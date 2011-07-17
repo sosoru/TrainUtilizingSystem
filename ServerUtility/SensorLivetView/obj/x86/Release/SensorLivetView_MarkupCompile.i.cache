@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\SensorLivetView\obj\x86\Release\
+C:\Users\root\Documents\TrainUtilizingSystem\ServerUtility\SensorLivetView\obj\x86\Release\
 SensorLivetView
 none
 false
 TRACE
-C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\SensorLivetView\App.xaml
-71051237405
+C:\Users\root\Documents\TrainUtilizingSystem\ServerUtility\SensorLivetView\App.xaml
+8656033745
 5-162595545
-221243677421
-24-1017159933
-DataStore\DataStore\DataStore.xaml;Views\MainWindow.xaml;Views\MotherBoardView.xaml;Views\TestWindow.xaml;Views\TrainSensorView.xaml;Views\UsbDevicesView.xaml;Views\VoltageGraphView.xaml;
+24-1791388129
+24-1432905763
+DataStore\DataStore\DataStore.xaml;Views\MainWindow.xaml;Views\MotherBoardView.xaml;Views\TestWindow.xaml;Views\TrainControllerView.xaml;Views\TrainSensorView.xaml;Views\UsbDevicesView.xaml;Views\VoltageGraphView.xaml;
 
 True
 

@@ -10,3 +10,4 @@ C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\SensorLivetVi
 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\SensorLivetView\obj\x86\Release\GeneratedInternalTypeHelper.g.cs
 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\SensorLivetView\obj\x86\Release\SensorLivetView_MarkupCompile.cache
 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\SensorLivetView\obj\x86\Release\SensorLivetView_MarkupCompile.lref
+C:\Users\root\Documents\TrainUtilizingSystem\ServerUtility\SensorLivetView\bin\Release\SensorLivetView.exe.config
