@@ -1,0 +1,36 @@
+﻿<UserControl x:Class="TrainControllerServer.MotherBoardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:sns="clr-namespace:SensorLibrary;assembly=SensorLibrary"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300"
+             x:Name="root">
+    <Control.Resources>
+        <ObjectDataProvider MethodName="GetValues"
+                            ObjectType="{x:Type sys:Enum}"
+                            x:Key="ModuleTypeEnumerable">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="sns:ModuleTypeEnum" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <DataTemplate x:Key="ModuleTypeTemplate">
+            <ComboBox ItemsSource="{StaticResource ModuleTypeEnumerable}" SelectedValue="{Binding}" />
+        </DataTemplate>
+
+    </Control.Resources>
+    <Grid>
+        <ListView ItemsSource="{Binding PortMappingEnumerable}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Port" DisplayMemberBinding="{Binding Port}" />
+                    <GridViewColumn Header="ModuleType"
+                                    DisplayMemberBinding="{Binding ModuleType}"
+                                    CellTemplate="{StaticResource ModuleTypeTemplate}"/>
+                </GridView>                
+            </ListView.View>
+        </ListView>
+    </Grid>
+</UserControl>

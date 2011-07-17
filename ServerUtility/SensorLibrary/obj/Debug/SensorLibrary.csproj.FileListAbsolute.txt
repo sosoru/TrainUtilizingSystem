@@ -1,0 +1,9 @@
+C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorLibrary\bin\Debug\SensorLibrary.dll
+C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorLibrary\bin\Debug\SensorLibrary.pdb
+C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorLibrary\bin\Debug\LibUsbDotNet.dll
+C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorLibrary\bin\Debug\System.Reactive.dll
+C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorLibrary\bin\Debug\LibUsbDotNet.pdb
+C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorLibrary\bin\Debug\System.Reactive.xml
+C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorLibrary\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorLibrary\obj\Debug\SensorLibrary.dll
+C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorLibrary\obj\Debug\SensorLibrary.pdb

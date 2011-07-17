@@ -1,0 +1,24 @@
+﻿2011/07/06 18:54:25 にビルドを開始しました。
+     1>ノード 2 上のプロジェクト "C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\SurfaceQueueLib\SurfaceQueueLib.vcxproj" (build ターゲット)。
+     1>InitializeBuildStatus:
+         "AlwaysCreate" が指定されたため "Release\SurfaceQueueLib.unsuccessfulbuild" を作成しています。
+       ClCompile:
+         D:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I"C:\Program Files (x86)\Microsoft DirectX SDK (August 2009)\Include" /Zi /nologo /W4 /WX- /O2 /Oi /Oy- /GL /D QUEUE_USE_CONFORMANT_NEW /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt SurfaceDevice10.cpp SurfaceDevice11.cpp SurfaceDevice9.cpp SurfaceQueue.cpp
+         SurfaceDevice10.cpp
+         SurfaceDevice11.cpp
+         SurfaceDevice9.cpp
+         SurfaceQueue.cpp
+       Lib:
+         D:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\Lib.exe /OUT:"C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\Release\SurfaceQueueLib.lib" /NOLOGO /LTCG Release\SurfaceDevice10.obj
+         Release\SurfaceDevice11.obj
+         Release\SurfaceDevice9.obj
+         Release\SurfaceQueue.obj
+         SurfaceQueueLib.vcxproj -> C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\Release\SurfaceQueueLib.lib
+       FinalizeBuildStatus:
+         ファイル "Release\SurfaceQueueLib.unsuccessfulbuild" を削除しています。
+         "Release\SurfaceQueueLib.lastbuildstate" のタッチ タスクを実行しています。
+     1>プロジェクト "C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\SurfaceQueueLib\SurfaceQueueLib.vcxproj" (build ターゲット) のビルドが完了しました。
+
+ビルドに成功しました。
+
+経過時間 00:00:09.04

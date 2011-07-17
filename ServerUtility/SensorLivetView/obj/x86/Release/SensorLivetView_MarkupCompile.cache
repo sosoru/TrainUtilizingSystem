@@ -1,0 +1,20 @@
+﻿SensorLivetView
+
+
+winexe
+C#
+.cs
+C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\SensorLivetView\obj\x86\Release\
+SensorLivetView
+none
+false
+TRACE
+C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\SensorLivetView\App.xaml
+71051237405
+5-162595545
+21-1402685395
+24-1017159933
+DataStore\DataStore\DataStore.xaml;Views\MainWindow.xaml;Views\MotherBoardView.xaml;Views\TestWindow.xaml;Views\TrainSensorView.xaml;Views\UsbDevicesView.xaml;Views\VoltageGraphView.xaml;
+
+True
+
