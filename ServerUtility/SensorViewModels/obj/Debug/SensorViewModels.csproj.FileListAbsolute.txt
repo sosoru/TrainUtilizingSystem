@@ -1,9 +1,0 @@
-C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorViewModels\bin\Debug\SensorViewModels.dll
-C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorViewModels\bin\Debug\SensorViewModels.pdb
-C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorViewModels\bin\Debug\SensorLibrary.dll
-C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorViewModels\bin\Debug\LibUsbDotNet.dll
-C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorViewModels\bin\Debug\SensorLibrary.pdb
-C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorViewModels\bin\Debug\LibUsbDotNet.pdb
-C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorViewModels\obj\Debug\ResolveAssemblyReference.cache
-C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorViewModels\obj\Debug\SensorViewModels.dll
-C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorViewModels\obj\Debug\SensorViewModels.pdb

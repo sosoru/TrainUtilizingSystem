@@ -1,1 +1,0 @@
-C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\TestProject\obj\Release\ResolveAssemblyReference.cache
