@@ -1,0 +1,409 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<TestRun id="ffaacbf2-6f38-4b82-98ef-90870a54c713" name="root@CLIENTAZS 2011-06-18 20:13:16" runUser="CLIENTAZS\root" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <TestSettings name="ローカル" id="82b9a1a8-b1c9-4cfe-afea-c8e70cee6ddc">
+    <Description>これらはローカル テスト実行用の既定のテスト設定です。</Description>
+    <Deployment enabled="false" runDeploymentRoot="root_CLIENTAZS 2011-06-18 20_13_16">
+      <DeploymentItem filename="C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorLibrary\bin\Debug\SensorLibrary.dll" />
+      <DeploymentItem filename="C:\Program Files\LibUsbDotNet\Src\LibWinUsb\bin\Debug\LibUsbDotNet.dll" />
+    </Deployment>
+    <Execution>
+      <TestTypeSpecific />
+      <AgentRule name="Execution Agents">
+      </AgentRule>
+    </Execution>
+  </TestSettings>
+  <Times creation="2011-06-18T20:13:16.9686019+09:00" queuing="2011-06-18T20:13:17.1246109+09:00" start="2011-06-18T20:13:17.1876145+09:00" finish="2011-06-18T20:13:19.3667391+09:00" />
+  <ResultSummary outcome="Failed">
+    <Counters total="28" executed="28" passed="9" error="0" failed="17" timeout="0" aborted="0" inconclusive="2" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+  </ResultSummary>
+  <TestDefinitions>
+    <UnitTest name="TimerTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="02112a0a-b267-4424-8970-91320a0a97c2">
+      <Execution id="6da5c534-f428-4b20-adf4-13af75473119" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.TrainSensorStateTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="TimerTest" />
+    </UnitTest>
+    <UnitTest name="ToStringTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="1ad9505e-7b3d-d16d-51df-a136ac1ace33">
+      <Execution id="b893e874-8333-4a39-abed-a90eff6dc0d8" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.TrainSensorStateTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="ToStringTest" />
+    </UnitTest>
+    <UnitTest name="PointModuleStateConstructorTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="8da466f7-c384-a693-e5eb-95d9f9f6fa64">
+      <Execution id="ba5e3ddf-4187-4de8-8c3d-7553098f9a0e" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.PointModuleStateTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="PointModuleStateConstructorTest" />
+    </UnitTest>
+    <UnitTest name="ItemTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="fd6576fe-8e64-b2e3-565c-e729b98d43e4">
+      <Execution id="959aeec4-4f88-4382-81e5-4ed50c9f6ac1" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.MotherBoardStateTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="ItemTest" />
+    </UnitTest>
+    <UnitTest name="MotherBoardStateConstructorTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="65de76b4-5202-0a40-1c68-8b330acbc2ea">
+      <Execution id="46623e8d-0df4-4690-b46d-fdc292ac3f9e" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.MotherBoardStateTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="MotherBoardStateConstructorTest" />
+    </UnitTest>
+    <UnitTest name="GetModuleTypeTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="58816480-a9ba-e318-f3ba-131396ca1f64">
+      <Execution id="9425e110-2af0-4b5b-b684-0fd502676560" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.MotherBoardStateTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="GetModuleTypeTest" />
+    </UnitTest>
+    <UnitTest name="DirectionsTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="3924b4a9-c8e3-1923-e40a-d9b46ab0bbcb">
+      <Execution id="28f1aaec-3a87-4b08-bcc8-6be0e54ad0f3" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.PointModuleDataTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="DirectionsTest" />
+    </UnitTest>
+    <UnitTest name="MotherBoardDataConstructorTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="31c80489-96bc-6432-541f-227c31e73e53">
+      <Execution id="0cb04289-79d4-495d-ab8c-fe3875a83799" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.MotherBoardDataTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="MotherBoardDataConstructorTest" />
+    </UnitTest>
+    <UnitTest name="FlushTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="64811b85-89b0-0b59-3263-26f94adb60fb">
+      <Execution id="944f55a9-57bb-4a45-92a1-7653a91496a3" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.ChunckedStreamTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="FlushTest" />
+    </UnitTest>
+    <UnitTest name="IsDetectedTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="4820147a-9623-95f5-e2c8-b660da05a3c5">
+      <Execution id="0932a661-98ab-45ff-9fb9-61855b7c7324" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.TrainSensorStateTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="IsDetectedTest" />
+    </UnitTest>
+    <UnitTest name="CurrentVoltageTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="5ef5b6e1-0cec-8e3e-2a18-36ec4ba05980">
+      <Execution id="efb552df-85af-428a-8380-7c60f52bb250" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.TrainSensorStateTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="CurrentVoltageTest" />
+    </UnitTest>
+    <UnitTest name="PointModuleStateConstructorTest1" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="48df926c-1e10-ea4f-821f-fe6d7ae397e0">
+      <Execution id="5d94f5db-aa9e-45db-be7c-65f68d5536c1" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.PointModuleStateTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="PointModuleStateConstructorTest1" />
+    </UnitTest>
+    <UnitTest name="ByteArrayValidationCheck" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="e97e0475-1df3-1614-6d37-36b8da6c07df">
+      <Execution id="52ae2b28-8886-4df9-807d-5db6ec52789a" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.ConvertExtenstionsTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="ByteArrayValidationCheck" />
+    </UnitTest>
+    <UnitTest name="GetPointStateTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="4a4e554a-7ba4-a5d9-4848-e1fe230e364e">
+      <Execution id="6d0d0944-8339-41be-9234-76d8235332bc" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.PointModuleStateTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="GetPointStateTest" />
+    </UnitTest>
+    <UnitTest name="SetModuleTypeTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="81f306fa-a965-8ce2-4561-6c80223556f0">
+      <Execution id="989481eb-a342-4028-85ea-2821fb8ce53c" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.MotherBoardStateTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="SetModuleTypeTest" />
+    </UnitTest>
+    <UnitTest name="SetPointStateTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="b838cd42-a1d9-5f7b-8393-2795415c3b1e">
+      <Execution id="da91c857-43f8-4168-ad61-9960b7381671" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.PointModuleStateTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="SetPointStateTest" />
+    </UnitTest>
+    <UnitTest name="WriteTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="e1892563-72ac-e402-dfba-90f0fb1b229e">
+      <Execution id="e271b291-feb4-4014-93a4-b02a2ba637e3" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.ChunckedStreamTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="WriteTest" />
+    </UnitTest>
+    <UnitTest name="TimerTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="e531a444-ddb8-6cc8-ba69-dded1772c8fb">
+      <Execution id="97c7353d-d158-4e80-8afc-23fa0169f5be" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.MotherBoardStateTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="TimerTest" />
+    </UnitTest>
+    <UnitTest name="ModuleTypeTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="c3e25e71-e6a3-3799-dbe0-bacda8fc8163">
+      <Execution id="32518656-35bd-45b6-b7dd-2659ad29d57d" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.MotherBoardDataTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="ModuleTypeTest" />
+    </UnitTest>
+    <UnitTest name="ItemTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="c6c2c1ab-9d23-f24c-e326-eec075cfb3f8">
+      <Execution id="967433a2-920e-4881-b49a-c3fd3f713d3c" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.PointModuleStateTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="ItemTest" />
+    </UnitTest>
+    <UnitTest name="PointModuleDataConstructorTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="e636afca-43c6-677e-deb3-86d562155830">
+      <Execution id="0501e3d7-cd22-41c2-887c-ea6083694768" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.PointModuleDataTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="PointModuleDataConstructorTest" />
+    </UnitTest>
+    <UnitTest name="ThresholdVoltageTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="e36da11d-994b-1ac2-4a9f-70734f4a554b">
+      <Execution id="543b6370-9960-4833-9cc6-9cad81bcfdab" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.TrainSensorStateTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="ThresholdVoltageTest" />
+    </UnitTest>
+    <UnitTest name="OverflowedCountTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="ad40eac8-0529-544e-7cd1-f5b2a391e919">
+      <Execution id="ff04573d-5392-40ce-9d0e-ab6db794686f" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.TrainSensorStateTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="OverflowedCountTest" />
+    </UnitTest>
+    <UnitTest name="ToByteArrayTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="8c676a8d-ec31-5a6b-13ab-e80d4af41e42">
+      <Execution id="000e4fb2-a843-4581-bbe6-7ddfae1b5b3c" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.ConvertExtenstionsTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="ToByteArrayTest" />
+    </UnitTest>
+    <UnitTest name="ModeTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="e7d27d5a-0dca-8191-f30e-a3d70f9835ee">
+      <Execution id="b3c55375-3907-401e-8ce2-4702872f6f40" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.TrainSensorStateTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="ModeTest" />
+    </UnitTest>
+    <UnitTest name="ParentIDTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="888367e1-b0e5-f904-1073-ef6838ec8384">
+      <Execution id="ffcd0e90-f798-4d3c-a7ff-e6d0b2c2d16e" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.MotherBoardStateTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="ParentIDTest" />
+    </UnitTest>
+    <UnitTest name="ReadTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="03d23227-fae1-7f69-18bc-75591f488ed7">
+      <Execution id="66885803-6583-4b34-b86a-61ef3a29ac76" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.ChunckedStreamTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="ReadTest" />
+    </UnitTest>
+    <UnitTest name="MotherBoardStateConstructorTest1" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="e38a07aa-8367-141d-4ea3-0937392e4245">
+      <Execution id="d1d90203-fb73-40cd-9103-e661b25ed126" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.MotherBoardStateTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="MotherBoardStateConstructorTest1" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestLists>
+    <TestList name="一覧に存在しない結果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="読み込まれたすべての結果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <TestEntries>
+    <TestEntry testId="02112a0a-b267-4424-8970-91320a0a97c2" executionId="6da5c534-f428-4b20-adf4-13af75473119" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="03d23227-fae1-7f69-18bc-75591f488ed7" executionId="66885803-6583-4b34-b86a-61ef3a29ac76" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1ad9505e-7b3d-d16d-51df-a136ac1ace33" executionId="b893e874-8333-4a39-abed-a90eff6dc0d8" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="31c80489-96bc-6432-541f-227c31e73e53" executionId="0cb04289-79d4-495d-ab8c-fe3875a83799" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3924b4a9-c8e3-1923-e40a-d9b46ab0bbcb" executionId="28f1aaec-3a87-4b08-bcc8-6be0e54ad0f3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4820147a-9623-95f5-e2c8-b660da05a3c5" executionId="0932a661-98ab-45ff-9fb9-61855b7c7324" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="48df926c-1e10-ea4f-821f-fe6d7ae397e0" executionId="5d94f5db-aa9e-45db-be7c-65f68d5536c1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4a4e554a-7ba4-a5d9-4848-e1fe230e364e" executionId="6d0d0944-8339-41be-9234-76d8235332bc" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="58816480-a9ba-e318-f3ba-131396ca1f64" executionId="9425e110-2af0-4b5b-b684-0fd502676560" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5ef5b6e1-0cec-8e3e-2a18-36ec4ba05980" executionId="efb552df-85af-428a-8380-7c60f52bb250" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="64811b85-89b0-0b59-3263-26f94adb60fb" executionId="944f55a9-57bb-4a45-92a1-7653a91496a3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="65de76b4-5202-0a40-1c68-8b330acbc2ea" executionId="46623e8d-0df4-4690-b46d-fdc292ac3f9e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="81f306fa-a965-8ce2-4561-6c80223556f0" executionId="989481eb-a342-4028-85ea-2821fb8ce53c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="888367e1-b0e5-f904-1073-ef6838ec8384" executionId="ffcd0e90-f798-4d3c-a7ff-e6d0b2c2d16e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8c676a8d-ec31-5a6b-13ab-e80d4af41e42" executionId="000e4fb2-a843-4581-bbe6-7ddfae1b5b3c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8da466f7-c384-a693-e5eb-95d9f9f6fa64" executionId="ba5e3ddf-4187-4de8-8c3d-7553098f9a0e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ad40eac8-0529-544e-7cd1-f5b2a391e919" executionId="ff04573d-5392-40ce-9d0e-ab6db794686f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b838cd42-a1d9-5f7b-8393-2795415c3b1e" executionId="da91c857-43f8-4168-ad61-9960b7381671" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c3e25e71-e6a3-3799-dbe0-bacda8fc8163" executionId="32518656-35bd-45b6-b7dd-2659ad29d57d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c6c2c1ab-9d23-f24c-e326-eec075cfb3f8" executionId="967433a2-920e-4881-b49a-c3fd3f713d3c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e1892563-72ac-e402-dfba-90f0fb1b229e" executionId="e271b291-feb4-4014-93a4-b02a2ba637e3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e36da11d-994b-1ac2-4a9f-70734f4a554b" executionId="543b6370-9960-4833-9cc6-9cad81bcfdab" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e38a07aa-8367-141d-4ea3-0937392e4245" executionId="d1d90203-fb73-40cd-9103-e661b25ed126" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e531a444-ddb8-6cc8-ba69-dded1772c8fb" executionId="97c7353d-d158-4e80-8afc-23fa0169f5be" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e636afca-43c6-677e-deb3-86d562155830" executionId="0501e3d7-cd22-41c2-887c-ea6083694768" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e7d27d5a-0dca-8191-f30e-a3d70f9835ee" executionId="b3c55375-3907-401e-8ce2-4702872f6f40" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e97e0475-1df3-1614-6d37-36b8da6c07df" executionId="52ae2b28-8886-4df9-807d-5db6ec52789a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="fd6576fe-8e64-b2e3-565c-e729b98d43e4" executionId="959aeec4-4f88-4382-81e5-4ed50c9f6ac1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <Results>
+    <UnitTestResult executionId="6da5c534-f428-4b20-adf4-13af75473119" testId="02112a0a-b267-4424-8970-91320a0a97c2" testName="TimerTest" computerName="CLIENTAZS" duration="00:00:00.0945570" startTime="2011-06-18T20:13:17.3086214+09:00" endTime="2011-06-18T20:13:17.9616587+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6da5c534-f428-4b20-adf4-13af75473119">
+      <Output>
+        <ErrorInfo>
+          <Message>テスト メソッド TestProject.TrainSensorStateTest.TimerTest が例外をスローしました: 
+System.ArgumentException: incorrect module type</Message>
+          <StackTrace>    場所 SensorLibrary.TrainSensorState..ctor(DevicePacket pack, PacketServer server) 場所 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorLibrary\DeviceState.cs:行 103
+   場所 SensorLibrary.TrainSensorState..ctor(DevicePacket pack) 場所 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorLibrary\DeviceState.cs:行 106
+   場所 TestProject.TrainSensorStateTest.TimerTest() 場所 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\TestProject\TrainSensorStateTest.cs:行 203
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="66885803-6583-4b34-b86a-61ef3a29ac76" testId="03d23227-fae1-7f69-18bc-75591f488ed7" testName="ReadTest" computerName="CLIENTAZS" duration="00:00:00.0048597" startTime="2011-06-18T20:13:17.9886603+09:00" endTime="2011-06-18T20:13:18.0196621+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="66885803-6583-4b34-b86a-61ef3a29ac76">
+    </UnitTestResult>
+    <UnitTestResult executionId="b893e874-8333-4a39-abed-a90eff6dc0d8" testId="1ad9505e-7b3d-d16d-51df-a136ac1ace33" testName="ToStringTest" computerName="CLIENTAZS" duration="00:00:00.0052937" startTime="2011-06-18T20:13:18.0326628+09:00" endTime="2011-06-18T20:13:18.0646646+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b893e874-8333-4a39-abed-a90eff6dc0d8">
+      <Output>
+        <ErrorInfo>
+          <Message>テスト メソッド TestProject.TrainSensorStateTest.ToStringTest が例外をスローしました: 
+System.NullReferenceException: オブジェクト参照がオブジェクト インスタンスに設定されていません。</Message>
+          <StackTrace>    場所 SensorLibrary.TrainSensorState..ctor(DevicePacket pack, PacketServer server) 場所 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorLibrary\DeviceState.cs:行 102
+   場所 SensorLibrary.TrainSensorState..ctor(DevicePacket pack) 場所 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorLibrary\DeviceState.cs:行 106
+   場所 TestProject.TrainSensorStateTest.ToStringTest() 場所 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\TestProject\TrainSensorStateTest.cs:行 113
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="0cb04289-79d4-495d-ab8c-fe3875a83799" testId="31c80489-96bc-6432-541f-227c31e73e53" testName="MotherBoardDataConstructorTest" computerName="CLIENTAZS" duration="00:00:00.0019211" startTime="2011-06-18T20:13:18.0776654+09:00" endTime="2011-06-18T20:13:18.0886660+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0cb04289-79d4-495d-ab8c-fe3875a83799">
+    </UnitTestResult>
+    <UnitTestResult executionId="28f1aaec-3a87-4b08-bcc8-6be0e54ad0f3" testId="3924b4a9-c8e3-1923-e40a-d9b46ab0bbcb" testName="DirectionsTest" computerName="CLIENTAZS" duration="00:00:00.0024266" startTime="2011-06-18T20:13:18.0936663+09:00" endTime="2011-06-18T20:13:18.1076671+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="28f1aaec-3a87-4b08-bcc8-6be0e54ad0f3">
+    </UnitTestResult>
+    <UnitTestResult executionId="0932a661-98ab-45ff-9fb9-61855b7c7324" testId="4820147a-9623-95f5-e2c8-b660da05a3c5" testName="IsDetectedTest" computerName="CLIENTAZS" duration="00:00:00.0040153" startTime="2011-06-18T20:13:18.1176677+09:00" endTime="2011-06-18T20:13:18.1396689+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0932a661-98ab-45ff-9fb9-61855b7c7324">
+      <Output>
+        <ErrorInfo>
+          <Message>テスト メソッド TestProject.TrainSensorStateTest.IsDetectedTest が例外をスローしました: 
+System.ArgumentException: incorrect module type</Message>
+          <StackTrace>    場所 SensorLibrary.TrainSensorState..ctor(DevicePacket pack, PacketServer server) 場所 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorLibrary\DeviceState.cs:行 103
+   場所 SensorLibrary.TrainSensorState..ctor(DevicePacket pack) 場所 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorLibrary\DeviceState.cs:行 106
+   場所 TestProject.TrainSensorStateTest.IsDetectedTest() 場所 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\TestProject\TrainSensorStateTest.cs:行 143
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="5d94f5db-aa9e-45db-be7c-65f68d5536c1" testId="48df926c-1e10-ea4f-821f-fe6d7ae397e0" testName="PointModuleStateConstructorTest1" computerName="CLIENTAZS" duration="00:00:00.0180590" startTime="2011-06-18T20:13:18.1536697+09:00" endTime="2011-06-18T20:13:18.2546755+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Inconclusive" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5d94f5db-aa9e-45db-be7c-65f68d5536c1">
+      <Output>
+        <ErrorInfo>
+          <Message>Assert.Inconclusive に失敗しました。TODO: ターゲットを確認するためのコードを実装してください</Message>
+          <StackTrace>   場所 TestProject.PointModuleStateTest.PointModuleStateConstructorTest1() 場所 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\TestProject\PointModuleStateTest.cs:行 87
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="6d0d0944-8339-41be-9234-76d8235332bc" testId="4a4e554a-7ba4-a5d9-4848-e1fe230e364e" testName="GetPointStateTest" computerName="CLIENTAZS" duration="00:00:00.0078332" startTime="2011-06-18T20:13:18.2716765+09:00" endTime="2011-06-18T20:13:18.3116788+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6d0d0944-8339-41be-9234-76d8235332bc">
+      <Output>
+        <ErrorInfo>
+          <Message>テスト メソッド TestProject.PointModuleStateTest.GetPointStateTest が例外をスローしました: 
+System.NullReferenceException: オブジェクト参照がオブジェクト インスタンスに設定されていません。</Message>
+          <StackTrace>    場所 SensorLibrary.DeviceState`1.get_Data() 場所 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorLibrary\DeviceState.cs:行 56
+   場所 SensorLibrary.PointModuleState.GetPointState(Int32 addr) 場所 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorLibrary\DeviceState.cs:行 218
+   場所 TestProject.PointModuleStateTest.GetPointStateTest() 場所 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\TestProject\PointModuleStateTest.cs:行 101
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="9425e110-2af0-4b5b-b684-0fd502676560" testId="58816480-a9ba-e318-f3ba-131396ca1f64" testName="GetModuleTypeTest" computerName="CLIENTAZS" duration="00:00:00.0057666" startTime="2011-06-18T20:13:18.3326800+09:00" endTime="2011-06-18T20:13:18.3566813+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9425e110-2af0-4b5b-b684-0fd502676560">
+      <Output>
+        <ErrorInfo>
+          <Message>テスト メソッド TestProject.MotherBoardStateTest.GetModuleTypeTest が例外をスローしました: 
+System.NullReferenceException: オブジェクト参照がオブジェクト インスタンスに設定されていません。</Message>
+          <StackTrace>    場所 SensorLibrary.MotherBoardState..ctor(DevicePacket pack, PacketServer server) 場所 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorLibrary\DeviceState.cs:行 257
+   場所 SensorLibrary.MotherBoardState..ctor(DevicePacket packet) 場所 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorLibrary\DeviceState.cs:行 261
+   場所 TestProject.MotherBoardStateTest.GetModuleTypeTest() 場所 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\TestProject\MotherBoardStateTest.cs:行 137
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="efb552df-85af-428a-8380-7c60f52bb250" testId="5ef5b6e1-0cec-8e3e-2a18-36ec4ba05980" testName="CurrentVoltageTest" computerName="CLIENTAZS" duration="00:00:00.0177283" startTime="2011-06-18T20:13:18.3746824+09:00" endTime="2011-06-18T20:13:18.4066842+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="efb552df-85af-428a-8380-7c60f52bb250">
+      <Output>
+        <ErrorInfo>
+          <Message>テスト メソッド TestProject.TrainSensorStateTest.CurrentVoltageTest が例外をスローしました: 
+System.ArgumentException: incorrect module type</Message>
+          <StackTrace>    場所 SensorLibrary.TrainSensorState..ctor(DevicePacket pack, PacketServer server) 場所 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorLibrary\DeviceState.cs:行 103
+   場所 SensorLibrary.TrainSensorState..ctor(DevicePacket pack) 場所 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorLibrary\DeviceState.cs:行 106
+   場所 TestProject.TrainSensorStateTest.CurrentVoltageTest() 場所 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\TestProject\TrainSensorStateTest.cs:行 128
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="944f55a9-57bb-4a45-92a1-7653a91496a3" testId="64811b85-89b0-0b59-3263-26f94adb60fb" testName="FlushTest" computerName="CLIENTAZS" duration="00:00:00.0025818" startTime="2011-06-18T20:13:18.4276854+09:00" endTime="2011-06-18T20:13:18.4636875+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="944f55a9-57bb-4a45-92a1-7653a91496a3">
+    </UnitTestResult>
+    <UnitTestResult executionId="46623e8d-0df4-4690-b46d-fdc292ac3f9e" testId="65de76b4-5202-0a40-1c68-8b330acbc2ea" testName="MotherBoardStateConstructorTest" computerName="CLIENTAZS" duration="00:00:00.0100689" startTime="2011-06-18T20:13:18.4676877+09:00" endTime="2011-06-18T20:13:18.5066899+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="46623e8d-0df4-4690-b46d-fdc292ac3f9e">
+      <Output>
+        <ErrorInfo>
+          <Message>テスト メソッド TestProject.MotherBoardStateTest.MotherBoardStateConstructorTest が例外をスローしました: 
+System.NullReferenceException: オブジェクト参照がオブジェクト インスタンスに設定されていません。</Message>
+          <StackTrace>    場所 SensorLibrary.MotherBoardState..ctor(DevicePacket pack, PacketServer server) 場所 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorLibrary\DeviceState.cs:行 257
+   場所 TestProject.MotherBoardStateTest.MotherBoardStateConstructorTest() 場所 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\TestProject\MotherBoardStateTest.cs:行 154
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="989481eb-a342-4028-85ea-2821fb8ce53c" testId="81f306fa-a965-8ce2-4561-6c80223556f0" testName="SetModuleTypeTest" computerName="CLIENTAZS" duration="00:00:00.0033424" startTime="2011-06-18T20:13:18.5176906+09:00" endTime="2011-06-18T20:13:18.5496924+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="989481eb-a342-4028-85ea-2821fb8ce53c">
+      <Output>
+        <ErrorInfo>
+          <Message>テスト メソッド TestProject.MotherBoardStateTest.SetModuleTypeTest が例外をスローしました: 
+System.NullReferenceException: オブジェクト参照がオブジェクト インスタンスに設定されていません。</Message>
+          <StackTrace>    場所 SensorLibrary.MotherBoardState..ctor(DevicePacket pack, PacketServer server) 場所 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorLibrary\DeviceState.cs:行 257
+   場所 SensorLibrary.MotherBoardState..ctor(DevicePacket packet) 場所 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorLibrary\DeviceState.cs:行 261
+   場所 TestProject.MotherBoardStateTest.SetModuleTypeTest() 場所 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\TestProject\MotherBoardStateTest.cs:行 123
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="ffcd0e90-f798-4d3c-a7ff-e6d0b2c2d16e" testId="888367e1-b0e5-f904-1073-ef6838ec8384" testName="ParentIDTest" computerName="CLIENTAZS" duration="00:00:00.0047085" startTime="2011-06-18T20:13:18.5556927+09:00" endTime="2011-06-18T20:13:18.5716936+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ffcd0e90-f798-4d3c-a7ff-e6d0b2c2d16e">
+      <Output>
+        <ErrorInfo>
+          <Message>テスト メソッド TestProject.MotherBoardStateTest.ParentIDTest が例外をスローしました: 
+System.NullReferenceException: オブジェクト参照がオブジェクト インスタンスに設定されていません。</Message>
+          <StackTrace>    場所 SensorLibrary.MotherBoardState..ctor(DevicePacket pack, PacketServer server) 場所 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorLibrary\DeviceState.cs:行 257
+   場所 SensorLibrary.MotherBoardState..ctor(DevicePacket packet) 場所 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorLibrary\DeviceState.cs:行 261
+   場所 TestProject.MotherBoardStateTest.ParentIDTest() 場所 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\TestProject\MotherBoardStateTest.cs:行 90
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="000e4fb2-a843-4581-bbe6-7ddfae1b5b3c" testId="8c676a8d-ec31-5a6b-13ab-e80d4af41e42" testName="ToByteArrayTest" computerName="CLIENTAZS" duration="00:00:00.0014319" startTime="2011-06-18T20:13:18.5846944+09:00" endTime="2011-06-18T20:13:18.6066956+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="000e4fb2-a843-4581-bbe6-7ddfae1b5b3c">
+    </UnitTestResult>
+    <UnitTestResult executionId="ba5e3ddf-4187-4de8-8c3d-7553098f9a0e" testId="8da466f7-c384-a693-e5eb-95d9f9f6fa64" testName="PointModuleStateConstructorTest" computerName="CLIENTAZS" duration="00:00:00.0029776" startTime="2011-06-18T20:13:18.6146961+09:00" endTime="2011-06-18T20:13:18.6476980+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Inconclusive" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ba5e3ddf-4187-4de8-8c3d-7553098f9a0e">
+      <Output>
+        <ErrorInfo>
+          <Message>Assert.Inconclusive に失敗しました。TODO: ターゲットを確認するためのコードを実装してください</Message>
+          <StackTrace>   場所 TestProject.PointModuleStateTest.PointModuleStateConstructorTest() 場所 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\TestProject\PointModuleStateTest.cs:行 75
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="ff04573d-5392-40ce-9d0e-ab6db794686f" testId="ad40eac8-0529-544e-7cd1-f5b2a391e919" testName="OverflowedCountTest" computerName="CLIENTAZS" duration="00:00:00.0063867" startTime="2011-06-18T20:13:18.6536983+09:00" endTime="2011-06-18T20:13:18.6867002+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ff04573d-5392-40ce-9d0e-ab6db794686f">
+      <Output>
+        <ErrorInfo>
+          <Message>テスト メソッド TestProject.TrainSensorStateTest.OverflowedCountTest が例外をスローしました: 
+System.ArgumentException: incorrect module type</Message>
+          <StackTrace>    場所 SensorLibrary.TrainSensorState..ctor(DevicePacket pack, PacketServer server) 場所 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorLibrary\DeviceState.cs:行 103
+   場所 SensorLibrary.TrainSensorState..ctor(DevicePacket pack) 場所 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorLibrary\DeviceState.cs:行 106
+   場所 TestProject.TrainSensorStateTest.OverflowedCountTest() 場所 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\TestProject\TrainSensorStateTest.cs:行 173
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="da91c857-43f8-4168-ad61-9960b7381671" testId="b838cd42-a1d9-5f7b-8393-2795415c3b1e" testName="SetPointStateTest" computerName="CLIENTAZS" duration="00:00:00.0044420" startTime="2011-06-18T20:13:18.6907004+09:00" endTime="2011-06-18T20:13:18.7287026+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="da91c857-43f8-4168-ad61-9960b7381671">
+      <Output>
+        <ErrorInfo>
+          <Message>テスト メソッド TestProject.PointModuleStateTest.SetPointStateTest が例外をスローしました: 
+System.NullReferenceException: オブジェクト参照がオブジェクト インスタンスに設定されていません。</Message>
+          <StackTrace>    場所 SensorLibrary.DeviceState`1.get_Data() 場所 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorLibrary\DeviceState.cs:行 56
+   場所 SensorLibrary.PointModuleState.SetPointState(Int32 addr, PointStateEnum state) 場所 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorLibrary\DeviceState.cs:行 228
+   場所 TestProject.PointModuleStateTest.SetPointStateTest() 場所 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\TestProject\PointModuleStateTest.cs:行 116
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="32518656-35bd-45b6-b7dd-2659ad29d57d" testId="c3e25e71-e6a3-3799-dbe0-bacda8fc8163" testName="ModuleTypeTest" computerName="CLIENTAZS" duration="00:00:00.0053083" startTime="2011-06-18T20:13:18.7337029+09:00" endTime="2011-06-18T20:13:18.7647047+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="32518656-35bd-45b6-b7dd-2659ad29d57d">
+    </UnitTestResult>
+    <UnitTestResult executionId="967433a2-920e-4881-b49a-c3fd3f713d3c" testId="c6c2c1ab-9d23-f24c-e326-eec075cfb3f8" testName="ItemTest" computerName="CLIENTAZS" duration="00:00:00.0054838" startTime="2011-06-18T20:13:18.8307085+09:00" endTime="2011-06-18T20:13:18.8677106+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="967433a2-920e-4881-b49a-c3fd3f713d3c">
+      <Output>
+        <ErrorInfo>
+          <Message>テスト メソッド TestProject.PointModuleStateTest.ItemTest が例外をスローしました: 
+System.NullReferenceException: オブジェクト参照がオブジェクト インスタンスに設定されていません。</Message>
+          <StackTrace>    場所 SensorLibrary.DeviceState`1.get_Data() 場所 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorLibrary\DeviceState.cs:行 56
+   場所 SensorLibrary.PointModuleState.SetPointState(Int32 addr, PointStateEnum state) 場所 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorLibrary\DeviceState.cs:行 228
+   場所 SensorLibrary.PointModuleState.set_Item(Int32 addr, PointStateEnum value) 場所 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorLibrary\DeviceState.cs:行 246
+   場所 TestProject.PointModuleStateTest.ItemTest() 場所 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\TestProject\PointModuleStateTest.cs:行 131
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="e271b291-feb4-4014-93a4-b02a2ba637e3" testId="e1892563-72ac-e402-dfba-90f0fb1b229e" testName="WriteTest" computerName="CLIENTAZS" duration="00:00:00.0007760" startTime="2011-06-18T20:13:18.8747110+09:00" endTime="2011-06-18T20:13:18.8997124+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e271b291-feb4-4014-93a4-b02a2ba637e3">
+    </UnitTestResult>
+    <UnitTestResult executionId="543b6370-9960-4833-9cc6-9cad81bcfdab" testId="e36da11d-994b-1ac2-4a9f-70734f4a554b" testName="ThresholdVoltageTest" computerName="CLIENTAZS" duration="00:00:00.0030011" startTime="2011-06-18T20:13:18.9097130+09:00" endTime="2011-06-18T20:13:18.9197135+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="543b6370-9960-4833-9cc6-9cad81bcfdab">
+      <Output>
+        <ErrorInfo>
+          <Message>テスト メソッド TestProject.TrainSensorStateTest.ThresholdVoltageTest が例外をスローしました: 
+System.ArgumentException: incorrect module type</Message>
+          <StackTrace>    場所 SensorLibrary.TrainSensorState..ctor(DevicePacket pack, PacketServer server) 場所 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorLibrary\DeviceState.cs:行 103
+   場所 SensorLibrary.TrainSensorState..ctor(DevicePacket pack) 場所 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorLibrary\DeviceState.cs:行 106
+   場所 TestProject.TrainSensorStateTest.ThresholdVoltageTest() 場所 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\TestProject\TrainSensorStateTest.cs:行 188
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="d1d90203-fb73-40cd-9103-e661b25ed126" testId="e38a07aa-8367-141d-4ea3-0937392e4245" testName="MotherBoardStateConstructorTest1" computerName="CLIENTAZS" duration="00:00:00.0029174" startTime="2011-06-18T20:13:18.9257139+09:00" endTime="2011-06-18T20:13:18.9487152+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d1d90203-fb73-40cd-9103-e661b25ed126">
+      <Output>
+        <ErrorInfo>
+          <Message>テスト メソッド TestProject.MotherBoardStateTest.MotherBoardStateConstructorTest1 が例外をスローしました: 
+System.NullReferenceException: オブジェクト参照がオブジェクト インスタンスに設定されていません。</Message>
+          <StackTrace>    場所 SensorLibrary.MotherBoardState..ctor(DevicePacket pack, PacketServer server) 場所 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorLibrary\DeviceState.cs:行 257
+   場所 SensorLibrary.MotherBoardState..ctor(DevicePacket packet) 場所 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorLibrary\DeviceState.cs:行 261
+   場所 TestProject.MotherBoardStateTest.MotherBoardStateConstructorTest1() 場所 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\TestProject\MotherBoardStateTest.cs:行 165
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="97c7353d-d158-4e80-8afc-23fa0169f5be" testId="e531a444-ddb8-6cc8-ba69-dded1772c8fb" testName="TimerTest" computerName="CLIENTAZS" duration="00:00:00.0031141" startTime="2011-06-18T20:13:18.9557156+09:00" endTime="2011-06-18T20:13:18.9737166+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="97c7353d-d158-4e80-8afc-23fa0169f5be">
+      <Output>
+        <ErrorInfo>
+          <Message>テスト メソッド TestProject.MotherBoardStateTest.TimerTest が例外をスローしました: 
+System.NullReferenceException: オブジェクト参照がオブジェクト インスタンスに設定されていません。</Message>
+          <StackTrace>    場所 SensorLibrary.MotherBoardState..ctor(DevicePacket pack, PacketServer server) 場所 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorLibrary\DeviceState.cs:行 257
+   場所 SensorLibrary.MotherBoardState..ctor(DevicePacket packet) 場所 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorLibrary\DeviceState.cs:行 261
+   場所 TestProject.MotherBoardStateTest.TimerTest() 場所 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\TestProject\MotherBoardStateTest.cs:行 74
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="0501e3d7-cd22-41c2-887c-ea6083694768" testId="e636afca-43c6-677e-deb3-86d562155830" testName="PointModuleDataConstructorTest" computerName="CLIENTAZS" duration="00:00:00.0003827" startTime="2011-06-18T20:13:18.9787169+09:00" endTime="2011-06-18T20:13:18.9977180+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0501e3d7-cd22-41c2-887c-ea6083694768">
+    </UnitTestResult>
+    <UnitTestResult executionId="b3c55375-3907-401e-8ce2-4702872f6f40" testId="e7d27d5a-0dca-8191-f30e-a3d70f9835ee" testName="ModeTest" computerName="CLIENTAZS" duration="00:00:00.0042916" startTime="2011-06-18T20:13:19.0037183+09:00" endTime="2011-06-18T20:13:19.0157190+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b3c55375-3907-401e-8ce2-4702872f6f40">
+      <Output>
+        <ErrorInfo>
+          <Message>テスト メソッド TestProject.TrainSensorStateTest.ModeTest が例外をスローしました: 
+System.ArgumentException: incorrect module type</Message>
+          <StackTrace>    場所 SensorLibrary.TrainSensorState..ctor(DevicePacket pack, PacketServer server) 場所 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorLibrary\DeviceState.cs:行 103
+   場所 SensorLibrary.TrainSensorState..ctor(DevicePacket pack) 場所 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorLibrary\DeviceState.cs:行 106
+   場所 TestProject.TrainSensorStateTest.ModeTest() 場所 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\TestProject\TrainSensorStateTest.cs:行 158
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="52ae2b28-8886-4df9-807d-5db6ec52789a" testId="e97e0475-1df3-1614-6d37-36b8da6c07df" testName="ByteArrayValidationCheck" computerName="CLIENTAZS" duration="00:00:00.0017618" startTime="2011-06-18T20:13:19.0197193+09:00" endTime="2011-06-18T20:13:19.0437206+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="52ae2b28-8886-4df9-807d-5db6ec52789a">
+    </UnitTestResult>
+    <UnitTestResult executionId="959aeec4-4f88-4382-81e5-4ed50c9f6ac1" testId="fd6576fe-8e64-b2e3-565c-e729b98d43e4" testName="ItemTest" computerName="CLIENTAZS" duration="00:00:00.0050889" startTime="2011-06-18T20:13:19.0487209+09:00" endTime="2011-06-18T20:13:19.0767225+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="959aeec4-4f88-4382-81e5-4ed50c9f6ac1">
+      <Output>
+        <ErrorInfo>
+          <Message>テスト メソッド TestProject.MotherBoardStateTest.ItemTest が例外をスローしました: 
+System.NullReferenceException: オブジェクト参照がオブジェクト インスタンスに設定されていません。</Message>
+          <StackTrace>    場所 SensorLibrary.MotherBoardState..ctor(DevicePacket pack, PacketServer server) 場所 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorLibrary\DeviceState.cs:行 257
+   場所 SensorLibrary.MotherBoardState..ctor(DevicePacket packet) 場所 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorLibrary\DeviceState.cs:行 261
+   場所 TestProject.MotherBoardStateTest.ItemTest() 場所 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\TestProject\MotherBoardStateTest.cs:行 106
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+</TestRun>

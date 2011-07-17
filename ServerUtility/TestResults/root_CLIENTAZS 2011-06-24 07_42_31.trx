@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<TestRun id="99333984-9382-4da4-b9d1-06c3b74f5878" name="root@CLIENTAZS 2011-06-24 07:42:31" runUser="CLIENTAZS\root" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <TestSettings name="ローカル" id="82b9a1a8-b1c9-4cfe-afea-c8e70cee6ddc">
+    <Description>これらはローカル テスト実行用の既定のテスト設定です。</Description>
+    <Deployment enabled="false" runDeploymentRoot="root_CLIENTAZS 2011-06-24 07_42_31">
+      <DeploymentItem filename="C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\SensorLivetView\InfrastructureAssemblies\Livet.dll" />
+      <DeploymentItem filename="C:\Program Files (x86)\Microsoft Reactive Extensions SDK\v1.0.10605\Binaries\.NETFramework\v4.0\System.Reactive.dll" />
+      <DeploymentItem filename="C:\Program Files (x86)\Microsoft SDKs\Expression\Blend\.NETFramework\v4.0\Libraries\System.Windows.Interactivity.dll" />
+      <DeploymentItem filename="C:\Program Files\LibUsbDotNet\Src\LibWinUsb\bin\Debug\LibUsbDotNet.dll" />
+      <DeploymentItem filename="C:\Program Files (x86)\Microsoft Reactive Extensions SDK\v1.0.10605\Binaries\.NETFramework\v4.0\Microsoft.Reactive.Testing.dll" />
+      <DeploymentItem filename="C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorLibrary\bin\Debug\SensorLibrary.dll" />
+      <DeploymentItem filename="C:\Program Files (x86)\Microsoft SDKs\Expression\Blend\.NETFramework\v4.0\Libraries\Microsoft.Expression.Interactions.dll" />
+      <DeploymentItem filename="C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\SensorLivetView\bin\Debug\SensorLivetView.exe" />
+      <DeploymentItem filename="C:\Program Files (x86)\Microsoft Reactive Extensions SDK\v1.0.10605\Binaries\.NETFramework\v4.0\System.Reactive.Windows.Threading.dll" />
+    </Deployment>
+    <Execution>
+      <TestTypeSpecific />
+      <AgentRule name="Execution Agents">
+      </AgentRule>
+    </Execution>
+  </TestSettings>
+  <Times creation="2011-06-24T07:42:31.7527806+09:00" queuing="2011-06-24T07:42:38.1691476+09:00" start="2011-06-24T07:42:38.7401803+09:00" finish="2011-06-24T07:43:20.0485430+09:00" />
+  <ResultSummary outcome="Error">
+    <Counters total="1" executed="1" error="0" failed="0" timeout="0" aborted="1" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" passed="0" completed="0" inProgress="0" pending="0" />
+    <RunInfos>
+      <RunInfo computerName="CLIENTAZS" outcome="Error" timestamp="2011-06-24T07:43:20.0275418+09:00">
+        <Text>テストのホスト プロセスは予期せずに終了しました。</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+  <TestDefinitions>
+    <UnitTest name="PortMappingEnumerableTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="c89c1729-1b69-9af7-691d-ccb30e6f1a55">
+      <Execution id="bfe9a1ec-a2b8-40bd-8700-7276430c2218" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.MotherBoardViewModelTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="PortMappingEnumerableTest" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestLists>
+    <TestList name="一覧に存在しない結果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="読み込まれたすべての結果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <TestEntries>
+    <TestEntry testId="c89c1729-1b69-9af7-691d-ccb30e6f1a55" executionId="bfe9a1ec-a2b8-40bd-8700-7276430c2218" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <Results>
+    <UnitTestResult executionId="bfe9a1ec-a2b8-40bd-8700-7276430c2218" testId="c89c1729-1b69-9af7-691d-ccb30e6f1a55" testName="PortMappingEnumerableTest" computerName="CLIENTAZS" duration="00:00:40.7533310" startTime="2011-06-24T07:42:39.2952120+09:00" endTime="2011-06-24T07:43:20.0485430+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Aborted" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="bfe9a1ec-a2b8-40bd-8700-7276430c2218">
+    </UnitTestResult>
+  </Results>
+</TestRun>

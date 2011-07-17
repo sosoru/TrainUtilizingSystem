@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<TestRun id="59d19aa5-9eca-46d7-a9eb-cd2b3f9f99a9" name="root@CLIENTAZS 2011-06-19 17:29:27" runUser="CLIENTAZS\root" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <TestSettings name="ローカル" id="82b9a1a8-b1c9-4cfe-afea-c8e70cee6ddc">
+    <Description>これらはローカル テスト実行用の既定のテスト設定です。</Description>
+    <Deployment enabled="false" runDeploymentRoot="root_CLIENTAZS 2011-06-19 17_29_27">
+      <DeploymentItem filename="C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorLibrary\bin\Debug\SensorLibrary.dll" />
+      <DeploymentItem filename="C:\Program Files\LibUsbDotNet\Src\LibWinUsb\bin\Debug\LibUsbDotNet.dll" />
+    </Deployment>
+    <Execution>
+      <TestTypeSpecific />
+      <AgentRule name="Execution Agents">
+      </AgentRule>
+    </Execution>
+  </TestSettings>
+  <Times creation="2011-06-19T17:29:27.9972143+09:00" queuing="2011-06-19T17:29:31.9194386+09:00" start="2011-06-19T17:29:32.3064607+09:00" finish="2011-06-19T17:29:37.5677617+09:00" />
+  <ResultSummary outcome="Error">
+    <Counters total="1" executed="1" error="0" failed="0" timeout="0" aborted="1" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" passed="0" completed="0" inProgress="0" pending="0" />
+    <RunInfos>
+      <RunInfo computerName="CLIENTAZS" outcome="Error" timestamp="2011-06-19T17:29:37.5637614+09:00">
+        <Text>テストのホスト プロセスは予期せずに終了しました。</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+  <TestDefinitions>
+    <UnitTest name="TimerTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="e531a444-ddb8-6cc8-ba69-dded1772c8fb">
+      <Execution id="99e813f0-d558-4ec5-9261-73ff2ab2c063" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.MotherBoardStateTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="TimerTest" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestLists>
+    <TestList name="一覧に存在しない結果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="読み込まれたすべての結果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <TestEntries>
+    <TestEntry testId="e531a444-ddb8-6cc8-ba69-dded1772c8fb" executionId="99e813f0-d558-4ec5-9261-73ff2ab2c063" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <Results>
+    <UnitTestResult executionId="99e813f0-d558-4ec5-9261-73ff2ab2c063" testId="e531a444-ddb8-6cc8-ba69-dded1772c8fb" testName="TimerTest" computerName="CLIENTAZS" duration="00:00:04.8272761" startTime="2011-06-19T17:29:32.7404856+09:00" endTime="2011-06-19T17:29:37.5677617+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Aborted" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="99e813f0-d558-4ec5-9261-73ff2ab2c063">
+    </UnitTestResult>
+  </Results>
+</TestRun>

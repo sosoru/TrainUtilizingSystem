@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<TestRun id="24a76239-712e-4b16-ab02-ae4f96f91140" name="root@CLIENTAZS 2011-07-17 02:45:39" runUser="CLIENTAZS\root" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <TestSettings name="ローカル" id="82b9a1a8-b1c9-4cfe-afea-c8e70cee6ddc">
+    <Description>これらはローカル テスト実行用の既定のテスト設定です。</Description>
+    <Deployment enabled="false" runDeploymentRoot="root_CLIENTAZS 2011-07-17 02_45_39">
+      <DeploymentItem filename="C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\SensorLivetView\InfrastructureAssemblies\Livet.dll" />
+      <DeploymentItem filename="C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorLibrary\bin\Debug\SensorLibrary.dll" />
+      <DeploymentItem filename="C:\Program Files (x86)\Microsoft SDKs\Expression\Blend\.NETFramework\v4.0\Libraries\Microsoft.Expression.Interactions.dll" />
+      <DeploymentItem filename="C:\Program Files (x86)\Microsoft Reactive Extensions SDK\v1.1.10621\Binaries\.NETFramework\v4.0\System.Reactive.dll" />
+      <DeploymentItem filename="C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\SensorLivetView\bin\Debug\SensorLivetView.exe" />
+      <DeploymentItem filename="C:\Program Files\LibUsbDotNet\Src\LibWinUsb\bin\Debug\LibUsbDotNet.dll" />
+      <DeploymentItem filename="C:\Program Files (x86)\Microsoft SDKs\Expression\Blend\.NETFramework\v4.0\Libraries\System.Windows.Interactivity.dll" />
+      <DeploymentItem filename="C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\TestProject\bin\Debug\Microsoft.Reactive.Testing.dll" />
+    </Deployment>
+    <Execution>
+      <TestTypeSpecific />
+      <AgentRule name="Execution Agents">
+      </AgentRule>
+    </Execution>
+  </TestSettings>
+  <Times creation="2011-07-17T02:45:39.3351197+09:00" queuing="2011-07-17T02:45:43.9323827+09:00" start="2011-07-17T02:45:44.3614072+09:00" finish="2011-07-17T02:45:57.1281374+09:00" />
+  <ResultSummary outcome="Error">
+    <Counters total="1" executed="1" error="0" failed="0" timeout="0" aborted="1" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" passed="0" completed="0" inProgress="0" pending="0" />
+    <RunInfos>
+      <RunInfo computerName="CLIENTAZS" outcome="Error" timestamp="2011-07-17T02:45:57.1241372+09:00">
+        <Text>テストのホスト プロセスは予期せずに終了しました。</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+  <TestDefinitions>
+    <UnitTest name="EssentialDutyResolutionTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="22f3781a-41b8-964c-ec0c-167b4a095ea8">
+      <Execution id="33fad04d-8b35-4065-ac56-423fae55b57a" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.TrainControllerStateTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="EssentialDutyResolutionTest" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestLists>
+    <TestList name="一覧に存在しない結果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="読み込まれたすべての結果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <TestEntries>
+    <TestEntry testId="22f3781a-41b8-964c-ec0c-167b4a095ea8" executionId="33fad04d-8b35-4065-ac56-423fae55b57a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <Results>
+    <UnitTestResult executionId="33fad04d-8b35-4065-ac56-423fae55b57a" testId="22f3781a-41b8-964c-ec0c-167b4a095ea8" testName="EssentialDutyResolutionTest" computerName="CLIENTAZS" duration="00:00:12.3377056" startTime="2011-07-17T02:45:44.7904318+09:00" endTime="2011-07-17T02:45:57.1281374+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Aborted" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="33fad04d-8b35-4065-ac56-423fae55b57a">
+    </UnitTestResult>
+  </Results>
+</TestRun>

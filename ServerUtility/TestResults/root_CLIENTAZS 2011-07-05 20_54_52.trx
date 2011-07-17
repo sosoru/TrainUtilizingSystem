@@ -1,0 +1,295 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<TestRun id="dae54be1-a3e6-475b-a98a-27e5cf04134a" name="root@CLIENTAZS 2011-07-05 20:54:52" runUser="CLIENTAZS\root" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <TestSettings name="ローカル" id="82b9a1a8-b1c9-4cfe-afea-c8e70cee6ddc">
+    <Description>これらはローカル テスト実行用の既定のテスト設定です。</Description>
+    <Deployment enabled="false" runDeploymentRoot="root_CLIENTAZS 2011-07-05 20_54_52">
+      <DeploymentItem filename="C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\SensorLivetView\InfrastructureAssemblies\Livet.dll" />
+      <DeploymentItem filename="C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\CensorLibrary\bin\Debug\SensorLibrary.dll" />
+      <DeploymentItem filename="C:\Program Files (x86)\Microsoft SDKs\Expression\Blend\.NETFramework\v4.0\Libraries\Microsoft.Expression.Interactions.dll" />
+      <DeploymentItem filename="C:\Program Files (x86)\Microsoft Reactive Extensions SDK\v1.1.10621\Binaries\.NETFramework\v4.0\System.Reactive.dll" />
+      <DeploymentItem filename="C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\SensorLivetView\bin\Debug\SensorLivetView.exe" />
+      <DeploymentItem filename="C:\Program Files\LibUsbDotNet\Src\LibWinUsb\bin\Debug\LibUsbDotNet.dll" />
+      <DeploymentItem filename="C:\Program Files (x86)\Microsoft SDKs\Expression\Blend\.NETFramework\v4.0\Libraries\System.Windows.Interactivity.dll" />
+      <DeploymentItem filename="C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\TestProject\bin\Debug\Microsoft.Reactive.Testing.dll" />
+    </Deployment>
+    <Execution>
+      <TestTypeSpecific />
+      <AgentRule name="Execution Agents">
+      </AgentRule>
+    </Execution>
+  </TestSettings>
+  <Times creation="2011-07-05T20:54:52.9911293+09:00" queuing="2011-07-05T20:54:53.8911808+09:00" start="2011-07-05T20:54:54.4102104+09:00" finish="2011-07-05T20:54:57.2363721+09:00" />
+  <ResultSummary outcome="Failed">
+    <Counters total="35" executed="35" passed="34" error="0" failed="1" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+  </ResultSummary>
+  <TestDefinitions>
+    <UnitTest name="TimerTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="02112a0a-b267-4424-8970-91320a0a97c2">
+      <Execution id="9e0b861f-8b7b-4dd9-89f3-fb7d5eac393b" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.TrainSensorStateTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="TimerTest" />
+    </UnitTest>
+    <UnitTest name="ToStringTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="1ad9505e-7b3d-d16d-51df-a136ac1ace33">
+      <Execution id="01734074-9901-43d2-b196-5ee4a14f82e0" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.TrainSensorStateTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="ToStringTest" />
+    </UnitTest>
+    <UnitTest name="NotifyTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="33375970-617f-3a5a-7a00-f7181501c5a1">
+      <Execution id="a2f2d8d3-86c4-4797-90fe-567d5642fc50" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.PacketDispatcherSingleTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="NotifyTest" />
+    </UnitTest>
+    <UnitTest name="PointModuleStateConstructorTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="8da466f7-c384-a693-e5eb-95d9f9f6fa64">
+      <Execution id="3f87cd55-df61-4c72-873d-f4364eb7f61e" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.PointModuleStateTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="PointModuleStateConstructorTest" />
+    </UnitTest>
+    <UnitTest name="ItemTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="fd6576fe-8e64-b2e3-565c-e729b98d43e4">
+      <Execution id="cda2e829-eda5-45da-bfb9-eff5cb121eb7" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.MotherBoardStateTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="ItemTest" />
+    </UnitTest>
+    <UnitTest name="SelectedDeviceTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="3a4db604-7139-9804-2ab5-ad14796afec1">
+      <Execution id="f7af5d10-fc54-4298-a422-598846518adb" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.UsbDevicesViewModelTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="SelectedDeviceTest" />
+    </UnitTest>
+    <UnitTest name="PushTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="314353f8-f8f2-09fc-9d42-2c7ab0b773e8">
+      <Execution id="3a56bc67-449b-4f10-8cd5-13ff27e668f3" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.LoopingArrayTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="PushTest" />
+    </UnitTest>
+    <UnitTest name="DeviceCandicatesTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="c57eff42-a84b-6116-b645-b74d987ba9b1">
+      <Execution id="97c7103a-7407-4a55-a44e-ce43d00687a0" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.UsbDevicesViewModelTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="DeviceCandicatesTest" />
+    </UnitTest>
+    <UnitTest name="MotherBoardDataConstructorTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="31c80489-96bc-6432-541f-227c31e73e53">
+      <Execution id="ccd4c6f7-967d-4fbf-86fe-f3a0ff1bb497" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.MotherBoardDataTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="MotherBoardDataConstructorTest" />
+    </UnitTest>
+    <UnitTest name="ThresholdVoltageTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="e36da11d-994b-1ac2-4a9f-70734f4a554b">
+      <Execution id="82e1e642-4e97-450d-9c4c-3dc56a96d721" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.TrainSensorStateTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="ThresholdVoltageTest" />
+    </UnitTest>
+    <UnitTest name="IsDetectedTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="4820147a-9623-95f5-e2c8-b660da05a3c5">
+      <Execution id="6e6cf3b1-621c-43d4-ae48-cc425e36f079" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.TrainSensorStateTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="IsDetectedTest" />
+    </UnitTest>
+    <UnitTest name="CurrentVoltageTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="5ef5b6e1-0cec-8e3e-2a18-36ec4ba05980">
+      <Execution id="1ab5f6ee-c671-4641-bee8-a9f4f5943bf0" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.TrainSensorStateTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="CurrentVoltageTest" />
+    </UnitTest>
+    <UnitTest name="PortMappingEnumerableTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="c89c1729-1b69-9af7-691d-ccb30e6f1a55">
+      <Execution id="e8c66cce-03a1-4ec8-98ef-ba6ee7be1bdb" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.MotherBoardViewModelTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="PortMappingEnumerableTest" />
+    </UnitTest>
+    <UnitTest name="GetEnumeratorTest1" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="b5a4d5e0-4c69-c428-0875-3e21832ca469">
+      <DeploymentItems>
+        <DeploymentItem filename="SensorLibrary.dll" />
+      </DeploymentItems>
+      <Execution id="8b17ce1a-af2d-4c38-a1b1-a2a9d0df39c8" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.LoopingArrayTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="GetEnumeratorTest1" />
+    </UnitTest>
+    <UnitTest name="ByteArrayValidationCheck" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="e97e0475-1df3-1614-6d37-36b8da6c07df">
+      <Execution id="5624db80-2a19-4445-ac81-1a06f695a346" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.ConvertExtenstionsTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="ByteArrayValidationCheck" />
+    </UnitTest>
+    <UnitTest name="ParentIDTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="888367e1-b0e5-f904-1073-ef6838ec8384">
+      <Execution id="acfbf6df-a95a-47f7-a8fb-05054c52671c" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.MotherBoardStateTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="ParentIDTest" />
+    </UnitTest>
+    <UnitTest name="LoopingArrayConstructorTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="bab9a259-07fe-b630-2db5-50efc4a015e7">
+      <Execution id="232afd81-382a-4594-b973-48898fc41310" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.LoopingArrayTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="LoopingArrayConstructorTest" />
+    </UnitTest>
+    <UnitTest name="MotherBoardViewModelConstructorTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="ff56d913-09b6-6f1a-eca1-4fc7d055cea3">
+      <Execution id="bad24154-45f8-4229-8525-25e59d0c32a7" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.MotherBoardViewModelTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="MotherBoardViewModelConstructorTest" />
+    </UnitTest>
+    <UnitTest name="UsbDevicesViewModelConstructorTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="bb37a384-0089-6563-1ba1-ccf041f0602b">
+      <Execution id="466351c2-5a29-41e1-a02f-2d69934678c7" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.UsbDevicesViewModelTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="UsbDevicesViewModelConstructorTest" />
+    </UnitTest>
+    <UnitTest name="DirectionsTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="3924b4a9-c8e3-1923-e40a-d9b46ab0bbcb">
+      <Execution id="c586955e-d2bb-4c26-b87c-69106ab54dfd" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.PointModuleDataTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="DirectionsTest" />
+    </UnitTest>
+    <UnitTest name="WriteTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="e1892563-72ac-e402-dfba-90f0fb1b229e">
+      <Execution id="f11f0c69-62b8-4f38-b7f7-ed182e75cbd4" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.ChunckedStreamTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="WriteTest" />
+    </UnitTest>
+    <UnitTest name="TimerTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="e531a444-ddb8-6cc8-ba69-dded1772c8fb">
+      <Execution id="c6ee37b6-a3de-49f1-957d-52884b4206de" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.MotherBoardStateTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="TimerTest" />
+    </UnitTest>
+    <UnitTest name="ModeTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="e7d27d5a-0dca-8191-f30e-a3d70f9835ee">
+      <Execution id="fdbb9e25-a58b-4728-a18b-589fae287166" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.TrainSensorStateTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="ModeTest" />
+    </UnitTest>
+    <UnitTest name="TrainSensorViewModelConstructorTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="f7a737b6-f8da-3a0e-93c8-58a3d6ddb7dd">
+      <Execution id="99aa58df-bee9-4b3b-b7c5-7e8009b8bccf" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.TrainSensorViewModelTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="TrainSensorViewModelConstructorTest" />
+    </UnitTest>
+    <UnitTest name="ModuleTypeTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="c3e25e71-e6a3-3799-dbe0-bacda8fc8163">
+      <Execution id="321b1579-724f-4df1-a081-a14a5646c488" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.MotherBoardDataTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="ModuleTypeTest" />
+    </UnitTest>
+    <UnitTest name="ItemTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="c6c2c1ab-9d23-f24c-e326-eec075cfb3f8">
+      <Execution id="d71a6e62-395d-4a08-9840-6898ef278459" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.PointModuleStateTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="ItemTest" />
+    </UnitTest>
+    <UnitTest name="PointModuleDataConstructorTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="e636afca-43c6-677e-deb3-86d562155830">
+      <Execution id="45a248a4-c9fb-4c21-9bb8-952fbf20926d" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.PointModuleDataTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="PointModuleDataConstructorTest" />
+    </UnitTest>
+    <UnitTest name="GetEnumeratorTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="f47f23ed-0e88-3d4b-b24a-b93a5162bbab">
+      <Execution id="55e57fa4-48c9-4f0d-894b-d7b6607babf3" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.LoopingArrayTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="GetEnumeratorTest" />
+    </UnitTest>
+    <UnitTest name="ConvertBackTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="f3ffe881-46a7-6ee6-404d-376b40511b07">
+      <Execution id="e078c334-3d6c-4315-9a20-5d45d7896219" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.UsbDeviceConverterTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="ConvertBackTest" />
+    </UnitTest>
+    <UnitTest name="OverflowedCountTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="ad40eac8-0529-544e-7cd1-f5b2a391e919">
+      <Execution id="c6720806-867f-4c7c-9691-92e81f2fd259" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.TrainSensorStateTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="OverflowedCountTest" />
+    </UnitTest>
+    <UnitTest name="ToByteArrayTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="8c676a8d-ec31-5a6b-13ab-e80d4af41e42">
+      <Execution id="f24db8f2-291f-40c8-a5a1-58390805ac7f" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.ConvertExtenstionsTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="ToByteArrayTest" />
+    </UnitTest>
+    <UnitTest name="AvailableDevicesTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="d525b94c-5b6f-2f29-8d49-3701df1775ef">
+      <Execution id="1c433b77-061e-4ebe-9b5e-0087984e9468" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.PacketDispatcherSingleTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="AvailableDevicesTest" />
+    </UnitTest>
+    <UnitTest name="ConvertTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="674eb767-160f-184e-901f-e20a6d038918">
+      <Execution id="58b94510-205b-4562-9d89-1594b637f9df" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.UsbDeviceConverterTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="ConvertTest" />
+    </UnitTest>
+    <UnitTest name="FlushTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="64811b85-89b0-0b59-3263-26f94adb60fb">
+      <Execution id="c93b2f0f-8491-49ed-8763-c58ada9ee2f9" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.ChunckedStreamTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="FlushTest" />
+    </UnitTest>
+    <UnitTest name="ReadTest" storage="c:\users\root\documents\visual studio 2010\projects\serialporttest\testproject\bin\debug\testproject.dll" id="03d23227-fae1-7f69-18bc-75591f488ed7">
+      <Execution id="d319b264-6b29-47da-a913-9ac94005ff07" />
+      <TestMethod codeBase="C:/Users/root/Documents/Visual Studio 2010/Projects/SerialPortTest/TestProject/bin/Debug/TestProject.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="TestProject.ChunckedStreamTest, TestProject, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="ReadTest" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestLists>
+    <TestList name="一覧に存在しない結果" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="読み込まれたすべての結果" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <TestEntries>
+    <TestEntry testId="02112a0a-b267-4424-8970-91320a0a97c2" executionId="9e0b861f-8b7b-4dd9-89f3-fb7d5eac393b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="03d23227-fae1-7f69-18bc-75591f488ed7" executionId="d319b264-6b29-47da-a913-9ac94005ff07" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1ad9505e-7b3d-d16d-51df-a136ac1ace33" executionId="01734074-9901-43d2-b196-5ee4a14f82e0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="314353f8-f8f2-09fc-9d42-2c7ab0b773e8" executionId="3a56bc67-449b-4f10-8cd5-13ff27e668f3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="31c80489-96bc-6432-541f-227c31e73e53" executionId="ccd4c6f7-967d-4fbf-86fe-f3a0ff1bb497" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="33375970-617f-3a5a-7a00-f7181501c5a1" executionId="a2f2d8d3-86c4-4797-90fe-567d5642fc50" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3924b4a9-c8e3-1923-e40a-d9b46ab0bbcb" executionId="c586955e-d2bb-4c26-b87c-69106ab54dfd" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3a4db604-7139-9804-2ab5-ad14796afec1" executionId="f7af5d10-fc54-4298-a422-598846518adb" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4820147a-9623-95f5-e2c8-b660da05a3c5" executionId="6e6cf3b1-621c-43d4-ae48-cc425e36f079" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5ef5b6e1-0cec-8e3e-2a18-36ec4ba05980" executionId="1ab5f6ee-c671-4641-bee8-a9f4f5943bf0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="64811b85-89b0-0b59-3263-26f94adb60fb" executionId="c93b2f0f-8491-49ed-8763-c58ada9ee2f9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="674eb767-160f-184e-901f-e20a6d038918" executionId="58b94510-205b-4562-9d89-1594b637f9df" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="888367e1-b0e5-f904-1073-ef6838ec8384" executionId="acfbf6df-a95a-47f7-a8fb-05054c52671c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8c676a8d-ec31-5a6b-13ab-e80d4af41e42" executionId="f24db8f2-291f-40c8-a5a1-58390805ac7f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8da466f7-c384-a693-e5eb-95d9f9f6fa64" executionId="3f87cd55-df61-4c72-873d-f4364eb7f61e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ad40eac8-0529-544e-7cd1-f5b2a391e919" executionId="c6720806-867f-4c7c-9691-92e81f2fd259" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b5a4d5e0-4c69-c428-0875-3e21832ca469" executionId="8b17ce1a-af2d-4c38-a1b1-a2a9d0df39c8" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="bab9a259-07fe-b630-2db5-50efc4a015e7" executionId="232afd81-382a-4594-b973-48898fc41310" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="bb37a384-0089-6563-1ba1-ccf041f0602b" executionId="466351c2-5a29-41e1-a02f-2d69934678c7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c3e25e71-e6a3-3799-dbe0-bacda8fc8163" executionId="321b1579-724f-4df1-a081-a14a5646c488" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c57eff42-a84b-6116-b645-b74d987ba9b1" executionId="97c7103a-7407-4a55-a44e-ce43d00687a0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c6c2c1ab-9d23-f24c-e326-eec075cfb3f8" executionId="d71a6e62-395d-4a08-9840-6898ef278459" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c89c1729-1b69-9af7-691d-ccb30e6f1a55" executionId="e8c66cce-03a1-4ec8-98ef-ba6ee7be1bdb" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d525b94c-5b6f-2f29-8d49-3701df1775ef" executionId="1c433b77-061e-4ebe-9b5e-0087984e9468" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e1892563-72ac-e402-dfba-90f0fb1b229e" executionId="f11f0c69-62b8-4f38-b7f7-ed182e75cbd4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e36da11d-994b-1ac2-4a9f-70734f4a554b" executionId="82e1e642-4e97-450d-9c4c-3dc56a96d721" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e531a444-ddb8-6cc8-ba69-dded1772c8fb" executionId="c6ee37b6-a3de-49f1-957d-52884b4206de" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e636afca-43c6-677e-deb3-86d562155830" executionId="45a248a4-c9fb-4c21-9bb8-952fbf20926d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e7d27d5a-0dca-8191-f30e-a3d70f9835ee" executionId="fdbb9e25-a58b-4728-a18b-589fae287166" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e97e0475-1df3-1614-6d37-36b8da6c07df" executionId="5624db80-2a19-4445-ac81-1a06f695a346" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f3ffe881-46a7-6ee6-404d-376b40511b07" executionId="e078c334-3d6c-4315-9a20-5d45d7896219" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f47f23ed-0e88-3d4b-b24a-b93a5162bbab" executionId="55e57fa4-48c9-4f0d-894b-d7b6607babf3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f7a737b6-f8da-3a0e-93c8-58a3d6ddb7dd" executionId="99aa58df-bee9-4b3b-b7c5-7e8009b8bccf" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="fd6576fe-8e64-b2e3-565c-e729b98d43e4" executionId="cda2e829-eda5-45da-bfb9-eff5cb121eb7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ff56d913-09b6-6f1a-eca1-4fc7d055cea3" executionId="bad24154-45f8-4229-8525-25e59d0c32a7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <Results>
+    <UnitTestResult executionId="9e0b861f-8b7b-4dd9-89f3-fb7d5eac393b" testId="02112a0a-b267-4424-8970-91320a0a97c2" testName="TimerTest" computerName="CLIENTAZS" duration="00:00:00.0360623" startTime="2011-07-05T20:54:54.4532129+09:00" endTime="2011-07-05T20:54:55.3482641+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9e0b861f-8b7b-4dd9-89f3-fb7d5eac393b">
+    </UnitTestResult>
+    <UnitTestResult executionId="d319b264-6b29-47da-a913-9ac94005ff07" testId="03d23227-fae1-7f69-18bc-75591f488ed7" testName="ReadTest" computerName="CLIENTAZS" duration="00:00:00.1497667" startTime="2011-07-05T20:54:55.3862663+09:00" endTime="2011-07-05T20:54:55.5642764+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d319b264-6b29-47da-a913-9ac94005ff07">
+    </UnitTestResult>
+    <UnitTestResult executionId="01734074-9901-43d2-b196-5ee4a14f82e0" testId="1ad9505e-7b3d-d16d-51df-a136ac1ace33" testName="ToStringTest" computerName="CLIENTAZS" duration="00:00:00.0180242" startTime="2011-07-05T20:54:55.5702768+09:00" endTime="2011-07-05T20:54:55.6022786+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="01734074-9901-43d2-b196-5ee4a14f82e0">
+      <Output>
+        <TextMessages>
+          <Message>Timer = 0, V = 2.5, IsDetected = True, Threshold = 1.25</Message>
+        </TextMessages>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="3a56bc67-449b-4f10-8cd5-13ff27e668f3" testId="314353f8-f8f2-09fc-9d42-2c7ab0b773e8" testName="PushTest" computerName="CLIENTAZS" duration="00:00:00.0408937" startTime="2011-07-05T20:54:55.6152794+09:00" endTime="2011-07-05T20:54:55.6652822+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3a56bc67-449b-4f10-8cd5-13ff27e668f3">
+    </UnitTestResult>
+    <UnitTestResult executionId="ccd4c6f7-967d-4fbf-86fe-f3a0ff1bb497" testId="31c80489-96bc-6432-541f-227c31e73e53" testName="MotherBoardDataConstructorTest" computerName="CLIENTAZS" duration="00:00:00.0059999" startTime="2011-07-05T20:54:55.6952839+09:00" endTime="2011-07-05T20:54:55.7362863+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ccd4c6f7-967d-4fbf-86fe-f3a0ff1bb497">
+    </UnitTestResult>
+    <UnitTestResult executionId="a2f2d8d3-86c4-4797-90fe-567d5642fc50" testId="33375970-617f-3a5a-7a00-f7181501c5a1" testName="NotifyTest" computerName="CLIENTAZS" duration="00:00:00.0130677" startTime="2011-07-05T20:54:55.7492870+09:00" endTime="2011-07-05T20:54:55.7712883+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a2f2d8d3-86c4-4797-90fe-567d5642fc50">
+    </UnitTestResult>
+    <UnitTestResult executionId="c586955e-d2bb-4c26-b87c-69106ab54dfd" testId="3924b4a9-c8e3-1923-e40a-d9b46ab0bbcb" testName="DirectionsTest" computerName="CLIENTAZS" duration="00:00:00.0010824" startTime="2011-07-05T20:54:55.7812889+09:00" endTime="2011-07-05T20:54:55.7892893+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c586955e-d2bb-4c26-b87c-69106ab54dfd">
+    </UnitTestResult>
+    <UnitTestResult executionId="f7af5d10-fc54-4298-a422-598846518adb" testId="3a4db604-7139-9804-2ab5-ad14796afec1" testName="SelectedDeviceTest" computerName="CLIENTAZS" duration="00:00:00.0193733" startTime="2011-07-05T20:54:55.7962897+09:00" endTime="2011-07-05T20:54:55.8282915+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f7af5d10-fc54-4298-a422-598846518adb">
+    </UnitTestResult>
+    <UnitTestResult executionId="6e6cf3b1-621c-43d4-ae48-cc425e36f079" testId="4820147a-9623-95f5-e2c8-b660da05a3c5" testName="IsDetectedTest" computerName="CLIENTAZS" duration="00:00:00.0025444" startTime="2011-07-05T20:54:55.8352919+09:00" endTime="2011-07-05T20:54:55.8562932+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6e6cf3b1-621c-43d4-ae48-cc425e36f079">
+    </UnitTestResult>
+    <UnitTestResult executionId="1ab5f6ee-c671-4641-bee8-a9f4f5943bf0" testId="5ef5b6e1-0cec-8e3e-2a18-36ec4ba05980" testName="CurrentVoltageTest" computerName="CLIENTAZS" duration="00:00:00.0028996" startTime="2011-07-05T20:54:55.8632936+09:00" endTime="2011-07-05T20:54:55.8782944+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1ab5f6ee-c671-4641-bee8-a9f4f5943bf0">
+    </UnitTestResult>
+    <UnitTestResult executionId="c93b2f0f-8491-49ed-8763-c58ada9ee2f9" testId="64811b85-89b0-0b59-3263-26f94adb60fb" testName="FlushTest" computerName="CLIENTAZS" duration="00:00:00.1823565" startTime="2011-07-05T20:54:55.8862949+09:00" endTime="2011-07-05T20:54:56.0773058+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c93b2f0f-8491-49ed-8763-c58ada9ee2f9">
+    </UnitTestResult>
+    <UnitTestResult executionId="58b94510-205b-4562-9d89-1594b637f9df" testId="674eb767-160f-184e-901f-e20a6d038918" testName="ConvertTest" computerName="CLIENTAZS" duration="00:00:00.1223430" startTime="2011-07-05T20:54:56.0843062+09:00" endTime="2011-07-05T20:54:56.2213140+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="58b94510-205b-4562-9d89-1594b637f9df">
+    </UnitTestResult>
+    <UnitTestResult executionId="acfbf6df-a95a-47f7-a8fb-05054c52671c" testId="888367e1-b0e5-f904-1073-ef6838ec8384" testName="ParentIDTest" computerName="CLIENTAZS" duration="00:00:00.0047403" startTime="2011-07-05T20:54:56.2283144+09:00" endTime="2011-07-05T20:54:56.2473155+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="acfbf6df-a95a-47f7-a8fb-05054c52671c">
+    </UnitTestResult>
+    <UnitTestResult executionId="f24db8f2-291f-40c8-a5a1-58390805ac7f" testId="8c676a8d-ec31-5a6b-13ab-e80d4af41e42" testName="ToByteArrayTest" computerName="CLIENTAZS" duration="00:00:00.0012425" startTime="2011-07-05T20:54:56.2553160+09:00" endTime="2011-07-05T20:54:56.2633164+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f24db8f2-291f-40c8-a5a1-58390805ac7f">
+    </UnitTestResult>
+    <UnitTestResult executionId="3f87cd55-df61-4c72-873d-f4364eb7f61e" testId="8da466f7-c384-a693-e5eb-95d9f9f6fa64" testName="PointModuleStateConstructorTest" computerName="CLIENTAZS" duration="00:00:00.0011556" startTime="2011-07-05T20:54:56.2713169+09:00" endTime="2011-07-05T20:54:56.2843176+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3f87cd55-df61-4c72-873d-f4364eb7f61e">
+    </UnitTestResult>
+    <UnitTestResult executionId="c6720806-867f-4c7c-9691-92e81f2fd259" testId="ad40eac8-0529-544e-7cd1-f5b2a391e919" testName="OverflowedCountTest" computerName="CLIENTAZS" duration="00:00:00.0008281" startTime="2011-07-05T20:54:56.2923181+09:00" endTime="2011-07-05T20:54:56.3033187+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c6720806-867f-4c7c-9691-92e81f2fd259">
+    </UnitTestResult>
+    <UnitTestResult executionId="8b17ce1a-af2d-4c38-a1b1-a2a9d0df39c8" testId="b5a4d5e0-4c69-c428-0875-3e21832ca469" testName="GetEnumeratorTest1" computerName="CLIENTAZS" duration="00:00:00.0014701" startTime="2011-07-05T20:54:56.3103191+09:00" endTime="2011-07-05T20:54:56.3223198+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8b17ce1a-af2d-4c38-a1b1-a2a9d0df39c8">
+    </UnitTestResult>
+    <UnitTestResult executionId="232afd81-382a-4594-b973-48898fc41310" testId="bab9a259-07fe-b630-2db5-50efc4a015e7" testName="LoopingArrayConstructorTest" computerName="CLIENTAZS" duration="00:00:00.0017439" startTime="2011-07-05T20:54:56.3313203+09:00" endTime="2011-07-05T20:54:56.3413209+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="232afd81-382a-4594-b973-48898fc41310">
+    </UnitTestResult>
+    <UnitTestResult executionId="466351c2-5a29-41e1-a02f-2d69934678c7" testId="bb37a384-0089-6563-1ba1-ccf041f0602b" testName="UsbDevicesViewModelConstructorTest" computerName="CLIENTAZS" duration="00:00:00.0003242" startTime="2011-07-05T20:54:56.3523215+09:00" endTime="2011-07-05T20:54:56.3773230+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="466351c2-5a29-41e1-a02f-2d69934678c7">
+    </UnitTestResult>
+    <UnitTestResult executionId="321b1579-724f-4df1-a081-a14a5646c488" testId="c3e25e71-e6a3-3799-dbe0-bacda8fc8163" testName="ModuleTypeTest" computerName="CLIENTAZS" duration="00:00:00.0006672" startTime="2011-07-05T20:54:56.3863235+09:00" endTime="2011-07-05T20:54:56.4063246+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="321b1579-724f-4df1-a081-a14a5646c488">
+    </UnitTestResult>
+    <UnitTestResult executionId="97c7103a-7407-4a55-a44e-ce43d00687a0" testId="c57eff42-a84b-6116-b645-b74d987ba9b1" testName="DeviceCandicatesTest" computerName="CLIENTAZS" duration="00:00:00.0637850" startTime="2011-07-05T20:54:56.4273258+09:00" endTime="2011-07-05T20:54:56.5013300+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="97c7103a-7407-4a55-a44e-ce43d00687a0">
+    </UnitTestResult>
+    <UnitTestResult executionId="d71a6e62-395d-4a08-9840-6898ef278459" testId="c6c2c1ab-9d23-f24c-e326-eec075cfb3f8" testName="ItemTest" computerName="CLIENTAZS" duration="00:00:00.0248076" startTime="2011-07-05T20:54:56.5123307+09:00" endTime="2011-07-05T20:54:56.5533330+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d71a6e62-395d-4a08-9840-6898ef278459">
+    </UnitTestResult>
+    <UnitTestResult executionId="e8c66cce-03a1-4ec8-98ef-ba6ee7be1bdb" testId="c89c1729-1b69-9af7-691d-ccb30e6f1a55" testName="PortMappingEnumerableTest" computerName="CLIENTAZS" duration="00:00:00.0109483" startTime="2011-07-05T20:54:56.5633336+09:00" endTime="2011-07-05T20:54:56.5843348+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e8c66cce-03a1-4ec8-98ef-ba6ee7be1bdb">
+    </UnitTestResult>
+    <UnitTestResult executionId="1c433b77-061e-4ebe-9b5e-0087984e9468" testId="d525b94c-5b6f-2f29-8d49-3701df1775ef" testName="AvailableDevicesTest" computerName="CLIENTAZS" duration="00:00:00.0651495" startTime="2011-07-05T20:54:56.5923353+09:00" endTime="2011-07-05T20:54:56.6643394+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1c433b77-061e-4ebe-9b5e-0087984e9468">
+      <Output>
+        <ErrorInfo>
+          <Message>Assert.AreEqual に失敗しました。&lt;32&gt; が必要ですが、&lt;2&gt; が指定されました。</Message>
+          <StackTrace>   場所 TestProject.PacketDispatcherSingleTest.AvailableDevicesTest() 場所 C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\TestProject\PacketDispatcherSingleTest.cs:行 96
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="f11f0c69-62b8-4f38-b7f7-ed182e75cbd4" testId="e1892563-72ac-e402-dfba-90f0fb1b229e" testName="WriteTest" computerName="CLIENTAZS" duration="00:00:00.0030288" startTime="2011-07-05T20:54:56.6773401+09:00" endTime="2011-07-05T20:54:56.7073418+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f11f0c69-62b8-4f38-b7f7-ed182e75cbd4">
+    </UnitTestResult>
+    <UnitTestResult executionId="82e1e642-4e97-450d-9c4c-3dc56a96d721" testId="e36da11d-994b-1ac2-4a9f-70734f4a554b" testName="ThresholdVoltageTest" computerName="CLIENTAZS" duration="00:00:00.0008711" startTime="2011-07-05T20:54:56.7213426+09:00" endTime="2011-07-05T20:54:56.7313432+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="82e1e642-4e97-450d-9c4c-3dc56a96d721">
+    </UnitTestResult>
+    <UnitTestResult executionId="c6ee37b6-a3de-49f1-957d-52884b4206de" testId="e531a444-ddb8-6cc8-ba69-dded1772c8fb" testName="TimerTest" computerName="CLIENTAZS" duration="00:00:00.0006095" startTime="2011-07-05T20:54:56.7393437+09:00" endTime="2011-07-05T20:54:56.7623450+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c6ee37b6-a3de-49f1-957d-52884b4206de">
+    </UnitTestResult>
+    <UnitTestResult executionId="45a248a4-c9fb-4c21-9bb8-952fbf20926d" testId="e636afca-43c6-677e-deb3-86d562155830" testName="PointModuleDataConstructorTest" computerName="CLIENTAZS" duration="00:00:00.0018488" startTime="2011-07-05T20:54:56.7843462+09:00" endTime="2011-07-05T20:54:56.8113478+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="45a248a4-c9fb-4c21-9bb8-952fbf20926d">
+    </UnitTestResult>
+    <UnitTestResult executionId="fdbb9e25-a58b-4728-a18b-589fae287166" testId="e7d27d5a-0dca-8191-f30e-a3d70f9835ee" testName="ModeTest" computerName="CLIENTAZS" duration="00:00:00.0112083" startTime="2011-07-05T20:54:56.8403494+09:00" endTime="2011-07-05T20:54:56.8583505+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="fdbb9e25-a58b-4728-a18b-589fae287166">
+    </UnitTestResult>
+    <UnitTestResult executionId="5624db80-2a19-4445-ac81-1a06f695a346" testId="e97e0475-1df3-1614-6d37-36b8da6c07df" testName="ByteArrayValidationCheck" computerName="CLIENTAZS" duration="00:00:00.0002519" startTime="2011-07-05T20:54:56.8753514+09:00" endTime="2011-07-05T20:54:56.8983528+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5624db80-2a19-4445-ac81-1a06f695a346">
+    </UnitTestResult>
+    <UnitTestResult executionId="e078c334-3d6c-4315-9a20-5d45d7896219" testId="f3ffe881-46a7-6ee6-404d-376b40511b07" testName="ConvertBackTest" computerName="CLIENTAZS" duration="00:00:00.0104127" startTime="2011-07-05T20:54:56.9093534+09:00" endTime="2011-07-05T20:54:56.9513558+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e078c334-3d6c-4315-9a20-5d45d7896219">
+    </UnitTestResult>
+    <UnitTestResult executionId="55e57fa4-48c9-4f0d-894b-d7b6607babf3" testId="f47f23ed-0e88-3d4b-b24a-b93a5162bbab" testName="GetEnumeratorTest" computerName="CLIENTAZS" duration="00:00:00.0024022" startTime="2011-07-05T20:54:56.9723570+09:00" endTime="2011-07-05T20:54:56.9893580+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="55e57fa4-48c9-4f0d-894b-d7b6607babf3">
+    </UnitTestResult>
+    <UnitTestResult executionId="99aa58df-bee9-4b3b-b7c5-7e8009b8bccf" testId="f7a737b6-f8da-3a0e-93c8-58a3d6ddb7dd" testName="TrainSensorViewModelConstructorTest" computerName="CLIENTAZS" duration="00:00:00.0015765" startTime="2011-07-05T20:54:57.0043588+09:00" endTime="2011-07-05T20:54:57.0233599+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="99aa58df-bee9-4b3b-b7c5-7e8009b8bccf">
+    </UnitTestResult>
+    <UnitTestResult executionId="cda2e829-eda5-45da-bfb9-eff5cb121eb7" testId="fd6576fe-8e64-b2e3-565c-e729b98d43e4" testName="ItemTest" computerName="CLIENTAZS" duration="00:00:00.0197780" startTime="2011-07-05T20:54:57.0323604+09:00" endTime="2011-07-05T20:54:57.0663624+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="cda2e829-eda5-45da-bfb9-eff5cb121eb7">
+    </UnitTestResult>
+    <UnitTestResult executionId="bad24154-45f8-4229-8525-25e59d0c32a7" testId="ff56d913-09b6-6f1a-eca1-4fc7d055cea3" testName="MotherBoardViewModelConstructorTest" computerName="CLIENTAZS" duration="00:00:00.0005461" startTime="2011-07-05T20:54:57.1063647+09:00" endTime="2011-07-05T20:54:57.1373664+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="bad24154-45f8-4229-8525-25e59d0c32a7">
+    </UnitTestResult>
+  </Results>
+</TestRun>

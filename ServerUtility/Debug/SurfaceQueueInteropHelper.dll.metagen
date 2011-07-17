@@ -1,0 +1,40 @@
+ImageRuntimeVersion: v4.0.30319
+Assembly SurfaceQueueInteropHelper, Version=1.0.*, Culture=ロケールに依存しない言語 (ロケールに依存しない国): 
+	hash=SHA1, flags=PublicKey
+Assembly mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly PresentationCore, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35: 
+	hash=None, flags=None
+Assembly System.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly WindowsBase, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35: 
+	hash=None, flags=None
+Assembly Microsoft.VisualC, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a: 
+	hash=None, flags=None
+Class Microsoft.Windows.Media.SurfaceQueueInteropHelper: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Interfaces:
+    System.IDisposable
+  Properties:
+    IntPtr HWND 'get set' : 
+    UInt32 PixelHeight 'get ' : 
+    UInt32 PixelWidth 'get ' : 
+    System.Windows.Interop.D3DImage D3DImage 'get set' : 
+    System.Action`1[System.IntPtr] RenderD2D 'set' : 
+  Methods:
+    set_RenderD2D(Action`1): PrivateScope, Public, HideBySig, SpecialName
+    get_D3DImage(): PrivateScope, Public, HideBySig, SpecialName
+    set_D3DImage(D3DImage): PrivateScope, Public, HideBySig, SpecialName
+    get_PixelWidth(): PrivateScope, Public, HideBySig, SpecialName
+    get_PixelHeight(): PrivateScope, Public, HideBySig, SpecialName
+    SetPixelSize(UInt32, UInt32): PrivateScope, Public, HideBySig
+    get_HWND(): PrivateScope, Public, HideBySig, SpecialName
+    set_HWND(IntPtr): PrivateScope, Public, HideBySig, SpecialName
+    RequestRenderD2D(): PrivateScope, Public, HideBySig
+    Dispose(): PrivateScope, Public, Final, Virtual, HideBySig

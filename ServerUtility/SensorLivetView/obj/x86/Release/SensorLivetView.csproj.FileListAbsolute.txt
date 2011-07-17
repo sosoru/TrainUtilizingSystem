@@ -1,0 +1,12 @@
+C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\SensorLivetView\obj\x86\Release\ResolveAssemblyReference.cache
+C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\SensorLivetView\obj\x86\Release\Views\MainWindow.g.cs
+C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\SensorLivetView\obj\x86\Release\Views\MotherBoardView.g.cs
+C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\SensorLivetView\obj\x86\Release\Views\TestWindow.g.cs
+C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\SensorLivetView\obj\x86\Release\Views\TrainSensorView.g.cs
+C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\SensorLivetView\obj\x86\Release\Views\UsbDevicesView.g.cs
+C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\SensorLivetView\obj\x86\Release\Views\VoltageGraphView.g.cs
+C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\SensorLivetView\obj\x86\Release\App.g.cs
+C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\SensorLivetView\obj\x86\Release\SensorLivetView_Content.g.cs
+C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\SensorLivetView\obj\x86\Release\GeneratedInternalTypeHelper.g.cs
+C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\SensorLivetView\obj\x86\Release\SensorLivetView_MarkupCompile.cache
+C:\Users\root\Documents\Visual Studio 2010\Projects\SerialPortTest\SensorLivetView\obj\x86\Release\SensorLivetView_MarkupCompile.lref

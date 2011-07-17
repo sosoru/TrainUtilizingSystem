@@ -1,0 +1,84 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+        xmlns:l="http://schemas.livet-mvvm.net/2011/wpf"
+        xmlns:v="clr-namespace:SensorLivetView.Views"
+        xmlns:vm="clr-namespace:SensorLivetView.ViewModels"
+        xmlns:SensorLivetView="clr-namespace:SensorLivetView" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:SensorLivetView_ViewModels_Controls="clr-namespace:SensorLivetView.ViewModels.Controls" x:Name="window" mc:Ignorable="d" x:Class="SensorLivetView.Views.MainWindow"
+    Loaded="Window_Loaded"
+        Title="MainWindow">
+	<Window.Resources>
+		<vm:MainWindowViewModel x:Key="MainWindowViewModelDataSource" d:IsDataSource="True"/>
+		<SensorLivetView_ViewModels_Controls:UsbRegistryConverter x:Key="UsbDeviceRegConverter"/>
+		<DataTemplate x:Key="DeviceSelectingItemTemplate">
+			<Grid>
+				<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding SelectedDeviceReg, Converter={StaticResource UsbDeviceRegConverter}}" Width="Auto"/>
+			</Grid>
+		</DataTemplate>
+		<DataTemplate x:Key="MbListItemTemplate">
+			<Grid>
+				<StackPanel>
+					<TextBlock HorizontalAlignment="Left" Height="11" Margin="8,0,0,0" TextWrapping="Wrap" Width="12" Text="{Binding Model.DeviceID}"/>
+					<SensorLivetView:MotherBoardView HorizontalAlignment="Left" d:LayoutOverrides="HorizontalAlignment" DataContext="{Binding ., Mode=TwoWay}">
+					</SensorLivetView:MotherBoardView>
+				</StackPanel>
+			</Grid>
+		</DataTemplate>
+		<ItemsPanelTemplate x:Key="MbListItemsPanelTemplate">
+			<VirtualizingStackPanel IsItemsHost="True" Orientation="Horizontal"/>
+		</ItemsPanelTemplate>
+		<ItemsPanelTemplate x:Key="TrSensorListItemsPanelTemplate">
+				<WrapPanel ItemHeight="200" ItemWidth="200"/>
+		</ItemsPanelTemplate>
+		<DataTemplate x:Key="TrSensorListItemTemplate">
+			<Grid>
+				<Border BorderBrush="Black" BorderThickness="1">
+					<Grid>
+						<v:TrainSensorView HorizontalAlignment="Left" Height="Auto" VerticalAlignment="Top" DataContext="{Binding .}"/>						
+					</Grid>
+				</Border>
+			</Grid>
+		</DataTemplate>
+		<DataTemplate x:Key="TrainControllerListItemDataTemplate">
+			<Grid>
+				<Border BorderBrush="Black" BorderThickness="1">
+					<v:TrainControllerView DataContext="{Binding .}"/>
+				</Border>
+			</Grid>
+		</DataTemplate>
+	</Window.Resources>
+    
+    <Window.DataContext>
+    	<Binding Mode="OneWay" Source="{StaticResource MainWindowViewModelDataSource}"/>
+    </Window.DataContext>
+	<DockPanel>
+		<TabControl x:Name="tabControl">
+			<TabItem Header="Devices">
+					<DockPanel>
+						
+						<SensorLivetView:UsbDevicesView DataContext="{Binding CandicateDevice}" DockPanel.Dock="Bottom">
+							<i:Interaction.Triggers>
+								<ei:PropertyChangedTrigger Binding="{Binding SelectedDeviceReg}">
+									<ei:CallMethodAction MethodName="PickUpCandicateDevice" TargetObject="{Binding Mode=OneWay, Source={StaticResource MainWindowViewModelDataSource}}"/>
+								</ei:PropertyChangedTrigger>
+							</i:Interaction.Triggers>
+						</SensorLivetView:UsbDevicesView>
+						<ListBox DataContext="{Binding SelectedDevices}" ItemTemplate="{DynamicResource DeviceSelectingItemTemplate}"/>
+						
+					</DockPanel>
+			</TabItem>
+			<TabItem Header="MotherBoard">
+				<ListBox ItemsSource="{Binding AvailableMotherBoardVMs, Mode=OneWay}" ItemTemplate="{DynamicResource MbListItemTemplate}"  ItemsPanel="{DynamicResource MbListItemsPanelTemplate}"/>
+			</TabItem>
+			<TabItem Header="TrainSensors">
+		        <ListBox ItemsPanel="{DynamicResource TrSensorListItemsPanelTemplate}" ItemsSource="{Binding AvailableTrainSensorVMs, Mode=OneWay}" ItemTemplate="{DynamicResource TrSensorListItemTemplate}" />
+			</TabItem>
+			<TabItem Header="PointModule"/>
+			<TabItem Header="TrainController">
+				<ListBox ItemsSource="{Binding AvailableTrainControllerVMs}" ItemTemplate="{DynamicResource TrainControllerListItemDataTemplate}" />
+			</TabItem>
+		</TabControl>
+	</DockPanel>
+</Window>
