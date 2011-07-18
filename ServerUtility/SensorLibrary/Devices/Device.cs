@@ -27,7 +27,7 @@ namespace SensorLibrary
         bool IsHold { get; }
 
         void Observe(IObservable<IDeviceState<IPacketDeviceData>> observable);
-        void SendPacket(DevicePacket packet);
+        void SendPacket(IDeviceState<IPacketDeviceData> packet);
 
         event PacketReceivedDelegate<TState> PacketReceived;
     }
@@ -37,10 +37,12 @@ namespace SensorLibrary
     where TState : class, IDeviceState<IPacketDeviceData>
     {
         private IDisposable _unsubscriber = null;
+        private TState _sentState = null;
 
         public TState CurrentState { get; protected set; }
         public DeviceID DeviceID { get; private set; }
         public ModuleTypeEnum ModuleType { get; private set; }
+        public IEqualityComparer<TState> StateEqualityComparer { get; set; }
 
         public Device(DeviceID id, ModuleTypeEnum moduletype, IObservable<IDeviceState<IPacketDeviceData>> observable)
         {
@@ -49,6 +51,8 @@ namespace SensorLibrary
 
             if (observable != null)
                 this.Observe(observable);
+
+            this.StateEqualityComparer = new GenericComparer<TState>((x, y) => x.BasePacket.Data.SequenceEqual(y.BasePacket.Data));
         }
 
         public Device(DeviceID id, ModuleTypeEnum moduletype)
@@ -91,16 +95,21 @@ namespace SensorLibrary
 
         public void SendPacket()
         {
-            this.SendPacket(this.CurrentState.BasePacket);
+            this.SendPacket(this.CurrentState);
         }
 
-        public void SendPacket(DevicePacket pack)
+        public void SendPacket(IDeviceState<IPacketDeviceData> state)
         {
-            if (this.CurrentState == null || this.CurrentState.ReceivingServer == null)
+            if (state == null || state.ReceivingServer == null)
                 throw new InvalidOperationException("missing Device");
 
+            if (!(state is TState))
+                throw new InvalidOperationException("invalid state");
+
             for(int i=0; i < 2; i++)
-                this.CurrentState.ReceivingServer.SendPacket(pack);
+                this.CurrentState.ReceivingServer.SendPacket(state.BasePacket);
+
+            this._sentState = state as TState;
         }
 
         protected DevicePacket CreatePacket<T>(T data)
@@ -134,6 +143,18 @@ namespace SensorLibrary
 
                 if(!this.IsHold)
                     this.CurrentState = casted;
+
+                if (this._sentState != null && this.StateEqualityComparer != null)
+                {
+                    if (!this.StateEqualityComparer.Equals(casted,this._sentState))
+                    {
+                        this.SendPacket(_sentState);
+                    }
+                    else
+                    {
+                        this._sentState = null;
+                    }
+                }
 
                 OnPacketReceived(new PacketReceiveEventArgs() { state = casted, beforestate = before });
 

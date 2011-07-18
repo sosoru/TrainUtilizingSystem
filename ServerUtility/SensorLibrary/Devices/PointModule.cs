@@ -23,7 +23,7 @@ namespace SensorLibrary
         public void ChangePoint(byte address, PointStateEnum state)
         {
             this.CurrentState[address] = state;
-            this.SendPacket(this.CurrentState.BasePacket);
+            this.SendPacket(this.CurrentState);
         }
     }
 

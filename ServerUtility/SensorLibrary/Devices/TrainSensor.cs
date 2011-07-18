@@ -56,7 +56,7 @@ namespace SensorLibrary
             var state = this.CurrentState;
 
             state.Mode = TrainSensorMode.meisuring;
-            this.SendPacket(state.BasePacket);
+            this.SendPacket(state);
         }
 
         public void ChangeDetectingMode(float threshold)
@@ -65,7 +65,7 @@ namespace SensorLibrary
 
             state.Mode = TrainSensorMode.detecting;
             state.ThresholdVoltage = threshold;
-            this.SendPacket(state.BasePacket);
+            this.SendPacket(state);
         }
 
         public GraphPainter<TrainSensorState> GetPainter()

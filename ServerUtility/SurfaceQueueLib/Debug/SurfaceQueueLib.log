@@ -1,9 +1,25 @@
-﻿2011/07/18 1:41:21 にビルドを開始しました。
-     1>ノード 2 上のプロジェクト "C:\Users\root\Documents\TrainUtilizingSystem\ServerUtility\SurfaceQueueLib\SurfaceQueueLib.vcxproj" (clean ターゲット)。
-     1>_PrepareForClean:
-         ファイル "Debug\SurfaceQueueLib.lastbuildstate" を削除しています。
-     1>プロジェクト "C:\Users\root\Documents\TrainUtilizingSystem\ServerUtility\SurfaceQueueLib\SurfaceQueueLib.vcxproj" (clean ターゲット) のビルドが完了しました。
+﻿2011/07/19 2:34:40 にビルドを開始しました。
+     1>ノード 2 上のプロジェクト "C:\Users\root\Documents\TrainUtilizingSystem\ServerUtility\SurfaceQueueLib\SurfaceQueueLib.vcxproj" (build ターゲット)。
+     1>InitializeBuildStatus:
+         "AlwaysCreate" が指定されたため "Debug\SurfaceQueueLib.unsuccessfulbuild" を作成しています。
+       ClCompile:
+         D:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I"C:\Program Files (x86)\Microsoft DirectX SDK (August 2009)\Include" /ZI /nologo /W4 /WX- /Od /Oy- /D QUEUE_USE_CONFORMANT_NEW /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt SurfaceDevice10.cpp SurfaceDevice11.cpp SurfaceDevice9.cpp SurfaceQueue.cpp
+         SurfaceQueue.cpp
+         SurfaceDevice9.cpp
+         SurfaceDevice11.cpp
+         SurfaceDevice10.cpp
+         コードを生成中...
+       Lib:
+         D:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\Lib.exe /OUT:"C:\Users\root\Documents\TrainUtilizingSystem\ServerUtility\Debug\SurfaceQueueLib.lib" /NOLOGO Debug\SurfaceDevice10.obj
+         Debug\SurfaceDevice11.obj
+         Debug\SurfaceDevice9.obj
+         Debug\SurfaceQueue.obj
+         SurfaceQueueLib.vcxproj -> C:\Users\root\Documents\TrainUtilizingSystem\ServerUtility\Debug\SurfaceQueueLib.lib
+       FinalizeBuildStatus:
+         ファイル "Debug\SurfaceQueueLib.unsuccessfulbuild" を削除しています。
+         "Debug\SurfaceQueueLib.lastbuildstate" のタッチ タスクを実行しています。
+     1>プロジェクト "C:\Users\root\Documents\TrainUtilizingSystem\ServerUtility\SurfaceQueueLib\SurfaceQueueLib.vcxproj" (build ターゲット) のビルドが完了しました。
 
 ビルドに成功しました。
 
-経過時間 00:00:00.03
+経過時間 00:00:18.74

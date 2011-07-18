@@ -65,7 +65,7 @@ namespace SensorLivetView.ViewModels
                 if (_SendPacketCommand == null)
                 {
                     var dev = this.Model as IDevice<IDeviceState<IPacketDeviceData>>;
-                    _SendPacketCommand = new DelegateCommand(new Action(() => dev.SendPacket(dev.CurrentState.BasePacket)), CanSendPacket);
+                    _SendPacketCommand = new DelegateCommand(new Action(() => dev.SendPacket(dev.CurrentState)), CanSendPacket);
                 }
                 return _SendPacketCommand;
             }

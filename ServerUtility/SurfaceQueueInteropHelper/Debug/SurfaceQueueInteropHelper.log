@@ -1,9 +1,35 @@
-﻿2011/07/18 1:41:19 にビルドを開始しました。
-     1>ノード 2 上のプロジェクト "C:\Users\root\Documents\TrainUtilizingSystem\ServerUtility\SurfaceQueueInteropHelper\SurfaceQueueInteropHelper.vcxproj" (clean ターゲット)。
-     1>_PrepareForClean:
-         ファイル "Debug\SurfaceQueueInteropHelper.lastbuildstate" を削除しています。
-     1>プロジェクト "C:\Users\root\Documents\TrainUtilizingSystem\ServerUtility\SurfaceQueueInteropHelper\SurfaceQueueInteropHelper.vcxproj" (clean ターゲット) のビルドが完了しました。
+﻿2011/07/19 2:35:00 にビルドを開始しました。
+     1>ノード 3 上のプロジェクト "C:\Users\root\Documents\TrainUtilizingSystem\ServerUtility\SurfaceQueueInteropHelper\SurfaceQueueInteropHelper.vcxproj" (build ターゲット)。
+     1>InitializeBuildStatus:
+         "AlwaysCreate" が指定されたため "Debug\SurfaceQueueInteropHelper.unsuccessfulbuild" を作成しています。
+       GenerateTargetFrameworkMonikerAttribute:
+       すべての出力ファイルが入力ファイルに対して最新なので、ターゲット "GenerateTargetFrameworkMonikerAttribute" を省略します。
+       ClCompile:
+         D:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I"D:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include" /I..\SurfaceQueueLib /AI"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0" /Zi /clr /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDLL /D _UNICODE /D UNICODE /EHa /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yc"StdAfx.h" /Fp"Debug\SurfaceQueueInteropHelper.pch" /Fo"Debug\\" /Fd"Debug\vc100.pdb" /TP /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\PresentationCore.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Core.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Data.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Xml.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\WindowsBase.dll" /analyze- /errorReport:prompt Stdafx.cpp /clr:nostdlib 
+         Stdafx.cpp
+         D:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I"D:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include" /I..\SurfaceQueueLib /AI"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0" /Zi /clr /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDLL /D _UNICODE /D UNICODE /EHa /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"StdAfx.h" /Fp"Debug\SurfaceQueueInteropHelper.pch" /Fo"Debug\\" /Fd"Debug\vc100.pdb" /TP /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\PresentationCore.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Core.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Data.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Xml.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\WindowsBase.dll" /analyze- /errorReport:prompt AssemblyInfo.cpp SurfaceQueueInteropHelper.cpp /clr:nostdlib 
+         AssemblyInfo.cpp
+         SurfaceQueueInteropHelper.cpp
+         コードを生成中...
+         D:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I"D:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include" /I..\SurfaceQueueLib /Zi /clr /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDLL /D _UNICODE /D UNICODE /EHa /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /TP /analyze- /errorReport:prompt "C:\Users\root\AppData\Local\Temp\.NETFramework,Version=v4.0.AssemblyAttributes.cpp"
+         .NETFramework,Version=v4.0.AssemblyAttributes.cpp
+       ResourceCompile:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /D _UNICODE /D UNICODE /l"0x0409" /nologo /fo"Debug\app.res" app.rc 
+       Link:
+         D:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\root\Documents\TrainUtilizingSystem\ServerUtility\Debug\SurfaceQueueInteropHelper.dll" /INCREMENTAL /NOLOGO /LIBPATH:"D:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x86" /LIBPATH:..\Debug SurfaceQueueLib.lib dxgi.lib d3d9.lib d3dx9d.lib d3d10_1.lib d3dx10d.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\SurfaceQueueInteropHelper.dll.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\root\Documents\TrainUtilizingSystem\ServerUtility\Debug\SurfaceQueueInteropHelper.pdb" /ASSEMBLYDEBUG /TLBID:1 /DYNAMICBASE /FIXED:NO /NXCOMPAT /MACHINE:X86 /DLL Debug\app.res
+         Debug\AssemblyInfo.obj
+         Debug\Stdafx.obj
+         Debug\SurfaceQueueInteropHelper.obj
+         "Debug\.NETFramework,Version=v4.0.AssemblyAttributes.obj"
+     1>SurfaceQueueLib.lib(SurfaceQueue.obj) : warning LNK4075: /EDITANDCONTINUE は /INCREMENTAL:NO の指定によって無視されます。
+         SurfaceQueueInteropHelper.vcxproj -> C:\Users\root\Documents\TrainUtilizingSystem\ServerUtility\Debug\SurfaceQueueInteropHelper.dll
+       Manifest:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"C:\Users\root\Documents\TrainUtilizingSystem\ServerUtility\Debug\SurfaceQueueInteropHelper.dll;#2" /manifest Debug\SurfaceQueueInteropHelper.dll.intermediate.manifest
+       FinalizeBuildStatus:
+         ファイル "Debug\SurfaceQueueInteropHelper.unsuccessfulbuild" を削除しています。
+         "Debug\SurfaceQueueInteropHelper.lastbuildstate" のタッチ タスクを実行しています。
+     1>プロジェクト "C:\Users\root\Documents\TrainUtilizingSystem\ServerUtility\SurfaceQueueInteropHelper\SurfaceQueueInteropHelper.vcxproj" (build ターゲット) のビルドが完了しました。
 
 ビルドに成功しました。
 
-経過時間 00:00:00.11
+経過時間 00:00:16.30

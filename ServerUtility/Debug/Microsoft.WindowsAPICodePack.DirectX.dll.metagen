@@ -2621,13 +2621,13 @@ Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D.FeatureLevel: AutoLayout, A
   :System.Enum
   Fields:
     Int32 value__ : Public, SpecialName, RTSpecialName
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D.FeatureLevel Default = 0 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D.FeatureLevel FeatureLevel_11_0 = 45056 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D.FeatureLevel FeatureLevel_10_1 = 41216 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D.FeatureLevel FeatureLevel_10_0 = 40960 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D.FeatureLevel FeatureLevel_9_3 = 37632 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D.FeatureLevel FeatureLevel_9_2 = 37376 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D.FeatureLevel FeatureLevel_9_1 = 37120 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D.FeatureLevel Default = 0 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D.DeviceType: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
   Fields:
@@ -2648,8 +2648,8 @@ Struct Microsoft.WindowsAPICodePack.DirectX.DXGI.EnumModes: AutoLayout, AnsiClas
   Fields:
     UInt32 value__ : Public, SpecialName, RTSpecialName
     Microsoft.WindowsAPICodePack.DirectX.DXGI.EnumModes Default = 0 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.DXGI.EnumModes Scaling = 2 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.DXGI.EnumModes Interlaced = 1 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.DXGI.EnumModes Scaling = 2 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.DXGI.UsageOption: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
   Fields:
@@ -2829,8 +2829,8 @@ Struct Microsoft.WindowsAPICodePack.DirectX.DXGI.MapOption: AutoLayout, AnsiClas
     UInt32 value__ : Public, SpecialName, RTSpecialName
     Microsoft.WindowsAPICodePack.DirectX.DXGI.MapOption Write = 2 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.DXGI.MapOption Read = 1 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.DXGI.MapOption Discard = 4 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.DXGI.MapOption Unspecified = 0 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.DXGI.MapOption Discard = 4 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.DXGI.ResourcePriority: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
   Fields:
@@ -2847,8 +2847,8 @@ Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D11.DriverType: AutoLayout, A
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.DriverType Warp = 5 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.DriverType Reference = 2 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.DriverType Hardware = 1 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.DriverType Null = 3 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.DriverType Software = 4 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.DriverType Null = 3 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.DriverType Unknown = 0 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D11.DebugFeature: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
@@ -2898,8 +2898,8 @@ Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D11.Primitive: AutoLayout, An
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.Primitive LineAdj = 6 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.Primitive Triangle = 3 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.Primitive Undefined = 0 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.Primitive Point = 1 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.Primitive Line = 2 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.Primitive Point = 1 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D11.AsyncGetDataFlag: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
   Fields:
@@ -2938,19 +2938,19 @@ Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D11.Blend: AutoLayout, AnsiCl
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.Blend InverseSourceColor = 4 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.Blend SourceColor = 3 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.Blend One = 2 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.Blend Zero = 1 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.Blend Undefined = 0 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.Blend Zero = 1 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.Blend BlendFactor = 14 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D11.BlendOperation: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
   Fields:
     UInt32 value__ : Public, SpecialName, RTSpecialName
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.BlendOperation ReverseSubtract = 3 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.BlendOperation Subtract = 2 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.BlendOperation Undefined = 0 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.BlendOperation Add = 1 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.BlendOperation Max = 5 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.BlendOperation Min = 4 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.BlendOperation Subtract = 2 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.BlendOperation Add = 1 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D11.BufferExShaderResourceViewFlag: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
   Fields:
@@ -2969,8 +2969,8 @@ Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D11.ClearFlag: AutoLayout, An
   Fields:
     UInt32 value__ : Public, SpecialName, RTSpecialName
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.ClearFlag Undefined = 0 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.ClearFlag Stencil = 2 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.ClearFlag Depth = 1 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.ClearFlag Stencil = 2 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D11.ColorWriteEnable: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
   Fields:
@@ -3027,9 +3027,9 @@ Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D11.CullMode: AutoLayout, Ans
   :System.Enum
   Fields:
     UInt32 value__ : Public, SpecialName, RTSpecialName
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.CullMode None = 1 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.CullMode Back = 3 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.CullMode Front = 2 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.CullMode None = 1 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D11.DepthWriteMask: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
   Fields:
@@ -3040,14 +3040,14 @@ Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D11.StencilReadMask: AutoLayo
   :System.Enum
   Fields:
     Byte value__ : Public, SpecialName, RTSpecialName
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.StencilReadMask Zero = 0 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.StencilReadMask Default = 255 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.StencilReadMask Zero = 0 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D11.StencilWriteMask: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
   Fields:
     Byte value__ : Public, SpecialName, RTSpecialName
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.StencilWriteMask Zero = 0 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.StencilWriteMask Default = 255 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.StencilWriteMask Zero = 0 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D11.DeviceContextType: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
   Fields:
@@ -3145,8 +3145,8 @@ Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D11.FormatSupport: AutoLayout
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.FormatSupport InputAssemblerIndexBuffer = 4 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.FormatSupport InputAssemblerVertexBuffer = 2 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.FormatSupport Undefined = 0 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.FormatSupport Buffer = 1 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.FormatSupport RenderTarget = 16384 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.FormatSupport Buffer = 1 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D11.FormatSupport2: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
   Fields:
@@ -3198,48 +3198,6 @@ Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId: AutoLayout, An
   :System.Enum
   Fields:
     UInt32 value__ : Public, SpecialName, RTSpecialName
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture3dLargeallocation = 124 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture3dNulldesc = 123 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture3dOutofmemoryReturn = 122 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture3dInvalidargReturn = 121 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture3dInvalidmiscflags = 120 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture3dInvalidmiplevels = 119 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture3dInvaliddimensions = 118 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture3dInvalidinitialdata = 117 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture3dInvalidbindflags = 116 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture3dInvalidcpuaccessflags = 115 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture3dUnrecognizedmiscflags = 114 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture3dUnrecognizedcpuaccessflags = 113 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture3dUnrecognizedbindflags = 112 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture3dUnrecognizedusage = 111 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture3dInvalidsamples = 110 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture3dUnsupportedformat = 109 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture3dUnrecognizedformat = 108 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture2dLargeallocation = 107 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture2dNulldesc = 106 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture2dOutofmemoryReturn = 105 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture2dInvalidargReturn = 104 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture2dInvalidmiscflags = 103 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture2dInvalidmiplevels = 102 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture2dInvaliddimensions = 101 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture2dInvalidinitialdata = 100 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture2dInvalidbindflags = 99 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture2dInvalidcpuaccessflags = 98 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture2dUnrecognizedmiscflags = 97 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture2dUnrecognizedcpuaccessflags = 96 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture2dUnrecognizedbindflags = 95 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture2dUnrecognizedusage = 94 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture2dInvalidsamples = 93 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture2dUnsupportedformat = 92 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture2dUnrecognizedformat = 91 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture1dLargeallocation = 90 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture1dNulldesc = 89 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture1dOutofmemoryReturn = 88 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture1dInvalidargReturn = 87 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture1dInvalidmiscflags = 86 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture1dInvalidmiplevels = 85 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture1dInvaliddimensions = 84 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture1dInvalidinitialdata = 83 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture1dInvalidbindflags = 82 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture1dInvalidcpuaccessflags = 81 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture1dUnrecognizedmiscflags = 80 : Public, Static, Literal, HasDefault
@@ -3614,6 +3572,48 @@ Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId: AutoLayout, An
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId CreateshaderresourceviewInvalidformat = 127 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId CreateshaderresourceviewInvaliddesc = 126 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId CreateshaderresourceviewUnrecognizedformat = 125 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture3dLargeallocation = 124 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture3dNulldesc = 123 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture3dOutofmemoryReturn = 122 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture3dInvalidargReturn = 121 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture3dInvalidmiscflags = 120 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture3dInvalidmiplevels = 119 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture3dInvaliddimensions = 118 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture3dInvalidinitialdata = 117 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture3dInvalidbindflags = 116 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture3dInvalidcpuaccessflags = 115 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture3dUnrecognizedmiscflags = 114 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture3dUnrecognizedcpuaccessflags = 113 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture3dUnrecognizedbindflags = 112 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture3dUnrecognizedusage = 111 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture3dInvalidsamples = 110 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture3dUnsupportedformat = 109 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture3dUnrecognizedformat = 108 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture2dLargeallocation = 107 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture2dNulldesc = 106 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture2dOutofmemoryReturn = 105 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture2dInvalidargReturn = 104 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture2dInvalidmiscflags = 103 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture2dInvalidmiplevels = 102 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture2dInvaliddimensions = 101 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture2dInvalidinitialdata = 100 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture2dInvalidbindflags = 99 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture2dInvalidcpuaccessflags = 98 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture2dUnrecognizedmiscflags = 97 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture2dUnrecognizedcpuaccessflags = 96 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture2dUnrecognizedbindflags = 95 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture2dUnrecognizedusage = 94 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture2dInvalidsamples = 93 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture2dUnsupportedformat = 92 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture2dUnrecognizedformat = 91 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture1dLargeallocation = 90 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture1dNulldesc = 89 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture1dOutofmemoryReturn = 88 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture1dInvalidargReturn = 87 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture1dInvalidmiscflags = 86 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture1dInvalidmiplevels = 85 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture1dInvaliddimensions = 84 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Createtexture1dInvalidinitialdata = 83 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageId Unknown = 0 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D11.MessageSeverity: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
@@ -3627,7 +3627,6 @@ Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D11.PrimitiveTopology: AutoLa
   :System.Enum
   Fields:
     UInt32 value__ : Public, SpecialName, RTSpecialName
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.PrimitiveTopology Undefined = 0 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.PrimitiveTopology ControlPointPatchList32 = 64 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.PrimitiveTopology ControlPointPatchList31 = 63 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.PrimitiveTopology ControlPointPatchList30 = 62 : Public, Static, Literal, HasDefault
@@ -3637,6 +3636,7 @@ Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D11.PrimitiveTopology: AutoLa
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.PrimitiveTopology ControlPointPatchList26 = 58 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.PrimitiveTopology ControlPointPatchList25 = 57 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.PrimitiveTopology ControlPointPatchList24 = 56 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.PrimitiveTopology Undefined = 0 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.PrimitiveTopology ControlPointPatchList23 = 55 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.PrimitiveTopology ControlPointPatchList22 = 54 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.PrimitiveTopology ControlPointPatchList21 = 53 : Public, Static, Literal, HasDefault
@@ -3682,13 +3682,13 @@ Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D11.Query: AutoLayout, AnsiCl
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.Query StreamOutputOverflowPredicateStream0 = 9 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.Query StreamOutputStatisticsStream0 = 8 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.Query StreamOutputOverflowPredicate = 7 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.Query Event = 0 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.Query StreamOutputStatistics = 6 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.Query OcclusionPredicate = 5 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.Query PipelineStatistics = 4 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.Query TimestampDisjoint = 3 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.Query Timestamp = 2 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.Query Occlusion = 1 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.Query Event = 0 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D11.QueryMiscFlag: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
   Fields:
@@ -3721,9 +3721,9 @@ Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D11.ResourceMiscFlag: AutoLay
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.ResourceMiscFlag DrawindirectArgs = 16 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.ResourceMiscFlag TextureCube = 4 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.ResourceMiscFlag Undefined = 0 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.ResourceMiscFlag GdiCompatible = 512 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.ResourceMiscFlag Shared = 2 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.ResourceMiscFlag GenerateMips = 1 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.ResourceMiscFlag GdiCompatible = 512 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D11.RldoFlags: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
   Fields:
@@ -3747,6 +3747,7 @@ Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D11.ShaderResourceViewDimensi
   :System.Enum
   Fields:
     UInt32 value__ : Public, SpecialName, RTSpecialName
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.ShaderResourceViewDimension BufferEx = 11 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.ShaderResourceViewDimension TextureCube = 9 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.ShaderResourceViewDimension Texture3D = 8 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.ShaderResourceViewDimension Texture2DMultiSampleArray = 7 : Public, Static, Literal, HasDefault
@@ -3755,9 +3756,8 @@ Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D11.ShaderResourceViewDimensi
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.ShaderResourceViewDimension Texture2D = 4 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.ShaderResourceViewDimension Texture1DArray = 3 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.ShaderResourceViewDimension Texture1D = 2 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.ShaderResourceViewDimension Buffer = 1 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.ShaderResourceViewDimension BufferEx = 11 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.ShaderResourceViewDimension TextureCubeArray = 10 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.ShaderResourceViewDimension Buffer = 1 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.ShaderResourceViewDimension Unknown = 0 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D11.StencilOperation: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
@@ -3767,10 +3767,10 @@ Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D11.StencilOperation: AutoLay
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.StencilOperation Increment = 7 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.StencilOperation DecrementSat = 5 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.StencilOperation IncrementSat = 4 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.StencilOperation Replace = 3 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.StencilOperation Zero = 2 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.StencilOperation Keep = 1 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D11.StencilOperation Invert = 6 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.StencilOperation Replace = 3 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D11.StencilOperation Zero = 2 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D11.TexturecubeFace: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
   Fields:
@@ -3860,10 +3860,10 @@ Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D10.BlendOperation: AutoLayou
   Fields:
     UInt32 value__ : Public, SpecialName, RTSpecialName
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.BlendOperation ReverseSubtract = 3 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.BlendOperation Subtract = 2 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.BlendOperation Add = 1 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.BlendOperation Max = 5 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.BlendOperation Min = 4 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.BlendOperation Subtract = 2 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.BlendOperation Add = 1 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ConstantBufferType: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
   Fields:
@@ -3875,8 +3875,8 @@ Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ClearFlag: AutoLayout, An
   Fields:
     UInt32 value__ : Public, SpecialName, RTSpecialName
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ClearFlag Undefined = 0 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ClearFlag Stencil = 2 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ClearFlag Depth = 1 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ClearFlag Stencil = 2 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ColorWriteEnable: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
   Fields:
@@ -3942,19 +3942,19 @@ Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D10.CreateDeviceFlag: AutoLay
   Fields:
     UInt32 value__ : Public, SpecialName, RTSpecialName
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.CreateDeviceFlag SupportBGRA = 32 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.CreateDeviceFlag AllowNullFromMap = 16 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.CreateDeviceFlag PreventInternalThreadingOptimizations = 8 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.CreateDeviceFlag SwitchToRef = 4 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.CreateDeviceFlag SingleThreaded = 1 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.CreateDeviceFlag AllowNullFromMap = 16 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.CreateDeviceFlag Default = 0 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.CreateDeviceFlag Debug = 2 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D10.CullMode: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
   Fields:
     UInt32 value__ : Public, SpecialName, RTSpecialName
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.CullMode None = 1 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.CullMode Back = 3 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.CullMode Front = 2 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.CullMode None = 1 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D10.DepthWriteMask: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
   Fields:
@@ -3965,24 +3965,25 @@ Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D10.StencilReadMask: AutoLayo
   :System.Enum
   Fields:
     Byte value__ : Public, SpecialName, RTSpecialName
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.StencilReadMask Zero = 0 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.StencilReadMask Default = 255 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.StencilReadMask Zero = 0 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D10.StencilWriteMask: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
   Fields:
     Byte value__ : Public, SpecialName, RTSpecialName
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.StencilWriteMask Zero = 0 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.StencilWriteMask Default = 255 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.StencilWriteMask Zero = 0 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D10.DeviceStateTypes: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
   Fields:
     UInt32 value__ : Public, SpecialName, RTSpecialName
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.DeviceStateTypes Predication = 24 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.DeviceStateTypes InputAssemblerIndexBuffer = 18 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.DeviceStateTypes RasterizerState = 23 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.DeviceStateTypes RasterizerStateScissorRects = 22 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.DeviceStateTypes RasterizerStateViewports = 21 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.DeviceStateTypes InputAssemblerPrimitiveTopology = 20 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.DeviceStateTypes InputAssemblerInputLayout = 19 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.DeviceStateTypes InputAssemblerIndexBuffer = 18 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.DeviceStateTypes InputAssemblerVertexBuffers = 17 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.DeviceStateTypes PixelShaderConstantBuffers = 16 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.DeviceStateTypes PixelShaderResources = 15 : Public, Static, Literal, HasDefault
@@ -4000,15 +4001,14 @@ Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D10.DeviceStateTypes: AutoLay
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.DeviceStateTypes OutputMergerDepthStencilState = 3 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.DeviceStateTypes OutputMergeRenderTargets = 2 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.DeviceStateTypes StreamOutputBuffers = 1 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.DeviceStateTypes Predication = 24 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D10.DriverType: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
   Fields:
     UInt32 value__ : Public, SpecialName, RTSpecialName
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.DriverType Reference = 1 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.DriverType Hardware = 0 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.DriverType Null = 2 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.DriverType Software = 3 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.DriverType Null = 2 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D10.DepthStencilViewDimension: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
   Fields:
@@ -4031,7 +4031,6 @@ Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D10.Filter: AutoLayout, AnsiC
   :System.Enum
   Fields:
     Int32 value__ : Public, SpecialName, RTSpecialName
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.Filter Text1bit = -2147483648 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.Filter ComparisonAnisotropic = 213 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.Filter ComparisonMinMagMipLinear = 149 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.Filter ComparisonMinMagLinearMipPoint = 148 : Public, Static, Literal, HasDefault
@@ -4050,6 +4049,7 @@ Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D10.Filter: AutoLayout, AnsiC
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.Filter MinPointMagLinearMipPoint = 4 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.Filter MinMagPointMipLinear = 1 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.Filter MinMagMipPoint = 0 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.Filter Text1bit = -2147483648 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D10.FilterType: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
   Fields:
@@ -4061,11 +4061,9 @@ Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D10.FormatSupport: AutoLayout
   Fields:
     UInt32 value__ : Public, SpecialName, RTSpecialName
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.FormatSupport ShaderGather = 8388608 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.FormatSupport MultiSampleLoad = 4194304 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.FormatSupport MultiSampleRendertarget = 2097152 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.FormatSupport CastWithinBitLayout = 1048576 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.FormatSupport Display = 524288 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.FormatSupport MultiSampleResolve = 262144 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.FormatSupport CpuLockable = 131072 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.FormatSupport DepthStencil = 65536 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.FormatSupport Blendable = 32768 : Public, Static, Literal, HasDefault
@@ -4082,8 +4080,10 @@ Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D10.FormatSupport: AutoLayout
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.FormatSupport StreamOutputBuffer = 8 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.FormatSupport InputAssemblerIndexBuffer = 4 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.FormatSupport InputAssemblerVertexBuffer = 2 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.FormatSupport Buffer = 1 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.FormatSupport MultiSampleLoad = 4194304 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.FormatSupport MultiSampleResolve = 262144 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.FormatSupport RenderTarget = 16384 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.FormatSupport Buffer = 1 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D10.IncludeType: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
   Fields:
@@ -4129,48 +4129,6 @@ Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId: AutoLayout, An
   :System.Enum
   Fields:
     UInt32 value__ : Public, SpecialName, RTSpecialName
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture3dLargeallocation = 124 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture3dNulldesc = 123 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture3dOutofmemoryReturn = 122 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture3dInvalidargReturn = 121 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture3dInvalidmiscflags = 120 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture3dInvalidmiplevels = 119 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture3dInvaliddimensions = 118 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture3dInvalidinitialdata = 117 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture3dInvalidbindflags = 116 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture3dInvalidcpuaccessflags = 115 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture3dUnrecognizedmiscflags = 114 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture3dUnrecognizedcpuaccessflags = 113 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture3dUnrecognizedbindflags = 112 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture3dUnrecognizedusage = 111 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture3dInvalidsamples = 110 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture3dUnsupportedformat = 109 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture3dUnrecognizedformat = 108 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture2dLargeallocation = 107 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture2dNulldesc = 106 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture2dOutofmemoryReturn = 105 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture2dInvalidargReturn = 104 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture2dInvalidmiscflags = 103 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture2dInvalidmiplevels = 102 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture2dInvaliddimensions = 101 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture2dInvalidinitialdata = 100 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture2dInvalidbindflags = 99 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture2dInvalidcpuaccessflags = 98 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture2dUnrecognizedmiscflags = 97 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture2dUnrecognizedcpuaccessflags = 96 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture2dUnrecognizedbindflags = 95 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture2dUnrecognizedusage = 94 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture2dInvalidsamples = 93 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture2dUnsupportedformat = 92 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture2dUnrecognizedformat = 91 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture1dLargeallocation = 90 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture1dNulldesc = 89 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture1dOutofmemoryReturn = 88 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture1dInvalidargReturn = 87 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture1dInvalidmiscflags = 86 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture1dInvalidmiplevels = 85 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture1dInvaliddimensions = 84 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture1dInvalidinitialdata = 83 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture1dInvalidbindflags = 82 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture1dInvalidcpuaccessflags = 81 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture1dUnrecognizedmiscflags = 80 : Public, Static, Literal, HasDefault
@@ -4545,6 +4503,48 @@ Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId: AutoLayout, An
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId CreateshaderresourceviewInvalidformat = 127 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId CreateshaderresourceviewInvaliddesc = 126 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId CreateshaderresourceviewUnrecognizedformat = 125 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture3dLargeallocation = 124 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture3dNulldesc = 123 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture3dOutofmemoryReturn = 122 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture3dInvalidargReturn = 121 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture3dInvalidmiscflags = 120 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture3dInvalidmiplevels = 119 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture3dInvaliddimensions = 118 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture3dInvalidinitialdata = 117 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture3dInvalidbindflags = 116 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture3dInvalidcpuaccessflags = 115 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture3dUnrecognizedmiscflags = 114 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture3dUnrecognizedcpuaccessflags = 113 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture3dUnrecognizedbindflags = 112 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture3dUnrecognizedusage = 111 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture3dInvalidsamples = 110 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture3dUnsupportedformat = 109 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture3dUnrecognizedformat = 108 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture2dLargeallocation = 107 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture2dNulldesc = 106 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture2dOutofmemoryReturn = 105 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture2dInvalidargReturn = 104 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture2dInvalidmiscflags = 103 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture2dInvalidmiplevels = 102 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture2dInvaliddimensions = 101 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture2dInvalidinitialdata = 100 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture2dInvalidbindflags = 99 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture2dInvalidcpuaccessflags = 98 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture2dUnrecognizedmiscflags = 97 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture2dUnrecognizedcpuaccessflags = 96 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture2dUnrecognizedbindflags = 95 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture2dUnrecognizedusage = 94 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture2dInvalidsamples = 93 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture2dUnsupportedformat = 92 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture2dUnrecognizedformat = 91 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture1dLargeallocation = 90 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture1dNulldesc = 89 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture1dOutofmemoryReturn = 88 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture1dInvalidargReturn = 87 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture1dInvalidmiscflags = 86 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture1dInvalidmiplevels = 85 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture1dInvaliddimensions = 84 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Createtexture1dInvalidinitialdata = 83 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageId Unknown = 0 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D10.MessageSeverity: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
@@ -4558,8 +4558,9 @@ Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D10.Name: AutoLayout, AnsiCla
   :System.Enum
   Fields:
     UInt32 value__ : Public, SpecialName, RTSpecialName
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.Name Coverage = 66 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.Name Target = 64 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.Name Undefined = 0 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.Name Coverage = 66 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.Name SampleIndex = 10 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.Name IsFrontFace = 9 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.Name PrimitiveId = 7 : Public, Static, Literal, HasDefault
@@ -4568,10 +4569,9 @@ Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D10.Name: AutoLayout, AnsiCla
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.Name RenderTargetArrayIndex = 4 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.Name CullDistance = 3 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.Name ClipDistance = 2 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.Name Undefined = 0 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.Name Position = 1 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.Name Depth = 65 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.Name InstanceId = 8 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.Name Position = 1 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D10.Primitive: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
   Fields:
@@ -4580,8 +4580,8 @@ Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D10.Primitive: AutoLayout, An
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.Primitive LineAdj = 6 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.Primitive Triangle = 3 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.Primitive Undefined = 0 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.Primitive Point = 1 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.Primitive Line = 2 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.Primitive Point = 1 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D10.PrimitiveTopology: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
   Fields:
@@ -4600,14 +4600,14 @@ Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D10.Query: AutoLayout, AnsiCl
   :System.Enum
   Fields:
     UInt32 value__ : Public, SpecialName, RTSpecialName
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.Query StreamOuputOverflowPredicate = 7 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.Query StreamOuputStatistics = 6 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.Query Event = 0 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.Query OcclusionPredicate = 5 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.Query PipelineStatistics = 4 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.Query TimestampDisjoint = 3 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.Query Timestamp = 2 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.Query Occlusion = 1 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.Query StreamOuputOverflowPredicate = 7 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.Query StreamOuputStatistics = 6 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.Query Event = 0 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D10.QueryMiscFlag: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
   Fields:
@@ -4625,8 +4625,8 @@ Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D10.RegisterComponentType: Au
   Fields:
     UInt32 value__ : Public, SpecialName, RTSpecialName
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.RegisterComponentType Float32 = 3 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.RegisterComponentType Sint32 = 2 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.RegisterComponentType Uint32 = 1 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.RegisterComponentType Sint32 = 2 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.RegisterComponentType Unknown = 0 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ResourceDimension: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
@@ -4641,12 +4641,12 @@ Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ResourceMiscFlag: AutoLay
   :System.Enum
   Fields:
     UInt32 value__ : Public, SpecialName, RTSpecialName
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ResourceMiscFlag SharedKeyedMutex = 16 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ResourceMiscFlag TextureCube = 4 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ResourceMiscFlag Undefined = 0 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ResourceMiscFlag SharedKeyedMutex = 16 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ResourceMiscFlag GdiCompatible = 32 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ResourceMiscFlag Shared = 2 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ResourceMiscFlag GenerateMips = 1 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ResourceMiscFlag GdiCompatible = 32 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ResourceReturnType: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
   Fields:
@@ -4687,20 +4687,20 @@ Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderDebugRegisterType: 
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderDebugRegisterType TempArray = 5 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderDebugRegisterType Temp = 4 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderDebugRegisterType TextureBuffer = 3 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderDebugRegisterType Input = 0 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderDebugRegisterType Unused = 10 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderDebugRegisterType ConstantBuffer = 2 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderDebugRegisterType Unused = 10 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderDebugRegisterType Output = 1 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderDebugRegisterType Input = 0 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderDebugScopetype: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
   Fields:
     UInt32 value__ : Public, SpecialName, RTSpecialName
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderDebugScopetype Block = 1 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderDebugScopetype Annotation = 7 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderDebugScopetype Stateblock = 5 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderDebugScopetype FuncParams = 4 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderDebugScopetype ForLoop = 2 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderDebugScopetype Block = 1 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderDebugScopetype Global = 0 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderDebugScopetype Annotation = 7 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderDebugScopetype Struct = 3 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderDebugScopetype Namespace = 6 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderDebugVartype: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
@@ -4740,22 +4740,28 @@ Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderVariableFlags: Auto
   :System.Enum
   Fields:
     UInt32 value__ : Public, SpecialName, RTSpecialName
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderVariableFlags Undefined = 0 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderVariableFlags Used = 2 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderVariableFlags UserPacked = 1 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderVariableFlags Undefined = 0 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderVariableType: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
   Fields:
     UInt32 value__ : Public, SpecialName, RTSpecialName
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderVariableType Texture2DMultiSampleArray = 33 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderVariableType Texture2DArray = 29 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderVariableType Texture1DArray = 28 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderVariableType Blend = 24 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderVariableType DepthStencil = 23 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderVariableType TextureCube = 9 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderVariableType Texture3D = 8 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderVariableType Texture2D = 7 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderVariableType Texture1D = 6 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderVariableType Void = 0 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderVariableType TextureCubeArray = 34 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderVariableType Texture2DMultipSample = 32 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderVariableType DepthStencilView = 31 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderVariableType RenderTargetView = 30 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderVariableType Texture2DArray = 29 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderVariableType Texture1DArray = 28 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderVariableType TextureBuffer = 27 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderVariableType Blend = 24 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderVariableType DepthStencil = 23 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderVariableType Rasterizer = 22 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderVariableType GeometryShader = 21 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderVariableType Uint8 = 20 : Public, Static, Literal, HasDefault
@@ -4763,19 +4769,13 @@ Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderVariableType: AutoL
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderVariableType VertexShader = 16 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderVariableType PixelShader = 15 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderVariableType Sampler = 10 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderVariableType TextureCube = 9 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderVariableType Texture3D = 8 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderVariableType Texture2D = 7 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderVariableType Texture1D = 6 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderVariableType Texture = 5 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderVariableType Float = 3 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderVariableType Int = 2 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderVariableType Bool = 1 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderVariableType Void = 0 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderVariableType ConstantBuffer = 26 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderVariableType Buffer = 25 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderVariableType String = 4 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderVariableType TextureCubeArray = 34 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderVariableType ConstantBuffer = 26 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderResourceViewDimension: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
   Fields:
@@ -4802,8 +4802,8 @@ Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderResourceViewDimensi
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderResourceViewDimension1 Texture2D = 4 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderResourceViewDimension1 Texture1DArray = 3 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderResourceViewDimension1 Texture1D = 2 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderResourceViewDimension1 Buffer = 1 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderResourceViewDimension1 TextureCubeArray = 10 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderResourceViewDimension1 Buffer = 1 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.ShaderResourceViewDimension1 Unknown = 0 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D10.StencilOperation: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
@@ -4813,10 +4813,10 @@ Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D10.StencilOperation: AutoLay
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.StencilOperation Increment = 7 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.StencilOperation DecrementSat = 5 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.StencilOperation IncrementSat = 4 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.StencilOperation Replace = 3 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.StencilOperation Zero = 2 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.StencilOperation Keep = 1 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct3D10.StencilOperation Invert = 6 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.StencilOperation Replace = 3 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct3D10.StencilOperation Zero = 2 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.Direct3D10.TexturecubeFace: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
   Fields:
@@ -4888,26 +4888,26 @@ Struct Microsoft.WindowsAPICodePack.DirectX.Direct2D1.DashStyle: AutoLayout, Ans
   Fields:
     Int32 value__ : Public, SpecialName, RTSpecialName
     Microsoft.WindowsAPICodePack.DirectX.Direct2D1.DashStyle Solid = 0 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct2D1.DashStyle Dot = 2 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct2D1.DashStyle Custom = 5 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct2D1.DashStyle DashDotDot = 4 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct2D1.DashStyle DashDot = 3 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct2D1.DashStyle Dash = 1 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct2D1.DashStyle Dot = 2 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.Direct2D1.DebugLevel: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
   Fields:
     Int32 value__ : Public, SpecialName, RTSpecialName
     Microsoft.WindowsAPICodePack.DirectX.Direct2D1.DebugLevel Error = 1 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct2D1.DebugLevel Information = 3 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct2D1.DebugLevel Warning = 2 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct2D1.DebugLevel None = 0 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct2D1.DebugLevel Information = 3 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.Direct2D1.DrawTextOptions: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
   Fields:
     Int32 value__ : Public, SpecialName, RTSpecialName
+    Microsoft.WindowsAPICodePack.DirectX.Direct2D1.DrawTextOptions None = 0 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct2D1.DrawTextOptions Clip = 2 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct2D1.DrawTextOptions NoSnap = 1 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct2D1.DrawTextOptions None = 0 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.Direct2D1.AntialiasMode: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
   Fields:
@@ -4918,10 +4918,10 @@ Struct Microsoft.WindowsAPICodePack.DirectX.Direct2D1.AlphaMode: AutoLayout, Ans
   :System.Enum
   Fields:
     Int32 value__ : Public, SpecialName, RTSpecialName
+    Microsoft.WindowsAPICodePack.DirectX.Direct2D1.AlphaMode Unknown = 0 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct2D1.AlphaMode Ignore = 3 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct2D1.AlphaMode Straight = 2 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct2D1.AlphaMode Premultiplied = 1 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct2D1.AlphaMode Unknown = 0 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.Direct2D1.ExtendMode: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
   Fields:
@@ -4951,61 +4951,61 @@ Struct Microsoft.WindowsAPICodePack.DirectX.Direct2D1.GeometryRelation: AutoLayo
   :System.Enum
   Fields:
     Int32 value__ : Public, SpecialName, RTSpecialName
-    Microsoft.WindowsAPICodePack.DirectX.Direct2D1.GeometryRelation Disjoint = 1 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct2D1.GeometryRelation Overlap = 4 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct2D1.GeometryRelation Contains = 3 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct2D1.GeometryRelation IsContained = 2 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct2D1.GeometryRelation Unknown = 0 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct2D1.GeometryRelation Overlap = 4 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct2D1.GeometryRelation IsContained = 2 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct2D1.GeometryRelation Disjoint = 1 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.Direct2D1.PathSegment: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
   Fields:
     Int32 value__ : Public, SpecialName, RTSpecialName
+    Microsoft.WindowsAPICodePack.DirectX.Direct2D1.PathSegment None = 0 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct2D1.PathSegment ForceRoundLineJoin = 2 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct2D1.PathSegment ForceUnstroked = 1 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct2D1.PathSegment None = 0 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.Direct2D1.CapStyle: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
   Fields:
     Int32 value__ : Public, SpecialName, RTSpecialName
     Microsoft.WindowsAPICodePack.DirectX.Direct2D1.CapStyle Triangle = 3 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct2D1.CapStyle Round = 2 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct2D1.CapStyle Square = 1 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct2D1.CapStyle Flat = 0 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct2D1.CapStyle Round = 2 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.Direct2D1.LayerOptions: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
   Fields:
     Int32 value__ : Public, SpecialName, RTSpecialName
-    Microsoft.WindowsAPICodePack.DirectX.Direct2D1.LayerOptions InitializeForClearType = 1 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct2D1.LayerOptions None = 0 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct2D1.LayerOptions InitializeForClearType = 1 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.Direct2D1.LineJoin: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
   Fields:
     Int32 value__ : Public, SpecialName, RTSpecialName
+    Microsoft.WindowsAPICodePack.DirectX.Direct2D1.LineJoin Round = 2 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct2D1.LineJoin MiterOrBevel = 3 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct2D1.LineJoin Bevel = 1 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct2D1.LineJoin Miter = 0 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct2D1.LineJoin Round = 2 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.Direct2D1.PresentOptions: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
   Fields:
     Int32 value__ : Public, SpecialName, RTSpecialName
+    Microsoft.WindowsAPICodePack.DirectX.Direct2D1.PresentOptions None = 0 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct2D1.PresentOptions Immediately = 2 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct2D1.PresentOptions RetainContents = 1 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct2D1.PresentOptions None = 0 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.Direct2D1.RenderTargetUsage: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
   Fields:
     Int32 value__ : Public, SpecialName, RTSpecialName
-    Microsoft.WindowsAPICodePack.DirectX.Direct2D1.RenderTargetUsage ForceBitmapRemoting = 1 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct2D1.RenderTargetUsage GdiCompatible = 2 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct2D1.RenderTargetUsage None = 0 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct2D1.RenderTargetUsage ForceBitmapRemoting = 1 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.Direct2D1.RenderTargetType: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
   Fields:
     Int32 value__ : Public, SpecialName, RTSpecialName
     Microsoft.WindowsAPICodePack.DirectX.Direct2D1.RenderTargetType Hardware = 2 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.Direct2D1.RenderTargetType Default = 0 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct2D1.RenderTargetType Software = 1 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct2D1.RenderTargetType Default = 0 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.Direct2D1.CompatibleRenderTargetOptions: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
   Fields:
@@ -5036,8 +5036,8 @@ Struct Microsoft.WindowsAPICodePack.DirectX.Direct2D1.WindowState: AutoLayout, A
   :System.Enum
   Fields:
     Int32 value__ : Public, SpecialName, RTSpecialName
-    Microsoft.WindowsAPICodePack.DirectX.Direct2D1.WindowState Occluded = 1 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.Direct2D1.WindowState None = 0 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.Direct2D1.WindowState Occluded = 1 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.Direct2D1.DCInitializeMode: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
   Fields:
@@ -5048,16 +5048,17 @@ Struct Microsoft.WindowsAPICodePack.DirectX.DirectWrite.DWriteFactoryType: AutoL
   :System.Enum
   Fields:
     Int32 value__ : Public, SpecialName, RTSpecialName
-    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.DWriteFactoryType Isolated = 1 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.DirectWrite.DWriteFactoryType Shared = 0 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.DWriteFactoryType Isolated = 1 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontWeight: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
   Fields:
     Int32 value__ : Public, SpecialName, RTSpecialName
+    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontWeight Black = 900 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontWeight Normal = 400 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontWeight UltraBlack = 950 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontWeight ExtraBlack = 950 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontWeight Heavy = 900 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontWeight Black = 900 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontWeight UltraBold = 800 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontWeight ExtraBold = 800 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontWeight Bold = 700 : Public, Static, Literal, HasDefault
@@ -5069,12 +5070,12 @@ Struct Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontWeight: AutoLayout, 
     Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontWeight UltraLight = 200 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontWeight ExtraLight = 200 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontWeight Thin = 100 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontWeight Normal = 400 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontStretch: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
   Fields:
     Int32 value__ : Public, SpecialName, RTSpecialName
     Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontStretch Undefined = 0 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontStretch Normal = 5 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontStretch UltraExpanded = 9 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontStretch ExtraExpanded = 8 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontStretch Expanded = 7 : Public, Static, Literal, HasDefault
@@ -5084,14 +5085,13 @@ Struct Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontStretch: AutoLayout,
     Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontStretch Condensed = 3 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontStretch ExtraCondensed = 2 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontStretch UltraCondensed = 1 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontStretch Normal = 5 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontStyle: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
   Fields:
     Int32 value__ : Public, SpecialName, RTSpecialName
+    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontStyle Normal = 0 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontStyle Italic = 2 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontStyle Oblique = 1 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontStyle Normal = 0 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.DirectWrite.ReadingDirection: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
   Fields:
@@ -5127,15 +5127,15 @@ Struct Microsoft.WindowsAPICodePack.DirectX.DirectWrite.LineSpacingMethod: AutoL
   :System.Enum
   Fields:
     Int32 value__ : Public, SpecialName, RTSpecialName
-    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.LineSpacingMethod Uniform = 1 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.DirectWrite.LineSpacingMethod Default = 0 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.LineSpacingMethod Uniform = 1 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.DirectWrite.TrimmingGranularity: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
   Fields:
     Int32 value__ : Public, SpecialName, RTSpecialName
+    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.TrimmingGranularity None = 0 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.DirectWrite.TrimmingGranularity Word = 2 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.DirectWrite.TrimmingGranularity Character = 1 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.TrimmingGranularity None = 0 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.DirectWrite.MeasuringMode: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
   Fields:
@@ -5154,17 +5154,18 @@ Struct Microsoft.WindowsAPICodePack.DirectX.DirectWrite.RenderingMode: AutoLayou
   :System.Enum
   Fields:
     Int32 value__ : Public, SpecialName, RTSpecialName
+    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.RenderingMode Outline = 6 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.RenderingMode Default = 0 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.DirectWrite.RenderingMode CleartypeNaturalSymmetric = 5 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.DirectWrite.RenderingMode CleartypeNatural = 4 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.DirectWrite.RenderingMode CleartypeGdiNatural = 3 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.DirectWrite.RenderingMode CleartypeGdiClassic = 2 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.RenderingMode Default = 0 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.RenderingMode Outline = 6 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.DirectWrite.RenderingMode Aliased = 1 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.DirectWrite.InformationalStringId: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
   Fields:
     Int32 value__ : Public, SpecialName, RTSpecialName
+    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.InformationalStringId None = 0 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.DirectWrite.InformationalStringId SampleText = 15 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.DirectWrite.InformationalStringId PreferredSubfamilyNames = 14 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.DirectWrite.InformationalStringId PreferredFamilyNames = 13 : Public, Static, Literal, HasDefault
@@ -5173,21 +5174,20 @@ Struct Microsoft.WindowsAPICodePack.DirectX.DirectWrite.InformationalStringId: A
     Microsoft.WindowsAPICodePack.DirectX.DirectWrite.InformationalStringId LicenseInfoUrl = 10 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.DirectWrite.InformationalStringId LicenseDescription = 9 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.DirectWrite.InformationalStringId FontVendorUrl = 8 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.InformationalStringId Description = 7 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.DirectWrite.InformationalStringId DesignerUrl = 6 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.DirectWrite.InformationalStringId Designer = 5 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.DirectWrite.InformationalStringId Manufacturer = 4 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.DirectWrite.InformationalStringId Trademark = 3 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.DirectWrite.InformationalStringId VersionStrings = 2 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.DirectWrite.InformationalStringId CopyrightNotice = 1 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.InformationalStringId Description = 7 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.InformationalStringId None = 0 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontSimulations: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
   Fields:
     Int32 value__ : Public, SpecialName, RTSpecialName
+    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontSimulations None = 0 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontSimulations Oblique = 2 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontSimulations Bold = 1 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontSimulations None = 0 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.DirectWrite.BreakCondition: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
   Fields:
@@ -5200,6 +5200,30 @@ Struct Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFeatureTag: AutoLayo
   :System.Enum
   Fields:
     Int32 value__ : Public, SpecialName, RTSpecialName
+    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFeatureTag SlashedZero = 1869768058 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFeatureTag Unicase = 1667853941 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFeatureTag ThirdWidths = 1684633460 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFeatureTag TraditionalForms = 1684107892 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFeatureTag TabularFigures = 1836412532 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFeatureTag TraditionalNameForms = 1835101812 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFeatureTag Titling = 1819568500 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFeatureTag Swash = 1752397683 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFeatureTag Superscript = 1936749939 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFeatureTag Subscript = 1935832435 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFeatureTag StylisticSet20 = 808612723 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFeatureTag StylisticSet19 = 959542131 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFeatureTag StylisticSet18 = 942764915 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFeatureTag StylisticSet17 = 925987699 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFeatureTag StylisticSet16 = 909210483 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFeatureTag StylisticSet15 = 892433267 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFeatureTag StylisticSet14 = 875656051 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFeatureTag StylisticSet13 = 858878835 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFeatureTag StylisticSet12 = 842101619 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFeatureTag StylisticSet11 = 825324403 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFeatureTag StylisticSet10 = 808547187 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFeatureTag StylisticSet09 = 959476595 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFeatureTag StylisticSet08 = 942699379 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFeatureTag StylisticSet07 = 925922163 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFeatureTag StylisticSet06 = 909144947 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFeatureTag StylisticSet05 = 892367731 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFeatureTag StylisticSet04 = 875590515 : Public, Static, Literal, HasDefault
@@ -5254,30 +5278,6 @@ Struct Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFeatureTag: AutoLayo
     Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFeatureTag SmallCapitalsFromCapitals = 1668493923 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFeatureTag PetiteCapitalsFromCapitals = 1668297315 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFeatureTag AlternativeFractions = 1668441697 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFeatureTag SlashedZero = 1869768058 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFeatureTag Unicase = 1667853941 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFeatureTag ThirdWidths = 1684633460 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFeatureTag TraditionalForms = 1684107892 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFeatureTag TabularFigures = 1836412532 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFeatureTag TraditionalNameForms = 1835101812 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFeatureTag Titling = 1819568500 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFeatureTag Swash = 1752397683 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFeatureTag Superscript = 1936749939 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFeatureTag Subscript = 1935832435 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFeatureTag StylisticSet20 = 808612723 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFeatureTag StylisticSet19 = 959542131 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFeatureTag StylisticSet18 = 942764915 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFeatureTag StylisticSet17 = 925987699 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFeatureTag StylisticSet16 = 909210483 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFeatureTag StylisticSet15 = 892433267 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFeatureTag StylisticSet14 = 875656051 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFeatureTag StylisticSet13 = 858878835 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFeatureTag StylisticSet12 = 842101619 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFeatureTag StylisticSet11 = 825324403 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFeatureTag StylisticSet10 = 808547187 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFeatureTag StylisticSet09 = 959476595 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFeatureTag StylisticSet08 = 942699379 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFeatureTag StylisticSet07 = 925922163 : Public, Static, Literal, HasDefault
 Struct Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFileType: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
   :System.Enum
   Fields:
@@ -5295,8 +5295,8 @@ Struct Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFaceType: AutoLayout
   Fields:
     Int32 value__ : Public, SpecialName, RTSpecialName
     Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFaceType Vector = 4 : Public, Static, Literal, HasDefault
-    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFaceType Bitmap = 5 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFaceType Unknown = 6 : Public, Static, Literal, HasDefault
+    Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFaceType Bitmap = 5 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFaceType Type1 = 3 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFaceType TrueTypeCollection = 2 : Public, Static, Literal, HasDefault
     Microsoft.WindowsAPICodePack.DirectX.DirectWrite.FontFaceType TrueType = 1 : Public, Static, Literal, HasDefault

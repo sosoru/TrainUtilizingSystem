@@ -121,5 +121,17 @@ namespace SensorLibrary
         {
             get { return 1.0 / this.PWMPeriod; }
         }
+
+        public TrainControllerDirection Direction
+        {
+            get
+            {
+                return this.Data.direction;
+            }
+            set
+            {
+                this.Data.direction = value;
+            }
+        }
     }
 }

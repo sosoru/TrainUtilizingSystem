@@ -58,6 +58,17 @@ namespace SensorLivetView.ViewModels.Controls
             }
         }
 
+        public bool DirectionValue
+        {
+            get
+            {
+                return this.Model.CurrentState.Direction == TrainControllerDirection.Positive;
+            }
+            set
+            {
+                this.Model.CurrentState.Direction = (value) ? TrainControllerDirection.Positive : TrainControllerDirection.Negative;
+            }
+        }
 
     }
 }

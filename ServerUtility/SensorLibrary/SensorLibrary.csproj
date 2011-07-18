@@ -56,6 +56,7 @@
     <Compile Include="Devices\PointModule.cs" />
     <Compile Include="Devices\TrainController.cs" />
     <Compile Include="Devices\TrainSensor.cs" />
+    <Compile Include="GenericComparer.cs" />
     <Compile Include="GenericWeakReference.cs" />
     <Compile Include="LoopingArray.cs" />
     <Compile Include="Packet\PacketExtensions.cs" />

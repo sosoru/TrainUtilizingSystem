@@ -75,6 +75,14 @@ namespace SensorLibrary
         public byte period;
         public byte prescale;
         public byte frequency;
+        public TrainControllerDirection direction;
+    }
+
+    public enum TrainControllerDirection
+        : byte
+    {
+        Positive = 0,
+        Negative = 1,
     }
 
     public enum TrainControllerPrescale
