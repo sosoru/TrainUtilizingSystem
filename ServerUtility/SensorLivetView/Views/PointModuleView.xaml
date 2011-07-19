@@ -1,0 +1,34 @@
+﻿<UserControl
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:SensorLivetView_ViewModels_Controls="clr-namespace:SensorLivetView.ViewModels.Controls"
+	mc:Ignorable="d"
+	x:Class="SensorLivetView.PointModuleView"
+	x:Name="UserControl"
+	d:DesignWidth="640" d:DesignHeight="480">
+	<UserControl.Resources>
+		<DataTemplate x:Key="PointModuleListItemTemplate">
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="20"/>
+				</Grid.RowDefinitions>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="20"/>
+					<ColumnDefinition Width="100"/>
+					<ColumnDefinition Width="100"/>
+				</Grid.ColumnDefinitions>
+				<TextBox Height="57" Margin="15,0,9,-89" TextWrapping="Wrap" Text="{Binding StateNo}" VerticalAlignment="Bottom"/>
+				<ToggleButton Content="Straight" Height="Auto" Width="Auto" ClickMode="Press" IsChecked="{Binding IsStraight, Mode=OneWay}" Grid.Column="1"/>
+				<ToggleButton Height="Auto" Width="Auto" Content="Curved" Grid.Column="2" ClickMode="Press" IsChecked="{Binding IsCurved, Mode=OneWay}"/>
+			</Grid>
+		</DataTemplate>
+	</UserControl.Resources>
+
+	<Grid x:Name="LayoutRoot">
+		<DockPanel>
+			<ListBox ItemsSource="{Binding StateList}" ItemTemplate="{DynamicResource PointModuleListItemTemplate}"/>
+		</DockPanel>
+	</Grid>
+</UserControl>
