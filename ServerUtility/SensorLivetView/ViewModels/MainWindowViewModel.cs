@@ -199,9 +199,7 @@ namespace SensorLivetView.ViewModels
         {
             get
             {
-                return this.PacketDispatchers.Where((disp) => disp.ReceivedMotherBoard != null)
-                                           .Select((disp) => new MotherBoardViewModel(disp.ReceivedMotherBoard))
-                                           .ToArray();
+                return GetAvailableModules<MotherBoardViewModel, MotherBoard>(this.PacketDispatchers);
             }
         }
 
@@ -209,10 +207,7 @@ namespace SensorLivetView.ViewModels
         {
             get
             {
-                return this.PacketDispatchers.SelectMany((disp) => disp.GetCastedAilveDevices<TrainSensor>())
-                                             .Where((tr) => tr != null)
-                                             .Select((tr) => new TrainSensorViewModel(tr))
-                                             .ToArray();
+                return GetAvailableModules<TrainSensorViewModel, TrainSensor>(this.PacketDispatchers);
             }
         }
 
@@ -220,11 +215,27 @@ namespace SensorLivetView.ViewModels
         {
             get
             {
-                return this.PacketDispatchers.SelectMany((disp) => disp.GetCastedAilveDevices<TrainController>())
-                                             .Where((cnt) => cnt != null)
-                                             .Select((cnt) => new TrainControllerViewModel(cnt))
-                                             .ToArray();
+                return GetAvailableModules<TrainControllerViewModel, TrainController>(this.PacketDispatchers);
             }
+        }
+
+        public IList<PointModuleViewModel> AvailablePointModuleVMs
+        {
+            get
+            {
+                return GetAvailableModules<PointModuleViewModel, PointModule>(this.PacketDispatchers);
+            }
+
+        }
+
+        private IList<TVM> GetAvailableModules<TVM, TM>(IEnumerable<PacketDispatcherSingle> disps)
+            where TVM : class
+            where TM : class
+        {
+            return disps.SelectMany((disp) => disp.GetCastedAilveDevices<TVM>())
+                        .Where((cnt) => cnt != null)
+                        .Select((cnt) => typeof(TVM).GetConstructor(new[] { typeof(TM) }).Invoke(new[] { cnt }) as TVM)
+                        .ToList();
         }
 
         IList<UsbDevicesViewModel> _SelectedDevices;

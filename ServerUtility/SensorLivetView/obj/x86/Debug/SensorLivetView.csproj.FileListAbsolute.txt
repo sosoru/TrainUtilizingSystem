@@ -98,3 +98,5 @@ C:\Users\root\Documents\TrainUtilizingSystem\ServerUtility\SensorLivetView\obj\x
 C:\Users\root\Documents\TrainUtilizingSystem\ServerUtility\SensorLivetView\obj\x86\Debug\GenerateResource.write.1.tlog
 C:\Users\root\Documents\TrainUtilizingSystem\ServerUtility\SensorLivetView\obj\x86\Debug\SensorLivetView.exe
 C:\Users\root\Documents\TrainUtilizingSystem\ServerUtility\SensorLivetView\obj\x86\Debug\SensorLivetView.pdb
+C:\Users\root\Documents\TrainUtilizingSystem\ServerUtility\SensorLivetView\obj\x86\Debug\Views\PointModuleView.baml
+C:\Users\root\Documents\TrainUtilizingSystem\ServerUtility\SensorLivetView\obj\x86\Debug\Views\PointModuleView.g.cs

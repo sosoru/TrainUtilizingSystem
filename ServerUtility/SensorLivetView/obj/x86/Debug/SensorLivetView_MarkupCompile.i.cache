@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\Users\root\Documents\TrainUtilizingSystem\ServerUtility\SensorLivetView\App.xaml
-8656033745
+9-1291075435
 5-162595545
-24-1791388129
+26-203183705
 2417815089
-DataStore\DataStore\DataStore.xaml;Views\MainWindow.xaml;Views\MotherBoardView.xaml;Views\TestWindow.xaml;Views\TrainControllerView.xaml;Views\TrainSensorView.xaml;Views\UsbDevicesView.xaml;Views\VoltageGraphView.xaml;
+DataStore\DataStore\DataStore.xaml;Views\MainWindow.xaml;Views\MotherBoardView.xaml;Views\PointModuleView.xaml;Views\TestWindow.xaml;Views\TrainControllerView.xaml;Views\TrainSensorView.xaml;Views\UsbDevicesView.xaml;Views\VoltageGraphView.xaml;
 
 True
 

@@ -83,12 +83,16 @@
     </Compile>
     <Compile Include="testServer.cs" />
     <Compile Include="ViewModels\Controls\PacketServerViewModel.cs" />
+    <Compile Include="ViewModels\Controls\PointModuleViewModel.cs" />
     <Compile Include="ViewModels\Controls\TrainControllerViewModel.cs" />
     <Compile Include="ViewModels\Controls\UsbDevicesViewModel.cs" />
     <Compile Include="ViewModels\Controls\VoltageGraphViewModel.cs" />
     <Compile Include="Views\D2DD3DImage.cs" />
     <Compile Include="Views\MotherBoardView.xaml.cs">
       <DependentUpon>MotherBoardView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PointModuleView.xaml.cs">
+      <DependentUpon>PointModuleView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TestWindow.xaml.cs">
       <DependentUpon>TestWindow.xaml</DependentUpon>
@@ -127,6 +131,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\MotherBoardView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\PointModuleView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

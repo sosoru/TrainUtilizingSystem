@@ -48,6 +48,13 @@
 				</Border>
 			</Grid>
 		</DataTemplate>
+		<DataTemplate x:Key="PointModuleListItemTemplate">
+			<Grid>
+				<Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Right" Height="Auto" VerticalAlignment="Bottom" Width="Auto">
+					<SensorLivetView:PointModuleView HorizontalAlignment="Left" Height="Auto" VerticalAlignment="Top" Width="Auto" DataContext="{Binding Mode=OneWay}"/>
+				</Border>
+			</Grid>
+		</DataTemplate>
 	</Window.Resources>
     
     <Window.DataContext>
@@ -75,7 +82,11 @@
 			<TabItem Header="TrainSensors">
 		        <ListBox ItemsPanel="{DynamicResource TrSensorListItemsPanelTemplate}" ItemsSource="{Binding AvailableTrainSensorVMs, Mode=OneWay}" ItemTemplate="{DynamicResource TrSensorListItemTemplate}" />
 			</TabItem>
-			<TabItem Header="PointModule"/>
+			<TabItem Header="PointModule">
+				<Grid>
+					<ListBox ItemsSource="{Binding AvailablePointModuleVMs}" ItemTemplate="{DynamicResource PointModuleListItemTemplate}"/>
+				</Grid>
+			</TabItem>
 			<TabItem Header="TrainController">
 				<ListBox ItemsSource="{Binding AvailableTrainControllerVMs}" ItemTemplate="{DynamicResource TrainControllerListItemDataTemplate}" />
 			</TabItem>
