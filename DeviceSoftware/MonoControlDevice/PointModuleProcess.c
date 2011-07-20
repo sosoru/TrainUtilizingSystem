@@ -1,4 +1,5 @@
-#include "MonoDevice.h"
+#include "../Headers/MotherBoardModule.h"
+#include "../Headers/PointModule.h"
 
 #define IS_POINTMODULE_REPRESENT(module) ((module) % 4 == 1)
 

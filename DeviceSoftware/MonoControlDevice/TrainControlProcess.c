@@ -1,4 +1,6 @@
-#include "MonoDevice.h"
+#include "HardwareProfile.h"
+#include "../Headers/TrainController.h"
+#include "../Headers/PortMapping.h"
 #include <timers.h>
 #include <pwm.h>
 

@@ -1,4 +1,5 @@
-#include "MonoDevice.h"
+#include <p18cxxx.h>
+#include "../Headers/eeprom.h"
 
 unsigned char ReadEEPROM(unsigned char address){
     EECON1=0;                   //ensure CFGS=0 and EEPGD=0 

@@ -1,4 +1,5 @@
-#include "MonoDevice.h"
+#include <p18cxxx.h>
+#include "../Headers/PortMapping.h"
 
 near BYTE * ModuleTris[] = 
 { 
