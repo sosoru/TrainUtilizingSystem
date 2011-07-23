@@ -4,7 +4,7 @@ Debug/
 Release/
 
 *.*sdf
-TestResult/
+TestResults/
 packages/
 
 *.o
