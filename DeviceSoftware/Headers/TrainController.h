@@ -8,6 +8,9 @@
 #define DIRECTION_TRAINCONTROLLER_POSITIVE 0
 #define DIRECTION_TRAINCONTROLLER_NEGATIVE 1
 
+#define MODE_TRAINCONTROLLER_DUTY 0
+#define MODE_TRAINCONTROLLER_FOLLOWING 1
+
 HRESULT GetFuncTableTrainController(BYTE module, ModuleFuncTable* table);
 HRESULT InitTrainController(BYTE module);
 HRESULT CreateTrainControllerState(BYTE module, PMODULE_DATA data);
@@ -26,6 +29,11 @@ typedef union tag_TrainControllerState
 		BYTE frequency; //Million
 		
 		BYTE direction;
+		
+		BYTE mode;
+		unsigned int voltage;
+		BYTE voltageEnabledBits;
+		
 	};
 	BYTE data[SIZE_DATA];
 } TrainControllerState;

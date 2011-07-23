@@ -20,19 +20,31 @@ namespace SensorLibrary
         {
         }
 
-        private ushort DutyMask
+        private ushort getmask(byte cnt)
+        {
+            return (ushort)((1 << cnt) -1);
+        }
+
+        private ushort dutyMask
         {
             get
             {
-                var enable = (int)this.Data.dutyEnabledBits;
-                return (ushort)((1 << enable) - 1);
+                return getmask(this.Data.dutyEnabledBits);
+            }
+        }
+
+        private ushort voltageMask
+        {
+            get
+            {
+                return getmask(this.Data.voltageEnabledBits);
             }
         }
 
         public int Duty
         {
             get { return this.Data.duty; }
-            set { this.Data.duty = (ushort)((int)value & (int)DutyMask); }
+            set { this.Data.duty = (ushort)((int)value & (int)dutyMask); }
         }
 
         public int DutyResolution
@@ -94,7 +106,7 @@ namespace SensorLibrary
                         break;
                 }
 
-                this.Data.prescale = (byte)scale;
+                this.Data.prescale = scale;
             }
         }
 
@@ -133,5 +145,30 @@ namespace SensorLibrary
                 this.Data.direction = value;
             }
         }
+
+        public TrainControllerMode ControllerMode
+        {
+            get
+            {
+                return this.Data.mode;
+            }
+            set
+            {
+                this.Data.mode = value;
+            }
+        }
+
+        public int Voltage
+        {
+            get
+            {
+                return (int)this.Data.voltage;
+            }
+            set
+            {
+                this.Data.voltage = (ushort)((ushort)value & this.voltageMask);
+            }
+        }
+        
     }
 }

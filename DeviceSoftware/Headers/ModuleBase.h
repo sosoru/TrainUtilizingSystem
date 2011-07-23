@@ -13,6 +13,8 @@
 
 #define ADDRESS_EEPROM_STARTS(module) (module * SIZE_EEPROM_MODULE_ALLOCATED + SIZE_EEPROM_MOTHERBOARD_ALLOCATED)
 
+extern BYTE g_usingAdc;
+
 typedef char MODULE_DATA;
 typedef MODULE_DATA* PMODULE_DATA;
 typedef char EEPROM_DATA;

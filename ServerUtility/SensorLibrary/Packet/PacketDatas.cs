@@ -73,9 +73,19 @@ namespace SensorLibrary
         public byte dutyEnabledBits;
 
         public byte period;
-        public byte prescale;
+        public TrainControllerPrescale prescale;
         public byte frequency;
         public TrainControllerDirection direction;
+        public TrainControllerMode mode;
+        public ushort voltage;
+        public byte voltageEnabledBits;
+    }
+
+    public enum TrainControllerMode
+        : byte
+    {
+        Duty = 0,
+        Following = 1
     }
 
     public enum TrainControllerDirection

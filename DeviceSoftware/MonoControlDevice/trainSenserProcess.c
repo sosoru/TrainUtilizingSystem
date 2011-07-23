@@ -29,7 +29,9 @@ void SetMeisureVoltage(BYTE module)
 	
 	if(convert == E_FAIL)
 		return;
-		
+	
+	while(!g_usingAdc);
+	g_usingAdc = TRUE;
 	SetChanADC(channel);
 	ConvertADC();
 }
@@ -105,6 +107,7 @@ HRESULT CreateTrainSensorState(BYTE module, PMODULE_DATA data)
 	argdata->VoltageResolution = 10;
 	
 	while(BusyADC());
+	g_usingAdc = FALSE;
 	voltage = ReadADC();
 	
 	argdata->CurrentVoltage = voltage;
@@ -173,7 +176,7 @@ HRESULT InitTrainSensor(BYTE module)
 	setTris(module, INPUT_PIN);
 	OpenADC(ADC_FOSC_64 & ADC_RIGHT_JUST & ADC_8_TAD,
 			channel & ADC_INT_OFF & ADC_VREFPLUS_VDD & ADC_VREFMINUS_VSS,
-			0b0011);
+			0b0000);
 
 	return S_OK;
 }

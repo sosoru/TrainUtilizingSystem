@@ -66,7 +66,7 @@ USB_HANDLE USBGenericInHandle = 0;
 
 ModuleFuncTable g_ModuleFuncLower[SIZE_SPLITED_FUNCTABLE];
 ModuleFuncTable g_ModuleFuncHigher[SIZE_SPLITED_FUNCTABLE];
-
+BYTE g_usingAdc = FALSE;
 
 void main();
 void DeviceInit();
@@ -154,7 +154,9 @@ void high_isr()
 	{
 		PIE2bits.TMR3IE = 0;
 		PIR2bits.TMR3IF = 0;
-		for(i = 0; i < MODULE_COUNT; i++)
+		
+		TMR1H |= ~TMR1H;
+		for(i = 0; i < MODULE_COUNT; ++i)
 		{
 			GET_FUNC_TABLE(i)->fninterrupt(i);
 		}
@@ -269,7 +271,7 @@ void DeviceInit()
 		  		
 	//for USB tasks
 	OpenTimer1(TIMER_INT_ON & T1_8BIT_RW & T1_SOURCE_INT & T1_PS_1_8 & T1_OSC1EN_OFF & T1_SYNC_EXT_OFF); 
-	OpenTimer3(TIMER_INT_ON & T3_16BIT_RW & T3_SOURCE_INT & T3_PS_1_1 & T3_SYNC_EXT_OFF);
+	OpenTimer3(TIMER_INT_ON & T3_8BIT_RW & T3_SOURCE_INT & T3_PS_1_8 & T3_SYNC_EXT_OFF);
 	
 	USBDeviceInit(); //check the endpoint initialization written in a callback method
 }
