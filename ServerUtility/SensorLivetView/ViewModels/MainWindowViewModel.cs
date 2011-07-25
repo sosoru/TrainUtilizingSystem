@@ -228,11 +228,26 @@ namespace SensorLivetView.ViewModels
 
         }
 
+        public TrainSpeedTransitionTestViewModel SpeedTestVM
+        {
+            get
+            {
+                var vm = new TrainSpeedTransitionTestViewModel()
+                {
+                    ControllerCandicates = this.AvailableTrainControllerVMs,
+                    SensorCandicates = this.AvailableTrainSensorVMs,
+                    Model = new TrainSpeedTransitionTest(),
+                };
+
+                return vm;                
+            }
+        }
+
         private IList<TVM> GetAvailableModules<TVM, TM>(IEnumerable<PacketDispatcherSingle> disps)
             where TVM : class
             where TM : class
         {
-            return disps.SelectMany((disp) => disp.GetCastedAilveDevices<TVM>())
+            return disps.SelectMany((disp) => disp.GetCastedAilveDevices<TM>())
                         .Where((cnt) => cnt != null)
                         .Select((cnt) => typeof(TVM).GetConstructor(new[] { typeof(TM) }).Invoke(new[] { cnt }) as TVM)
                         .ToList();

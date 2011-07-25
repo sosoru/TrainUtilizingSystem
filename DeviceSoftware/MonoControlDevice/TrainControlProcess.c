@@ -64,7 +64,13 @@ HRESULT InitTrainController(BYTE module)
 	g_cacheState.voltage = 0;
 	g_cacheState.voltageEnabledBits = VOLTAGE_RESOLUTION_BITCOUNT;
 	
+	TRIS_DIRECTION = OUTPUT_PIN;
 	TRIS_FEEDBACK = INPUT_PIN;
+	TRIS_FREE = OUTPUT_PIN;
+	TRIS_PWMSIGNAL = OUTPUT_PIN;
+	
+	PORT_DIRECTION = DIRECTION_TRAINCONTROLLER_NEGATIVE;
+	PORT_FREE = 1;
 	
 	OpenADC(ADC_FOSC_64 & ADC_RIGHT_JUST & ADC_8_TAD,
 		FEEDBACK_CHANNEL & ADC_INT_ON & ADC_VREFPLUS_VDD & ADC_VREFMINUS_VSS,
@@ -99,7 +105,7 @@ HRESULT StoreTrainControllerState(BYTE module, PMODULE_DATA data)
 		if(pstate->mode > 1)
 			g_cacheState.mode = MODE_TRAINCONTROLLER_DUTY;
 		else
-			g_cacheState.mode = MODE_TRAINCONTROLLER_FOLLOWING;
+			g_cacheState.mode = pstate->mode;
 		
 		modeChanged = TRUE;
 	}
@@ -133,23 +139,30 @@ HRESULT StoreTrainControllerState(BYTE module, PMODULE_DATA data)
 		periodChanged = TRUE;
 	}
 	
+	if(modeChanged)
+	{
+		if(g_cacheState.mode == MODE_TRAINCONTROLLER_DUTY)
+			PORT_FREE = 1;
+	}
+	
 	if(g_cacheState.duty != pstate->duty)
 	{
 		g_cacheState.duty = pstate->duty & DUTY_RESOLUTION_BITMASK;
 		dutyChanged = TRUE;
 	}
 	
-	if(prescaleChanged)
+	if(prescaleChanged || modeChanged)
 	{
 		ChangeTimer();
 	}
 	
-	if(periodChanged)
+	if(periodChanged || modeChanged)
 	{
+		PORT_DIRECTION = g_cacheState.direction;
 		ChangePWM();
 	}
 	
-	if(dutyChanged || periodChanged)
+	if(dutyChanged || periodChanged || modeChanged)
 	{
 		if(g_cacheState.mode == MODE_TRAINCONTROLLER_DUTY)
 			SetPWM();
@@ -161,7 +174,7 @@ HRESULT StoreTrainControllerState(BYTE module, PMODULE_DATA data)
 
 void InterruptTrainController(BYTE module)
 {
-	if(settingState && 
+	if(!settingState && 
 		!g_usingAdc &&
 		g_cacheState.mode == MODE_TRAINCONTROLLER_FOLLOWING)
 	{
@@ -169,13 +182,13 @@ void InterruptTrainController(BYTE module)
 		BYTE meisuringCount= 5;
 		unsigned int AveVoltage =0;
 		
-		if(++waitingCount < 100)
+		if(++waitingCount < 10)
 			return;
 			
-		if(isMeisuring)
+		if(!isMeisuring)
 		{
-			isMeisuring = 1;
-			PORT_FREE = 1;
+			isMeisuring = TRUE;
+			PORT_FREE = 0;
 		}
 		else
 		{
@@ -203,8 +216,9 @@ void InterruptTrainController(BYTE module)
 				SetPWM();
 			}
 			
-			PORT_FREE = 0;
-			waitingCount = 0;	
+			PORT_FREE = 1;
+			waitingCount = 0;
+			isMeisuring = FALSE;	
 		}
 		
 	}
@@ -212,7 +226,6 @@ void InterruptTrainController(BYTE module)
 
 void ChangeTimer()
 {
-	CloseTimer2();
 	OpenTimer2(TIMER_INT_OFF & g_cacheState.prescale);	
 }
 

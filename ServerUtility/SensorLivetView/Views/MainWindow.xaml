@@ -90,6 +90,9 @@
 			<TabItem Header="TrainController">
 				<ListBox ItemsSource="{Binding AvailableTrainControllerVMs}" ItemTemplate="{DynamicResource TrainControllerListItemDataTemplate}" />
 			</TabItem>
+			<TabItem Header="SpeedTest">
+				<SensorLivetView:TransitionTestView DataContext="{Binding SpeedTestVM, Mode=OneWay}" />
+			</TabItem>
 		</TabControl>
 	</DockPanel>
 </Window>

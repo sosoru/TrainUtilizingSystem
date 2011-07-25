@@ -30,7 +30,7 @@ void SetMeisureVoltage(BYTE module)
 	if(convert == E_FAIL)
 		return;
 	
-	while(!g_usingAdc);
+	while(g_usingAdc);
 	g_usingAdc = TRUE;
 	SetChanADC(channel);
 	ConvertADC();

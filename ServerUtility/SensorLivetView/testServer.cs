@@ -26,6 +26,12 @@ namespace SensorLivetView
 
         public TestEnumerable() { }
 
+        private TestEnumerable setStack(Func<IEnumerable<IDeviceState<IPacketDeviceData>>> f)
+        {
+            this.stacking.AddRange(f().Select((state) => state.BasePacket));
+            return new TestEnumerable(this);
+        }
+
         public TestEnumerable SetMotherBoard(DeviceID id)
         {
             var packet = new DevicePacket()
@@ -45,8 +51,7 @@ namespace SensorLivetView
 
             }
 
-            this.stacking.Add(state.BasePacket);
-            return new TestEnumerable(this);
+            return setStack(() => new[] { state });
         }
 
         public TestEnumerable SetTrainSensors(DeviceID id)
@@ -68,8 +73,29 @@ namespace SensorLivetView
                                                 CurrentVoltage = (float)(5.0 * (double)i / 256.0),
                                                 Timer = (ushort)(i * 256),
                                             });
-            this.stacking.AddRange(tsenses.Select((t) => t.BasePacket));
-            return new TestEnumerable(this);
+            return setStack(() => tsenses);
+        }
+
+        public TestEnumerable SetTrainDetectingSensors(DeviceID id)
+        {
+            var tsens = Enumerable.Range(0, 2)
+                                  .Select((i) => new TrainSensorState(
+                                                    new DevicePacket()
+                                                    {
+                                                        ID = id,
+                                                        ModuleType = ModuleTypeEnum.TrainSensor,
+                                                    }, null, null)
+                                                    {
+                                                        Mode = TrainSensorMode.detecting,
+                                                        ReferenceVoltageMinus = 0.0f,
+                                                        ReferenceVoltagePlus = 5.0f,
+                                                        VoltageResolution = 10,
+                                                        ThresholdVoltage = 2.5F,
+                                                        CurrentVoltage = i * 2.5f,
+                                                        Timer = (ushort)(i * 1000),
+                                                    });
+            return setStack(() => tsens);
+
         }
 
         public IEnumerable<DevicePacket> ToEnumerable()

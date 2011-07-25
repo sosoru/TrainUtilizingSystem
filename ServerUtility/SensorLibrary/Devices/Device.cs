@@ -7,12 +7,14 @@ using System.Text.RegularExpressions;
 using System.Drawing;
 using System.ComponentModel;
 using System.Reactive.Linq;
+using System.Reactive;
 
 namespace SensorLibrary
 {
     public delegate void PacketReceivedDelegate<in TState>(IDevice<TState> sender, PacketReceiveEventArgs args);
 
     public class PacketReceiveEventArgs
+        : EventArgs 
     {
         public IDeviceState<IPacketDeviceData> state;
         public IDeviceState<IPacketDeviceData> beforestate;
@@ -160,6 +162,11 @@ namespace SensorLibrary
 
                 OnPropertyChanged("");
             }
+        }
+
+        public IObservable<EventPattern<PacketReceiveEventArgs>> GetNextObservable()
+        {
+            return Observable.FromEventPattern<PacketReceivedDelegate<TState>, PacketReceiveEventArgs>((del)=> PacketReceived+= del, (del)=>PacketReceived -= del);
         }
 
         public override string ToString()

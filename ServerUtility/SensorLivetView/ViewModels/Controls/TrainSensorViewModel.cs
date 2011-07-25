@@ -140,5 +140,47 @@ namespace SensorLivetView.ViewModels.Controls
             }
         }
 
+        double _ReflectorInterval;
+
+        public double ReflectorInterval
+        {
+            get
+            { return _ReflectorInterval; }
+            set
+            {
+                if (_ReflectorInterval == value)
+                    return;
+                _ReflectorInterval = value;
+                RaisePropertyChanged("ReflectorInterval");
+            }
+        }
+      
+
+        public bool IsSpeedCalculatable
+        {
+            get
+            {
+                double tr = double.NaN;
+                try
+                {
+                    tr = this.Model.CalculateSpeed(this.ReflectorInterval);
+                }
+                catch
+                {
+                    return false;
+                }
+                return tr != double.NaN;
+            }
+        }
+
+        public double TrainSpeed
+        {
+            get
+            {
+                return this.Model.CalculateSpeed(this.ReflectorInterval);
+            }
+        }
+      
+
     }
 }

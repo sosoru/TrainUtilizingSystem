@@ -127,7 +127,7 @@ namespace SensorLivetView.ViewModels.Controls
         {
             if (value == null)
                 return null;
-
+            
             try
             {
                 var res = UsbDevice.AllDevices.Where((dev) => dev.SymbolicName == value as string).Single();

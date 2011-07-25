@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Reactive;
+using System.Reactive.Linq;
 
 namespace SensorLibrary
 {
@@ -86,6 +88,51 @@ namespace SensorLibrary
             };
 
             return painter;
+        }
+
+        public IObservable<TrainSensor> GetSpeedChangedObservable()
+        {
+            return this.GetNextObservable().Where((args) =>
+                {
+                    var bef = args.EventArgs.beforestate as TrainSensorState;
+                    var cur = args.EventArgs.state as TrainSensorState;
+                    if (bef != null && cur != null
+                        && bef.Mode == TrainSensorMode.detecting && cur.Mode == TrainSensorMode.detecting
+                        )
+                        return true;
+                    else
+                        return false;
+                })
+                .Select((args) => args.Sender as TrainSensor);
+                       
+        }
+
+        public double CalculateSpeed(double leninterval)
+        {
+            if (this.CurrentState.Mode != TrainSensorMode.detecting)
+                throw new InvalidOperationException("cannot calculate speed unless its mode is detecting");
+
+            if (this.history.Count > 1)
+            {
+                TrainSensorState before, current;
+                before = this.history.ElementAt(this.history.Count - 2);
+                current = this.CurrentState;
+
+                if (before != null && current != null && before.Mode == TrainSensorMode.detecting && current.Mode == TrainSensorMode.detecting)
+                {
+                    double sec = 0.0f;
+                    if (current.Timer - before.Timer < 0)
+                        sec = Math.Abs(current.Timer - before.Timer) + ushort.MaxValue;
+                    else
+                        sec = current.Timer - before.Timer;
+
+                    sec /= 48000000.0;
+
+                    return leninterval / sec;
+                }
+            }
+
+            return double.NaN;
         }
     }
 

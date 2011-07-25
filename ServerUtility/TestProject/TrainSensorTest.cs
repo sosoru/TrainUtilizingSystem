@@ -1,6 +1,11 @@
 ﻿using SensorLibrary;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Reactive.Linq;
+using SensorLivetView;
+using System.IO;
 
 namespace TestProject
 {
@@ -63,6 +68,56 @@ namespace TestProject
         //
         #endregion
 
+        private TrainSensor testsensor
+        {
+            get
+            {
+                var id = new DeviceID() { ParentPart = 1, ModulePart =1};
+                var packets = new TestEnumerable().SetTrainDetectingSensors(id);
+                
+                var st = new TestPacketStream(packets.ToEnumerable());
+                var serv = new PacketServer(st);
+                var disp = new PacketDispatcher();
+                serv.LoopStart();
+                serv.AddAction(disp);
 
+                var tsens = new TrainSensor(id,disp);
+                System.Threading.Thread.Sleep(100);
+                return tsens as TrainSensor ;
+            }
+        }
+
+
+
+        /// <summary>
+        ///CalculateSpeed のテスト
+        ///</summary>
+        [TestMethod()]
+        public void CalculateSpeedTest()
+        {
+            var target = testsensor;
+            double leninterval = 10;
+            double expected = 480000F; // TODO: 適切な値に初期化してください
+            double actual;
+
+            actual = target.CalculateSpeed(leninterval);
+            Assert.AreEqual(expected, actual);
+        }
+
+        /// <summary>
+        ///GetSpeedChangedObservable のテスト
+        ///</summary>
+        [TestMethod()]
+        public void GetSpeedChangedObservableTest()
+        {
+            var target = testsensor;
+            IObservable<TrainSensor> actual;
+            actual = target.GetSpeedChangedObservable();
+
+            bool state = false ;
+            actual.Subscribe((i) => state = true);
+
+            while (!state) ;
+        }
     }
 }

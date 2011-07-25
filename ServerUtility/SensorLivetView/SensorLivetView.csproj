@@ -81,9 +81,13 @@
     <Compile Include="DataStore\DataStore\DataStore.xaml.cs">
       <DependentUpon>DataStore.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\TestTaskModel.cs" />
+    <Compile Include="Models\TrainSpeedTransitionTest.cs" />
     <Compile Include="testServer.cs" />
+    <Compile Include="ViewModels\Controls\DeviceSelectViewModel.cs" />
     <Compile Include="ViewModels\Controls\PacketServerViewModel.cs" />
     <Compile Include="ViewModels\Controls\PointModuleViewModel.cs" />
+    <Compile Include="ViewModels\Controls\TestTaskViewModel.cs" />
     <Compile Include="ViewModels\Controls\TrainControllerViewModel.cs" />
     <Compile Include="ViewModels\Controls\UsbDevicesViewModel.cs" />
     <Compile Include="ViewModels\Controls\VoltageGraphViewModel.cs" />
@@ -102,6 +106,9 @@
     </Compile>
     <Compile Include="Views\TrainSensorView.xaml.cs">
       <DependentUpon>TrainSensorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TransitionTestView.xaml.cs">
+      <DependentUpon>TransitionTestView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UsbDevicesView.xaml.cs">
       <DependentUpon>UsbDevicesView.xaml</DependentUpon>
@@ -150,6 +157,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\TransitionTestView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\UsbDevicesView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -194,7 +205,6 @@
     <Content Include="InfrastructureAssemblies\Microsoft.Expression.Interactions.dll" />
     <Content Include="InfrastructureAssemblies\System.Windows.Interactivity.dll" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\..\..\..\Program Files\LibUsbDotNet\Src\LibWinUsb\LibUsbDotNet.csproj">
       <Project>{0A78F6FF-5586-4052-8104-E23FF83A7CE1}</Project>
