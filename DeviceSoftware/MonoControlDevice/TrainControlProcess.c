@@ -13,7 +13,7 @@
 
 #ifdef VERSION_REV1
 
-#define FEEDBACK_CHANNEL 13
+#define FEEDBACK_CHANNEL ADC_CH12
 
 #define PORT_DIRECTION PORT_PORTC_A
 #define PORT_FEEDBACK PORT_PORTC_B
@@ -27,11 +27,15 @@
 
 #endif
 
+#define STACK_SIZE 10
+
 //single module in a device
 TrainControllerState g_cacheState;
 BYTE settingState = FALSE;
-BYTE isMeisuring = FALSE;
 BYTE waitingCount = 0;
+
+int voltageDif_1 = 0;
+int voltageDif_2 = 0;
 
 void SetPWM();
 void ChangePWM();
@@ -64,6 +68,10 @@ HRESULT InitTrainController(BYTE module)
 	g_cacheState.voltage = 0;
 	g_cacheState.voltageEnabledBits = VOLTAGE_RESOLUTION_BITCOUNT;
 	
+	g_cacheState.paramp = 1.0f;
+	g_cacheState.parami = 0.0f;
+	g_cacheState.paramd = 0.0f;
+	
 	TRIS_DIRECTION = OUTPUT_PIN;
 	TRIS_FEEDBACK = INPUT_PIN;
 	TRIS_FREE = OUTPUT_PIN;
@@ -73,7 +81,7 @@ HRESULT InitTrainController(BYTE module)
 	PORT_FREE = 1;
 	
 	OpenADC(ADC_FOSC_64 & ADC_RIGHT_JUST & ADC_8_TAD,
-		FEEDBACK_CHANNEL & ADC_INT_ON & ADC_VREFPLUS_VDD & ADC_VREFMINUS_VSS,
+		FEEDBACK_CHANNEL & ADC_INT_OFF & ADC_VREFPLUS_VDD & ADC_VREFMINUS_VSS,
 		0b0000);
 				
 	ChangeTimer();
@@ -99,6 +107,10 @@ HRESULT StoreTrainControllerState(BYTE module, PMODULE_DATA data)
 	     modeChanged=FALSE, voltageChanged=FALSE;
 	     
 	settingState = TRUE;     
+	
+	g_cacheState.paramp = pstate->paramp;
+	g_cacheState.parami = pstate->parami;
+	g_cacheState.paramd = pstate->paramd;
 	 
 	if(g_cacheState.mode != pstate->mode)
 	{
@@ -164,8 +176,7 @@ HRESULT StoreTrainControllerState(BYTE module, PMODULE_DATA data)
 	
 	if(dutyChanged || periodChanged || modeChanged)
 	{
-		if(g_cacheState.mode == MODE_TRAINCONTROLLER_DUTY)
-			SetPWM();
+		SetPWM();
 	}
 	
 	settingState = FALSE;
@@ -179,47 +190,48 @@ void InterruptTrainController(BYTE module)
 		g_cacheState.mode == MODE_TRAINCONTROLLER_FOLLOWING)
 	{
 		BYTE i;
-		BYTE meisuringCount= 5;
+		unsigned int meisuringCount= 3;
 		unsigned int AveVoltage =0;
+		int df=0, duty=0;
 		
-		if(++waitingCount < 10)
+		if(++waitingCount < 2)
 			return;
 			
-		if(!isMeisuring)
+		PORT_FREE = 0;
+		Delay1KTCYx(4);
+		
+		g_usingAdc = TRUE;
+		SetChanADC(FEEDBACK_CHANNEL);
+		for(i=0; i<meisuringCount; ++i)
 		{
-			isMeisuring = TRUE;
-			PORT_FREE = 0;
+			ConvertADC();
+			while(BusyADC());		
+			AveVoltage+= ReadADC();
 		}
-		else
-		{
-			g_usingAdc = TRUE;
-			SetChanADC(FEEDBACK_CHANNEL);
-			for(i=0; i<meisuringCount; ++i)
-			{
-				ConvertADC();
-				while(BusyADC());		
-				AveVoltage+= ReadADC();
-			}
-			g_usingAdc = FALSE;
-			AveVoltage /= meisuringCount;
-			
-			if(AveVoltage > g_cacheState.voltage
-				&& g_cacheState.duty > 0 )
-			{
-				g_cacheState.duty--;
-				SetPWM();
-			}
-			else if(AveVoltage < g_cacheState.voltage
-					&& g_cacheState.duty < VOLTAGE_RESOLUTION_BITMASK)
-			{
-				g_cacheState.duty++;
-				SetPWM();
-			}
-			
-			PORT_FREE = 1;
-			waitingCount = 0;
-			isMeisuring = FALSE;	
-		}
+		g_usingAdc = FALSE;
+		AveVoltage /= meisuringCount;
+		
+		df = g_cacheState.voltage - AveVoltage;
+		
+		duty = (int)(g_cacheState.paramp * ((float)(df - voltageDif_1))  
+			   + g_cacheState.parami * ((float)df) 
+			   + g_cacheState.paramd * ((float)((voltageDif_1 - df) - (voltageDif_2 - voltageDif_1))));
+		
+		voltageDif_2 = voltageDif_1;
+		voltageDif_1 = df;
+		
+		duty += g_cacheState.duty;
+		if(duty < 0)
+			duty = 0;
+		else if (duty < VOLTAGE_RESOLUTION_BITMASK)
+			duty = VOLTAGE_RESOLUTION_BITMASK;
+		
+		g_cacheState.duty = duty;
+		SetPWM();
+		
+		g_cacheState.meisuredvoltage = AveVoltage;
+		PORT_FREE = 1;
+		waitingCount = 0;
 		
 	}
 }

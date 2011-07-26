@@ -70,5 +70,48 @@ namespace SensorLivetView.ViewModels.Controls
             }
         }
 
+        public float ParamP
+        {
+            get { return this.Model.CurrentState.PidParams.paramp; }
+            set
+            {
+                var st = this.Model.CurrentState.PidParams;
+                st.paramp = getLimitedValue(value, 0.0f, 1.0f);
+                this.Model.CurrentState.PidParams = st;
+            }
+        }
+
+        public float ParamI
+        {
+            get { return this.Model.CurrentState.PidParams.parami; }
+            set
+            {
+                var st = this.Model.CurrentState.PidParams;
+                st.parami = getLimitedValue(value, 0.0f, 1.0f);
+                this.Model.CurrentState.PidParams = st;
+            }
+        }
+
+        public float ParamD
+        {
+            get { return this.Model.CurrentState.PidParams.paramd; }
+            set
+            {
+                var st = this.Model.CurrentState.PidParams;
+                st.paramd = getLimitedValue(value, 0.0f, 1.0f);
+                this.Model.CurrentState.PidParams = st;
+            }
+        }
+
+        private float getLimitedValue(float val, float min, float max)
+        {
+            if (val < min)
+                val = min;
+            else if (val > max)
+                val = max;
+
+            return val;
+        }
+
     }
 }

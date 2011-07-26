@@ -14,7 +14,7 @@ namespace SensorLibrary
     public delegate void PacketReceivedDelegate<in TState>(IDevice<TState> sender, PacketReceiveEventArgs args);
 
     public class PacketReceiveEventArgs
-        : EventArgs 
+        : EventArgs
     {
         public IDeviceState<IPacketDeviceData> state;
         public IDeviceState<IPacketDeviceData> beforestate;
@@ -38,7 +38,9 @@ namespace SensorLibrary
         : IDevice<TState>, INotifyPropertyChanged
     where TState : class, IDeviceState<IPacketDeviceData>
     {
-        private IDisposable _unsubscriber = null;
+        protected IDisposable Unsubscriber = null;
+        protected IObservable<IDeviceState<IPacketDeviceData>> Observing = null;
+
         private TState _sentState = null;
 
         public TState CurrentState { get; protected set; }
@@ -89,10 +91,12 @@ namespace SensorLibrary
 
         public void Observe(IObservable<IDeviceState<IPacketDeviceData>> observable)
         {
-            if (this._unsubscriber != null)
-                this._unsubscriber.Dispose();
+            if (this.Unsubscriber != null)
+                this.Unsubscriber.Dispose();
 
-            this._unsubscriber = observable.Subscribe(this);
+            this.Observing = observable;
+            if (observable != null)
+                this.Unsubscriber = observable.Subscribe(this);
         }
 
         public void SendPacket()
@@ -108,7 +112,7 @@ namespace SensorLibrary
             if (!(state is TState))
                 throw new InvalidOperationException("invalid state");
 
-            for(int i=0; i < 2; i++)
+            for (int i = 0; i < 2; i++)
                 this.CurrentState.ReceivingServer.SendPacket(state.BasePacket);
 
             this._sentState = state as TState;
@@ -143,12 +147,12 @@ namespace SensorLibrary
             {
                 var before = this.CurrentState;
 
-                if(!this.IsHold)
+                if (!this.IsHold)
                     this.CurrentState = casted;
 
                 if (this._sentState != null && this.StateEqualityComparer != null)
                 {
-                    if (!this.StateEqualityComparer.Equals(casted,this._sentState))
+                    if (!this.StateEqualityComparer.Equals(casted, this._sentState))
                     {
                         this.SendPacket(_sentState);
                     }
@@ -166,7 +170,7 @@ namespace SensorLibrary
 
         public IObservable<EventPattern<PacketReceiveEventArgs>> GetNextObservable()
         {
-            return Observable.FromEventPattern<PacketReceivedDelegate<TState>, PacketReceiveEventArgs>((del)=> PacketReceived+= del, (del)=>PacketReceived -= del);
+            return Observable.FromEventPattern<PacketReceivedDelegate<TState>, PacketReceiveEventArgs>((del) => PacketReceived += del, (del) => PacketReceived -= del);
         }
 
         public override string ToString()
@@ -190,8 +194,8 @@ namespace SensorLibrary
 
         ~Device()
         {
-            if (this._unsubscriber != null)
-                this._unsubscriber.Dispose();
+            if (this.Unsubscriber != null)
+                this.Unsubscriber.Dispose();
         }
     }
 }

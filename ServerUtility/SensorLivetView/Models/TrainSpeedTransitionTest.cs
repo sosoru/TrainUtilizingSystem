@@ -30,7 +30,7 @@ namespace SensorLivetView.Models
          * ViewModelへNotificatorを使用した通知を行う場合はViewModelHelperを使用して受信側の登録をしてください。
          */
 
-        public TrainSensor targetSensor { get; set; }
+        public DetectingTrainSensor targetSensor { get; set; }
         public TrainController targetController { get; set; }
 
 

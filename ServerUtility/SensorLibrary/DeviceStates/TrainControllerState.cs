@@ -169,6 +169,34 @@ namespace SensorLibrary
                 this.Data.voltage = (ushort)((ushort)value & this.voltageMask);
             }
         }
+
+        public int MeisuredVoltage
+        {
+            get
+            {
+                return (int)this.Data.meisuredVoltage;
+            }
+        }
+
+        public PidParams PidParams
+        {
+            get
+            {
+                return new PidParams()
+                {
+                    paramp = this.Data.paramp,
+                    parami = this.Data.parami,
+                    paramd = this.Data.paramd,
+                };
+            }
+            set
+            {
+                this.Data.paramp = value.paramp;
+                this.Data.parami = value.parami;
+                this.Data.paramd = value.paramd;
+            }
+        
+        }
         
     }
 }

@@ -41,6 +41,22 @@ namespace SensorLivetView.ViewModels.Controls
             }
         }
 
+        public DetectingTrainSensor DetectingModel
+        {
+            get
+            {
+                return this.Model as DetectingTrainSensor;
+            }
+        }
+
+        public MeisuringTrainSensor MeisuringModel
+        {
+            get
+            {
+                return this.Model as MeisuringTrainSensor;
+            }
+        }
+
         protected override void ReceivedProcess(IDevice<IDeviceState<IPacketDeviceData>> dev, PacketReceiveEventArgs e)
         {
             RaisePropertyChanged("VoltageGraphVm");
@@ -66,7 +82,9 @@ namespace SensorLivetView.ViewModels.Controls
 
         private void ChangeMeisuringMode()
         {
-            this.Model.ChangeMeisuringMode();
+            var newmodel = this.Model.ChangeMeisuringMode();
+            this.Model.Observe(null);
+            this.Model = newmodel;
         }
         #endregion
 
@@ -94,7 +112,9 @@ namespace SensorLivetView.ViewModels.Controls
 
         private void ChangeDetectingMode(object parameter)
         {
-            this.Model.ChangeDetectingMode((float)parameter);
+            var newmodel = this.Model.ChangeDetectingMode((float)parameter);
+            this.Model.Observe(null);
+            this.Model = newmodel;
         }
         #endregion
 
@@ -116,7 +136,7 @@ namespace SensorLivetView.ViewModels.Controls
             {
                 var vm = new VoltageGraphViewModel()
                 {
-                    Painter = this.Model.GetPainter(),
+                    Painter = this.MeisuringModel.GetPainter(),
                 };
                 return vm;
             }
@@ -126,7 +146,7 @@ namespace SensorLivetView.ViewModels.Controls
         {
             get
             {
-                var ptlist = this.Model.GetPainter().GetGraphPointCollection(new System.Drawing.RectangleF(0, 0, 100, 100));
+                var ptlist = this.MeisuringModel.GetPainter().GetGraphPointCollection(new System.Drawing.RectangleF(0, 0, 100, 100));
                 var fig = new PathFigure();
 
                 foreach (var pt in ptlist)
@@ -163,7 +183,7 @@ namespace SensorLivetView.ViewModels.Controls
                 double tr = double.NaN;
                 try
                 {
-                    tr = this.Model.CalculateSpeed(this.ReflectorInterval);
+                    tr = this.DetectingModel.CalculateSpeed(this.ReflectorInterval);
                 }
                 catch
                 {
@@ -177,7 +197,7 @@ namespace SensorLivetView.ViewModels.Controls
         {
             get
             {
-                return this.Model.CalculateSpeed(this.ReflectorInterval);
+                return this.DetectingModel.CalculateSpeed(this.ReflectorInterval);
             }
         }
       

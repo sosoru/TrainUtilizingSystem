@@ -79,6 +79,18 @@ namespace SensorLibrary
         public TrainControllerMode mode;
         public ushort voltage;
         public byte voltageEnabledBits;
+        public ushort meisuredVoltage;
+
+        public float paramp;
+        public float parami;
+        public float paramd;
+    }
+
+    public struct PidParams
+    {
+        public float paramp;
+        public float parami;
+        public float paramd;
     }
 
     public enum TrainControllerMode

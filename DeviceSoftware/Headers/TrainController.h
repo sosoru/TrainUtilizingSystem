@@ -33,6 +33,11 @@ typedef union tag_TrainControllerState
 		BYTE mode;
 		unsigned int voltage;
 		BYTE voltageEnabledBits;
+		unsigned int meisuredvoltage;
+		
+		float paramp;
+		float parami;
+		float paramd;
 		
 	};
 	BYTE data[SIZE_DATA];

@@ -95,9 +95,9 @@ namespace TestProject
         [TestMethod()]
         public void CalculateSpeedTest()
         {
-            var target = testsensor;
+            var target = testsensor.ChangeDetectingMode();
             double leninterval = 10;
-            double expected = 480000F; // TODO: 適切な値に初期化してください
+            double expected = 480000F; 
             double actual;
 
             actual = target.CalculateSpeed(leninterval);
@@ -110,7 +110,7 @@ namespace TestProject
         [TestMethod()]
         public void GetSpeedChangedObservableTest()
         {
-            var target = testsensor;
+            var target = testsensor.ChangeDetectingMode();
             IObservable<TrainSensor> actual;
             actual = target.GetSpeedChangedObservable();
 
