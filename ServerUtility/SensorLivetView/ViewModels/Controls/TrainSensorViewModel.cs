@@ -11,6 +11,7 @@ using SensorLibrary;
 using Livet;
 using Livet.Command;
 using System.ComponentModel;
+using System.Reactive.Linq;
 
 namespace SensorLivetView.ViewModels.Controls
 {
@@ -38,6 +39,7 @@ namespace SensorLivetView.ViewModels.Controls
             {
 
                 base.Model = value;
+                RaisePropertyChanged("");
             }
         }
 
@@ -57,9 +59,41 @@ namespace SensorLivetView.ViewModels.Controls
             }
         }
 
+        public bool IsDetectingMode
+        {
+            get
+            {
+                return this.Model != null && this.Model.CurrentState != null && this.Model.CurrentState.Mode == TrainSensorMode.detecting;
+            }
+        }
+
+        public bool IsMeisuringMode
+        {
+            get
+            {
+                return this.Model != null && this.Model.CurrentState != null && this.Model.CurrentState.Mode == TrainSensorMode.meisuring;
+            }
+        }
+
+        public bool IsSensorDetected
+        {
+            get
+            {
+                try
+                {
+                    return this.Model != null && this.Model.CurrentState != null && this.Model.CurrentState.IsDetected;
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+        }
+
         protected override void ReceivedProcess(IDevice<IDeviceState<IPacketDeviceData>> dev, PacketReceiveEventArgs e)
         {
-            RaisePropertyChanged("VoltageGraphVm");
+            RaisePropertyChanged("");
+            //RaisePropertyChanged("VoltageGraphVm");
         }
 
         #region ChangeMeisuringModeCommand
@@ -134,6 +168,9 @@ namespace SensorLivetView.ViewModels.Controls
         {
             get
             {
+                if (this.MeisuringModel == null)
+                    return new VoltageGraphViewModel();
+
                 var vm = new VoltageGraphViewModel()
                 {
                     Painter = this.MeisuringModel.GetPainter(),
@@ -152,7 +189,7 @@ namespace SensorLivetView.ViewModels.Controls
                 foreach (var pt in ptlist)
                     fig.Segments.Add(new LineSegment(new Point((double)pt.X, (double)pt.Y), true));
 
-                var geo = new PathGeometry(new PathFigure[] { fig }, FillRule.EvenOdd, Transform.Identity);
+                var geo = new PathGeometry(new PathFigure [] { fig }, FillRule.EvenOdd, Transform.Identity);
                 var dw = new GeometryDrawing(Brushes.Black, new Pen(Brushes.Black, 1), geo);
                 var b = new DrawingBrush(dw);
 
@@ -174,7 +211,7 @@ namespace SensorLivetView.ViewModels.Controls
                 RaisePropertyChanged("ReflectorInterval");
             }
         }
-      
+
 
         public bool IsSpeedCalculatable
         {
@@ -193,6 +230,24 @@ namespace SensorLivetView.ViewModels.Controls
             }
         }
 
+        public double Speed
+        {
+            get
+            {
+                if (this.DetectingModel == null)
+                    return double.NaN;
+
+                try
+                {
+                    return this.DetectingModel.CalculateSpeed(this.ReflectorInterval);
+                }
+                catch
+                {
+                    return double.NaN;
+                }
+            }
+        }
+
         public double TrainSpeed
         {
             get
@@ -200,7 +255,7 @@ namespace SensorLivetView.ViewModels.Controls
                 return this.DetectingModel.CalculateSpeed(this.ReflectorInterval);
             }
         }
-      
+
 
     }
 }

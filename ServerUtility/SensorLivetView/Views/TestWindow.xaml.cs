@@ -37,7 +37,7 @@ namespace SensorLivetView
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            this.tsensview.DataContext = new TrainSensorViewModel(new TrainSensor(new DeviceID(0x01, 0x01),this.dispatcher));
+            this.tsensview.DataContext = new TrainSensorViewModel(new TrainSensor(new DeviceID(0x01, 0x01), this.dispatcher));
             this.tctrl.DataContext = new TrainControllerViewModel(new TrainController(new DeviceID(0x01, 0x06), this.dispatcher));
 
             this.server.AddAction(this.dispatcher);
@@ -63,13 +63,14 @@ namespace SensorLivetView
 
                                                 }, null, this.server)
                                                 {
-                                                    Mode = TrainSensorMode.meisuring,
+                                                    Mode = TrainSensorMode.detecting,
                                                     ReferenceVoltageMinus = 0.0F,
                                                     ReferenceVoltagePlus = 5.0F,
                                                     VoltageResolution = 10,
                                                     ThresholdVoltage = 2.0F,
                                                     CurrentVoltage = (float)(5.0 * (double)i / 256.0),
                                                     Timer = (ushort)(i * 256),
+                                                    IsDetected = i % 2 == 0,
                                                 });
 
                 var mbpacket = new DevicePacket()
@@ -88,15 +89,15 @@ namespace SensorLivetView
                 for (int i = 0; i < 28; i++)
                 {
                     if (i == 0)
-                        mbState[i] = ModuleTypeEnum.MotherBoard;
+                        mbState [i] = ModuleTypeEnum.MotherBoard;
                     else if (i > 0 && i < 5)
-                        mbState[i] = ModuleTypeEnum.TrainSensor;
+                        mbState [i] = ModuleTypeEnum.TrainSensor;
                     else if (i == 5)
-                        mbState[i] = ModuleTypeEnum.PointModule;
+                        mbState [i] = ModuleTypeEnum.PointModule;
                     else if (i == 6)
-                        mbState[i] = ModuleTypeEnum.TrainController;
+                        mbState [i] = ModuleTypeEnum.TrainController;
                     else
-                        mbState[i] = ModuleTypeEnum.Unknown;
+                        mbState [i] = ModuleTypeEnum.Unknown;
                 }
                 mbState.FlushDataState();
 
@@ -119,7 +120,7 @@ namespace SensorLivetView
                 tctrlstate.FlushDataState();
 
                 return tsenses.Select((state) => state.BasePacket)
-                              .Concat(new[] { mbState.BasePacket, tctrlstate.BasePacket })
+                              .Concat(new [] { mbState.BasePacket, tctrlstate.BasePacket })
                               .ToList();
             }
         }
