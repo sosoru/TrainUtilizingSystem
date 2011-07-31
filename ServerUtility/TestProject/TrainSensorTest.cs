@@ -100,6 +100,8 @@ namespace TestProject
             double expected = 480000F; 
             double actual;
 
+            System.Threading.Thread.Sleep(500);
+
             actual = target.CalculateSpeed(leninterval);
             Assert.AreEqual(expected, actual);
         }

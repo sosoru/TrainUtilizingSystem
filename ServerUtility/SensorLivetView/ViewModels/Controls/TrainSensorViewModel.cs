@@ -27,6 +27,7 @@ namespace SensorLivetView.ViewModels.Controls
             : base(cens)
         {
             //this.Model.TimerOverflowed += new EventHandler((sender, e) => RaisePropertyChanged(""));
+            this.ReflectorInterval = 5.0;
         }
 
         public override TrainSensor Model
@@ -111,7 +112,7 @@ namespace SensorLivetView.ViewModels.Controls
 
         private bool CanChangeMeisuringMode()
         {
-            return this.Model != null;
+            return this.Model != null && this.CurrentState != null;
         }
 
         private void ChangeMeisuringMode()
@@ -137,7 +138,7 @@ namespace SensorLivetView.ViewModels.Controls
 
         private bool CanChangeDetectingMode(object parameter)
         {
-            var expr = this.Model != null;
+            var expr = this.Model != null && this.Model.CurrentState != null;
             try { float.Parse(parameter as string); }
             catch { expr = false; }
 
@@ -146,7 +147,7 @@ namespace SensorLivetView.ViewModels.Controls
 
         private void ChangeDetectingMode(object parameter)
         {
-            var newmodel = this.Model.ChangeDetectingMode((float)parameter);
+            var newmodel = this.Model.ChangeDetectingMode(float.Parse((string)parameter));
             this.Model.Observe(null);
             this.Model = newmodel;
         }

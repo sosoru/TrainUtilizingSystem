@@ -93,6 +93,7 @@ namespace SensorLivetView
                                                         ThresholdVoltage = 2.5F,
                                                         CurrentVoltage = i * 2.5f,
                                                         Timer = (ushort)(i * 1000),
+                                                        IsDetected = i == 0,
                                                     });
             return setStack(() => tsens);
 
@@ -136,6 +137,8 @@ namespace SensorLivetView
             buf = en;
             enumerator = en.GetEnumerator();
         }
+
+        public Action<byte []> WriteFunc { get; set; }
 
         public override bool CanRead
         {
@@ -214,7 +217,8 @@ namespace SensorLivetView
 
         public override void Write(byte[] buffer, int offset, int count)
         {
-            throw new NotImplementedException();
+            if (this.WriteFunc != null)
+                this.WriteFunc(buffer.Skip(offset).Take(count).ToArray());
         }
     }
 }

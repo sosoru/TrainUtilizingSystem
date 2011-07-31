@@ -57,7 +57,7 @@
 			<TextBlock TextWrapping="Wrap" Text="{Binding Model.CurrentState.EssentialDutyResolution, Mode=OneWay}" VerticalAlignment="Top" Grid.Column="1" Grid.Row="3"/>
 			<TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.537000000476837,-0.125" Grid.Row="3" Grid.Column="2"><Run Language="ja-jp" Text="PWMFreq"/><LineBreak/><Run Language="ja-jp"/></TextBlock>
 			<TextBlock TextWrapping="Wrap" Text="{Binding Model.CurrentState.PWMFreqency}" VerticalAlignment="Top" Grid.Column="3" Grid.Row="3"/>
-			<Slider Grid.ColumnSpan="3" Grid.Column="1" Grid.Row="4" VerticalAlignment="Top" Value="{Binding DutyValue, Mode=TwoWay}" Maximum="255" SmallChange="1" AutoToolTipPlacement="TopLeft"/>
+			<Slider Grid.ColumnSpan="3" Grid.Column="1" Grid.Row="4" VerticalAlignment="Top" Value="{Binding DutyValue, Mode=TwoWay}" Maximum="1023" Minimum="0" SmallChange="1" AutoToolTipPlacement="TopLeft"/>
 			<TextBlock Height="32" Grid.Row="4" TextWrapping="Wrap" VerticalAlignment="Bottom" HorizontalAlignment="Center"><Run Language="ja-jp" Text="Duty"/><LineBreak/><Run Language="ja-jp"/></TextBlock>
 			<CheckBox Content="Direction" d:LayoutOverrides="Width, Height" Grid.Row="5" Grid.ColumnSpan="4" IsChecked="{Binding DirectionValue, Mode=TwoWay}"/>
 			<ComboBox d:LayoutOverrides="Height" Grid.Column="1" Width="100" HorizontalAlignment="Left" ItemsSource="{Binding Source={StaticResource TrainControllerMode}}" SelectedValue="{Binding Model.CurrentState.ControllerMode, Mode=TwoWay}"/>
