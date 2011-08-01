@@ -76,7 +76,7 @@ namespace SensorLivetView.ViewModels.Controls
             set
             {
                 var st = this.Model.CurrentState.PidParams;
-                st.paramp = getLimitedValue(value, 0.0f, 1.0f);
+                st.paramp = getLimitedValue(value, -1.0f, 1.0f);
                 this.Model.CurrentState.PidParams = st;
             }
         }
@@ -87,7 +87,7 @@ namespace SensorLivetView.ViewModels.Controls
             set
             {
                 var st = this.Model.CurrentState.PidParams;
-                st.parami = getLimitedValue(value, 0.0f, 1.0f);
+                st.parami = getLimitedValue(value, -1.0f, 1.0f);
                 this.Model.CurrentState.PidParams = st;
             }
         }
@@ -98,7 +98,7 @@ namespace SensorLivetView.ViewModels.Controls
             set
             {
                 var st = this.Model.CurrentState.PidParams;
-                st.paramd = getLimitedValue(value, 0.0f, 1.0f);
+                st.paramd = getLimitedValue(value, -1.0f, 1.0f);
                 this.Model.CurrentState.PidParams = st;
             }
         }
