@@ -72,7 +72,7 @@
 								</ei:PropertyChangedTrigger>
 							</i:Interaction.Triggers>
 						</SensorLivetView:UsbDevicesView>
-						<ListBox DataContext="{Binding SelectedDevices}" ItemTemplate="{DynamicResource DeviceSelectingItemTemplate}"/>
+						<ListBox ItemsSource="{Binding SelectedDevices}" ItemTemplate="{DynamicResource DeviceSelectingItemTemplate}"/>
 						
 					</DockPanel>
 			</TabItem>

@@ -40,11 +40,7 @@ namespace SensorLibrary
 
         public DetectingTrainSensor ChangeDetectingMode()
         {
-            var state = this.CurrentState;
-            state.Mode = TrainSensorMode.detecting;
-            this.SendPacket(state);
-
-            return new DetectingTrainSensor(this.DeviceID, this.Observing);
+            return ChangeDetectingMode(this.CurrentState.ThresholdVoltage);
         }
 
         public DetectingTrainSensor ChangeDetectingMode(float threshold)

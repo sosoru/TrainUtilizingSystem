@@ -1,7 +1,18 @@
 #ifndef BLOCK_MOTHERBOARD
 #define BLOCK_MOTHERBOARD
 
+#include "HardwareProfile.h"
 #include "../Headers/ModuleBase.h"
+
+#ifdef VERSION_REV1
+
+	#define MODULE_COUNT 32
+
+#elif VERSION_REV2
+
+	#define MODULE_COUNT 19
+
+#endif
 
 #define MOTHER_BOARD_MODULE_TYPE 0x00
 

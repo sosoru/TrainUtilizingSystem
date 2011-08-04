@@ -1,6 +1,7 @@
 #include "../Headers/MotherBoardModule.h"
 #include "../Headers/PointModule.h"
 
+
 #define IS_POINTMODULE_REPRESENT(module) ((module) % 4 == 1)
 
 void ReadPointModuleSavedState(BYTE module, PointModuleState * pstate);

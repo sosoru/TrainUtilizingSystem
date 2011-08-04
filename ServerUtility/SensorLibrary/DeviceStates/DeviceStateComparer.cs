@@ -19,14 +19,7 @@ namespace SensorLibrary
             {
                 var ara = x.BasePacket.Data;
                 var arb = y.BasePacket.Data;
-
-                for (int i = 0; i < ara.Length; i++)
-                {
-                    if (ara[i] != arb[i])
-                        return false;
-                }
-                return true;
-                
+                return ara.SequenceEqual(arb);                
             }
         }
 

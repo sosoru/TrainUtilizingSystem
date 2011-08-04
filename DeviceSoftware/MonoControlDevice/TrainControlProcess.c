@@ -25,7 +25,18 @@
 #define TRIS_PWMSIGNALB TRIS_PORTC_C
 #define TRIS_PWMSIGNALA TRIS_PORTC_D
 
+#elif VERSION_REV2
+
+#define FEEDBACK_CHANNEL ADC_CH12
+
+#define PORT_DIRECTION_POS PORTDbits.RD3
+#define PORT_DIRECTION_NEG PORTDbits.RD2
+#define PORT_FEEDBACK PORTBbits.RB0
+#define PORT_PWMSIGNALB PORTCbits.RC1
+#define PORT_PWMSIGNALA PORTCbits.RC2
+
 #endif
+
 
 #define STACK_SIZE 10
 
@@ -36,6 +47,7 @@ BYTE waitingCount = 0;
 
 int voltageDif_1 = 0;
 int voltageDif_2 = 0;
+float internal_duty = 0.0f;
 
 void SetPWM();
 void ChangePWM();
@@ -176,18 +188,17 @@ HRESULT StoreTrainControllerState(BYTE module, PMODULE_DATA data)
 void InterruptTrainController(BYTE module)
 {
 	if(!settingState && 
-		!g_usingAdc &&
-		g_cacheState.mode == MODE_TRAINCONTROLLER_FOLLOWING)
+		!g_usingAdc)
 	{
 		BYTE i;
-		unsigned int meisuringCount= 3;
+		unsigned int meisuringCount= 10;
 		unsigned int AveVoltage =0;
-		int df=0, duty=0;
+		int df=0, tmpduty;
 		
 		if(++waitingCount < 2)
 			return;
 		
-		duty += (int)g_cacheState.duty;
+		tmpduty = g_cacheState.duty;
 		g_cacheState.duty = 0;
 		SetPWM();
 		
@@ -204,21 +215,29 @@ void InterruptTrainController(BYTE module)
 		g_usingAdc = FALSE;
 		AveVoltage /= meisuringCount;
 		
-		df = g_cacheState.voltage - AveVoltage;
-		
-		duty += (int)(g_cacheState.paramp * ((float)(df - voltageDif_1))  
-			   + g_cacheState.parami * ((float)df) 
-			   + g_cacheState.paramd * ((float)((voltageDif_1 - df) - (voltageDif_2 - voltageDif_1))));
-		
-		voltageDif_2 = voltageDif_1;
-		voltageDif_1 = df;
-		
-		if(duty < 0)
-			duty = 0;
-		else if (duty > VOLTAGE_RESOLUTION_BITMASK)
-			duty = VOLTAGE_RESOLUTION_BITMASK;
-		
-		g_cacheState.duty = duty;
+		if(g_cacheState.mode == MODE_TRAINCONTROLLER_FOLLOWING)
+		{
+			df = g_cacheState.voltage - AveVoltage;
+			
+			internal_duty += (g_cacheState.paramp * ((float)(df - voltageDif_1))  
+						   + g_cacheState.parami * ((float)df) 
+						   + g_cacheState.paramd * ((float)((voltageDif_1 - df) - (voltageDif_2 - voltageDif_1))));
+			
+			voltageDif_2 = voltageDif_1;
+			voltageDif_1 = df;
+			
+			if(internal_duty < 0.0f)
+				g_cacheState.duty = 0;
+			else if (internal_duty > 800.0f)
+				g_cacheState.duty = 800;
+			else
+				g_cacheState.duty = (unsigned int)internal_duty;
+			
+		}
+		else
+		{
+			g_cacheState.duty = tmpduty;
+		}
 		SetPWM();
 		
 		g_cacheState.meisuredvoltage = AveVoltage;
@@ -237,16 +256,36 @@ void ChangePWM()
 	if(g_cacheState.direction == DIRECTION_TRAINCONTROLLER_POSITIVE)
 	{
 		ClosePWM2();
+#ifdef VERSION_REV1
+
 		PORT_PWMSIGNALB = 0;
 		PORT_DIRECTION = 0;
+
+#elif VERSION_REV2
+		
+		PORT_PWMSIGNALB = 0;
+		PORT_DIRECTION_NEG = 0;
+		PORT_DIRECTION_POS = 1;
+		
+#endif
 		OpenPWM1(g_cacheState.period);
 		SetDCPWM1(g_cacheState.duty);
 	}
 	else
 	{
 		ClosePWM1();
+#ifdef VERSION_REV1
+
 		PORT_PWMSIGNALA = 0;
 		PORT_DIRECTION = 1;
+
+#elif VERSION_REV2
+		
+		PORT_PWMSIGNALA = 0;
+		PORT_DIRECTION_POS = 0;
+		PORT_DIRECTION_NEG = 1;
+
+#endif		
 		OpenPWM2(g_cacheState.period);
 		SetDCPWM2(g_cacheState.duty);
 	}

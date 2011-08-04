@@ -82,7 +82,7 @@ namespace SensorLivetView.ViewModels.Controls
             {
                 try
                 {
-                    return this.Model != null && this.Model.CurrentState != null && this.Model.CurrentState.IsDetected;
+                    return this.Model != null && this.Model.CurrentState != null&& this.Model.CurrentState.Mode == TrainSensorMode.detecting && this.Model.CurrentState.IsDetected;
                 }
                 catch
                 {

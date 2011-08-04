@@ -1,5 +1,8 @@
 #include <p18cxxx.h>
+#include "HardwareProfile.h"
 #include "../Headers/PortMapping.h"
+
+#ifdef VERSION_REV1
 
 near BYTE * ModuleTris[] = 
 { 
@@ -54,7 +57,7 @@ near BYTE * ModuleLat[] =
 	//PORTD
 	&LATB,	&LATB,	&LATB,	&LATB,
 	//PORTE
-	&LATD,	&LATB, &LATB,	&LATB,
+	&LATD,	&LATB,  &LATB,	&LATB,
 	//PORTF
 	&LATC,	&LATD,	&LATD,	&LATD,
 	//PORTG
@@ -80,3 +83,43 @@ BYTE ModuleShift[]=
 	//PORTG
 	1,2,3,6
 };
+
+#elif VERSION_REV2
+
+near BYTE * ModuleTris[] = 
+{ 
+	//MB
+	0,
+	//PORTA
+	&TRISA,	&TRISA,	&TRISA,	&TRISE, &TRISE, &TRISE,	
+	//PORTB
+	&TRISB,	&TRISB,	&TRISA,	&TRISB, &TRISA, &TRISB,	
+	//PORTC
+	&TRISC,	&TRISC,	&TRISD,	&TRISD, &TRISD, &TRISD	
+};
+
+near BYTE * ModuleLat[] =
+{
+	//MB
+	0,
+	//PORTA
+	&LATA,	&LATA,	&LATA,	&LATE, &LATE, &LATE,
+	//PORTB
+	&LATB,	&LATB,	&LATA,	&LATB, &LATA, &LATB,	
+	//PORTC
+	&LATC,	&LATC,	&LATD,	&LATD, &LATD, &LATD	
+};
+
+BYTE ModuleShift[]=
+{
+	//MB
+	0,
+	//PORTA
+	2,3,5,0,1,2,
+	//PORTB
+	1,2,1,3,0,4,
+	//PORTC
+	6,7,4,5,6,7
+};
+
+#endif

@@ -1,3 +1,4 @@
+#include "HardwareProfile.h"
 #include "../Headers/MotherBoardModule.h"
 #include "../Headers/ModuleFuncDefs.h"
 

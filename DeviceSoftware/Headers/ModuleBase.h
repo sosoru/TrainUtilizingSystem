@@ -5,7 +5,6 @@
 #include "../Headers/eeprom.h"
 #include "../Headers/PortMapping.h"
 
-#define MODULE_COUNT 32
 
 #define SIZE_DATA 28
 #define SIZE_EEPROM_MODULE_ALLOCATED 8

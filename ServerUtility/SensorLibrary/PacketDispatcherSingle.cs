@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Reflection;
+using System.Reactive.Linq;
 
 namespace SensorLibrary
 {
@@ -17,10 +19,11 @@ namespace SensorLibrary
             if (state.BasePacket.ModuleType == ModuleTypeEnum.MotherBoard)
             {
                 var mb = new MotherBoard(state.BasePacket.ID);
-                if (ReceivedMotherBoard == null || this.ReceivedMotherBoard.DeviceID != state.BasePacket.ID)
+                if (ReceivedMotherBoard == null || !new MotherBoardStateComparer().Equals(state as MotherBoardState, this.ReceivedMotherBoard.CurrentState))
                 {
                     mb.Observe(this);
                     this.ReceivedMotherBoard = mb;
+                    this.Refresh(state as MotherBoardState);
                     OnReceivedMotherBoardChanged();
                 }
             }
@@ -35,32 +38,42 @@ namespace SensorLibrary
         }
 
 
-        private IList<IDevice<IDeviceState<IPacketDeviceData>>> _cache_availabledevs = null;
-        public IList<IDevice<IDeviceState<IPacketDeviceData>>> AvailableDevices
+        private ObservableCollection<IDevice<IDeviceState<IPacketDeviceData>>> _cache_availabledevs
+            = new ObservableCollection<IDevice<IDeviceState<IPacketDeviceData>>>();
+        public ObservableCollection<IDevice<IDeviceState<IPacketDeviceData>>> AvailableDevices
         {
             get
             {
-                if (this.ReceivedMotherBoard == null && this.ReceivedMotherBoard.CurrentState == null)
-                    return new IDevice<IDeviceState<IPacketDeviceData>>[0];
-
-                if (_cache_availabledevs == null)
-                {
-                    var len = this.ReceivedMotherBoard.CurrentState.ModuleTypeLength;
-                    var list = new List<IDevice<IDeviceState<IPacketDeviceData>>>();
-                    for (byte i = 0; i < len; i++)
-                    {
-                        var devtype = this.ReceivedMotherBoard.CurrentState[i];
-                        var dev = PacketDispatcher.GetCorrectDevice(devtype, new DeviceID(this.ReceivedMotherBoard.DeviceID.ParentPart, i));
-                        if (dev != null)
-                        {
-                            list.Add(dev);
-                            dev.Observe(this);
-                        }
-                    }
-                    this._cache_availabledevs = list;
-                }
                 return _cache_availabledevs;
             }
+        }
+
+        public void Refresh()
+        {
+            if (this.ReceivedMotherBoard == null)
+                return;
+
+            this.Refresh(this.ReceivedMotherBoard.CurrentState);
+        }
+
+        private void Refresh(MotherBoardState state)
+        {
+            if (state == null)
+                return;
+
+            var len = state.ModuleTypeLength;
+            var list = this._cache_availabledevs;
+            for (byte i = 0; i < len; i++)
+            {
+                var devtype = state [i];
+                var dev = PacketDispatcher.GetCorrectDevice(devtype, new DeviceID(this.ReceivedMotherBoard.DeviceID.ParentPart, i));
+                if (dev != null)
+                {
+                    list.Add(dev);
+                    dev.Observe(this);
+                }
+            }
+
         }
 
         public IEnumerable<T> GetCastedAilveDevices<T>()

@@ -63,8 +63,6 @@ namespace SensorLivetView.ViewModels
             this.OpeningServers = new ObservableCollection<PacketServer>();
             this.PacketDispatchers = new ObservableCollection<PacketDispatcherSingle>();
 
-
-
 #if TEST
             if (!this.PacketDispatchers.Contains(this.testDisp))
                 this.PacketDispatchers.Add(this.testDisp);
@@ -163,6 +161,14 @@ namespace SensorLivetView.ViewModels
             }
 
         }
+
+        //public void Refresh()
+        //{
+        //    this.RaisePropertyChanged("AvailableTrainSensorVMs");
+        //    this.RaisePropertyChanged("AvailableTrainControllerVMs");
+        //    this.RaisePropertyChanged("AvailablePointModuleVMs");
+
+        //}
 
         IList<PacketServer> _OpeningServers;
 

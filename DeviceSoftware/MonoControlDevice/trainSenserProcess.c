@@ -1,7 +1,10 @@
+#include "MonoDevice.h"
+
 #include "../Headers/MotherBoardModule.h"
 #include "../Headers/TrainSensorModule.h"
 #include <stdlib.h>
 #include <adc.h>
+
 
 //#define IS_VALID_PORT(m) ((m>=1 && m <= 8) || (m >=13 && m <= 16))
 
@@ -191,10 +194,10 @@ HRESULT StoreTrainSensorSavedState(BYTE module, PMODULE_DATA buf)
 	TrainSensorSavedState saved;
 	TrainSensorState* pstate;
 	
-	saved.Mode = pstate->Mode;
-	saved.ThresholdVoltage = pstate->ThresholdVoltage;
+	ApplyTrainSensorSavedState(pstate, &saved);
 	
 	WriteModuleSavedState(module, &saved);
 	
+	Port_SurfaceLedA = 1;
 	return S_OK;
 }

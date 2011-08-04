@@ -72,8 +72,6 @@ HRESULT ReceivingProcessUSB()
     //OUTPacket contains data the host sent
     if(USBHandleBusy(USBGenericOutHandle))		//Check if the endpoint has received any data from the host.
     	return E_FAIL;
-    	
-    Port_SurfaceLedA = 1;
 
     for(i = 0 ; i < USBGEN_EP_SIZE; i+= sizeof(DevicePacket))
     {
