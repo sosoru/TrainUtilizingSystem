@@ -13,7 +13,7 @@ void ApplyTrainSensorSavedState(TrainSensorState* state, TrainSensorSavedState* 
 void SetMeisureVoltage(BYTE module);
 HRESULT GetChannel(BYTE module, unsigned char * channel);
 
-HRESULT GetFuncTableTrainSensor(BYTE module, ModuleFuncTable* table)
+HRESULT GetFuncTableTrainSensor(DeviceID * pid, ModuleFuncTable* table)
 {
 	table->fncreate = CreateTrainSensorState;
 	table->fnstore = StoreTrainSensorSavedState;
@@ -86,7 +86,7 @@ HRESULT GetChannel(BYTE module, unsigned char * channel)
 	return S_OK;
 }
 
-HRESULT CreateTrainSensorState(BYTE module, PMODULE_DATA data)
+HRESULT CreateTrainSensorState(DeviceID * pid, PMODULE_DATA data)
 {
 	int decVoltage, flacVoltage;
 	unsigned int voltage;
@@ -94,6 +94,7 @@ HRESULT CreateTrainSensorState(BYTE module, PMODULE_DATA data)
 	TrainSensorState* argdata = (TrainSensorState*)data;
 	int romdatasize = sizeof(TrainSensorState);
 	unsigned int curTimer;
+	BYTE module = pid->ModulePart;
 	
 	SetMeisureVoltage(module);
 	
@@ -167,10 +168,11 @@ void ApplyTrainSensorSavedState(TrainSensorState* state, TrainSensorSavedState* 
 	state->ThresholdVoltage = saveState->ThresholdVoltage;
 }
 
-HRESULT InitTrainSensor(BYTE module)
+HRESULT InitTrainSensor(DeviceID * pid)
 {	
 	unsigned char channel;
 	HRESULT res;
+	BYTE module = pid->ModulePart;
 	
 	res = GetChannel(module, &channel);
 	if(res != S_OK)
@@ -184,16 +186,17 @@ HRESULT InitTrainSensor(BYTE module)
 	return S_OK;
 }
 
-void InterruptTrainSensor(BYTE module)
+void InterruptTrainSensor(DeviceID * pid)
 {
 	
 }
 
-HRESULT StoreTrainSensorSavedState(BYTE module, PMODULE_DATA buf)
+HRESULT StoreTrainSensorSavedState(DeviceID * pid, PMODULE_DATA buf)
 {
 	TrainSensorSavedState saved;
 	TrainSensorState* pstate;
-	
+	BYTE module = pid->ModulePart;
+		
 	ApplyTrainSensorSavedState(pstate, &saved);
 	
 	WriteModuleSavedState(module, &saved);

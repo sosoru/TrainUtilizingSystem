@@ -1,29 +1,29 @@
 #include "../Headers/EmptyModule.h"
 
-HRESULT CreateEmptyState(BYTE module, PMODULE_DATA data)
+HRESULT CreateEmptyState(DeviceID* pid, PMODULE_DATA data)
 {
 	// do nothing
 	return E_FAIL;
 }
 
-HRESULT StoreEmptySavedState(BYTE module, PEEPROM_DATA buf)
+HRESULT StoreEmptySavedState(DeviceID* pid, PEEPROM_DATA buf)
 {
 	// do nothing
 	return E_FAIL;
 }
 
-HRESULT InitEmpty(BYTE module)
+HRESULT InitEmpty(DeviceID* pid)
 {
 	//do nothing
 	return E_FAIL;
 }
 
-void CloseEmpty(BYTE module)
+void CloseEmpty(DeviceID* pid)
 {
 	//do nothing
 }
 
-void InterruptEmpty(BYTE module)
+void InterruptEmpty(DeviceID* pid)
 {
 	//do nothing
 }

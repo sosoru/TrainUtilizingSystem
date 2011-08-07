@@ -3,16 +3,11 @@
 
 #include "../Headers/ModuleBase.h"
 
-typedef struct tag_DeviceIdType
-{
-	BYTE ParentPart;
-	BYTE ModulePart;
-} DeviceIdType;
 
 typedef struct tag_DevicePacket
 {
 	BYTE ReadMark;
-	DeviceIdType DeviceID;
+	DeviceID ID;
 	BYTE ModuleType;
 	MODULE_DATA Data[SIZE_DATA]; 
 } DevicePacket;
@@ -24,6 +19,7 @@ typedef struct tag_DevicePacket
 #define BYTESIZE_PACKET_BUFFER (COUNT_PACKET_BUFFER * sizeof(DevicePacket))
 #define BUFFER_MAX COUNT_PACKET_BUFFER
 
+//HRESULT AddPacketUSB(DeviceID* pid, BYTE moduleType, char* data);
 HRESULT SendPacketUSB();
 HRESULT ReceivingProcessUSB();
 

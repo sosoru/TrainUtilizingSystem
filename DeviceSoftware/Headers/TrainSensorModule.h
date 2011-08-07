@@ -14,11 +14,11 @@ extern unsigned long TimerOccupied;
 #define SET_TIMER_OCCUPIED(pos, val) (TimerOccupied = (TimerOccupied & (~(((unsigned long)1) << ((unsigned long)(pos)))) | (((unsigned long)val) << ((unsigned long)(pos)))))
 #define GET_TIMER_OCCUPIED(pos) ((TimerOccupied & (((unsigned long)0x00000001) << ((unsigned long)(pos)))) > ((unsigned long)0))
 
-HRESULT GetFuncTableTrainSensor(BYTE module, ModuleFuncTable* table);
-HRESULT InitTrainSensor(BYTE module);
-HRESULT CreateTrainSensorState(BYTE module, PMODULE_DATA data);
-HRESULT StoreTrainSensorSavedState(BYTE module, PEEPROM_DATA buf);
-void InterruptTrainSensor(BYTE module);
+HRESULT GetFuncTableTrainSensor(DeviceID* pid, ModuleFuncTable* table);
+HRESULT InitTrainSensor(DeviceID* pid);
+HRESULT CreateTrainSensorState(DeviceID* pid, PMODULE_DATA data);
+HRESULT StoreTrainSensorSavedState(DeviceID* pid, PEEPROM_DATA buf);
+void InterruptTrainSensor(DeviceID* pid);
 
 typedef union tag_TrainSensorState
 {

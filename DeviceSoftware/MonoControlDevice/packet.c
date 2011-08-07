@@ -8,7 +8,7 @@ DevicePacket g_PacketBuffer[BUFFER_MAX];
 BYTE g_PacketBufferPos = 0;
 BYTE g_PacketTransfarPos = 0;
 
-HRESULT AddPacketUSB(BYTE moduleID, BYTE moduleType, char * data)
+HRESULT AddPacketUSB(DeviceID* pid, BYTE moduleType, char * data)
 {
 	BYTE savedStatus;
 	DevicePacket * ppack;
@@ -19,8 +19,7 @@ HRESULT AddPacketUSB(BYTE moduleID, BYTE moduleType, char * data)
 	ppack = &g_PacketBuffer[g_PacketBufferPos];
 		
 	ppack->ReadMark = 0xFF;
-	ppack->DeviceID.ParentPart = g_mbState.ParentId;
-	ppack->DeviceID.ModulePart = moduleID;
+	memcpy(&(ppack->ID), pid, sizeof(*pid));
 	ppack->ModuleType = moduleType;
 	memcpy(&(ppack->Data), data, SIZE_DATA);
 	
@@ -67,7 +66,7 @@ HRESULT SendPacketUSB()
 
 HRESULT ReceivingProcessUSB()
 {
-	BYTE i;
+	BYTE i, j;
 	
     //OUTPacket contains data the host sent
     if(USBHandleBusy(USBGenericOutHandle))		//Check if the endpoint has received any data from the host.
@@ -80,12 +79,20 @@ HRESULT ReceivingProcessUSB()
     	if(pack->ReadMark != (BYTE)0xFF)
     		continue;
     		
-    	if(g_mbState.ParentId == pack->DeviceID.ParentPart
-    		&& pack->DeviceID.ModulePart < MODULE_COUNT
-    		&& READ_MBSTATE_MODULETYPE(g_mbState, pack->DeviceID.ModulePart) == pack->ModuleType)
+    	if(g_mbState.ParentId == pack->ID.ParentPart)
     	{
-    		GET_FUNC_TABLE(pack->DeviceID.ModulePart)->fnstore(pack->DeviceID.ModulePart, pack->Data);
+    		if( pack->ID.ModulePart < MODULE_COUNT
+    			&& READ_MBSTATE_MODULETYPE(g_mbState, pack->ID.ModulePart) == pack->ModuleType)
+	    	{
+	   			GET_FUNC_TABLE(pack->ID.ModulePart)->fnstore(&(pack->ID), pack->Data);
+	    	}
+	    	else if (pack->ID.ModulePart & REMOTE_BIT > 0
+	    			&& READ_MBSTATE_MODULETYPE(g_mbState, pack->ID.ModulePart & (~REMOTE_BIT)) == pack->ModuleType)
+	    	{
+	    		GET_FUNC_TABLE(pack->ID.ModulePart & (~REMOTE_BIT))->fnstore(&(pack->ID), pack->Data);
+	    	}
     	}
+    	
     }
     //Port_SurfaceLedA = 0;
    	

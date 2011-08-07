@@ -25,10 +25,13 @@
 #define READ_MBSTATE_MODULETYPE(state, n) (((state).ModuleType[(n)/2] &(0b1111 << (((n)%2)*4))) >> (((n)%2)*4))
 #define WRITE_MBSTATE_MODULETYPE(state, n, value) ((state).ModuleType[(n)/2] = ((state).ModuleType[(n)/2] & (~(0b1111 << (((n)%2)*4)))) | ((value) << (((n)%2)*4)))
 
-HRESULT GetFuncTableMotherBoard(BYTE module, ModuleFuncTable* table);
-HRESULT InitMotherBoard(BYTE module);
-HRESULT CreateMotherBoardState(BYTE module, PMODULE_DATA data);
-HRESULT StoreMotherBoardSavedState(BYTE module, PEEPROM_DATA buf);
+#define IS_THIS_BOARD(pid) (pid->ParentId == g_mbState.ParentId)
+#define IS_BOARDING_MODULE(state, pid, type) (READ_MBSTATE_MODULETYPE((state), (pid)->ModulePart) == (type))
+
+HRESULT GetFuncTableMotherBoard(DeviceID * pid, ModuleFuncTable* table);
+HRESULT InitMotherBoard(DeviceID* pid);
+HRESULT CreateMotherBoardState(DeviceID* pid, PMODULE_DATA data);
+HRESULT StoreMotherBoardSavedState(DeviceID* pid, PEEPROM_DATA buf);
 
 typedef union tag_MotherBoardState
 {

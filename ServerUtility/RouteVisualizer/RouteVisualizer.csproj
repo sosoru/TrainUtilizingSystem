@@ -92,6 +92,9 @@
     </Compile>
     <Compile Include="Models\BasicInterfaces.cs" />
     <Compile Include="Models\Model.cs" />
+    <Compile Include="Models\PysicalPath.cs" />
+    <Compile Include="Models\Rail.cs" />
+    <Compile Include="Models\RainConnection.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

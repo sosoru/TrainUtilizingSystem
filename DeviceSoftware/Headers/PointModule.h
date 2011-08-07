@@ -8,11 +8,11 @@
 
 #define SIZE_POINTMODULESTATE_DIRECTIONS (4 * sizeof(BYTE))
 
-HRESULT GetFuncTablePointModule(BYTE module, ModuleFuncTable* table);
-HRESULT InitPointModule(BYTE module);
-HRESULT CreatePointModuleState(BYTE module, PMODULE_DATA data);
-HRESULT StorePointModuleState(BYTE module, PMODULE_DATA data);
-void InterruptPointModule(BYTE module); 
+HRESULT GetFuncTablePointModule(DeviceID* pid, ModuleFuncTable* table);
+HRESULT InitPointModule(DeviceID* pid);
+HRESULT CreatePointModuleState(DeviceID* pid, PMODULE_DATA data);
+HRESULT StorePointModuleState(DeviceID* pid, PMODULE_DATA data);
+void InterruptPointModule(DeviceID* pid); 
 
 typedef union tag_PointModuleState
 {

@@ -4,7 +4,7 @@
 
 MotherBoardState g_mbState;
 
-HRESULT GetFuncTableMotherBoard(BYTE module, ModuleFuncTable* table)
+HRESULT GetFuncTableMotherBoard(DeviceID* pid, ModuleFuncTable* table)
 {
 	table->fncreate = CreateMotherBoardState;
 	table->fnstore = StoreMotherBoardSavedState;
@@ -15,12 +15,12 @@ HRESULT GetFuncTableMotherBoard(BYTE module, ModuleFuncTable* table)
 	return S_OK;
 }
 
-HRESULT InitMotherBoard(BYTE module)
+HRESULT InitMotherBoard(DeviceID* pid)
 {
 	ReadMotherBoardSavedState((MotherBoardSavedState*) &g_mbState);
 }
 
-HRESULT CreateMotherBoardState(BYTE module, PMODULE_DATA data)
+HRESULT CreateMotherBoardState(DeviceID* pid, PMODULE_DATA data)
 {
 	MotherBoardState* pmbdata = (MotherBoardState*)data;
 	
@@ -31,11 +31,11 @@ HRESULT CreateMotherBoardState(BYTE module, PMODULE_DATA data)
 }
 
 
-HRESULT StoreMotherBoardSavedState(BYTE module, PMODULE_DATA buf)
+HRESULT StoreMotherBoardSavedState(DeviceID* pid, PMODULE_DATA buf)
 {
 	BYTE i;
 	MotherBoardState* pcurrent = (MotherBoardState*)buf;
-	
+			
 	g_mbState.ParentId = pcurrent->ParentId;
 	
 	for(i=0; i< COUNT_MBSTATE_MODULETYPE; i++)

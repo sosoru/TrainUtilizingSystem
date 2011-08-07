@@ -1,11 +1,12 @@
 #include "../Headers/ModuleFuncDefs.h"
 #include "../Headers/MonoModules.h"
 
-void InitializeTable(BYTE module, BYTE moduletype, ModuleFuncTable* table);
+void InitializeTable(DeviceID* pid, BYTE moduletype, ModuleFuncTable* table);
 
 void SetFuncTable()
 {
 	MotherBoardSavedState state;
+	DeviceID id;
 	BYTE i;
 	
 	ReadMotherBoardSavedState(&state);
@@ -17,38 +18,46 @@ void SetFuncTable()
 		WriteMotherBoardSavedState(&state);
 	}
 	
+	id.ParentPart = state.ParentId;
 	for(i = 0; i < MODULE_COUNT; i++)
 	{
-		InitializeTable(i, READ_MBSTATE_MODULETYPE(state, i), GET_FUNC_TABLE(i));
+		id.ModulePart = i;
+		InitializeTable(&id, READ_MBSTATE_MODULETYPE(state, i), GET_FUNC_TABLE(i));
 	}
 }
 
-void InitializeTable(BYTE module, BYTE moduletype, ModuleFuncTable* ptable)
+void InitializeTable(DeviceID* pid, BYTE moduletype, ModuleFuncTable* ptable)
 {
 	BYTE empty = 0;
 	HRESULT res = 0;
 	switch(moduletype)
 	{
 		case TRAIN_SENSOR_MODULE_TYPE:
-			if(FAILED(GetFuncTableTrainSensor(module, ptable)))
+			if(FAILED(GetFuncTableTrainSensor(pid, ptable)))
 			{
 				empty = 1;
 			}
 		break;
 		case MOTHER_BOARD_MODULE_TYPE:
-			if(FAILED(GetFuncTableMotherBoard(module, ptable)))
+			if(FAILED(GetFuncTableMotherBoard(pid, ptable)))
 			{
 				empty = 1;
 			}
 		break;
 		case POINT_MODULE_MODULE_TYPE:
-			if(FAILED(GetFuncTablePointModule(module, ptable)))
+			if(FAILED(GetFuncTablePointModule(pid, ptable)))
 			{
 				empty = 1;
 			}
 		break;
 		case TRAIN_CONTROLLER_MODULE_TYPE:
-			if(FAILED(GetFuncTableTrainController(module, ptable)))
+			if(FAILED(GetFuncTableTrainController(pid, ptable)))
+			{
+				empty = 1;
+			}
+		break;
+		case REMOTE_MODULE_MODULE_TYPE:
+			if(FAILED(GetFuncTableRemoteModule(pid, ptable)))
 			{
 				empty = 1;
 			}

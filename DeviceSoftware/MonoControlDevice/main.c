@@ -1,6 +1,7 @@
 #include "MonoDevice.h"
 #include <timers.h>
 #include <adc.h>
+#include <spi.h>
 
  /** Configuration Bits *******************************************/
  #pragma config PLLDIV = 5           //Configure for 20Mhz crystal, 20/5 = 4Mhz (required for USB)
@@ -97,6 +98,10 @@ void main()
 void Process()
 {
 	BYTE i;
+	DeviceID id;
+	
+	id.ParentPart = g_mbState.ParentId;
+	
     if(!USB_TRANSFAR_AVAILABLE)
 	{
 		Port_SurfaceLedB = 0;
@@ -117,7 +122,9 @@ void Process()
 			memset(data, 0x00, sizeof(data));
 			if(SUCCEEDED(GET_FUNC_TABLE(i)->fncreate(i, data)))
 			{
-				AddPacketUSB(i, type, data);
+				id.ModulePart = i;
+				
+				AddPacketUSB(&id, type, data);
 				SendPacketUSB();
 			}
 		}
@@ -149,6 +156,7 @@ void high_interrupt()
 void high_isr()
 {
 	BYTE i;
+	DeviceID id;
 	
 	if(PIR2bits.TMR3IF)
 	{
@@ -156,9 +164,12 @@ void high_isr()
 		PIR2bits.TMR3IF = 0;
 		
 		TMR1H |= ~TMR1H;
+		id.ParentPart = g_mbState.ParentId;
 		for(i = 0; i < MODULE_COUNT; ++i)
 		{
-			GET_FUNC_TABLE(i)->fninterrupt(i);
+			id.ModulePart = i;
+			
+			GET_FUNC_TABLE(i)->fninterrupt(&id);
 		}
 		PIE2bits.TMR3IE = 1;
 	}

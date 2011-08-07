@@ -34,6 +34,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SurfaceQueueInteropHelper",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SensorLibrary", "SensorLibrary\SensorLibrary.csproj", "{160A1D77-985C-4DDD-BB20-46C8EBADF62F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RouteVisualizer", "RouteVisualizer\RouteVisualizer.csproj", "{E366CBAE-EDDF-4486-87A2-826A07E1D9CC}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = SerialPortTest.vsmdi
@@ -189,6 +191,24 @@ Global
 		{160A1D77-985C-4DDD-BB20-46C8EBADF62F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{160A1D77-985C-4DDD-BB20-46C8EBADF62F}.Release|Win32.ActiveCfg = Release|Any CPU
 		{160A1D77-985C-4DDD-BB20-46C8EBADF62F}.Release|x86.ActiveCfg = Release|Any CPU
+		{E366CBAE-EDDF-4486-87A2-826A07E1D9CC}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{E366CBAE-EDDF-4486-87A2-826A07E1D9CC}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{E366CBAE-EDDF-4486-87A2-826A07E1D9CC}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{E366CBAE-EDDF-4486-87A2-826A07E1D9CC}.Debug|Win32.ActiveCfg = Debug|x86
+		{E366CBAE-EDDF-4486-87A2-826A07E1D9CC}.Debug|x86.ActiveCfg = Debug|x86
+		{E366CBAE-EDDF-4486-87A2-826A07E1D9CC}.Debug|x86.Build.0 = Debug|x86
+		{E366CBAE-EDDF-4486-87A2-826A07E1D9CC}.Release x64|Any CPU.ActiveCfg = Release|x86
+		{E366CBAE-EDDF-4486-87A2-826A07E1D9CC}.Release x64|Mixed Platforms.ActiveCfg = Release|x86
+		{E366CBAE-EDDF-4486-87A2-826A07E1D9CC}.Release x64|Mixed Platforms.Build.0 = Release|x86
+		{E366CBAE-EDDF-4486-87A2-826A07E1D9CC}.Release x64|Win32.ActiveCfg = Release|x86
+		{E366CBAE-EDDF-4486-87A2-826A07E1D9CC}.Release x64|x86.ActiveCfg = Release|x86
+		{E366CBAE-EDDF-4486-87A2-826A07E1D9CC}.Release x64|x86.Build.0 = Release|x86
+		{E366CBAE-EDDF-4486-87A2-826A07E1D9CC}.Release|Any CPU.ActiveCfg = Release|x86
+		{E366CBAE-EDDF-4486-87A2-826A07E1D9CC}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{E366CBAE-EDDF-4486-87A2-826A07E1D9CC}.Release|Mixed Platforms.Build.0 = Release|x86
+		{E366CBAE-EDDF-4486-87A2-826A07E1D9CC}.Release|Win32.ActiveCfg = Release|x86
+		{E366CBAE-EDDF-4486-87A2-826A07E1D9CC}.Release|x86.ActiveCfg = Release|x86
+		{E366CBAE-EDDF-4486-87A2-826A07E1D9CC}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

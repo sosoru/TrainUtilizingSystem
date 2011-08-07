@@ -53,7 +53,7 @@ void SetPWM();
 void ChangePWM();
 void ChangeTimer();
 
-HRESULT GetFuncTableTrainController(BYTE module, ModuleFuncTable* table)
+HRESULT GetFuncTableTrainController(DeviceID * pid, ModuleFuncTable* table)
 {
 	table->fncreate = CreateTrainControllerState;
 	table->fnstore = StoreTrainControllerState;
@@ -63,7 +63,7 @@ HRESULT GetFuncTableTrainController(BYTE module, ModuleFuncTable* table)
 	return S_OK;	
 }
 
-HRESULT InitTrainController(BYTE module)
+HRESULT InitTrainController(DeviceID * pid)
 {
 	settingState = TRUE;
 	
@@ -101,7 +101,7 @@ HRESULT InitTrainController(BYTE module)
 	return S_OK;
 }
 
-HRESULT CreateTrainControllerState(BYTE module, PMODULE_DATA data)
+HRESULT CreateTrainControllerState(DeviceID * pid, PMODULE_DATA data)
 {
 	TrainControllerState * pstate = (TrainControllerState *)data;
 	
@@ -109,7 +109,7 @@ HRESULT CreateTrainControllerState(BYTE module, PMODULE_DATA data)
 	return S_OK;
 }
 	
-HRESULT StoreTrainControllerState(BYTE module, PMODULE_DATA data)
+HRESULT StoreTrainControllerState(DeviceID * pid, PMODULE_DATA data)
 {
 	TrainControllerState * pstate = (TrainControllerState *) data;
 	BYTE periodChanged=FALSE, prescaleChanged=FALSE, dutyChanged=FALSE,
@@ -185,7 +185,7 @@ HRESULT StoreTrainControllerState(BYTE module, PMODULE_DATA data)
 	
 }
 
-void InterruptTrainController(BYTE module)
+void InterruptTrainController(DeviceID * pid)
 {
 	if(!settingState && 
 		!g_usingAdc)

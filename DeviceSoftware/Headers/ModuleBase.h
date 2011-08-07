@@ -5,6 +5,13 @@
 #include "../Headers/eeprom.h"
 #include "../Headers/PortMapping.h"
 
+#define REMOTE_BIT 0b10000000
+
+typedef struct tag_DeviceID
+{
+	BYTE ParentPart;
+	BYTE ModulePart;
+} DeviceID;
 
 #define SIZE_DATA 28
 #define SIZE_EEPROM_MODULE_ALLOCATED 8
@@ -19,11 +26,11 @@ typedef MODULE_DATA* PMODULE_DATA;
 typedef char EEPROM_DATA;
 typedef EEPROM_DATA* PEEPROM_DATA;
 
-typedef HRESULT (*FUNC_CREATE_STATE) (BYTE, PMODULE_DATA);
-typedef HRESULT (*FUNC_STORE_STATE) (BYTE, PMODULE_DATA);
-typedef HRESULT (*FUNC_INIT_STATE) (BYTE);
-typedef void (*FUNC_CLOSE_STATE) (BYTE);
-typedef void (*FUNC_INTERRUPT_STATE) (BYTE);
+typedef HRESULT (*FUNC_CREATE_STATE) (DeviceID*, PMODULE_DATA);
+typedef HRESULT (*FUNC_STORE_STATE) (DeviceID*, PMODULE_DATA);
+typedef HRESULT (*FUNC_INIT_STATE) (DeviceID*);
+typedef void (*FUNC_CLOSE_STATE) (DeviceID*);
+typedef void (*FUNC_INTERRUPT_STATE) (DeviceID*);
 
 typedef struct tag_ModuleFuncTable
 {

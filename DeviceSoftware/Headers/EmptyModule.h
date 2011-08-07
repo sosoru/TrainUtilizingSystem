@@ -3,10 +3,10 @@
 
 #include "../Headers/ModuleBase.h"
 
-HRESULT InitEmpty(BYTE module);
-HRESULT CreateEmptyState(BYTE module, PMODULE_DATA data);
-HRESULT StoreEmptySavedState(BYTE module, PEEPROM_DATA buf);
-void InterruptEmpty(BYTE module);
+HRESULT InitEmpty(DeviceID* pid);
+HRESULT CreateEmptyState(DeviceID* pid, PMODULE_DATA data);
+HRESULT StoreEmptySavedState(DeviceID* pid, PEEPROM_DATA buf);
+void InterruptEmpty(DeviceID* pid);
 
 
 #endif

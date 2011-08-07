@@ -6,6 +6,7 @@
 #include "../Headers/TrainController.h"
 #include "../Headers/PointModule.h"
 #include "../Headers/EmptyModule.h"
+#include "../Headers/RemoteModule.h"
 
 #define UNKNOWN_MODULE_TYPE 0x0F
 

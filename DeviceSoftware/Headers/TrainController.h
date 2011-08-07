@@ -11,11 +11,11 @@
 #define MODE_TRAINCONTROLLER_DUTY 0
 #define MODE_TRAINCONTROLLER_FOLLOWING 1
 
-HRESULT GetFuncTableTrainController(BYTE module, ModuleFuncTable* table);
-HRESULT InitTrainController(BYTE module);
-HRESULT CreateTrainControllerState(BYTE module, PMODULE_DATA data);
-HRESULT StoreTrainControllerState(BYTE module, PMODULE_DATA data);
-void InterruptTrainController(BYTE module); 
+HRESULT GetFuncTableTrainController(DeviceID* pid, ModuleFuncTable* table);
+HRESULT InitTrainController(DeviceID* pid);
+HRESULT CreateTrainControllerState(DeviceID* pid, PMODULE_DATA data);
+HRESULT StoreTrainControllerState(DeviceID* pid, PMODULE_DATA data);
+void InterruptTrainController(DeviceID* pid); 
 
 typedef union tag_TrainControllerState
 {
