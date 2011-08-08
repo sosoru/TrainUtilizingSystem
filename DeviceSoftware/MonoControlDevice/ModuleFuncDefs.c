@@ -21,7 +21,7 @@ void SetFuncTable()
 	id.ParentPart = state.ParentId;
 	for(i = 0; i < MODULE_COUNT; i++)
 	{
-		id.ModulePart = i;
+		id.ModuleAddr = i;
 		InitializeTable(&id, READ_MBSTATE_MODULETYPE(state, i), GET_FUNC_TABLE(i));
 	}
 }

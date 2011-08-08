@@ -5,16 +5,30 @@
 #include "../Headers/eeprom.h"
 #include "../Headers/PortMapping.h"
 
-#define REMOTE_BIT 0b10000000
-
-typedef struct tag_DeviceID
+typedef union tag_DeviceID
 {
-	BYTE ParentPart;
-	BYTE ModulePart;
+	struct
+	{
+		unsigned GlobalAddr:5;
+		unsigned InDeviceAddr:3;
+		unsigned RemoteBit:1;
+		unsigned ModuleAddr:3;
+		unsigned InternalAddr:4;
+	};
+	struct
+	{
+		BYTE ParentPart;
+		BYTE ModulePart;
+	};
 } DeviceID;
 
+#define INTERNAL_MODULE_COUNT (1<<(3+1))
+
+#define REPEAT_TERMINATE ((HRESULT)0x04)
+#define TERMINATED(Status) ((HRESULT)((Status) & REPEAT_TERMINATE)!=0)
+
 #define SIZE_DATA 28
-#define SIZE_EEPROM_MODULE_ALLOCATED 8
+#define SIZE_EEPROM_MODULE_ALLOCATED 27
 #define SIZE_EEPROM_MOTHERBOARD_ALLOCATED 40
 
 #define ADDRESS_EEPROM_STARTS(module) (module * SIZE_EEPROM_MODULE_ALLOCATED + SIZE_EEPROM_MOTHERBOARD_ALLOCATED)

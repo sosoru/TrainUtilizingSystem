@@ -106,7 +106,7 @@ HRESULT CreateTrainControllerState(DeviceID * pid, PMODULE_DATA data)
 	TrainControllerState * pstate = (TrainControllerState *)data;
 	
 	memcpy(pstate, &g_cacheState, (size_t)sizeof(TrainControllerState));
-	return S_OK;
+	return S_OK | REPEAT_TERMINATE;
 }
 	
 HRESULT StoreTrainControllerState(DeviceID * pid, PMODULE_DATA data)

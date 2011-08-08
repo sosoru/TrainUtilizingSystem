@@ -81,15 +81,10 @@ HRESULT ReceivingProcessUSB()
     		
     	if(g_mbState.ParentId == pack->ID.ParentPart)
     	{
-    		if( pack->ID.ModulePart < MODULE_COUNT
-    			&& READ_MBSTATE_MODULETYPE(g_mbState, pack->ID.ModulePart) == pack->ModuleType)
+    		if( pack->ID.ModuleAddr < MODULE_COUNT
+    			&& READ_MBSTATE_MODULETYPE(g_mbState, pack->ID.ModuleAddr) == pack->ModuleType)
 	    	{
-	   			GET_FUNC_TABLE(pack->ID.ModulePart)->fnstore(&(pack->ID), pack->Data);
-	    	}
-	    	else if (pack->ID.ModulePart & REMOTE_BIT > 0
-	    			&& READ_MBSTATE_MODULETYPE(g_mbState, pack->ID.ModulePart & (~REMOTE_BIT)) == pack->ModuleType)
-	    	{
-	    		GET_FUNC_TABLE(pack->ID.ModulePart & (~REMOTE_BIT))->fnstore(&(pack->ID), pack->Data);
+	   			GET_FUNC_TABLE(pack->ID.ModuleAddr)->fnstore(&(pack->ID), pack->Data);
 	    	}
     	}
     	

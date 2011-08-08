@@ -27,7 +27,7 @@ HRESULT CreateMotherBoardState(DeviceID* pid, PMODULE_DATA data)
 	g_mbState.Timer = ReadTimer0();
 	memcpy(pmbdata, &g_mbState, sizeof(MotherBoardState));
 	
-	return S_OK;
+	return S_OK | REPEAT_TERMINATE;
 }
 
 

@@ -48,7 +48,7 @@ namespace SensorLibrary
 
             //lock (LockObject)
             //{
-            if (value.BasePacket.ID == this.DeviceID
+            if (value.BasePacket.ID.ModuleAddr == this.DeviceID.ModuleAddr
                 && casted.Mode == TrainSensorMode.meisuring)
             {
                 lock (this.LockObject)

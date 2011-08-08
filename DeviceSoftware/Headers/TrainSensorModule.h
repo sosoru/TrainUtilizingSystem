@@ -8,6 +8,11 @@
 #define MODE_TRAINSENSOR_MEISURING 0x01
 #define MODE_TRAINSENSOR_DETECTING 0x02
 
+#define TRAINSENSOR_INNERMODULE_COUNT 8
+
+#define ReadTrainSensorSavedModuledState(module, port, pbuf) EEPROMcpy((unsigned char *)(pbuf), (unsigned char)(ADDRESS_EEPROM_STARTS(module) + sizeof(TrainSensorSavedModuledState) * (port)), (unsigned char)(sizeof(TrainSensorSavedModuledState)))
+#define WriteTrainSensorSavedModuledState(module, port, pbuf) EEPROMset((unsigned char)ADDRESS_EEPROM_STARTS(module) + sizeof(TrainSensorSavedModuledState) * (port), (unsigned char *)(pbuf), (unsigned char)(sizeof(TrainSensorSavedModuledState)))
+
 extern unsigned long Timer0OverflowCount;
 extern unsigned long TimerOccupied;
 
@@ -37,13 +42,19 @@ typedef union tag_TrainSensorState
 	BYTE data[SIZE_DATA];
 } TrainSensorState;
 
-typedef union tag_TrainSensorSavedState
+typedef union tag_TrainSensorSavedModuledState
 {
 	struct 
 	{
 		BYTE Mode;
 		unsigned int ThresholdVoltage;
 	};
+	BYTE data[3];
+} TrainSensorSavedModuledState;
+
+typedef union tag_TrainSensorSavedState
+{
+	TrainSensorSavedModuledState states[TRAINSENSOR_INNERMODULE_COUNT];
 	BYTE data[SIZE_EEPROM_MODULE_ALLOCATED];
 } TrainSensorSavedState;
 

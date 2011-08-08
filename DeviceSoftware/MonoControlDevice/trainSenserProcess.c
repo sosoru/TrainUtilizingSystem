@@ -8,23 +8,49 @@
 
 //#define IS_VALID_PORT(m) ((m>=1 && m <= 8) || (m >=13 && m <= 16))
 
-void ApplyTrainSensorSavedState(TrainSensorState* state, TrainSensorSavedState* saveSate);
+void ApplyTrainSensorSavedState(TrainSensorState* state, TrainSensorSavedModuledState* savemState);
 
-void SetMeisureVoltage(BYTE module);
+void SetMeisureVoltage(BYTE module, BYTE port);
 HRESULT GetChannel(BYTE module, unsigned char * channel);
 
 HRESULT GetFuncTableTrainSensor(DeviceID * pid, ModuleFuncTable* table)
 {
+	BYTE i, base;
+	
 	table->fncreate = CreateTrainSensorState;
 	table->fnstore = StoreTrainSensorSavedState;
 	table->fninit = InitTrainSensor;
 //	table->fnclose = CloseTrainSensor;
 	table->fninterrupt = InterruptTrainSensor;
 	
+	base = (pid->ModulePart-1) * PORT_PIN_COUNT;
+	
+	setTris(base, INPUT_PIN);
+	for(i=1; i< PORT_PIN_COUNT; ++i)
+	{
+		setTris(base+i, OUTPUT_PIN);
+	}
+	
 	return S_OK;
 }
 
-void SetMeisureVoltage(BYTE module)
+void SetUsingPort(BYTE module, BYTE port)
+{	
+	BYTE base = (module+1) * PORT_PIN_COUNT;
+		
+	setPort(base+4, 0);
+	if(port > 8)
+		return;
+	
+	setPort(base+1, (port & 0x01));
+	setPort(base+2, (port & 0x02) >> 1);
+	setPort(base+3, (port & 0x04) >> 2);
+	setPort(base+4, 1);
+	
+	Delay10TCYx(10);
+}
+
+void SetMeisureVoltage(BYTE module, BYTE port)
 {
 	HRESULT convert;
 	unsigned char channel;
@@ -36,11 +62,13 @@ void SetMeisureVoltage(BYTE module)
 	while(g_usingAdc);
 	g_usingAdc = TRUE;
 	SetChanADC(channel);
+	SetUsingPort(module, port);
 	ConvertADC();
 }
 
 HRESULT GetChannel(BYTE module, unsigned char * channel)
 {
+	#if defined VERSION_REV1
 	//valid for module port A, B, D
 	switch(module) 
 	{
@@ -48,59 +76,36 @@ HRESULT GetChannel(BYTE module, unsigned char * channel)
 			*channel = ADC_CH0;
 			break;
 		case 2:
-			*channel = ADC_CH1;
-			break;
-		case 3:
-			*channel = ADC_CH2;
-			break;
-		case 4:
-			*channel = ADC_CH3;
-			break;
-		case 5:
 			*channel = ADC_CH4;
 			break;
-		case 6:
-			*channel = ADC_CH5;
-			break;
-		case 7:
-			*channel = ADC_CH6;
-			break;
-		case 8:
-			*channel = ADC_CH7;
-			break;
-		case 13:
+		case 3:
 			*channel = ADC_CH8;
-			break;
-		case 14:
-			*channel = ADC_CH9;
-			break;
-		case 15:
-			*channel = ADC_CH10;
-			break;
-		case 16:
-			*channel = ADC_CH11;
 			break;
 		default:
 			return E_FAIL;	
 	}
 	return S_OK;
+	
+	#elif defined VERSION_REV2
+	
+	#endif
 }
 
 HRESULT CreateTrainSensorState(DeviceID * pid, PMODULE_DATA data)
 {
-	int decVoltage, flacVoltage;
 	unsigned int voltage;
-	TrainSensorSavedState romdata;
+	TrainSensorSavedModuledState romdata;
 	TrainSensorState* argdata = (TrainSensorState*)data;
 	int romdatasize = sizeof(TrainSensorState);
 	unsigned int curTimer;
-	BYTE module = pid->ModulePart;
+	BYTE module = pid->ModuleAddr, port = pid->InternalAddr;
+	HRESULT res = (port==TRAINSENSOR_INNERMODULE_COUNT-1) ? REPEAT_TERMINATE : 0;
 	
-	SetMeisureVoltage(module);
+	SetMeisureVoltage(module, port);
 	
 	curTimer = ReadTimer0();
 	memset((void *)data, (unsigned char)0x00, (size_t)SIZE_DATA);
-	ReadModuleSavedState(module, &romdata);
+	ReadTrainSensorSavedModuledState(module, port, &romdata);
 	ApplyTrainSensorSavedState(argdata, &romdata);
 	
 	// take care of the size of data
@@ -120,7 +125,7 @@ HRESULT CreateTrainSensorState(DeviceID * pid, PMODULE_DATA data)
 	{
 		case MODE_TRAINSENSOR_MEISURING:
 			//sprintf(data, PGMCSTR("Tm=%u,V=%u.%u\n"), curTimer, decVoltage, flacVoltage);
-			return S_OK;
+			res |= S_OK;
 		break;
 		
 		case MODE_TRAINSENSOR_DETECTING:
@@ -134,7 +139,7 @@ HRESULT CreateTrainSensorState(DeviceID * pid, PMODULE_DATA data)
 				 SET_TIMER_OCCUPIED(module, 1);
 				 argdata->IsDetected = FALSE;
 				 //sprintf(data, PGMCSTR("Tm=%u,TmOf=%lu,Dg\n"), curTimer, Timer0OverflowCount);
-				 return S_OK;
+				 res |= S_OK;
 			 }
 			 else if(GET_TIMER_OCCUPIED(module) 
 			 		&& (
@@ -146,7 +151,7 @@ HRESULT CreateTrainSensorState(DeviceID * pid, PMODULE_DATA data)
 				 SET_TIMER_OCCUPIED(module, 0);
 				 argdata->IsDetected = TRUE;
 				 //sprintf(data, PGMCSTR("Tm=%u,TmOf=%lu,Dd\n"), curTimer, Timer0OverflowCount);
-			 	 return S_OK;
+			 	 res |= S_OK;
 			 }
 		break;
 		
@@ -155,24 +160,26 @@ HRESULT CreateTrainSensorState(DeviceID * pid, PMODULE_DATA data)
 			//strcpypgm2ram(&cmdbuf[0], &defaultCmd[0]);
 			memset(&romdata, 0x00, sizeof(romdata));
 			romdata.Mode = MODE_TRAINSENSOR_MEISURING;
-			WriteModuleSavedState(module, &romdata);
+			WriteTrainSensorSavedModuledState(module, port, &romdata);
+			res |= E_FAIL;
 		break;
 	}
 	
-	return E_FAIL;
+	
+	return res;
 }
 
-void ApplyTrainSensorSavedState(TrainSensorState* state, TrainSensorSavedState* saveState)
+void ApplyTrainSensorSavedState(TrainSensorState* state, TrainSensorSavedModuledState* savemState)
 {
-	state->Mode = saveState->Mode;
-	state->ThresholdVoltage = saveState->ThresholdVoltage;
+	state->Mode = savemState->Mode;
+	state->ThresholdVoltage = savemState->ThresholdVoltage;
 }
 
 HRESULT InitTrainSensor(DeviceID * pid)
 {	
 	unsigned char channel;
 	HRESULT res;
-	BYTE module = pid->ModulePart;
+	BYTE module = pid->ModuleAddr;
 	
 	res = GetChannel(module, &channel);
 	if(res != S_OK)
@@ -193,13 +200,16 @@ void InterruptTrainSensor(DeviceID * pid)
 
 HRESULT StoreTrainSensorSavedState(DeviceID * pid, PMODULE_DATA buf)
 {
-	TrainSensorSavedState saved;
+	TrainSensorSavedModuledState msaved;
 	TrainSensorState* pstate;
 	BYTE module = pid->ModulePart;
-		
-	ApplyTrainSensorSavedState(pstate, &saved);
 	
-	WriteModuleSavedState(module, &saved);
+	if(pid->InternalAddr > TRAINSENSOR_INNERMODULE_COUNT)
+		return E_FAIL;
+		
+	ApplyTrainSensorSavedState(pstate, &msaved);
+	
+	WriteTrainSensorSavedModuledState(module, pid->InternalAddr, &msaved);
 	
 	Port_SurfaceLedA = 1;
 	return S_OK;

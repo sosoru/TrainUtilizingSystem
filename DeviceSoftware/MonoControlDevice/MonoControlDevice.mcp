@@ -68,6 +68,7 @@ file_040=.
 file_041=.
 file_042=.
 file_043=.
+file_044=.
 [GENERATED_FILES]
 file_000=no
 file_001=no
@@ -113,6 +114,7 @@ file_040=no
 file_041=no
 file_042=no
 file_043=no
+file_044=no
 [OTHER_FILES]
 file_000=no
 file_001=no
@@ -158,6 +160,7 @@ file_040=no
 file_041=no
 file_042=no
 file_043=no
+file_044=no
 [FILE_INFO]
 file_000=main.c
 file_001=usb_function_generic.c
@@ -202,7 +205,8 @@ file_039=C:\Users\root\Documents\TrainUtilizingSystem\DeviceSoftware\Headers\Mon
 file_040=C:\Users\root\Documents\TrainUtilizingSystem\DeviceSoftware\Headers\PortMappingRev2.h
 file_041=C:\Users\root\Documents\TrainUtilizingSystem\DeviceSoftware\Headers\SpiTransmit.h
 file_042=C:\Users\root\Documents\TrainUtilizingSystem\DeviceSoftware\Headers\RemoteModule.h
-file_043=18f4550_g.lkr
+file_043=C:\Users\root\Documents\TrainUtilizingSystem\DeviceSoftware\Headers\PortMappingRev1.h
+file_044=18f4550_g.lkr
 [SUITE_INFO]
 suite_guid={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
 suite_state=

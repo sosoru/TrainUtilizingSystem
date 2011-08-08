@@ -70,7 +70,7 @@ namespace SensorLibrary
             switch (type)
             {
                 case ModuleTypeEnum.TrainSensor:
-                    dev = new TrainSensor(id);
+                    dev = new MeisuringTrainSensor(id);
                     break;
                 case ModuleTypeEnum.PointModule:
                     dev = new PointModule(id);

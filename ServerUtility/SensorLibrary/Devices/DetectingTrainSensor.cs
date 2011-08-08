@@ -27,7 +27,7 @@ namespace SensorLibrary
             if (casted == null)
                 return;
 
-            if (casted.BasePacket.ID == this.DeviceID && casted.Mode == TrainSensorMode.detecting)
+            if (casted.BasePacket.ID.ModuleAddr == this.DeviceID.ModuleAddr && casted.Mode == TrainSensorMode.detecting)
             {
                 if (casted.IsDetected)
                 {

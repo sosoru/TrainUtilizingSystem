@@ -30,7 +30,7 @@ namespace SensorLibrary
         : IPacketDeviceData
     {
         public byte ParentId;
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
         private byte[] _moduleType;
         public ushort Timer;
 
@@ -39,7 +39,7 @@ namespace SensorLibrary
             get
             {
                 if (_moduleType == null)
-                    _moduleType = new byte[16];
+                    _moduleType = new byte[3];
                 return _moduleType;
             }
         }

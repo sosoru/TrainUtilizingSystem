@@ -1,7 +1,7 @@
 #include "MonoDevice.h"
 #include <timers.h>
 #include <adc.h>
-#include <spi.h>
+#include "../Headers/SpiTransmit.h"
 
  /** Configuration Bits *******************************************/
  #pragma config PLLDIV = 5           //Configure for 20Mhz crystal, 20/5 = 4Mhz (required for USB)
@@ -97,7 +97,7 @@ void main()
 
 void Process()
 {
-	BYTE i;
+	BYTE i, j;
 	DeviceID id;
 	
 	id.ParentPart = g_mbState.ParentId;
@@ -119,13 +119,25 @@ void Process()
 		
 		if(type != UNKNOWN_MODULE_TYPE)
 		{
-			memset(data, 0x00, sizeof(data));
-			if(SUCCEEDED(GET_FUNC_TABLE(i)->fncreate(i, data)))
-			{
-				id.ModulePart = i;
+			for(j=0; j<INTERNAL_MODULE_COUNT; ++j)
+			{		
+				HRESULT res;
 				
-				AddPacketUSB(&id, type, data);
-				SendPacketUSB();
+				memset(data, 0x00, sizeof(data));
+				id.ModuleAddr = i;
+				id.InternalAddr = j;
+				
+				res = GET_FUNC_TABLE(i)->fncreate(&id, data);
+				if(SUCCEEDED(res))
+				{
+					AddPacketUSB(&id, type, data);
+					SendPacketUSB();
+				}
+				
+				if(TERMINATED(res))
+				{
+					break;
+				}
 			}
 		}
 	}
@@ -136,11 +148,14 @@ void Process()
 void ModuleInit()
 {
 	BYTE i;
+	DeviceID id;
 	SetFuncTable(MODULE_COUNT);
 	
+	id.ParentPart = g_mbState.ParentId;
 	for(i=0; i<MODULE_COUNT; i++)
 	{
-		if(FAILED(GET_FUNC_TABLE(i)->fninit(i)))
+		id.ModuleAddr = i;
+		if(FAILED(GET_FUNC_TABLE(i)->fninit(&id)))
 		{
 			// do nothing
 		}
@@ -167,7 +182,7 @@ void high_isr()
 		id.ParentPart = g_mbState.ParentId;
 		for(i = 0; i < MODULE_COUNT; ++i)
 		{
-			id.ModulePart = i;
+			id.ModuleAddr = i;
 			
 			GET_FUNC_TABLE(i)->fninterrupt(&id);
 		}
@@ -193,6 +208,7 @@ void high_isr()
 //			Port_SurfaceLedA = 0;
 //
 	}
+	
     if(PIR1bits.TMR1IF)
 	{
 		PIR1bits.TMR1IF = 0;
@@ -203,6 +219,21 @@ void high_isr()
 		USBDeviceTasks();	
 	}
 	
+	if(PIR1bits.SSPIF)
+	{
+		SpiPacket packet;
+		
+		PIE1bits.SSPIE = 0;
+		PIR1bits.SSPIF = 0;
+		ReceiveSpiPacket(&packet);
+		
+		if(packet.mode == MODE_CREATE)
+		{
+				
+		}
+		
+		PIE1bits.SSPIE = 1;
+	}
 
 }
 #pragma code 
@@ -218,7 +249,7 @@ void DeviceInit()
 	Tris_SurfaceLedA = 0;
 	Tris_SurfaceLedB = 0;
 	
-	SSPCON1bits.SSPEN = 0;
+	//PIE1bits.SSPIE =1;
 	
 	//TRISB = 0xFC;	// RB0,1 output
 	//TRISDbits.RD0 = INPUT_PIN;

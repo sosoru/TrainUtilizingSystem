@@ -20,6 +20,8 @@ HRESULT InitRemoteModule(DeviceID * pid)
 {
 	#if defined VERSION_REV2
 		OpenSPI(SPI_FOSC_4, MODE_01, SMPEND);
+	#elif defined TRAIN_CONTROLLER_REV1
+		OpenSPI(SLV_SSOFF, MODE_01, SMPEND);
 	#endif
 }
 
@@ -53,7 +55,7 @@ HRESULT CreateRemoteModuleState(DeviceID * pid, PMODULE_DATA data)
 
 HRESULT StoreRemoteModuleState(DeviceID * pid, PMODULE_DATA data)
 {
-	if(pid->ModulePart & REMOTE_BIT > 0 )
+	if(pid->RemoteBit)
 	{
 		RemoteModuleState * pstate = (RemoteModuleState * )data;
 		RemoteModuleSavedState saved;

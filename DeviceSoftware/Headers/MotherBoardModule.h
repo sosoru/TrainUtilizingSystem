@@ -6,19 +6,23 @@
 
 #ifdef VERSION_REV1
 
-	#define MODULE_COUNT 32
+	#define MODULE_COUNT 6
 
 #elif VERSION_REV2
 
-	#define MODULE_COUNT 19
+	#define MODULE_COUNT 4
 
+#else
+	
+	#define MODULE_COUNT 8
+	
 #endif
 
 #define MOTHER_BOARD_MODULE_TYPE 0x00
 
-#define ReadModuleSavedState(module, pbuf) EEPROMcpy((unsigned char *)(pbuf), (unsigned char)(ADDRESS_EEPROM_STARTS(module)), (unsigned char)(SIZE_EEPROM_MODULE_ALLOCATED));
-#define WriteModuleSavedState(module, pbuf) EEPROMset((unsigned char)ADDRESS_EEPROM_STARTS(module), (unsigned char *)(pbuf), (unsigned char)(SIZE_EEPROM_MODULE_ALLOCATED));
-#define ReadMotherBoardSavedState(pbuf) EEPROMcpy((unsigned char * )(pbuf), (unsigned char)0, (unsigned char)(SIZE_EEPROM_MOTHERBOARD_ALLOCATED));
+#define ReadModuleSavedState(module, pbuf) EEPROMcpy((unsigned char *)(pbuf), (unsigned char)(ADDRESS_EEPROM_STARTS(module)), (unsigned char)(SIZE_EEPROM_MODULE_ALLOCATED))
+#define WriteModuleSavedState(module, pbuf) EEPROMset((unsigned char)ADDRESS_EEPROM_STARTS(module), (unsigned char *)(pbuf), (unsigned char)(SIZE_EEPROM_MODULE_ALLOCATED))
+#define ReadMotherBoardSavedState(pbuf) EEPROMcpy((unsigned char * )(pbuf), (unsigned char)0, (unsigned char)(SIZE_EEPROM_MOTHERBOARD_ALLOCATED))
 #define WriteMotherBoardSavedState(pbuf) EEPROMset((unsigned char)0, (unsigned char * )(pbuf), (unsigned char)(SIZE_EEPROM_MOTHERBOARD_ALLOCATED))
 
 #define COUNT_MBSTATE_MODULETYPE (MODULE_COUNT / 2)
