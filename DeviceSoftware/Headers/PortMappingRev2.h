@@ -1,6 +1,13 @@
 #ifndef BLOCK_PORT_MAPPING_REV2
 #define BLOCK_PORT_MAPPING_REV2
 
+#define PORT_PIN_COUNT 6
+
+#define Tris_SurfaceLedA TRISCbits.TRISC0
+#define Tris_SurfaceLedB TRISDbits.TRISD0
+#define Port_SurfaceLedA LATCbits.LATC0
+#define Port_SurfaceLedB LATDbits.LATD0
+
 #define PORT_PORTA_A PORTAbits.RA2
 #define PORT_PORTA_B PORTAbits.RA3
 #define PORT_PORTA_C PORTAbits.RA5

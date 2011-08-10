@@ -2,7 +2,7 @@
 #ifndef HARDWARE_PROFILE_H
 #define HARDWARE_PROFILE_H
 
-#define VERSION_REV1
+#define VERSION_REV2
 #include <p18cxxx.h>
 
 #define self_power          1

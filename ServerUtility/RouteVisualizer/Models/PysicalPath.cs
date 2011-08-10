@@ -17,6 +17,8 @@ namespace RouteVisualizer.Models
 
         public IGate NextGate { get; set; }
 
+        public bool ElectricalConnection { get; set; }
+
         public Drawing CurrentDrawing
         {
             get { throw new NotImplementedException(); }
@@ -25,6 +27,14 @@ namespace RouteVisualizer.Models
         public Rect Bound
         {
             get { throw new NotImplementedException(); }
+        }
+
+        public Rail OwnerRail
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 }

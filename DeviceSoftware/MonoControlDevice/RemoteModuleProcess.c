@@ -3,6 +3,7 @@
 #include "../Headers/MotherBoardModule.h"
 #include "../Headers/SpiTransmit.h"
 #include <stdlib.h>
+#include <spi.h>
 
 HRESULT SendRemoteDevice(DeviceID * pid, BYTE mode, PMODULE_DATA data);
 

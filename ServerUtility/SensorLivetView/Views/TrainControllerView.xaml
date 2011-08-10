@@ -66,11 +66,10 @@
 			<ProgressBar Grid.ColumnSpan="3" Grid.Column="1" Grid.Row="7" Maximum="1023" Value="{Binding Model.CurrentState.MeisuredVoltage, Mode=OneWay}" Height="20"/>
 			<Slider Grid.Column="1" Grid.Row="8" Grid.ColumnSpan="3" Maximum="1" Minimum="-1" SmallChange="0.01" LargeChange="0.1" Value="{Binding ParamP, Mode=TwoWay}"/>
             <Slider Grid.Column="1" Grid.Row="9" Grid.ColumnSpan="3" Maximum="1" Minimum="-1"  SmallChange="0.01" LargeChange="0.1" Value="{Binding ParamI, Mode=TwoWay}"/>
-            <Slider Grid.Column="1" Grid.Row="10" SmallChange="0.01" Maximum="1" Minimum="-1"  LargeChange="0.1" Grid.ColumnSpan="3" Value="{Binding ParamD, Mode=TwoWay}"/>
 			<TextBlock Grid.Row="7" TextWrapping="Wrap" Text="Voltage" HorizontalAlignment="Center"/>
 			<TextBlock Grid.Row="8" TextWrapping="Wrap" Text="P" HorizontalAlignment="Center"/>
 			<TextBlock Grid.Row="9" TextWrapping="Wrap" Text="I" HorizontalAlignment="Center"/>
-			<TextBlock Grid.Row="10" TextWrapping="Wrap" Text="D" HorizontalAlignment="Center"/>
+			<ProgressBar Grid.ColumnSpan="3" Grid.Column="1" Grid.Row="10" Height="20" Maximum="1023" Value="{Binding Model.CurrentState.MeisuredVoltage2, Mode=OneWay}"/>
 		</Grid>
 	</Grid>
 </UserControl>

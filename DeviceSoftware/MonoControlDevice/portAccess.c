@@ -84,7 +84,7 @@ BYTE ModuleShift[]=
 	1,2,3,6
 };
 
-#elif VERSION_REV2
+#elif defined VERSION_REV2
 
 near BYTE * ModuleTris[] = 
 { 
@@ -108,6 +108,18 @@ near BYTE * ModuleLat[] =
 	&LATB,	&LATB,	&LATA,	&LATB, &LATA, &LATB,	
 	//PORTC
 	&LATC,	&LATC,	&LATD,	&LATD, &LATD, &LATD	
+};
+
+near BYTE * ModulePort[] =
+{
+	//MB
+	0,
+	//PORTA
+	&PORTA,	&PORTA,	&PORTA,	&PORTE, &PORTE, &PORTE,
+	//PORTB
+	&PORTB,	&PORTB,	&PORTA,	&PORTB, &PORTA, &PORTB,	
+	//PORTC
+	&PORTC,	&PORTC,	&PORTD,	&PORTD, &PORTD, &PORTD	
 };
 
 BYTE ModuleShift[]=

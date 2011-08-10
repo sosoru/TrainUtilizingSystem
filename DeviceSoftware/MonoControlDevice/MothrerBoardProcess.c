@@ -1,6 +1,7 @@
 #include "HardwareProfile.h"
 #include "../Headers/MotherBoardModule.h"
 #include "../Headers/ModuleFuncDefs.h"
+#include <stdlib.h>
 
 MotherBoardState g_mbState;
 
@@ -17,7 +18,14 @@ HRESULT GetFuncTableMotherBoard(DeviceID* pid, ModuleFuncTable* table)
 
 HRESULT InitMotherBoard(DeviceID* pid)
 {
-	ReadMotherBoardSavedState((MotherBoardSavedState*) &g_mbState);
+	MotherBoardSavedState saved;
+	
+	ReadMotherBoardSavedState(&saved);
+	
+	g_mbState.ParentId = saved.ParentId;
+	memcpy(g_mbState.ModuleType, saved.ModuleType, (size_t)COUNT_MBSTATE_MODULETYPE);
+	g_mbState.Timer = 0;
+	
 }
 
 HRESULT CreateMotherBoardState(DeviceID* pid, PMODULE_DATA data)

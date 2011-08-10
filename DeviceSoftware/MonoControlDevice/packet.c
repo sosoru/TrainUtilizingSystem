@@ -21,7 +21,7 @@ HRESULT AddPacketUSB(DeviceID* pid, BYTE moduleType, char * data)
 	ppack->ReadMark = 0xFF;
 	memcpy(&(ppack->ID), pid, sizeof(*pid));
 	ppack->ModuleType = moduleType;
-	memcpy(&(ppack->Data), data, SIZE_DATA);
+	memcpy(ppack->Data, data, (size_t)SIZE_DATA);
 	
 	//memcpy(g_PacketBuffer + g_PacketBufferPos, ppack, sizeof(DevicePacket));
 	g_PacketBufferPos ++;

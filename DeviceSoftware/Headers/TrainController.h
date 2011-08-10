@@ -37,7 +37,8 @@ typedef union tag_TrainControllerState
 		
 		float paramp;
 		float parami;
-		float paramd;
+		//float paramd;
+		unsigned int meisuredvoltage2;
 		
 	};
 	BYTE data[SIZE_DATA];

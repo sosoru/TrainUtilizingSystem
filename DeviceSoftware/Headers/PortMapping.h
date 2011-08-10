@@ -5,6 +5,8 @@
 
 #ifdef VERSION_REV1
 #include "../Headers/PortMappingRev1.h"
+#elif defined VERSION_REV2
+#include "../Headers/PortMappingRev2.h"
 #endif
 
 extern near BYTE* ModuleTris[];

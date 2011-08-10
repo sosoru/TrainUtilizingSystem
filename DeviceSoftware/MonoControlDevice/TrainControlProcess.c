@@ -25,15 +25,24 @@
 #define TRIS_PWMSIGNALB TRIS_PORTC_C
 #define TRIS_PWMSIGNALA TRIS_PORTC_D
 
-#elif VERSION_REV2
+#elif defined VERSION_REV2
 
-#define FEEDBACK_CHANNEL ADC_CH12
+#define FEEDBACK_CHANNELA ADC_CH0
+#define FEEDBACK_CHANNELB ADC_CH1
 
-#define PORT_DIRECTION_POS PORTDbits.RD3
-#define PORT_DIRECTION_NEG PORTDbits.RD2
-#define PORT_FEEDBACK PORTBbits.RB0
+#define PORT_DIRECTION_POS PORTBbits.RB7
+#define PORT_DIRECTION_NEG PORTBbits.RB6
+#define PORT_FEEDBACKA PORTAbits.RA0
+#define PORT_FEEDBACKB PORTAbits.RA1
 #define PORT_PWMSIGNALB PORTCbits.RC1
 #define PORT_PWMSIGNALA PORTCbits.RC2
+
+#define TRIS_DIRECTION_POS TRISBbits.TRISB7
+#define TRIS_DIRECTION_NEG TRISBbits.TRISB6
+#define TRIS_FEEDBACKA TRISAbits.TRISA0
+#define TRIS_FEEDBACKB TRISAbits.TRISA1
+#define TRIS_PWMSIGNALB TRISCbits.TRISC1
+#define TRIS_PWMSIGNALA TRISCbits.TRISC2
 
 #endif
 
@@ -79,10 +88,13 @@ HRESULT InitTrainController(DeviceID * pid)
 	g_cacheState.mode = MODE_TRAINCONTROLLER_DUTY;
 	g_cacheState.voltage = 0;
 	g_cacheState.voltageEnabledBits = VOLTAGE_RESOLUTION_BITCOUNT;
+	g_cacheState.meisuredvoltage = 0;
 	
 	g_cacheState.paramp = 1.0f;
 	g_cacheState.parami = 0.0f;
-	g_cacheState.paramd = 0.0f;
+//	g_cacheState.paramd = 0.0f;
+	
+#if defined VERSION_REV1
 	
 	TRIS_DIRECTION = OUTPUT_PIN;
 	TRIS_FEEDBACK = INPUT_PIN;
@@ -92,6 +104,25 @@ HRESULT InitTrainController(DeviceID * pid)
 	OpenADC(ADC_FOSC_64 & ADC_RIGHT_JUST & ADC_8_TAD,
 		FEEDBACK_CHANNEL & ADC_INT_OFF & ADC_VREFPLUS_VDD & ADC_VREFMINUS_VSS,
 		0b0000);
+		
+#elif defined VERSION_REV2
+
+	TRIS_DIRECTION_POS = OUTPUT_PIN;
+	TRIS_DIRECTION_NEG = OUTPUT_PIN;
+	TRIS_FEEDBACKA = INPUT_PIN;
+	TRIS_FEEDBACKB = INPUT_PIN;
+	TRIS_PWMSIGNALA = OUTPUT_PIN;
+	TRIS_PWMSIGNALB = OUTPUT_PIN;
+	
+	OpenADC(ADC_FOSC_64 & ADC_RIGHT_JUST & ADC_8_TAD,
+	FEEDBACK_CHANNELA & ADC_INT_OFF & ADC_VREFPLUS_VDD & ADC_VREFMINUS_VSS,
+	0b0000);
+	
+	OpenADC(ADC_FOSC_64 & ADC_RIGHT_JUST & ADC_8_TAD,
+	FEEDBACK_CHANNELB & ADC_INT_OFF & ADC_VREFPLUS_VDD & ADC_VREFMINUS_VSS,
+	0b0000);
+
+#endif
 				
 	ChangeTimer();
 	ChangePWM();
@@ -119,7 +150,7 @@ HRESULT StoreTrainControllerState(DeviceID * pid, PMODULE_DATA data)
 	
 	g_cacheState.paramp = pstate->paramp;
 	g_cacheState.parami = pstate->parami;
-	g_cacheState.paramd = pstate->paramd;
+	//g_cacheState.paramd = pstate->paramd;
 	 
 	if(g_cacheState.mode != pstate->mode)
 	{
@@ -193,16 +224,16 @@ void InterruptTrainController(DeviceID * pid)
 		BYTE i;
 		unsigned int meisuringCount= 10;
 		unsigned int AveVoltage =0;
-		int df=0, tmpduty;
+		int df=0;
 		
 		if(++waitingCount < 2)
 			return;
 		
-		tmpduty = g_cacheState.duty;
-		g_cacheState.duty = 0;
-		SetPWM();
+		ClosePWM1();	
+		ClosePWM2();
 		
-		Delay1KTCYx(4);
+	#if defined VERSION_REV1
+		Delay1KTCYx(8);
 		
 		g_usingAdc = TRUE;
 		SetChanADC(FEEDBACK_CHANNEL);
@@ -214,33 +245,67 @@ void InterruptTrainController(DeviceID * pid)
 		}
 		g_usingAdc = FALSE;
 		AveVoltage /= meisuringCount;
+	#elif defined VERSION_REV2
+	{
+		unsigned int tmpvoltA=0, tmpvoltB=0;
+		
+		PORT_DIRECTION_POS = 1;
+		PORT_DIRECTION_NEG = 1;
+		
+		Delay1KTCYx(20);	
+		
+		g_usingAdc = TRUE;
+		SetChanADC(FEEDBACK_CHANNELA);
+		for(i=0; i<meisuringCount; ++i)
+		{
+			ConvertADC();
+			while(BusyADC());
+			tmpvoltA += ReadADC();
+		}
+		tmpvoltA /= meisuringCount;
+		
+		SetChanADC(FEEDBACK_CHANNELB);
+		for(i=0; i<meisuringCount; ++i)
+		{
+			ConvertADC();
+			while(BusyADC());
+			tmpvoltB += ReadADC();
+		}
+		tmpvoltB /= meisuringCount;
+		
+		g_usingAdc = FALSE;
+		
+		g_cacheState.meisuredvoltage = tmpvoltA;
+		g_cacheState.meisuredvoltage2 = tmpvoltB;
+		//AveVoltage = (tmpvoltA > tmpvoltB) ? tmpvoltA : tmpvoltB;
+	}
+	#endif
 		
 		if(g_cacheState.mode == MODE_TRAINCONTROLLER_FOLLOWING)
 		{
-			df = g_cacheState.voltage - AveVoltage;
+			if(AveVoltage == 1023) // if train is stopping, the bemf sticks to 0 or 1023
+				AveVoltage = 0;
+				
+			df = ((int)(g_cacheState.voltage)) - ((int)AveVoltage);
 			
 			internal_duty += (g_cacheState.paramp * ((float)(df - voltageDif_1))  
-						   + g_cacheState.parami * ((float)df) 
-						   + g_cacheState.paramd * ((float)((voltageDif_1 - df) - (voltageDif_2 - voltageDif_1))));
+						   + g_cacheState.parami * ((float)df)) ;
+						   //+ g_cacheState.paramd * ((float)((voltageDif_1 - df) - (voltageDif_2 - voltageDif_1))));
 			
 			voltageDif_2 = voltageDif_1;
 			voltageDif_1 = df;
 			
 			if(internal_duty < 0.0f)
-				g_cacheState.duty = 0;
+				internal_duty = 0.0f;
 			else if (internal_duty > 800.0f)
-				g_cacheState.duty = 800;
-			else
-				g_cacheState.duty = (unsigned int)internal_duty;
+				internal_duty = 800.0f;
+			
+			g_cacheState.duty = (unsigned int)internal_duty;
 			
 		}
-		else
-		{
-			g_cacheState.duty = tmpduty;
-		}
-		SetPWM();
+		ChangePWM();
 		
-		g_cacheState.meisuredvoltage = AveVoltage;
+		//g_cacheState.meisuredvoltage = AveVoltage;
 		waitingCount = 0;
 		
 	}
@@ -261,7 +326,7 @@ void ChangePWM()
 		PORT_PWMSIGNALB = 0;
 		PORT_DIRECTION = 0;
 
-#elif VERSION_REV2
+#elif defined VERSION_REV2
 		
 		PORT_PWMSIGNALB = 0;
 		PORT_DIRECTION_NEG = 0;
@@ -279,7 +344,7 @@ void ChangePWM()
 		PORT_PWMSIGNALA = 0;
 		PORT_DIRECTION = 1;
 
-#elif VERSION_REV2
+#elif defined VERSION_REV2
 		
 		PORT_PWMSIGNALA = 0;
 		PORT_DIRECTION_POS = 0;

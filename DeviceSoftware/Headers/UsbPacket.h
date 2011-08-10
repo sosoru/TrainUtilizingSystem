@@ -19,7 +19,7 @@ typedef struct tag_DevicePacket
 #define BYTESIZE_PACKET_BUFFER (COUNT_PACKET_BUFFER * sizeof(DevicePacket))
 #define BUFFER_MAX COUNT_PACKET_BUFFER
 
-//HRESULT AddPacketUSB(DeviceID* pid, BYTE moduleType, char* data);
+HRESULT AddPacketUSB(DeviceID* pid, BYTE moduleType, char* data);
 HRESULT SendPacketUSB();
 HRESULT ReceivingProcessUSB();
 

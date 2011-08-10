@@ -178,6 +178,14 @@ namespace SensorLibrary
             }
         }
 
+        public int MeisuredVoltage2
+        {
+            get
+            {
+                return (int)this.Data.meisuredVoltage2;
+            }
+        }
+
         public PidParams PidParams
         {
             get
@@ -186,14 +194,14 @@ namespace SensorLibrary
                 {
                     paramp = this.Data.paramp,
                     parami = this.Data.parami,
-                    paramd = this.Data.paramd,
+                    //paramd = this.Data.paramd,
                 };
             }
             set
             {
                 this.Data.paramp = value.paramp;
                 this.Data.parami = value.parami;
-                this.Data.paramd = value.paramd;
+                //this.Data.paramd = value.paramd;
             }
         
         }

@@ -8,7 +8,7 @@
 
 	#define MODULE_COUNT 6
 
-#elif VERSION_REV2
+#elif defined VERSION_REV2
 
 	#define MODULE_COUNT 4
 
@@ -53,7 +53,7 @@ typedef union tag_MotherBoardSavedState
 	struct
 	{
 		BYTE ParentId;
-		BYTE ModuleType[MODULE_COUNT];
+		BYTE ModuleType[COUNT_MBSTATE_MODULETYPE];
 	};
 	BYTE data[SIZE_EEPROM_MOTHERBOARD_ALLOCATED];
 } MotherBoardSavedState;
