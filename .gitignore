@@ -16,3 +16,8 @@ packages/
 *.mptags
 *.mcs
 
+*.b#*
+*.pro
+*.s#*
+*.l#*
+
