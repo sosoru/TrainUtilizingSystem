@@ -39,62 +39,54 @@ namespace SensorLivetView
                 ID = id,
                 ModuleType = ModuleTypeEnum.MotherBoard,
             };
-            var state = new MotherBoardState(packet);
-            for (int i = 0; i < state.ModuleTypeLength; i++)
-            {
-                if (i == 0)
-                    state[i] = ModuleTypeEnum.MotherBoard;
-                else if (i < 5)
-                    state[i] = ModuleTypeEnum.TrainSensor;
-                else if (i == 5)
-                    state[i] = ModuleTypeEnum.PointModule;
+            var state = DeviceFactory.MotherBoardFactory.DeviceStateCreate();
+            state.Data.ModuleType [0] = 0x10; //mb, sens
+            state.Data.ModuleType [1] = 0x11; //sens, sens
+            state.Data.ModuleType [2] = 0x23; //controller, point
 
-            }
-
-            return setStack(() => new[] { state });
+            return setStack(() => new [] { state });
         }
 
         public TestEnumerable SetTrainSensors(DeviceID id)
         {
             var tsenses = Enumerable.Range(0, 256)
-                                    .Select((i) => new TrainSensorState(
-                                            new DevicePacket()
-                                            {
-                                                ID = id,
-                                                ModuleType = ModuleTypeEnum.TrainSensor,
-
-                                            }, null, null)
-                                            {
-                                                Mode = TrainSensorMode.meisuring,
-                                                ReferenceVoltageMinus = 0.0F,
-                                                ReferenceVoltagePlus = 5.0F,
-                                                VoltageResolution = 10,
-                                                ThresholdVoltage = 2.0F,
-                                                CurrentVoltage = (float)(5.0 * (double)i / 256.0),
-                                                Timer = (ushort)(i * 256),
-                                            });
+                                    .Select((i) => new TrainSensorState()
+                                              {
+                                                  BasePacket = new DevicePacket()
+                                                  {
+                                                      ID = id,
+                                                      ModuleType = ModuleTypeEnum.TrainSensor,
+                                                  },
+                                                  Mode = TrainSensorMode.meisuring,
+                                                  ReferenceVoltageMinus = 0.0F,
+                                                  ReferenceVoltagePlus = 5.0F,
+                                                  VoltageResolution = 10,
+                                                  ThresholdVoltage = 2.0F,
+                                                  CurrentVoltage = (float)(5.0 * (double)i / 256.0),
+                                                  Timer = (ushort)(i * 256),
+                                              });
             return setStack(() => tsenses);
         }
 
         public TestEnumerable SetTrainDetectingSensors(DeviceID id)
         {
             var tsens = Enumerable.Range(0, 2)
-                                  .Select((i) => new TrainSensorState(
-                                                    new DevicePacket()
-                                                    {
-                                                        ID = id,
-                                                        ModuleType = ModuleTypeEnum.TrainSensor,
-                                                    }, null, null)
-                                                    {
-                                                        Mode = TrainSensorMode.detecting,
-                                                        ReferenceVoltageMinus = 0.0f,
-                                                        ReferenceVoltagePlus = 5.0f,
-                                                        VoltageResolution = 10,
-                                                        ThresholdVoltage = 2.5F,
-                                                        CurrentVoltage = i * 2.5f,
-                                                        Timer = (ushort)(i * 1000),
-                                                        IsDetected = i == 0,
-                                                    });
+                                  .Select((i) => new TrainSensorState()
+                                  {
+                                      BasePacket = new DevicePacket()
+                                      {
+                                          ID = id,
+                                          ModuleType = ModuleTypeEnum.TrainSensor,
+                                      },
+                                      Mode = TrainSensorMode.detecting,
+                                      ReferenceVoltageMinus = 0.0f,
+                                      ReferenceVoltagePlus = 5.0f,
+                                      VoltageResolution = 10,
+                                      ThresholdVoltage = 2.5F,
+                                      CurrentVoltage = i * 2.5f,
+                                      Timer = (ushort)(i * 1000),
+                                      IsDetected = i == 0,
+                                  });
             return setStack(() => tsens);
 
         }
@@ -177,7 +169,7 @@ namespace SensorLivetView
             }
         }
 
-        public override int Read(byte[] buffer, int offset, int count)
+        public override int Read(byte [] buffer, int offset, int count)
         {
             int pos;
             for (pos = 0; pos < count; pos++)
@@ -196,7 +188,7 @@ namespace SensorLivetView
                     }
                 }
 
-                buffer[pos + offset] = current[currentPos++];
+                buffer [pos + offset] = current [currentPos++];
 
                 if (currentPos == current.Length)
                     current = null;
@@ -215,7 +207,7 @@ namespace SensorLivetView
             throw new NotImplementedException();
         }
 
-        public override void Write(byte[] buffer, int offset, int count)
+        public override void Write(byte [] buffer, int offset, int count)
         {
             if (this.WriteFunc != null)
                 this.WriteFunc(buffer.Skip(offset).Take(count).ToArray());

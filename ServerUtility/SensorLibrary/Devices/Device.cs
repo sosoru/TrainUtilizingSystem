@@ -24,9 +24,9 @@ namespace SensorLibrary
         : IObserver<IDeviceState<IPacketDeviceData>>
     {
         TState CurrentState { get; }
-        DeviceID DeviceID { get; }
+        DeviceID DeviceID { get; set; }
         ModuleTypeEnum ModuleType { get; }
-        bool IsHold { get; }
+        bool IsHold { get; set; }
 
         void Observe(IObservable<IDeviceState<IPacketDeviceData>> observable);
         void SendPacket(IDeviceState<IPacketDeviceData> packet);
@@ -44,24 +44,13 @@ namespace SensorLibrary
         private TState _sentState = null;
 
         public TState CurrentState { get; protected set; }
-        public DeviceID DeviceID { get; private set; }
-        public ModuleTypeEnum ModuleType { get; private set; }
+        public DeviceID DeviceID { get; set; }
+        public ModuleTypeEnum ModuleType { get; protected set; }
         public IEqualityComparer<TState> StateEqualityComparer { get; set; }
 
-        public Device(DeviceID id, ModuleTypeEnum moduletype, IObservable<IDeviceState<IPacketDeviceData>> observable)
+        public Device()
         {
-            this.DeviceID = id;
-            this.ModuleType = moduletype;
-
-            if (observable != null)
-                this.Observe(observable);
-
             this.StateEqualityComparer = new GenericComparer<TState>((x, y) => x.BasePacket.Data.SequenceEqual(y.BasePacket.Data));
-        }
-
-        public Device(DeviceID id, ModuleTypeEnum moduletype)
-            : this(id, moduletype, null)
-        {
         }
 
         private object LockHold = new object();

@@ -81,7 +81,8 @@ namespace TestProject
                 serv.LoopStart();
                 serv.AddAction(disp);
 
-                var tsens = new TrainSensor(id,disp);
+                var tsens = new TrainSensor() { DeviceID = id };
+                tsens.Observe(disp);
                 System.Threading.Thread.Sleep(100);
                 return tsens as TrainSensor ;
             }
@@ -116,10 +117,12 @@ namespace TestProject
             IObservable<TrainSensor> actual;
             actual = target.GetSpeedChangedObservable();
 
-            bool state = false ;
-            actual.Subscribe((i) => state = true);
-
-            while (!state) ;
+            try
+            {
+                bool state = false;
+                actual.Timeout(new DateTimeOffset(DateTime.Now.Ticks, new TimeSpan(0, 0, 10))).Subscribe((i) => state = true);
+            }
+            catch { Assert.Fail(); }
         }
     }
 }

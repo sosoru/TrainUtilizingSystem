@@ -1,7 +1,7 @@
 [HEADER]
 magic_cookie={66E99B07-E706-4689-9E80-9B2582898A13}
 file_version=1.0
-device=PIC16F1827
+device=PIC18F14K50
 [PATH_INFO]
 BuildDirPolicy=BuildDirIsProjectDir
 dir_src=
@@ -12,23 +12,49 @@ dir_inc=
 dir_lib=
 dir_lkr=
 [CAT_FILTERS]
-filter_src=*.c;*.as;*.asm;*.usb
-filter_inc=*.h;
-filter_obj=*.obj;*.p1;*.hex
-filter_lib=*.lib;*.lpp
-filter_lkr=*.unknown
+filter_src=*.asm;*.c
+filter_inc=*.h;*.inc
+filter_obj=*.o
+filter_lib=*.lib
+filter_lkr=*.lkr
 [CAT_SUBFOLDERS]
 subfolder_src=
 subfolder_inc=
 subfolder_obj=
 subfolder_lib=
 subfolder_lkr=
+[FILE_SUBFOLDERS]
+file_000=.
+file_001=.
+file_002=.
+file_003=.
+file_004=.
+[GENERATED_FILES]
+file_000=no
+file_001=no
+file_002=no
+file_003=no
+file_004=no
+[OTHER_FILES]
+file_000=no
+file_001=no
+file_002=no
+file_003=no
+file_004=no
+[FILE_INFO]
+file_000=main.c
+file_001=C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1827.h
+file_002=C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\htc.h
+file_003=C:\Users\root\Documents\TrainUtilizingSystem\DeviceSoftware\Headers\TrainSensorModule.h
+file_004=C:\Users\root\Documents\TrainUtilizingSystem\DeviceSoftware\Headers\CommonDefs.h
 [SUITE_INFO]
-suite_guid={507D93FD-16F1-4270-980F-0C7C0207E6D3}
+suite_guid={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
 suite_state=
 [TOOL_SETTINGS]
-TS{3FF1D5F2-E530-4850-9F70-F61D55BD1AC9}=
-TS{3FF1D5F2-E530-4850-9F70-F61D55BD1AC9}_alt=yes
+TS{DD2213A8-6310-47B1-8376-9430CDFC013F}=
+TS{BFD27FBA-4A02-4C0E-A5E5-B812F3E7707C}=/o"$(BINDIR_)$(TARGETBASE).cof" /M"$(BINDIR_)$(TARGETBASE).map" /W
+TS{C2AF05E7-1416-4625-923D-E114DB6E2B96}=-Ou- -Ot- -Ob- -Op- -Or- -Od- -Opa-
+TS{ADE93A55-C7C7-4D4D-A4BA-59305F7D0391}=
 [INSTRUMENTED_TRACE]
 enable=0
 transport=0

@@ -88,7 +88,9 @@ namespace SensorLibrary
                         lock (lockStream)
                             pack = this.StreamController.ReadPacket();
 
-                        var state = DeviceState<IPacketDeviceData>.CreateCorrectState(pack, this);
+                        var state = DeviceFactory.AvailableDeviceTypes.First((f) => f.ModuleType == pack.ModuleType).DeviceStateCreate();
+                        state.BasePacket = pack;
+                        state.ReceivingServer = this;
 
                         this.actionList.ForEach((item) => item.Act(state));
                     }

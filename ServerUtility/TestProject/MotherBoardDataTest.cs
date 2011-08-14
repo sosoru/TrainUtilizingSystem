@@ -83,7 +83,7 @@ namespace TestProject
             MotherBoardData target = new MotherBoardData(); 
             byte[] actual;
             actual = target.ModuleType;
-            Assert.AreEqual(actual.Length, 16);
+            Assert.AreEqual(actual.Length, 2);
         }
     }
 }

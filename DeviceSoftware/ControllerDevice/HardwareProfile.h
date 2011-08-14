@@ -1,0 +1,10 @@
+#if !defined LOCK_TRAINCONTROLLER_HARDWAREPROFILE
+#define LOCK_TRAINCONTROLLER_HARDWAREPROFILE
+
+#define CONTROLLER_DEIVCE_REV1
+#include <p18cxxx.h>
+
+#define CLOCK_FREQ 48000000
+#define GetSystemClock() CLOCK_FREQ   
+
+#endif

@@ -8,16 +8,15 @@ namespace SensorLibrary
     public class PointModule
     : Device<PointModuleState>
     {
-        public PointModule(DeviceID id, IObservable<IDeviceState<IPacketDeviceData>> obsv)
-            : base(id, ModuleTypeEnum.PointModule, obsv)
+        public PointModule()
+            :base()
         {
-            if (id.ModulePart % 4 == 1)
-                throw new InvalidOperationException("invalid module no");
+            this.ModuleType = ModuleTypeEnum.PointModule;
         }
 
-        public PointModule(DeviceID id)
-            : this(id, null)
+        public override void OnNext(IDeviceState<IPacketDeviceData> value)
         {
+            base.OnNext(value);
         }
 
         public void ChangePoint(byte address, PointStateEnum state)

@@ -87,6 +87,7 @@
     <Compile Include="ViewModels\Controls\DeviceSelectViewModel.cs" />
     <Compile Include="ViewModels\Controls\PacketServerViewModel.cs" />
     <Compile Include="ViewModels\Controls\PointModuleViewModel.cs" />
+    <Compile Include="ViewModels\Controls\RemoteModuleViewModel.cs" />
     <Compile Include="ViewModels\Controls\TestTaskViewModel.cs" />
     <Compile Include="ViewModels\Controls\TrainControllerViewModel.cs" />
     <Compile Include="ViewModels\Controls\UsbDevicesViewModel.cs" />
@@ -97,6 +98,9 @@
     </Compile>
     <Compile Include="Views\PointModuleView.xaml.cs">
       <DependentUpon>PointModuleView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RemoteModuleView.xaml.cs">
+      <DependentUpon>RemoteModuleView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TestWindow.xaml.cs">
       <DependentUpon>TestWindow.xaml</DependentUpon>
@@ -142,6 +146,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\PointModuleView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\RemoteModuleView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -10,16 +10,10 @@ namespace SensorLibrary
     public class MotherBoardState
     : DeviceState<MotherBoardData>
     {
-        public MotherBoardState(DevicePacket packet, MotherBoardData data, PacketServer server)
-            : base(packet, data, server)
+        public MotherBoardState()
+            : base()
         {
-            if (packet.ModuleType != ModuleTypeEnum.MotherBoard)
-                throw new ArgumentException("invalid module type");
         }
-
-        public MotherBoardState(DevicePacket packet)
-            : this(packet, null, null)
-        { }
 
         public ushort Timer
         {
@@ -53,6 +47,22 @@ namespace SensorLibrary
             set { this.Data.ParentId = value; }
         }
 
+        public IDevice<IDeviceState<IPacketDeviceData>> GetDevice(int addr)
+        {
+            var mtype =  GetModuleType(addr);
+            var fact = DeviceFactory.AvailableDeviceTypes.FirstOrDefault((f) => f.ModuleType == mtype);
+
+            if (fact == null)
+                return null; // throw new InvalidCastException("invalid packet thrown considering strange module type");
+            var dev = fact.DeviceCreate();
+            dev.DeviceID = new DeviceID()
+            {
+                ParentPart = this.ParentID,
+                ModulePart = (byte)addr,
+            };
+            return dev;
+        }
+
         public ModuleTypeEnum this [int addr]
         {
             get
@@ -63,6 +73,26 @@ namespace SensorLibrary
             {
                 SetModuleType(addr, value);
             }
+        }
+
+        public IEnumerable<IDevice<IDeviceState<IPacketDeviceData>>> DeviceEnumerate()
+        {
+            var len = this.ModuleTypeLength;
+            for (int i=0; i < len; ++i)
+            {
+                var dev = this.GetDevice(i);
+                if (dev == null)
+                    continue;
+
+                yield return dev;
+            }
+        }
+
+        public IEnumerable<ModuleTypeEnum> ModuleTypeEnumerate()
+        {
+            var len = this.ModuleTypeLength;
+            for (int i =0; i < len; ++i)
+                yield return this [i];
         }
     }
 

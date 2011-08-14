@@ -82,7 +82,7 @@ namespace TestProject
         {
             var packet = new DevicePacket();
             packet.ModuleType = ModuleTypeEnum.PointModule;
-            PointModuleState target = new PointModuleState(packet);
+            PointModuleState target = new PointModuleState() { BasePacket = packet };
         }
 
         /// <summary>

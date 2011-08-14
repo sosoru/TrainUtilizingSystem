@@ -8,8 +8,8 @@ namespace RouteVisualizer.Models
     public class Rail
         : IDrawable
     {
-        IList<PysicalPath> Pathes { get; private set; }
-        IList<RainConnection> Connections { get; private set; }
+        public IList<PysicalPath> Pathes { get; private set; }
+        public IList<RainConnection> Connections { get; private set; }
 
         public System.Windows.Media.Drawing CurrentDrawing
         {

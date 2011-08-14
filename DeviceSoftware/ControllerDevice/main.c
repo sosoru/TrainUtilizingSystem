@@ -1,4 +1,6 @@
-#include "ControllerDevice.h"
+#include "HardwareProfile.h"
+#include "ControllerModule.h"
+#include <timers.h>
 
  /** Configuration Bits *******************************************/
  #pragma config PLLDIV = 5           //Configure for 20Mhz crystal, 20/5 = 4Mhz (required for USB)
@@ -19,7 +21,7 @@
  #pragma config CCP2MX = ON          //RC1
  #pragma config STVREN = ON          //Stack overflow reset enable
  #pragma config LVP = OFF            //Low voltage programming disabled
- #pragma config ICPRT = OFF          //Dedicated In-Circuit Debug/Programming Port (ICPORT) disabled
+ //#pragma config ICPRT = OFF          //Dedicated In-Circuit Debug/Programming Port (ICPORT) disabled
  #pragma config XINST = OFF          //Extended mode off
  #pragma config DEBUG = OFF          //Debug mode off
  #pragma config CP0 = OFF 
@@ -40,6 +42,8 @@
  #pragma config EBTR2 = OFF 
  #pragma config EBTR3 = OFF 
  #pragma config EBTRB = OFF
+ 
+void high_isr();
  
 #pragma code HIGH_VECTOR = 0x08
 void high_interrupt()
@@ -67,6 +71,37 @@ void high_isr()
 		}
 		PIE2bits.TMR3IE = 1;
 	}
+	
+	//remoted packets receiving for RemoteModule
+	if(PIR1bits.SSPIF)
+	{
+		SpiPacket packet;
+		DeviceID devid;
+		
+		PIE1bits.SSPIE = 0;
+		PIR1bits.SSPIF = 0;
+		
+		LATAbits.LATA2 = 1;
+		ReceiveSpiPacket(&packet);
+		
+		if(packet.devid.ParentPart == g_mbState.ParentId)
+		{			
+			if(packet.mode == MODE_CREATE)
+			{
+				GET_FUNC_TABLE(devid.ModuleAddr)->fncreate(&devid, packet.data);
+				
+				SendSpiPacket(&packet);
+			}
+			else
+			{
+				GET_FUNC_TABLE(devid.ModuleAddr)->fnstore(&devid, packet.data);
+			}
+			
+		}		
+		
+		PIE1bits.SSPIE = 1;
+	}
+
 
 }
 #pragma code 
@@ -90,8 +125,13 @@ void DeviceInit()
 {
 	INTCONbits.GIE = 1;
     INTCONbits.PEIE = 1;   
+    
+    PIE1bits.SSPIE =1;
+    
+    TRISAbits.TRISA2 = OUTPUT_PIN;
+    LATAbits.LATA2 = 0;
 	
-	OpenTimer3(TIMER_INT_ON & T3_8BIT_RW & T3_SOURCE_INT & T3_PS_1_8 & T3_SYNC_EXT_OFF);
+	OpenTimer3(TIMER_INT_ON & T3_8BIT_RW & T3_SOURCE_INT & T3_PS_1_2 & T3_SYNC_EXT_OFF);
 }
 
 void main()

@@ -216,6 +216,7 @@ namespace SensorLibrary
         TrainSensor = 0x01,
         PointModule = 0x02,
         TrainController = 0x03,
+        RemoteModule = 0x04,
 
         Unknown = 0x0F,
     }

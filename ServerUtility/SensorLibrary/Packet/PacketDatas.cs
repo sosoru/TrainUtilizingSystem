@@ -88,6 +88,13 @@ namespace SensorLibrary
         public ushort meisuredVoltage2;
     }
 
+    [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 28)]
+    public class RemoteModuleData
+        : IPacketDeviceData
+    {
+        public DeviceID remoteid;
+    }
+
     public struct PidParams
     {
         public float paramp;

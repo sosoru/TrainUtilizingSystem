@@ -65,10 +65,6 @@ unsigned char INPacket[64];		//User application buffer for sending IN packets to
 USB_HANDLE USBGenericOutHandle = 0;
 USB_HANDLE USBGenericInHandle = 0;
 
-ModuleFuncTable g_ModuleFuncLower[SIZE_SPLITED_FUNCTABLE];
-ModuleFuncTable g_ModuleFuncHigher[SIZE_SPLITED_FUNCTABLE];
-BYTE g_usingAdc = FALSE;
-
 void main();
 void DeviceInit();
 void ModuleInit();
@@ -200,13 +196,6 @@ void high_isr()
             {
                   Timer0OverflowCount++;
         }        
-//        if(Port_SurfaceLedA == 0)
-//		{
-//			Port_SurfaceLedA = 1;
-//	    }
-//	    else
-//			Port_SurfaceLedA = 0;
-//
 	}
 	
     if(PIR1bits.TMR1IF)
@@ -214,22 +203,25 @@ void high_isr()
 		PIR1bits.TMR1IF = 0;
 		
 		TMR1H |= ~TMR1H;
-		//Port_SurfaceLedA = (USBDeviceState >= DEFAULT_STATE);
 					
 		USBDeviceTasks();	
 	}
 	
+	//remoted packets receiving for RemoteModule
 	if(PIR1bits.SSPIF)
 	{
 		SpiPacket packet;
+		DeviceID devid;
+		MODULE_DATA data[SIZE_DATA];
 		
 		PIE1bits.SSPIE = 0;
 		PIR1bits.SSPIF = 0;
 		ReceiveSpiPacket(&packet);
 		
-		if(packet.mode == MODE_CREATE)
+		if(SUCCEEDED(CreateMessageFromReceived(&packet, &devid, data)))
 		{
-				
+			BYTE type = READ_MBSTATE_MODULETYPE(g_mbState, devid.ModuleAddr);
+			AddPacketUSB(&devid, type, data);
 		}
 		
 		PIE1bits.SSPIE = 1;
@@ -249,7 +241,7 @@ void DeviceInit()
 	Tris_SurfaceLedA = 0;
 	Tris_SurfaceLedB = 0;
 	
-	//PIE1bits.SSPIE =1;
+	PIE1bits.SSPIE =1;
 	
 	//TRISB = 0xFC;	// RB0,1 output
 	//TRISDbits.RD0 = INPUT_PIN;
@@ -313,7 +305,7 @@ void DeviceInit()
 		  		
 	//for USB tasks
 	OpenTimer1(TIMER_INT_ON & T1_8BIT_RW & T1_SOURCE_INT & T1_PS_1_8 & T1_OSC1EN_OFF & T1_SYNC_EXT_OFF); 
-	OpenTimer3(TIMER_INT_ON & T3_8BIT_RW & T3_SOURCE_INT & T3_PS_1_8 & T3_SYNC_EXT_OFF);
+	OpenTimer3(TIMER_INT_ON & T3_8BIT_RW & T3_SOURCE_INT & T3_PS_1_2 & T3_SYNC_EXT_OFF);
 	
 	USBDeviceInit(); //check the endpoint initialization written in a callback method
 }

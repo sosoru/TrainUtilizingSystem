@@ -11,21 +11,40 @@ namespace SensorLibrary
     public class PacketDispatcherSingle
         : PacketDispatcher
     {
-        public MotherBoard ReceivedMotherBoard { get; private set; }
+        public ObservableCollection<MotherBoard> ReceivedMotherBoardList { get; private set; }
         public event EventHandler ReceivedMotherBoardChanged;
+
+        public PacketDispatcherSingle()
+            : base()
+        {
+            this.ReceivedMotherBoardList = new ObservableCollection<MotherBoard>();
+        }
 
         public override void Notify(IDeviceState<IPacketDeviceData> state)
         {
             if (state.BasePacket.ModuleType == ModuleTypeEnum.MotherBoard)
             {
-                var mb = new MotherBoard(state.BasePacket.ID);
-                if (ReceivedMotherBoard == null || !new MotherBoardStateComparer().Equals(state as MotherBoardState, this.ReceivedMotherBoard.CurrentState))
+                var casted = state as MotherBoardState;
+                if (casted == null)
+                    throw new InvalidCastException("mismatching type of DevciceState and one of ModuleType");
+
+                var curmb = new MotherBoard() { DeviceID = state.BasePacket.ID };
+                var comp = new MotherBoardStateComparer();
+
+                var before = this.ReceivedMotherBoardList.FirstOrDefault((mb) => mb.DeviceID == curmb.DeviceID);
+
+                if (before == null)
                 {
-                    mb.Observe(this);
-                    this.ReceivedMotherBoard = mb;
-                    this.Refresh(state as MotherBoardState);
-                    OnReceivedMotherBoardChanged();
+                    curmb.Observe(this);
+                    this.ReceivedMotherBoardList.Add(curmb);
+                    before = curmb;
                 }
+
+                if (!comp.Equals(before.CurrentState, casted))
+                {
+                    this.Refresh(casted);
+                }
+                OnReceivedMotherBoardChanged();
             }
 
             base.Notify(state);
@@ -50,10 +69,11 @@ namespace SensorLibrary
 
         public void Refresh()
         {
-            if (this.ReceivedMotherBoard == null)
+            if (this.ReceivedMotherBoardList == null)
                 return;
 
-            this.Refresh(this.ReceivedMotherBoard.CurrentState);
+            foreach (var mb in this.ReceivedMotherBoardList)
+                this.Refresh(mb.CurrentState);
         }
 
         private void Refresh(MotherBoardState state)
@@ -61,19 +81,12 @@ namespace SensorLibrary
             if (state == null)
                 return;
 
-            var len = state.ModuleTypeLength;
             var list = this._cache_availabledevs;
-            for (byte i = 0; i < len; i++)
+            foreach (var dev in state.DeviceEnumerate())
             {
-                var devtype = state [i];
-                var dev = PacketDispatcher.GetCorrectDevice(devtype, new DeviceID(this.ReceivedMotherBoard.DeviceID.ParentPart, i));
-                if (dev != null)
-                {
-                    list.Add(dev);
-                    dev.Observe(this);
-                }
+                list.Add(dev);
+                dev.Observe(this);
             }
-
         }
 
         public IEnumerable<T> GetCastedAilveDevices<T>()

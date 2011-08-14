@@ -111,10 +111,10 @@ namespace TestProject
             var expected = Enumerable.Repeat(ModuleTypeEnum.Unknown, 29).ToList();
             expected[0] = ModuleTypeEnum.MotherBoard;
             expected[1] = ModuleTypeEnum.TrainSensor;
-            expected[5] = ModuleTypeEnum.PointModule;
-            expected[6] = ModuleTypeEnum.PointModule;
-            expected[7] = ModuleTypeEnum.PointModule;
-            expected[8] = ModuleTypeEnum.PointModule;
+            //expected[5] = ModuleTypeEnum.PointModule;
+            //expected[6] = ModuleTypeEnum.PointModule;
+            //expected[7] = ModuleTypeEnum.PointModule;
+            //expected[8] = ModuleTypeEnum.PointModule;
 
             foreach (var exp in expected)
             {

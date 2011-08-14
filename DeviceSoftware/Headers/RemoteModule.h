@@ -2,9 +2,14 @@
 #define BLOCK_REMOTE_MODULE
 
 #include "../Headers/ModuleBase.h"
-#include "../Headers/TrainController.h"
+#include "../Headers/SpiTransmit.h"
 
 #define REMOTE_MODULE_MODULE_TYPE 0x04
+
+extern BOOL g_SendingCompletion;
+extern DeviceID g_RemotingPendingIntDevID;
+
+HRESULT CreateMessageFromReceived(SpiPacket * ppacket, DeviceID * pid, PMODULE_DATA data);
 
 HRESULT GetFuncTableRemoteModule(DeviceID * pid, ModuleFuncTable* table);
 HRESULT InitRemoteModule(DeviceID * pid);

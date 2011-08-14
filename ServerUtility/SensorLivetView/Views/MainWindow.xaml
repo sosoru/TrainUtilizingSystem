@@ -93,6 +93,11 @@
 			<TabItem Header="SpeedTest">
 				<SensorLivetView:TransitionTestView DataContext="{Binding SpeedTestVM, Mode=OneWay}" />
 			</TabItem>
+			<TabItem Header="RemoteModule">
+				<Grid Background="#FFE5E5E5">
+					<ListBox/>
+				</Grid>
+			</TabItem>
 		</TabControl>
 	</DockPanel>
 </Window>

@@ -13,13 +13,10 @@ namespace SensorLibrary
         private TrainSensorState lastDetected = null;
         private TrainSensorState firstNotDetected = null;
 
-        public DetectingTrainSensor(DeviceID id, IObservable<IDeviceState<IPacketDeviceData>> obsv)
-            : base(id, obsv)
-        { }
-
-        public DetectingTrainSensor(DeviceID id)
-            : this(id, null)
-        { }
+        public DetectingTrainSensor()
+            :base()
+        {
+        }
 
         public override void OnNext(IDeviceState<IPacketDeviceData> value)
         {

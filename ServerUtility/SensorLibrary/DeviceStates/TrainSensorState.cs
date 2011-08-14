@@ -10,15 +10,10 @@ namespace SensorLibrary
     public class TrainSensorState
     : DeviceState<TrainSensorData>
     {
-        public TrainSensorState(DevicePacket pack, TrainSensorData data, PacketServer server)
-            : base(pack, data, server)
+        public TrainSensorState()
+            :base()
         {
-            if (pack.ModuleType != ModuleTypeEnum.TrainSensor)
-                throw new ArgumentException("incorrect module type");
         }
-
-        public TrainSensorState(DevicePacket pack)
-            : this(pack, null, null) { }
 
         public override string ToString()
         {

@@ -8,17 +8,11 @@ namespace SensorLibrary
     public class TrainControllerState
         : DeviceState<TrainControllerData>
     {
-        public TrainControllerState(DevicePacket packet, TrainControllerData data, PacketServer server)
-            : base(packet, data, server)
+        public TrainControllerState()
+            :base()
         {
-            if (packet.ModuleType != ModuleTypeEnum.TrainController)
-                throw new ArgumentException("incorrect module type");
         }
 
-        public TrainControllerState(DevicePacket packet)
-            : this(packet, null, null)
-        {
-        }
 
         private ushort getmask(byte cnt)
         {

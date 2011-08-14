@@ -54,7 +54,7 @@ namespace TestProject
             {
                 var pack = TestPacket;
                 pack.ModuleType = ModuleTypeEnum.TrainSensor;
-                var state = new TrainSensorState(pack, TestTrainSensorData, null);
+                var state = new TrainSensorState() { BasePacket = pack, Data = TestTrainSensorData };
                 return state;
             }
         }
@@ -78,8 +78,9 @@ namespace TestProject
             {
                 var pack = TestPacket;
                 pack.ModuleType = ModuleTypeEnum.MotherBoard;
-                var state = new MotherBoardState(pack)
+                var state = new MotherBoardState()
                 {
+                    BasePacket = pack,
                     ParentID = 0x01,
                     Timer = 0,
                 };
@@ -102,7 +103,7 @@ namespace TestProject
             {
                 var pack = TestPacket;
                 pack.ModuleType = ModuleTypeEnum.PointModule;
-                var state = new PointModuleState(pack);
+                var state = new PointModuleState() { BasePacket = pack };
                 return state;
             }
         }

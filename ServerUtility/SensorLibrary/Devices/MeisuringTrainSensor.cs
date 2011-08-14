@@ -11,12 +11,8 @@ namespace SensorLibrary
         private object LockObject = new object();
         private Queue<TrainSensorState> history = new Queue<TrainSensorState>(1024);
 
-        public MeisuringTrainSensor(DeviceID id)
-            : this(id, null)
-        { }
-
-        public MeisuringTrainSensor(DeviceID id, IObservable<IDeviceState<IPacketDeviceData>> obsv)
-            : base(id, obsv)
+        public MeisuringTrainSensor()
+            : base()
         { }
 
         public GraphPainter<TrainSensorState> GetPainter()

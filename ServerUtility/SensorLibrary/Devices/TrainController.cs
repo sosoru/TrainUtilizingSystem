@@ -8,14 +8,12 @@ namespace SensorLibrary
     public class TrainController
         : Device<TrainControllerState>
     {
-        public TrainController(DeviceID id, IObservable<IDeviceState<IPacketDeviceData>> obsv)
-            : base(id, ModuleTypeEnum.TrainController, obsv)
+        public TrainController()
+            :base()
         {
+            this.ModuleType = ModuleTypeEnum.TrainController;
         }
 
-        public TrainController(DeviceID id)
-            : this(id, null)
-        { }
-        
+
     }
 }

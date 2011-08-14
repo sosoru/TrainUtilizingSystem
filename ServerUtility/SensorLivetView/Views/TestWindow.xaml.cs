@@ -37,8 +37,13 @@ namespace SensorLivetView
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            this.tsensview.DataContext = new TrainSensorViewModel(new TrainSensor(new DeviceID(0x01, 0x01), this.dispatcher));
-            this.tctrl.DataContext = new TrainControllerViewModel(new TrainController(new DeviceID(0x01, 0x06), this.dispatcher));
+            var tsensvm = new TrainSensorViewModel(new TrainSensor() { DeviceID = new DeviceID(0x01, 0x01), });
+            tsensvm.Model.Observe(this.dispatcher);
+            this.tsensview.DataContext = tsensvm;
+
+            var tctrlvm = new TrainControllerViewModel(new TrainController(){ DeviceID = new DeviceID(0x01, 0x06)});
+            tctrlvm.Model.Observe(this.dispatcher);
+            this.tctrl.DataContext = tctrlvm;
 
             this.server.AddAction(this.dispatcher);
             this.server.LoopStart();
@@ -50,19 +55,19 @@ namespace SensorLivetView
             get
             {
                 var tsenses = Enumerable.Range(0, 256)
-                                        .Select((i) => new TrainSensorState(
-                                                new DevicePacket()
-                                                {
-                                                    ID = new DeviceID()
-                                                        {
-                                                            ParentPart = 0x01,
-                                                            ModulePart = 0x01,
-                                                        },
-                                                    ModuleType = ModuleTypeEnum.TrainSensor,
-                                                    ReadMark = 0xFF,
+                                        .Select((i) => new TrainSensorState(){
+                                                    BasePacket =  new DevicePacket()
+                                                            {
+                                                                ID = new DeviceID()
+                                                                    {
+                                                                        ParentPart = 0x01,
+                                                                        ModulePart = 0x01,
+                                                                    },
+                                                                ModuleType = ModuleTypeEnum.TrainSensor,
+                                                                ReadMark = 0xFF,
 
-                                                }, null, this.server)
-                                                {
+                                                            },
+                                                    ReceivingServer = this.server,
                                                     Mode = TrainSensorMode.detecting,
                                                     ReferenceVoltageMinus = 0.0F,
                                                     ReferenceVoltagePlus = 5.0F,
@@ -83,7 +88,11 @@ namespace SensorLivetView
                     ModuleType = ModuleTypeEnum.MotherBoard,
                     ReadMark = 0xFF,
                 };
-                var mbState = new MotherBoardState(mbpacket, null, this.server);
+                var mbState = new MotherBoardState()//(mbpacket, null, this.server);
+                {
+                    BasePacket = mbpacket,
+                    ReceivingServer = this.server,
+                };
                 mbState.ParentID = 0x01;
                 mbState.Timer = 1000;
                 for (int i = 0; i < 28; i++)
@@ -111,7 +120,9 @@ namespace SensorLivetView
                     ModuleType = ModuleTypeEnum.TrainController,
                     ReadMark = 0xFF,
                 };
-                var tctrlstate = new TrainControllerState(tctrlpacket, null, this.server);
+                var tctrlstate = new TrainControllerState();
+                tctrlstate.BasePacket = tctrlpacket;
+                tctrlstate.ReceivingServer = this.server;
                 tctrlstate.Data.dutyEnabledBits = 10;
                 tctrlstate.PreScale = 1;
                 tctrlstate.Data.frequency = 48;

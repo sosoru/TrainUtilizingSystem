@@ -4,6 +4,8 @@
 #include <stdlib.h>
 
 MotherBoardState g_mbState;
+BYTE g_usingAdc = FALSE;
+
 
 HRESULT GetFuncTableMotherBoard(DeviceID* pid, ModuleFuncTable* table)
 {

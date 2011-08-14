@@ -13,13 +13,9 @@ namespace SensorLibrary
     {
         public const byte MAX_ADDRESS_COUNT = 8;
 
-        public PointModuleState(DevicePacket packet, PointModuleData data, PacketServer server)
-            : base(packet, data, server) { }
+        public PointModuleState()
+            : base() { }
 
-        public PointModuleState(DevicePacket packet)
-            : this(packet, null, null)
-        {
-        }
 
         public PointStateEnum GetPointState(int addr)
         {

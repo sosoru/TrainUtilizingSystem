@@ -84,7 +84,7 @@ namespace TestProject
         {
             MotherBoardViewModel target = new MotherBoardViewModel();
             var state = TestPacketProvider.TestMotherBoardState;
-            var dev = new MotherBoard(state.BasePacket.ID);
+            var dev = new MotherBoard() { DeviceID = state.BasePacket.ID, };
             target.Model = dev;
             dev.OnNext(state);
 

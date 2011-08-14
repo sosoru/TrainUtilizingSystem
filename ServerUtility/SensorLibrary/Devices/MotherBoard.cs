@@ -13,16 +13,11 @@ namespace SensorLibrary
     public class MotherBoard
         : Device<MotherBoardState>
     {
-        public MotherBoard(DeviceID id, IObservable<IDeviceState<IPacketDeviceData>> obsv)
-            : base(id, ModuleTypeEnum.MotherBoard, obsv)
+        public MotherBoard()
+            :base()
         {
             this.StateEqualityComparer = new GenericComparer<MotherBoardState>(mbstateCompare);
-
-        }
-
-        public MotherBoard(DeviceID id)
-            : this(id, null)
-        {
+            this.ModuleType = ModuleTypeEnum.MotherBoard;
         }
 
         private bool mbstateCompare(MotherBoardState x, MotherBoardState y)

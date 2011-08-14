@@ -89,7 +89,7 @@ namespace TestProject
         [TestMethod()]
         public void DutyTest()
         {
-            TrainControllerState target = new TrainControllerState(TestingPacket);
+            TrainControllerState target = new TrainControllerState() { BasePacket = TestingPacket };
             target.Data.dutyEnabledBits = 10;
             int expected = 0xFFFF;
             int actual;
@@ -105,7 +105,7 @@ namespace TestProject
         [TestMethod()]
         public void DeviceFrequencyTest()
         {
-            TrainControllerState target = new TrainControllerState(TestingPacket);
+            TrainControllerState target = new TrainControllerState() { BasePacket = TestingPacket };
             target.Data.frequency = 48;
             double actual;
             actual = target.DeviceFrequency;
@@ -118,7 +118,7 @@ namespace TestProject
         [TestMethod()]
         public void DeviceRegisteredPeriodTest()
         {
-            TrainControllerState target = new TrainControllerState(TestingPacket);
+            TrainControllerState target = new TrainControllerState() { BasePacket = TestingPacket };
             byte expected = 16;
             byte actual;
             target.DeviceRegisteredPeriod = expected;
@@ -132,7 +132,7 @@ namespace TestProject
         [TestMethod()]
         public void PreScaleTest()
         {
-            TrainControllerState target = new TrainControllerState(TestingPacket);
+            TrainControllerState target = new TrainControllerState() { BasePacket = TestingPacket };
             try
             {
                 target.PreScale = 0;
@@ -161,7 +161,7 @@ namespace TestProject
         [TestMethod()]
         public void DevicePeriodTest()
         {
-            TrainControllerState target = new TrainControllerState(TestingPacket);
+            TrainControllerState target = new TrainControllerState() { BasePacket = TestingPacket };
             byte exp = 44;
             target.Data.frequency = exp;
             double actual;
@@ -175,7 +175,7 @@ namespace TestProject
         [TestMethod()]
         public void EssentialDutyResolutionTest()
         {
-            TrainControllerState target = new TrainControllerState(TestingPacket);
+            TrainControllerState target = new TrainControllerState() { BasePacket = TestingPacket };
 
             target.Data.frequency = 40;
             target.PreScale = 4;
@@ -195,7 +195,7 @@ namespace TestProject
         [TestMethod()]
         public void IsSatisfiedDutyResolutionTest()
         {
-            TrainControllerState target = new TrainControllerState(TestingPacket);
+            TrainControllerState target = new TrainControllerState() { BasePacket = TestingPacket };
 
             target.Data.dutyEnabledBits = 10;
             target.Data.frequency = 40;
@@ -216,7 +216,7 @@ namespace TestProject
         [TestMethod()]
         public void PWMFreqencyTest()
         {
-            TrainControllerState target = new TrainControllerState(TestingPacket);
+            TrainControllerState target = new TrainControllerState() { BasePacket = TestingPacket };
 
             target.Data.dutyEnabledBits = 10;
             target.Data.frequency = 40;
@@ -239,7 +239,7 @@ namespace TestProject
         [TestMethod()]
         public void PWMPeriodTest()
         {
-            TrainControllerState target = new TrainControllerState(TestingPacket);
+            TrainControllerState target = new TrainControllerState() { BasePacket = TestingPacket };
 
             target.Data.dutyEnabledBits = 10;
             target.Data.frequency = 40;

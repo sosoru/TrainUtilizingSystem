@@ -63,29 +63,6 @@ namespace SensorLibrary
         //}
 
 
-        public static IDevice<IDeviceState<IPacketDeviceData>> GetCorrectDevice(ModuleTypeEnum type, DeviceID id)
-        {
-            IDevice<IDeviceState<IPacketDeviceData>> dev = null;
-
-            switch (type)
-            {
-                case ModuleTypeEnum.TrainSensor:
-                    dev = new MeisuringTrainSensor(id);
-                    break;
-                case ModuleTypeEnum.PointModule:
-                    dev = new PointModule(id);
-                    break;
-                case ModuleTypeEnum.TrainController:
-                    dev = new TrainController(id);
-                    break;
-                case ModuleTypeEnum.MotherBoard:
-                    dev = new MotherBoard(id);
-                    break;
-            }
-            return dev;
-        }
-
-
         #region Implemention of IObservable
 
         protected List<obsvType> observerList = new List<obsvType>();

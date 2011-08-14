@@ -14,13 +14,15 @@ namespace SensorLibrary
         //public event EventHandler TimerOverflowed;
 
         public TrainSensor(DeviceID id)
-            : this(id, null)
+            : base()
         {
+            this.ModuleType = ModuleTypeEnum.TrainSensor;
             //Observable.Range(1, 1024).Do((i) => this.history.Push(new TrainSensorState(new DevicePacket())));
         }
 
-        public TrainSensor(DeviceID id, IObservable<IDeviceState<IPacketDeviceData>> obsv)
-            : base(id, ModuleTypeEnum.TrainSensor, obsv) { }
+        public TrainSensor()
+            : base()
+        { }
 
         //protected void OnTimerOverflowed()
         //{            
@@ -35,7 +37,11 @@ namespace SensorLibrary
             state.Mode = TrainSensorMode.meisuring;
             this.SendPacket(state);
 
-            return new MeisuringTrainSensor(this.DeviceID, this.Observing);
+            return new MeisuringTrainSensor()
+                {
+                    DeviceID = this.DeviceID,
+                    Observing = this.Observing,
+                };
         }
 
         public DetectingTrainSensor ChangeDetectingMode()
@@ -51,7 +57,11 @@ namespace SensorLibrary
             state.ThresholdVoltage = threshold;
             this.SendPacket(state);
 
-            return new DetectingTrainSensor(this.DeviceID, this.Observing);
+            return new DetectingTrainSensor()
+                {
+                    DeviceID = this.DeviceID,
+                    Observing = this.Observing,
+                };
         }
 
     }
