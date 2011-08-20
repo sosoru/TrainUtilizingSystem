@@ -3,8 +3,10 @@
 #include "../Headers/MotherBoardModule.h"
 #include "../Headers/TrainSensorModule.h"
 #include <stdlib.h>
+#include <string.h>
 #include <adc.h>
-
+#include <timers.h>
+#include <delays.h>
 
 //#define IS_VALID_PORT(m) ((m>=1 && m <= 8) || (m >=13 && m <= 16))
 
@@ -158,7 +160,7 @@ HRESULT CreateTrainSensorState(DeviceID * pid, PMODULE_DATA data)
 		default:
 			//maybe missing settingdata
 			//strcpypgm2ram(&cmdbuf[0], &defaultCmd[0]);
-			memset(&romdata, 0x00, sizeof(romdata));
+			memset((void*)&romdata, 0x00, (size_t)sizeof(TrainSensorSavedModuledState));
 			romdata.Mode = MODE_TRAINSENSOR_MEISURING;
 			WriteTrainSensorSavedModuledState(module, port, &romdata);
 			res |= E_FAIL;

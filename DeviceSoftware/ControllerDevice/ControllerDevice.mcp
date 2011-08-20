@@ -101,8 +101,8 @@ file_013=C:\Users\root\Documents\TrainUtilizingSystem\DeviceSoftware\Headers\Emp
 file_014=C:\Users\root\Documents\TrainUtilizingSystem\DeviceSoftware\Headers\ModuleFuncDefs.h
 file_015=C:\Users\root\Documents\TrainUtilizingSystem\DeviceSoftware\Headers\CommonDefs.h
 file_016=C:\Users\root\Documents\TrainUtilizingSystem\DeviceSoftware\Headers\eeprom.h
-file_017=ControllerModule.h
-file_018=HardwareProfile.h
+file_017=HardwareProfile.h
+file_018=C:\Users\root\Documents\TrainUtilizingSystem\DeviceSoftware\Headers\ControllerModule.h
 [SUITE_INFO]
 suite_guid={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
 suite_state=

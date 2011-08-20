@@ -6,6 +6,11 @@
 
 #define REMOTE_MODULE_MODULE_TYPE 0x04
 
+#define REMOTE_MODULE_INNERCOUNT 8
+
+#define ReadInnerRemoteModuleSavedState(module, inner, pbuf) EEPROMcpy((unsigned char *)(pbuf), (unsigned char)(ADDRESS_EEPROM_STARTS(module) + sizeof(RemoteModuleSavedState)*(inner)), (unsigned char)(sizeof(RemoteModuleSavedState)))
+#define WriteInnerRemoteModuleSavedState(module, inner, pbuf) EEPROMset((unsigned char)(ADDRESS_EEPROM_STARTS(module) + sizeof(RemoteModuleSavedState)*(inner)), (unsigned char *)(pbuf), (unsigned char)(sizeof(RemoteModuleSavedState)))
+
 extern BOOL g_SendingCompletion;
 extern DeviceID g_RemotingPendingIntDevID;
 
@@ -32,7 +37,7 @@ typedef union tag_RemoteModuleSavedState
 	{
 		DeviceID remid;
 	};
-	BYTE data[SIZE_EEPROM_MODULE_ALLOCATED];
+	BYTE data[2];
 } RemoteModuleSavedState;
 
 #endif

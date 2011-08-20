@@ -1,7 +1,9 @@
 #include "HardwareProfile.h"
-#include "../Headers/MotherBoardModule.h"
 #include "../Headers/ModuleFuncDefs.h"
+#include "../Headers/MotherBoardModule.h"
 #include <stdlib.h>
+#include <string.h>
+#include <timers.h>
 
 MotherBoardState g_mbState;
 BYTE g_usingAdc = FALSE;
@@ -25,7 +27,7 @@ HRESULT InitMotherBoard(DeviceID* pid)
 	ReadMotherBoardSavedState(&saved);
 	
 	g_mbState.ParentId = saved.ParentId;
-	memcpy(g_mbState.ModuleType, saved.ModuleType, (size_t)COUNT_MBSTATE_MODULETYPE);
+	memcpy((void*)g_mbState.ModuleType, (void*)saved.ModuleType, (size_t)COUNT_MBSTATE_MODULETYPE);
 	g_mbState.Timer = 0;
 	
 }
@@ -35,7 +37,7 @@ HRESULT CreateMotherBoardState(DeviceID* pid, PMODULE_DATA data)
 	MotherBoardState* pmbdata = (MotherBoardState*)data;
 	
 	g_mbState.Timer = ReadTimer0();
-	memcpy(pmbdata, &g_mbState, sizeof(MotherBoardState));
+	memcpy((void*)pmbdata, (void*)&g_mbState, (size_t)sizeof(MotherBoardState));
 	
 	return S_OK | REPEAT_TERMINATE;
 }
@@ -44,9 +46,12 @@ HRESULT CreateMotherBoardState(DeviceID* pid, PMODULE_DATA data)
 HRESULT StoreMotherBoardSavedState(DeviceID* pid, PMODULE_DATA buf)
 {
 	BYTE i;
+	DeviceID mid;
 	MotherBoardState* pcurrent = (MotherBoardState*)buf;
 			
 	g_mbState.ParentId = pcurrent->ParentId;
+	memcpy((void*)&mid, (void*)pid, sizeof(DeviceID));
+	mid.ParentPart = g_mbState.ParentId;
 	
 	for(i=0; i< COUNT_MBSTATE_MODULETYPE; i++)
 	{
@@ -56,7 +61,8 @@ HRESULT StoreMotherBoardSavedState(DeviceID* pid, PMODULE_DATA buf)
 		if(beftype != curtype)
 		{
 			//GET_FUNC_TABLE(i)->fnclose(i);			
-			InitializeTable(i, curtype, GET_FUNC_TABLE(i));
+			mid.ModulePart = i;
+			InitializeTable(&mid, curtype, GET_FUNC_TABLE(i));
 			WRITE_MBSTATE_MODULETYPE(g_mbState, i, curtype);
 		}
 	}

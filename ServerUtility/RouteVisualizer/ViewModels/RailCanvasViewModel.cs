@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows;
 
 using Livet;
 using Livet.Command;
@@ -15,7 +18,7 @@ using RouteVisualizer.Models;
 
 namespace RouteVisualizer.ViewModels
 {
-    public class MainWindowViewModel : ViewModel
+    public class RailCanvasViewModel : ViewModel
     {
         /*コマンド、プロパティの定義にはそれぞれ 
          * 
@@ -42,6 +45,49 @@ namespace RouteVisualizer.ViewModels
          * 原因となりやすく推奨できません。ViewModelHelperの各静的メソッドの利用を検討してください。
          */
 
+        public ObservableCollection<IDrawable> Drawables { get; private set; }
+        public PixelScaler DrawingScaler { get; set; }
 
+        public RailCanvasViewModel()
+            : base()
+        {
+            this.Drawables = new ObservableCollection<IDrawable>();
+        }
+
+        public virtual WriteableBitmap CreateBitmap(Size bmppxSize)
+        {
+            var drawables = this.Drawables.ToList();
+            var bmp = new WriteableBitmap((int)bmppxSize.Width, (int)bmppxSize.Height, 96.0, 96.0, PixelFormats.Bgr24, BitmapPalettes.WebPalette);
+            var srcRect = new Rect();
+
+            drawables.ForEach((d) => srcRect.Union(d.Bound));            
+            
+            foreach (var d in drawables)
+            {
+                var b = new DrawingBrush(d.CurrentDrawing);
+                b.Transform = this.DrawingScaler.GetTransform();
+                
+                
+                
+            }
+            
+        }
+        
+    }
+}
+
+public abstract class Scaler
+{
+    public virtual Transform GetTransform();
+}
+
+public class PixelScaler
+    : Scaler
+{
+    public Rect srcRect { get; set; }
+    public Size pxSize { get; set; }
+    public override Transform GetTransform()
+    {
+        return new ScaleTransform(pxSize.Width, pxSize.Height);
     }
 }

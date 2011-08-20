@@ -1,19 +1,19 @@
-#ifndef MONO_DEVICE_INCLUDE
+#if !defined MONO_DEVICE_INCLUDE
 #define MONO_DEVICE_INCLUDE
-
+ 
 #include "HardwareProfile.h"
-
 
 #include "USB/usb.h"
 #include "USB/usb_function_generic.h"
 #include "../Headers/UsbPacket.h"
 
+#include "../Headers/SpiTransmit.h"
+
 #include "../Headers/CommonDefs.h"
+#include "../Headers/ModuleFuncDefs.h"
 #include "../Headers/MonoModules.h"
 
-#include "../Headers/ModuleFuncDefs.h"
 #include "../Headers/PortMapping.h"
-
 
 /** VARIABLES ******************************************************/
 //#if defined(__18F14K50) || defined(__18F13K50) || defined(__18LF14K50) || defined(__18LF13K50) 

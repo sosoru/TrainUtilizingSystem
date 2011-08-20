@@ -22,6 +22,7 @@ namespace SensorLibrary
                 ModuleType = ModuleTypeEnum.RemoteModule
             };
 
+            packet.ID.RemoteBit = true;
             var remstate =  new RemoteModuleState() { BasePacket = packet };
             remstate.RemotingID = id;
 

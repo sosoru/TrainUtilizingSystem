@@ -82,22 +82,22 @@ namespace SensorLibrary
             }
         }
 
-        public override int Read(byte[] buffer, int offset, int count)
+        public override int Read(byte [] buffer, int offset, int count)
         {
             int pos = 0;
             do
             {
-                int len = 0;
-                var trans = new byte[count];
+                int len = 64;
+                var buf = new byte [len];
                 // we should read data per 64byte and implement double buffer
 
-                var ec = this.Reader.Read(trans, this.ReadTimeout, out len);
+                var ec = this.Reader.Read(buf, this.ReadTimeout, out len);
                 if (ec != ErrorCode.None)
                     throw new IOException(Enum.GetName(typeof(ErrorCode), ec));
 
-                Array.Copy(trans, 0, buffer, offset + pos, len);
+                Array.Copy(buf, 0, buffer, pos + offset, len);
                 pos += len;
-            } while (pos < count);
+            } while (pos == 0);
 
             return pos;
         }
@@ -105,7 +105,7 @@ namespace SensorLibrary
         public DevicePacket ReadPacket()
         {
             var pack = new DevicePacket();
-            var buffer = new byte[32];
+            var buffer = new byte [32];
 
             this.Read(buffer, 0, buffer.Length);
 
@@ -119,7 +119,7 @@ namespace SensorLibrary
                     ModulePart = sr.ReadByte(),
                 };
                 pack.ModuleType = (ModuleTypeEnum)sr.ReadByte();
-                sr.ReadBytes(28).CopyTo(pack.Data,0);
+                sr.ReadBytes(28).CopyTo(pack.Data, 0);
             }
             return pack;
         }
@@ -134,13 +134,13 @@ namespace SensorLibrary
             throw new NotImplementedException();
         }
 
-        public override void Write(byte[] buffer, int offset, int count)
+        public override void Write(byte [] buffer, int offset, int count)
         {
             int pos = 0;
 
             do
             {
-                var trans = new byte[Writer.EndpointInfo.Descriptor.MaxPacketSize];
+                var trans = new byte [Writer.EndpointInfo.Descriptor.MaxPacketSize];
                 var len = 0;
                 Array.Copy(buffer, offset + pos, trans, 0, trans.Length);
 

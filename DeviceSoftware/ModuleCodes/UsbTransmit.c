@@ -1,8 +1,8 @@
-//#include "Usb.h"
+#include <p18cxxx.h>
 #include "MonoDevice.h"
-#include "./USB/usb.h"
-#include "./USB/usb_function_generic.h"
+#include "../Headers/UsbPacket.h"
 #include <stdlib.h>
+#include <string.h>
 
 DevicePacket g_PacketBuffer[BUFFER_MAX];
 BYTE g_PacketBufferPos = 0;
@@ -10,25 +10,24 @@ BYTE g_PacketTransfarPos = 0;
 
 HRESULT AddPacketUSB(DeviceID* pid, BYTE moduleType, char * data)
 {
-	BYTE savedStatus;
 	DevicePacket * ppack;
+	BYTE peieCache = INTCONbits.PEIE;
 	
-	savedStatus = PIE2bits.TMR3IE;
-	PIE2bits.TMR3IE = 0; // disable timer 3 interruption (SendPacket())
+	INTCONbits.PEIE = 0; // disable low-priority interrupts
 
 	ppack = &g_PacketBuffer[g_PacketBufferPos];
 		
 	ppack->ReadMark = 0xFF;
-	memcpy(&(ppack->ID), pid, sizeof(*pid));
+	memcpy((void*)&(ppack->ID), (void*)pid, (size_t)sizeof(DeviceID));
 	ppack->ModuleType = moduleType;
-	memcpy(ppack->Data, data, (size_t)SIZE_DATA);
+	memcpy((void*)ppack->Data, (void*)data, (size_t)SIZE_DATA);
 	
 	//memcpy(g_PacketBuffer + g_PacketBufferPos, ppack, sizeof(DevicePacket));
 	g_PacketBufferPos ++;
 	if(g_PacketBufferPos >= BUFFER_MAX)
 		g_PacketBufferPos = 0;
 	
-	PIE2bits.TMR3IE = 1;
+	INTCONbits.PEIE = peieCache; // resume low-priority interrupts
 	return S_OK;
 }
 
@@ -37,6 +36,7 @@ HRESULT SendPacketUSB()
 	BYTE i;
 	BYTE savedStatus; 
 	BYTE distanceBufPos;
+	BYTE peieCache = INTCONbits.PEIE, gieCache = INTCONbits.GIE;
 		
 	if(USBHandleBusy(USBGenericInHandle))
 		return E_FAIL;
@@ -51,15 +51,21 @@ HRESULT SendPacketUSB()
 		return E_FAIL;
 	}
 	
+	INTCONbits.GIE = 0; //disable high-priority interrupts
+	INTCONbits.PEIE = 0; // disable low-priority interrupts
+	
 	Port_SurfaceLedB = 0;
 
 	//INPacket should be specified because of usb ram memory allocation
-	memcpy(INPacket, &g_PacketBuffer[g_PacketTransfarPos], SIZE_ONE_TRANSFAR_PACKETS);
+	memcpy((void*)INPacket, (void*)&g_PacketBuffer[g_PacketTransfarPos], (size_t)SIZE_ONE_TRANSFAR_PACKETS);
 	USBGenericInHandle = USBGenWrite(USBGEN_EP_NUM, INPacket, SIZE_ONE_TRANSFAR_PACKETS);
 	
 	g_PacketTransfarPos += COUNT_ONE_TRANSFAR_PACKETS;		
 	if(g_PacketTransfarPos >= BUFFER_MAX)
 		g_PacketTransfarPos = 0;
+	
+	INTCONbits.GIE = gieCache; // resume high-priority interrupts	
+	INTCONbits.PEIE = peieCache; // resume low-priority interrupts
 	
 	return S_OK;
 }
@@ -67,14 +73,18 @@ HRESULT SendPacketUSB()
 HRESULT ReceivingProcessUSB()
 {
 	BYTE i, j;
-	
+	BYTE peieCache = INTCONbits.PEIE, gieCache = INTCONbits.GIE;
+
     //OUTPacket contains data the host sent
     if(USBHandleBusy(USBGenericOutHandle))		//Check if the endpoint has received any data from the host.
     	return E_FAIL;
+	
+	INTCONbits.GIE = 0; //disable high-priority interrupts
+	INTCONbits.PEIE = 0; // disable low-priority interrupts
 
     for(i = 0 ; i < USBGEN_EP_SIZE; i+= sizeof(DevicePacket))
     {
-    	DevicePacket* pack = &OUTPacket[i];
+    	DevicePacket* pack = (DevicePacket*)&OUTPacket[i];
     	
     	if(pack->ReadMark != (BYTE)0xFF)
     		continue;
@@ -91,7 +101,11 @@ HRESULT ReceivingProcessUSB()
     }
     //Port_SurfaceLedA = 0;
    	
-   	memset(OUTPacket, 0x00, (size_t)sizeof(OUTPacket));
+   	memset((void*)OUTPacket, 0x00, (size_t)sizeof(OUTPacket));
 	USBGenericOutHandle = USBGenRead(USBGEN_EP_NUM,(BYTE*)&OUTPacket,USBGEN_EP_SIZE);
+	
+	INTCONbits.GIE = gieCache; // resume high-priority interrupts	
+	INTCONbits.PEIE = peieCache; // resume low-priority interrupts
+
 	return S_OK;
 }

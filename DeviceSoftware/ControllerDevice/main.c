@@ -1,5 +1,6 @@
 #include "HardwareProfile.h"
-#include "ControllerModule.h"
+#include "../Headers/SpiTransmit.h"
+#include "../Headers/ControllerModule.h"
 #include <timers.h>
 
  /** Configuration Bits *******************************************/
@@ -43,7 +44,10 @@
  #pragma config EBTR3 = OFF 
  #pragma config EBTRB = OFF
  
-void high_isr();
+void ModuleInit();
+void DeviceInit();
+void high_isr(void);
+void SpiProcess(SpiPacket * ppacket);
  
 #pragma code HIGH_VECTOR = 0x08
 void high_interrupt()
@@ -61,7 +65,6 @@ void high_isr()
 		PIE2bits.TMR3IE = 0;
 		PIR2bits.TMR3IF = 0;
 		
-		TMR1H |= ~TMR1H;
 		id.ParentPart = g_mbState.ParentId;
 		for(i = 0; i < MODULE_COUNT; ++i)
 		{
@@ -69,52 +72,60 @@ void high_isr()
 			
 			GET_FUNC_TABLE(i)->fninterrupt(&id);
 		}
+		TMR3H |= ~TMR3H;
+		TMR3L = 0;
+		
 		PIE2bits.TMR3IE = 1;
 	}
 	
-	//remoted packets receiving for RemoteModule
 	if(PIR1bits.SSPIF)
 	{
+		BYTE received;
 		SpiPacket packet;
-		DeviceID devid;
 		
-		PIE1bits.SSPIE = 0;
 		PIR1bits.SSPIF = 0;
+		received = SSPBUF;
 		
-		LATAbits.LATA2 = 1;
-		ReceiveSpiPacket(&packet);
-		
-		if(packet.devid.ParentPart == g_mbState.ParentId)
-		{			
-			if(packet.mode == MODE_CREATE)
-			{
-				GET_FUNC_TABLE(devid.ModuleAddr)->fncreate(&devid, packet.data);
-				
-				SendSpiPacket(&packet);
-			}
-			else
-			{
-				GET_FUNC_TABLE(devid.ModuleAddr)->fnstore(&devid, packet.data);
-			}
-			
-		}		
-		
-		PIE1bits.SSPIE = 1;
+		if(SUCCEEDED(PacketReady(&packet)))
+			SpiProcess(&packet);
 	}
-
 
 }
 #pragma code 
 
+//remoted packets receiving for RemoteModule
+void SpiProcess(SpiPacket * ppacket)
+{
+	DeviceID devid;			
+
+	LATAbits.LATA2 = 1;
+	if(ppacket->devid.ParentPart == g_mbState.ParentId)
+	{			
+		if(ppacket->mode == MODE_CREATE)
+		{
+			GET_FUNC_TABLE((BYTE)(devid.ModuleAddr))->fncreate(&devid, (PMODULE_DATA)(ppacket->data));
+			
+			SendSpiPacket(ppacket);
+		}
+		else
+		{
+			GET_FUNC_TABLE((BYTE)(devid.ModuleAddr))->fnstore(&devid, (PMODULE_DATA)(ppacket->data));
+		}
+		
+	}		
+}
 
 void ModuleInit()
 {
 	BYTE i;
-	SetFuncTable(MODULE_COUNT);
+	DeviceID devid;
+	SetFuncTable();
 	
+	devid.ParentPart = g_mbState.ParentId;
 	for(i=0; i<MODULE_COUNT; i++)
 	{
-		if(FAILED(GET_FUNC_TABLE(i)->fninit(i)))
+		devid.ModulePart = i;
+		if(FAILED(GET_FUNC_TABLE(i)->fninit(&devid)))
 		{
 			// do nothing
 		}
@@ -126,10 +137,14 @@ void DeviceInit()
 	INTCONbits.GIE = 1;
     INTCONbits.PEIE = 1;   
     
-    PIE1bits.SSPIE =1;
+    PIR1bits.SSPIF = 0;
+    SSPBUF = 0x00;
+    PIE1bits.SSPIE = 1;
     
     TRISAbits.TRISA2 = OUTPUT_PIN;
+    TRISAbits.TRISA3 = OUTPUT_PIN;
     LATAbits.LATA2 = 0;
+    LATAbits.LATA3 = 0;
 	
 	OpenTimer3(TIMER_INT_ON & T3_8BIT_RW & T3_SOURCE_INT & T3_PS_1_2 & T3_SYNC_EXT_OFF);
 }
@@ -139,5 +154,6 @@ void main()
 	ModuleInit();
 	DeviceInit();
 	
+	LATAbits.LATA3 = 1;
 	while(1);
 }

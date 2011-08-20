@@ -11,56 +11,13 @@ namespace SensorLibrary
     public class PacketDispatcher
         : IObservable<IDeviceState<IPacketDeviceData>>
     {
-
         public virtual void Notify(IDeviceState<IPacketDeviceData> state)
         {
             foreach (var ob in this.observerList.ToList())
             {
-                //if (!ob.IsAlive)
-                //    this.observerList.Remove(ob);
-                //else
-                //    ob.Target.OnNext(state);
-                //if (state.BasePacket.ModuleType == ModuleTypeEnum.MotherBoard)
-                //{
-                //    var mb = new MotherBoard(state.BasePacket.ID);
-                //    if (!_mboards.Contains(mb))
-                //    {
-                //        mb.Observe(this);
-                //        _mboards.Add(mb);
-                //    }
-                    
-                //}
-                //else
-                //{
-                    ob.OnNext(state);
-                //}
+                ob.OnNext(state);
             }
         }
-
-        //private IList<WeakReference<MotherBoard>> _mboards = new List<WeakReference<MotherBoard>>();
-        //public IList<WeakReference<MotherBoard>> MotherBoards
-        //{
-        //    get
-        //    {
-        //        foreach (var mb in _mboards.ToList())
-        //        {
-        //            if (!mb.IsAlive)
-        //                _mboards.Remove(mb);
-        //        }
-        //        return new ReadOnlyCollection<WeakReference<MotherBoard>>(this._mboards);
-        //    }
-        //}
-
-        //public virtual TDevice GetDevice<TDevice>(DeviceID id)
-        //    where TDevice : class, IDevice<IDeviceState<IPacketDeviceData>>
-        //{
-        //    var ctor = typeof(TDevice).GetConstructor(new[] { typeof(DeviceID) });
-        //    var inst = ctor.Invoke(new object[] { id });
-        //    var dev = inst as IDevice<IDeviceState<IPacketDeviceData>>;
-
-        //    dev.Observe(this);
-        //    return dev as TDevice;
-        //}
 
 
         #region Implemention of IObservable

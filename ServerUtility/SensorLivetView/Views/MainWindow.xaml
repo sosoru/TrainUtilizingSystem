@@ -55,6 +55,11 @@
 				</Border>
 			</Grid>
 		</DataTemplate>
+		<DataTemplate x:Key="RemoteModuleListItemTemplate">
+			<Grid>
+				<SensorLivetView:RemoteModuleView HorizontalAlignment="Right" Height="Auto" VerticalAlignment="Bottom" Width="Auto" DataContext="{Binding Mode=OneWay}"/>
+			</Grid>
+		</DataTemplate>
 	</Window.Resources>
     
     <Window.DataContext>
@@ -95,7 +100,7 @@
 			</TabItem>
 			<TabItem Header="RemoteModule">
 				<Grid Background="#FFE5E5E5">
-					<ListBox/>
+					<ListBox ItemsSource="{Binding AvailableRemoteModuleVMs}" ItemTemplate="{DynamicResource RemoteModuleListItemTemplate}"/>
 				</Grid>
 			</TabItem>
 		</TabControl>

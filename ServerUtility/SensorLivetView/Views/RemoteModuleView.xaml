@@ -9,8 +9,10 @@
 	x:Name="UserControl"
 	d:DesignWidth="640" d:DesignHeight="480">
 
-	<Grid x:Name="LayoutRoot">
+	<Border BorderBrush="Black">
+		<Grid x:Name="LayoutRoot">
 		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="Auto"/>
@@ -19,11 +21,14 @@
 			<ColumnDefinition Width="100"/>
 			<ColumnDefinition Width="100"/>
 		</Grid.ColumnDefinitions>
-		<TextBlock Grid.Column="0" Grid.Row="0" TextWrapping="Wrap" Text="InDeviceAddr"/>
-		<TextBlock Grid.Column="0" Grid.Row="1" TextWrapping="Wrap" Text="ModuleAddr"/>
-		<TextBlock TextWrapping="Wrap" Text="InternalAddr" Grid.Row="2"/>
-		<TextBox Grid.Column="1" Grid.Row="0" TextWrapping="Wrap" Text="{Binding Model.DeviceID.InDeviceAddr, Mode=TwoWay}"/>
-		<TextBox Grid.Column="1" Grid.Row="1" TextWrapping="Wrap" Text="{Binding Model.DeviceID.ModuleAddr, Mode=TwoWay}" Height="24" VerticalAlignment="Top"/>
-		<TextBox Grid.Column="1" Grid.Row="2" TextWrapping="Wrap" Text="{Binding Model.DeviceID.InternalAddr, Mode=TwoWay}"/>
+		<CheckBox Content="Hold" Margin="0,0,26.126,6" d:LayoutOverrides="Width, Height" Grid.ColumnSpan="2" IsChecked="{Binding Model.IsHold, Mode=TwoWay}"/>
+			<TextBlock Grid.Column="0" Grid.Row="1" TextWrapping="Wrap"><Run Text="InDeviceAddr"/></TextBlock>
+			<TextBlock Grid.Column="0" Grid.Row="2" TextWrapping="Wrap" Text="ModuleAddr"/>
+			<TextBlock TextWrapping="Wrap" Text="InternalAddr" Grid.Row="3"/>
+			<TextBox Grid.Column="1" Grid.Row="1" TextWrapping="Wrap" Text="{Binding Model.DeviceID.InDeviceAddr, Mode=TwoWay}"/>
+			<TextBox Grid.Column="1" Grid.Row="2" TextWrapping="Wrap" Text="{Binding Model.DeviceID.ModuleAddr, Mode=TwoWay}" Height="24" VerticalAlignment="Top"/>
+			<TextBox Grid.Column="1" Grid.Row="3" TextWrapping="Wrap" Text="{Binding Model.DeviceID.InternalAddr, Mode=TwoWay}"/>
 	</Grid>
+
+	</Border>
 </UserControl>

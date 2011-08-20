@@ -1,11 +1,18 @@
+#include "HardwareProfile.h"
 #include "../Headers/ModuleFuncDefs.h"
 #include "../Headers/MotherBoardModule.h"
-//#include "../Headers/MonoModules.h"
+#include <stdlib.h>
+#include <string.h>
 
-ModuleFuncTable g_ModuleFuncLower[SIZE_SPLITED_FUNCTABLE];
-ModuleFuncTable g_ModuleFuncHigher[SIZE_SPLITED_FUNCTABLE];
+#if defined(VERSION_REV1) || defined (VERSION_REV2)
+	#include "../Headers/MonoModules.h"
+#elif defined(CONTROLLER_DEIVCE_REV1)
+	#include "../Headers/ControllerModule.h"
+#endif
 
-void InitializeTable(DeviceID* pid, BYTE moduletype, ModuleFuncTable* table);
+//ModuleFuncTable g_ModuleFuncLower[SIZE_SPLITED_FUNCTABLE];
+//ModuleFuncTable g_ModuleFuncHigher[SIZE_SPLITED_FUNCTABLE];
+ModuleFuncTable g_ModuleFunc[MODULE_COUNT];
 
 void SetFuncTable()
 {
@@ -16,7 +23,7 @@ void SetFuncTable()
 	ReadMotherBoardSavedState(&state);
 	if(READ_MBSTATE_MODULETYPE(state, 0) != MOTHER_BOARD_MODULE_TYPE)
 	{
-		memset(&state, 0xFF, sizeof(MotherBoardSavedState));
+		memset((void*)&state, 0xFF, (size_t)sizeof(MotherBoardSavedState));
 		WRITE_MBSTATE_MODULETYPE(state,0, MOTHER_BOARD_MODULE_TYPE);
 			
 		WriteMotherBoardSavedState(&state);
@@ -26,8 +33,11 @@ void SetFuncTable()
 	for(i = 0; i < MODULE_COUNT; i++)
 	{
 		id.ModuleAddr = i;
-		InitializeTable(&id, READ_MBSTATE_MODULETYPE(state, i), GET_FUNC_TABLE(i));
+		InitializeTable(&id, (BYTE)READ_MBSTATE_MODULETYPE(state, i), GET_FUNC_TABLE(i));
 	}
+	
+	id.ModulePart = 0x00;
+	GET_FUNC_TABLE(0)->fninit(&id);
 }
 
 void InitializeTable(DeviceID* pid, BYTE moduletype, ModuleFuncTable* ptable)

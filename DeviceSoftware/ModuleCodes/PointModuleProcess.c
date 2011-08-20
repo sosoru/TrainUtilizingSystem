@@ -1,6 +1,8 @@
+#include "../Headers/ModuleBase.h"
 #include "../Headers/MotherBoardModule.h"
 #include "../Headers/PointModule.h"
-
+#include <stdlib.h>
+#include <string.h>
 
 #define IS_POINTMODULE_REPRESENT(module) ((module) % 4 == 1)
 
@@ -8,6 +10,27 @@ void ReadPointModuleSavedState(DeviceID * pid, PointModuleState * pstate);
 void WritePointModuleSavedState(DeviceID * pid, PointModuleState* pstate);
 
 BYTE PointChangingCurrent[MODULE_COUNT / 4];
+
+
+void ReadPointModuleSavedState(DeviceID * pid, PointModuleState * pstate)
+{
+	PointModuleSavedState saved;
+	BYTE module = pid->ModulePart;
+	
+	ReadModuleSavedState(module, &saved);
+	memcpy((void*)pstate->directions, (void*)saved.directions, (size_t)SIZE_POINTMODULESTATE_DIRECTIONS);
+}
+
+void WritePointModuleSavedState(DeviceID * pid, PointModuleState* pstate)
+{
+	PointModuleSavedState saved;
+	BYTE module = pid->ModulePart;
+	
+	memset((void*)&saved, 0x00, (size_t)sizeof(PointModuleSavedState));
+	memcpy((void*)saved.directions, (void*)pstate->directions, (size_t)SIZE_POINTMODULESTATE_DIRECTIONS);
+	WriteModuleSavedState(module, &saved);
+}
+
 
 HRESULT GetFuncTablePointModule(DeviceID * pid, ModuleFuncTable* table)
 {
@@ -29,8 +52,8 @@ HRESULT CreatePointModuleState(DeviceID * pid, PMODULE_DATA data)
 	PointModuleSavedState saved;
 	PointModuleState * pstate = (PointModuleState * ) data;
 		
-	memset(pstate, 0x00, sizeof(*pstate));
-	ReadPointModuleSavedState(pid->ModulePart, pstate);
+	memset((void*)pstate, 0x00, (size_t)sizeof(PointModuleState));
+	ReadPointModuleSavedState(pid, pstate);
 	
 	return S_OK;	
 	
@@ -40,28 +63,9 @@ HRESULT StorePointModuleState(DeviceID * pid, PMODULE_DATA data)
 {
 	PointModuleState* pstate = (PointModuleState*)data;
 				
-	WritePointModuleSavedState(pid->ModulePart, pstate);
+	WritePointModuleSavedState(pid, pstate);
 	
 	return S_OK;
-}
-
-void ReadPointModuleSavedState(DeviceID * pid, PointModuleState * pstate)
-{
-	PointModuleSavedState saved;
-	BYTE module = pid->ModulePart;
-	
-	ReadModuleSavedState(module, &saved);
-	memcpy(pstate->directions, saved.directions, SIZE_POINTMODULESTATE_DIRECTIONS);
-}
-
-void WritePointModuleSavedState(DeviceID * pid, PointModuleState* pstate)
-{
-	PointModuleSavedState saved;
-	BYTE module = pid->ModulePart;
-	
-	memset(&saved, 0x00, (size_t)sizeof(PointModuleSavedState));
-	memcpy(saved.directions, pstate->directions, SIZE_POINTMODULESTATE_DIRECTIONS);
-	WriteModuleSavedState(module, &saved);
 }
 
 HRESULT InitPointModule(DeviceID * pid)
@@ -81,7 +85,7 @@ void InterruptPointModule(DeviceID * pid)
 	BYTE i, pack, arindex, module = pid->ModulePart;
 	PointModuleSavedState saved;
 	
-	ReadPointModuleSavedState(module, &saved);
+	ReadPointModuleSavedState(pid, &saved);
 	
 	//load and increment it
 	arindex = module / 4;

@@ -1,7 +1,10 @@
+
 #include "MonoDevice.h"
+
 #include <timers.h>
 #include <adc.h>
-#include "../Headers/SpiTransmit.h"
+#include <stdlib.h>
+#include <string.h>
 
  /** Configuration Bits *******************************************/
  #pragma config PLLDIV = 5           //Configure for 20Mhz crystal, 20/5 = 4Mhz (required for USB)
@@ -20,11 +23,11 @@
  #pragma config LPT1OSC = OFF        //Disabled
  #pragma config PBADEN = OFF         //Port B0-4 are digital inputs on reset
  #pragma config CCP2MX = ON          //RC1
- #pragma config STVREN = ON          //Stack overflow reset enable
+ #pragma config STVREN = ON         //Stack overflow reset enable
  #pragma config LVP = OFF            //Low voltage programming disabled
  #pragma config ICPRT = OFF          //Dedicated In-Circuit Debug/Programming Port (ICPORT) disabled
  #pragma config XINST = OFF          //Extended mode off
- #pragma config DEBUG = OFF          //Debug mode off
+ //#pragma config DEBUG = OFF          //Debug mode off
  #pragma config CP0 = OFF 
  #pragma config CP1 = OFF 
  #pragma config CP2 = OFF 
@@ -35,7 +38,7 @@
  #pragma config WRT1 = OFF 
  #pragma config WRT2 = OFF 
  #pragma config WRT3 = OFF 
- #pragma config WRTB = ON            //Table write protect bootloader code 
+ #pragma config WRTB = OFF            //Table write protect bootloader code 
  #pragma config WRTC = OFF 
  #pragma config WRTD = OFF 
  #pragma config EBTR0 = OFF 
@@ -61,7 +64,7 @@ BYTE USBTasksCounter = 0;
 #endif
 unsigned char OUTPacket[64];	//User application buffer for receiving and holding OUT packets sent from the host
 unsigned char INPacket[64];		//User application buffer for sending IN packets to the host
-#pragma udata
+#pragma code
 USB_HANDLE USBGenericOutHandle = 0;
 USB_HANDLE USBGenericInHandle = 0;
 
@@ -69,121 +72,73 @@ void main();
 void DeviceInit();
 void ModuleInit();
 void Process();
+void low_isr();
 void high_isr();
 
-void main()
-{ 
-	Port_SurfaceLedA = 0;
-	Port_SurfaceLedB = 0;
-	ModuleInit();
-	DeviceInit();
-	
-//	LATBbits.LATB0 = 1;
-//	Delay10KTCYx(200);
-//	LATBbits.LATB0 = 0;
-//	
-	USBDeviceAttach();
-//	LATBbits.LATB0 = 1;
-
-	while(1)
-	{
-		Process();	
-	}
-}
-
-void Process()
-{
-	BYTE i, j;
-	DeviceID id;
-	
-	id.ParentPart = g_mbState.ParentId;
-	
-    if(!USB_TRANSFAR_AVAILABLE)
-	{
-		Port_SurfaceLedB = 0;
-	    return;
-    }
-	Port_SurfaceLedB = 1;
-	    	
-	for(i = 0; i < MODULE_COUNT; i++)
-	{
-		BYTE type;
-		MODULE_DATA data[SIZE_DATA];
-		
-		ReceivingProcessUSB();
-		type = READ_MBSTATE_MODULETYPE(g_mbState, i);
-		
-		if(type != UNKNOWN_MODULE_TYPE)
-		{
-			for(j=0; j<INTERNAL_MODULE_COUNT; ++j)
-			{		
-				HRESULT res;
-				
-				memset(data, 0x00, sizeof(data));
-				id.ModuleAddr = i;
-				id.InternalAddr = j;
-				
-				res = GET_FUNC_TABLE(i)->fncreate(&id, data);
-				if(SUCCEEDED(res))
-				{
-					AddPacketUSB(&id, type, data);
-					SendPacketUSB();
-				}
-				
-				if(TERMINATED(res))
-				{
-					break;
-				}
-			}
-		}
-	}
-	SendPacketUSB();
-	
-}
-
-void ModuleInit()
-{
-	BYTE i;
-	DeviceID id;
-	SetFuncTable(MODULE_COUNT);
-	
-	id.ParentPart = g_mbState.ParentId;
-	for(i=0; i<MODULE_COUNT; i++)
-	{
-		id.ModuleAddr = i;
-		if(FAILED(GET_FUNC_TABLE(i)->fninit(&id)))
-		{
-			// do nothing
-		}
-	}
-}
+#pragma interrupt high_isr //save = PROD
+#pragma interruptlow low_isr save = WREG, BSR, STATUS//, PROD
+#pragma code LOW_VECTOR = 0x18
+void low_interrupt()
+{ _asm GOTO low_isr _endasm}
+#pragma code
 
 #pragma code HIGH_VECTOR = 0x08
 void high_interrupt()
 { _asm GOTO high_isr _endasm}
 #pragma code
 
-#pragma interrupt high_isr
-void high_isr()
+BYTE isr_i;
+DeviceID isr_id;
+
+void low_isr()
 {
-	BYTE i;
-	DeviceID id;
-	
+
 	if(PIR2bits.TMR3IF)
 	{
 		PIE2bits.TMR3IE = 0;
 		PIR2bits.TMR3IF = 0;
 		
-		TMR1H |= ~TMR1H;
-		id.ParentPart = g_mbState.ParentId;
-		for(i = 0; i < MODULE_COUNT; ++i)
+		isr_id.ParentPart = g_mbState.ParentId;
+		for(isr_i = 0; isr_i < MODULE_COUNT; ++isr_i)
 		{
-			id.ModuleAddr = i;
+			isr_id.ModuleAddr = isr_i;
 			
-			GET_FUNC_TABLE(i)->fninterrupt(&id);
+			GET_FUNC_TABLE(isr_i)->fninterrupt(&isr_id);
 		}
+		
+		TMR3H |= ~TMR3H;
+		//TMR3L = 0;
 		PIE2bits.TMR3IE = 1;
 	}
+
+	//remoted packets receiving for RemoteModule
+	if(PIR1bits.SSPIF)
+	{
+		SpiPacket packet;
+		DeviceID devid;
+		MODULE_DATA data[SIZE_DATA];
+		BYTE received; 
+		
+		PIR1bits.SSPIF = 0;
+		received = SSPBUF;
+		SSPBUF = 0x00;
+		
+		ReceiveByte(received);
+		
+		if( SUCCEEDED(PacketReady(&packet))
+			&& SUCCEEDED(CreateMessageFromReceived(&packet, &devid, data)))
+		{
+			BYTE type = READ_MBSTATE_MODULETYPE(g_mbState, devid.ModuleAddr);
+			
+			AddPacketUSB(&devid, type, data);
+		}
+		
+	}
+
+}
+
+void high_isr()
+{
 
 	if(INTCONbits.T0IF)
 	{
@@ -192,9 +147,10 @@ void high_isr()
         if(TimerOccupied == 0L)
         {
                 Timer0OverflowCount = 0L;
-        }else
-            {
-                  Timer0OverflowCount++;
+        }
+        else
+        {
+                Timer0OverflowCount++;
         }        
 	}
 	
@@ -207,28 +163,32 @@ void high_isr()
 		USBDeviceTasks();	
 	}
 	
-	//remoted packets receiving for RemoteModule
-	if(PIR1bits.SSPIF)
-	{
-		SpiPacket packet;
-		DeviceID devid;
-		MODULE_DATA data[SIZE_DATA];
-		
-		PIE1bits.SSPIE = 0;
-		PIR1bits.SSPIF = 0;
-		ReceiveSpiPacket(&packet);
-		
-		if(SUCCEEDED(CreateMessageFromReceived(&packet, &devid, data)))
-		{
-			BYTE type = READ_MBSTATE_MODULETYPE(g_mbState, devid.ModuleAddr);
-			AddPacketUSB(&devid, type, data);
-		}
-		
-		PIE1bits.SSPIE = 1;
-	}
-
+//	if(PIR1bits.SSPIF)
+//		Port_SurfaceLedA = 1;
+//	else
+//		Port_SurfaceLedA = 0;
+//	
 }
-#pragma code 
+
+
+
+void ModuleInit()
+{
+	BYTE i;
+	DeviceID id;
+	
+	SetFuncTable();
+	
+	id.ParentPart = g_mbState.ParentId;
+	for(i=0; i<MODULE_COUNT; i++)
+	{
+		id.ModuleAddr = i;
+		if(FAILED(GET_FUNC_TABLE(i)->fninit(&id)))
+		{
+			// do nothing
+		}
+	}
+}
 
 void DeviceInit()
 {
@@ -240,8 +200,6 @@ void DeviceInit()
 	
 	Tris_SurfaceLedA = 0;
 	Tris_SurfaceLedB = 0;
-	
-	PIE1bits.SSPIE =1;
 	
 	//TRISB = 0xFC;	// RB0,1 output
 	//TRISDbits.RD0 = INPUT_PIN;
@@ -257,55 +215,116 @@ void DeviceInit()
 	//IPR1bits.SSPIP=1;	
 	//TRISCbits.RC3 = 1;
 	//TRISCbits.RC4 = 1;
-	
-    //	The USB specifications require that USB peripheral devices must never source
-//	current onto the Vbus pin.  Additionally, USB peripherals should not source
-//	current on D+ or D- when the host/hub is not actively powering the Vbus line.
-//	When designing a self powered (as opposed to bus powered) USB peripheral
-//	device, the firmware should make sure not to turn on the USB module and D+
-//	or D- pull up resistor unless Vbus is actively powered.  Therefore, the
-//	firmware needs some means to detect when Vbus is being powered by the host.
-//	A 5V tolerant I/O pin can be connected to Vbus (through a resistor), and
-// 	can be used to detect when Vbus is high (host actively powering), or low
-//	(host is shut down or otherwise not supplying power).  The USB firmware
-// 	can then periodically poll this I/O pin to know when it is okay to turn on
-//	the USB module/D+/D- pull up resistor.  When designing a purely bus powered
-//	peripheral device, it is not possible to source current on D+ or D- when the
-//	host is not actively providing power on Vbus. Therefore, implementing this
-//	bus sense feature is optional.  This firmware can be made to use this bus
-//	sense feature by making sure "USE_USB_BUS_SENSE_IO" has been defined in the
-//	HardwareProfile.h file.    
+
     #if defined(USE_USB_BUS_SENSE_IO)
     tris_usb_bus_sense = INPUT_PIN; // See HardwareProfile.h
     #endif
-    
-//	If the host PC sends a GetStatus (device) request, the firmware must respond
-//	and let the host know if the USB peripheral device is currently bus powered
-//	or self powered.  See chapter 9 in the official USB specifications for details
-//	regarding this request.  If the peripheral device is capable of being both
-//	self and bus powered, it should not return a hard coded value for this request.
-//	Instead, firmware should check if it is currently self or bus powered, and
-//	respond accordingly.  If the hardware has been configured like demonstrated
-//	on the PICDEM FS USB Demo Board, an I/O pin can be polled to determine the
-//	currently selected power source.  On the PICDEM FS USB Demo Board, "RA2" 
-//	is used for	this purpose.  If using this feature, make sure "USE_SELF_POWER_SENSE_IO"
-//	has been defined in HardwareProfile.h, and that an appropriate I/O pin has been mapped
-//	to it in HardwareProfile.h.
+
     #if defined(USE_SELF_POWER_SENSE_IO)
     tris_self_power = INPUT_PIN;	// See HardwareProfile.h
     #endif
     
+ 	USBDeviceInit(); //check the endpoint initialization written in a callback method
+ 	
     INTCONbits.GIE = 1;
     INTCONbits.PEIE = 1;   
+    RCONbits.IPEN = 1;
+    PIE1bits.SSPIE = 1;
+
+    INTCON2bits.TMR0IP = 1; // tmr0 = high interrupt
+    IPR1bits.TMR1IP = 1; //tmr1 = high interrupt
+    IPR1bits.SSPIP = 0; // ssp = low interrupt
+    IPR2bits.TMR3IP = 0; //tmr3 = low interrupt
 
 	OpenTimer0(TIMER_INT_ON 
 				& T0_16BIT 
 		    	& T0_SOURCE_INT 
 		  		& T0_PS_1_256 );
 		  		
+	
+	
 	//for USB tasks
 	OpenTimer1(TIMER_INT_ON & T1_8BIT_RW & T1_SOURCE_INT & T1_PS_1_8 & T1_OSC1EN_OFF & T1_SYNC_EXT_OFF); 
-	OpenTimer3(TIMER_INT_ON & T3_8BIT_RW & T3_SOURCE_INT & T3_PS_1_2 & T3_SYNC_EXT_OFF);
+	OpenTimer3(TIMER_INT_ON & T3_8BIT_RW & T3_SOURCE_INT & T3_PS_1_4 & T3_SYNC_EXT_OFF);
+}
+
+void Process()
+{
+	BYTE i, j;
+	DeviceID id;
+	MODULE_DATA data[SIZE_DATA];
 	
-	USBDeviceInit(); //check the endpoint initialization written in a callback method
+    if(!USB_TRANSFAR_AVAILABLE)
+	{
+		Port_SurfaceLedB = 0;
+	    return;
+    }
+	Port_SurfaceLedB = 1;
+	
+	id.ParentPart = g_mbState.ParentId;
+	    	
+	for(i = 0; i < MODULE_COUNT; i++)
+	{
+		BYTE type;
+		
+		ReceivingProcessUSB();
+		type = READ_MBSTATE_MODULETYPE(g_mbState, i);
+		
+		if(type != UNKNOWN_MODULE_TYPE)
+		{
+			memset((void*)data, 0x00, (size_t)SIZE_DATA);
+			for(j=0; j<INTERNAL_MODULE_COUNT; ++j)
+			{		
+				HRESULT res;
+				BYTE k, remoting = (type == REMOTE_MODULE_MODULE_TYPE);
+				
+
+				id.ModuleAddr = i;
+				id.InternalAddr = j;
+				
+				for(k=0; k<=remoting; ++k)
+				{
+					id.RemoteBit = k;
+					
+					res = GET_FUNC_TABLE(i)->fncreate(&id, data);
+					if(SUCCEEDED(res))
+					{
+						AddPacketUSB(&id, type, data);
+						memset((void*)data, 0x00, (size_t)SIZE_DATA);
+						
+						SendPacketUSB();
+					}
+				}
+				
+				if(TERMINATED(res))
+				{
+					break;
+				}
+			}
+		}
+	}
+	SendPacketUSB();
+	
+}
+
+void main()
+{ 
+	ModuleInit();
+	DeviceInit();
+	
+	Port_SurfaceLedA = 1;
+	
+//	LATBbits.LATB0 = 1;
+//	Delay10KTCYx(200);
+//	LATBbits.LATB0 = 0;
+//	
+//	LATBbits.LATB0 = 1;
+	USBDeviceAttach();
+
+	while(1)
+	{
+		//Port_SurfaceLedA = (USBDeviceState == CONFIGURED_STATE);
+		
+		Process();	
+	}
 }

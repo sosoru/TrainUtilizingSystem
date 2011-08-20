@@ -1,7 +1,10 @@
 #include "HardwareProfile.h"
 #include "../Headers/TrainController.h"
 #include "../Headers/PortMapping.h"
+#include <stdlib.h>
+#include <string.h>
 #include <timers.h>
+#include <delays.h>
 #include <pwm.h>
 #include <adc.h>
 
@@ -82,6 +85,65 @@ void SetPWM();
 void ChangePWM();
 void ChangeTimer();
 
+
+void ChangeTimer()
+{
+	OpenTimer2(TIMER_INT_OFF & g_cacheState.prescale);	
+}
+
+void ChangePWM()
+{
+	if(g_cacheState.direction == DIRECTION_TRAINCONTROLLER_POSITIVE)
+	{
+		ClosePWM2();
+#ifdef VERSION_REV1
+
+		PORT_PWMSIGNALB = 0;
+		PORT_DIRECTION = 0;
+
+#elif defined VERSION_REV2
+		
+		PORT_PWMSIGNALB = 0;
+		PORT_DIRECTION_NEG = 0;
+		PORT_DIRECTION_POS = 1;
+		
+#endif
+		OpenPWM1(g_cacheState.period);
+		SetDCPWM1(g_cacheState.duty);
+	}
+	else
+	{
+		ClosePWM1();
+#ifdef VERSION_REV1
+
+		PORT_PWMSIGNALA = 0;
+		PORT_DIRECTION = 1;
+
+#elif defined VERSION_REV2
+		
+		PORT_PWMSIGNALA = 0;
+		PORT_DIRECTION_POS = 0;
+		PORT_DIRECTION_NEG = 1;
+
+#endif		
+		OpenPWM2(g_cacheState.period);
+		SetDCPWM2(g_cacheState.duty);
+	}
+}
+
+void SetPWM()
+{
+	if(g_cacheState.direction == DIRECTION_TRAINCONTROLLER_POSITIVE)
+	{
+		SetDCPWM1(g_cacheState.duty);
+	}
+	else
+	{
+		SetDCPWM2(g_cacheState.duty);
+	}
+}
+
+
 HRESULT GetFuncTableTrainController(DeviceID * pid, ModuleFuncTable* table)
 {
 	table->fncreate = CreateTrainControllerState;
@@ -96,7 +158,7 @@ HRESULT InitTrainController(DeviceID * pid)
 {
 	settingState = TRUE;
 	
-	memset(&g_cacheState, 0x00, (size_t)sizeof(g_cacheState)); 
+	memset((void*)&g_cacheState, 0x00, (size_t)sizeof(g_cacheState)); 
 	
 	g_cacheState.duty = 0;
 	g_cacheState.dutyEnabledBits = DUTY_RESOLUTION_BITCOUNT;
@@ -173,7 +235,7 @@ HRESULT CreateTrainControllerState(DeviceID * pid, PMODULE_DATA data)
 {
 	TrainControllerState * pstate = (TrainControllerState *)data;
 	
-	memcpy(pstate, &g_cacheState, (size_t)sizeof(TrainControllerState));
+	memcpy((void*)pstate, (void*)&g_cacheState, (size_t)sizeof(TrainControllerState));
 	return S_OK | REPEAT_TERMINATE;
 }
 	
@@ -345,62 +407,5 @@ void InterruptTrainController(DeviceID * pid)
 		//g_cacheState.meisuredvoltage = AveVoltage;
 		waitingCount = 0;
 		
-	}
-}
-
-void ChangeTimer()
-{
-	OpenTimer2(TIMER_INT_OFF & g_cacheState.prescale);	
-}
-
-void ChangePWM()
-{
-	if(g_cacheState.direction == DIRECTION_TRAINCONTROLLER_POSITIVE)
-	{
-		ClosePWM2();
-#ifdef VERSION_REV1
-
-		PORT_PWMSIGNALB = 0;
-		PORT_DIRECTION = 0;
-
-#elif defined VERSION_REV2
-		
-		PORT_PWMSIGNALB = 0;
-		PORT_DIRECTION_NEG = 0;
-		PORT_DIRECTION_POS = 1;
-		
-#endif
-		OpenPWM1(g_cacheState.period);
-		SetDCPWM1(g_cacheState.duty);
-	}
-	else
-	{
-		ClosePWM1();
-#ifdef VERSION_REV1
-
-		PORT_PWMSIGNALA = 0;
-		PORT_DIRECTION = 1;
-
-#elif defined VERSION_REV2
-		
-		PORT_PWMSIGNALA = 0;
-		PORT_DIRECTION_POS = 0;
-		PORT_DIRECTION_NEG = 1;
-
-#endif		
-		OpenPWM2(g_cacheState.period);
-		SetDCPWM2(g_cacheState.duty);
-	}
-}
-
-void SetPWM()
-{
-	if(g_cacheState.direction == DIRECTION_TRAINCONTROLLER_POSITIVE)
-	{
-		SetDCPWM1(g_cacheState.duty);
-	}
-	else
-	{
-		SetDCPWM2(g_cacheState.duty);
 	}
 }

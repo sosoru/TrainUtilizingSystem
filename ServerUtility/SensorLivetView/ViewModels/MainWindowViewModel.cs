@@ -146,6 +146,7 @@ namespace SensorLivetView.ViewModels
                 serv.LoopStart();
             this.OpeningServers.Add(serv);
             this.PacketDispatchers.Add(dispat);
+            dispat.FoundDeviceList.CollectionChanged += (sender, e) => base.RaisePropertyChanged("");
             RaisePropertyChanged("");
         }
 
@@ -161,14 +162,6 @@ namespace SensorLivetView.ViewModels
             }
 
         }
-
-        //public void Refresh()
-        //{
-        //    this.RaisePropertyChanged("AvailableTrainSensorVMs");
-        //    this.RaisePropertyChanged("AvailableTrainControllerVMs");
-        //    this.RaisePropertyChanged("AvailablePointModuleVMs");
-
-        //}
 
         IList<PacketServer> _OpeningServers;
 
@@ -234,6 +227,14 @@ namespace SensorLivetView.ViewModels
 
         }
 
+        public IList<RemoteModuleViewModel> AvailableRemoteModuleVMs
+        {
+            get
+            {
+                return GetAvailableModules<RemoteModuleViewModel, RemoteModule>(this.PacketDispatchers);
+            }
+        }
+
         public TrainSpeedTransitionTestViewModel SpeedTestVM
         {
             get
@@ -253,8 +254,8 @@ namespace SensorLivetView.ViewModels
             where TVM : class
             where TM : class
         {
-            return disps.SelectMany((disp) => disp.GetCastedAilveDevices<TM>())
-                        .Where((cnt) => cnt != null)
+            return disps.SelectMany((disp) => disp.FoundDeviceList)
+                        .Where((cnt)=> cnt is TM)
                         .Select((cnt) => typeof(TVM).GetConstructor(new[] { typeof(TM) }).Invoke(new[] { cnt }) as TVM)
                         .ToList();
         }

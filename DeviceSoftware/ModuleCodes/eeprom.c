@@ -26,6 +26,7 @@ char SaveInt;
     EEADR = address;            //setup Address
     EEDATA = data;              //and data
     INTCONbits.GIE=0;           //No interrupts
+    INTCONbits.PEIE=0;
     EECON2 = 0x55;              //required sequence #1
     EECON2 = 0xaa;              //#2
     EECON1bits.WR = 1;          //#3 = actual write
