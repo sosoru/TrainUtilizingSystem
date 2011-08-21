@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.ComponentModel;
-using System.Collections.ObjectModel;
 
 using Livet;
 using Livet.Command;
@@ -15,7 +14,7 @@ using RouteVisualizer.Models;
 
 namespace RouteVisualizer.ViewModels
 {
-    public class MainWindowViewModel : ViewModel
+    public class ModeledViewModel<T> : ViewModel
     {
         /*コマンド、プロパティの定義にはそれぞれ 
          * 
@@ -42,15 +41,39 @@ namespace RouteVisualizer.ViewModels
          * 原因となりやすく推奨できません。ViewModelHelperの各静的メソッドの利用を検討してください。
          */
 
-        public DrawablesViewModel dwViewModel
+        private T model;
+        private T beforeModel;
+        public T Model
         {
             get
             {
-                return new DrawablesViewModel()
-                {
-                };
+                return this.model;
+            }
+            set
+            {
+                this.beforeModel = this.model;
+                this.model = value;
+                OnModelChanged(new ModelChangedArgs<T>() { before = this.beforeModel, current = this.model });
             }
         }
+
+        public delegate void ModelChangeEventHandler(object sender, ModelChangedArgs<T> e);
+
+        public event ModelChangeEventHandler ModelChanged;
+        protected void OnModelChanged(ModelChangedArgs<T> e)
+        {
+            if (this.ModelChanged != null)
+            {
+                this.ModelChanged(this, e);
+            }
+        }
+    }
+
+    public class ModelChangedArgs<T>
+        : EventArgs
+    {
+        public T before;
+        public T current;
 
     }
 }

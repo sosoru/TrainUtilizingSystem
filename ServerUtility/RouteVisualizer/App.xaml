@@ -1,9 +1,12 @@
-﻿<Application x:Class="RouteVisualizer.App"
+﻿<Application
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:RouteVisualizer_RailEditor_ViewModels="clr-namespace:RouteVisualizer.RailEditor.ViewModels" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="RouteVisualizer.App"
              StartupUri="Views\MainWindow.xaml"
              Startup="Application_Startup">
     <Application.Resources>
+         
+    	<RouteVisualizer_RailEditor_ViewModels:WindowCreater x:Key="WindowCreaterDataSource" d:IsDataSource="True"/>
          
     </Application.Resources>
 </Application>

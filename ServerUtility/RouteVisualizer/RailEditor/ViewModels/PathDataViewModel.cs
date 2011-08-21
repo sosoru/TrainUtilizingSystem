@@ -4,9 +4,13 @@ using System.Linq;
 using System.Text;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows;
+
+using SensorLibrary;
+using System.Data.Entity;
+using RouteVisualizer.View;
+using RouteVisualizer.ViewModels;
+using RouteVisualizer.EF;
 
 using Livet;
 using Livet.Command;
@@ -16,9 +20,10 @@ using Livet.Messaging.Window;
 
 using RouteVisualizer.Models;
 
-namespace RouteVisualizer.ViewModels
+namespace RouteVisualizer.RailEditor.ViewModels
 {
-    public class RailCanvasViewModel : ViewModel
+    public class PathDataViewModel
+        : ModeledViewModel<PathData>
     {
         /*コマンド、プロパティの定義にはそれぞれ 
          * 
@@ -45,49 +50,28 @@ namespace RouteVisualizer.ViewModels
          * 原因となりやすく推奨できません。ViewModelHelperの各静的メソッドの利用を検討してください。
          */
 
-        public ObservableCollection<IDrawable> Drawables { get; private set; }
-        public PixelScaler DrawingScaler { get; set; }
-
-        public RailCanvasViewModel()
-            : base()
+        public PathDataViewModel()
+            :base()
         {
-            this.Drawables = new ObservableCollection<IDrawable>();
+            this.AvailableGates = new ObservableCollection<string>();
         }
 
-        public virtual WriteableBitmap CreateBitmap(Size bmppxSize)
+        public RailDataViewModel ParentRail { get; set; }
+
+        public bool IsStraight
         {
-            var drawables = this.Drawables.ToList();
-            var bmp = new WriteableBitmap((int)bmppxSize.Width, (int)bmppxSize.Height, 96.0, 96.0, PixelFormats.Bgr24, BitmapPalettes.WebPalette);
-            var srcRect = new Rect();
-
-            drawables.ForEach((d) => srcRect.Union(d.Bound));            
-            
-            foreach (var d in drawables)
-            {
-                var b = new DrawingBrush(d.CurrentDrawing);
-                b.Transform = this.DrawingScaler.GetTransform();
-                
-                
-                
-            }
-            
+            get { return this.Model.IsStraight; }
+            set { this.Model.IsStraight = value; }
         }
-        
-    }
-}
 
-public abstract class Scaler
-{
-    public virtual Transform GetTransform();
-}
+        public bool IsCurved
+        {
+            get { return !this.Model.IsStraight; }
+            set { this.Model.IsStraight = !value; }
+        }
 
-public class PixelScaler
-    : Scaler
-{
-    public Rect srcRect { get; set; }
-    public Size pxSize { get; set; }
-    public override Transform GetTransform()
-    {
-        return new ScaleTransform(pxSize.Width, pxSize.Height);
+        public ObservableCollection<string> AvailableGates { get; set; }
+
+
     }
 }

@@ -10,7 +10,7 @@ namespace SensorLibrary
 {
     public static class ConvertExtenstions
     {
-        public static T ToObject<T>(this Array arr, int offset)
+        public static T ToObject<T>(this Array arr)
         {
             var handle = GCHandle.Alloc(arr, GCHandleType.Pinned);
             try
@@ -34,6 +34,20 @@ namespace SensorLibrary
                 // obj  will be destroyed
                 Marshal.StructureToPtr(obj, handle.AddrOfPinnedObject(), true);
                 return buffer;
+            }
+            finally
+            {
+                handle.Free();
+            }
+        }
+
+        public static T RestoreObject<T>(this T obj, byte [] array)
+        {
+            var handle = GCHandle.Alloc(obj, GCHandleType.Pinned);
+            try
+            {
+                Marshal.Copy(array, 0, handle.AddrOfPinnedObject(), Marshal.SizeOf(obj));
+                return obj;
             }
             finally
             {

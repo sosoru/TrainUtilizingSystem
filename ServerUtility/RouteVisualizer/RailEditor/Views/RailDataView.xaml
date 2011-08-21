@@ -1,0 +1,76 @@
+﻿<UserControl
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:RouteVisualizer_EF="clr-namespace:RouteVisualizer.EF"
+	xmlns:RouteVisualizer_RailEditor_ViewModels="clr-namespace:RouteVisualizer.RailEditor.ViewModels"
+	xmlns:local="clr-namespace:RouteVisualizer"
+	mc:Ignorable="d"
+	x:Class="RouteVisualizer.RailDataView"
+	x:Name="UserControl"
+	d:DesignWidth="640" d:DesignHeight="480">
+	<UserControl.Resources>
+		<Style x:Key="EditButtonTemplate" TargetType="{x:Type DataGridCell}">
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="{x:Type DataGridCell}">
+						<Grid>
+							<Button Content="Del" Height="Auto" Command="{Binding ParentRail.RemotePathCommand}" CommandParameter="{Binding .}" />
+						</Grid>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+	</UserControl.Resources>
+
+
+	<Grid x:Name="LayoutRoot" Background="White">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition/>
+		</Grid.ColumnDefinitions>
+		<GroupBox Grid.Column="1" Header="General">
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition/>
+					<RowDefinition/>
+				</Grid.RowDefinitions>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="100"/>
+					<ColumnDefinition Width="100*"/>
+				</Grid.ColumnDefinitions>
+				<TextBlock TextWrapping="Wrap" Text="Manifacturer"/>
+				<TextBox TextWrapping="Wrap" Text="{Binding Model.Manifacturer}" Grid.Column="1"/>
+				<TextBlock TextWrapping="Wrap" Grid.Row="1"><Run Text="Name"/></TextBlock>
+				<TextBox TextWrapping="Wrap" Text="{Binding Model.RailName}" Grid.Row="1" Grid.Column="1" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
+			</Grid>
+		</GroupBox>
+		<GroupBox Header="Gates" Grid.Row="1" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">
+			<Grid>
+				<DataGrid ItemsSource="{Binding Model.Gates}" SelectionMode="Single" CanUserSortColumns="False" Height="10" Margin="35,-54,-35,0" VerticalAlignment="Top">
+					<DataGrid.Columns>
+						<DataGridTextColumn/>
+					</DataGrid.Columns>
+				</DataGrid>
+			</Grid>
+		</GroupBox>
+		<GroupBox Header="Pathes" Grid.Row="2">
+			<DataGrid SelectionMode="Single" ItemsSource="{Binding PathViewModels}">
+				<DataGrid.Columns>
+					<DataGridTemplateColumn CellStyle="{DynamicResource EditButtonTemplate}"/>
+					<DataGridTextColumn Binding="{Binding GateStart}" Header="from"/>
+					<DataGridTextColumn Binding="{Binding GateEnd}" Header="to"/>
+					<DataGridCheckBoxColumn Binding="{Binding IsStraight}" Header="IsStraight" IsReadOnly="True"/>
+					<DataGridTextColumn Binding="{Binding StraightLength}" Header="Len"/>
+					<DataGridTextColumn Binding="{Binding Radius}" Header="radius"/>
+					<DataGridTextColumn Binding="{Binding Angle}" Header="angle"/>
+				</DataGrid.Columns>
+			</DataGrid>
+		</GroupBox>
+	</Grid>
+</UserControl>

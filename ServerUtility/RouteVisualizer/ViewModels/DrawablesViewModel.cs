@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows;
 
 using Livet;
 using Livet.Command;
@@ -15,7 +18,7 @@ using RouteVisualizer.Models;
 
 namespace RouteVisualizer.ViewModels
 {
-    public class MainWindowViewModel : ViewModel
+    public class DrawablesViewModel : ViewModel
     {
         /*コマンド、プロパティの定義にはそれぞれ 
          * 
@@ -42,13 +45,30 @@ namespace RouteVisualizer.ViewModels
          * 原因となりやすく推奨できません。ViewModelHelperの各静的メソッドの利用を検討してください。
          */
 
-        public DrawablesViewModel dwViewModel
+        public ObservableCollection<IDrawable> Drawables { get; private set; }
+        public Size DrawingSize { get; set; }
+
+        public DrawablesViewModel()
+            : base()
+        {
+            this.Drawables = new ObservableCollection<IDrawable>();
+        }
+
+        public virtual Brush ConbinedBrush
         {
             get
             {
-                return new DrawablesViewModel()
+                var drawables = this.Drawables.ToList();
+                var group = new DrawingGroup();
+                
+                foreach (var d in drawables)
                 {
-                };
+                    group.Children.Add(d.CurrentDrawing);
+                }
+
+                var b = new DrawingBrush(group);
+
+                return b;
             }
         }
 

@@ -4,8 +4,11 @@ using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Windows;
+using System.Data.Entity;
 
 using Livet;
+using RouteVisualizer.Properties;
+using RouteVisualizer.EF;
 
 namespace RouteVisualizer
 {
@@ -18,6 +21,10 @@ namespace RouteVisualizer
         {
             DispatcherHelper.UIDispatcher = Dispatcher;
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
+            //todo: avoid global setting
+            Database.DefaultConnectionFactory = new System.Data.Entity.Infrastructure.SqlCeConnectionFactory("System.Data.SqlServerCe.4.0");
+
+            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<ModelingDatabase>());
         }
 
         //集約エラーハンドラ
@@ -32,6 +39,11 @@ namespace RouteVisualizer
                 MessageBoxImage.Error);
 
             Environment.Exit(1);
+        }
+
+        internal static Settings Settings
+        {
+            get { return Settings; }
         }
     }
 }

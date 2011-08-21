@@ -183,7 +183,7 @@ namespace SensorLibrary
         public T CopyFromData<T>()
             where T : IPacketDeviceData
         {
-            return this.Data.ToObject<T>(0);
+            return this.Data.ToObject<T>();
         }
 
         public override string ToString()

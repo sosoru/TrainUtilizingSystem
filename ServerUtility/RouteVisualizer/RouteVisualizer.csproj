@@ -51,6 +51,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\EntityFramework.4.1.10715.0\lib\EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="Livet, Version=0.95.2011.517, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>InfrastructureAssemblies\Livet.dll</HintPath>
@@ -60,7 +64,9 @@
       <HintPath>InfrastructureAssemblies\Microsoft.Expression.Interactions.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Reactive, Version=1.1.10621.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Windows.Interactivity">
       <SpecificVersion>False</SpecificVersion>
@@ -83,6 +89,48 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="RailEditor\ViewModels\PathDataViewModel.cs" />
+    <Compile Include="RailEditor\ViewModels\RailDataViewModel.cs" />
+    <Compile Include="RailEditor\ViewModels\RailEditorViewModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RailEditor\ViewModels\WindowCreater.cs" />
+    <Compile Include="RailEditor\Views\PathDataView.xaml.cs">
+      <DependentUpon>PathDataView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="RailEditor\Views\RailDataView.xaml.cs">
+      <DependentUpon>RailDataView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="RailEditor\Views\RailEditorWindow.xaml.cs">
+      <DependentUpon>RailEditorWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="RailEditor\Views\SettingWindow.xaml.cs">
+      <DependentUpon>SettingWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\ModeledViewModel.cs" />
+    <Compile Include="Views\SettingWindow.xaml.cs">
+      <DependentUpon>SettingWindow.xaml</DependentUpon>
+    </Compile>
+    <Page Include="RailEditor\Views\PathDataView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="RailEditor\Views\RailDataView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="RailEditor\Views\RailEditorWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="RailEditor\Views\SettingWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\DrawablesView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -91,17 +139,26 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="EF\ModelingDatabase.cs" />
+    <Compile Include="EF\PocoData.cs" />
     <Compile Include="Models\BasicInterfaces.cs" />
     <Compile Include="Models\Model.cs" />
     <Compile Include="Models\PysicalPath.cs" />
     <Compile Include="Models\Rail.cs" />
     <Compile Include="Models\RainConnection.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
-    <Compile Include="ViewModels\RailCanvasViewModel.cs" />
+    <Compile Include="ViewModels\DrawablesViewModel.cs" />
+    <Compile Include="Views\DrawablesView.xaml.cs">
+      <DependentUpon>DrawablesView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\SettingWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -121,7 +178,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="app.config" />
     <None Include="Models\ClassDiagram1.cd" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -157,6 +216,15 @@
       <ProductName>Windows インストーラー 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="RailEditor\Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SensorLibrary\SensorLibrary.csproj">
+      <Project>{160A1D77-985C-4DDD-BB20-46C8EBADF62F}</Project>
+      <Name>SensorLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
