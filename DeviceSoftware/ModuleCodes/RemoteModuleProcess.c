@@ -30,8 +30,8 @@ HRESULT DequeueRemotingPending(SpiPacket ** ppacket, DeviceID ** pid);
 HRESULT SendRemoteDevice(DeviceID * pid, BYTE mode, PMODULE_DATA data);
 
 #define IS_PENDING_FULL ((pendingFirstInd <= pendingLastInd) \
-							? pendingLastInd - pendingFirstInd >= (PENDING_COUNT-1) \
-							: (pendingLastInd + PENDING_COUNT) - pendingFirstInd >= (PENDING_COUNT-1))
+							? (pendingLastInd - pendingFirstInd >= (PENDING_COUNT-1)) \
+							: ((pendingLastInd + PENDING_COUNT) - pendingFirstInd >= (PENDING_COUNT-1)))
 							
 HRESULT EnqueueRemotingPending(SpiPacket ** ppacket, DeviceID * pid)
 {
@@ -40,11 +40,11 @@ HRESULT EnqueueRemotingPending(SpiPacket ** ppacket, DeviceID * pid)
 	if(IS_PENDING_FULL)
 		return E_FAIL;
 		
-	pcnt = &pendingList[pendingLastInd++];
+	pcnt = &pendingList[pendingLastInd];
 	*ppacket = &(pcnt->Packet);
 	memcpy((void*)&(pcnt->InternalID), (void*)pid, sizeof(DeviceID));
 	
-	if(pendingLastInd >= PENDING_COUNT)
+	if(++pendingLastInd >= PENDING_COUNT)
 		pendingLastInd = 0;
 	
 	return S_OK;
@@ -57,10 +57,11 @@ HRESULT DequeueRemotingPending(SpiPacket ** ppacket, DeviceID ** pid)
 	if(pendingFirstInd == pendingLastInd)
 		return E_FAIL; //pendingList is empty
 	
-	pcnt = &pendingList[pendingFirstInd++];
+	pcnt = &pendingList[pendingFirstInd];
 	*ppacket = &(pcnt->Packet);
 	*pid = &(pcnt->InternalID);
-	if(pendingFirstInd >= PENDING_COUNT)
+	
+	if(++pendingFirstInd >= PENDING_COUNT)
 		pendingFirstInd = 0;
 	
 	return S_OK;
@@ -93,8 +94,8 @@ HRESULT SendRemoteDevice(DeviceID * pid, BYTE mode, PMODULE_DATA data)
 	SpiPacket * packet;
 	RemoteModuleSavedState saved;
 	
-	ReadInnerRemoteModuleSavedState(pid->ModulePart, pid->InternalAddr, &saved);
-	
+	ReadInnerRemoteModuleSavedState(pid->ModuleAddr, pid->InternalAddr, &saved);
+
 	if(saved.remid.ParentPart == g_mbState.ParentId)
 		return E_FAIL;
 	
@@ -140,14 +141,17 @@ HRESULT CreateMessageFromReceived(SpiPacket * ppacket, DeviceID * pid, PMODULE_D
 		return E_FAIL; //invalid calling
 		
 	memcpy((void*)pid, (void*)&g_RemotingPendingIntDevID, (size_t)sizeof(DeviceID));
-	memcpy((void*)data, (void*)ppacket->data, (size_t)sizeof(MODULE_DATA));
+	memcpy((void*)data, (void*)ppacket->data, (size_t)SPI_DATASIZE);
 	
 	return S_OK;
 }
 
 HRESULT CreateRemoteModuleState(DeviceID * pid, PMODULE_DATA data)
 {
-	HRESULT res = (pid->InternalAddr >= REMOTE_MODULE_INNERCOUNT) ? REPEAT_TERMINATE : 0;
+	HRESULT res=0;// = (pid->InternalAddr >= REMOTE_MODULE_INNERCOUNT) ? REPEAT_TERMINATE : 0;
+	
+	if(pid->InternalAddr >= REMOTE_MODULE_INNERCOUNT)
+		return E_FAIL;
 	
 	PacketSetting = TRUE;	
 	
@@ -161,10 +165,13 @@ HRESULT CreateRemoteModuleState(DeviceID * pid, PMODULE_DATA data)
 		res |= S_OK;
 	}
 	else
+	{
 		res |= SendRemoteDevice(pid, MODE_CREATE, data);
+	}
 		
 	PacketSetting = FALSE;
 	return res;
+	//return E_FAIL | REPEAT_TERMINATE;
 }
 
 HRESULT StoreRemoteModuleState(DeviceID * pid, PMODULE_DATA data)

@@ -4,10 +4,14 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:SensorLivetView_ViewModels_Controls="clr-namespace:SensorLivetView.ViewModels.Controls"
+	xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
 	mc:Ignorable="d"
 	x:Class="SensorLivetView.RemoteModuleView"
 	x:Name="UserControl"
 	d:DesignWidth="640" d:DesignHeight="480">
+	<UserControl.DataContext>
+		<SensorLivetView_ViewModels_Controls:RemoteModuleViewModel/>
+	</UserControl.DataContext>
 
 	<Border BorderBrush="Black">
 		<Grid x:Name="LayoutRoot">
@@ -21,7 +25,13 @@
 			<ColumnDefinition Width="100"/>
 			<ColumnDefinition Width="100"/>
 		</Grid.ColumnDefinitions>
-		<CheckBox Content="Hold" Margin="0,0,26.126,6" d:LayoutOverrides="Width, Height" Grid.ColumnSpan="2" IsChecked="{Binding Model.IsHold, Mode=TwoWay}"/>
+		<CheckBox Content="Hold" Margin="0,0,26.126,6" d:LayoutOverrides="Width, Height" Grid.ColumnSpan="2" IsChecked="{Binding Model.IsHold, Mode=TwoWay}">
+			<i:Interaction.Triggers>
+				<i:EventTrigger EventName="Unchecked">
+					<i:InvokeCommandAction Command="{Binding SendPacketCommand, Mode=OneWay}"/>
+				</i:EventTrigger>
+			</i:Interaction.Triggers>
+		</CheckBox>
 			<TextBlock Grid.Column="0" Grid.Row="1" TextWrapping="Wrap"><Run Text="InDeviceAddr"/></TextBlock>
 			<TextBlock Grid.Column="0" Grid.Row="2" TextWrapping="Wrap" Text="ModuleAddr"/>
 			<TextBlock TextWrapping="Wrap" Text="InternalAddr" Grid.Row="3"/>

@@ -48,6 +48,7 @@ HRESULT StoreMotherBoardSavedState(DeviceID* pid, PMODULE_DATA buf)
 	BYTE i;
 	DeviceID mid;
 	MotherBoardState* pcurrent = (MotherBoardState*)buf;
+	MotherBoardSavedState saved;
 			
 	g_mbState.ParentId = pcurrent->ParentId;
 	memcpy((void*)&mid, (void*)pid, sizeof(DeviceID));
@@ -66,7 +67,12 @@ HRESULT StoreMotherBoardSavedState(DeviceID* pid, PMODULE_DATA buf)
 			WRITE_MBSTATE_MODULETYPE(g_mbState, i, curtype);
 		}
 	}
-	WriteMotherBoardSavedState(0, &g_mbState);
+	
+	saved.ParentId = pcurrent->ParentId;
+	memcpy((void*)saved.ModuleType, (void*)pcurrent->ModuleType, COUNT_MBSTATE_MODULETYPE);
+	WriteMotherBoardSavedState(&saved);
+	
+	memcpy((void*)&g_mbState, (void*)pcurrent, sizeof(g_mbState));
 	
 	return S_OK;
 }

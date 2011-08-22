@@ -10,12 +10,18 @@ unsigned char ReadEEPROM(unsigned char address){
 
 void EEPROMcpy(unsigned char * dest, unsigned char srcaddr, unsigned char len )
 {
+	unsigned char conCache = INTCON;
 	unsigned char i;
 	
-	for(i = 0; i < len; i++)
+	//INTCONbits.GIE = 0;
+	INTCONbits.PEIE = 0;
+	
+	for(i = 0; i < len; ++i)
 	{
 		*(dest+i) = ReadEEPROM(srcaddr+i);
 	}
+	
+	INTCON = conCache;
 }
 
 void WriteEEPROM(unsigned char address,unsigned char data){

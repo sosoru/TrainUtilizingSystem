@@ -1,5 +1,7 @@
 #include <p18cxxx.h>
 #include "MonoDevice.h"
+#include "USB/usb.h"
+#include "USB/usb_function_generic.h"
 #include "../Headers/UsbPacket.h"
 #include <stdlib.h>
 #include <string.h>
@@ -12,6 +14,9 @@ HRESULT AddPacketUSB(DeviceID* pid, BYTE moduleType, char * data)
 {
 	DevicePacket * ppack;
 	BYTE peieCache = INTCONbits.PEIE;
+	
+	if(USBDeviceState < CONFIGURED_STATE)
+		return E_FAIL;
 	
 	INTCONbits.PEIE = 0; // disable low-priority interrupts
 
@@ -38,7 +43,7 @@ HRESULT SendPacketUSB()
 	BYTE distanceBufPos;
 	BYTE peieCache = INTCONbits.PEIE, gieCache = INTCONbits.GIE;
 		
-	if(USBHandleBusy(USBGenericInHandle))
+	if(USBHandleBusy(USBGenericInHandle) && (USBDeviceState < CONFIGURED_STATE))
 		return E_FAIL;
 
 	if(g_PacketBufferPos >= g_PacketTransfarPos)
@@ -76,7 +81,7 @@ HRESULT ReceivingProcessUSB()
 	BYTE peieCache = INTCONbits.PEIE, gieCache = INTCONbits.GIE;
 
     //OUTPacket contains data the host sent
-    if(USBHandleBusy(USBGenericOutHandle))		//Check if the endpoint has received any data from the host.
+    if(USBHandleBusy(USBGenericOutHandle) && (USBDeviceState < CONFIGURED_STATE))	//Check if the endpoint has received any data from the host.
     	return E_FAIL;
 	
 	INTCONbits.GIE = 0; //disable high-priority interrupts

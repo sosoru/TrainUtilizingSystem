@@ -37,7 +37,7 @@ typedef union tag_RemoteModuleSavedState
 	{
 		DeviceID remid;
 	};
-	BYTE data[2];
+	BYTE data[sizeof(DeviceID)];
 } RemoteModuleSavedState;
 
 #endif
