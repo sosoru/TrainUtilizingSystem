@@ -10,7 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace RouteVisualizer.View
+namespace RouteVisualizer.RailEditor.View
 {
 	/// <summary>
 	/// SettingWindowxaml.xaml の相互作用ロジック

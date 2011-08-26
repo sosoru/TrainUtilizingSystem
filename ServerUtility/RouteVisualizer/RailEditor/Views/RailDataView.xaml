@@ -24,7 +24,6 @@
 		</Style>
 	</UserControl.Resources>
 
-
 	<Grid x:Name="LayoutRoot" Background="White">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>
@@ -52,20 +51,20 @@
 		</GroupBox>
 		<GroupBox Header="Gates" Grid.Row="1" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">
 			<Grid>
-				<DataGrid ItemsSource="{Binding Model.Gates}" SelectionMode="Single" CanUserSortColumns="False" Height="10" Margin="35,-54,-35,0" VerticalAlignment="Top">
+				<DataGrid x:Name="dataGrid" SelectionMode="Single"  ItemsSource="{Binding gates}" AutoGenerateColumns="False">
 					<DataGrid.Columns>
-						<DataGridTextColumn/>
+						<DataGridTextColumn Binding="{Binding GateName}" Header="GateName"/>
 					</DataGrid.Columns>
 				</DataGrid>
 			</Grid>
 		</GroupBox>
 		<GroupBox Header="Pathes" Grid.Row="2">
-			<DataGrid SelectionMode="Single" ItemsSource="{Binding PathViewModels}">
+			<DataGrid SelectionMode="Single" ItemsSource="{Binding pathvms}" AutoGenerateColumns="False">
 				<DataGrid.Columns>
 					<DataGridTemplateColumn CellStyle="{DynamicResource EditButtonTemplate}"/>
-					<DataGridTextColumn Binding="{Binding GateStart}" Header="from"/>
-					<DataGridTextColumn Binding="{Binding GateEnd}" Header="to"/>
-					<DataGridCheckBoxColumn Binding="{Binding IsStraight}" Header="IsStraight" IsReadOnly="True"/>
+					<DataGridComboBoxColumn ItemsSource="{Binding ItemsSource, ElementName=dataGrid}" Header="from" DisplayMemberPath="GateName" SelectedItemBinding="{Binding GateStart}"/>
+					<DataGridComboBoxColumn Header="to" ItemsSource="{Binding ElementName=dataGrid, Mode=OneWay}" DisplayMemberPath="GateName" SelectedItemBinding="{Binding GateEnd}"/>
+					<DataGridCheckBoxColumn Binding="{Binding IsStraight}" Header="IsStraight"/>
 					<DataGridTextColumn Binding="{Binding StraightLength}" Header="Len"/>
 					<DataGridTextColumn Binding="{Binding Radius}" Header="radius"/>
 					<DataGridTextColumn Binding="{Binding Angle}" Header="angle"/>

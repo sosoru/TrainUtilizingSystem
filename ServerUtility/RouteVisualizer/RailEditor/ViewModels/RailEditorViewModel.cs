@@ -45,10 +45,28 @@ namespace RouteVisualizer.RailEditor.ViewModels
          * 原因となりやすく推奨できません。ViewModelHelperの各静的メソッドの利用を検討してください。
          */
 
-        public ModelingDatabase modeling { get;set;}
+        private ModelingDatabase _modeling;
+        public ModelingDatabase modeling
+        {
+            get
+            {
+                return this._modeling;
+            }
+            set
+            {
+                this._modeling = value;
+                ObservableRailDatas.Context = this._modeling.Rails;
+                ObservablePathDatas.Context = this._modeling.Pathes;
+            }
+        }
+
+        public ObservableWrappingCollection<IDbSet<RailData>, RailData> ObservableRailDatas { get; private set; }
+        public ObservableWrappingCollection<IDbSet<PathData>, PathData> ObservablePathDatas { get; private set; }
 
         public RailEditorViewModel()
         {
+            this.ObservableRailDatas = new ObservableWrappingCollection<IDbSet<RailData>, RailData>();
+            this.ObservablePathDatas = new ObservableWrappingCollection<IDbSet<PathData>, PathData>();
         }
 
         #region RemoveRailCommand
@@ -73,6 +91,43 @@ namespace RouteVisualizer.RailEditor.ViewModels
         {
             this.modeling.Rails.Remove(parameter);
             this.modeling.SaveChanges();
+            this.RaisePropertyChanged("");
+
+        }
+        #endregion
+
+
+        #region CreateRailCommand
+        DelegateCommand _CreateRailCommand;
+
+        public DelegateCommand CreateRailCommand
+        {
+            get
+            {
+                if (_CreateRailCommand == null)
+                    _CreateRailCommand = new DelegateCommand(CreateRail);
+                return _CreateRailCommand;
+            }
+        }
+
+        private void CreateRail()
+        {
+            var newname = "NewRail";
+            var cnt= this.modeling.Rails.Where(r => r.RailName.Contains(newname)).Count();
+            var rail = new RailData()
+            {
+                Manifacturer = "new",
+                RailName = newname + ((cnt > 0) ? cnt.ToString() : ""),
+            };
+            var rvm = new RailDataViewModel()
+            {
+                Model = rail,
+            };
+
+            this.ObservableRailDatas.Add(rail);
+            this.modeling.SaveChanges();
+
+            this.RaisePropertyChanged("");
         }
         #endregion
 
@@ -97,11 +152,13 @@ namespace RouteVisualizer.RailEditor.ViewModels
 
         private void AddRail(RailData parameter)
         {
-            this.modeling.Rails.Add(parameter);
+            this.ObservableRailDatas.Add(parameter);
             this.modeling.SaveChanges();
+
+            this.RaisePropertyChanged("");
         }
         #endregion
-      
+
 
 
         #region SaveCommand
@@ -120,6 +177,7 @@ namespace RouteVisualizer.RailEditor.ViewModels
         private void Save()
         {
             this.modeling.SaveChanges();
+            //this.RaisePropertyChanged("");
         }
         #endregion
 
@@ -144,8 +202,10 @@ namespace RouteVisualizer.RailEditor.ViewModels
 
         private void RemovePath(PathData parameter)
         {
-            this.modeling.Pathes.Remove(parameter);
+            this.ObservablePathDatas.Remove(parameter);
             this.modeling.SaveChanges();
+            this.RaisePropertyChanged("");
+
         }
         #endregion
 
@@ -170,11 +230,13 @@ namespace RouteVisualizer.RailEditor.ViewModels
 
         private void AddPath(PathData parameter)
         {
-            this.modeling.Pathes.Add(parameter);
+            this.ObservablePathDatas.Add(parameter);
             this.modeling.SaveChanges();
+            this.RaisePropertyChanged("");
+
         }
         #endregion
-      
+
 
     }
 }

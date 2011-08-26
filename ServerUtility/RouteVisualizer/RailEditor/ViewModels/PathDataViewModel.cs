@@ -8,7 +8,7 @@ using System.Windows;
 
 using SensorLibrary;
 using System.Data.Entity;
-using RouteVisualizer.View;
+using RouteVisualizer.Views;
 using RouteVisualizer.ViewModels;
 using RouteVisualizer.EF;
 
@@ -51,26 +51,184 @@ namespace RouteVisualizer.RailEditor.ViewModels
          */
 
         public PathDataViewModel()
-            :base()
+            : base()
         {
-            this.AvailableGates = new ObservableCollection<string>();
+            this.AvailableGates = new ObservableCollection<GateDataViewModel>();
         }
 
         public RailDataViewModel ParentRail { get; set; }
 
         public bool IsStraight
         {
-            get { return this.Model.IsStraight; }
-            set { this.Model.IsStraight = value; }
+            get
+            {
+                if (this.Model != null)
+                    return this.Model.IsStraight;
+                else
+                    return false;
+            }
+            set
+            {
+                if (this.Model != null)
+                {
+                    this.Model.IsStraight = value;
+                    RaisePropertyChanged("IsStraight");
+                }
+            }
         }
 
         public bool IsCurved
         {
-            get { return !this.Model.IsStraight; }
-            set { this.Model.IsStraight = !value; }
+            get
+            {
+                if (this.Model != null)
+                    return !this.Model.IsStraight;
+                else
+                    return true;
+            }
+            set
+            {
+                if (this.Model != null)
+                {
+                    this.Model.IsStraight = !value;
+                    RaisePropertyChanged("IsCurved");
+                }
+            }
         }
 
-        public ObservableCollection<string> AvailableGates { get; set; }
+        private GateDataViewModel _cache_gateStart;
+        public GateDataViewModel GateStart
+        {
+            get
+            {
+                if (this.Model != null)
+                {
+                    if (_cache_gateStart == null)
+                        _cache_gateStart = new GateDataViewModel();
+
+                    _cache_gateStart.Model = this.Model.GateStart;
+
+                    return this._cache_gateStart;
+                }
+                else
+                    return new GateDataViewModel();
+            }
+            set
+            {
+                if (this.Model != null)
+                {
+                    if (value == null)
+                        this.Model.GateStart = null;
+                    else
+                    {
+                        this._cache_gateStart = value;
+                        this.Model.GateStart = value.Model;
+                    }
+                    //RaisePropertyChanged("GateStart");
+                    RaisePropertyChanged("");
+                }
+            }
+        }
+
+        private GateDataViewModel _cache_gateEnd;
+        public GateDataViewModel GateEnd
+        {
+            get
+            {
+                if (this.Model != null)
+                {
+                    if (_cache_gateEnd == null)
+                        this._cache_gateEnd = new GateDataViewModel();
+
+                    this._cache_gateEnd.Model = this.Model.GateEnd;
+
+                    return this._cache_gateEnd;
+                }
+                else
+                    return new GateDataViewModel();
+
+            }
+            set
+            {
+                if (this.Model != null)
+                {
+                    if (value == null)
+                        this.Model.GateEnd = null;
+                    else
+                    {
+                        this._cache_gateEnd = value;
+                        this.Model.GateEnd = value.Model;
+                    }
+                    //RaisePropertyChanged("GateEnd");
+                    RaisePropertyChanged("");
+                }
+            }
+        }
+
+        public double StraightLength
+        {
+            get
+            {
+                if (this.Model != null)
+                {
+                    return this.Model.StraightLength;
+                }
+                else
+                    return double.NaN;
+            }
+            set
+            {
+                if (this.Model != null)
+                {
+                    this.Model.StraightLength = value;
+                    RaisePropertyChanged("StraightLength");
+                }
+            }
+        }
+
+        public double Radius
+        {
+            get
+            {
+                if (this.Model != null)
+                {
+                    return this.Model.Radius;
+                }
+                else
+                    return double.NaN;
+            }
+            set
+            {
+                if (this.Model != null)
+                {
+                    this.Model.Radius = value;
+                    RaisePropertyChanged("Radius");
+                }
+            }
+        }
+
+        public double Angle
+        {
+            get
+            {
+                if (this.Model != null)
+                {
+                    return this.Model.Angle;
+                }
+                else
+                    return double.NaN;
+            }
+            set
+            {
+                if (this.Model != null)
+                {
+                    this.Model.Angle = value;
+                    RaisePropertyChanged("Angle");
+                }
+            }
+        }
+
+        public ObservableCollection<GateDataViewModel> AvailableGates { get; set; }
 
 
     }

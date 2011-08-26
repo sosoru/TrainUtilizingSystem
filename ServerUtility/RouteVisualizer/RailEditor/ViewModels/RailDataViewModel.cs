@@ -8,7 +8,7 @@ using System.Windows;
 
 using SensorLibrary;
 using System.Data.Entity;
-using RouteVisualizer.View;
+using RouteVisualizer.Views;
 using RouteVisualizer.ViewModels;
 using RouteVisualizer.EF;
 
@@ -50,13 +50,16 @@ namespace RouteVisualizer.RailEditor.ViewModels
          * 原因となりやすく推奨できません。ViewModelHelperの各静的メソッドの利用を検討してください。
          */
 
-        public ObservableCollection<PathDataViewModel> pathvms = new ObservableCollection<PathDataViewModel>();
-        public ObservableCollection<string> gates = new ObservableCollection<string>();
+        public ObservableCollection<PathDataViewModel> pathvms { get; private set; }
+        public ObservableCollection<GateDataViewModel> gates { get; private set; }
 
 
         public RailDataViewModel()
             : base()
         {
+            pathvms = new ObservableCollection<PathDataViewModel>();
+            gates = new ObservableCollection<GateDataViewModel>();
+
             this.pathvms.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(pathvms_CollectionChanged);
             this.ModelChanged += this.model_Changed;
         }
@@ -67,6 +70,13 @@ namespace RouteVisualizer.RailEditor.ViewModels
             {
                 foreach (var vm in e.NewItems.Cast<PathDataViewModel>())
                 {
+                    if (vm.Model == null)
+                    {
+                        vm.Model = new PathData()
+                        {
+                            RailID = this.Model.ID,
+                        };
+                    }
                     vm.AvailableGates = this.gates;
                     vm.ParentRail = this;
 
@@ -88,10 +98,21 @@ namespace RouteVisualizer.RailEditor.ViewModels
 
         private void model_Changed(object sender, ModelChangedArgs<RailData> e)
         {
-            if (e.current != null && e.current.Pathes != null)
+            if (e.current != null)
             {
                 this.pathvms.Clear();
                 this.gates.Clear();
+
+                if (e.current.Pathes == null)
+                {
+                    e.current.Pathes = new List<PathData>();
+                }
+
+                if (e.current.Gates == null)
+                {
+                    e.current.Gates = new List<GateData>();
+                }
+
                 foreach (var p in e.current.Pathes)
                 {
                     var pvm = new PathDataViewModel()
@@ -101,23 +122,15 @@ namespace RouteVisualizer.RailEditor.ViewModels
                         AvailableGates = this.gates,
                     };
 
-                    if (!this.gates.Contains(p.GateStart))
-                        this.gates.Add(p.GateStart);
+                    if (!this.gates.Any(vm => vm.Model == p.GateStart))
+                        this.gates.Add(new GateDataViewModel() { Model = p.GateStart });
 
-                    if (!this.gates.Contains(p.GateEnd))
-                        this.gates.Add(p.GateEnd);
+                    if (!this.gates.Any(vm => vm.Model == p.GateEnd))
+                        this.gates.Add(new GateDataViewModel() { Model = p.GateEnd });
 
                     this.pathvms.Add(pvm);
                 }
 
-            }
-        }
-
-        public ObservableCollection<PathDataViewModel> PathViewModels
-        {
-            get
-            {
-                return this.pathvms;
             }
         }
 
@@ -182,6 +195,6 @@ namespace RouteVisualizer.RailEditor.ViewModels
             this.pathvms.Remove(parameter);
         }
         #endregion
-      
+
     }
 }

@@ -89,11 +89,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="EF\ObservableWrappingCollection.cs" />
+    <Compile Include="RailEditor\ViewModels\GateDataViewModel.cs" />
     <Compile Include="RailEditor\ViewModels\PathDataViewModel.cs" />
     <Compile Include="RailEditor\ViewModels\RailDataViewModel.cs" />
     <Compile Include="RailEditor\ViewModels\RailEditorViewModel.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="RailEditor\ViewModels\RailEditorWindowViewModel.cs" />
     <Compile Include="RailEditor\ViewModels\WindowCreater.cs" />
     <Compile Include="RailEditor\Views\PathDataView.xaml.cs">
       <DependentUpon>PathDataView.xaml</DependentUpon>

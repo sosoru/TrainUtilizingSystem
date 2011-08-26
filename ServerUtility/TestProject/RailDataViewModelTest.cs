@@ -79,7 +79,7 @@ namespace TestProject
                     Manifacturer = "test",
                     RailName = "R-999",
                     Pathes = new List<PathData>(),
-                    Gates = new List<string>(),
+                    Gates = new List<GateData>(),
                 };
                 var vm = new RailDataViewModel()
                 {
@@ -101,7 +101,7 @@ namespace TestProject
                 Model = pathdata,
             };
 
-            vm.PathViewModels.Add(pathvm);
+            vm.pathvms.Add(pathvm);
 
             Assert.IsTrue(vm.Model.Pathes.Contains(pathdata));
 
@@ -121,26 +121,29 @@ namespace TestProject
                 Model = pathdata,
             };
 
-            vm.PathViewModels.Add(pathvm);
+            vm.pathvms.Add(pathvm);
 
-            var gatename = "testgate";
-            vm.gates.Add(gatename);
+            var gatem = new GateData() { GateName = "testgate" };
+            var gate = new GateDataViewModel { Model = gatem };
+            vm.gates.Add(gate);
 
-            Assert.IsTrue(pathvm.AvailableGates.Contains(gatename));
+            Assert.IsTrue(pathvm.AvailableGates.Contains(gate));
         }
 
         [TestMethod()]
         public void gatesearchTest()
         {
+            var stagate = new GateData { GateName = "gatestart" };
+            var endgate =  new GateData { GateName = "gateend" };
             var pathdata = new PathData()
             {
-                GateStart = "start",
-                GateEnd = "end",
+                GateStart = stagate,
+                GateEnd = endgate
             };
             var raildata = new RailData()
             {
                 Pathes = new List<PathData>(),
-                Gates = new List<string>(),
+                Gates = new List<GateData>(),
             };
             raildata.Pathes.Add(pathdata);
 

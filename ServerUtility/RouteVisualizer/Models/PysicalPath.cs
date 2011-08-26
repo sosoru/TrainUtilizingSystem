@@ -29,12 +29,6 @@ namespace RouteVisualizer.Models
             get { throw new NotImplementedException(); }
         }
 
-        public Rail OwnerRail
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public Rail OwnerRail { get; set; }
     }
 }

@@ -1,7 +1,7 @@
 ﻿<Window
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	x:Class="RouteVisualizer.View.SettingWindow"
+	x:Class="RouteVisualizer.RailEditor.View.SettingWindow"
 	x:Name="Window"
 	Title="SettingWindow"
 	Width="640" Height="480">

@@ -87,6 +87,7 @@
     <Compile Include="PointModuleStateTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RailDataViewModelTest.cs" />
+    <Compile Include="RailEditorViewModelTest.cs" />
     <Compile Include="TestPacketProvider.cs" />
     <Compile Include="TrainControllerStateTest.cs" />
     <Compile Include="TrainSensorDataTest.cs" />
@@ -122,12 +123,11 @@
       <Name>SurfaceQueueInteropHelper</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="テストの参照\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="app.config" />
     <None Include="Signification.pfx" />
+    <Shadow Include="テストの参照\RouteVisualizer.accessor" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

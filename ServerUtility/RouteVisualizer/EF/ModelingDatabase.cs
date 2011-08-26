@@ -18,7 +18,7 @@ namespace RouteVisualizer.EF
         {
         }
 
-        public IDbSet<RailData> Rails;
-        public IDbSet<PathData> Pathes;
+        public IDbSet<RailData> Rails { get; set; }
+        public IDbSet<PathData> Pathes { get; set; }
     }
 }
