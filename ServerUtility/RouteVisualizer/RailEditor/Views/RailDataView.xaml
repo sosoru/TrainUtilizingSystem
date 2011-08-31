@@ -6,11 +6,13 @@
 	xmlns:RouteVisualizer_EF="clr-namespace:RouteVisualizer.EF"
 	xmlns:RouteVisualizer_RailEditor_ViewModels="clr-namespace:RouteVisualizer.RailEditor.ViewModels"
 	xmlns:local="clr-namespace:RouteVisualizer"
+	xmlns:System_Collections="clr-namespace:System.Collections;assembly=mscorlib"
 	mc:Ignorable="d"
 	x:Class="RouteVisualizer.RailDataView"
 	x:Name="UserControl"
-	d:DesignWidth="640" d:DesignHeight="480">
+	d:DesignWidth="640" d:DesignHeight="480" DataContextChanged="UserControl_DataContextChanged">
 	<UserControl.Resources>
+		<local:GateStoringCollection x:Key="GateStoringCollectionDataSource" d:IsDataSource="True"/>
 		<Style x:Key="EditButtonTemplate" TargetType="{x:Type DataGridCell}">
 			<Setter Property="Template">
 				<Setter.Value>
@@ -24,7 +26,7 @@
 		</Style>
 	</UserControl.Resources>
 
-	<Grid x:Name="LayoutRoot" Background="White">
+	<Grid x:Name="LayoutRoot" Background="White" >
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="Auto"/>
@@ -62,8 +64,8 @@
 			<DataGrid SelectionMode="Single" ItemsSource="{Binding pathvms}" AutoGenerateColumns="False">
 				<DataGrid.Columns>
 					<DataGridTemplateColumn CellStyle="{DynamicResource EditButtonTemplate}"/>
-					<DataGridComboBoxColumn ItemsSource="{Binding ItemsSource, ElementName=dataGrid}" Header="from" DisplayMemberPath="GateName" SelectedItemBinding="{Binding GateStart}"/>
-					<DataGridComboBoxColumn Header="to" ItemsSource="{Binding ElementName=dataGrid, Mode=OneWay}" DisplayMemberPath="GateName" SelectedItemBinding="{Binding GateEnd}"/>
+					<DataGridComboBoxColumn ItemsSource="{Binding Source={StaticResource GateStoringCollectionDataSource},  Mode=OneWay}" Header="from" SelectedValueBinding="{Binding GateStart}" SortMemberPath="GateStart" TextBinding="{Binding GateName}"/>
+					<DataGridComboBoxColumn Header="to" ItemsSource="{Binding Source={StaticResource GateStoringCollectionDataSource}, Mode=OneWay}" DisplayMemberPath="GateName" SelectedItemBinding="{Binding GateEnd}"/>
 					<DataGridCheckBoxColumn Binding="{Binding IsStraight}" Header="IsStraight"/>
 					<DataGridTextColumn Binding="{Binding StraightLength}" Header="Len"/>
 					<DataGridTextColumn Binding="{Binding Radius}" Header="radius"/>

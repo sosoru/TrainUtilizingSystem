@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows;
+using System.Windows.Media;
+using RouteVisualizer;
 using RouteVisualizer.EF;
 
 namespace RouteVisualizer.Models
@@ -20,24 +23,41 @@ namespace RouteVisualizer.Models
             get { return this._baseData; }
             set
             {
+                this._baseData = value;
+
                 this._connectedPathes.Clear();
             }
         }
 
         private IList<IPath> _connectedPathes;
-        public IEnumerable<IPath> ConnectedPathes
+        public IList<IPath> ConnectedPathes
         {
             get { return this._connectedPathes; }
         }
 
-        public System.Windows.Media.Drawing CurrentDrawing
+        public Geometry CurrentGeometry
         {
-            get { throw new NotImplementedException(); }
+            get
+            {
+                var geo = new EllipseGeometry(new Rect(this.BasePosition, new Size(35.0, 35.0)));
+
+                return geo;
+            }
         }
 
-        public System.Windows.Rect Bound
+        public Rect Bound
         {
-            get { throw new NotImplementedException(); }
+            get
+            {
+                return new Rect(this.BasePosition, new Size(35.0, 35.0));
+            }
+        }
+
+        public Point BasePosition { get; set; }
+
+        public override string ToString()
+        {
+            return string.Format("Name : {0}", this.BaseData.GateName);
         }
     }
 }

@@ -14,7 +14,7 @@ namespace RouteVisualizer.EF
 
         public string Manifacturer { get; set; }
         public string RailName { get; set; }
-        public string BottomGate { get; set; }
+        public virtual GateData BottomGate { get; set; }
 
         public virtual ICollection<GateData> Gates { get; set; }
         

@@ -63,7 +63,7 @@ namespace RouteVisualizer.ViewModels
                 
                 foreach (var d in drawables)
                 {
-                    group.Children.Add(d.CurrentDrawing);
+                    //group.Children.Add(d.CurrentGeometry);
                 }
 
                 var b = new DrawingBrush(group);

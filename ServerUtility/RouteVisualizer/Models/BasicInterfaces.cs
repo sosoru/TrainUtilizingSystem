@@ -17,12 +17,12 @@ namespace RouteVisualizer.Models
 
     public interface IGate
     {
-        IEnumerable<IPath> ConnectedPathes { get; }
+        IList<IPath> ConnectedPathes { get; }
     }
 
     public interface IDrawable
     {
-        Drawing CurrentDrawing { get; }
+        Geometry CurrentGeometry { get; }
         Rect Bound { get; }
     }
 

@@ -90,6 +90,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="EF\ObservableWrappingCollection.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="RailEditor\ViewModels\GateDataViewModel.cs" />
     <Compile Include="RailEditor\ViewModels\PathDataViewModel.cs" />
     <Compile Include="RailEditor\ViewModels\RailDataViewModel.cs" />
@@ -148,7 +149,7 @@
     <Compile Include="Models\Model.cs" />
     <Compile Include="Models\PysicalPath.cs" />
     <Compile Include="Models\Rail.cs" />
-    <Compile Include="Models\RainConnection.cs" />
+    <Compile Include="Models\RailConnection.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\DrawablesViewModel.cs" />
     <Compile Include="Views\DrawablesView.xaml.cs">
