@@ -51,7 +51,7 @@ namespace SensorLibrary
         public static readonly IDeviceFactory<TrainSensor, TrainSensorState, TrainSensorData> TrainSensorFactory
             = new devfactint<TrainSensor, TrainSensorState, TrainSensorData>
             {
-                DeviceCreate = () => new TrainSensor(),
+                DeviceCreate = () => new MeisuringTrainSensor(),
                 DeviceStateCreate = () => new TrainSensorState(),
                 DeviceDataCreate = () => new TrainSensorData(),
                 ModuleType = ModuleTypeEnum.TrainSensor,

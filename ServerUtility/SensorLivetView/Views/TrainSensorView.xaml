@@ -5,20 +5,6 @@
         >
     <StackPanel x:Name="stackPanel" HorizontalAlignment="Left" VerticalAlignment="Top">
     	<i:Interaction.Triggers>
-    		<ei:PropertyChangedTrigger Binding="{Binding IsMeisuring}">
-    			<ei:ChangePropertyAction TargetObject="{Binding ElementName=voltageGraphView, Mode=OneWay}" PropertyName="Visibility">
-    				<ei:ChangePropertyAction.Value>
-    					<Visibility>Visible</Visibility>
-    				</ei:ChangePropertyAction.Value>
-    			</ei:ChangePropertyAction>
-    		</ei:PropertyChangedTrigger>
-    		<ei:PropertyChangedTrigger Binding="{Binding IsDetecting}">
-    			<ei:ChangePropertyAction TargetObject="{Binding ElementName=voltageGraphView, Mode=OneWay}" PropertyName="Visibility">
-    				<ei:ChangePropertyAction.Value>
-    					<Visibility>Collapsed</Visibility>
-    				</ei:ChangePropertyAction.Value>
-    			</ei:ChangePropertyAction>
-    		</ei:PropertyChangedTrigger>
     		<ei:PropertyChangedTrigger Binding="{Binding IsSensorDetected}">
     			<i:Interaction.Behaviors>
     				<ei:ConditionBehavior>
@@ -86,7 +72,7 @@
     	</StackPanel>
     	<Button Content="change meisuring" Command="{Binding ChangeMeisuringModeCommand, Mode=OneWay}"/>
     	<Button Content="change detecting" Command="{Binding ChangeDetectingModeCommand, Mode=OneWay}" CommandParameter="{Binding Text, ElementName=textBox}"/>
-    	<local:VoltageGraphView x:Name="voltageGraphView" Height="200" Width="200" DataContext="{Binding VoltageGraphVm, Mode=OneWay}"/>
+    	<Rectangle Fill="{Binding CurrentGraphBrush, Mode=OneWay}" Stroke="Black" Width="200" Height="100"/>
 		
 	</StackPanel>
 </UserControl>

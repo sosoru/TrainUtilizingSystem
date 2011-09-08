@@ -128,7 +128,8 @@ void low_isr()
 		if( SUCCEEDED(PacketReady(&packet))
 			&& SUCCEEDED(CreateMessageFromReceived(&packet, &devid, data)))
 		{
-			BYTE type = READ_MBSTATE_MODULETYPE(g_mbState, devid.ModuleAddr);
+			BYTE addr = devid.ModuleAddr;
+			BYTE type = READ_MBSTATE_MODULETYPE(g_mbState, addr);
 			
 			AddPacketUSB(&devid, type, data);
 		}
@@ -272,7 +273,7 @@ void Process()
 		
 		if(type != UNKNOWN_MODULE_TYPE)
 		{
-			memset((void*)data, 0x00, (size_t)SIZE_DATA);
+			//memset((void*)data, 0x00, (size_t)SIZE_DATA);
 			for(j=0; j<INTERNAL_MODULE_COUNT; ++j)
 			{		
 				HRESULT res;
@@ -290,7 +291,7 @@ void Process()
 					if(SUCCEEDED(res))
 					{
 						AddPacketUSB(&id, type, data);
-						memset((void*)data, 0x00, (size_t)SIZE_DATA);
+						//memset((void*)data, 0x00, (size_t)SIZE_DATA);
 						
 						SendPacketUSB();
 					}

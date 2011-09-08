@@ -60,13 +60,13 @@ namespace RouteVisualizer.RailEditor.ViewModels
             }
         }
 
-        public ObservableWrappingCollection<IDbSet<RailData>, RailData> ObservableRailDatas { get; private set; }
-        public ObservableWrappingCollection<IDbSet<PathData>, PathData> ObservablePathDatas { get; private set; }
+        public ObservableWrappingCollection<RailData, RailData> ObservableRailDatas { get; private set; }
+        public ObservableWrappingCollection<PathData, PathData> ObservablePathDatas { get; private set; }
 
         public RailEditorViewModel()
         {
-            this.ObservableRailDatas = new ObservableWrappingCollection<IDbSet<RailData>, RailData>();
-            this.ObservablePathDatas = new ObservableWrappingCollection<IDbSet<PathData>, PathData>();
+            this.ObservableRailDatas = new ObservableWrappingCollection<RailData, RailData>();
+            this.ObservablePathDatas = new ObservableWrappingCollection<PathData, PathData>();
         }
 
         #region RemoveRailCommand

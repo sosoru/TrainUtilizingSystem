@@ -35,9 +35,18 @@ namespace SensorLibrary
         //    }
         //}
 
+        private class pointcmp
+            : IComparer<PointF>
+        {
+            public int Compare(PointF x, PointF y)
+            {
+                return x.X.CompareTo(y.X);
+            }
+        }
+
         public IList<PointF> GetGraphPointCollection(RectangleF canvasRect)
         {
-            var list = new List<PointF>();
+            var list = new SortedSet<PointF>(new pointcmp());
 
             foreach (var state in this.States)
             {
@@ -46,7 +55,7 @@ namespace SensorLibrary
                 list.Add(ptA);
 
             }
-            return list;
+            return list.ToList();
 
         }
 

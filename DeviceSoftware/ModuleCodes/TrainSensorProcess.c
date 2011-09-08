@@ -70,7 +70,7 @@ void SetMeisureVoltage(BYTE module, BYTE port)
 
 HRESULT GetChannel(BYTE module, unsigned char * channel)
 {
-	#if defined VERSION_REV1
+	//#if defined(VERSION_REV1) || defined(VERSION_REV2)
 	//valid for module port A, B, D
 	switch(module) 
 	{
@@ -88,9 +88,7 @@ HRESULT GetChannel(BYTE module, unsigned char * channel)
 	}
 	return S_OK;
 	
-	#elif defined VERSION_REV2
-	
-	#endif
+	//#endif
 }
 
 HRESULT CreateTrainSensorState(DeviceID * pid, PMODULE_DATA data)

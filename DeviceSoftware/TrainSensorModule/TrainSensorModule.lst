@@ -1,0 +1,1041 @@
+
+
+HI-TECH Software PIC LITE Macro Assembler V9.82 build 9453 
+                                                                                               Thu Sep 08 20:15:16 2011
+
+HI-TECH Software Omniscient Code Generator (Lite mode) build 9453
+     1  0000                     opt subtitle "HI-TECH Software Omniscient Code Generator (Lite mode) build 9453"
+     2                           
+     3                           opt pagewidth 120
+     4                           
+     5                           	opt lm
+     6                           
+     7                           	processor	16F628A
+     8                           clrc	macro
+     9                           	bcf	3,0
+    10  0000                     	endm
+    11                           clrz	macro
+    12                           	bcf	3,2
+    13  0000                     	endm
+    14                           setc	macro
+    15                           	bsf	3,0
+    16  0000                     	endm
+    17                           setz	macro
+    18                           	bsf	3,2
+    19  0000                     	endm
+    20                           skipc	macro
+    21                           	btfss	3,0
+    22  0000                     	endm
+    23                           skipz	macro
+    24                           	btfss	3,2
+    25  0000                     	endm
+    26                           skipnc	macro
+    27                           	btfsc	3,0
+    28  0000                     	endm
+    29                           skipnz	macro
+    30                           	btfsc	3,2
+    31  0000                     	endm
+    32  0000                     indf	equ	0
+    33  0000                     indf0	equ	0
+    34  0002                     pc	equ	2
+    35  0002                     pcl	equ	2
+    36  0003                     status	equ	3
+    37  0004                     fsr	equ	4
+    38  0004                     fsr0	equ	4
+    39  0001                     c	equ	1
+    40  0000                     z	equ	0
+    41  000A                     pclath	equ	10
+    42                           # 4 "C:\Users\root\Documents\TrainUtilizingSystem\DeviceSoftware\TrainSensorModule\main.
+                                 c"
+    43                           	psect config,class=CONFIG,delta=2 ;#
+    44                           # 4 "C:\Users\root\Documents\TrainUtilizingSystem\DeviceSoftware\TrainSensorModule\main.
+                                 c"
+    45  2007  FFAA               	dw 0xFFEE & 0xFFFB & 0xFFBF & 0xFFFF ;#
+    46                           	FNCALL	_main,_Init
+    47                           	FNCALL	_main,_ReadInput
+    48                           	FNCALL	_Init,_PortClear
+    49                           	FNROOT	_main
+    50                           	global	_BITS_Array
+    51                           	global	_PORT_Array
+    52                           	global	_TRIS_Array
+    53                           psect	idataBANK0,class=CODE,space=0,delta=2
+    54                           global __pidataBANK0
+    55  06DA                     __pidataBANK0:
+    56                           	file	"C:\Users\root\Documents\TrainUtilizingSystem\DeviceSoftware\TrainSensorModule\mai
+                                 n.c"
+    57                           	line	37
+    58                           
+    59                           ;initializer for _BITS_Array
+    60  06DA  3401               	retlw	01h
+    61  06DB  3400               	retlw	0
+    62  06DC  3402               	retlw	02h
+    63  06DD  3403               	retlw	03h
+    64  06DE  3404               	retlw	04h
+    65  06DF  3405               	retlw	05h
+    66  06E0  3406               	retlw	06h
+    67  06E1  3407               	retlw	07h
+    68                           	line	42
+    69                           
+    70                           ;initializer for _PORT_Array
+    71  06E2  3405               	retlw	5&0ffh
+    72  06E3  3405               	retlw	5&0ffh
+    73  06E4  3405               	retlw	5&0ffh
+    74  06E5  3405               	retlw	5&0ffh
+    75  06E6  3405               	retlw	5&0ffh
+    76  06E7  3406               	retlw	6&0ffh
+    77  06E8  3406               	retlw	6&0ffh
+    78  06E9  3406               	retlw	6&0ffh
+    79                           	line	25
+    80                           
+    81                           ;initializer for _TRIS_Array
+    82  06EA  3485               	retlw	133&0ffh
+    83  06EB  3485               	retlw	133&0ffh
+    84  06EC  3485               	retlw	133&0ffh
+    85  06ED  3485               	retlw	133&0ffh
+    86  06EE  3485               	retlw	133&0ffh
+    87  06EF  3486               	retlw	134&0ffh
+    88  06F0  3486               	retlw	134&0ffh
+    89  06F1  3486               	retlw	134&0ffh
+    90                           	global	_CARRY
+    91  0018                     _CARRY	set	24
+    92                           	global	_GIE
+    93  005F                     _GIE	set	95
+    94                           	global	_RB4
+    95  0034                     _RB4	set	52
+    96                           	global	_EEADR
+    97  009B                     _EEADR	set	155
+    98                           	global	_EECON1
+    99  009C                     _EECON1	set	156
+   100                           	global	_EECON2
+   101  009D                     _EECON2	set	157
+   102                           	global	_EEDATA
+   103  009A                     _EEDATA	set	154
+   104                           	global	_RD
+   105  04E0                     _RD	set	1248
+   106                           	global	_TRISB4
+   107  0434                     _TRISB4	set	1076
+   108                           	global	_WR
+   109  04E1                     _WR	set	1249
+   110                           	global	_WREN
+   111  04E2                     _WREN	set	1250
+   112                           	global	_PORTA
+   113  0005                     _PORTA	set	5
+   114                           	global	_PORTB
+   115  0006                     _PORTB	set	6
+   116                           	global	_TRISA
+   117  0085                     _TRISA	set	133
+   118                           	global	_TRISB
+   119  0086                     _TRISB	set	134
+   120                           	file	"C:\Users\root\AppData\Local\Temp\sbm4."
+   121                           	line	#
+   122                           psect cinit,class=CODE,delta=2
+   123                           global start_initialization
+   124  06BF                     start_initialization:
+   125                           
+   126                           psect	dataBANK0,class=BANK0,space=1
+   127                           global __pdataBANK0
+   128  0020                     __pdataBANK0:
+   129                           	file	"C:\Users\root\Documents\TrainUtilizingSystem\DeviceSoftware\TrainSensorModule\mai
+                                 n.c"
+   130                           	line	37
+   131  0020                     _BITS_Array:
+   132  0020                            ds      8
+   133                           
+   134                           psect	dataBANK0
+   135                           	file	"C:\Users\root\Documents\TrainUtilizingSystem\DeviceSoftware\TrainSensorModule\mai
+                                 n.c"
+   136                           	line	42
+   137  0028                     _PORT_Array:
+   138  0028                            ds      8
+   139                           
+   140                           psect	dataBANK0
+   141                           	file	"C:\Users\root\Documents\TrainUtilizingSystem\DeviceSoftware\TrainSensorModule\mai
+                                 n.c"
+   142                           	line	25
+   143  0030                     _TRIS_Array:
+   144  0030                            ds      8
+   145                           
+   146                           global btemp
+   147                           psect inittext,class=CODE,delta=2
+   148                           global init_fetch,btemp
+   149                           ;	Called with low address in FSR and high address in W
+   150  06CB                     init_fetch:
+   151  06CB  087E               	movf btemp,w
+   152  06CC  008A               	movwf pclath
+   153  06CD  087F               	movf btemp+1,w
+   154  06CE  0082               	movwf pc
+   155                           global init_ram
+   156                           ;Called with:
+   157                           ;	high address of idata address in btemp 
+   158                           ;	low address of idata address in btemp+1 
+   159                           ;	low address of data in FSR
+   160                           ;	high address + 1 of data in btemp-1
+   161  06CF                     init_ram:
+   162  06CF  26CB               	fcall init_fetch
+   163  06D0  0080               	movwf indf,f
+   164  06D1  0A84               	incf fsr,f
+   165  06D2  0804               	movf fsr,w
+   166  06D3  067D               	xorwf btemp-1,w
+   167  06D4  1903               	btfsc status,2
+   168  06D5  3400               	retlw 0
+   169  06D6  0AFF               	incf btemp+1,f
+   170  06D7  1903               	btfsc status,2
+   171  06D8  0AFE               	incf btemp,f
+   172  06D9  2ECF               	goto init_ram
+   173                           ; Initialize objects allocated to BANK0
+   174                           psect cinit,class=CODE,delta=2
+   175                           global init_ram, __pidataBANK0
+   176  06BF  1383               	bcf	status, 7	;select IRP bank0
+   177  06C0  3038               	movlw low(__pdataBANK0+24)
+   178  06C1  00FD               	movwf btemp-1,f
+   179  06C2  3006               	movlw high(__pidataBANK0)
+   180  06C3  00FE               	movwf btemp,f
+   181  06C4  30DA               	movlw low(__pidataBANK0)
+   182  06C5  00FF               	movwf btemp+1,f
+   183  06C6  3020               	movlw low(__pdataBANK0)
+   184  06C7  0084               	movwf fsr,f
+   185  06C8  26CF               	fcall init_ram
+   186                           psect cinit,class=CODE,delta=2
+   187                           global end_of_initialization
+   188                           
+   189                           ;End of C runtime variable initialization code
+   190                           
+   191  06C9                     end_of_initialization:
+   192  06C9  0183               clrf status
+   193  06CA  2F70               ljmp _main	;jump to C main() function
+   194                           psect	cstackCOMMON,class=COMMON,space=1
+   195                           global __pcstackCOMMON
+   196  0070                     __pcstackCOMMON:
+   197                           	global	?_PortClear
+   198  0070                     ?_PortClear:	; 0 bytes @ 0x0
+   199                           	global	??_PortClear
+   200  0070                     ??_PortClear:	; 0 bytes @ 0x0
+   201                           	global	?_Init
+   202  0070                     ?_Init:	; 0 bytes @ 0x0
+   203                           	global	??_ReadInput
+   204  0070                     ??_ReadInput:	; 0 bytes @ 0x0
+   205                           	global	?_main
+   206  0070                     ?_main:	; 0 bytes @ 0x0
+   207                           	global	?_ReadInput
+   208  0070                     ?_ReadInput:	; 1 bytes @ 0x0
+   209  0070                     	ds	3
+   210                           	global	PortClear@i
+   211  0073                     PortClear@i:	; 1 bytes @ 0x3
+   212  0073                     	ds	1
+   213                           	global	??_Init
+   214  0074                     ??_Init:	; 0 bytes @ 0x4
+   215  0074                     	ds	3
+   216                           	global	Init@i
+   217  0077                     Init@i:	; 1 bytes @ 0x7
+   218  0077                     	ds	1
+   219                           	global	??_main
+   220  0078                     ??_main:	; 0 bytes @ 0x8
+   221  0078                     	ds	3
+   222                           	global	main@tmp
+   223  007B                     main@tmp:	; 1 bytes @ 0xB
+   224  007B                     	ds	1
+   225                           	global	main@cache
+   226  007C                     main@cache:	; 1 bytes @ 0xC
+   227  007C                     	ds	1
+   228 ;;Data sizes: Strings 0, constant 0, data 24, bss 0, persistent 0 stack 0
+   229 ;;Auto spaces:   Size  Autos    Used
+   230 ;; COMMON          14     13      13
+   231 ;; BANK0           80      0      24
+   232 ;; BANK1           80      0       0
+   233 ;; BANK2           48      0       0
+   234                           
+   235 ;;
+   236 ;; Pointer list with targets:
+   237                           
+   238 ;; PORT_Array	PTR volatile unsigned char [8] size(1) Largest target is 1
+   239 ;;		 -> PORTB(BITSFR0[1]), PORTA(BITSFR0[1]), 
+   240 ;;
+   241 ;; TRIS_Array	PTR volatile unsigned char [8] size(1) Largest target is 1
+   242 ;;		 -> TRISB(BITSFR1[1]), TRISA(BITSFR1[1]), 
+   243 ;;
+   244                           
+   245                           
+   246 ;;
+   247 ;; Critical Paths under _main in COMMON
+   248 ;;
+   249 ;;   _main->_Init
+   250 ;;   _Init->_PortClear
+   251 ;;
+   252 ;; Critical Paths under _main in BANK0
+   253 ;;
+   254 ;;   None.
+   255 ;;
+   256 ;; Critical Paths under _main in BANK1
+   257 ;;
+   258 ;;   None.
+   259 ;;
+   260 ;; Critical Paths under _main in BANK2
+   261 ;;
+   262 ;;   None.
+   263                           
+   264 ;;
+   265 ;;Main: autosize = 0, tempsize = 3, incstack = 0, save=0
+   266 ;;
+   267                           
+   268 ;;
+   269 ;;Call Graph Tables:
+   270 ;;
+   271 ;; ---------------------------------------------------------------------------------
+   272 ;; (Depth) Function   	        Calls       Base Space   Used Autos Params    Refs
+   273 ;; ---------------------------------------------------------------------------------
+   274 ;; (0) _main                                                 5     5      0     623
+   275 ;;                                              8 COMMON     5     5      0
+   276 ;;                               _Init
+   277 ;;                          _ReadInput
+   278 ;; ---------------------------------------------------------------------------------
+   279 ;; (1) _Init                                                 4     4      0     268
+   280 ;;                                              4 COMMON     4     4      0
+   281 ;;                          _PortClear
+   282 ;; ---------------------------------------------------------------------------------
+   283 ;; (1) _ReadInput                                            0     0      0       0
+   284 ;; ---------------------------------------------------------------------------------
+   285 ;; (2) _PortClear                                            4     4      0     134
+   286 ;;                                              0 COMMON     4     4      0
+   287 ;; ---------------------------------------------------------------------------------
+   288 ;; Estimated maximum stack depth 2
+   289 ;; ---------------------------------------------------------------------------------
+   290                           
+   291 ;; Call Graph Graphs:
+   292                           
+   293 ;; _main (ROOT)
+   294 ;;   _Init
+   295 ;;     _PortClear
+   296 ;;   _ReadInput
+   297 ;;
+   298                           
+   299 ;; Address spaces:
+   300                           
+   301 ;;Name               Size   Autos  Total    Cost      Usage
+   302 ;;SFR3                 0      0       0       4        0.0%
+   303 ;;BITSFR3              0      0       0       4        0.0%
+   304 ;;BANK2               30      0       0       9        0.0%
+   305 ;;BITBANK2            30      0       0       8        0.0%
+   306 ;;SFR2                 0      0       0       5        0.0%
+   307 ;;BITSFR2              0      0       0       5        0.0%
+   308 ;;SFR1                 0      0       0       2        0.0%
+   309 ;;BITSFR1              0      0       0       2        0.0%
+   310 ;;BANK1               50      0       0       7        0.0%
+   311 ;;BITBANK1            50      0       0       6        0.0%
+   312 ;;CODE                 0      0       0       0        0.0%
+   313 ;;DATA                 0      0      27      10        0.0%
+   314 ;;ABS                  0      0      25       4        0.0%
+   315 ;;NULL                 0      0       0       0        0.0%
+   316 ;;STACK                0      0       2       2        0.0%
+   317 ;;BANK0               50      0      18       3       30.0%
+   318 ;;BITBANK0            50      0       0       5        0.0%
+   319 ;;SFR0                 0      0       0       1        0.0%
+   320 ;;BITSFR0              0      0       0       1        0.0%
+   321 ;;COMMON               E      D       D       1       92.9%
+   322 ;;BITCOMMON            E      0       0       0        0.0%
+   323 ;;EEDATA              80      0       0       0        0.0%
+   324                           
+   325                           	global	_main
+   326                           psect	maintext,global,class=CODE,delta=2
+   327                           global __pmaintext
+   328  0770                     __pmaintext:
+   329                           
+   330 ;; *************** function _main *****************
+   331 ;; Defined at:
+   332 ;;		line 101 in file "C:\Users\root\Documents\TrainUtilizingSystem\DeviceSoftware\TrainSensorModule\main.c"
+   333 ;; Parameters:    Size  Location     Type
+   334 ;;		None
+   335 ;; Auto vars:     Size  Location     Type
+   336 ;;  tmp             1   11[COMMON] unsigned char 
+   337 ;;  cache           1   12[COMMON] unsigned char 
+   338 ;; Return value:  Size  Location     Type
+   339 ;;		None               void
+   340 ;; Registers used:
+   341 ;;		wreg, fsr0l, fsr0h, status,2, status,0, pclath, cstack
+   342 ;; Tracked objects:
+   343 ;;		On entry : 17F/0
+   344 ;;		On exit  : 0/0
+   345 ;;		Unchanged: 0/0
+   346 ;; Data sizes:     COMMON   BANK0   BANK1   BANK2
+   347 ;;      Params:         0       0       0       0
+   348 ;;      Locals:         2       0       0       0
+   349 ;;      Temps:          3       0       0       0
+   350 ;;      Totals:         5       0       0       0
+   351 ;;Total ram usage:        5 bytes
+   352 ;; Hardware stack levels required when called:    2
+   353 ;; This function calls:
+   354 ;;		_Init
+   355 ;;		_ReadInput
+   356 ;; This function is called by:
+   357 ;;		Startup code after reset
+   358 ;; This function uses a non-reentrant model
+   359 ;;
+   360                           psect	maintext
+   361                           	file	"C:\Users\root\Documents\TrainUtilizingSystem\DeviceSoftware\TrainSensorModule\mai
+                                 n.c"
+   362                           	line	101
+   363                           	global	__size_of_main
+   364  0090                     	__size_of_main	equ	__end_of_main-_main
+   365                           	
+   366  0770                     _main:	
+   367                           	opt	stack 6
+   368                           ; Regs used in _main: [wreg-fsr0h+status,2+status,0+pclath+cstack]
+   369                           	line	102
+   370                           	
+   371  0770                     l2114:	
+   372                           ;main.c: 102: unsigned char cache = 0x01;
+   373  0770  01FC               	clrf	(main@cache)
+   374  0771  1403               	bsf	status,0
+   375  0772  0DFC               	rlf	(main@cache),f
+   376                           	line	104
+   377                           	
+   378  0773                     l2116:	
+   379                           ;main.c: 104: Init();
+   380  0773  272B               	fcall	_Init
+   381                           	line	105
+   382                           	
+   383  0774                     l2118:	
+   384                           ;main.c: 105: (*PORT_Array[(cache)] = ((*PORT_Array[(cache)]) & (~(1 << (cache)))) | ((1
+                                 &1) << (cache)));
+   385  0774  3001               	movlw	(01h)
+   386  0775  00F8               	movwf	(??_main+0)+0
+   387  0776  0A7C               	incf	(main@cache),w
+   388  0777  2F7A               	goto	u2464
+   389  0778                     u2465:
+   390  0778  1003               	clrc
+   391  0779  0DF8               	rlf	(??_main+0)+0,f
+   392  077A                     u2464:
+   393  077A  3EFF               	addlw	-1
+   394  077B  1D03               	skipz
+   395  077C  2F78               	goto	u2465
+   396  077D  087C               	movf	(main@cache),w
+   397  077E  3E28               	addlw	_PORT_Array&0ffh
+   398  077F  0084               	movwf	fsr0
+   399  0780  1383               	bcf	status, 7	;select IRP bank0
+   400  0781  0800               	movf	indf,w
+   401  0782  0084               	movwf	fsr0
+   402  0783  3001               	movlw	(01h)
+   403  0784  00F9               	movwf	(??_main+1)+0
+   404  0785  0A7C               	incf	(main@cache),w
+   405  0786  2F89               	goto	u2474
+   406  0787                     u2475:
+   407  0787  1003               	clrc
+   408  0788  0DF9               	rlf	(??_main+1)+0,f
+   409  0789                     u2474:
+   410  0789  3EFF               	addlw	-1
+   411  078A  1D03               	skipz
+   412  078B  2F87               	goto	u2475
+   413  078C  0879               	movf	0+(??_main+1)+0,w
+   414  078D  3AFF               	xorlw	0ffh
+   415  078E  0500               	andwf	indf,w
+   416  078F  0478               	iorwf	0+(??_main+0)+0,w
+   417  0790  00FA               	movwf	(??_main+2)+0
+   418  0791  087C               	movf	(main@cache),w
+   419  0792  3E28               	addlw	_PORT_Array&0ffh
+   420  0793  0084               	movwf	fsr0
+   421  0794  0800               	movf	indf,w
+   422  0795  0084               	movwf	fsr0
+   423  0796  087A               	movf	(??_main+2)+0,w
+   424  0797  0080               	movwf	indf
+   425                           	line	106
+   426                           	
+   427  0798                     l2120:	
+   428                           ;main.c: 106: RB4 = 1;
+   429  0798  1283               	bcf	status, 5	;RP0=0, select bank0
+   430  0799  1303               	bcf	status, 6	;RP1=0, select bank0
+   431  079A  1606               	bsf	(52/8),(52)&7
+   432  079B  2F9C               	goto	l2122
+   433                           	line	108
+   434                           ;main.c: 108: while(1)
+   435                           	
+   436  079C                     l396:	
+   437                           	line	110
+   438                           	
+   439  079C                     l2122:	
+   440                           ;main.c: 109: {
+   441                           ;main.c: 110: unsigned char tmp = ReadInput();
+   442  079C  26B9               	fcall	_ReadInput
+   443  079D  00F8               	movwf	(??_main+0)+0
+   444  079E  0878               	movf	(??_main+0)+0,w
+   445  079F  00FB               	movwf	(main@tmp)
+   446                           	line	111
+   447                           	
+   448  07A0                     l2124:	
+   449                           ;main.c: 111: if(cache != tmp)
+   450  07A0  087C               	movf	(main@cache),w
+   451  07A1  067B               	xorwf	(main@tmp),w
+   452  07A2  1903               	skipnz
+   453  07A3  2FA5               	goto	u2481
+   454  07A4  2FA6               	goto	u2480
+   455  07A5                     u2481:
+   456  07A5  2F9C               	goto	l2122
+   457  07A6                     u2480:
+   458                           	line	113
+   459                           	
+   460  07A6                     l2126:	
+   461                           ;main.c: 112: {
+   462                           ;main.c: 113: RB4 = 0;
+   463  07A6  1283               	bcf	status, 5	;RP0=0, select bank0
+   464  07A7  1303               	bcf	status, 6	;RP1=0, select bank0
+   465  07A8  1206               	bcf	(52/8),(52)&7
+   466                           	line	115
+   467                           	
+   468  07A9                     l2128:	
+   469                           ;main.c: 115: (*PORT_Array[(cache)] = ((*PORT_Array[(cache)]) & (~(1 << (cache)))) | ((0
+                                 &1) << (cache)));
+   470  07A9  3000               	movlw	(0)
+   471  07AA  00F8               	movwf	(??_main+0)+0
+   472  07AB  0A7C               	incf	(main@cache),w
+   473  07AC  2FAF               	goto	u2494
+   474  07AD                     u2495:
+   475  07AD  1003               	clrc
+   476  07AE  0DF8               	rlf	(??_main+0)+0,f
+   477  07AF                     u2494:
+   478  07AF  3EFF               	addlw	-1
+   479  07B0  1D03               	skipz
+   480  07B1  2FAD               	goto	u2495
+   481  07B2  087C               	movf	(main@cache),w
+   482  07B3  3E28               	addlw	_PORT_Array&0ffh
+   483  07B4  0084               	movwf	fsr0
+   484  07B5  1383               	bcf	status, 7	;select IRP bank0
+   485  07B6  0800               	movf	indf,w
+   486  07B7  0084               	movwf	fsr0
+   487  07B8  3001               	movlw	(01h)
+   488  07B9  00F9               	movwf	(??_main+1)+0
+   489  07BA  0A7C               	incf	(main@cache),w
+   490  07BB  2FBE               	goto	u2504
+   491  07BC                     u2505:
+   492  07BC  1003               	clrc
+   493  07BD  0DF9               	rlf	(??_main+1)+0,f
+   494  07BE                     u2504:
+   495  07BE  3EFF               	addlw	-1
+   496  07BF  1D03               	skipz
+   497  07C0  2FBC               	goto	u2505
+   498  07C1  0879               	movf	0+(??_main+1)+0,w
+   499  07C2  3AFF               	xorlw	0ffh
+   500  07C3  0500               	andwf	indf,w
+   501  07C4  0478               	iorwf	0+(??_main+0)+0,w
+   502  07C5  00FA               	movwf	(??_main+2)+0
+   503  07C6  087C               	movf	(main@cache),w
+   504  07C7  3E28               	addlw	_PORT_Array&0ffh
+   505  07C8  0084               	movwf	fsr0
+   506  07C9  0800               	movf	indf,w
+   507  07CA  0084               	movwf	fsr0
+   508  07CB  087A               	movf	(??_main+2)+0,w
+   509  07CC  0080               	movwf	indf
+   510                           	line	116
+   511                           	
+   512  07CD                     l2130:	
+   513                           ;main.c: 116: if(tmp < 8)
+   514  07CD  3008               	movlw	(08h)
+   515  07CE  027B               	subwf	(main@tmp),w
+   516  07CF  1803               	skipnc
+   517  07D0  2FD2               	goto	u2511
+   518  07D1  2FD3               	goto	u2510
+   519  07D2                     u2511:
+   520  07D2  2F9C               	goto	l2122
+   521  07D3                     u2510:
+   522                           	line	118
+   523                           	
+   524  07D3                     l2132:	
+   525                           ;main.c: 117: {
+   526                           ;main.c: 118: (*PORT_Array[(tmp)] = ((*PORT_Array[(tmp)]) & (~(1 << (tmp)))) | ((1&1) <<
+                                  (tmp)));
+   527  07D3  3001               	movlw	(01h)
+   528  07D4  00F8               	movwf	(??_main+0)+0
+   529  07D5  0A7B               	incf	(main@tmp),w
+   530  07D6  2FD9               	goto	u2524
+   531  07D7                     u2525:
+   532  07D7  1003               	clrc
+   533  07D8  0DF8               	rlf	(??_main+0)+0,f
+   534  07D9                     u2524:
+   535  07D9  3EFF               	addlw	-1
+   536  07DA  1D03               	skipz
+   537  07DB  2FD7               	goto	u2525
+   538  07DC  087B               	movf	(main@tmp),w
+   539  07DD  3E28               	addlw	_PORT_Array&0ffh
+   540  07DE  0084               	movwf	fsr0
+   541  07DF  0800               	movf	indf,w
+   542  07E0  0084               	movwf	fsr0
+   543  07E1  3001               	movlw	(01h)
+   544  07E2  00F9               	movwf	(??_main+1)+0
+   545  07E3  0A7B               	incf	(main@tmp),w
+   546  07E4  2FE7               	goto	u2534
+   547  07E5                     u2535:
+   548  07E5  1003               	clrc
+   549  07E6  0DF9               	rlf	(??_main+1)+0,f
+   550  07E7                     u2534:
+   551  07E7  3EFF               	addlw	-1
+   552  07E8  1D03               	skipz
+   553  07E9  2FE5               	goto	u2535
+   554  07EA  0879               	movf	0+(??_main+1)+0,w
+   555  07EB  3AFF               	xorlw	0ffh
+   556  07EC  0500               	andwf	indf,w
+   557  07ED  0478               	iorwf	0+(??_main+0)+0,w
+   558  07EE  00FA               	movwf	(??_main+2)+0
+   559  07EF  087B               	movf	(main@tmp),w
+   560  07F0  3E28               	addlw	_PORT_Array&0ffh
+   561  07F1  0084               	movwf	fsr0
+   562  07F2  0800               	movf	indf,w
+   563  07F3  0084               	movwf	fsr0
+   564  07F4  087A               	movf	(??_main+2)+0,w
+   565  07F5  0080               	movwf	indf
+   566                           	line	120
+   567                           	
+   568  07F6                     l2134:	
+   569                           ;main.c: 120: RB4 = 1;
+   570  07F6  1606               	bsf	(52/8),(52)&7
+   571                           	line	121
+   572                           	
+   573  07F7                     l2136:	
+   574                           ;main.c: 121: cache = tmp;
+   575  07F7  087B               	movf	(main@tmp),w
+   576  07F8  00F8               	movwf	(??_main+0)+0
+   577  07F9  0878               	movf	(??_main+0)+0,w
+   578  07FA  00FC               	movwf	(main@cache)
+   579  07FB  2F9C               	goto	l2122
+   580                           	line	122
+   581                           	
+   582  07FC                     l398:	
+   583  07FC  2F9C               	goto	l2122
+   584                           	line	123
+   585                           	
+   586  07FD                     l397:	
+   587  07FD  2F9C               	goto	l2122
+   588                           	line	124
+   589                           	
+   590  07FE                     l399:	
+   591                           	line	108
+   592  07FE  2F9C               	goto	l2122
+   593                           	
+   594  07FF                     l400:	
+   595                           	line	125
+   596                           	
+   597  07FF                     l401:	
+   598                           	global	start
+   599  07FF  2800               	ljmp	start
+   600                           	opt stack 0
+   601                           GLOBAL	__end_of_main
+   602  0800                     	__end_of_main:
+   603 ;; =============== function _main ends ============
+   604                           
+   605                           	signat	_main,88
+   606                           	global	_Init
+   607                           psect	text149,local,class=CODE,delta=2
+   608                           global __ptext149
+   609  072B                     __ptext149:
+   610                           
+   611 ;; *************** function _Init *****************
+   612 ;; Defined at:
+   613 ;;		line 74 in file "C:\Users\root\Documents\TrainUtilizingSystem\DeviceSoftware\TrainSensorModule\main.c"
+   614 ;; Parameters:    Size  Location     Type
+   615 ;;		None
+   616 ;; Auto vars:     Size  Location     Type
+   617 ;;  i               1    7[COMMON] unsigned char 
+   618 ;; Return value:  Size  Location     Type
+   619 ;;		None               void
+   620 ;; Registers used:
+   621 ;;		wreg, fsr0l, fsr0h, status,2, status,0, pclath, cstack
+   622 ;; Tracked objects:
+   623 ;;		On entry : 0/0
+   624 ;;		On exit  : 0/0
+   625 ;;		Unchanged: 0/0
+   626 ;; Data sizes:     COMMON   BANK0   BANK1   BANK2
+   627 ;;      Params:         0       0       0       0
+   628 ;;      Locals:         1       0       0       0
+   629 ;;      Temps:          3       0       0       0
+   630 ;;      Totals:         4       0       0       0
+   631 ;;Total ram usage:        4 bytes
+   632 ;; Hardware stack levels used:    1
+   633 ;; Hardware stack levels required when called:    1
+   634 ;; This function calls:
+   635 ;;		_PortClear
+   636 ;; This function is called by:
+   637 ;;		_main
+   638 ;; This function uses a non-reentrant model
+   639 ;;
+   640                           psect	text149
+   641                           	file	"C:\Users\root\Documents\TrainUtilizingSystem\DeviceSoftware\TrainSensorModule\mai
+                                 n.c"
+   642                           	line	74
+   643                           	global	__size_of_Init
+   644  0045                     	__size_of_Init	equ	__end_of_Init-_Init
+   645                           	
+   646  072B                     _Init:	
+   647                           	opt	stack 6
+   648                           ; Regs used in _Init: [wreg-fsr0h+status,2+status,0+pclath+cstack]
+   649                           	line	77
+   650                           	
+   651  072B                     l2100:	
+   652                           ;main.c: 75: unsigned char i;
+   653                           ;main.c: 77: TRISA = 0xFF;
+   654  072B  30FF               	movlw	(0FFh)
+   655  072C  1683               	bsf	status, 5	;RP0=1, select bank1
+   656  072D  1303               	bcf	status, 6	;RP1=0, select bank1
+   657  072E  0085               	movwf	(133)^080h	;volatile
+   658                           	line	78
+   659                           ;main.c: 78: TRISB = 0xFF;
+   660  072F  30FF               	movlw	(0FFh)
+   661  0730  0086               	movwf	(134)^080h	;volatile
+   662                           	line	80
+   663                           	
+   664  0731                     l2102:	
+   665                           ;main.c: 80: for(i=0; i<8; ++i)
+   666  0731  01F7               	clrf	(Init@i)
+   667  0732  3008               	movlw	(08h)
+   668  0733  0277               	subwf	(Init@i),w
+   669  0734  1C03               	skipc
+   670  0735  2F37               	goto	u2421
+   671  0736  2F38               	goto	u2420
+   672  0737                     u2421:
+   673  0737  2F3A               	goto	l2106
+   674  0738                     u2420:
+   675  0738  2F68               	goto	l389
+   676                           	
+   677  0739                     l2104:	
+   678  0739  2F68               	goto	l389
+   679                           	line	81
+   680                           	
+   681  073A                     l388:	
+   682                           	line	82
+   683                           	
+   684  073A                     l2106:	
+   685                           ;main.c: 81: {
+   686                           ;main.c: 82: (*TRIS_Array[(i)] = ((*TRIS_Array[(i)]) & (~(1 << (i)))) | ((0&1) << (i)));
+   687  073A  3000               	movlw	(0)
+   688  073B  00F4               	movwf	(??_Init+0)+0
+   689  073C  0A77               	incf	(Init@i),w
+   690  073D  2F40               	goto	u2434
+   691  073E                     u2435:
+   692  073E  1003               	clrc
+   693  073F  0DF4               	rlf	(??_Init+0)+0,f
+   694  0740                     u2434:
+   695  0740  3EFF               	addlw	-1
+   696  0741  1D03               	skipz
+   697  0742  2F3E               	goto	u2435
+   698  0743  0877               	movf	(Init@i),w
+   699  0744  3E30               	addlw	_TRIS_Array&0ffh
+   700  0745  0084               	movwf	fsr0
+   701  0746  1383               	bcf	status, 7	;select IRP bank0
+   702  0747  0800               	movf	indf,w
+   703  0748  0084               	movwf	fsr0
+   704  0749  3001               	movlw	(01h)
+   705  074A  00F5               	movwf	(??_Init+1)+0
+   706  074B  0A77               	incf	(Init@i),w
+   707  074C  2F4F               	goto	u2444
+   708  074D                     u2445:
+   709  074D  1003               	clrc
+   710  074E  0DF5               	rlf	(??_Init+1)+0,f
+   711  074F                     u2444:
+   712  074F  3EFF               	addlw	-1
+   713  0750  1D03               	skipz
+   714  0751  2F4D               	goto	u2445
+   715  0752  0875               	movf	0+(??_Init+1)+0,w
+   716  0753  3AFF               	xorlw	0ffh
+   717  0754  0500               	andwf	indf,w
+   718  0755  0474               	iorwf	0+(??_Init+0)+0,w
+   719  0756  00F6               	movwf	(??_Init+2)+0
+   720  0757  0877               	movf	(Init@i),w
+   721  0758  3E30               	addlw	_TRIS_Array&0ffh
+   722  0759  0084               	movwf	fsr0
+   723  075A  0800               	movf	indf,w
+   724  075B  0084               	movwf	fsr0
+   725  075C  0876               	movf	(??_Init+2)+0,w
+   726  075D  0080               	movwf	indf
+   727                           	line	80
+   728                           	
+   729  075E                     l2108:	
+   730  075E  3001               	movlw	(01h)
+   731  075F  00F4               	movwf	(??_Init+0)+0
+   732  0760  0874               	movf	(??_Init+0)+0,w
+   733  0761  07F7               	addwf	(Init@i),f
+   734                           	
+   735  0762                     l2110:	
+   736  0762  3008               	movlw	(08h)
+   737  0763  0277               	subwf	(Init@i),w
+   738  0764  1C03               	skipc
+   739  0765  2F67               	goto	u2451
+   740  0766  2F68               	goto	u2450
+   741  0767                     u2451:
+   742  0767  2F3A               	goto	l2106
+   743  0768                     u2450:
+   744                           	
+   745  0768                     l389:	
+   746                           	line	85
+   747                           ;main.c: 83: }
+   748                           ;main.c: 85: TRISB4 = 0;
+   749  0768  1683               	bsf	status, 5	;RP0=1, select bank1
+   750  0769  1303               	bcf	status, 6	;RP1=0, select bank1
+   751  076A  1206               	bcf	(1076/8)^080h,(1076)&7
+   752                           	line	87
+   753                           ;main.c: 87: RB4 = 0;
+   754  076B  1283               	bcf	status, 5	;RP0=0, select bank0
+   755  076C  1303               	bcf	status, 6	;RP1=0, select bank0
+   756  076D  1206               	bcf	(52/8),(52)&7
+   757                           	line	88
+   758                           	
+   759  076E                     l2112:	
+   760                           ;main.c: 88: PortClear();
+   761  076E  26F2               	fcall	_PortClear
+   762                           	line	89
+   763                           	
+   764  076F                     l390:	
+   765  076F  0008               	return
+   766                           	opt stack 0
+   767                           GLOBAL	__end_of_Init
+   768  0770                     	__end_of_Init:
+   769 ;; =============== function _Init ends ============
+   770                           
+   771                           	signat	_Init,88
+   772                           	global	_ReadInput
+   773                           psect	text150,local,class=CODE,delta=2
+   774                           global __ptext150
+   775  06B9                     __ptext150:
+   776                           
+   777 ;; *************** function _ReadInput *****************
+   778 ;; Defined at:
+   779 ;;		line 92 in file "C:\Users\root\Documents\TrainUtilizingSystem\DeviceSoftware\TrainSensorModule\main.c"
+   780 ;; Parameters:    Size  Location     Type
+   781 ;;		None
+   782 ;; Auto vars:     Size  Location     Type
+   783 ;;		None
+   784 ;; Return value:  Size  Location     Type
+   785 ;;                  1    wreg      unsigned char 
+   786 ;; Registers used:
+   787 ;;		wreg, status,2
+   788 ;; Tracked objects:
+   789 ;;		On entry : 0/0
+   790 ;;		On exit  : 0/0
+   791 ;;		Unchanged: 0/0
+   792 ;; Data sizes:     COMMON   BANK0   BANK1   BANK2
+   793 ;;      Params:         0       0       0       0
+   794 ;;      Locals:         0       0       0       0
+   795 ;;      Temps:          0       0       0       0
+   796 ;;      Totals:         0       0       0       0
+   797 ;;Total ram usage:        0 bytes
+   798 ;; Hardware stack levels used:    1
+   799 ;; This function calls:
+   800 ;;		Nothing
+   801 ;; This function is called by:
+   802 ;;		_main
+   803 ;; This function uses a non-reentrant model
+   804 ;;
+   805                           psect	text150
+   806                           	file	"C:\Users\root\Documents\TrainUtilizingSystem\DeviceSoftware\TrainSensorModule\mai
+                                 n.c"
+   807                           	line	92
+   808                           	global	__size_of_ReadInput
+   809  0006                     	__size_of_ReadInput	equ	__end_of_ReadInput-_ReadInput
+   810                           	
+   811  06B9                     _ReadInput:	
+   812                           	opt	stack 7
+   813                           ; Regs used in _ReadInput: [wreg+status,2]
+   814                           	line	97
+   815                           	
+   816  06B9                     l2096:	
+   817                           ;main.c: 97: return PORTB & 0b00001111;
+   818  06B9  1283               	bcf	status, 5	;RP0=0, select bank0
+   819  06BA  1303               	bcf	status, 6	;RP1=0, select bank0
+   820  06BB  0806               	movf	(6),w
+   821  06BC  390F               	andlw	0Fh
+   822  06BD  2EBE               	goto	l393
+   823                           	
+   824  06BE                     l2098:	
+   825                           	line	98
+   826                           	
+   827  06BE                     l393:	
+   828  06BE  0008               	return
+   829                           	opt stack 0
+   830                           GLOBAL	__end_of_ReadInput
+   831  06BF                     	__end_of_ReadInput:
+   832 ;; =============== function _ReadInput ends ============
+   833                           
+   834                           	signat	_ReadInput,89
+   835                           	global	_PortClear
+   836                           psect	text151,local,class=CODE,delta=2
+   837                           global __ptext151
+   838  06F2                     __ptext151:
+   839                           
+   840 ;; *************** function _PortClear *****************
+   841 ;; Defined at:
+   842 ;;		line 65 in file "C:\Users\root\Documents\TrainUtilizingSystem\DeviceSoftware\TrainSensorModule\main.c"
+   843 ;; Parameters:    Size  Location     Type
+   844 ;;		None
+   845 ;; Auto vars:     Size  Location     Type
+   846 ;;  i               1    3[COMMON] unsigned char 
+   847 ;; Return value:  Size  Location     Type
+   848 ;;		None               void
+   849 ;; Registers used:
+   850 ;;		wreg, fsr0l, fsr0h, status,2, status,0
+   851 ;; Tracked objects:
+   852 ;;		On entry : 0/0
+   853 ;;		On exit  : 0/0
+   854 ;;		Unchanged: 0/0
+   855 ;; Data sizes:     COMMON   BANK0   BANK1   BANK2
+   856 ;;      Params:         0       0       0       0
+   857 ;;      Locals:         1       0       0       0
+   858 ;;      Temps:          3       0       0       0
+   859 ;;      Totals:         4       0       0       0
+   860 ;;Total ram usage:        4 bytes
+   861 ;; Hardware stack levels used:    1
+   862 ;; This function calls:
+   863 ;;		Nothing
+   864 ;; This function is called by:
+   865 ;;		_Init
+   866 ;; This function uses a non-reentrant model
+   867 ;;
+   868                           psect	text151
+   869                           	file	"C:\Users\root\Documents\TrainUtilizingSystem\DeviceSoftware\TrainSensorModule\mai
+                                 n.c"
+   870                           	line	65
+   871                           	global	__size_of_PortClear
+   872  0039                     	__size_of_PortClear	equ	__end_of_PortClear-_PortClear
+   873                           	
+   874  06F2                     _PortClear:	
+   875                           	opt	stack 6
+   876                           ; Regs used in _PortClear: [wreg-fsr0h+status,2+status,0]
+   877                           	line	67
+   878                           	
+   879  06F2                     l2084:	
+   880                           ;main.c: 66: unsigned char i;
+   881                           ;main.c: 67: for(i=0; i<8; ++i)
+   882  06F2  01F3               	clrf	(PortClear@i)
+   883                           	
+   884  06F3                     l2086:	
+   885  06F3  3008               	movlw	(08h)
+   886  06F4  0273               	subwf	(PortClear@i),w
+   887  06F5  1C03               	skipc
+   888  06F6  2EF8               	goto	u2381
+   889  06F7  2EF9               	goto	u2380
+   890  06F8                     u2381:
+   891  06F8  2EFB               	goto	l2090
+   892  06F9                     u2380:
+   893  06F9  2F2A               	goto	l385
+   894                           	
+   895  06FA                     l2088:	
+   896  06FA  2F2A               	goto	l385
+   897                           	line	68
+   898                           	
+   899  06FB                     l383:	
+   900                           	line	69
+   901                           	
+   902  06FB                     l2090:	
+   903                           ;main.c: 68: {
+   904                           ;main.c: 69: (*TRIS_Array[(i)] = ((*TRIS_Array[(i)]) & (~(1 << (i)))) | ((0&1) << (i)));
+   905  06FB  3000               	movlw	(0)
+   906  06FC  00F0               	movwf	(??_PortClear+0)+0
+   907  06FD  0A73               	incf	(PortClear@i),w
+   908  06FE  2F01               	goto	u2394
+   909  06FF                     u2395:
+   910  06FF  1003               	clrc
+   911  0700  0DF0               	rlf	(??_PortClear+0)+0,f
+   912  0701                     u2394:
+   913  0701  3EFF               	addlw	-1
+   914  0702  1D03               	skipz
+   915  0703  2EFF               	goto	u2395
+   916  0704  0873               	movf	(PortClear@i),w
+   917  0705  3E30               	addlw	_TRIS_Array&0ffh
+   918  0706  0084               	movwf	fsr0
+   919  0707  1383               	bcf	status, 7	;select IRP bank0
+   920  0708  0800               	movf	indf,w
+   921  0709  0084               	movwf	fsr0
+   922  070A  3001               	movlw	(01h)
+   923  070B  00F1               	movwf	(??_PortClear+1)+0
+   924  070C  0A73               	incf	(PortClear@i),w
+   925  070D  2F10               	goto	u2404
+   926  070E                     u2405:
+   927  070E  1003               	clrc
+   928  070F  0DF1               	rlf	(??_PortClear+1)+0,f
+   929  0710                     u2404:
+   930  0710  3EFF               	addlw	-1
+   931  0711  1D03               	skipz
+   932  0712  2F0E               	goto	u2405
+   933  0713  0871               	movf	0+(??_PortClear+1)+0,w
+   934  0714  3AFF               	xorlw	0ffh
+   935  0715  0500               	andwf	indf,w
+   936  0716  0470               	iorwf	0+(??_PortClear+0)+0,w
+   937  0717  00F2               	movwf	(??_PortClear+2)+0
+   938  0718  0873               	movf	(PortClear@i),w
+   939  0719  3E30               	addlw	_TRIS_Array&0ffh
+   940  071A  0084               	movwf	fsr0
+   941  071B  0800               	movf	indf,w
+   942  071C  0084               	movwf	fsr0
+   943  071D  0872               	movf	(??_PortClear+2)+0,w
+   944  071E  0080               	movwf	indf
+   945                           	line	67
+   946                           	
+   947  071F                     l2092:	
+   948  071F  3001               	movlw	(01h)
+   949  0720  00F0               	movwf	(??_PortClear+0)+0
+   950  0721  0870               	movf	(??_PortClear+0)+0,w
+   951  0722  07F3               	addwf	(PortClear@i),f
+   952                           	
+   953  0723                     l2094:	
+   954  0723  3008               	movlw	(08h)
+   955  0724  0273               	subwf	(PortClear@i),w
+   956  0725  1C03               	skipc
+   957  0726  2F28               	goto	u2411
+   958  0727  2F29               	goto	u2410
+   959  0728                     u2411:
+   960  0728  2EFB               	goto	l2090
+   961  0729                     u2410:
+   962  0729  2F2A               	goto	l385
+   963                           	
+   964  072A                     l384:	
+   965                           	line	71
+   966                           	
+   967  072A                     l385:	
+   968  072A  0008               	return
+   969                           	opt stack 0
+   970                           GLOBAL	__end_of_PortClear
+   971  072B                     	__end_of_PortClear:
+   972 ;; =============== function _PortClear ends ============
+   973                           
+   974                           	signat	_PortClear,88
+   975                           psect	text152,local,class=CODE,delta=2
+   976                           global __ptext152
+   977  0000                     __ptext152:
+   978                           	global	btemp
+   979  007E                     	btemp set 07Eh
+   980                           
+   981                           	DABS	1,126,2	;btemp
+   982                           	global	wtemp0
+   983  007E                     	wtemp0 set btemp
+
+
+HI-TECH Software PICC Macro Assembler V9.82 build 9453 
+Symbol Table                                                                                   Thu Sep 08 20:15:16 2011
+
+          _TRIS_Array 0030                     pc 0002                    _RD 04E0                    _WR 04E1  
+                  fsr 0004                   l400 07FF                   l401 07FF                   l390 076F  
+                 l383 06FB                   l384 072A                   l385 072A                   l393 06BE  
+                 l388 073A                   l396 079C                   l389 0768                   l397 07FD  
+                 l398 07FC                   l399 07FE                   _GIE 005F                   _RB4 0034  
+                 fsr0 0004                   indf 0000                  l2100 072B                  l2110 0762  
+                l2102 0731                  l2112 076E                  l2104 0739                  l2120 0798  
+                l2106 073A                  l2130 07CD                  l2122 079C                  l2114 0770  
+                l2108 075E                  l2132 07D3                  l2124 07A0                  l2116 0773  
+                l2134 07F6                  l2126 07A6                  l2118 0774                  l2136 07F7  
+                l2128 07A9                  l2090 06FB                  l2092 071F                  l2084 06F2  
+                l2094 0723                  l2086 06F3                  l2088 06FA                  l2096 06B9  
+                l2098 06BE                  u2410 0729                  u2411 0728                  u2404 0710  
+                u2420 0738                  u2405 070E                  u2421 0737                  u2510 07D3  
+                u2511 07D2                  u2504 07BE                  u2505 07BC                  u2450 0768  
+                u2434 0740                  u2451 0767                  u2435 073E                  u2380 06F9  
+                u2444 074F                  u2524 07D9                  u2381 06F8                  u2445 074D  
+                u2525 07D7                  u2534 07E7                  u2535 07E5                  u2480 07A6  
+                u2464 077A                  u2481 07A5                  u2465 0778                  u2394 0701  
+                u2474 0789                  u2395 06FF                  u2475 0787                  u2494 07AF  
+                u2495 07AD                  _WREN 04E2                  _Init 072B                  _main 0770  
+                btemp 007E                  start 0000                 ?_Init 0070                 ?_main 0070  
+               _EEADR 009B                 _CARRY 0018                 _PORTA 0005                 _PORTB 0006  
+               _TRISA 0085                 _TRISB 0086                 Init@i 0077                 pclath 000A  
+               status 0003                 wtemp0 007E          __end_of_Init 0770          __end_of_main 0800  
+              ??_Init 0074                ??_main 0078                _EEDATA 009A                _EECON1 009C  
+              _EECON2 009D                _TRISB4 0434    __size_of_ReadInput 0006            PortClear@i 0073  
+  __size_of_PortClear 0039        __pcstackCOMMON 0070          __pidataBANK0 06DA     __end_of_ReadInput 06BF  
+   __end_of_PortClear 072B            __pmaintext 0770               main@tmp 007B  end_of_initialization 06C9  
+             init_ram 06CF   start_initialization 06BF             _ReadInput 06B9             _PortClear 06F2  
+         __pdataBANK0 0020            ?_ReadInput 0070            ?_PortClear 0070             __ptext150 06B9  
+           __ptext151 06F2             __ptext152 0000             __ptext149 072B             main@cache 007C  
+         ??_ReadInput 0070             init_fetch 06CB           ??_PortClear 0070            _BITS_Array 0020  
+       __size_of_Init 0045         __size_of_main 0090            _PORT_Array 0028  

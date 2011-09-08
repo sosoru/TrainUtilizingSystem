@@ -93,8 +93,12 @@ namespace SensorLibrary
 
                 var ec = this.Reader.Read(buf, this.ReadTimeout, out len);
                 if (ec != ErrorCode.None)
-                    throw new IOException(Enum.GetName(typeof(ErrorCode), ec));
-
+                {
+                    this.Reader.Reset();
+                    ec = this.Reader.Read(buf, this.ReadTimeout, out len);
+                    if (ec != ErrorCode.None)
+                        throw new IOException(Enum.GetName(typeof(ErrorCode), ec));
+                }
                 Array.Copy(buf, 0, buffer, pos + offset, len);
                 pos += len;
             } while (pos == 0);

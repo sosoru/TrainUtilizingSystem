@@ -46,6 +46,7 @@ namespace RouteVisualizer.ViewModels
          */
 
         public ObservableCollection<IDrawable> Drawables { get; private set; }
+
         public Size DrawingSize { get; set; }
 
         public DrawablesViewModel()
@@ -54,21 +55,32 @@ namespace RouteVisualizer.ViewModels
             this.Drawables = new ObservableCollection<IDrawable>();
         }
 
-        public virtual Brush ConbinedBrush
+        private GeometryDrawing _curdrawing;
+        public Drawing CurrentDrawing
         {
             get
             {
                 var drawables = this.Drawables.ToList();
-                var group = new DrawingGroup();
+                var group = new GeometryGroup();
                 
                 foreach (var d in drawables)
                 {
-                    //group.Children.Add(d.CurrentGeometry);
+                    var geo = d.CurrentGeometry;
+                    
+                    group.Children.Add(d.CurrentGeometry);
                 }
 
-                var b = new DrawingBrush(group);
+                if (_curdrawing == null)
+                {
+                    var dr = new GeometryDrawing();
+                    dr.Brush = Brushes.White;
+                    dr.Pen = new Pen(Brushes.Black, 1.0);
+                    this._curdrawing = dr;
+                }
 
-                return b;
+                _curdrawing.Geometry = group;
+
+                return this._curdrawing;
             }
         }
 

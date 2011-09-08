@@ -37,7 +37,7 @@ namespace SensorLivetView
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            var tsensvm = new TrainSensorViewModel(new TrainSensor() { DeviceID = new DeviceID(0x01, 0x01), });
+            var tsensvm = new TrainSensorViewModel(new MeisuringTrainSensor() { DeviceID = new DeviceID(0x01, 0x01), });
             tsensvm.Model.Observe(this.dispatcher);
             this.tsensview.DataContext = tsensvm;
 
@@ -68,14 +68,14 @@ namespace SensorLivetView
 
                                                             },
                                                     ReceivingServer = this.server,
-                                                    Mode = TrainSensorMode.detecting,
+                                                    Mode = TrainSensorMode.meisuring,
                                                     ReferenceVoltageMinus = 0.0F,
                                                     ReferenceVoltagePlus = 5.0F,
                                                     VoltageResolution = 10,
                                                     ThresholdVoltage = 2.0F,
                                                     CurrentVoltage = (float)(5.0 * (double)i / 256.0),
                                                     Timer = (ushort)(i * 256),
-                                                    IsDetected = i % 2 == 0,
+                                                    //IsDetected = i % 2 == 0,
                                                 });
 
                 var mbpacket = new DevicePacket()
@@ -95,19 +95,7 @@ namespace SensorLivetView
                 };
                 mbState.ParentID = 0x01;
                 mbState.Timer = 1000;
-                for (int i = 0; i < 28; i++)
-                {
-                    if (i == 0)
-                        mbState [i] = ModuleTypeEnum.MotherBoard;
-                    else if (i > 0 && i < 5)
-                        mbState [i] = ModuleTypeEnum.TrainSensor;
-                    else if (i == 5)
-                        mbState [i] = ModuleTypeEnum.PointModule;
-                    else if (i == 6)
-                        mbState [i] = ModuleTypeEnum.TrainController;
-                    else
-                        mbState [i] = ModuleTypeEnum.Unknown;
-                }
+                mbState.Data.ModuleType[0] = 0x10; //sens, mb
                 mbState.FlushDataState();
 
                 var tctrlpacket = new DevicePacket()

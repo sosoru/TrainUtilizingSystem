@@ -40,9 +40,8 @@ namespace SensorLivetView
                 ModuleType = ModuleTypeEnum.MotherBoard,
             };
             var state = DeviceFactory.MotherBoardFactory.DeviceStateCreate();
+            state.BasePacket = packet;
             state.Data.ModuleType [0] = 0x10; //mb, sens
-            state.Data.ModuleType [1] = 0x11; //sens, sens
-            state.Data.ModuleType [2] = 0x23; //controller, point
 
             return setStack(() => new [] { state });
         }

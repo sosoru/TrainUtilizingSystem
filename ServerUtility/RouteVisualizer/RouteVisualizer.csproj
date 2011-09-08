@@ -89,7 +89,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="EF\ObservableWrappingCollection.cs" />
+    <Compile Include="ObservableWrappingCollection.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="RailEditor\ViewModels\GateDataViewModel.cs" />
     <Compile Include="RailEditor\ViewModels\PathDataViewModel.cs" />
@@ -112,6 +112,9 @@
       <DependentUpon>SettingWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\ModeledViewModel.cs" />
+    <Compile Include="Views\RailView.xaml.cs">
+      <DependentUpon>RailView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SettingWindow.xaml.cs">
       <DependentUpon>SettingWindow.xaml</DependentUpon>
     </Compile>
@@ -159,6 +162,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\RailView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\SettingWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

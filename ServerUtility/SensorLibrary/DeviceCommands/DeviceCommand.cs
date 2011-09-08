@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+
 using System.Linq;
 using System.Text;
 using SensorLibrary;
@@ -54,7 +55,7 @@ namespace SensorLibrary.DeviceCommands
 
         public Action<IDeviceCommand<TState>> Command { get; set; }
 
-        public IDevice<TState> OwnerDevice { get; protected set; }
+        public IDevice<TState> OwnerDevice { get; set; }
 
         public void OnCompleted()
         {

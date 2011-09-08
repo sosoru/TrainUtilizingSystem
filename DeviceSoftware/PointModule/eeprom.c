@@ -1,4 +1,5 @@
-#include "PointModule.h"
+#include <p18cxxx.h>
+#include "../Headers/eeprom.h"
 
 unsigned char ReadEEPROM(unsigned char address){
     EECON1=0;                   //ensure CFGS=0 and EEPGD=0 
@@ -9,12 +10,18 @@ unsigned char ReadEEPROM(unsigned char address){
 
 void EEPROMcpy(unsigned char * dest, unsigned char srcaddr, unsigned char len )
 {
+	unsigned char conCache = INTCON;
 	unsigned char i;
 	
-	for(i = 0; i < len; i++)
+	//INTCONbits.GIE = 0;
+	INTCONbits.PEIE = 0;
+	
+	for(i = 0; i < len; ++i)
 	{
 		*(dest+i) = ReadEEPROM(srcaddr+i);
 	}
+	
+	INTCON = conCache;
 }
 
 void WriteEEPROM(unsigned char address,unsigned char data){
@@ -25,6 +32,7 @@ char SaveInt;
     EEADR = address;            //setup Address
     EEDATA = data;              //and data
     INTCONbits.GIE=0;           //No interrupts
+    INTCONbits.PEIE=0;
     EECON2 = 0x55;              //required sequence #1
     EECON2 = 0xaa;              //#2
     EECON1bits.WR = 1;          //#3 = actual write

@@ -148,7 +148,7 @@ HRESULT CreateMessageFromReceived(SpiPacket * ppacket, DeviceID * pid, PMODULE_D
 
 HRESULT CreateRemoteModuleState(DeviceID * pid, PMODULE_DATA data)
 {
-	HRESULT res=0;// = (pid->InternalAddr >= REMOTE_MODULE_INNERCOUNT) ? REPEAT_TERMINATE : 0;
+	HRESULT res = (pid->InternalAddr >= REMOTE_MODULE_INNERCOUNT) ? REPEAT_TERMINATE : 0;
 	
 	if(pid->InternalAddr >= REMOTE_MODULE_INNERCOUNT)
 		return E_FAIL;

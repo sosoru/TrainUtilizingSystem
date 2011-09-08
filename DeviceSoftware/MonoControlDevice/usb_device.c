@@ -2597,7 +2597,7 @@ USB_HANDLE USBTransferOnePacket(BYTE ep,BYTE dir,BYTE* data,BYTE len)
     {
 	    return 0;
 	}
-	LATBbits.LATB0 = 1;
+	//LATBbits.LATB0 = 1;
 
     //Toggle the DTS bit if required
     #if (USB_PING_PONG_MODE == USB_PING_PONG__NO_PING_PONG)

@@ -91,7 +91,7 @@ near BYTE * ModuleTris[] =
 	//MB
 	0,
 	//PORTA
-	&TRISA,	&TRISA,	&TRISA,	&TRISE, &TRISE, &TRISE,	
+	&TRISA,	&TRISA,	&TRISA,	&TRISA, &TRISA, &TRISA,	
 	//PORTB
 	&TRISB,	&TRISB,	&TRISA,	&TRISB, &TRISA, &TRISB,	
 	//PORTC
@@ -103,7 +103,7 @@ near BYTE * ModuleLat[] =
 	//MB
 	0,
 	//PORTA
-	&LATA,	&LATA,	&LATA,	&LATE, &LATE, &LATE,
+	&LATA,	&LATA,	&LATA,	&LATA, &LATA, &LATA,
 	//PORTB
 	&LATB,	&LATB,	&LATA,	&LATB, &LATA, &LATB,	
 	//PORTC
@@ -115,7 +115,7 @@ near BYTE * ModulePort[] =
 	//MB
 	0,
 	//PORTA
-	&PORTA,	&PORTA,	&PORTA,	&PORTE, &PORTE, &PORTE,
+	&PORTA,	&PORTA,	&PORTA,	&PORTA, &PORTA, &PORTA,
 	//PORTB
 	&PORTB,	&PORTB,	&PORTA,	&PORTB, &PORTA, &PORTB,	
 	//PORTC
@@ -127,7 +127,7 @@ BYTE ModuleShift[]=
 	//MB
 	0,
 	//PORTA
-	2,3,5,0,1,2,
+	0,1,2,3,4,5,
 	//PORTB
 	1,2,1,3,0,4,
 	//PORTC

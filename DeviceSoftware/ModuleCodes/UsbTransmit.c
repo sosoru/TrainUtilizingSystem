@@ -13,7 +13,7 @@ BYTE g_PacketTransfarPos = 0;
 HRESULT AddPacketUSB(DeviceID* pid, BYTE moduleType, char * data)
 {
 	DevicePacket * ppack;
-	BYTE peieCache = INTCONbits.PEIE;
+	BYTE intCache = INTCON;
 	
 	if(USBDeviceState < CONFIGURED_STATE)
 		return E_FAIL;
@@ -32,7 +32,7 @@ HRESULT AddPacketUSB(DeviceID* pid, BYTE moduleType, char * data)
 	if(g_PacketBufferPos >= BUFFER_MAX)
 		g_PacketBufferPos = 0;
 	
-	INTCONbits.PEIE = peieCache; // resume low-priority interrupts
+	INTCON = intCache; // resume interrupts	
 	return S_OK;
 }
 
@@ -41,7 +41,7 @@ HRESULT SendPacketUSB()
 	BYTE i;
 	BYTE savedStatus; 
 	BYTE distanceBufPos;
-	BYTE peieCache = INTCONbits.PEIE, gieCache = INTCONbits.GIE;
+	BYTE intCache = INTCON;
 		
 	if(USBHandleBusy(USBGenericInHandle) && (USBDeviceState < CONFIGURED_STATE))
 		return E_FAIL;
@@ -69,8 +69,7 @@ HRESULT SendPacketUSB()
 	if(g_PacketTransfarPos >= BUFFER_MAX)
 		g_PacketTransfarPos = 0;
 	
-	INTCONbits.GIE = gieCache; // resume high-priority interrupts	
-	INTCONbits.PEIE = peieCache; // resume low-priority interrupts
+	INTCON = intCache; // resume interrupts	
 	
 	return S_OK;
 }
@@ -78,7 +77,7 @@ HRESULT SendPacketUSB()
 HRESULT ReceivingProcessUSB()
 {
 	BYTE i, j;
-	BYTE peieCache = INTCONbits.PEIE, gieCache = INTCONbits.GIE;
+	BYTE intCache = INTCON;
 
     //OUTPacket contains data the host sent
     if(USBHandleBusy(USBGenericOutHandle) && (USBDeviceState < CONFIGURED_STATE))	//Check if the endpoint has received any data from the host.
@@ -109,8 +108,7 @@ HRESULT ReceivingProcessUSB()
    	memset((void*)OUTPacket, 0x00, (size_t)sizeof(OUTPacket));
 	USBGenericOutHandle = USBGenRead(USBGEN_EP_NUM,(BYTE*)&OUTPacket,USBGEN_EP_SIZE);
 	
-	INTCONbits.GIE = gieCache; // resume high-priority interrupts	
-	INTCONbits.PEIE = peieCache; // resume low-priority interrupts
+	INTCON = intCache; // resume interrupts	
 
 	return S_OK;
 }

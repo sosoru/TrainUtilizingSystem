@@ -8,12 +8,12 @@
 #define Port_SurfaceLedA LATCbits.LATC0
 #define Port_SurfaceLedB LATDbits.LATD0
 
-#define PORT_PORTA_A PORTAbits.RA2
-#define PORT_PORTA_B PORTAbits.RA3
-#define PORT_PORTA_C PORTAbits.RA5
-#define PORT_PORTA_D PORTEbits.RE0
-#define PORT_PORTA_E PORTEbits.RE1
-#define PORT_PORTA_F PORTEbits.RE2
+#define PORT_PORTA_A PORTAbits.RA0
+#define PORT_PORTA_B PORTAbits.RA1
+#define PORT_PORTA_C PORTAbits.RA2
+#define PORT_PORTA_D PORTEbits.RA3
+#define PORT_PORTA_E PORTEbits.RA4
+#define PORT_PORTA_F PORTEbits.RA5
 
 #define PORT_PORTB_A PORTBbits.RB1
 #define PORT_PORTB_B PORTBbits.RB2
@@ -28,5 +28,12 @@
 #define PORT_PORTC_D PORTDbits.RD5
 #define PORT_PORTC_E PORTDbits.RD6
 #define PORT_PORTC_F PORTDbits.RD7
+
+#define TRIS_PORTA_A TRISAbits.TRISA0
+#define TRIS_PORTA_B TRISAbits.TRISA1
+#define TRIS_PORTA_C TRISAbits.TRISA2
+#define TRIS_PORTA_D TRISEbits.TRISA3
+#define TRIS_PORTA_E TRISEbits.TRISA4
+#define TRIS_PORTA_F TRISEbits.TRISA5
 
 #endif

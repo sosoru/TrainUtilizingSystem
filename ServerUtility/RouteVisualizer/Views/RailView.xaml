@@ -3,15 +3,10 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	xmlns:RouteVisualizer_ViewModels="clr-namespace:RouteVisualizer.ViewModels"
 	mc:Ignorable="d"
-	x:Class="RouteVisualizer.DrawablesView"
+	x:Class="RouteVisualizer.RailView"
 	x:Name="UserControl"
-	d:DesignWidth="640" d:DesignHeight="480"
-    DataContextChanged="UserControl_DataContextChanged"
-    Loaded="UserControl_Loaded">
+	d:DesignWidth="640" d:DesignHeight="480">
 
-	<Grid x:Name="LayoutRoot" >
-		<Canvas x:Name="cnv"/>
-		</Grid>
+	<Grid x:Name="LayoutRoot"/>
 </UserControl>
