@@ -10,14 +10,6 @@
         Height="350" Width="525"
         Loaded="UserControl_Loaded"
         DataContextChanged="UserControl_DataContextChanged"
-        SizeChanged="UserControl_SizeChanged">
-            
-    <Grid>
-    	<Image HorizontalAlignment="Left" >
-    		<Image.Source>
-    			<v:D2DD3DImage x:Name="dxImage" /> 		
-			</Image.Source>	
-		</Image>
-        
-    </Grid>
+>
+	<Canvas x:Name="cnv"/>
 </UserControl>

@@ -7,21 +7,11 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
-//using System.Windows.Media;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
-using Microsoft.Windows.Media;
-using Microsoft.WindowsAPICodePack.DirectX.Direct2D1;
-using Microsoft.WindowsAPICodePack.DirectX.DirectWrite;
-
-using DWrite = Microsoft.WindowsAPICodePack.DirectX.DirectWrite;
-using Microsoft.WindowsAPICodePack.DirectX.DXGI;
-using Microsoft.WindowsAPICodePack.DirectX.WindowsImagingComponent;
-using System.Windows.Interop;
-
-using Drawing = System.Drawing;
+using System.Windows.Media.Animation;
 
 using SensorLivetView.ViewModels.Controls;
 using System.Reactive.Concurrency;
@@ -35,112 +25,109 @@ namespace SensorLivetView.Views
     /// </summary>
     public partial class VoltageGraphView : UserControl
     {
-        private D2DFactory d2dfactory;
-        private DWriteFactory dwfactory;
-        private RenderTarget renderTarget;
+        List<Line> lines = new List<Line>();
+        System.Windows.Threading.DispatcherTimer uitimer;
 
-        // Maintained simply to detect changes in the interop back buffer
-        IntPtr m_pIDXGISurfacePreviousNoRef;
+        DoubleAnimation lineXanim;
+        DoubleAnimation lineYanim;
+        AnimationClock lineXclock;
+        AnimationClock lineYclock;
+
+        VoltageGraphViewModel ViewModel
+        {
+            get
+            {
+                return this.DataContext as VoltageGraphViewModel;
+            }
+            set
+            {
+                this.DataContext = value;
+            }
+        }
 
         public VoltageGraphView()
         {
             InitializeComponent();
         }
 
-        public VoltageGraphViewModel ViewModel
-        {
-            get { return this.DataContext as VoltageGraphViewModel; }
-        }
-
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            this.d2dfactory = D2DFactory.CreateFactory(D2DFactoryType.SingleThreaded);
-            this.dwfactory = DWriteFactory.CreateFactory();
-
-            this.dxImage.HWNDOwner = (new WindowInteropHelper(Window.GetWindow(this))).Handle;
-            this.dxImage.OnRender = DoRender;
-
-            Observable.Interval(new TimeSpan(0, 0, 0, 0, 200), Scheduler.ThreadPool)
-                      .ObserveOn(System.Threading.SynchronizationContext.Current)
-                      .Subscribe(_ => this.dxImage.RequestRender());
-        }
-
-        private void DoRender(IntPtr pIDXGISurface)
-        {
-            //if changed interop back buffer ?
-            if (pIDXGISurface != m_pIDXGISurfacePreviousNoRef)
+            int cap = 100;
+            for (int i = 0; i < cap; ++i)
             {
-                this.m_pIDXGISurfacePreviousNoRef = pIDXGISurface;
-
-                var surf = Surface.FromNativeSurface(pIDXGISurface);
-                var surfdesc = surf.Description;
-                var renderprop = new RenderTargetProperties(RenderTargetType.Hardware,
-                                                            new PixelFormat(Format.Unknown, AlphaMode.Premultiplied),
-                                                            96,
-                                                            96,
-                                                            RenderTargetUsage.None,
-                                                            Microsoft.WindowsAPICodePack.DirectX.Direct3D.FeatureLevel.Default);
-
-                try
-                {
-                    this.renderTarget = this.d2dfactory.CreateDxgiSurfaceRenderTarget(surf, renderprop);
-                }
-                catch
-                {
-                    return;
-                }
-
-                renderTarget.BeginDraw();
-                renderTarget.Clear(new ColorF(1, 1, 1, 0));
-                renderTarget.EndDraw();
+                var line = new Line();
+                line.Stroke = Brushes.Red;
+                line.StrokeThickness = 1.0;
+                lines.Add(line);
             }
 
-            renderTarget.BeginDraw();
-
-            renderTarget.Clear(new ColorF(0, 0, 0, 1));
-            GraphPaint(this.renderTarget);
-
-            renderTarget.EndDraw();
-        }
-
-        private void GraphPaint(RenderTarget target)
-        {
-            try
-            {
-                if (this.ViewModel != null && this.ViewModel.Painter != null)
-                {
-                    var size = target.Size;
-                    var points = this.ViewModel.Painter.GetGraphPointCollection(new Drawing.RectangleF(0, 0, size.Width, size.Height));
-                    var b = target.CreateSolidColorBrush(new ColorF(0, 1, 0, 1));
-
-                    for (int i = 0; i < points.Count - 1; i++)
-                    {
-                        target.DrawLine(new Point2F((float)i * size.Width / (float)points.Count, points[i].Y),
-                                        new Point2F((float)(i + 1) * size.Width / (float)points.Count, points[i + 1].Y),
-                                        b,
-                                        1.0F);
-
-                    }
-                }
-            }
-            catch { Console.WriteLine(); }
+            this.uitimer = new DispatcherTimer();
+            uitimer.Tick += new EventHandler(uitimer_Tick);
         }
 
         private void UserControl_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            //if (e.NewValue == null)
-            //    return;
+            if (uitimer.IsEnabled)
+                uitimer.Stop();
 
-            //if (this.ViewModel != null && this.dxImage != null)
-            //{
-            //    this.dxImage.RequestRender();
-            //}
+            var oldvm = e.OldValue as VoltageGraphViewModel;
+            var newvm = e.NewValue as VoltageGraphViewModel;
+
+            if (newvm != null)
+            {
+                uitimer.Interval = new TimeSpan(0, 0, 0, 0, 500);
+                uitimer.Start();
+            }
         }
 
-        private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
+        void uitimer_Tick(object sender, EventArgs e)
         {
-            if (this.dxImage != null)
-                this.dxImage.SetPixelSize((uint)this.ActualWidth, (uint)this.ActualHeight);
+            var vm = this.ViewModel;
+            if (vm == null || vm.DataProvider == null)
+                return;
+
+            RefreshLine(vm.DataProvider.GetNext);
+        }
+
+        private int refreshind = 0;
+        private void RefreshLine(double y)
+        {
+            if (refreshind > lines.Count)
+            {
+                refreshind = 0;
+                cnv.Children.Clear();
+            }
+
+            y = (y > 1.0) ? 1.0 : y;
+
+            var li = lines [refreshind];
+            var befli = (refreshind - 1 < 0) ? lines.Last() : lines [refreshind - 1];
+            var lenx = cnv.ActualWidth / ((double)lines.Count);
+            var animateDuration = new Duration(new TimeSpan(0, 0, 0, 0, 500));
+
+            li.X1 = lenx * refreshind;
+            li.X2 = li.X1;
+            var destX = lenx * (refreshind + 1);
+
+            li.Y1 = befli.Y2; // valid if refrehed before line
+            li.Y2 = li.Y1;
+            var destY = cnv.ActualHeight * y;
+
+            this.lineXanim = new DoubleAnimation(destX, animateDuration);
+            li.ApplyAnimationClock(Line.X2Property, null);
+            this.lineXclock = lineXanim.CreateClock();
+            li.ApplyAnimationClock(Line.X2Property, this.lineXclock);
+
+            this.lineYanim = new DoubleAnimation(destY, animateDuration);
+            li.ApplyAnimationClock(Line.Y2Property, null);
+            this.lineYclock = lineYanim.CreateClock();
+            li.ApplyAnimationClock(Line.Y2Property, this.lineYclock);
+
+            cnv.Children.Add(li);
+            this.lineXclock.Controller.Begin();
+            this.lineYclock.Controller.Begin();
+
+            ++refreshind;
         }
     }
 }

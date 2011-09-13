@@ -3,10 +3,10 @@
 
 #define PORT_PIN_COUNT 6
 
-#define Tris_SurfaceLedA TRISCbits.TRISC0
-#define Tris_SurfaceLedB TRISDbits.TRISD0
-#define Port_SurfaceLedA LATCbits.LATC0
-#define Port_SurfaceLedB LATDbits.LATD0
+#define Tris_SurfaceLedA TRISDbits.TRISD1
+#define Tris_SurfaceLedB TRISDbits.TRISD2
+#define Port_SurfaceLedA LATDbits.LATD1
+#define Port_SurfaceLedB LATDbits.LATD2
 
 #define PORT_PORTA_A PORTAbits.RA0
 #define PORT_PORTA_B PORTAbits.RA1

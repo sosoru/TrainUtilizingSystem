@@ -15,10 +15,9 @@ using SensorLibrary;
 
 namespace SensorLivetView.ViewModels.Controls
 {
-    public class VoltageGraphViewModel : ViewModel
+    public class VoltageGraphViewModel
+        : ViewModel
     {
-        public IGraphPainter Painter { get; set; }
-                
-        
+        public IGraphPainter DataProvider { get; set; }
     }
 }

@@ -1,7 +1,7 @@
 
 
 HI-TECH Software PIC LITE Macro Assembler V9.82 build 9453 
-                                                                                               Thu Sep 08 20:15:16 2011
+                                                                                               Sat Sep 10 03:36:09 2011
 
 HI-TECH Software Omniscient Code Generator (Lite mode) build 9453
      1  0000                     opt subtitle "HI-TECH Software Omniscient Code Generator (Lite mode) build 9453"
@@ -126,7 +126,7 @@ HI-TECH Software Omniscient Code Generator (Lite mode) build 9453
    117  0085                     _TRISA	set	133
    118                           	global	_TRISB
    119  0086                     _TRISB	set	134
-   120                           	file	"C:\Users\root\AppData\Local\Temp\sbm4."
+   120                           	file	"C:\Users\root\AppData\Local\Temp\sc4o."
    121                           	line	#
    122                           psect cinit,class=CODE,delta=2
    123                           global start_initialization
@@ -1003,7 +1003,7 @@ HI-TECH Software Omniscient Code Generator (Lite mode) build 9453
 
 
 HI-TECH Software PICC Macro Assembler V9.82 build 9453 
-Symbol Table                                                                                   Thu Sep 08 20:15:16 2011
+Symbol Table                                                                                   Sat Sep 10 03:36:09 2011
 
           _TRIS_Array 0030                     pc 0002                    _RD 04E0                    _WR 04E1  
                   fsr 0004                   l400 07FF                   l401 07FF                   l390 076F  

@@ -16,7 +16,7 @@ extern BYTE ModuleShift[];
 
 #define BIT_MASK(bit_no) (1 << (bit_no))
 #define GetMaskedValue(value, bit_no) ((value) & BIT_MASK((bit_no)))
-#define SetMaskedValue(value, bit_no, set) ((value) |= ((BIT_MASK(bit_no)) & ((set) << (bit_no))))
+#define SetMaskedValue(value, bit_no, set) ((value) &= ((~BIT_MASK(bit_no)) | ((set) << (bit_no))))
 
 #define getTris(no) (GetMaskedValue(*ModuleTris[(no)], ModuleShift[(no)]))
 #define setTris(no, val) (SetMaskedValue(*ModuleTris[(no)], ModuleShift[(no)], val))

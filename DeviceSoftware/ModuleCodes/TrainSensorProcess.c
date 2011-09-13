@@ -25,7 +25,7 @@ HRESULT GetFuncTableTrainSensor(DeviceID * pid, ModuleFuncTable* table)
 //	table->fnclose = CloseTrainSensor;
 	table->fninterrupt = InterruptTrainSensor;
 	
-	base = (pid->ModulePart-1) * PORT_PIN_COUNT;
+	base = (pid->ModuleAddr-1) * PORT_PIN_COUNT + 1;
 	
 	setTris(base, INPUT_PIN);
 	for(i=1; i< PORT_PIN_COUNT; ++i)
@@ -38,18 +38,19 @@ HRESULT GetFuncTableTrainSensor(DeviceID * pid, ModuleFuncTable* table)
 
 void SetUsingPort(BYTE module, BYTE port)
 {	
-	BYTE base = (module+1) * PORT_PIN_COUNT;
+	BYTE base = (module-1) * PORT_PIN_COUNT + 1;
 		
-	setPort(base+4, 0);
-	if(port > 8)
-		return;
+//	setLat(base+4, 0);
+//	if(port > 8)
+//		return;
+//	
+//	setLat(base+1, (port & 0x01));
+//	setLat(base+2, (port & 0x02) >> 1);
+//	setLat(base+3, (port & 0x04) >> 2);
+//	setLat(base+4, 1);
+	LATA |= ((port<<1) & (0b00001110));
 	
-	setPort(base+1, (port & 0x01));
-	setPort(base+2, (port & 0x02) >> 1);
-	setPort(base+3, (port & 0x04) >> 2);
-	setPort(base+4, 1);
-	
-	Delay10TCYx(10);
+	Delay10KTCYx(1);
 }
 
 void SetMeisureVoltage(BYTE module, BYTE port)
@@ -188,7 +189,7 @@ HRESULT InitTrainSensor(DeviceID * pid)
 	setTris(module, INPUT_PIN);
 	OpenADC(ADC_FOSC_64 & ADC_RIGHT_JUST & ADC_8_TAD,
 			channel & ADC_INT_OFF & ADC_VREFPLUS_VDD & ADC_VREFMINUS_VSS,
-			0b0000);
+			0b1110);
 
 	return S_OK;
 }

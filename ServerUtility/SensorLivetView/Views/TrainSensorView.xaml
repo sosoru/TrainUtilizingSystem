@@ -72,7 +72,7 @@
     	</StackPanel>
     	<Button Content="change meisuring" Command="{Binding ChangeMeisuringModeCommand, Mode=OneWay}"/>
     	<Button Content="change detecting" Command="{Binding ChangeDetectingModeCommand, Mode=OneWay}" CommandParameter="{Binding Text, ElementName=textBox}"/>
-    	<Rectangle Fill="{Binding CurrentGraphBrush, Mode=OneWay}" Stroke="Black" Width="200" Height="100"/>
+    	<local:VoltageGraphView Width="200" Height="200" DataContext="{Binding VoltageGraphVm}"/>
 		
 	</StackPanel>
 </UserControl>

@@ -1,5 +1,5 @@
 ﻿using System;
-using Drawing = System.Drawing;
+//using Drawing = System.Drawing;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -91,15 +91,15 @@ namespace SensorLivetView.ViewModels.Controls
             }
         }
 
-        private DateTime _beforeraised =DateTime.MinValue;
+        
         protected override void ReceivedProcess(IDevice<IDeviceState<IPacketDeviceData>> dev, PacketReceiveEventArgs e)
         {
-            var now = DateTime.Now;
-            if ((now - this._beforeraised).Milliseconds > 300)
-            {
-                RaisePropertyChanged("");
-                this._beforeraised = now;
-            }
+            //var now = DateTime.Now;
+            //if ((now - this._beforeraised).Milliseconds > 300)
+            //{
+            //    RaisePropertyChanged("");
+            //    this._beforeraised = now;
+            //}
             //RaisePropertyChanged("VoltageGraphVm");
         }
 
@@ -180,44 +180,16 @@ namespace SensorLivetView.ViewModels.Controls
 
                 var vm = new VoltageGraphViewModel()
                 {
-                    Painter = this.MeisuringModel.GetPainter(),
+                    DataProvider = new GraphPainter<TrainSensor, TrainSensorState>()
+                    {
+                        DeterminateFunc = (state) => (state.CurrentVoltage - state.ReferenceVoltageMinus) / state.ReferenceVoltagePlus,
+                        Device = this.Model
+                    },
                 };
                 return vm;
             }
         }
 
-        public Brush CurrentGraphBrush
-        {
-            get
-            {
-                var model = this.MeisuringModel;
-                if (model == null)
-                    return new SolidColorBrush(Colors.Black);
-
-                var ptlist = this.MeisuringModel.GetPainter().GetGraphPointCollection(new System.Drawing.RectangleF(0, 0, 200, 100));
-                var geogrp = new GeometryGroup();
-
-                for(int i=0; i< ptlist.Count-2;++i)
-                {
-                    var pta = new Point((double)ptlist[i].X,(double)ptlist[i].Y);
-                    var ptb = new Point((double)ptlist[i+1].X, (double)ptlist[i+1].Y);
-
-                    geogrp.Children.Add(new LineGeometry(pta,ptb));
-                }
-
-                //guideline
-                var axis = new LineGeometry(new Point(0, 0), new Point(200, 0));
-                geogrp.Children.Add(axis);
-
-                var dw = new GeometryDrawing(Brushes.Black, new Pen(Brushes.Red, 1), geogrp);
-                var b = new DrawingBrush(dw);
-                b.Stretch = Stretch.None;
-                b.TileMode = TileMode.None;
-                b.Freeze();
-
-                return b;
-            }
-        }
 
         double _ReflectorInterval;
 

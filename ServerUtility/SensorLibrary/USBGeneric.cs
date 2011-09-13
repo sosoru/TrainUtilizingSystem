@@ -90,11 +90,12 @@ namespace SensorLibrary
                 int len = 64;
                 var buf = new byte [len];
                 // we should read data per 64byte and implement double buffer
-
+                
                 var ec = this.Reader.Read(buf, this.ReadTimeout, out len);
                 if (ec != ErrorCode.None)
                 {
                     this.Reader.Reset();
+
                     ec = this.Reader.Read(buf, this.ReadTimeout, out len);
                     if (ec != ErrorCode.None)
                         throw new IOException(Enum.GetName(typeof(ErrorCode), ec));
