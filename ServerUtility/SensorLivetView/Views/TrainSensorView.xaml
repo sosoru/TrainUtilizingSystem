@@ -58,6 +58,10 @@
     		<TextBlock Text="CurrentVoltage:"/>
     		<TextBlock Text="{Binding Model.CurrentState.CurrentVoltage}"/>
     	</StackPanel> -->
+		<StackPanel Orientation="Horizontal" >
+    		<TextBlock Text="ID:"/>
+    		<TextBlock Text="{Binding Model.DeviceID}"/>
+    	</StackPanel>
     	<StackPanel Orientation="Horizontal" >
     		<TextBlock Text="Mode:"/>
     		<TextBlock Text="{Binding Model.CurrentState.Mode}"/>

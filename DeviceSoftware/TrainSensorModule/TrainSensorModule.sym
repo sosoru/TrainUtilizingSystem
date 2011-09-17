@@ -1,15 +1,16 @@
 _RD 4E0 0 ABS
 _WR 4E1 0 ABS
+_RB3 33 0 ABS
 _RB4 34 0 ABS
 __S0 2008 0 ABS
-__S1 7D 0 ABS
+__S1 79 0 ABS
 __S2 0 0 ABS
 _GIE 5F 0 ABS
 __Hintentry 0 0 CODE
 __Lintentry 0 0 CODE
 _WREN 4E2 0 ABS
-_main 770 0 CODE
-_Init 72B 0 CODE
+_main 767 0 CODE
+_Init 700 0 CODE
 btemp 7E 0 ABS
 _exit 0 0 CODE
 start 0 0 CODE
@@ -20,19 +21,25 @@ _PORTA 5 0 ABS
 reset_vec 0 0 CODE
 _PORTB 6 0 ABS
 _EEADR 9B 0 ABS
+_CMCON 1F 0 ABS
+_VRCON 9F 0 ABS
 wtemp0 7E 0 ABS
+_nRBPU 40F 0 ABS
 _CARRY 18 0 ABS
 __Hconfig 2008 0 CONFIG
 __Lconfig 2007 0 CONFIG
-Init@i 77 0 COMMON
 ??_PortClear 70 0 COMMON
 __Hram 0 0 ABS
 __Lram 0 0 ABS
 ?_main 70 0 COMMON
 ?_Init 70 0 COMMON
+_TRISB0 430 0 ABS
 __Hfunctab 0 0 CODE
 __Lfunctab 0 0 CODE
-main@cache 7C 0 COMMON
+_TRISB1 431 0 ABS
+main@cache 78 0 COMMON
+_TRISB2 432 0 ABS
+_TRISB3 433 0 ABS
 _EECON1 9C 0 ABS
 _TRISB4 434 0 ABS
 _EECON2 9D 0 ABS
@@ -51,14 +58,14 @@ __Hsfr2 0 0 ABS
 __Lsfr2 0 0 ABS
 __Hsfr3 0 0 ABS
 __Lsfr3 0 0 ABS
-init_fetch 6CB 0 CODE
-__ptext150 6B9 0 CODE
-__ptext151 6F2 0 CODE
+init_fetch 6F1 0 CODE
+__ptext150 6DF 0 CODE
+__ptext151 72E 0 CODE
 __ptext152 0 0 CODE
 __Hcode 0 0 ABS
 __Lcode 0 0 ABS
-??_main 78 0 COMMON
-_PortClear 6F2 0 CODE
+??_main 74 0 COMMON
+_PortClear 72E 0 CODE
 ??_Init 74 0 COMMON
 __Hinit 0 0 CODE
 __Linit 0 0 CODE
@@ -68,10 +75,10 @@ __Ltext 0 0 ABS
 __HdataBANK0 0 0 ABS
 __LdataBANK0 0 0 ABS
 __pdataBANK0 20 0 BANK0
-end_of_initialization 6C9 0 CODE
-__ptext149 72B 0 CODE
-__end_of_ReadInput 6BF 0 CODE
-__end_of_PortClear 72B 0 CODE
+end_of_initialization 6EF 0 CODE
+__ptext149 700 0 CODE
+__end_of_ReadInput 6E5 0 CODE
+__end_of_PortClear 767 0 CODE
 __Hstrings 0 0 ABS
 __Lstrings 0 0 ABS
 __Hbank0 0 0 ABS
@@ -85,22 +92,22 @@ __Lbank3 0 0 BANK3
 __size_of_Init 0 0 ABS
 __Hpowerup 0 0 CODE
 __Lpowerup 0 0 CODE
-_ReadInput 6B9 0 CODE
+_ReadInput 6DF 0 CODE
 __Hclrtext 0 0 ABS
 __Lclrtext 0 0 ABS
 __Hidloc 0 0 IDLOC
 __Lidloc 0 0 IDLOC
 ?_PortClear 70 0 COMMON
-init_ram 6CF 0 CODE
-main@tmp 7B 0 COMMON
+init_ram 6F5 0 CODE
+main@tmp 77 0 COMMON
 __Hcinit 0 0 ABS
 __Lcinit 0 0 ABS
 __size_of_ReadInput 0 0 ABS
 __size_of_main 0 0 ABS
 __HidataBANK0 0 0 ABS
 __LidataBANK0 0 0 ABS
-__pidataBANK0 6DA 0 CODE
-__end_of_Init 770 0 CODE
+__pidataBANK0 716 0 CODE
+__end_of_Init 716 0 CODE
 __size_of_PortClear 0 0 ABS
 ??_ReadInput 70 0 COMMON
 __Hend_init 1 0 CODE
@@ -120,59 +127,66 @@ intlevel5 0 0 CODE
 __HcstackCOMMON 0 0 ABS
 __LcstackCOMMON 0 0 ABS
 __pcstackCOMMON 70 0 COMMON
-start_initialization 6BF 0 CODE
+start_initialization 6E5 0 CODE
 __Hmaintext 0 0 ABS
 __Lmaintext 0 0 ABS
-__pmaintext 770 0 CODE
+__pmaintext 767 0 CODE
 __Hinittext 0 0 ABS
 __Linittext 0 0 ABS
 %segments
 reset_vec 0 1 CODE 0
 config 400E 400F CONFIG 400E
-cstackCOMMON 70 7C COMMON 70
+cstackCOMMON 70 78 COMMON 70
 dataBANK0 20 37 BANK0 20
-maintext EE0 FFF CODE EE0
-text149 E56 EDF CODE E56
-text151 DE4 E55 CODE DE4
-idataBANK0 DB4 DE3 CODE DB4
-inittext D96 DB3 CODE D96
-cinit D7E D95 CODE D7E
-text150 D72 D7D CODE D72
+maintext ECE FFF CODE ECE
+text151 E5C ECD CODE E5C
+idataBANK0 E2C E5B CODE E2C
+text149 E00 E2B CODE E00
+inittext DE2 DFF CODE DE2
+cinit DCA DE1 CODE DCA
+text150 DBE DC9 CODE DBE
 %locals
 TrainSensorModule.obj
 C:\Users\root\Documents\TrainUtilizingSystem\DeviceSoftware\TrainSensorModule\main.c
-4 2007 0 CONFIG
-37 6DA 0 CODE
-42 6E2 0 CODE
-25 6EA 0 CODE
-102 770 0 CODE
-104 773 0 CODE
-105 774 0 CODE
-106 798 0 CODE
-110 79C 0 CODE
-111 7A0 0 CODE
-113 7A6 0 CODE
-115 7A9 0 CODE
-116 7CD 0 CODE
-118 7D3 0 CODE
-120 7F6 0 CODE
-121 7F7 0 CODE
-122 7FC 0 CODE
-123 7FD 0 CODE
-108 7FE 0 CODE
-125 7FF 0 CODE
-77 72B 0 CODE
-78 72F 0 CODE
-80 731 0 CODE
-82 73A 0 CODE
-80 75E 0 CODE
-85 768 0 CODE
-87 76B 0 CODE
-88 76E 0 CODE
-89 76F 0 CODE
-97 6B9 0 CODE
-98 6BE 0 CODE
-67 6F2 0 CODE
-69 6FB 0 CODE
-67 71F 0 CODE
-71 72A 0 CODE
+3 2007 0 CONFIG
+36 716 0 CODE
+41 71E 0 CODE
+24 726 0 CODE
+108 767 0 CODE
+110 76A 0 CODE
+111 76B 0 CODE
+112 78F 0 CODE
+116 793 0 CODE
+118 799 0 CODE
+119 79D 0 CODE
+121 7A3 0 CODE
+123 7A6 0 CODE
+124 7CA 0 CODE
+126 7D0 0 CODE
+128 7F3 0 CODE
+130 7F8 0 CODE
+133 7F9 0 CODE
+134 7FD 0 CODE
+114 7FE 0 CODE
+136 7FF 0 CODE
+76 700 0 CODE
+77 703 0 CODE
+79 704 0 CODE
+80 706 0 CODE
+81 709 0 CODE
+83 70A 0 CODE
+84 70B 0 CODE
+86 70C 0 CODE
+87 70D 0 CODE
+88 70E 0 CODE
+89 70F 0 CODE
+91 710 0 CODE
+93 711 0 CODE
+94 714 0 CODE
+95 715 0 CODE
+103 6DF 0 CODE
+104 6E4 0 CODE
+66 72E 0 CODE
+68 737 0 CODE
+66 75B 0 CODE
+70 766 0 CODE

@@ -17,21 +17,13 @@ HRESULT GetChannel(BYTE module, unsigned char * channel);
 
 HRESULT GetFuncTableTrainSensor(DeviceID * pid, ModuleFuncTable* table)
 {
-	BYTE i, base;
+	BYTE i;
 	
 	table->fncreate = CreateTrainSensorState;
 	table->fnstore = StoreTrainSensorSavedState;
 	table->fninit = InitTrainSensor;
 //	table->fnclose = CloseTrainSensor;
 	table->fninterrupt = InterruptTrainSensor;
-	
-	base = (pid->ModuleAddr-1) * PORT_PIN_COUNT + 1;
-	
-	setTris(base, INPUT_PIN);
-	for(i=1; i< PORT_PIN_COUNT; ++i)
-	{
-		setTris(base+i, OUTPUT_PIN);
-	}
 	
 	return S_OK;
 }
@@ -40,17 +32,19 @@ void SetUsingPort(BYTE module, BYTE port)
 {	
 	BYTE base = (module-1) * PORT_PIN_COUNT + 1;
 		
-//	setLat(base+4, 0);
+	//setLat(base+4, 0);
 //	if(port > 8)
 //		return;
 //	
 //	setLat(base+1, (port & 0x01));
 //	setLat(base+2, (port & 0x02) >> 1);
 //	setLat(base+3, (port & 0x04) >> 2);
-//	setLat(base+4, 1);
-	LATA |= ((port<<1) & (0b00001110));
+	LATAbits.LATA4 = 1;
+	LATA = ((port<<1) | (LATA & 0b11110001));
+	LATAbits.LATA4 = 0;
+	//setLat(base+4, 1);
 	
-	Delay10KTCYx(1);
+	Delay10TCYx(140); // 28us
 }
 
 void SetMeisureVoltage(BYTE module, BYTE port)
@@ -180,14 +174,22 @@ HRESULT InitTrainSensor(DeviceID * pid)
 {	
 	unsigned char channel;
 	HRESULT res;
-	BYTE module = pid->ModuleAddr;
+	BYTE module = pid->ModuleAddr, i, base;
 	
 	res = GetChannel(module, &channel);
 	if(res != S_OK)
-		return E_FAIL;
+		return E_FAIL;	
+			
+	base = (pid->ModuleAddr-1) * PORT_PIN_COUNT + 1;
 	
-	setTris(module, INPUT_PIN);
-	OpenADC(ADC_FOSC_64 & ADC_RIGHT_JUST & ADC_8_TAD,
+	setTris(base, INPUT_PIN);
+	for(i=1; i< PORT_PIN_COUNT; ++i)
+	{
+		setTris(base+i, OUTPUT_PIN);
+	}
+
+	//setTris(module, INPUT_PIN);
+	OpenADC(ADC_FOSC_4 & ADC_RIGHT_JUST & ADC_20_TAD,
 			channel & ADC_INT_OFF & ADC_VREFPLUS_VDD & ADC_VREFMINUS_VSS,
 			0b1110);
 
@@ -203,7 +205,7 @@ HRESULT StoreTrainSensorSavedState(DeviceID * pid, PMODULE_DATA buf)
 {
 	TrainSensorSavedModuledState msaved;
 	TrainSensorState* pstate;
-	BYTE module = pid->ModulePart;
+	BYTE module = pid->ModuleAddr;
 	
 	if(pid->InternalAddr > TRAINSENSOR_INNERMODULE_COUNT)
 		return E_FAIL;

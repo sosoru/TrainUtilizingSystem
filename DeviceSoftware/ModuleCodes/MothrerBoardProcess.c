@@ -62,7 +62,7 @@ HRESULT StoreMotherBoardSavedState(DeviceID* pid, PMODULE_DATA buf)
 		if(beftype != curtype)
 		{
 			//GET_FUNC_TABLE(i)->fnclose(i);			
-			mid.ModulePart = i;
+			mid.ModuleAddr = i;
 			InitializeTable(&mid, curtype, GET_FUNC_TABLE(i));
 			WRITE_MBSTATE_MODULETYPE(g_mbState, i, curtype);
 		}

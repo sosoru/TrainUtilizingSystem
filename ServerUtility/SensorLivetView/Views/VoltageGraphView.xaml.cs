@@ -48,10 +48,10 @@ namespace SensorLivetView.Views
         public VoltageGraphView()
         {
             InitializeComponent();
-        }
 
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
+            this.uitimer = new DispatcherTimer();
+            uitimer.Tick += new EventHandler(uitimer_Tick);
+
             int cap = 100;
             for (int i = 0; i < cap; ++i)
             {
@@ -60,13 +60,19 @@ namespace SensorLivetView.Views
                 line.StrokeThickness = 1.0;
                 lines.Add(line);
             }
+        }
 
-            this.uitimer = new DispatcherTimer();
-            uitimer.Tick += new EventHandler(uitimer_Tick);
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (!uitimer.IsEnabled)
+                this.uitimer.Start();
         }
 
         private void UserControl_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
+            if (!this.IsLoaded)
+                return;
+
             if (uitimer.IsEnabled)
                 uitimer.Stop();
 
@@ -92,7 +98,7 @@ namespace SensorLivetView.Views
         private int refreshind = 0;
         private void RefreshLine(double y)
         {
-            if (refreshind > lines.Count)
+            if (refreshind >= lines.Count)
             {
                 refreshind = 0;
                 cnv.Children.Clear();
@@ -111,7 +117,7 @@ namespace SensorLivetView.Views
 
             li.Y1 = befli.Y2; // valid if refrehed before line
             li.Y2 = li.Y1;
-            var destY = cnv.ActualHeight * y;
+            var destY = cnv.ActualHeight * (1.0 - y);
 
             this.lineXanim = new DoubleAnimation(destX, animateDuration);
             li.ApplyAnimationClock(Line.X2Property, null);

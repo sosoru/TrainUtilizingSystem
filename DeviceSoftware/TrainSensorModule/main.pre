@@ -595,10 +595,10 @@ extern void memcpyee(eeprom unsigned char *to, const unsigned char *from, unsign
 #pragma inline(_delay)
 extern void _delay(unsigned long);
 
-# 4 "C:\Users\root\Documents\TrainUtilizingSystem\DeviceSoftware\TrainSensorModule\main.c"
-asm("\tpsect config,class=CONFIG,delta=2"); asm("\tdw ""0xFFEE & 0xFFFB & 0xFFBF & 0xFFFF");
+# 3 "C:\Users\root\Documents\TrainUtilizingSystem\DeviceSoftware\TrainSensorModule\main.c"
+asm("\tpsect config,class=CONFIG,delta=2"); asm("\tdw ""0xFFEE & 0xFFFB & 0xFFBF & 0xFFFF & 0xFFFF & 0xFF7F");
 
-# 25
+# 24
 volatile unsigned char * TRIS_Array[] =
 {
 &TRISA,
@@ -628,7 +628,7 @@ volatile unsigned char * PORT_Array[] =
 &PORTB
 };
 
-# 59
+# 58
 void Init();
 void PortClear();
 void main();
@@ -647,13 +647,20 @@ void Init()
 {
 unsigned char i;
 
-TRISA = 0xFF;
-TRISB = 0xFF;
+PORTA = 0x00;
+PORTB = 0x00;
 
-for(i=0; i<8; ++i)
-{
-(*TRIS_Array[(i)] = ((*TRIS_Array[(i)]) & (~(1 << (i)))) | ((0&1) << (i)));
-}
+CMCON = 0b00000111;
+VRCON = 0b00000000;
+nRBPU = 1;
+
+TRISA = 0x00;
+TRISB = 0x00;
+
+TRISB0 = 1;
+TRISB1 = 1;
+TRISB2 = 1;
+TRISB3 = 1;
 
 TRISB4 = 0;
 
@@ -667,7 +674,7 @@ unsigned char ReadInput()
 
 
 
-return PORTB & 0b00001111;
+return PORTB & 0b00000111;
 }
 
 void main()
@@ -680,6 +687,8 @@ RB4 = 1;
 
 while(1)
 {
+while(RB3==1);
+
 unsigned char tmp = ReadInput();
 if(cache != tmp)
 {
@@ -690,9 +699,12 @@ if(tmp < 8)
 {
 (*PORT_Array[(tmp)] = ((*PORT_Array[(tmp)]) & (~(1 << (tmp)))) | ((1&1) << (tmp)));
 
-RB4 = 1;
 cache = tmp;
 }
+}
+else
+{
+RB4 = 1;
 }
 }
 }

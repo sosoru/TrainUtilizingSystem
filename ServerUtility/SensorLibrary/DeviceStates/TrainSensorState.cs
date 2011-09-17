@@ -11,13 +11,15 @@ namespace SensorLibrary
     : DeviceState<TrainSensorData>
     {
         public TrainSensorState()
-            :base()
+            : base()
         {
         }
 
         public override string ToString()
         {
-            string ret = string.Format("Timer = {0}, V = {1}", Timer, CurrentVoltage);
+            string ret = string.Format("(Module={0}, Internal={1}, MPart={2})Timer = {3}, V = {4}",
+                                        this.BasePacket.ID.ModuleAddr, this.BasePacket.ID.InternalAddr, this.BasePacket.ID.ModulePart,
+                                        Timer, CurrentVoltage);
             switch (Mode)
             {
                 case TrainSensorMode.meisuring:

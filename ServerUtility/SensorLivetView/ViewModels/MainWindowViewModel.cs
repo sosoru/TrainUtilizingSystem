@@ -1,5 +1,5 @@
 ﻿
-//#define TEST
+#define TEST
 
 using System;
 using System.Collections.Generic;
@@ -140,6 +140,11 @@ namespace SensorLivetView.ViewModels
 
             var serv = new PacketServer(st);
             var dispat = new PacketDispatcherSingle();
+
+#if TEST
+            var logging = new PacketServerAction((state) => Console.WriteLine(state.ToString()));
+            serv.AddAction(logging);
+#endif
 
             serv.AddAction(dispat);
             if (!serv.IsLooping)

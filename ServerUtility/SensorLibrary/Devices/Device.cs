@@ -131,6 +131,9 @@ namespace SensorLibrary
 
         public virtual void OnNext(IDeviceState<IPacketDeviceData> value)
         {
+            if (this.DeviceID != value.BasePacket.ID)
+                return;
+
             var casted = value as TState;
             if (casted != null)
             {

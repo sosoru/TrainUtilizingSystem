@@ -30,7 +30,7 @@
 #define WRITE_MBSTATE_MODULETYPE(state, n, value) ((state).ModuleType[(n)/2] = ((state).ModuleType[(n)/2] & (~(0b1111 << (((n)%2)*4)))) | ((value) << (((n)%2)*4)))
 
 #define IS_THIS_BOARD(pid) (pid->ParentId == g_mbState.ParentId)
-#define IS_BOARDING_MODULE(state, pid, type) (READ_MBSTATE_MODULETYPE((state), (pid)->ModulePart) == (type))
+#define IS_BOARDING_MODULE(state, pid, type) (READ_MBSTATE_MODULETYPE((state), (pid)->ModuleAddr) == (type))
 
 HRESULT GetFuncTableMotherBoard(DeviceID * pid, ModuleFuncTable* table);
 HRESULT InitMotherBoard(DeviceID* pid);

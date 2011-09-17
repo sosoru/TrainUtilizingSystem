@@ -1,7 +1,6 @@
 #include <htc.h>
-#include <pic16f628a.h>
 
-__CONFIG(FOSC_HS & WDTE_OFF & BOREN_OFF & CP_OFF);
+__CONFIG(FOSC_HS & WDTE_OFF & BOREN_OFF & MCLRE_ON & CP_OFF & LVP_OFF);
 
 #define BYTE unsigned char
 
@@ -74,13 +73,20 @@ void Init()
 {
 	BYTE i;
 	
-	TRISA = 0xFF; //all input temporalily
-	TRISB = 0xFF;
+	PORTA = 0x00;
+	PORTB = 0x00;
 	
-	for(i=0; i<OUTPUT_PORT_COUNT; ++i)
-	{
-		WRITE_TRIS_OUTPORT(i, OUTPUT_PIN);
-	}
+	CMCON = 0b00000111;
+	VRCON = 0b00000000;
+	nRBPU = 1; // disable internal pullup
+	
+	TRISA = 0x00; //all output temporalily
+	TRISB = 0x00;
+		
+	TRIS_PORT1 = INPUT_PIN;
+	TRIS_PORT2 = INPUT_PIN;
+	TRIS_PORT3 = INPUT_PIN;
+	TRIS_PORT4 = INPUT_PIN;
 
 	TRIS_PORTACK = OUTPUT_PIN;
 	
@@ -94,7 +100,7 @@ BYTE ReadInput()
 //			| (LAT_PORT2 << 1)
 //			| (LAT_PORT3 << 2)
 //			| (LAT_PORT4 << 3);
-	return PORTB & 0b00001111;
+	return PORTB & 0b00000111;
 }
 
 void main()
@@ -107,6 +113,8 @@ void main()
 	
 	while(1)
 	{
+		while(PORT_PORT4==1);
+		
 		BYTE tmp = ReadInput();
 		if(cache != tmp)
 		{
@@ -117,9 +125,12 @@ void main()
 			{
 				WRITE_PORT_OUTPORT(tmp, 1);
 				
-				PORT_PORTACK = 1;
 				cache = tmp; //sync	
 			}
+		}
+		else
+		{
+			PORT_PORTACK = 1;		
 		}
 	}
 }
