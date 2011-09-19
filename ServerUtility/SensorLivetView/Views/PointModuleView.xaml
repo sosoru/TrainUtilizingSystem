@@ -4,6 +4,7 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:SensorLivetView_ViewModels_Controls="clr-namespace:SensorLivetView.ViewModels.Controls"
+	xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
 	mc:Ignorable="d"
 	x:Class="SensorLivetView.PointModuleView"
 	x:Name="UserControl"
@@ -19,9 +20,17 @@
 					<ColumnDefinition Width="100"/>
 					<ColumnDefinition Width="100"/>
 				</Grid.ColumnDefinitions>
+				<i:Interaction.Triggers>
+					<i:EventTrigger EventName="Checked" SourceObject="{Binding ElementName=StraightButton, Mode=OneWay}">
+						<i:InvokeCommandAction Command="{Binding ChangeStraightCommand}"/>
+					</i:EventTrigger>
+					<i:EventTrigger EventName="Checked" SourceObject="{Binding ElementName=CurvedButton, Mode=OneWay}">
+						<i:InvokeCommandAction Command="{Binding ChangeCurvedCommand}"/>
+					</i:EventTrigger>
+				</i:Interaction.Triggers>
 				<TextBox Height="57" Margin="15,0,9,-89" TextWrapping="Wrap" Text="{Binding StateNo}" VerticalAlignment="Bottom"/>
-				<ToggleButton Content="Straight" Height="Auto" Width="Auto" ClickMode="Press" IsChecked="{Binding IsStraight, Mode=OneWay}" Grid.Column="1"/>
-				<ToggleButton Height="Auto" Width="Auto" Content="Curved" Grid.Column="2" ClickMode="Press" IsChecked="{Binding IsCurved, Mode=OneWay}"/>
+				<ToggleButton x:Name="StraightButton" Content="Straight" Height="Auto" Width="Auto" ClickMode="Press" IsChecked="{Binding IsStraight, Mode=OneWay}" Grid.Column="1"/>
+				<ToggleButton x:Name="CurvedButton" Height="Auto" Width="Auto" Content="Curved" Grid.Column="2" ClickMode="Press" IsChecked="{Binding IsCurved, Mode=OneWay}"/>
 			</Grid>
 		</DataTemplate>
 	</UserControl.Resources>

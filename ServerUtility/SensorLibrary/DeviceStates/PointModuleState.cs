@@ -22,9 +22,7 @@ namespace SensorLibrary
             if (addr >= StateLength)
                 throw new IndexOutOfRangeException("インデックスが使用できる範囲を超えています");
 
-            int arindex = addr / 8;
-            int bitindex = addr % 8;
-            return (PointStateEnum)((this.Data.Directions[arindex] & (1 << bitindex)) >> bitindex);
+            return (PointStateEnum)(this.Data.Directions [addr] & 1);
         }
 
         public void SetPointState(int addr, PointStateEnum state)
@@ -32,16 +30,12 @@ namespace SensorLibrary
             if (addr >= StateLength)
                 throw new IndexOutOfRangeException("インデックスが使用できる範囲を超えています");
 
-            int arindex = addr / 8;
-            int bitindex = addr % 8;
-
-            this.Data.Directions[arindex] &= (byte)(~(1 << bitindex));
-            this.Data.Directions[arindex] |= (byte)((uint)(state) << bitindex);
+            this.Data.Directions [addr] = (byte)state;
         }
 
         public int StateLength
         {
-            get { return this.Data.Directions.Length * 8; }
+            get { return this.Data.Directions.Length; }
         }
 
         public PointStateEnum this[int addr]

@@ -79,12 +79,75 @@ namespace SensorLivetView.ViewModels.Controls
             public bool IsStraight
             {
                 get { return State == PointStateEnum.Straight; }
+                set
+                {
+                    this.State = PointStateEnum.Straight;
+                }
             }
 
             public bool IsCurved
             {
                 get { return State == PointStateEnum.Curve; }
+                set
+                {
+                    this.State = PointStateEnum.Curve;
+                }
             }
+
+
+            #region ChangeStraightCommand
+            DelegateCommand _ChangeStraightCommand;
+
+            public DelegateCommand ChangeStraightCommand
+            {
+                get
+                {
+                    if (_ChangeStraightCommand == null)
+                        _ChangeStraightCommand = new DelegateCommand(ChangeStraight, CanChangeStraight);
+                    return _ChangeStraightCommand;
+                }
+            }
+
+            private bool CanChangeStraight()
+            {
+                return this.ViewModel != null;
+            }
+
+            private void ChangeStraight()
+            {
+                this.IsStraight = true;
+                if (this.ViewModel.SendPacketCommand.CanExecute())
+                    this.ViewModel.SendPacketCommand.Execute();
+            }
+            #endregion
+
+
+            #region ChangeCurvedCommand
+            DelegateCommand _ChangeCurvedCommand;
+
+            public DelegateCommand ChangeCurvedCommand
+            {
+                get
+                {
+                    if (_ChangeCurvedCommand == null)
+                        _ChangeCurvedCommand = new DelegateCommand(ChangeCurved, CanChangeCurved);
+                    return _ChangeCurvedCommand;
+                }
+            }
+
+            private bool CanChangeCurved()
+            {
+                return this.ViewModel != null;
+            }
+
+            private void ChangeCurved()
+            {
+                this.IsCurved = true;
+                if (this.ViewModel.SendPacketCommand.CanExecute())
+                    this.ViewModel.SendPacketCommand.Execute();
+            }
+            #endregion
+      
         }
     }
 }

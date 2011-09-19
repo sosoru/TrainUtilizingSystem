@@ -1,18 +1,17 @@
 #include "PointModule.h"
-#include <delays.h>
+#include <timers.h>
 
  /** Configuration Bits *******************************************/
- #pragma config OSC = HSPLL
-// #pragma config PLLDIV = 5           //Configure for 20Mhz crystal, 20/5 = 4Mhz (required for USB)
-// #pragma config CPUDIV = OSC1_PLL2   //Use 48MHz clock for system clock = 96MHz/2 = 48MHz
-// #pragma config USBDIV = 2           //USB Clock source from the 96 MHz PLL divided by 2
-// #pragma config FOSC = HSPLL_HS      //Oscillator Selection bits - HS oscillator, PLL enabled, HS used by USB
+ #pragma config PLLDIV = 5           //Configure for 20Mhz crystal, 20/5 = 4Mhz (required for USB)
+ #pragma config CPUDIV = OSC1_PLL2   //Use 48MHz clock for system clock = 96MHz/2 = 48MHz
+ #pragma config USBDIV = 2           //USB Clock source from the 96 MHz PLL divided by 2
+ #pragma config FOSC = HSPLL_HS      //Oscillator Selection bits - HS oscillator, PLL enabled, HS used by USB
  #pragma config FCMEN = OFF          //Fail-Safe Clock Monitor Enable bit: Disable
  #pragma config IESO = OFF           //Internal/External Oscillator Switchover bit: Disable
  #pragma config PWRT = ON            //Power Up timer enabled
- //#pragma config BOR = SOFT           //Brown-out Reset enabled and controlled by software (SBOREN is enabled)
+ #pragma config BOR = SOFT           //Brown-out Reset enabled and controlled by software (SBOREN is enabled)
  #pragma config BORV = 2             //Brown-out voltage = 2.7V
- //#pragma config VREGEN = ON          //USB Voltage regulator enabled
+ #pragma config VREGEN = ON          //USB Voltage regulator enabled
  #pragma config WDT = OFF            //Watchdog timer HW Disabled - SW Controlled
  #pragma config WDTPS = 128          //Watchdog timer = 512ms (128 x 4ms)
  #pragma config MCLRE = ON           //Master clear enabled
@@ -41,16 +40,117 @@
  #pragma config EBTR2 = OFF 
  #pragma config EBTR3 = OFF 
  #pragma config EBTRB = OFF
-
-volatile near BYTE* g_pCurrentModule = &PORT_DEFAULT;
-BYTE g_ModuleNumber = 0;
-PointInfo g_ParentCache;
+ 
+BYTE g_delayBreak = 0;
+BYTE g_interrupted = 0;
+PointInfo g_ReceivedInfo;
 
 void high_isr();
 void DeviceInit();
+void Delay(unsigned int t);
 void ApplyPoint(PointInfo* pinfo);
+void RefreshPoint();
+void ReadPointInfo(PointInfo* pinfo);
+void LoadSavedDirection(PointInfo* pinfo);
+void StoreDirection(PointInfo* pinfo);
 
-//upper bits |<- A B C D ->| lower bits
+void Delay(unsigned int t)
+{	
+	OpenTimer1(TIMER_INT_ON & T1_16BIT_RW & T1_SOURCE_INT & T1_PS_1_8 & T1_OSC1EN_OFF & T1_SYNC_EXT_OFF);
+	
+	WriteTimer1(0xFFFF - t);
+	
+	g_delayBreak = 0;
+	while(!g_delayBreak);
+	
+	CloseTimer1();
+}
+
+void ApplyPoint(PointInfo * pinfo)
+{
+	volatile near BYTE* pUsingPort = (!(pinfo->PointValue & 0b00000100)) ? &PORT_OUTPUT_LOWER : &PORT_OUTPUT_UPPER;
+	BYTE value = 1 << (((pinfo->PointValue & 0b00000011) << 1) + pinfo->PointDirection);
+	
+	*pUsingPort = ~value;
+	
+	Delay(0xFFFF);
+	Delay(0xFFFF);
+	Delay(0xFFFF);
+	Delay(0xFFFF);
+
+	*pUsingPort = 0xFF;
+}
+
+void ReadPointInfo(PointInfo * pinfo)
+{
+	pinfo->data = PORT_RECEIVING;
+}
+
+void LoadSavedDirection(PointInfo* pinfo)
+{
+	BYTE intcache = INTCON;
+	
+	INTCONbits.GIE = 0;
+	INTCONbits.PEIE = 0;
+
+	pinfo->PointDirection = ReadEEPROM(pinfo->PointValue);
+	
+	INTCON = intcache;
+}
+
+void StoreDirection(PointInfo* pinfo)
+{
+	BYTE intcache = INTCON;
+	
+	INTCONbits.GIE = 0;
+	INTCONbits.PEIE = 0;
+
+	WriteEEPROM(pinfo->PointValue, pinfo->PointDirection);
+		
+	INTCON = intcache;
+}
+
+void DeviceInit()
+{
+	PointInfo info;
+	
+	ADCON1bits.PCFG = 0b1111; // all digital
+	CMCON = 0x07; //disable comparator
+	
+	// set all I/O ports output temporarily 
+	TRISA = 0x00;
+	TRISB = 0x00;
+	TRISC = 0x00;
+	
+	PORTA = 0x00;
+	PORTB = 0xFF;
+	PORTC = 0xFF;
+	
+	TRIS_RECEIVING = 0xFF; // input
+	TRIS_ACK_DEVICE = OUTPUT_PIN;
+	
+	PORT_ACK_DEVICE = 1;
+			
+	INTCONbits.GIE = 1;
+	INTCONbits.PEIE = 1;
+	OpenTimer0(TIMER_INT_ON & T0_8BIT & T0_SOURCE_INT & T0_PS_1_1);
+	
+	g_ReceivedInfo.PointValue = 0;
+	LoadSavedDirection(&g_ReceivedInfo); // initialize received data 
+}
+
+void RefreshPoint()
+{
+	BYTE i;
+	PointInfo info;
+	for(i=0; i<8; ++i)
+	{
+		info.PointValue = i;
+		
+		LoadSavedDirection(&info);
+		ApplyPoint(&info);	
+	}	
+}
 
 void main()
 {
@@ -58,103 +158,22 @@ void main()
 	
 	while(1)
 	{
-		PointInfo info;
-		info.data = PARENT_VALUE;
-		info.ACK = 0;
+		BYTE i;
 		
-		if(info.data == g_ParentCache.data)
+		RefreshPoint();
+		
+		//waiting
+		for(i=0; i<200; ++i)
 		{
-			// waiting
-		}else{
-			PARENT_ACK_PORT = 0;
-			ApplyPoint(&info);
+			Delay(0xFFFF);
 			
-			PARENT_ACK_PORT = 1;
-			g_ParentCache.data = info.data;		
-		}
-	}
-}
-
-void DeviceInit()
-{
-	BYTE data[] = {ReadEEPROM(0), ReadEEPROM(1), ReadEEPROM(2)};
-	BYTE i, j;
-	PointInfo info;
-	
-	ADCON1bits.PCFG = 0b1111;
-	
-	//init point status
-	PARENT_TRIS = 0xFF;
-	PARENT_ACK_TRIS = OUTPUT_PIN;
-	PARENT_ACK_PORT = 0;
-	
-	TRIS_POINT_A = 0x00;
-	TRIS_POINT_B = 0x00;
-	TRIS_POINT_C = 0x00;
-	TRIS_POINT_DIRECTION = OUTPUT_PIN;
-	
-	PORT_POINT_A = 0x00;
-	PORT_POINT_B = 0x00;
-	PORT_POINT_C = 0x00;
-	
-	g_ParentCache.data = 0x00;
-	
-	for(i = 1; i <= 3; ++i)
-	{
-		info.ModuleDefine = 1;
-		info.ModuleValue = i;
-		ApplyPoint(&info);
-		
-		info.ModuleDefine = 0;
-		for(j = 0 ; j < 7; ++j)
-		{
-			info.PointValue = j;
-			info.PointDirection = GetBitValue(data[i], j);
-			ApplyPoint(&info);
-		}
-	}
-	
-}
-
-void ApplyPoint(PointInfo * pinfo)
-{
-	if(pinfo->ModuleDefine)
-	{
-		switch(pinfo->ModuleValue)
-		{
-			case 1:
-				g_pCurrentModule = &PORT_POINT_A;
+			if(g_interrupted)
+			{
+				g_interrupted = 0;
 				break;
-			case 2:
-				g_pCurrentModule = &PORT_POINT_B;
-				break;
-			case 3:
-				g_pCurrentModule = &PORT_POINT_C;
-				break;
-			default:
-				g_pCurrentModule = &PORT_DEFAULT;
-		}
-		g_ModuleNumber = pinfo->ModuleValue;
+			}		
+		}		
 	}
-	else
-	{
-		BYTE buf = ReadEEPROM(g_ModuleNumber-1);
-		
-		PORT_POINT_DIRECTION = pinfo->PointDirection;
-		Delay1KTCYx(1);
-				
-		*g_pCurrentModule = 0x00;
-		//ensured cleared
-		SetBitValue(*g_pCurrentModule, (near BYTE)pinfo->PointValue, 1);
-		Delay10KTCYx(200); 
-		Delay10KTCYx(200); // 100msec
-		*g_pCurrentModule = 0x00;
-		
-		ClearBitValue(buf, pinfo->PointValue);
-		SetBitValue(buf, pinfo->PointValue, pinfo->PointDirection);
-		WriteEEPROM(g_ModuleNumber-1,buf);
-	}
-	
 }
 
 #pragma code HIGH_VECTOR = 0x08
@@ -165,6 +184,38 @@ void high_interrupt()
 #pragma interrupt high_isr
 void high_isr()
 {
-
+	if(INTCONbits.T0IF)
+	{
+		INTCONbits.T0IF = 0;
+		
+		//check ack
+		if(PORT_ACK_HOST)
+		{
+			PointInfo receivedInfo, romInfo;
+			
+			ReadPointInfo(&receivedInfo);
+			romInfo.PointValue = receivedInfo.PointValue;
+			
+			LoadSavedDirection(&romInfo);
+			
+			if(romInfo.PointDirection != receivedInfo.PointDirection)
+			{
+				PORT_ACK_DEVICE = 0;
+				
+				StoreDirection(&receivedInfo);
+				
+				PORT_ACK_DEVICE = 1;
+				
+				g_interrupted = 1;
+				g_ReceivedInfo.data = receivedInfo.data;
+			}
+		}
+	}
+	
+	if(PIR1bits.TMR1IF)
+	{
+		PIR1bits.TMR1IF = 0;
+		g_delayBreak = 1;
+	}
 }
 #pragma code 

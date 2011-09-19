@@ -198,6 +198,8 @@ void DeviceInit()
 //	ADCON2bits.ADFM = 1; // right justified format
 //	ADCON2bits.ADCS = 0b110; // A/D conversion clock is Fosc / 64
 	
+	ADCON1 = 0x0F;
+	CMCON = 0x07; //disable comparators
 	
 	Tris_SurfaceLedA = 0;
 	Tris_SurfaceLedB = 0;

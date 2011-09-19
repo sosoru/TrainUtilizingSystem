@@ -102,10 +102,11 @@ HRESULT ReceivingProcessUSB()
 	    	}
     	}
     	
+    	pack->ReadMark = 0x00;
     }
     //Port_SurfaceLedA = 0;
    	
-   	memset((void*)OUTPacket, 0x00, (size_t)sizeof(OUTPacket));
+   	//memset((void*)OUTPacket, 0x00, (size_t)sizeof(OUTPacket));
 	USBGenericOutHandle = USBGenRead(USBGEN_EP_NUM,(BYTE*)&OUTPacket,USBGEN_EP_SIZE);
 	
 	INTCON = intCache; // resume interrupts	

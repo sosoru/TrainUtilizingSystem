@@ -1,42 +1,48 @@
+#include "HardwareProfile.h"
 #include "../Headers/ModuleBase.h"
 #include "../Headers/MotherBoardModule.h"
 #include "../Headers/PointModule.h"
+#include "../Headers/PortMapping.h"
 #include <stdlib.h>
 #include <string.h>
 
-#define IS_POINTMODULE_REPRESENT(module) ((module) % 4 == 1)
+BYTE IsStoring = FALSE;
+BYTE SendingPointInd = 0xFF;
+PointModuleSavedState cachePointSaved;
 
-void ReadPointModuleSavedState(DeviceID * pid, PointModuleState * pstate);
-void WritePointModuleSavedState(DeviceID * pid, PointModuleState* pstate);
+void ReadPointModuleSavedState(DeviceID * pid, PointModuleSavedState * psaved);
+void WritePointModuleSavedState(DeviceID * pid, PointModuleSavedState * psaved);
 
-BYTE PointChangingCurrent[MODULE_COUNT / 4];
+void StateToSaved(PointModuleState* pstate, PointModuleSavedState* psaved);
+void SavedToState(PointModuleSavedState* psaved, PointModuleState* pstate);
 
-
-void ReadPointModuleSavedState(DeviceID * pid, PointModuleState * pstate)
+void StateToSaved(PointModuleState* pstate, PointModuleSavedState* psaved)
 {
-	PointModuleSavedState saved;
-	BYTE module = pid->ModulePart;
-	
-	ReadModuleSavedState(module, &saved);
-	memcpy((void*)pstate->directions, (void*)saved.directions, (size_t)SIZE_POINTMODULESTATE_DIRECTIONS);
+	memcpy((void*)psaved->directions, (void*)pstate->directions, SIZE_POINTMODULESTATE_DIRECTIONS);
 }
 
-void WritePointModuleSavedState(DeviceID * pid, PointModuleState* pstate)
+void SavedToState(PointModuleSavedState* psaved, PointModuleState* pstate)
 {
-	PointModuleSavedState saved;
-	BYTE module = pid->ModulePart;
+	memcpy((void*)pstate->directions, (void*)psaved->directions, SIZE_POINTMODULESTATE_DIRECTIONS);
+}
+
+void ReadPointModuleSavedState(DeviceID * pid, PointModuleSavedState * psaved)
+{
+	BYTE module = pid->ModuleAddr;
 	
-	memset((void*)&saved, 0x00, (size_t)sizeof(PointModuleSavedState));
-	memcpy((void*)saved.directions, (void*)pstate->directions, (size_t)SIZE_POINTMODULESTATE_DIRECTIONS);
-	WriteModuleSavedState(module, &saved);
+	ReadModuleSavedState(module, psaved);
+}
+
+void WritePointModuleSavedState(DeviceID * pid, PointModuleSavedState* psaved)
+{
+	BYTE module = pid->ModuleAddr;
+	
+	WriteModuleSavedState(module, psaved);
 }
 
 
 HRESULT GetFuncTablePointModule(DeviceID * pid, ModuleFuncTable* table)
 {
-	if(!IS_POINTMODULE_REPRESENT(pid->ModulePart))
-		return E_FAIL;
-
 	table->fncreate = CreatePointModuleState;
 	table->fnstore = StorePointModuleState;
 	table->fninit = InitPointModule;
@@ -49,61 +55,70 @@ HRESULT GetFuncTablePointModule(DeviceID * pid, ModuleFuncTable* table)
 
 HRESULT CreatePointModuleState(DeviceID * pid, PMODULE_DATA data)
 {
-	PointModuleSavedState saved;
 	PointModuleState * pstate = (PointModuleState * ) data;
 		
-	memset((void*)pstate, 0x00, (size_t)sizeof(PointModuleState));
-	ReadPointModuleSavedState(pid, pstate);
+	//memset((void*)pstate, 0x00, (size_t)sizeof(PointModuleState));
+	SavedToState(&cachePointSaved, pstate);
 	
-	return S_OK;	
+	return S_OK | REPEAT_TERMINATE;	
 	
 }
 
 HRESULT StorePointModuleState(DeviceID * pid, PMODULE_DATA data)
 {
 	PointModuleState* pstate = (PointModuleState*)data;
-				
-	WritePointModuleSavedState(pid, pstate);
+	
+	IsStoring = TRUE;
+	StateToSaved(pstate, &cachePointSaved);
+	WritePointModuleSavedState(pid, &cachePointSaved);
+	ReadPointModuleSavedState(pid, &cachePointSaved);
+	
+	IsStoring = FALSE;
 	
 	return S_OK;
 }
 
 HRESULT InitPointModule(DeviceID * pid)
 {
-	BYTE module = pid->ModulePart;
+	BYTE module = (pid->ModuleAddr-1) * PORT_PIN_COUNT + 1;
 	
 	setTris(module, OUTPUT_PIN);
 	setTris(module+1, OUTPUT_PIN);
 	setTris(module+2, OUTPUT_PIN);
 	setTris(module+3, OUTPUT_PIN);
+	setTris(module+4, OUTPUT_PIN);
+	setTris(module+5, INPUT_PIN);
+
+	ReadPointModuleSavedState(pid, &cachePointSaved);
 
 	return S_OK;
 }
 
 void InterruptPointModule(DeviceID * pid)
 {
-	BYTE i, pack, arindex, module = pid->ModulePart;
-	PointModuleSavedState saved;
+	BYTE module = (pid->ModuleAddr-1) * PORT_PIN_COUNT + 1;;
 	
-	ReadPointModuleSavedState(pid, &saved);
-	
-	//load and increment it
-	arindex = module / 4;
-	pack = PointChangingCurrent[arindex];
-	PointChangingCurrent[arindex] +=2;
-	
-	if(saved.directions[0] & (1 << pack) != 0)
-		++pack;
+	if(IsStoring)
+		return;
 		
-	//currently available port count == 4
-	//back changing no
-	if(pack > 8)
-		PointChangingCurrent[arindex] = 0;
-		
-	//valid lower 4 bits
-	setPort(module, pack & 0b0001);
-	setPort(module+1, pack & 0b0010);
-	setPort(module+2, pack & 0b0100);
-	setPort(module+3, pack & 0b1000);
+	if(!PORTAbits.RA5)//!getPort(module+5)) // device ack false
+		return;
 
+	if(++SendingPointInd >= POINT_COUNT)
+		SendingPointInd = 0;
+		
+//	setLat(module+4, 0); // host ack disable
+//	
+//	setLat(module, cachePointSaved.directions[SendingPointInd]&1);
+//	setLat(module+1, (SendingPointInd&1));
+//	setLat(module+2, (SendingPointInd&2)>>1);
+//	setLat(module+3, (SendingPointInd&4)>>2);
+//	
+//	setLat(module+4, 1); // host ack enable		
+
+	LATAbits.LATA4 = 0;
+	
+	LATA = 0b00001111 & (((SendingPointInd & 7)<<1) | (cachePointSaved.directions[SendingPointInd]&1));
+	
+	LATAbits.LATA4 = 1;
 }

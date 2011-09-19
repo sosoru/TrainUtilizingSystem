@@ -7,14 +7,7 @@ typedef union tag_PointInfo
 	{
 		unsigned PointDirection : 1;
 		unsigned PointValue : 3;
-		unsigned ModuleDefine:1;
-		unsigned ACK :1;		
-	};
-	struct
-	{
-		unsigned ModuleValue :4;
-		unsigned ModuleDefine:1;
-		unsigned ACK :1;	
+		unsigned :4;
 	};
 	BYTE data;
 } PointInfo;

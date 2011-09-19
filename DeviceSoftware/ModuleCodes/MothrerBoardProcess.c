@@ -54,7 +54,7 @@ HRESULT StoreMotherBoardSavedState(DeviceID* pid, PMODULE_DATA buf)
 	memcpy((void*)&mid, (void*)pid, sizeof(DeviceID));
 	mid.ParentPart = g_mbState.ParentId;
 	
-	for(i=0; i< COUNT_MBSTATE_MODULETYPE; i++)
+	for(i=0; i< COUNT_MBSTATE_MODULETYPE; ++i)
 	{
 		BYTE curtype, beftype;
 		curtype = READ_MBSTATE_MODULETYPE(*pcurrent, i);
@@ -65,6 +65,8 @@ HRESULT StoreMotherBoardSavedState(DeviceID* pid, PMODULE_DATA buf)
 			mid.ModuleAddr = i;
 			InitializeTable(&mid, curtype, GET_FUNC_TABLE(i));
 			WRITE_MBSTATE_MODULETYPE(g_mbState, i, curtype);
+			
+			GET_FUNC_TABLE(i)->fninit(&mid);
 		}
 	}
 	

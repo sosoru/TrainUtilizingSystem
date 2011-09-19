@@ -30,7 +30,6 @@ namespace SensorLibrary
             Reader = Device.OpenEndpointReader(ReadEndpointID.Ep01, 4096, EndpointType.Bulk);
 
             Writer = Device.OpenEndpointWriter(WriteEndpointID.Ep01);
-
             Reader.Reset();
         }
 
@@ -90,11 +89,11 @@ namespace SensorLibrary
                 int len = 64;
                 var buf = new byte [len];
                 // we should read data per 64byte and implement double buffer
-                
+
                 var ec = this.Reader.Read(buf, this.ReadTimeout, out len);
                 if (ec != ErrorCode.None)
                 {
-                    this.Reader.Reset();
+                    this.usbReset();
 
                     ec = this.Reader.Read(buf, this.ReadTimeout, out len);
                     if (ec != ErrorCode.None)
@@ -151,13 +150,34 @@ namespace SensorLibrary
 
                 var ec = this.Writer.Write(trans, this.WriteTimeout, out len);
                 if (ec != ErrorCode.None)
-                    throw new IOException(UsbDevice.LastErrorString);
+                {
+                    this.usbReset();
+
+                    ec = this.Writer.Write(trans, this.WriteTimeout, out len);
+
+                    if (ec != ErrorCode.None)
+                        throw new IOException(UsbDevice.LastErrorString);
+                }
 
                 pos += len;
 
             } while (pos < count);
 
             return;
+        }
+
+        private void usbReset()
+        {
+            if (this.Reader != null || this.Device != null)
+                return;
+
+            if (!this.Reader.IsDisposed)
+                this.Reader.Dispose();
+
+            if (!this.Device.IsOpen)
+                this.Device.Close();
+
+            this.Open();
         }
     }
 

@@ -49,7 +49,7 @@ namespace SensorLibrary
     public class PointModuleData
         : IPacketDeviceData
     {
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 8)]
         private byte[] _directions;
 
         public byte[] Directions
@@ -57,7 +57,7 @@ namespace SensorLibrary
             get
             {
                 if (this._directions == null)
-                    this._directions = new byte[4];
+                    this._directions = new byte[8];
 
                 return this._directions;
             }
