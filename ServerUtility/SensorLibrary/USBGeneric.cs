@@ -168,7 +168,7 @@ namespace SensorLibrary
 
         private void usbReset()
         {
-            if (this.Reader != null || this.Device != null)
+            if (this.Reader == null || this.Device == null)
                 return;
 
             if (!this.Reader.IsDisposed)
