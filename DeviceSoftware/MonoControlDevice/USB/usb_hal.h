@@ -91,11 +91,17 @@ Description:
 //DOM-IGNORE-END
 
 #if defined(__18CXX)
-    #include "USB\usb_hal_pic18.h"
+    #include "USB/usb_hal_pic18.h"
 #elif defined(__C30__)
-    #include "USB\usb_hal_pic24.h"
+	#if defined(__dsPIC33EP512MU810__) 
+	    #include "USB/usb_hal_dspic33E.h"
+	#elif defined(__PIC24E__)
+		#include "USB/usb_hal_pic24E.h"
+	#else
+    #include "USB/usb_hal_pic24.h"
+	#endif
 #elif defined(__PIC32MX__)
-    #include "USB\usb_hal_pic32.h"
+    #include "USB/usb_hal_pic32.h"
 #else
     #error "Silicon Platform not defined"
 #endif

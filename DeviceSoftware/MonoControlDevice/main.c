@@ -322,11 +322,11 @@ void main()
 //	LATBbits.LATB0 = 0;
 //	
 //	LATBbits.LATB0 = 1;
-	USBDeviceAttach();
 
 	while(1)
 	{
 		//Port_SurfaceLedA = (USBDeviceState == CONFIGURED_STATE);
+		USBDeviceAttach();
 		
 		Process();	
 	}

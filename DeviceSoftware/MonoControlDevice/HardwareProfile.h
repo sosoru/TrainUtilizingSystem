@@ -8,9 +8,9 @@
 #define self_powered
 #define self_power          1
 
-//#define USE_USB_BUS_SENSE_IO
-//#define tris_usb_bus_sense TRISDbits.TRISD2
-#define USB_BUS_SENSE       1//PORTDbits.RD2
+#define USE_USB_BUS_SENSE_IO
+#define tris_usb_bus_sense TRISCbits.TRISC6
+#define USB_BUS_SENSE       PORTCbits.RC6
 
 #define CLOCK_FREQ 48000000
 #define GetSystemClock() CLOCK_FREQ   
