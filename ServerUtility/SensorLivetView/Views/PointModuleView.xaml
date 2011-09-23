@@ -28,7 +28,7 @@
 						<i:InvokeCommandAction Command="{Binding ChangeCurvedCommand}"/>
 					</i:EventTrigger>
 				</i:Interaction.Triggers>
-				<TextBox Height="57" Margin="15,0,9,-89" TextWrapping="Wrap" Text="{Binding StateNo}" VerticalAlignment="Bottom"/>
+				<TextBox Height="Auto" TextWrapping="Wrap" Text="{Binding StateNo, Converter={StaticResource AlphabetValueConverterDataSource}}" VerticalAlignment="Bottom"/>
 				<ToggleButton x:Name="StraightButton" Content="Straight" Height="Auto" Width="Auto" ClickMode="Press" IsChecked="{Binding IsStraight, Mode=OneWay}" Grid.Column="1"/>
 				<ToggleButton x:Name="CurvedButton" Height="Auto" Width="Auto" Content="Curved" Grid.Column="2" ClickMode="Press" IsChecked="{Binding IsCurved, Mode=OneWay}"/>
 			</Grid>

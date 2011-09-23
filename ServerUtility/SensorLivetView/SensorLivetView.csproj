@@ -93,6 +93,7 @@
     <Compile Include="ViewModels\Controls\TrainControllerViewModel.cs" />
     <Compile Include="ViewModels\Controls\UsbDevicesViewModel.cs" />
     <Compile Include="ViewModels\Controls\VoltageGraphViewModel.cs" />
+    <Compile Include="ViewModels\Converters\AlphabetValueConverter.cs" />
     <Compile Include="Views\D2DD3DImage.cs" />
     <Compile Include="Views\MotherBoardView.xaml.cs">
       <DependentUpon>MotherBoardView.xaml</DependentUpon>

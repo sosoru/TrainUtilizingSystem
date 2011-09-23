@@ -1,10 +1,12 @@
 ﻿<Application
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:DataStore="clr-namespace:Expression.Blend.DataStore.DataStore" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="SensorLivetView.App"
+             xmlns:DataStore="clr-namespace:Expression.Blend.DataStore.DataStore" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:SensorLivetView_ViewModels_Converters="clr-namespace:SensorLivetView.ViewModels.Converters" mc:Ignorable="d" x:Class="SensorLivetView.App"
              StartupUri="Views\MainWindow.xaml"
              Startup="Application_Startup">
     <Application.Resources>
+         
+    	<SensorLivetView_ViewModels_Converters:AlphabetValueConverter x:Key="AlphabetValueConverterDataSource" d:IsDataSource="True"/>
          
     	<DataStore:DataStore x:Key="DataStore" d:IsDataSource="True"/>
          

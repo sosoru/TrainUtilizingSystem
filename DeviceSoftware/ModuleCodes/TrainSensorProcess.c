@@ -1,5 +1,5 @@
 //#include "MonoDevice.h"
-
+#include "HardwareProfile.h"
 #include "../Headers/MotherBoardModule.h"
 #include "../Headers/TrainSensorModule.h"
 #include <stdlib.h>
@@ -191,7 +191,7 @@ HRESULT InitTrainSensor(DeviceID * pid)
 	//setTris(module, INPUT_PIN);
 	OpenADC(ADC_FOSC_4 & ADC_RIGHT_JUST & ADC_20_TAD,
 			channel & ADC_INT_OFF & ADC_VREFPLUS_VDD & ADC_VREFMINUS_VSS,
-			0b1110);
+			AD_PORT);
 
 	return S_OK;
 }

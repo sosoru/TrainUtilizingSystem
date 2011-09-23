@@ -101,7 +101,7 @@ void InterruptPointModule(DeviceID * pid)
 	if(IsStoring)
 		return;
 		
-	if(!PORTAbits.RA5)//!getPort(module+5)) // device ack false
+	if(!getPort(module+5)) // device ack false
 		return;
 
 	if(++SendingPointInd >= POINT_COUNT)

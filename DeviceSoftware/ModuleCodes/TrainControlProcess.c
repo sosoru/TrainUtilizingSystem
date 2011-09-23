@@ -245,13 +245,14 @@ HRESULT StoreTrainControllerState(DeviceID * pid, PMODULE_DATA data)
 
 void InterruptTrainController(DeviceID * pid)
 {
-	if(settingState || g_usingAdc)
-		return;
-		
 	BYTE i;
 	unsigned int meisuringCount= 10;
 	unsigned int AveVoltage =0;
 	int df=0;
+	
+	if(settingState || g_usingAdc)
+		return;
+		
 	
 	if(++waitingCount < 2)
 		return;

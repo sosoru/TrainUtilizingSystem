@@ -78,5 +78,20 @@ namespace SensorLivetView.ViewModels
 
         #endregion
 
+        public DeviceID DevID
+        {
+            get
+            {
+                if (this.Model != null)
+                    return this.Model.DeviceID;
+                else
+                    return new DeviceID();
+            }
+            set
+            {
+                if (this.Model != null)
+                    this.Model.DeviceID = value;
+            }
+        }
     }
 }
