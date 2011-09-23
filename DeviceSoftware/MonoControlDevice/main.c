@@ -312,6 +312,8 @@ void Process()
 
 void main()
 { 
+
+	//IoTest();
 	ModuleInit();
 	DeviceInit();
 	
@@ -322,6 +324,7 @@ void main()
 //	LATBbits.LATB0 = 0;
 //	
 //	LATBbits.LATB0 = 1;
+
 
 	while(1)
 	{

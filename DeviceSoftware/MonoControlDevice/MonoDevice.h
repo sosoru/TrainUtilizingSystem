@@ -34,6 +34,7 @@ extern USB_HANDLE USBGenericOutHandle;
 extern USB_HANDLE USBGenericInHandle;
 //#pragma udata
 
+void IoTest();
 
 #define USB_TRANSFAR_AVAILABLE (!((USBDeviceState < CONFIGURED_STATE)||(USBSuspendControl==1)))
 
