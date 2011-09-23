@@ -105,6 +105,7 @@ namespace SensorLivetView.ViewModels
                                                        .SetTrainSensors(new DeviceID(1, 2))
                                                        .SetTrainSensors(new DeviceID(1, 3))
                                                        .SetTrainSensors(new DeviceID(1, 4))
+                                                       .SetPointModules(new DeviceID(1,5))
                                                        .ToEnumerable();
                     var testserv = new TestServer(testenum);
                     var testdisp = new PacketDispatcherSingle();

@@ -90,6 +90,21 @@ namespace SensorLivetView
 
         }
 
+        public TestEnumerable SetPointModules(DeviceID id)
+        {
+            var data = new PointModuleData();
+            for (int i = 0; i < data.Directions.Length; i += 2)
+                data.Directions [i] = 1;
+
+            var state = new PointModuleState()
+            {
+                BasePacket = new DevicePacket() { ID = id, ModuleType = ModuleTypeEnum.PointModule } ,
+                Data = data,
+            };
+            
+            return setStack(() => new [] { state });
+        }
+
         public IEnumerable<DevicePacket> ToEnumerable()
         {
             return this.stacking;
