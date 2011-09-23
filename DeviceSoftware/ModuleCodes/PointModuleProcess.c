@@ -107,18 +107,18 @@ void InterruptPointModule(DeviceID * pid)
 	if(++SendingPointInd >= POINT_COUNT)
 		SendingPointInd = 0;
 		
-//	setLat(module+4, 0); // host ack disable
-//	
-//	setLat(module, cachePointSaved.directions[SendingPointInd]&1);
-//	setLat(module+1, (SendingPointInd&1));
-//	setLat(module+2, (SendingPointInd&2)>>1);
-//	setLat(module+3, (SendingPointInd&4)>>2);
-//	
-//	setLat(module+4, 1); // host ack enable		
+	setLat(module+4, 0); // host ack disable
+	
+	setLat(module, cachePointSaved.directions[SendingPointInd]&1);
+	setLat(module+1, (SendingPointInd&1));
+	setLat(module+2, (SendingPointInd&2)>>1);
+	setLat(module+3, (SendingPointInd&4)>>2);
+	
+	setLat(module+4, 1); // host ack enable		
 
-	LATAbits.LATA4 = 0;
-	
-	LATA = 0b00001111 & (((SendingPointInd & 7)<<1) | (cachePointSaved.directions[SendingPointInd]&1));
-	
-	LATAbits.LATA4 = 1;
+//	LATAbits.LATA4 = 0;
+//	
+//	LATA = 0b00001111 & (((SendingPointInd & 7)<<1) | (cachePointSaved.directions[SendingPointInd]&1));
+//	
+//	LATAbits.LATA4 = 1;
 }

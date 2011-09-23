@@ -32,17 +32,17 @@ void SetUsingPort(BYTE module, BYTE port)
 {	
 	BYTE base = (module-1) * PORT_PIN_COUNT + 1;
 		
-	//setLat(base+4, 0);
-//	if(port > 8)
-//		return;
-//	
-//	setLat(base+1, (port & 0x01));
-//	setLat(base+2, (port & 0x02) >> 1);
-//	setLat(base+3, (port & 0x04) >> 2);
-	LATAbits.LATA4 = 1;
-	LATA = ((port<<1) | (LATA & 0b11110001));
-	LATAbits.LATA4 = 0;
-	//setLat(base+4, 1);
+	setLat(base+4, 0);
+	if(port > 8)
+		return;
+	
+	setLat(base+1, (port & 0x01));
+	setLat(base+2, (port & 0x02) >> 1);
+	setLat(base+3, (port & 0x04) >> 2);
+//	LATAbits.LATA4 = 1;
+//	LATA = ((port<<1) | (LATA & 0b11110001));
+//	LATAbits.LATA4 = 0;
+	setLat(base+4, 1);
 	
 	Delay10TCYx(140); // 28us
 }
