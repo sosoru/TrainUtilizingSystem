@@ -91,11 +91,11 @@ near BYTE * ModuleTris[] =
 	//MB
 	0,
 	//PORTA
-	&TRISA,	&TRISA,	&TRISA,	&TRISA, &TRISA, &TRISA,	
+	&TRISA,	&TRISD,	&TRISB,	&TRISB, &TRISB, &TRISB,	
 	//PORTB
-	&TRISB,	&TRISB,	&TRISA,	&TRISB, &TRISA, &TRISB,	
+	&TRISA,	&TRISD,	&TRISB,	&TRISB, &TRISB, &TRISB,	
 	//PORTC
-	&TRISC,	&TRISC,	&TRISD,	&TRISD, &TRISD, &TRISD	
+	&TRISA,	&TRISD,	&TRISD,	&TRISD, &TRISD, &TRISD	
 };
 
 near BYTE * ModuleLat[] =
@@ -103,11 +103,11 @@ near BYTE * ModuleLat[] =
 	//MB
 	0,
 	//PORTA
-	&LATA,	&LATA,	&LATA,	&LATA, &LATA, &LATA,
+	&LATA,	&LATD,	&LATB,	&LATB, &LATB, &LATB,
 	//PORTB
-	&LATB,	&LATB,	&LATA,	&LATB, &LATA, &LATB,	
+	&LATA,	&LATD,	&LATB,	&LATB, &LATB, &LATB,	
 	//PORTC
-	&LATC,	&LATC,	&LATD,	&LATD, &LATD, &LATD	
+	&LATA,	&LATD,	&LATD,	&LATD, &LATD, &LATD	
 };
 
 near BYTE * ModulePort[] =
@@ -115,11 +115,11 @@ near BYTE * ModulePort[] =
 	//MB
 	0,
 	//PORTA
-	&PORTA,	&PORTA,	&PORTA,	&PORTA, &PORTA, &PORTA,
+	&PORTA,	&PORTD,	&PORTB,	&PORTB, &PORTB, &PORTB,
 	//PORTB
-	&PORTB,	&PORTB,	&PORTA,	&PORTB, &PORTA, &PORTB,	
+	&PORTA,	&PORTD,	&PORTB,	&PORTB, &PORTB, &PORTB,	
 	//PORTC
-	&PORTC,	&PORTC,	&PORTD,	&PORTD, &PORTD, &PORTD	
+	&PORTA,	&PORTD,	&PORTD,	&PORTD, &PORTD, &PORTD	
 };
 
 BYTE ModuleShift[]=
@@ -127,11 +127,11 @@ BYTE ModuleShift[]=
 	//MB
 	0,
 	//PORTA
-	0,1,2,3,4,5,
+	1,7,0,1,2,3,
 	//PORTB
-	1,2,1,3,0,4,
+	0,6,4,5,6,7,
 	//PORTC
-	6,7,4,5,6,7
+	2,5,0,1,2,3
 };
 
 #endif
