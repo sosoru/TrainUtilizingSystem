@@ -134,4 +134,28 @@ BYTE ModuleShift[]=
 	2,5,0,1,2,3
 };
 
+near BYTE * ModuleDataPort[] =
+{
+	0,
+	&PORTB,
+	&PORTB,
+	&PORTD
+};
+
+near BYTE * ModuleDataLat[] =
+{
+	0,
+	&LATB,
+	&LATB,
+	&LATD
+};
+
+BYTE ModuleDataPortShift[] =
+{
+	0,
+	0,
+	4,
+	0
+};
+
 #endif
