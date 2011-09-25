@@ -92,6 +92,7 @@
     <Compile Include="ViewModels\Controls\TestTaskViewModel.cs" />
     <Compile Include="ViewModels\Controls\TrainControllerViewModel.cs" />
     <Compile Include="ViewModels\Controls\UsbDevicesViewModel.cs" />
+    <Compile Include="ViewModels\Controls\UsbRegistryViewModel.cs" />
     <Compile Include="ViewModels\Controls\VoltageGraphViewModel.cs" />
     <Compile Include="ViewModels\Converters\AlphabetValueConverter.cs" />
     <Compile Include="Views\D2DD3DImage.cs" />
@@ -223,6 +224,10 @@
     <ProjectReference Include="..\SensorLibrary\SensorLibrary.csproj">
       <Project>{160A1D77-985C-4DDD-BB20-46C8EBADF62F}</Project>
       <Name>SensorLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SensorViewLibrary\SensorViewLibrary.csproj">
+      <Project>{67364770-A9D3-42C1-ADB9-DF160FB38A27}</Project>
+      <Name>SensorViewLibrary</Name>
     </ProjectReference>
     <ProjectReference Include="..\SurfaceQueueInteropHelper\SurfaceQueueInteropHelper.vcxproj">
       <Project>{93ABD028-4151-42B4-83C3-0E9630C6AA46}</Project>

@@ -111,7 +111,6 @@
     <Compile Include="RailEditor\Views\SettingWindow.xaml.cs">
       <DependentUpon>SettingWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\ModeledViewModel.cs" />
     <Compile Include="Views\RailView.xaml.cs">
       <DependentUpon>RailView.xaml</DependentUpon>
     </Compile>
@@ -235,6 +234,10 @@
     <ProjectReference Include="..\SensorLibrary\SensorLibrary.csproj">
       <Project>{160A1D77-985C-4DDD-BB20-46C8EBADF62F}</Project>
       <Name>SensorLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SensorViewLibrary\SensorViewLibrary.csproj">
+      <Project>{67364770-A9D3-42C1-ADB9-DF160FB38A27}</Project>
+      <Name>SensorViewLibrary</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

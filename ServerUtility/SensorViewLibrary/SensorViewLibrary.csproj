@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{4CFD405E-79A5-4691-91DA-FB538DCADC9F}</ProjectGuid>
+    <ProjectGuid>{67364770-A9D3-42C1-ADB9-DF160FB38A27}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SensorViewLibrary</RootNamespace>
@@ -76,6 +76,7 @@
     </Compile>
     <Compile Include="Models\Model.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="ViewModels\ModeledViewModel.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

@@ -36,6 +36,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SensorLibrary", "SensorLibr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RouteVisualizer", "RouteVisualizer\RouteVisualizer.csproj", "{E366CBAE-EDDF-4486-87A2-826A07E1D9CC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SensorViewLibrary", "SensorViewLibrary\SensorViewLibrary.csproj", "{67364770-A9D3-42C1-ADB9-DF160FB38A27}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = SerialPortTest.vsmdi
@@ -209,6 +211,24 @@ Global
 		{E366CBAE-EDDF-4486-87A2-826A07E1D9CC}.Release|Win32.ActiveCfg = Release|x86
 		{E366CBAE-EDDF-4486-87A2-826A07E1D9CC}.Release|x86.ActiveCfg = Release|x86
 		{E366CBAE-EDDF-4486-87A2-826A07E1D9CC}.Release|x86.Build.0 = Release|x86
+		{67364770-A9D3-42C1-ADB9-DF160FB38A27}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{67364770-A9D3-42C1-ADB9-DF160FB38A27}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{67364770-A9D3-42C1-ADB9-DF160FB38A27}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{67364770-A9D3-42C1-ADB9-DF160FB38A27}.Debug|Win32.ActiveCfg = Debug|x86
+		{67364770-A9D3-42C1-ADB9-DF160FB38A27}.Debug|x86.ActiveCfg = Debug|x86
+		{67364770-A9D3-42C1-ADB9-DF160FB38A27}.Debug|x86.Build.0 = Debug|x86
+		{67364770-A9D3-42C1-ADB9-DF160FB38A27}.Release x64|Any CPU.ActiveCfg = Release|x86
+		{67364770-A9D3-42C1-ADB9-DF160FB38A27}.Release x64|Mixed Platforms.ActiveCfg = Release|x86
+		{67364770-A9D3-42C1-ADB9-DF160FB38A27}.Release x64|Mixed Platforms.Build.0 = Release|x86
+		{67364770-A9D3-42C1-ADB9-DF160FB38A27}.Release x64|Win32.ActiveCfg = Release|x86
+		{67364770-A9D3-42C1-ADB9-DF160FB38A27}.Release x64|x86.ActiveCfg = Release|x86
+		{67364770-A9D3-42C1-ADB9-DF160FB38A27}.Release x64|x86.Build.0 = Release|x86
+		{67364770-A9D3-42C1-ADB9-DF160FB38A27}.Release|Any CPU.ActiveCfg = Release|x86
+		{67364770-A9D3-42C1-ADB9-DF160FB38A27}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{67364770-A9D3-42C1-ADB9-DF160FB38A27}.Release|Mixed Platforms.Build.0 = Release|x86
+		{67364770-A9D3-42C1-ADB9-DF160FB38A27}.Release|Win32.ActiveCfg = Release|x86
+		{67364770-A9D3-42C1-ADB9-DF160FB38A27}.Release|x86.ActiveCfg = Release|x86
+		{67364770-A9D3-42C1-ADB9-DF160FB38A27}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

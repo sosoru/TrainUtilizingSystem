@@ -10,11 +10,15 @@ using Livet.Messaging;
 using Livet.Messaging.File;
 using Livet.Messaging.Window;
 
-using RouteVisualizer.Models;
+using SensorLivetView.Models;
 
-namespace RouteVisualizer.ViewModels
+using LibUsbDotNet.Main;
+using SensorViewLibrary.ViewModels;
+
+namespace SensorLivetView.ViewModels.Controls
 {
-    public class ModeledViewModel<T> : ViewModel
+    public class UsbRegistryViewModel 
+        : UsbRegistry
     {
         /*コマンド、プロパティの定義にはそれぞれ 
          * 
@@ -40,40 +44,5 @@ namespace RouteVisualizer.ViewModels
          * Modelからの変更通知などの各種イベントをそのままViewModelで購読する事はメモリリークの
          * 原因となりやすく推奨できません。ViewModelHelperの各静的メソッドの利用を検討してください。
          */
-
-        private T model;
-        private T beforeModel;
-        public T Model
-        {
-            get
-            {
-                return this.model;
-            }
-            set
-            {
-                this.beforeModel = this.model;
-                this.model = value;
-                OnModelChanged(new ModelChangedArgs<T>() { before = this.beforeModel, current = this.model });
-            }
-        }
-
-        public delegate void ModelChangeEventHandler(object sender, ModelChangedArgs<T> e);
-
-        public event ModelChangeEventHandler ModelChanged;
-        protected void OnModelChanged(ModelChangedArgs<T> e)
-        {
-            if (this.ModelChanged != null)
-            {
-                this.ModelChanged(this, e);
-            }
-        }
-    }
-
-    public class ModelChangedArgs<T>
-        : EventArgs
-    {
-        public T before;
-        public T current;
-
     }
 }
