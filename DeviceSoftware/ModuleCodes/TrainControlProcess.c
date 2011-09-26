@@ -18,6 +18,7 @@
 
 #define FEEDBACK_CHANNELA ADC_CH5
 #define FEEDBACK_CHANNELB ADC_CH6
+#define DUTYCONTROL_CHANNEL ADC_CH4
 
 #define PORT_DIRECTION_POS PORTDbits.RD0
 #define PORT_DIRECTION_NEG PORTCbits.RC0
@@ -25,6 +26,9 @@
 #define PORT_FEEDBACKB PORTEbits.RE0
 #define PORT_PWMSIGNALB PORTCbits.RC1
 #define PORT_PWMSIGNALA PORTCbits.RC2
+#define PORT_DUTYCONTROL PORTAbits.RA5
+#define PORT_CONTROLSWITCH PORTEbits.RE0
+#define PORT_DIRECTION PORTCbits.RC0
 
 #define TRIS_DIRECTION_POS TRISDbits.TRISD0
 #define TRIS_DIRECTION_NEG TRISCbits.TRISC0
@@ -32,6 +36,9 @@
 #define TRIS_FEEDBACKB TRISEbits.TRISE0
 #define TRIS_PWMSIGNALB TRISCbits.TRISC1
 #define TRIS_PWMSIGNALA TRISCbits.TRISC2
+#define TRIS_DUTYCONTROL TRISAbits.TRISA5
+#define TRIS_CONTROLSWITCH TRISEbits.TRISE0
+#define TRIS_DIRECTION TRISCbits.TRISC0
 
 #endif
 
@@ -140,14 +147,17 @@ HRESULT InitTrainController(DeviceID * pid)
 	TRIS_FEEDBACKB = INPUT_PIN;
 	TRIS_PWMSIGNALA = OUTPUT_PIN;
 	TRIS_PWMSIGNALB = OUTPUT_PIN;
+	TRIS_DUTYCONTROL = INPUT_PIN;
+	TRIS_CONTROLSWITCH = INPUT_PIN;
+	TRIS_DIRECTION = INPUT_PIN;
 	
 	OpenADC(ADC_FOSC_64 & ADC_RIGHT_JUST & ADC_8_TAD,
 	FEEDBACK_CHANNELA & ADC_INT_OFF & ADC_VREFPLUS_VDD & ADC_VREFMINUS_VSS,
 	AD_PORT);
 	
-	OpenADC(ADC_FOSC_64 & ADC_RIGHT_JUST & ADC_8_TAD,
-	FEEDBACK_CHANNELB & ADC_INT_OFF & ADC_VREFPLUS_VDD & ADC_VREFMINUS_VSS,
-	AD_PORT);
+//	OpenADC(ADC_FOSC_64 & ADC_RIGHT_JUST & ADC_8_TAD,
+//	FEEDBACK_CHANNELB & ADC_INT_OFF & ADC_VREFPLUS_VDD & ADC_VREFMINUS_VSS,
+//	AD_PORT);
 
 #endif
 				
@@ -172,7 +182,10 @@ HRESULT StoreTrainControllerState(DeviceID * pid, PMODULE_DATA data)
 	TrainControllerState * pstate = (TrainControllerState *) data;
 	BYTE periodChanged=FALSE, prescaleChanged=FALSE, dutyChanged=FALSE,
 	     modeChanged=FALSE, voltageChanged=FALSE;
-	     
+	
+	if(PORT_CONTROLSWITCH)
+		return E_FAIL;     
+	
 	settingState = TRUE;     
 	
 	g_cacheState.paramp = pstate->paramp;
@@ -240,7 +253,8 @@ HRESULT StoreTrainControllerState(DeviceID * pid, PMODULE_DATA data)
 	}
 	
 	settingState = FALSE;
-	
+
+	return S_OK;	
 }
 
 void InterruptTrainController(DeviceID * pid)
@@ -257,6 +271,7 @@ void InterruptTrainController(DeviceID * pid)
 	if(++waitingCount < 2)
 		return;
 	
+		
 	ClosePWM1();	
 	ClosePWM2();
 		
@@ -295,8 +310,23 @@ void InterruptTrainController(DeviceID * pid)
 		//AveVoltage = (tmpvoltA > tmpvoltB) ? tmpvoltA : tmpvoltB;
 	}
 	#endif
+				
+	if (PORT_CONTROLSWITCH)
+	{
+		unsigned int vol;
+		SetChanADC(DUTYCONTROL_CHANNEL);
+		ConvertADC();
+		while(BusyADC());
+		vol = ReadADC();
 		
-	if(g_cacheState.mode == MODE_TRAINCONTROLLER_FOLLOWING)
+		g_cacheState.duty = vol;
+		g_cacheState.period = 0xFF;
+		g_cacheState.direction = PORT_DIRECTION;
+		g_cacheState.prescale = PRESCALE_DEFAULT;
+		g_cacheState.mode = MODE_TRAINCONTROLLER_ONDEVICE;
+		
+	}
+	else if(g_cacheState.mode == MODE_TRAINCONTROLLER_FOLLOWING)
 	{
 		if(AveVoltage == 1023) // if train is stopping, the bemf sticks to 0 or 1023
 			AveVoltage = 0;
@@ -315,9 +345,10 @@ void InterruptTrainController(DeviceID * pid)
 		else if (internal_duty > 800.0f)
 			internal_duty = 800.0f;
 		
-		g_cacheState.duty = (unsigned int)internal_duty;
-		
+		g_cacheState.duty = (unsigned int)internal_duty;		
 	}
+	
+	
 	ChangePWM();
 	
 	//g_cacheState.meisuredvoltage = AveVoltage;

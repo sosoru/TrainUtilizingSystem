@@ -10,6 +10,7 @@
 
 #define MODE_TRAINCONTROLLER_DUTY 0
 #define MODE_TRAINCONTROLLER_FOLLOWING 1
+#define MODE_TRAINCONTROLLER_ONDEVICE 2
 
 HRESULT GetFuncTableTrainController(DeviceID* pid, ModuleFuncTable* table);
 HRESULT InitTrainController(DeviceID* pid);
