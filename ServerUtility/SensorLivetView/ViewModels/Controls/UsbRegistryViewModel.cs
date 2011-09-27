@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.ComponentModel;
 
+using LibUsbDotNet;
+using LibUsbDotNet.Main;
+
 using Livet;
 using Livet.Command;
 using Livet.Messaging;
@@ -11,14 +14,12 @@ using Livet.Messaging.File;
 using Livet.Messaging.Window;
 
 using SensorLivetView.Models;
-
-using LibUsbDotNet.Main;
 using SensorViewLibrary.ViewModels;
 
 namespace SensorLivetView.ViewModels.Controls
 {
-    public class UsbRegistryViewModel 
-        : UsbRegistry
+    public class UsbRegistryViewModel
+        : ModeledViewModel<UsbRegistry>
     {
         /*コマンド、プロパティの定義にはそれぞれ 
          * 
@@ -44,5 +45,28 @@ namespace SensorLivetView.ViewModels.Controls
          * Modelからの変更通知などの各種イベントをそのままViewModelで購読する事はメモリリークの
          * 原因となりやすく推奨できません。ViewModelHelperの各静的メソッドの利用を検討してください。
          */
+
+        
+        bool _IsReceiving;
+
+        public bool IsReceiving
+        {
+            get
+            { return _IsReceiving; }
+            set
+            {
+                if (_IsReceiving == value)
+                    return;
+                _IsReceiving = value; 
+                RaisePropertyChanged("IsReceiving");
+            }
+        }
+             
+
+        public string SymbolicName
+        {
+            get { return this.Model.SymbolicName; }
+        }
+        
     }
 }

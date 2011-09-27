@@ -106,7 +106,8 @@ namespace SensorLibrary
         : byte
     {
         Duty = 0,
-        Following = 1
+        Following = 1,
+        OnDevice = 2,
     }
 
     public enum TrainControllerDirection

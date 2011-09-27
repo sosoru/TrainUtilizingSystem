@@ -45,7 +45,10 @@
 		<DataTemplate x:Key="TrainControllerListItemDataTemplate">
 			<Grid Width="500">
 				<Border BorderBrush="Black" BorderThickness="1">
-					<v:TrainControllerView DataContext="{Binding .}"/>
+					<DockPanel LastChildFill="True">	
+						<TextBlock DockPanel.Dock="Top" Text="{Binding DevID}" />
+						<v:TrainControllerView DataContext="{Binding .}"/>						
+					</DockPanel>
 				</Border>
 			</Grid>
 		</DataTemplate>

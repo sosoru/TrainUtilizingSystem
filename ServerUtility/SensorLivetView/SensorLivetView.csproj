@@ -81,6 +81,9 @@
     <Compile Include="DataStore\DataStore\DataStore.xaml.cs">
       <DependentUpon>DataStore.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\DeviceListModel.cs" />
+    <Compile Include="Models\UsbDevicesModel.cs" />
+    <Compile Include="Models\UsbRegistryModel.cs" />
     <Compile Include="PlotImage.cs" />
     <Compile Include="Models\TestTaskModel.cs" />
     <Compile Include="Models\TrainSpeedTransitionTest.cs" />

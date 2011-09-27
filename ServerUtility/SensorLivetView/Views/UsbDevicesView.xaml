@@ -10,6 +10,13 @@
 	d:DesignWidth="640" d:DesignHeight="480">
 	<UserControl.Resources>
 		<SensorLivetView_ViewModels_Controls:UsbRegistryConverter x:Key="UsbRegistryConverter"/>
+		<DataTemplate x:Key="UsbRegTemplate">
+			<Border>
+				<Grid>
+					<TextBlock/>
+				</Grid>
+			</Border>
+		</DataTemplate>
 	</UserControl.Resources>
 
 	<Grid x:Name="LayoutRoot">
@@ -20,7 +27,7 @@
 			</StackPanel>
 			
 		<StackPanel>
-			<ListBox ItemsSource="{Binding DeviceCandicates, Mode=OneWay}" SelectedItem="{Binding SelectedDeviceReg, Mode=TwoWay}" SelectedValuePath="FullName"/>
+			<ListBox ItemsSource="{Binding DeviceCandicates, Mode=OneWay}" SelectedItem="{Binding SelectedDeviceReg, Mode=TwoWay}" SelectedValuePath="FullName" ItemTemplate="{DynamicResource UsbRegTemplate}"/>
 		</StackPanel>
 			
 		</DockPanel>
