@@ -12,7 +12,7 @@ using Livet;
 
 namespace SensorLivetView.Models
 {
-    internal class UsbDevicesModel
+    public class UsbDevicesModel
         : NotifyObject
     {
         /*
@@ -31,10 +31,11 @@ namespace SensorLivetView.Models
 
         public UsbDevicesModel()
         {
-            this.Registries = new ObservableCollection<UsbRegistryModel>();            
+            this.Candicates = new ObservableCollection<UsbRegistryModel>();
         }
 
-        ObservableCollection<UsbRegistryModel> Registries { get; private set; }
+        public ObservableCollection<UsbRegistryModel> Candicates { get; private set; }
+        public Notificator<UsbDeviceRegisteredEventArgs> ModelRegisteredStateChanged { get; set; }
 
         int _VenderId;
 
@@ -69,20 +70,36 @@ namespace SensorLivetView.Models
         public void Refresh()
         {
             foreach (var reg in UsbDevice.AllLibUsbDevices
-                                        .FindAll(reg=> reg.Pid == this.ProductId && reg.Vid == this.VenderId)
+                                        .FindAll(reg => reg.Pid == this.ProductId && reg.Vid == this.VenderId)
                                         .ToArray())
             {
-                if(!this.Registries.Any(_=>_.Registry.SymbolicName == reg.SymbolicName))
+                if (!this.Candicates.Any(_ => _.Registry.SymbolicName == reg.SymbolicName))
                 {
                     var m = new UsbRegistryModel(this)
                     {
-                        Registry =reg,
+                        Registry = reg,
                         IsRegistered = false,
                     };
-                    this.Registries.Add(m);
+
+                    m.PropertyChanged += (sender, e) =>
+                        {
+                            if (this.ModelRegisteredStateChanged == null)
+                                return;
+
+                            if (e.PropertyName == "IsRegistered")
+                                this.ModelRegisteredStateChanged.Raise(new UsbDeviceRegisteredEventArgs { RegistryModel = m });
+                        };
+                    this.Candicates.Add(m);
                 }
             }
         }
 
     }
+
+    public class UsbDeviceRegisteredEventArgs
+        : EventArgs
+    {
+        public UsbRegistryModel RegistryModel { get; set; }
+    }
+
 }

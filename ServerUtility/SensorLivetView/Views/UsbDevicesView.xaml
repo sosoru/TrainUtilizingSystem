@@ -9,26 +9,30 @@
 	x:Name="UserControl"
 	d:DesignWidth="640" d:DesignHeight="480">
 	<UserControl.Resources>
-		<SensorLivetView_ViewModels_Controls:UsbRegistryConverter x:Key="UsbRegistryConverter"/>
 		<DataTemplate x:Key="UsbRegTemplate">
 			<Border>
 				<Grid>
-					<TextBlock/>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition/>
+						<ColumnDefinition Width="30"/>
+					</Grid.ColumnDefinitions>
+					<ToggleButton Grid.Column="1" IsChecked="{Binding IsSelected}" Content="Subscribe"/>
+					<TextBlock Grid.Column="0" Text="{Binding Name}"/>
 				</Grid>
 			</Border>
 		</DataTemplate>
 	</UserControl.Resources>
 
 	<Grid x:Name="LayoutRoot">
-		<DockPanel>
+		<DockPanel LastChildFill="True">
 			<StackPanel DockPanel.Dock="Top">
-			<Button Content="更新" Command="{Binding RefreshCommand}"/>
+				<Button Content="更新" Command="{Binding RefreshCommand}"/>
 				
 			</StackPanel>
 			
-		<StackPanel>
-			<ListBox ItemsSource="{Binding DeviceCandicates, Mode=OneWay}" SelectedItem="{Binding SelectedDeviceReg, Mode=TwoWay}" SelectedValuePath="FullName" ItemTemplate="{DynamicResource UsbRegTemplate}"/>
-		</StackPanel>
+			<StackPanel>
+				<ListBox ItemsSource="{Binding DeviceCandicates, Mode=OneWay}" ItemTemplate="{DynamicResource UsbRegTemplate}"/>
+			</StackPanel>
 			
 		</DockPanel>
 	</Grid>

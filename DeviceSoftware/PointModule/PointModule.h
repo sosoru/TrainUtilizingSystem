@@ -1,7 +1,7 @@
 #ifndef INCLUDE_POINT_MODULE
 #define INCLUDE_POINT_MODULE
 
-#include <p18f2550.h>
+#include <p18f2420.h>
 #include <GenericTypeDefs.h>
 #include "../Headers/eeprom.h"
 #include "../Headers/PointInfo.h"

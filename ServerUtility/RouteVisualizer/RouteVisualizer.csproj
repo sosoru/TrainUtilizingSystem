@@ -89,7 +89,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Models\DeviceListNotificator.cs" />
     <Compile Include="ObservableWrappingCollection.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="RailEditor\ViewModels\GateDataViewModel.cs" />

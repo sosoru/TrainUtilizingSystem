@@ -75,6 +75,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Models\Model.cs" />
+    <Compile Include="ObservableWrappingCollection.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\ModeledViewModel.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">

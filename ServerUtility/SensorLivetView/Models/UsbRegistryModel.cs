@@ -11,7 +11,7 @@ using Livet;
 
 namespace SensorLivetView.Models
 {
-    internal class UsbRegistryModel
+    public class UsbRegistryModel
         : NotifyObject
     {
         /*
@@ -34,7 +34,6 @@ namespace SensorLivetView.Models
         }
 
         public UsbDevicesModel DevicesModel { get; private set; }
-        public Notificator<EventArgs> SelectedNotificator { get; set; }
 
         UsbRegistry _Registry;
 
@@ -66,8 +65,7 @@ namespace SensorLivetView.Models
                 RaisePropertyChanged("IsRegistered");
             }
         }
-      
-        
+
 
     }
 }

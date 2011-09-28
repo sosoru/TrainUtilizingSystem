@@ -81,7 +81,6 @@
     <Compile Include="DataStore\DataStore\DataStore.xaml.cs">
       <DependentUpon>DataStore.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Models\DeviceListModel.cs" />
     <Compile Include="Models\UsbDevicesModel.cs" />
     <Compile Include="Models\UsbRegistryModel.cs" />
     <Compile Include="PlotImage.cs" />
@@ -98,6 +97,7 @@
     <Compile Include="ViewModels\Controls\UsbRegistryViewModel.cs" />
     <Compile Include="ViewModels\Controls\VoltageGraphViewModel.cs" />
     <Compile Include="ViewModels\Converters\AlphabetValueConverter.cs" />
+    <Compile Include="ViewModels\DeviceViewModelDispatcher.cs" />
     <Compile Include="Views\D2DD3DImage.cs" />
     <Compile Include="Views\MotherBoardView.xaml.cs">
       <DependentUpon>MotherBoardView.xaml</DependentUpon>
@@ -220,7 +220,7 @@
     <Content Include="InfrastructureAssemblies\System.Windows.Interactivity.dll" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\..\Program Files\LibUsbDotNet\Src\LibWinUsb\LibUsbDotNet.csproj">
+    <ProjectReference Include="..\..\..\..\..\..\Program Files\LibUsbDotNet\Src\LibWinUsb\LibUsbDotNet.csproj">
       <Project>{0A78F6FF-5586-4052-8104-E23FF83A7CE1}</Project>
       <Name>LibUsbDotNet</Name>
     </ProjectReference>

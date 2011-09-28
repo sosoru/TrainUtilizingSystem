@@ -19,7 +19,7 @@ using SensorViewLibrary.ViewModels;
 namespace SensorLivetView.ViewModels.Controls
 {
     public class UsbRegistryViewModel
-        : ModeledViewModel<UsbRegistry>
+        : ModeledViewModel<UsbRegistryModel>
     {
         /*コマンド、プロパティの定義にはそれぞれ 
          * 
@@ -46,27 +46,86 @@ namespace SensorLivetView.ViewModels.Controls
          * 原因となりやすく推奨できません。ViewModelHelperの各静的メソッドの利用を検討してください。
          */
 
-        
-        bool _IsReceiving;
-
-        public bool IsReceiving
+        public string Name
         {
             get
-            { return _IsReceiving; }
+            {
+                if (this.Model == null)
+                    return "model is not selected";
+                else
+                {
+                    return this.Model.Registry.SymbolicName;
+                }
+            }
+
+        }
+
+        public bool IsSelected
+        {
+            get
+            {
+                if (this.Model == null)
+                    return false;
+                else
+                    return this.Model.IsRegistered;
+
+            }
             set
             {
-                if (_IsReceiving == value)
-                    return;
-                _IsReceiving = value; 
-                RaisePropertyChanged("IsReceiving");
+                if (this.Model != null)
+                    this.Model.IsRegistered = value;
             }
         }
-             
 
-        public string SymbolicName
+
+        #region SelectDeviceCommand
+        DelegateCommand _SelectDeviceCommand;
+
+        public DelegateCommand SelectDeviceCommand
         {
-            get { return this.Model.SymbolicName; }
+            get
+            {
+                if (_SelectDeviceCommand == null)
+                    _SelectDeviceCommand = new DelegateCommand(SelectDevice, CanSelectDevice);
+                return _SelectDeviceCommand;
+            }
         }
-        
+
+        private bool CanSelectDevice()
+        {
+            return this.Model != null;
+        }
+
+        private void SelectDevice()
+        {
+            this.IsSelected = true;
+        }
+        #endregion
+
+
+        #region UnSelectCommand
+        DelegateCommand _UnSelectCommand;
+
+        public DelegateCommand UnSelectCommand
+        {
+            get
+            {
+                if (_UnSelectCommand == null)
+                    _UnSelectCommand = new DelegateCommand(UnSelect, CanUnSelect);
+                return _UnSelectCommand;
+            }
+        }
+
+        private bool CanUnSelect()
+        {
+            return this.Model != null;
+        }
+
+        private void UnSelect()
+        {
+            this.IsSelected = false;
+        }
+        #endregion
+      
     }
 }

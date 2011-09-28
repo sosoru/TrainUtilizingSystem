@@ -49,56 +49,65 @@ namespace SensorLivetView.ViewModels
          * 原因となりやすく推奨できません。ViewModelHelperの各静的メソッドの利用を検討してください。
          */
 
-        public int VenderID { get; set; }
-        public int ProductID { get; set; }
+        public UsbDevicesViewModel usbdevVm { get; private set; }
 
         public MainWindowViewModel()
         {
-            this.InitCandicateDevice();
+            this.InitUsbPeripherals();
 
-            var sellist = new ObservableCollection<UsbDevicesViewModel>();
-            sellist.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(sellist_CollectionChanged);
-
-            this.SelectedDevices = sellist;
             this.OpeningServers = new ObservableCollection<PacketServer>();
-            this.PacketDispatchers = new ObservableCollection<PacketDispatcherSingle>();
+            this.OpeningServers.CollectionChanged += servlist_CollectionChanged;
 
-#if TEST
-            if (!this.PacketDispatchers.Contains(this.testDisp))
-                this.PacketDispatchers.Add(this.testDisp);
-#endif
+//#if TEST
+//            if (!this.OpeningServers.Contains(this.testserv))
+//                this.OpeningServers.Add(this.testserv);
+//#endif
+            
         }
 
-        void sellist_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        void servlist_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems != null && e.NewItems.Count > 0)
             {
-                foreach (var item in e.NewItems.Cast<UsbDevicesViewModel>())
-                    this.listenDevice(item);
+                foreach (var newserv in e.NewItems.Cast<PacketServer>())
+                {
+                    newserv.AddAction(this.motherboardVmDispat.dispat);
+                    newserv.AddAction(this.tsensorVmDispat.dispat);
+                    newserv.AddAction(this.tcontrollerDispat.dispat);
+                    newserv.AddAction(this.pmoduleDispat.dispat);
+                    newserv.AddAction(this.remmoduleDispat.dispat);
+                }
             }
-            if (e.OldItems != null && e.OldItems.Count > 0)
-            {
-                foreach (var item in e.OldItems.Cast<UsbDevicesViewModel>())
-                    this.closeDevice(item);
-            }
-
         }
 
-        public void InitCandicateDevice()
+        public void InitUsbPeripherals()
         {
-            this.CandicateDevice = new UsbDevicesViewModel()
+            var model = new UsbDevicesModel()
             {
-                ProductID = this.ProductID,
-                VenderID = this.VenderID,
+                ProductId = 0x0204,
+                VenderId = 0x04D8,
+                ModelRegisteredStateChanged = new Notificator<UsbDeviceRegisteredEventArgs>()
+            };
+            model.ModelRegisteredStateChanged.Raised += (sender, e) =>
+                {
+                    if (e.RegistryModel.IsRegistered)
+                        listenDevice(e.RegistryModel);
+                    else
+                        closeDevice(e.RegistryModel);
+                };
+
+            this.usbdevVm = new UsbDevicesViewModel()
+            {
+                Model = model,
             };
         }
 
-        private PacketDispatcherSingle _cache_testdisp = null;
-        private PacketDispatcherSingle testDisp
+        private PacketServer _cache_testserv = null;
+        private PacketServer testserv
         {
             get
             {
-                if (_cache_testdisp == null)
+                if (_cache_testserv == null)
                 {
                     var testenum = new TestEnumerable().SetMotherBoard(new DeviceID(1, 0))
                                                        .SetTrainSensors(new DeviceID(1, 1))
@@ -108,26 +117,21 @@ namespace SensorLivetView.ViewModels
                                                        .SetPointModules(new DeviceID(1,5))
                                                        .ToEnumerable();
                     var testserv = new TestServer(testenum);
-                    var testdisp = new PacketDispatcherSingle();
-                    testserv.AddAction(testdisp);
-                    this.OpeningServers.Add(testserv);
-                    this.PacketDispatchers.Add(testdisp);
                     //testdisp.ReceivedMotherBoardChanged += (sender, e) => this.RaisePropertyChanged("");
                     testserv.LoopStart();
-
-                    this._cache_testdisp = testdisp;
+                    this._cache_testserv = testserv;
                 }
-                return this._cache_testdisp;
+                return this._cache_testserv;
             }
         }
 
-        private void listenDevice(UsbDevicesViewModel usbvm)
+        private void listenDevice(UsbRegistryModel usbm)
         {
-            if (usbvm == null || usbvm.SelectedDeviceReg == null)
+            if (usbm == null)
                 return;
 
             //device open to listen stream
-            var dev = usbvm.SelectedDeviceReg.Device;
+            var dev = usbm.Registry.Device;
 
             if (!dev.IsOpen)
             {
@@ -140,28 +144,23 @@ namespace SensorLivetView.ViewModels
             st.Open();
 
             var serv = new PacketServer(st);
-            var dispat = new PacketDispatcherSingle();
 
 #if TEST
             var logging = new PacketServerAction((state) => Console.WriteLine(state.ToString()));
             serv.AddAction(logging);
 #endif
 
-            serv.AddAction(dispat);
             if (!serv.IsLooping)
                 serv.LoopStart();
             this.OpeningServers.Add(serv);
-            this.PacketDispatchers.Add(dispat);
-            dispat.FoundDeviceList.CollectionChanged += (sender, e) => base.RaisePropertyChanged("");
-            RaisePropertyChanged("");
         }
 
-        private void closeDevice(UsbDevicesViewModel usbvm)
+        private void closeDevice(UsbRegistryModel usbm)
         {
-            if (usbvm == null)
+            if (usbm == null)
                 return;
 
-            var dev = usbvm.SelectedDeviceReg.Device;
+            var dev = usbm.Registry.Device;
             if (dev != null && dev.IsOpen)
             {
                 dev.Close();
@@ -169,9 +168,9 @@ namespace SensorLivetView.ViewModels
 
         }
 
-        IList<PacketServer> _OpeningServers;
+        ObservableCollection<PacketServer> _OpeningServers;
 
-        public IList<PacketServer> OpeningServers
+        public ObservableCollection<PacketServer> OpeningServers
         {
             get
             { return _OpeningServers; }
@@ -184,60 +183,54 @@ namespace SensorLivetView.ViewModels
             }
         }
 
-
-        ObservableCollection<PacketDispatcherSingle> _PacketDispatchers;
-
-        public ObservableCollection<PacketDispatcherSingle> PacketDispatchers
-        {
-            get
-            { return _PacketDispatchers; }
-            set
-            {
-                if (_PacketDispatchers == value)
-                    return;
-                _PacketDispatchers = value;
-                RaisePropertyChanged("PacketDispatchers");
-            }
-        }
-
+        private DeviceViewModelDispatcher<MotherBoard, MotherBoardState, MotherBoardViewModel> motherboardVmDispat
+            = new DeviceViewModelDispatcher<MotherBoard, MotherBoardState, MotherBoardViewModel>();
         public IList<MotherBoardViewModel> AvailableMotherBoardVMs
         {
             get
             {
-                return GetAvailableModules<MotherBoardViewModel, MotherBoard>(this.PacketDispatchers);
+                return this.motherboardVmDispat.projected;
             }
         }
 
+        private DeviceViewModelDispatcher<TrainSensor, TrainSensorState, TrainSensorViewModel> tsensorVmDispat
+             = new DeviceViewModelDispatcher<TrainSensor, TrainSensorState, TrainSensorViewModel>();
         public IList<TrainSensorViewModel> AvailableTrainSensorVMs
         {
             get
             {
-                return GetAvailableModules<TrainSensorViewModel, TrainSensor>(this.PacketDispatchers);
+                return this.tsensorVmDispat.projected;
             }
         }
 
+        private DeviceViewModelDispatcher<TrainController, TrainControllerState, TrainControllerViewModel> tcontrollerDispat
+            = new DeviceViewModelDispatcher<TrainController, TrainControllerState, TrainControllerViewModel>();
         public IList<TrainControllerViewModel> AvailableTrainControllerVMs
         {
             get
             {
-                return GetAvailableModules<TrainControllerViewModel, TrainController>(this.PacketDispatchers);
+                return this.tcontrollerDispat.projected;
             }
         }
 
+        private DeviceViewModelDispatcher<PointModule, PointModuleState, PointModuleViewModel> pmoduleDispat
+            = new DeviceViewModelDispatcher<PointModule, PointModuleState, PointModuleViewModel>();
         public IList<PointModuleViewModel> AvailablePointModuleVMs
         {
             get
             {
-                return GetAvailableModules<PointModuleViewModel, PointModule>(this.PacketDispatchers);
+                return this.pmoduleDispat.projected;
             }
 
         }
 
+        private DeviceViewModelDispatcher<RemoteModule, RemoteModuleState, RemoteModuleViewModel> remmoduleDispat
+            = new DeviceViewModelDispatcher<RemoteModule, RemoteModuleState, RemoteModuleViewModel>();
         public IList<RemoteModuleViewModel> AvailableRemoteModuleVMs
         {
             get
             {
-                return GetAvailableModules<RemoteModuleViewModel, RemoteModule>(this.PacketDispatchers);
+                return this.remmoduleDispat.projected;
             }
         }
 
@@ -256,59 +249,6 @@ namespace SensorLivetView.ViewModels
             }
         }
 
-        private IList<TVM> GetAvailableModules<TVM, TM>(IEnumerable<PacketDispatcherSingle> disps)
-            where TVM : class
-            where TM : class
-        {
-            return disps.SelectMany((disp) => disp.FoundDeviceList)
-                        .Where((cnt)=> cnt is TM)
-                        .Select((cnt) => typeof(TVM).GetConstructor(new[] { typeof(TM) }).Invoke(new[] { cnt }) as TVM)
-                        .ToList();
-        }
-
-        IList<UsbDevicesViewModel> _SelectedDevices;
-
-        public IList<UsbDevicesViewModel> SelectedDevices
-        {
-            get
-            { return _SelectedDevices; }
-            set
-            {
-                if (_SelectedDevices == value)
-                    return;
-                _SelectedDevices = value;
-                RaisePropertyChanged("SelectedDevices");
-            }
-        }
-
-
-        UsbDevicesViewModel _CandicateDevice;
-
-        public UsbDevicesViewModel CandicateDevice
-        {
-            get
-            { return _CandicateDevice; }
-            set
-            {
-                if (_CandicateDevice == value)
-                    return;
-                _CandicateDevice = value;
-                RaisePropertyChanged("CandicateDevice");
-            }
-        }
-
-        public void PickUpCandicateDevice()
-        {
-            if (this.CandicateDevice != null && this.CandicateDevice.SelectedDeviceReg != null)
-            {
-                if (!this.SelectedDevices.Any((vm) => vm.SelectedDeviceReg == this.CandicateDevice.SelectedDeviceReg))
-                {
-                    this.SelectedDevices.Add(this.CandicateDevice);
-                    this.InitCandicateDevice();
-                    RaisePropertyChanged("");
-                }
-            }
-        }
 
     }
 }

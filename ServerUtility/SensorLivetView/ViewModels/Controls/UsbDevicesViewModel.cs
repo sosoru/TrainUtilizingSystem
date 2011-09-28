@@ -15,11 +15,12 @@ using Livet.Messaging;
 using Livet.Messaging.File;
 using Livet.Messaging.Window;
 
+using SensorViewLibrary.ViewModels;
 using SensorLivetView.Models;
 
 namespace SensorLivetView.ViewModels.Controls
 {
-    public class UsbDevicesViewModel : ViewModel
+    public class UsbDevicesViewModel : ModeledViewModel<UsbDevicesModel>
     {
         public UsbDevicesViewModel()
         {
@@ -27,41 +28,50 @@ namespace SensorLivetView.ViewModels.Controls
 
         #region properties
 
-        int _VenderID;
         public int VenderID
         {
             get
-            { return _VenderID; }
+            {
+                if (this.Model == null)
+                    return 0;
+                else
+                    return this.Model.VenderId;
+            }
             set
             {
-                if (_VenderID == value)
-                    return;
-                _VenderID = value;
-                RaisePropertyChanged("");
-            }
+                if (this.Model != null)
+                    this.Model.VenderId = value;
+            }                
         }
 
-        int _ProductID;
         public int ProductID
         {
             get
-            { return _ProductID; }
+            {
+                if (this.Model == null)
+                    return 0;
+                else
+                    return this.Model.ProductId;
+            }
             set
             {
-                if (_ProductID == value)
-                    return;
-                _ProductID = value;
-                RaisePropertyChanged("");
+                if (this.Model != null)
+                    this.Model.ProductId = value;
             }
         }
 
-        public IEnumerable<UsbRegistry> DeviceCandicates
+        public IList<UsbRegistryViewModel> DeviceCandicates
         {
             get
             {
-                var cands = UsbDevice.AllDevices.FindAll(new UsbDeviceFinder(this.VenderID, this.ProductID))
-                                            .ToArray();
-                return cands;
+                if (this.Model == null)
+                    return new UsbRegistryViewModel [] { };
+                else
+                {
+                    return this.Model.Candicates.Select(reg => new UsbRegistryViewModel() { Model = reg })
+                                                .ToList();
+                }
+
             }
         }
 
@@ -80,12 +90,14 @@ namespace SensorLivetView.ViewModels.Controls
 
         private bool CanRefresh()
         {
-            return true;
+            return this.Model != null;
         }
 
         private void Refresh()
         {
-            RaisePropertyChanged("DeviceCandicates");
+            this.Model.Refresh();
+
+            RaisePropertyChanged(()=> this.DeviceCandicates);
         }
         #endregion
 

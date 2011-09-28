@@ -30,9 +30,6 @@ namespace SensorLivetView.Views
         {
             InitializeComponent();
 
-            this.ViewModel.VenderID = 0x04D8;
-            this.ViewModel.ProductID = 0x0204;
-            this.ViewModel.InitCandicateDevice();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

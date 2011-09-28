@@ -6,28 +6,34 @@ using System.Text;
 using System.Reflection;
 using System.Reactive.Linq;
 
+using SensorLibrary;
+
 namespace SensorLibrary
 {
-    public class PacketDispatcherSingle
+    public class PacketDispatcherSingle<TDevice, TDevState>
         : PacketDispatcher
+        where TDevice : IDevice<IDeviceState<IPacketDeviceData>>
     {
-        public ObservableCollection<IDevice<IDeviceState<IPacketDeviceData>>> FoundDeviceList { get; private set; }
+        public ObservableCollection<TDevice> FoundDeviceList { get; private set; }
 
         public PacketDispatcherSingle()
             : base()
         {
-            this.FoundDeviceList = new ObservableCollection<IDevice<IDeviceState<IPacketDeviceData>>>();
+            this.FoundDeviceList = new ObservableCollection<TDevice>();
         }
 
         public override void Notify(IDeviceState<IPacketDeviceData> state)
         {
+            if (!(state is TDevState))
+                return;
+
             var before = this.FoundDeviceList.FirstOrDefault((dev) => dev.DeviceID == state.BasePacket.ID);
 
             if (before == null)
             {
                 var fact = DeviceFactory.AvailableDeviceTypes.First((d) => d.ModuleType == state.BasePacket.ModuleType);
                 
-                var dev = fact.DeviceCreate();
+                var dev = (TDevice)fact.DeviceCreate();
                 dev.DeviceID = state.BasePacket.ID;
                 dev.Observe(this);
                 this.FoundDeviceList.Add(dev);

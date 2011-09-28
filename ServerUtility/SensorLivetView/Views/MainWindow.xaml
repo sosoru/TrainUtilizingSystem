@@ -11,12 +11,6 @@
         Title="MainWindow">
 	<Window.Resources>
 		<vm:MainWindowViewModel x:Key="MainWindowViewModelDataSource" d:IsDataSource="True"/>
-		<SensorLivetView_ViewModels_Controls:UsbRegistryConverter x:Key="UsbDeviceRegConverter"/>
-		<DataTemplate x:Key="DeviceSelectingItemTemplate">
-			<Grid>
-				<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding SelectedDeviceReg, Converter={StaticResource UsbDeviceRegConverter}}" Width="Auto"/>
-			</Grid>
-		</DataTemplate>
 		<DataTemplate x:Key="MbListItemTemplate">
 			<Grid>
 				<StackPanel>
@@ -78,18 +72,12 @@
 	<DockPanel>
 		<TabControl x:Name="tabControl">
 			<TabItem Header="Devices">
-					<DockPanel>
+					<Grid>
 						
-						<SensorLivetView:UsbDevicesView DataContext="{Binding CandicateDevice}" DockPanel.Dock="Bottom">
-							<i:Interaction.Triggers>
-								<ei:PropertyChangedTrigger Binding="{Binding SelectedDeviceReg}">
-									<ei:CallMethodAction MethodName="PickUpCandicateDevice" TargetObject="{Binding Mode=OneWay, Source={StaticResource MainWindowViewModelDataSource}}"/>
-								</ei:PropertyChangedTrigger>
-							</i:Interaction.Triggers>
+						<SensorLivetView:UsbDevicesView DataContext="{Binding usbdevVm}">
 						</SensorLivetView:UsbDevicesView>
-						<ListBox ItemsSource="{Binding SelectedDevices}" ItemTemplate="{DynamicResource DeviceSelectingItemTemplate}"/>
 						
-					</DockPanel>
+					</Grid>
 			</TabItem>
 			<TabItem Header="MotherBoard">
 				<ListBox ItemsSource="{Binding AvailableMotherBoardVMs, Mode=OneWay}" ItemTemplate="{DynamicResource MbListItemTemplate}"  ItemsPanel="{DynamicResource MbListItemsPanelTemplate}"/>
