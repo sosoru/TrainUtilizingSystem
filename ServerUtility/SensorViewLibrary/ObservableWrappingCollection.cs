@@ -63,7 +63,7 @@ namespace SensorViewLibrary
         }
 
         private Func<Tsrc, Tproj> _proj;
-        public Func<Tsrc, Tproj> Projection
+        public virtual Func<Tsrc, Tproj> Projection
         {
             get
             {
@@ -73,7 +73,7 @@ namespace SensorViewLibrary
         }
 
         private Func<Tproj, Tsrc> _invproj;
-        public Func<Tproj, Tsrc> InverseProjection
+        public virtual Func<Tproj, Tsrc> InverseProjection
         {
             get
             {

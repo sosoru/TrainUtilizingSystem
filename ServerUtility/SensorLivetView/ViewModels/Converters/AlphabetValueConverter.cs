@@ -22,12 +22,12 @@ namespace SensorLivetView.ViewModels.Converters
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            int v;
-            try
-            {
-                v = (int)value;
-            }
-            catch { return char.MinValue; }
+            int v = (int) value;
+            //try
+            //{
+            //    v = (int)value;
+            //}
+            //catch { return char.MinValue; }
 
             if (v > basestring.Length)
                 return '?';

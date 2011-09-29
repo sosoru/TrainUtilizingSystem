@@ -12,6 +12,9 @@ namespace SensorLibrary
             :base()
         {
             this.ModuleType = ModuleTypeEnum.PointModule;
+
+            this.StateEqualityComparer = new GenericComparer<PointModuleState>((x, y) => x.Data.Directions.SequenceEqual(y.Data.Directions));
+
         }
 
         public override void OnNext(IDeviceState<IPacketDeviceData> value)
