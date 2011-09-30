@@ -55,8 +55,8 @@ namespace RouteVisualizer.RailEditor.ViewModels
             set
             {
                 this._modeling = value;
-                ObservableRailDatas.Context = this._modeling.Rails;
-                ObservablePathDatas.Context = this._modeling.Pathes;
+                ObservableRailDatas.Context = this._modeling.Rails.ToList();
+                ObservablePathDatas.Context = this._modeling.Pathes.ToList();
             }
         }
 

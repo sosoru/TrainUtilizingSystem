@@ -48,6 +48,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Moq">
+      <HintPath>..\packages\Moq.4.0.10827\lib\NET40\Moq.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -78,6 +81,7 @@
     <Compile Include="ChunckedStreamTest.cs" />
     <Compile Include="ConvertExtenstionsTest.cs" />
     <Compile Include="LoopingArrayTest.cs" />
+    <Compile Include="ManipulatorViewModelTest.cs" />
     <Compile Include="MotherBoardDataTest.cs" />
     <Compile Include="MotherBoardStateTest.cs" />
     <Compile Include="MotherBoardViewModelTest.cs" />
@@ -120,6 +124,10 @@
     <ProjectReference Include="..\SensorLivetView\SensorLivetView.csproj">
       <Project>{6DDB5211-7C3D-40EC-B826-B928AFFCD432}</Project>
       <Name>SensorLivetView</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SensorViewLibrary\SensorViewLibrary.csproj">
+      <Project>{67364770-A9D3-42C1-ADB9-DF160FB38A27}</Project>
+      <Name>SensorViewLibrary</Name>
     </ProjectReference>
     <ProjectReference Include="..\SurfaceQueueInteropHelper\SurfaceQueueInteropHelper.vcxproj">
       <Project>{93ABD028-4151-42B4-83C3-0E9630C6AA46}</Project>

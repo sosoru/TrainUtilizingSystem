@@ -34,6 +34,7 @@ namespace SensorLivetView.Views
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            this.ViewModel.AssociatedDispatcher = this.Dispatcher;
 #if TEST
             try
             {

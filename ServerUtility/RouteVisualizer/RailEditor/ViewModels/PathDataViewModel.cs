@@ -20,6 +20,9 @@ using Livet.Messaging.Window;
 
 using RouteVisualizer.Models;
 
+using SensorViewLibrary;
+using SensorViewLibrary.ViewModels;
+
 namespace RouteVisualizer.RailEditor.ViewModels
 {
     public class PathDataViewModel

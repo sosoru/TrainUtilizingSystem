@@ -68,14 +68,14 @@ namespace TestProject
         /// <summary>
         ///Notify のテスト
         ///</summary>
-        [TestMethod()]
-        public void NotifyTest()
-        {
-            PacketDispatcherSingle target = new PacketDispatcherSingle();
-            var packet = new DevicePacket();
-            var state = new MotherBoardState() { BasePacket = packet };
-            target.Notify(state);
-        }
+        //[TestMethod()]
+        //public void NotifyTest()
+        //{
+        //    PacketDispatcherSingle target = new PacketDispatcherSingle();
+        //    var packet = new DevicePacket();
+        //    var state = new MotherBoardState() { BasePacket = packet };
+        //    target.Notify(state);
+        //}
 
         /// <summary>
         ///AvailableDevices のテスト

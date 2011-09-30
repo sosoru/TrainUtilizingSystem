@@ -43,7 +43,7 @@ namespace SensorLibrary
 
         private TState _sentState = null;
 
-        public TState CurrentState { get; protected set; }
+        public virtual TState CurrentState { get; protected set; }
         public DeviceID DeviceID { get; set; }
         public ModuleTypeEnum ModuleType { get; protected set; }
         public IEqualityComparer<TState> StateEqualityComparer { get; set; }
@@ -93,7 +93,7 @@ namespace SensorLibrary
             this.SendPacket(this.CurrentState);
         }
 
-        public void SendPacket(IDeviceState<IPacketDeviceData> state)
+        public virtual void SendPacket(IDeviceState<IPacketDeviceData> state)
         {
             if (state == null || state.ReceivingServer == null)
                 throw new InvalidOperationException("missing Device");

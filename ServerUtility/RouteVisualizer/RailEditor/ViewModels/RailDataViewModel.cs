@@ -19,6 +19,8 @@ using Livet.Messaging.File;
 using Livet.Messaging.Window;
 
 using RouteVisualizer.Models;
+using SensorViewLibrary;
+using SensorViewLibrary.ViewModels;
 
 namespace RouteVisualizer.RailEditor.ViewModels
 {

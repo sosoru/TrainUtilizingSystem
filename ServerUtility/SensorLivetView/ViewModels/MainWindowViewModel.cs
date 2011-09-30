@@ -67,6 +67,7 @@ namespace SensorLivetView.ViewModels
                 this.tcontrollerDispat = this.createDispat<TrainController, TrainControllerState, TrainControllerViewModel>();
                 this.pmoduleDispat = this.createDispat<PointModule, PointModuleState, PointModuleViewModel>();
                 this.remmoduleDispat = this.createDispat<RemoteModule, RemoteModuleState, RemoteModuleViewModel>();
+                RaisePropertyChanged("");
             }
         }
 
@@ -164,10 +165,10 @@ namespace SensorLivetView.ViewModels
 
             var serv = new PacketServer(st);
 
-//#if TEST
-//            var logging = new PacketServerAction((state) => Console.WriteLine(state.ToString()));
-//            serv.AddAction(logging);
-//#endif
+#if TEST
+            var logging = new PacketServerAction((state) => Console.WriteLine(state.ToString()));
+            serv.AddAction(logging);
+#endif
 
             if (!serv.IsLooping)
                 serv.LoopStart();

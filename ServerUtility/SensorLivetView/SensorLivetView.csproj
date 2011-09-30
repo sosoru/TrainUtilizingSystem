@@ -46,6 +46,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>InfrastructureAssemblies\Microsoft.Expression.Interactions.dll</HintPath>
     </Reference>
+    <Reference Include="Moq">
+      <HintPath>..\packages\Moq.4.0.10827\lib\NET40\Moq.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -81,13 +84,17 @@
     <Compile Include="DataStore\DataStore\DataStore.xaml.cs">
       <DependentUpon>DataStore.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\DeserializeManipulatorModel.cs" />
+    <Compile Include="Models\ControllerManipulatorModel.cs" />
     <Compile Include="Models\UsbDevicesModel.cs" />
     <Compile Include="Models\UsbRegistryModel.cs" />
     <Compile Include="PlotImage.cs" />
     <Compile Include="Models\TestTaskModel.cs" />
     <Compile Include="Models\TrainSpeedTransitionTest.cs" />
     <Compile Include="testServer.cs" />
+    <Compile Include="ViewModels\Controls\DeseralizeManipulatorViewModel.cs" />
     <Compile Include="ViewModels\Controls\DeviceSelectViewModel.cs" />
+    <Compile Include="ViewModels\Controls\ManipulatorViewModel.cs" />
     <Compile Include="ViewModels\Controls\PacketServerViewModel.cs" />
     <Compile Include="ViewModels\Controls\PointModuleViewModel.cs" />
     <Compile Include="ViewModels\Controls\RemoteModuleViewModel.cs" />

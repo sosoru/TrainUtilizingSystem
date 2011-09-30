@@ -11,6 +11,7 @@ using Livet.Messaging.File;
 using Livet.Messaging.Window;
 
 using SensorLivetView.Models;
+using SensorViewLibrary;
 using SensorLibrary;
 
 namespace SensorLivetView.ViewModels.Controls
@@ -52,17 +53,19 @@ namespace SensorLivetView.ViewModels.Controls
             : this(null)
         { }
 
+        private IList<PointStateClass> _StateList;
         public IList<PointStateClass> StateList
         {
             get
             {
-                return Enumerable.Range(0, this.Model.CurrentState.StateLength)
-                                 .Select((i) => new PointStateClass()
-                                 {
-                                     ViewModel = this,
-                                     StateNo = i,
-                                 })
-                                 .ToList();
+                return this._StateList
+                    ?? (this._StateList = Enumerable.Range(0, this.Model.CurrentState.StateLength)
+                                                     .Select((i) => new PointStateClass()
+                                                     {
+                                                         ViewModel = this,
+                                                         StateNo = i,
+                                                     })
+                                                     .ToList());
             }
         }
 
@@ -72,8 +75,8 @@ namespace SensorLivetView.ViewModels.Controls
             public int StateNo { get; set; }
             public PointStateEnum State
             {
-                get { return this.ViewModel.Model.CurrentState[StateNo]; }
-                set { this.ViewModel.Model.CurrentState[StateNo] = value; }
+                get { return this.ViewModel.Model.CurrentState [StateNo]; }
+                set { this.ViewModel.Model.CurrentState [StateNo] = value; }
             }
 
             public bool IsStraight
@@ -81,7 +84,10 @@ namespace SensorLivetView.ViewModels.Controls
                 get { return State == PointStateEnum.Straight; }
                 set
                 {
-                    this.State = PointStateEnum.Straight;
+                    if (value)
+                        this.State = PointStateEnum.Straight;
+                    else
+                        this.State = PointStateEnum.Curve;
                 }
             }
 
@@ -90,7 +96,7 @@ namespace SensorLivetView.ViewModels.Controls
                 get { return State == PointStateEnum.Curve; }
                 set
                 {
-                    this.State = PointStateEnum.Curve;
+                    this.IsStraight = !value;
                 }
             }
 
@@ -147,7 +153,7 @@ namespace SensorLivetView.ViewModels.Controls
                     this.ViewModel.SendPacketCommand.Execute();
             }
             #endregion
-      
+
         }
     }
 }

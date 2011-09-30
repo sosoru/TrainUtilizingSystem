@@ -93,12 +93,12 @@ namespace TestProject
         /// <summary>
         ///DeviceCandicates のテスト
         ///</summary>
-        [TestMethod()]
-        public void DeviceCandicatesTest()
-        {
-            UsbDevicesViewModel target = new UsbDevicesViewModel(); // TODO: 適切な値に初期化してください
-            IEnumerable<UsbRegistry> actual;
-            actual = target.DeviceCandicates;
-        }
+        //[TestMethod()]
+        //public void DeviceCandicatesTest()
+        //{
+        //    UsbDevicesViewModel target = new UsbDevicesViewModel(); // TODO: 適切な値に初期化してください
+        //    IEnumerable<UsbRegistry> actual;
+        //    actual = target.DeviceCandicates;
+        //}
     }
 }

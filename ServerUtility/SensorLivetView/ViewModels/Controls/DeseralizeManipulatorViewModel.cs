@@ -10,16 +10,13 @@ using Livet.Messaging;
 using Livet.Messaging.File;
 using Livet.Messaging.Window;
 
-using RouteVisualizer.EF;
-using RouteVisualizer.Models;
-using RouteVisualizer.ViewModels;
-using SensorViewLibrary;
-using SensorViewLibrary.ViewModels;
+using SensorLivetView.Models;
+using SensorLibrary;
+using SensorLibrary.Manipulators;
 
-namespace RouteVisualizer.RailEditor.ViewModels
+namespace SensorLivetView.ViewModels.Controls
 {
-    public class GateDataViewModel 
-        : ModeledViewModel<GateData>
+    public class DeseralizeManipulatorViewModel 
     {
         /*コマンド、プロパティの定義にはそれぞれ 
          * 
@@ -46,25 +43,6 @@ namespace RouteVisualizer.RailEditor.ViewModels
          * 原因となりやすく推奨できません。ViewModelHelperの各静的メソッドの利用を検討してください。
          */
 
-        public string GateName
-        {
-            get
-            {
-                if (this.Model != null)
-                {
-                    return this.Model.GateName;
 
-                }
-                else
-                    return "";
-            }
-            set
-            {
-                if (this.Model != null)
-                {
-                    this.Model.GateName = value;
-                }
-            }
-        }
     }
 }

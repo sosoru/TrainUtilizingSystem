@@ -82,6 +82,10 @@
     <Compile Include="GenericComparer.cs" />
     <Compile Include="GenericWeakReference.cs" />
     <Compile Include="LoopingArray.cs" />
+    <Compile Include="Manipulators\ControllerManipulator.cs" />
+    <Compile Include="Manipulators\DeviceManipulater.cs" />
+    <Compile Include="Manipulators\IDeviceManipulator.cs" />
+    <Compile Include="Manipulators\DeviceStateDeserializer.cs" />
     <Compile Include="Packet\PacketExtensions.cs" />
     <Compile Include="Packet\PacketDatas.cs" />
     <Compile Include="PacketDispatcher.cs" />
