@@ -61,10 +61,16 @@ HRESULT StoreMotherBoardSavedState(DeviceID* pid, PMODULE_DATA buf)
 		beftype = READ_MBSTATE_MODULETYPE(g_mbState, i);
 		if(beftype != curtype)
 		{
+			BYTE dummy[SIZE_EEPROM_MOTHERBOARD_ALLOCATED];
+			
 			//GET_FUNC_TABLE(i)->fnclose(i);			
 			mid.ModuleAddr = i;
 			InitializeTable(&mid, curtype, GET_FUNC_TABLE(i));
 			WRITE_MBSTATE_MODULETYPE(g_mbState, i, curtype);
+			
+			//clear eeprom
+			memset((void*)dummy, 0xff, sizeof(dummy));
+			WriteModuleSavedState(i, dummy);			
 			
 			GET_FUNC_TABLE(i)->fninit(&mid);
 		}

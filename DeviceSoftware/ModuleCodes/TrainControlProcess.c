@@ -274,13 +274,12 @@ void InterruptTrainController(DeviceID * pid)
 	
 	if(++waitingCount < 2)
 		return;
-	
-		
+			
 	ClosePWM1();	
 	ClosePWM2();
 		
 	#if defined VERSION_REV2
-	if(FALSE){
+	{
 		unsigned int tmpvoltA=0, tmpvoltB=0;
 		
 		PORT_DIRECTION_POS = 1;
@@ -321,21 +320,22 @@ void InterruptTrainController(DeviceID * pid)
 		SetChanADC(DUTYCONTROL_CHANNEL);
 		ConvertADC();
 		while(BusyADC());
-		vol = ReadADC();
+		vol = (~ReadADC()) & 0x3ff;
 		
-		if(vol < 300)
+		if(vol < 150)
 			vol = 0;
 		else
-			vol -= 300;
+			vol -= 150;
 		
 		g_cacheState.duty = vol;
 		g_cacheState.period = 0xFF;
 		g_cacheState.direction = PORT_DIRECTION;
 		g_cacheState.prescale = PRESCALE_DEFAULT;
 		g_cacheState.mode = MODE_TRAINCONTROLLER_ONDEVICE;
-		
+		 
 	}
-	else if(g_cacheState.mode == MODE_TRAINCONTROLLER_FOLLOWING)
+	else
+	 if(g_cacheState.mode == MODE_TRAINCONTROLLER_FOLLOWING)
 	{
 		if(AveVoltage == 1023) // if train is stopping, the bemf sticks to 0 or 1023
 			AveVoltage = 0;
