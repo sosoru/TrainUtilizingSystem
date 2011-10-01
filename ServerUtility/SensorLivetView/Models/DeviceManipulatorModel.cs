@@ -11,7 +11,7 @@ using SensorLibrary.Manipulators;
 
 namespace SensorLivetView.Models
 {
-    public class ControllerManipulatorModel : NotifyObject
+    public class DeviceManipulatorModel : NotifyObject
     {
         /*
          * NotifyObjectはプロパティ変更通知の仕組みを実装したオブジェクトです。

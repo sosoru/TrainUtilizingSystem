@@ -12,7 +12,7 @@
 #define tris_usb_bus_sense TRISCbits.TRISC6
 #define USB_BUS_SENSE       PORTCbits.RC6
 
-#define AD_PORT 5
+#define AD_PORT 0b00001001
 
 #define CLOCK_FREQ 48000000
 #define GetSystemClock() CLOCK_FREQ   

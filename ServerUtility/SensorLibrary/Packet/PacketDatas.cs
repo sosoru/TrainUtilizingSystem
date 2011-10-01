@@ -115,7 +115,6 @@ namespace SensorLibrary
     {
         Positive = 0,
         Negative = 1,
-        Any = 0xFF,
     }
 
     public enum TrainControllerPrescale
@@ -131,6 +130,7 @@ namespace SensorLibrary
     {
         Straight = 0x00,
         Curve = 0x01,
+        Any = 0xFF,
     }
 
     public enum TrainSensorMode

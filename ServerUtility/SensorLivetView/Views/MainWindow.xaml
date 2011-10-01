@@ -101,6 +101,20 @@
 					<ListBox ItemsSource="{Binding AvailableRemoteModuleVMs}" ItemTemplate="{DynamicResource RemoteModuleListItemTemplate}"/>
 				</Grid>
 			</TabItem>
+			<TabItem Header="Commands">
+				<StackPanel>
+                    <Button x:Name="MiddleToOuter"  Content="中→外" Click="MiddleToOuter_Click" />
+                    <Button x:Name="OuterToMiddle" Content="外→中" />
+                    <Button x:Name="MiddleToInner" Content="中→内" />
+                    <Button x:Name="InnerToMiddle" Content="内→中" />
+					<Button Content="" />
+					<Button Content="" />
+					<Button Content="" />
+					<Button Content="" />
+					<Button Content="" />
+
+				</StackPanel>
+			</TabItem>
 		</TabControl>
 	</DockPanel>
 </Window>

@@ -49,7 +49,7 @@ namespace SensorLivetView.ViewModels.Controls
          * 原因となりやすく推奨できません。ViewModelHelperの各静的メソッドの利用を検討してください。
          */
 
-        public ControllerManipulatorModel Model { get; set; }
+        public DeviceManipulatorModel Model { get; set; }
 
 
 

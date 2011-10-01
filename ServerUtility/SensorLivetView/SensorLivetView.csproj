@@ -85,7 +85,7 @@
       <DependentUpon>DataStore.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\DeserializeManipulatorModel.cs" />
-    <Compile Include="Models\ControllerManipulatorModel.cs" />
+    <Compile Include="Models\DeviceManipulatorModel.cs" />
     <Compile Include="Models\UsbDevicesModel.cs" />
     <Compile Include="Models\UsbRegistryModel.cs" />
     <Compile Include="PlotImage.cs" />

@@ -4,6 +4,7 @@ using System;
 using Livet.Command;
 using Moq;
 using Moq.Protected;
+using System.Reactive.Linq;
 
 using SensorLivetView.Models;
 using SensorLibrary;
@@ -73,6 +74,7 @@ namespace TestProject
         private Mock<TrainSensor> triggerMock;
         private Mock<TrainSensor> abotionMock;
         private Mock<TrainController> controllerMock;
+        private Mock<PointModule> pointModuleMock;
 
         public ManipulatorViewModelTest()
         {
@@ -97,6 +99,11 @@ namespace TestProject
                 IsDetected = true,
             };
 
+            var pointState = new PointModuleState()
+            {
+                BasePacket = new DevicePacket() { ID = new DeviceID { ParentPart = 100, ModuleAddr = 4}},
+            };
+
             this.triggerMock = new Mock<TrainSensor>();
             this.triggerMock.SetupGet((sens) => sens.CurrentState).Returns(detectedState);
 
@@ -116,6 +123,12 @@ namespace TestProject
                     this.controllerMock.SetupGet((cnt) => cnt.CurrentState).Returns(state as TrainControllerState);
                 });
 
+            this.pointModuleMock = new Mock<PointModule>()
+            ;
+            this.pointModuleMock.Setup(pm=>pm.SendPacket(It.IsAny<IDeviceState<IPacketDeviceData>>())).Callback((IDeviceState<IPacketDeviceData> state) =>
+                {
+                    this.pointModuleMock.SetupGet((cnt)=>cnt.CurrentState).Returns(state as PointModuleState);
+                });
         }
 
 
@@ -151,7 +164,49 @@ namespace TestProject
             this.controllerMock.Object.DeviceID = cntid;
             this.controllerMock.Object.SendPacket(defaultstate);
 
-            var model = new ControllerManipulatorModel()
+            var model = new DeviceManipulatorModel()
+            {
+                Manipulator = manipulator,
+            };
+
+            target.Model = model;
+            target.ExecuteCommand.Execute();
+
+            while (target.IsExecuting) ;
+
+        }
+
+        [TestMethod()]
+        public void PointManipExecuteCommandTest()
+        {
+            var target = new ManipulatorViewModel();
+
+            var whiteState = new PointModuleState()
+            {
+                BasePacket = new DevicePacket() { ID = this.pointModuleMock.Object.DeviceID, },
+            };
+            Observable.Range(0, whiteState.StateLength)
+                      .Do(i => whiteState.SetPointState(i, PointStateEnum.Straight));
+            this.pointModuleMock.Object.SendPacket(whiteState);
+            
+            var desState = new PointModuleState()
+            {
+                BasePacket = new DevicePacket () { ID = this.pointModuleMock.Object.DeviceID, ModuleType = ModuleTypeEnum.PointModule},
+            };
+
+            Observable.Range(0, desState.StateLength)
+                      .Where(i => i % 2 == 0)
+                      .Do(i => desState.SetPointState(i, PointStateEnum.Curve));
+
+            var manipulator = new DeviceStateDeserializer<PointModule, PointModuleState>()
+            {
+                TargetDevice = this.pointModuleMock.Object,
+                DeserializingState = desState,
+                ApplyFunc = new Func<DeviceStateDeserializer<PointModule,PointModuleState>,PointModuleState>((des)=> des.DeserializingState),
+                
+            };
+
+            var model = new DeviceManipulatorModel()
             {
                 Manipulator = manipulator,
             };

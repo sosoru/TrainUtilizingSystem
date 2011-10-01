@@ -42,7 +42,7 @@ namespace SensorLibrary.Manipulators
             var curvalue = this.TargetDevice.CurrentState.Duty;
             var actualTo = (double)(1 << (this.TargetDevice.CurrentState.DutyResolution - 1)) * To;
 
-            var interval = 200.0;
+            var interval = 500.0;
             var rate = (actualTo - (double)curvalue) / (Duration.TotalMilliseconds / interval);
 
             while (Math.Abs(this.TargetDevice.CurrentState.Duty - actualTo) > rate)
