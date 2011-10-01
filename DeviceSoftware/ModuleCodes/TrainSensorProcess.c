@@ -32,7 +32,7 @@ void SetUsingPort(BYTE module, BYTE port)
 {	
 	BYTE base = (module-1) * PORT_PIN_COUNT + 1;
 		
-	setLat(base+4, 0);
+	setLat(base+4, 1);
 	if(port > 8)
 		return;
 	
@@ -42,7 +42,7 @@ void SetUsingPort(BYTE module, BYTE port)
 //	LATAbits.LATA4 = 1;
 //	LATA = ((port<<1) | (LATA & 0b11110001));
 //	LATAbits.LATA4 = 0;
-	setLat(base+4, 1);
+	setLat(base+4, 0);
 	
 	Delay10TCYx(140); // 28us
 }
@@ -55,6 +55,10 @@ void SetMeisureVoltage(BYTE module, BYTE port)
 	
 	if(convert == E_FAIL)
 		return;
+		
+	OpenADC(ADC_FOSC_4 & ADC_RIGHT_JUST & ADC_20_TAD,
+	channel & ADC_INT_OFF & ADC_VREFPLUS_VDD & ADC_VREFMINUS_VSS,
+	AD_PORT);
 	
 	while(g_usingAdc);
 	g_usingAdc = TRUE;
@@ -65,18 +69,16 @@ void SetMeisureVoltage(BYTE module, BYTE port)
 
 HRESULT GetChannel(BYTE module, unsigned char * channel)
 {
-	//#if defined(VERSION_REV1) || defined(VERSION_REV2)
-	//valid for module port A, B, D
 	switch(module) 
 	{
 		case 1:
-			*channel = ADC_CH0;
+			*channel = ADC_CH1;
 			break;
 		case 2:
-			*channel = ADC_CH4;
+			*channel = ADC_CH0;
 			break;
 		case 3:
-			*channel = ADC_CH8;
+			*channel = ADC_CH2;
 			break;
 		default:
 			return E_FAIL;	
@@ -95,7 +97,7 @@ HRESULT CreateTrainSensorState(DeviceID * pid, PMODULE_DATA data)
 	unsigned int curTimer;
 	BYTE module = pid->ModuleAddr, port = pid->InternalAddr;
 	HRESULT res = (port==TRAINSENSOR_INNERMODULE_COUNT-1) ? REPEAT_TERMINATE : 0;
-	
+				
 	SetMeisureVoltage(module, port);
 	
 	curTimer = ReadTimer0();
@@ -189,9 +191,6 @@ HRESULT InitTrainSensor(DeviceID * pid)
 	}
 
 	//setTris(module, INPUT_PIN);
-	OpenADC(ADC_FOSC_4 & ADC_RIGHT_JUST & ADC_20_TAD,
-			channel & ADC_INT_OFF & ADC_VREFPLUS_VDD & ADC_VREFMINUS_VSS,
-			AD_PORT);
 
 	return S_OK;
 }

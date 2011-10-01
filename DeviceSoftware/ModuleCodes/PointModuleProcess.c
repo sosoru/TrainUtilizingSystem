@@ -5,6 +5,7 @@
 #include "../Headers/PortMapping.h"
 #include <stdlib.h>
 #include <string.h>
+#include <adc.h>
 
 BYTE IsStoring = FALSE;
 BYTE SendingPointInd = 0xFF;
@@ -82,39 +83,77 @@ HRESULT InitPointModule(DeviceID * pid)
 {
 	BYTE module = (pid->ModuleAddr-1) * PORT_PIN_COUNT + 1;
 	
-	setTris(module, OUTPUT_PIN);
+	setTris(module, INPUT_PIN); // analog
 	setTris(module+1, OUTPUT_PIN);
 	setTris(module+2, OUTPUT_PIN);
 	setTris(module+3, OUTPUT_PIN);
 	setTris(module+4, OUTPUT_PIN);
-	setTris(module+5, INPUT_PIN);
+	setTris(module+5, OUTPUT_PIN);
 
 	ReadPointModuleSavedState(pid, &cachePointSaved);
+	switch(pid->ModuleAddr) 
+	{
+		case 1:
+			OpenADC(ADC_FOSC_4 & ADC_RIGHT_JUST & ADC_20_TAD,
+			ADC_CH1 & ADC_INT_OFF & ADC_VREFPLUS_VDD & ADC_VREFMINUS_VSS,
+			AD_PORT);
+			break;
+		case 2:
+			OpenADC(ADC_FOSC_4 & ADC_RIGHT_JUST & ADC_20_TAD,
+			ADC_CH0 & ADC_INT_OFF & ADC_VREFPLUS_VDD & ADC_VREFMINUS_VSS,
+			AD_PORT);
+			break;
+		case 3:
+			OpenADC(ADC_FOSC_4 & ADC_RIGHT_JUST & ADC_20_TAD,
+			ADC_CH2 & ADC_INT_OFF & ADC_VREFPLUS_VDD & ADC_VREFMINUS_VSS,
+			AD_PORT);
+			break;
+	}
+
 
 	return S_OK;
 }
 
 void InterruptPointModule(DeviceID * pid)
 {
-	BYTE module = (pid->ModuleAddr-1) * PORT_PIN_COUNT + 1;;
+	BYTE module = (pid->ModuleAddr-1) * PORT_PIN_COUNT + 1;
 	
-	if(IsStoring)
+	if(IsStoring || g_usingAdc)
 		return;
 		
-	if(!getPort(module+5)) // device ack false
-		return;
-
+//	if(!getPort(module)) // device ack false
+//		return;
+	g_usingAdc = TRUE;
+	switch(pid->ModuleAddr) 
+	{
+		case 1:
+			SetChanADC(ADC_CH1);
+			break;
+		case 2:
+			SetChanADC(ADC_CH0);
+			break;
+		case 3:
+			SetChanADC(ADC_CH2);
+			break;
+	}
+	ConvertADC();
+	while(BusyADC());
+	g_usingAdc = FALSE;
+	
+	if(ReadADC() <= 0x1FF) // device ask false
+		return ;
+	
 	if(++SendingPointInd >= POINT_COUNT)
 		SendingPointInd = 0;
 		
-	setLat(module+4, 0); // host ack disable
+	setLat(module+5, 0); // host ack disable
 	
-	setLat(module, cachePointSaved.directions[SendingPointInd]&1);
-	setLat(module+1, (SendingPointInd&1));
-	setLat(module+2, (SendingPointInd&2)>>1);
-	setLat(module+3, (SendingPointInd&4)>>2);
+	setLat(module+1, cachePointSaved.directions[SendingPointInd]&1);
+	setLat(module+2, (SendingPointInd&1));
+	setLat(module+3, (SendingPointInd&2)>>1);
+	setLat(module+4, (SendingPointInd&4)>>2);
 	
-	setLat(module+4, 1); // host ack enable		
+	setLat(module+5, 1); // host ack enable		
 
 //	LATAbits.LATA4 = 0;
 //	

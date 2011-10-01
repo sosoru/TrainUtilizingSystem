@@ -198,8 +198,8 @@ void high_isr()
 				PORT_ACK_DEVICE = 1;
 				
 				g_interrupted = 1;
-				g_ReceivedInfo.data = receivedInfo.data;
 			}
+			g_ReceivedInfo.data = receivedInfo.data;
 		}
 	}
 	

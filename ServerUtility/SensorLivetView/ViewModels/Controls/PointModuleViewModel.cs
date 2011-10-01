@@ -47,25 +47,29 @@ namespace SensorLivetView.ViewModels.Controls
         public PointModuleViewModel(PointModule pm)
             : base(pm)
         {
+            this.Comparer = new GenericComparer<IDeviceState<IPacketDeviceData>>((a, b) =>
+                                                                                {
+                                                                                    var pa = a as PointModuleState; var pb = b as PointModuleState;
+                                                                                    return pa != null && pb != null && pa.Data.Directions.SequenceEqual(pb.Data.Directions);
+                                                                                });
+
         }
 
         public PointModuleViewModel()
             : this(null)
         { }
 
-        private IList<PointStateClass> _StateList;
         public IList<PointStateClass> StateList
         {
             get
             {
-                return this._StateList
-                    ?? (this._StateList = Enumerable.Range(0, this.Model.CurrentState.StateLength)
-                                                     .Select((i) => new PointStateClass()
-                                                     {
-                                                         ViewModel = this,
-                                                         StateNo = i,
-                                                     })
-                                                     .ToList());
+                return  Enumerable.Range(0, this.Model.CurrentState.StateLength)
+                                .Select((i) => new PointStateClass()
+                                {
+                                    ViewModel = this,
+                                    StateNo = i,
+                                })
+                                .ToList();
             }
         }
 
