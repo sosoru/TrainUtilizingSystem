@@ -27,16 +27,12 @@ namespace SensorLibrary.Manipulators
 
         private PointModuleState apply(DeviceStateDeserializer<PointModule, PointModuleState> des)
         {
-            var state = new PointModuleState()
-            {
-                BasePacket = new DevicePacket() { ID = des.TargetDevice.DeviceID, ModuleType = ModuleTypeEnum.PointModule },
-            };
-
-            this.Target.CurrentState.Data.Directions.CopyTo(state.Data.Directions, 0);
+            var state = this.Target.CurrentState;
 
             Observable.Range(0, des.TargetDevice.CurrentState.StateLength)
                       .Where(i => des.DeserializingState.GetPointState(i) != PointStateEnum.Any)
-                      .Do(i => state.SetPointState(i, des.DeserializingState.GetPointState(i)));
+                      .Do(i => state.SetPointState(i, des.DeserializingState.GetPointState(i)))
+                      .Subscribe();
 
             return state;
         }

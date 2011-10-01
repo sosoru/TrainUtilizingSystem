@@ -101,7 +101,7 @@ namespace TestProject
 
             var pointState = new PointModuleState()
             {
-                BasePacket = new DevicePacket() { ID = new DeviceID { ParentPart = 100, ModuleAddr = 4}},
+                BasePacket = new DevicePacket() { ID = new DeviceID { ParentPart = 100, ModuleAddr = 4 } },
             };
 
             this.triggerMock = new Mock<TrainSensor>();
@@ -120,14 +120,15 @@ namespace TestProject
             this.controllerMock = new Mock<TrainController>();
             this.controllerMock.Setup(cnt => cnt.SendPacket(It.IsAny<IDeviceState<IPacketDeviceData>>())).Callback((IDeviceState<IPacketDeviceData> state) =>
                 {
-                    this.controllerMock.SetupGet((cnt) => cnt.CurrentState).Returns(state as TrainControllerState);
+                    if (state is TrainControllerState)
+                        this.controllerMock.SetupGet(cnt=>cnt.CurrentState).Returns(state as TrainControllerState);
                 });
 
-            this.pointModuleMock = new Mock<PointModule>()
-            ;
-            this.pointModuleMock.Setup(pm=>pm.SendPacket(It.IsAny<IDeviceState<IPacketDeviceData>>())).Callback((IDeviceState<IPacketDeviceData> state) =>
+            this.pointModuleMock = new Mock<PointModule>();
+            this.pointModuleMock.Setup(pm => pm.SendPacket(It.IsAny<IDeviceState<IPacketDeviceData>>())).Callback((IDeviceState<IPacketDeviceData> state) =>
                 {
-                    this.pointModuleMock.SetupGet((cnt)=>cnt.CurrentState).Returns(state as PointModuleState);
+                    if (state is PointModuleState)
+                        this.pointModuleMock.SetupGet(cnt => cnt.CurrentState).Returns(state as PointModuleState);
                 });
         }
 
@@ -188,10 +189,10 @@ namespace TestProject
             Observable.Range(0, whiteState.StateLength)
                       .Do(i => whiteState.SetPointState(i, PointStateEnum.Straight));
             this.pointModuleMock.Object.SendPacket(whiteState);
-            
+
             var desState = new PointModuleState()
             {
-                BasePacket = new DevicePacket () { ID = this.pointModuleMock.Object.DeviceID, ModuleType = ModuleTypeEnum.PointModule},
+                BasePacket = new DevicePacket() { ID = this.pointModuleMock.Object.DeviceID, ModuleType = ModuleTypeEnum.PointModule },
             };
 
             Observable.Range(0, desState.StateLength)
@@ -202,8 +203,8 @@ namespace TestProject
             {
                 TargetDevice = this.pointModuleMock.Object,
                 DeserializingState = desState,
-                ApplyFunc = new Func<DeviceStateDeserializer<PointModule,PointModuleState>,PointModuleState>((des)=> des.DeserializingState),
-                
+                ApplyFunc = new Func<DeviceStateDeserializer<PointModule, PointModuleState>, PointModuleState>((des) => des.DeserializingState),
+
             };
 
             var model = new DeviceManipulatorModel()
@@ -217,5 +218,62 @@ namespace TestProject
             while (target.IsExecuting) ;
 
         }
+
+        [TestMethod()]
+        public void PointManipTest()
+        {
+            var defaultstate = new PointModuleState()
+            {
+                BasePacket = new DevicePacket() { ID = this.pointModuleMock.Object.DeviceID, ModuleType = ModuleTypeEnum.PointModule },
+            };
+
+            Observable.Range(0, defaultstate.StateLength)
+                      .Do(i => defaultstate.SetPointState(i, PointStateEnum.Straight))
+                      .Subscribe();
+
+            this.pointModuleMock.Object.SendPacket(defaultstate);
+
+            var modstate = new PointModuleState()
+            {
+                BasePacket = new DevicePacket { ID = this.pointModuleMock.Object.DeviceID, ModuleType = ModuleTypeEnum.PointModule },
+            };
+
+            Observable.Range(0, modstate.StateLength)
+                      .Do(i => modstate.SetPointState(i, PointStateEnum.Any))
+                      .Where(i => i % 2 == 0)
+                      .Do(i => modstate.SetPointState(i, PointStateEnum.Curve))
+                      .Subscribe();
+
+            var man = new PointManipulator()
+            {
+                Target = this.pointModuleMock.Object,
+                To = modstate,
+            };
+
+            var model = new DeviceManipulatorModel()
+            {
+                Manipulator = man,
+            };
+            var target = new ManipulatorViewModel()
+            {
+                Model = model,
+
+            };
+
+            target.ExecuteCommand.Execute();
+
+            while (target.IsExecuting) ;
+
+            for (int i = 0; i < this.pointModuleMock.Object.CurrentState.StateLength; ++i)
+            {
+                if (i % 2 == 0)
+                    Assert.IsTrue(this.pointModuleMock.Object.CurrentState.GetPointState(i) == PointStateEnum.Curve);
+                else
+                    Assert.IsTrue(this.pointModuleMock.Object.CurrentState.GetPointState(i) == PointStateEnum.Straight);
+
+            }
+
+        }
+
     }
 }

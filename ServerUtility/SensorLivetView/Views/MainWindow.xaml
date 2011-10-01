@@ -103,10 +103,9 @@
 			</TabItem>
 			<TabItem Header="Commands">
 				<StackPanel>
-                    <Button x:Name="MiddleToOuter"  Content="中→外" Click="MiddleToOuter_Click" />
-                    <Button x:Name="OuterToMiddle" Content="外→中" />
-                    <Button x:Name="MiddleToInner" Content="中→内" />
-                    <Button x:Name="InnerToMiddle" Content="内→中" />
+                    <Button x:Name="OuterToMiddle" Content="外ー中" Click="OuterToMiddle_Click" />
+                    <Button x:Name="InnerToMiddle" Content="内ー中" Click="InnerToMiddle_Click" />
+                    <Button x:Name="Independent" Content="独立" Click="Independent_Click" />
 					<Button Content="" />
 					<Button Content="" />
 					<Button Content="" />

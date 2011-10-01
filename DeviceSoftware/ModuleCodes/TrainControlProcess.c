@@ -267,7 +267,7 @@ void InterruptTrainController(DeviceID * pid)
 	unsigned int meisuringCount= 5;
 	unsigned int AveVoltage =0;
 	int df=0;
-	
+		
 	if(settingState || g_usingAdc)
 		return;
 		
@@ -280,7 +280,7 @@ void InterruptTrainController(DeviceID * pid)
 	ClosePWM2();
 		
 	#if defined VERSION_REV2
-	{
+	if(FALSE){
 		unsigned int tmpvoltA=0, tmpvoltB=0;
 		
 		PORT_DIRECTION_POS = 1;

@@ -64,51 +64,18 @@ namespace SensorLivetView.Views
             man.ExecuteFunc();
         }
 
-        private void MiddleToOuter_Click(object sender, RoutedEventArgs e)
-        {
-            var state = new PointModuleState();
-
-            state.SetPointState(0, PointStateEnum.Any); // A
-            state.SetPointState(1, PointStateEnum.Any); // B
-            state.SetPointState(2, PointStateEnum.Any); // C
-            state.SetPointState(3, PointStateEnum.Any); // D
-            state.SetPointState(4, PointStateEnum.Any); // E
-            state.SetPointState(5, PointStateEnum.Any); // F
-            state.SetPointState(6, PointStateEnum.Any); // G
-            state.SetPointState(7, PointStateEnum.Any); // H
-
-            this.pointmanipulate(state);
-        }
-
         private void OuterToMiddle_Click(object sender, RoutedEventArgs e)
         {
-            var state = new PointModuleState();
+            var state = this.ViewModel.AvailablePointModuleVMs.First().Model.CurrentState;
 
-            state.SetPointState(0, PointStateEnum.Any); // A
-            state.SetPointState(1, PointStateEnum.Any); // B
-            state.SetPointState(2, PointStateEnum.Any); // C
-            state.SetPointState(3, PointStateEnum.Any); // D
-            state.SetPointState(4, PointStateEnum.Any); // E
-            state.SetPointState(5, PointStateEnum.Any); // F
+            state.SetPointState(0, PointStateEnum.Straight); // A
+            state.SetPointState(1, PointStateEnum.Straight); // B
+            state.SetPointState(2, PointStateEnum.Curve); // C
+            state.SetPointState(3, PointStateEnum.Curve); // D
+            state.SetPointState(4, PointStateEnum.Straight); // E
+            state.SetPointState(5, PointStateEnum.Straight); // F
             state.SetPointState(6, PointStateEnum.Any); // G
-            state.SetPointState(7, PointStateEnum.Any); // H
-
-            this.pointmanipulate(state);
-
-        }
-
-        private void MiddleToInner_Click(object sender, RoutedEventArgs e)
-        {
-            var state = new PointModuleState();
-
-            state.SetPointState(0, PointStateEnum.Any); // A
-            state.SetPointState(1, PointStateEnum.Any); // B
-            state.SetPointState(2, PointStateEnum.Any); // C
-            state.SetPointState(3, PointStateEnum.Any); // D
-            state.SetPointState(4, PointStateEnum.Any); // E
-            state.SetPointState(5, PointStateEnum.Any); // F
-            state.SetPointState(6, PointStateEnum.Any); // G
-            state.SetPointState(7, PointStateEnum.Any); // H
+            state.SetPointState(7, PointStateEnum.Curve); // H
 
             this.pointmanipulate(state);
 
@@ -116,16 +83,33 @@ namespace SensorLivetView.Views
 
         private void InnerToMiddle_Click(object sender, RoutedEventArgs e)
         {
-            var state = new PointModuleState();
+            var state = this.ViewModel.AvailablePointModuleVMs.First().Model.CurrentState;
 
-            state.SetPointState(0, PointStateEnum.Any); // A
-            state.SetPointState(1, PointStateEnum.Any); // B
-            state.SetPointState(2, PointStateEnum.Any); // C
-            state.SetPointState(3, PointStateEnum.Any); // D
-            state.SetPointState(4, PointStateEnum.Any); // E
-            state.SetPointState(5, PointStateEnum.Any); // F
+            state.SetPointState(0, PointStateEnum.Curve); // A
+            state.SetPointState(1, PointStateEnum.Curve); // B
+            state.SetPointState(2, PointStateEnum.Straight); // C
+            state.SetPointState(3, PointStateEnum.Straight); // D
+            state.SetPointState(4, PointStateEnum.Curve); // E
+            state.SetPointState(5, PointStateEnum.Curve); // F
             state.SetPointState(6, PointStateEnum.Any); // G
-            state.SetPointState(7, PointStateEnum.Any); // H
+            state.SetPointState(7, PointStateEnum.Straight); // H
+
+            this.pointmanipulate(state);
+
+        }
+
+        private void Independent_Click(object sender, RoutedEventArgs e)
+        {
+            var state = this.ViewModel.AvailablePointModuleVMs.First().Model.CurrentState;
+
+            state.SetPointState(0, PointStateEnum.Straight); // A
+            state.SetPointState(1, PointStateEnum.Straight); // B
+            state.SetPointState(2, PointStateEnum.Straight); // C
+            state.SetPointState(3, PointStateEnum.Straight); // D
+            state.SetPointState(4, PointStateEnum.Straight); // E
+            state.SetPointState(5, PointStateEnum.Straight); // F
+            state.SetPointState(6, PointStateEnum.Any); // G
+            state.SetPointState(7, PointStateEnum.Straight); // H
 
             this.pointmanipulate(state);
 
