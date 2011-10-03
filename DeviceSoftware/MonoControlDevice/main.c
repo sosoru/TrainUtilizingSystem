@@ -5,6 +5,7 @@
 #include <adc.h>
 #include <stdlib.h>
 #include <string.h>
+#include <delays.h>
 
  /** Configuration Bits *******************************************/
  #pragma config PLLDIV = 5           //Configure for 20Mhz crystal, 20/5 = 4Mhz (required for USB)
@@ -90,25 +91,32 @@ void high_interrupt()
 BYTE isr_i;
 DeviceID isr_id;
 
+BYTE tmr3Count = 0;
+
 void low_isr()
 {
 
 	if(PIR2bits.TMR3IF)
 	{
-		PIE2bits.TMR3IE = 0;
 		PIR2bits.TMR3IF = 0;
-		
-		isr_id.ParentPart = g_mbState.ParentId;
-		for(isr_i = 0; isr_i < MODULE_COUNT; ++isr_i)
+		if(++tmr3Count>3)
 		{
-			isr_id.ModuleAddr = isr_i;
+			tmr3Count = 0;
 			
-			GET_FUNC_TABLE(isr_i)->fninterrupt(&isr_id);
+			PIE2bits.TMR3IE = 0;
+			
+			isr_id.ParentPart = g_mbState.ParentId;
+			for(isr_i = 0; isr_i < MODULE_COUNT; ++isr_i)
+			{
+				isr_id.ModuleAddr = isr_i;
+				
+				GET_FUNC_TABLE(isr_i)->fninterrupt(&isr_id);
+			}
+			
+			TMR3H |= ~TMR3H;
+			//TMR3L = 0;
+			PIE2bits.TMR3IE = 1;
 		}
-		
-		TMR3H |= ~TMR3H;
-		//TMR3L = 0;
-		PIE2bits.TMR3IE = 1;
 	}
 
 	//remoted packets receiving for RemoteModule
@@ -232,11 +240,11 @@ void DeviceInit()
     INTCONbits.GIE = 1;
     INTCONbits.PEIE = 1;   
     RCONbits.IPEN = 1;
-    PIE1bits.SSPIE = 1;
+    //PIE1bits.SSPIE = 1;
 
     INTCON2bits.TMR0IP = 1; // tmr0 = high interrupt
     IPR1bits.TMR1IP = 1; //tmr1 = high interrupt
-    IPR1bits.SSPIP = 0; // ssp = low interrupt
+    //IPR1bits.SSPIP = 0; // ssp = low interrupt
     IPR2bits.TMR3IP = 0; //tmr3 = low interrupt
 
 	OpenTimer0(TIMER_INT_ON 
@@ -248,6 +256,7 @@ void DeviceInit()
 	
 	//for USB tasks
 	OpenTimer1(TIMER_INT_ON & T1_8BIT_RW & T1_SOURCE_INT & T1_PS_1_8 & T1_OSC1EN_OFF & T1_SYNC_EXT_OFF); 
+	
 	OpenTimer3(TIMER_INT_ON & T3_8BIT_RW & T3_SOURCE_INT & T3_PS_1_8 & T3_SYNC_EXT_OFF);
 }
 
@@ -329,7 +338,11 @@ void main()
 	while(1)
 	{
 		//Port_SurfaceLedA = (USBDeviceState == CONFIGURED_STATE);
-		USBDeviceAttach();
+		if(USBDeviceState == DETACHED_STATE)
+		{
+			USBDeviceAttach();
+			Delay10KTCYx(200);
+		}
 		
 		Process();	
 	}

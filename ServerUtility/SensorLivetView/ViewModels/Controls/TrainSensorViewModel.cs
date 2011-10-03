@@ -44,22 +44,6 @@ namespace SensorLivetView.ViewModels.Controls
             }
         }
 
-        public DetectingTrainSensor DetectingModel
-        {
-            get
-            {
-                return this.Model as DetectingTrainSensor;
-            }
-        }
-
-        public MeisuringTrainSensor MeisuringModel
-        {
-            get
-            {
-                return this.Model as MeisuringTrainSensor;
-            }
-        }
-
         public bool IsDetectingMode
         {
             get
@@ -175,7 +159,7 @@ namespace SensorLivetView.ViewModels.Controls
         {
             get
             {
-                if (this.MeisuringModel == null)
+                if (this.IsDetectingMode)
                     return new VoltageGraphViewModel();
 
                 var vm = new VoltageGraphViewModel()

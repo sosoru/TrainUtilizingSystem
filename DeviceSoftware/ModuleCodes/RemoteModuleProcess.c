@@ -126,7 +126,7 @@ void InterruptRemoteModule(DeviceID * pid)
 		DeviceID * pidbuf;
 		if(SUCCEEDED(DequeueRemotingPending(&ppacket, &pidbuf)))
 		{
-			Port_SurfaceLedA = 0;
+			//Port_SurfaceLedA = 0;
 			SendSpiPacket(ppacket);
 			memcpy((void*)&g_RemotingPendingIntDevID, (void*)pidbuf, (size_t)sizeof(DeviceID));
 			

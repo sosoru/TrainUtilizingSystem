@@ -64,6 +64,8 @@ HRESULT SendPacketUSB()
 	//INPacket should be specified because of usb ram memory allocation
 	memcpy((void*)INPacket, (void*)&g_PacketBuffer[g_PacketTransfarPos], (size_t)SIZE_ONE_TRANSFAR_PACKETS);
 	USBGenericInHandle = USBGenWrite(USBGEN_EP_NUM, INPacket, SIZE_ONE_TRANSFAR_PACKETS);
+	if(USBGenericInHandle == 0)
+		return E_FAIL;
 	
 	g_PacketTransfarPos += COUNT_ONE_TRANSFAR_PACKETS;		
 	if(g_PacketTransfarPos >= BUFFER_MAX)

@@ -72,8 +72,6 @@
     <Compile Include="DeviceStates\RemoteModuleState.cs" />
     <Compile Include="DeviceStates\TrainControllerState.cs" />
     <Compile Include="DeviceStates\TrainSensorState.cs" />
-    <Compile Include="Devices\DetectingTrainSensor.cs" />
-    <Compile Include="Devices\MeisuringTrainSensor.cs" />
     <Compile Include="Devices\MotherBoard.cs" />
     <Compile Include="Devices\PointModule.cs" />
     <Compile Include="Devices\RemoteModule.cs" />

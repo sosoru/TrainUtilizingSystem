@@ -213,6 +213,6 @@ HRESULT StoreTrainSensorSavedState(DeviceID * pid, PMODULE_DATA buf)
 	
 	WriteTrainSensorSavedModuledState(module, pid->InternalAddr, &msaved);
 	
-	Port_SurfaceLedA = 1;
+	//Port_SurfaceLedA = 1;
 	return S_OK;
 }

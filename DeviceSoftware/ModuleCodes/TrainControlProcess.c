@@ -20,8 +20,8 @@
 #define FEEDBACK_CHANNELB ADC_CH4
 #define DUTYCONTROL_CHANNEL ADC_CH5
 
-#define PORT_DIRECTION_POS PORTDbits.RD0
-#define PORT_DIRECTION_NEG PORTCbits.RC0
+#define PORT_DIRECTION_POS PORTEbits.RE1
+#define PORT_DIRECTION_NEG PORTEbits.RE2
 #define PORT_FEEDBACKA PORTAbits.RA3
 #define PORT_FEEDBACKB PORTAbits.RA5
 #define PORT_PWMSIGNALB PORTCbits.RC1
@@ -30,8 +30,8 @@
 #define PORT_CONTROLSWITCH PORTAbits.RA4
 #define PORT_DIRECTION PORTCbits.RC0
 
-#define TRIS_DIRECTION_POS TRISDbits.TRISD0
-#define TRIS_DIRECTION_NEG TRISCbits.TRISC0
+#define TRIS_DIRECTION_POS TRISEbits.TRISE1
+#define TRIS_DIRECTION_NEG TRISEbits.TRISE2
 #define TRIS_FEEDBACKA TRISAbits.TRISA3
 #define TRIS_FEEDBACKB TRISAbits.TRISA5
 #define TRIS_PWMSIGNALB TRISCbits.TRISC1
@@ -70,7 +70,7 @@ void ChangePWM()
 		ClosePWM2();
 #if defined VERSION_REV2
 		
-		PORT_PWMSIGNALB = 0;
+		//PORT_PWMSIGNALB = 0;
 		PORT_DIRECTION_NEG = 0;
 		PORT_DIRECTION_POS = 1;
 		
@@ -84,7 +84,7 @@ void ChangePWM()
 
 #if defined VERSION_REV2
 		
-		PORT_PWMSIGNALA = 0;
+		//PORT_PWMSIGNALA = 0;
 		PORT_DIRECTION_POS = 0;
 		PORT_DIRECTION_NEG = 1;
 
@@ -317,10 +317,15 @@ void InterruptTrainController(DeviceID * pid)
 	if (PORT_CONTROLSWITCH)
 	{
 		unsigned int vol;
+		
+		g_usingAdc = TRUE;
+		
 		SetChanADC(DUTYCONTROL_CHANNEL);
 		ConvertADC();
 		while(BusyADC());
-		vol = (~ReadADC()) & 0x3ff;
+		vol = (~ReadADC()) & 0x3f0;
+		
+		g_usingAdc = FALSE;
 		
 		if(vol < 150)
 			vol = 0;
