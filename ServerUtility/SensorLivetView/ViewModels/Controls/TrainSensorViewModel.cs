@@ -12,67 +12,50 @@ using Livet;
 using Livet.Command;
 using System.ComponentModel;
 using System.Reactive.Linq;
+using SensorLivetView.Models.Devices;
 
 namespace SensorLivetView.ViewModels.Controls
 {
     public class TrainSensorViewModel
-        : DeviceViewModel<TrainSensor>
+        : DeviceViewModel<TrainSensorModel>
     {
-        public TrainSensorViewModel()
-            : this(null)
-        {
-        }
 
-        public TrainSensorViewModel(TrainSensor cens)
-            : base(cens)
+        public TrainSensorViewModel(TrainSensorModel model)
+            : base(model)
         {
             //this.Model.TimerOverflowed += new EventHandler((sender, e) => RaisePropertyChanged(""));
             this.ReflectorInterval = 5.0;
-        }
 
-        public override TrainSensor Model
-        {
-            get
-            {
-                return base.Model;
-            }
-            set
-            {
+            ViewModelHelper.BindNotifyChanged(
+                model,
+                this,
+                (sender, e) =>
+                {
+                    RaisePropertyChanged(e.PropertyName);
+                    if (e.PropertyName == "IsMeisuringMode")
+                    {
+                        RaisePropertyChanged(() => VoltageGraphVm);
+                    }
 
-                base.Model = value;
-                RaisePropertyChanged("");
-            }
+                }
+            );
         }
 
         public bool IsDetectingMode
         {
-            get
-            {
-                return this.Model != null && this.Model.CurrentState != null && this.Model.CurrentState.Mode == TrainSensorMode.detecting;
-            }
+            get { return this.Model.IsDetectingMode; }
+            set { this.Model.IsDetectingMode = value; }
         }
 
         public bool IsMeisuringMode
         {
-            get
-            {
-                return this.Model != null && this.Model.CurrentState != null && this.Model.CurrentState.Mode == TrainSensorMode.meisuring;
-            }
+            get{ return this.Model.IsMeisuringMode}
+            set { this.Model.IsMeisuringMode = value;}
         }
 
         public bool IsSensorDetected
         {
-            get
-            {
-                try
-                {
-                    return this.Model != null && this.Model.CurrentState != null&& this.Model.CurrentState.Mode == TrainSensorMode.detecting && this.Model.CurrentState.IsDetected;
-                }
-                catch
-                {
-                    return false;
-                }
-            }
+            get { return this.Model.IsDetected; }
         }
 
         
@@ -102,14 +85,12 @@ namespace SensorLivetView.ViewModels.Controls
 
         private bool CanChangeMeisuringMode()
         {
-            return this.Model != null && this.CurrentState != null;
+            return this.Model != null;
         }
 
         private void ChangeMeisuringMode()
         {
-            var newmodel = this.Model.ChangeMeisuringMode();
-            this.Model.Observe(null);
-            this.Model = newmodel;
+            this.Model.IsMeisuringMode = true;
         }
         #endregion
 
@@ -128,18 +109,20 @@ namespace SensorLivetView.ViewModels.Controls
 
         private bool CanChangeDetectingMode(object parameter)
         {
-            var expr = this.Model != null && this.Model.CurrentState != null;
-            try { float.Parse(parameter as string); }
-            catch { expr = false; }
+            if ((!(parameter is double)) || this.Model == null || this.Model.TargetDevice == null)
+                return false;
 
-            return expr;
+            var state = this.Model.TargetDevice.CurrentState;
+            if (state == null)
+                return false;
+
+            var threshold = (double)parameter;
+            return state.ReferenceVoltageMinus <= threshold && threshold <= state.ReferenceVoltagePlus;
         }
 
         private void ChangeDetectingMode(object parameter)
         {
-            var newmodel = this.Model.ChangeDetectingMode(float.Parse((string)parameter));
-            this.Model.Observe(null);
-            this.Model = newmodel;
+            this.Model.IsDetectingMode = true;
         }
         #endregion
 
@@ -168,7 +151,7 @@ namespace SensorLivetView.ViewModels.Controls
                     {
                         DeterminateFunc = (state) => (state!=null) ? (state.CurrentVoltage - state.ReferenceVoltageMinus) / state.ReferenceVoltagePlus
                                                                     : 0.0,
-                        Device = this.Model
+                        Device = this.Model.TargetDevice
                     },
                 };
                 return vm;

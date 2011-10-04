@@ -41,7 +41,7 @@ namespace SensorViewLibrary.ViewModels
 
         private T model;
         private T beforeModel;
-        public T Model
+        internal T Model
         {
             get
             {

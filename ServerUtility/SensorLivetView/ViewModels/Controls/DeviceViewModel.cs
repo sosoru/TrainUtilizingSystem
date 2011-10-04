@@ -7,18 +7,19 @@ using System.ComponentModel;
 using SensorLibrary;
 using Livet;
 using Livet.Command;
+using SensorLivetView.Models.Devices;
 
 namespace SensorLivetView.ViewModels
 {
-    public abstract class DeviceViewModel<T>
+    public abstract class DeviceViewModel<TModel>
         : ViewModel
-    where T : class, IDevice<IDeviceState<IPacketDeviceData>>
+    where TModel : DeviceModel<IDeviceState<IPacketDeviceData>>
     {
-        private T _model;
+        private TModel _model;
 
         public IEqualityComparer<IDeviceState<IPacketDeviceData>> Comparer;
 
-        public virtual T Model
+        public virtual TModel Model
         {
             get
             {
@@ -26,17 +27,18 @@ namespace SensorLivetView.ViewModels
             }
             set
             {
-                var del = new PacketReceivedDelegate<IDeviceState<IPacketDeviceData>>(ReceivedProcess);
-                if (value != null && value != Model)
-                    value.PacketReceived += del;
-                if (Model != null && value != Model)
-                    Model.PacketReceived -= del;
+                //var del = new PacketReceivedDelegate<IDeviceState<IPacketDeviceData>>(ReceivedProcess);
+                //if (value != null && value != Model)
+                //    value.PacketReceived += del;
+                //if (Model != null && value != Model)
+                //    Model.PacketReceived -= del;
 
                 _model = value;
+
             }
         }
-
-        public DeviceViewModel(T device)
+        
+        public DeviceViewModel(TModel device)
             : base()
         {
             this.Model = device;
@@ -48,12 +50,6 @@ namespace SensorLivetView.ViewModels
             if (!this.Comparer.Equals(e.beforestate, e.state))
                 this.RaisePropertyChanged("");
         }
-
-        public IDeviceState<IPacketDeviceData> CurrentState
-        {
-            get { return this.Model.CurrentState; }
-        }
-
 
         #region SendPacketCommand
         DelegateCommand _SendPacketCommand;
@@ -83,14 +79,14 @@ namespace SensorLivetView.ViewModels
             get
             {
                 if (this.Model != null)
-                    return this.Model.DeviceID;
+                    return this.Model.TargetDevice.DeviceID;
                 else
                     return new DeviceID();
             }
             set
             {
                 if (this.Model != null)
-                    this.Model.DeviceID = value;
+                    this.Model.TargetDevice.DeviceID = value;
             }
         }
     }

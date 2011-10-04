@@ -81,21 +81,6 @@ namespace SensorLibrary
             return double.NaN;
         }
 
-        public IObservable<TrainSensor> GetSpeedChangedObservable()
-        {
-            return this.GetNextObservable().Where((args) =>
-            {
-                var bef = args.EventArgs.beforestate as TrainSensorState;
-                var cur = args.EventArgs.state as TrainSensorState;
-                if (bef != null && cur != null)
-                    return true;
-                else
-                    return false;
-            })
-                .Select((args) => args.Sender as TrainSensor);
-
-        }
-
         public override void OnNext(IDeviceState<IPacketDeviceData> value)
         {
             var casted = value as TrainSensorState;
