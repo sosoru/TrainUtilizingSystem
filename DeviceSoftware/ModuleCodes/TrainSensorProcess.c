@@ -11,6 +11,7 @@
 //#define IS_VALID_PORT(m) ((m>=1 && m <= 8) || (m >=13 && m <= 16))
 
 void ApplyTrainSensorSavedState(TrainSensorState* state, TrainSensorSavedModuledState* savemState);
+void ApplyTrainSensorState(TrainSensorState * state, TrainSensorSavedModuledState * savemState);
 
 void SetMeisureVoltage(BYTE module, BYTE port);
 HRESULT GetChannel(BYTE module, unsigned char * channel);
@@ -172,6 +173,12 @@ void ApplyTrainSensorSavedState(TrainSensorState* state, TrainSensorSavedModuled
 	state->ThresholdVoltage = savemState->ThresholdVoltage;
 }
 
+void ApplyTrainSensorState(TrainSensorState * state, TrainSensorSavedModuledState * savemState)
+{
+	savemState->Mode = state->Mode;
+	savemState->ThresholdVoltage = state->ThresholdVoltage;
+}
+
 HRESULT InitTrainSensor(DeviceID * pid)
 {	
 	unsigned char channel;
@@ -203,13 +210,13 @@ void InterruptTrainSensor(DeviceID * pid)
 HRESULT StoreTrainSensorSavedState(DeviceID * pid, PMODULE_DATA buf)
 {
 	TrainSensorSavedModuledState msaved;
-	TrainSensorState* pstate;
+	TrainSensorState* pstate = (TrainSensorState*) buf;
 	BYTE module = pid->ModuleAddr;
 	
 	if(pid->InternalAddr > TRAINSENSOR_INNERMODULE_COUNT)
 		return E_FAIL;
 		
-	ApplyTrainSensorSavedState(pstate, &msaved);
+	ApplyTrainSensorState(pstate, &msaved);
 	
 	WriteTrainSensorSavedModuledState(module, pid->InternalAddr, &msaved);
 	

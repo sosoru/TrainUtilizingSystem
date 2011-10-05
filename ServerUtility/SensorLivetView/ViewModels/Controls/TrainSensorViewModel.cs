@@ -98,14 +98,19 @@ namespace SensorLivetView.ViewModels.Controls
 
         private bool CanChangeDetectingMode(object parameter)
         {
-            if ((!(parameter is double)) || this.Model == null || this.Model.TargetDevice == null)
+            if ((!(parameter is string)) || this.Model == null || this.Model.TargetDevice == null)
+                return false;
+
+            double castedparam;
+            double.TryParse(parameter as string,out castedparam);
+            if (castedparam == 0.0)
                 return false;
 
             var state = this.Model.TargetDevice.CurrentState;
             if (state == null)
                 return false;
 
-            var threshold = (double)parameter;
+            var threshold = castedparam;
             return state.ReferenceVoltageMinus <= threshold && threshold <= state.ReferenceVoltagePlus;
         }
 
