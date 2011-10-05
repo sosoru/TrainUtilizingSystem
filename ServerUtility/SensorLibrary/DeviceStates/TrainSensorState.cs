@@ -63,8 +63,9 @@ namespace SensorLibrary
             get
             {
                 if (this.Data.Mode != TrainSensorMode.detecting)
-                    throw new InvalidOperationException("invalid operation unless Mode is Detecting");
-                return this.Data.IsDetected != 0;
+                    return false;
+                else
+                    return this.Data.IsDetected != 0;
             }
             set
             {

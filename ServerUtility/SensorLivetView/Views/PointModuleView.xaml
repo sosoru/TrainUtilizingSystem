@@ -20,24 +20,16 @@
 					<ColumnDefinition Width="100"/>
 					<ColumnDefinition Width="100"/>
 				</Grid.ColumnDefinitions>
-				<i:Interaction.Triggers>
-					<i:EventTrigger EventName="Checked" SourceObject="{Binding ElementName=StraightButton, Mode=OneWay}">
-						<i:InvokeCommandAction Command="{Binding ChangeStraightCommand}"/>
-					</i:EventTrigger>
-					<i:EventTrigger EventName="Checked" SourceObject="{Binding ElementName=CurvedButton, Mode=OneWay}">
-						<i:InvokeCommandAction Command="{Binding ChangeCurvedCommand}"/>
-					</i:EventTrigger>
-				</i:Interaction.Triggers>
-				<TextBox Height="Auto" TextWrapping="Wrap" Text="{Binding StateNo, Converter={StaticResource AlphabetValueConverterDataSource}}" VerticalAlignment="Bottom"/>
-				<ToggleButton x:Name="StraightButton" Content="Straight" Height="Auto" Width="Auto" ClickMode="Press" IsChecked="{Binding IsStraight, Mode=OneWay}" Grid.Column="1"/>
-				<ToggleButton x:Name="CurvedButton" Height="Auto" Width="Auto" Content="Curved" Grid.Column="2" ClickMode="Press" IsChecked="{Binding IsCurved, Mode=OneWay}"/>
+				<TextBox Height="Auto" TextWrapping="Wrap" Text="{Binding Address, Converter={StaticResource AlphabetValueConverterDataSource}}" VerticalAlignment="Bottom"/>
+				<ToggleButton x:Name="StraightButton" Content="Straight" Height="Auto" Width="Auto" ClickMode="Press" IsChecked="{Binding IsStraight, Mode=TwoWay}" Grid.Column="1"/>
+				<ToggleButton x:Name="CurvedButton" Height="Auto" Width="Auto" Content="Curved" Grid.Column="2" ClickMode="Press" IsChecked="{Binding IsCurved, Mode=TwoWay}"/>
 			</Grid>
 		</DataTemplate>
 	</UserControl.Resources>
 
 	<Grid x:Name="LayoutRoot">
 		<DockPanel>
-			<ListBox ItemsSource="{Binding StateList}" ItemTemplate="{DynamicResource PointModuleListItemTemplate}"/>
+			<ListBox ItemsSource="{Binding PointModels}" ItemTemplate="{DynamicResource PointModuleListItemTemplate}"/>
 		</DockPanel>
 	</Grid>
 </UserControl>

@@ -9,8 +9,8 @@ using SensorLibrary;
 
 namespace SensorLivetView.Models.Devices
 {
-    internal class TrainSensorModel
-        :DeviceModel<TrainSensor>
+    public class TrainSensorModel
+        : DeviceModel<TrainSensor>
     {
         /*
          * NotifyObjectはプロパティ変更通知の仕組みを実装したオブジェクトです。
@@ -35,6 +35,11 @@ namespace SensorLivetView.Models.Devices
                     var before = e.beforestate as TrainSensorState;
                     var current = e.state as TrainSensorState;
 
+                    if (before == null && current == null)
+                        return;
+                    else if (before == null || current == null)
+                        RaisePropertyChanged("");
+
                     if (before.IsDetected != current.IsDetected)
                     {
                         RaisePropertyChanged(() => IsDetected);
@@ -42,15 +47,18 @@ namespace SensorLivetView.Models.Devices
 
                     if (before.Mode != current.Mode)
                     {
+                        RaisePropertyChanged(() => Mode);
                         RaisePropertyChanged(() => IsDetectingMode);
                         RaisePropertyChanged(() => IsMeisuringMode);
                     }
 
-                    var speed = this.TargetDevice.CalculateSpeed(this.ReflactorInterval);
-                    if (speed != double.NaN)
-                        this.Speed = speed;
+                    if (before.ThresholdVoltage != current.ThresholdVoltage)
+                    {
+                        RaisePropertyChanged(() => ThresholdVoltage);
+                    }
 
-                    
+                    this.Speed = this.TargetDevice.CalculateSpeed(this.ReflactorInterval);
+
                 };
 
         }
@@ -96,9 +104,7 @@ namespace SensorLivetView.Models.Devices
             {
                 if (value)
                 {
-                    this.TargetDevice.CurrentState.Mode = TrainSensorMode.meisuring;
-                    RaisePropertyChanged(() => IsMeisuringMode);
-                    RaisePropertyChanged(() => IsDetectingMode);
+                    ModifyState(() => this.TargetDevice.CurrentState.Mode = TrainSensorMode.meisuring);
                 }
             }
         }
@@ -110,9 +116,7 @@ namespace SensorLivetView.Models.Devices
             {
                 if (value)
                 {
-                    this.TargetDevice.CurrentState.Mode = TrainSensorMode.detecting;
-                    RaisePropertyChanged(() => IsMeisuringMode);
-                    RaisePropertyChanged(() => IsDetectingMode);
+                    ModifyState(() => this.TargetDevice.CurrentState.Mode = TrainSensorMode.detecting);
                 }
             }
         }
@@ -126,6 +130,18 @@ namespace SensorLivetView.Models.Devices
                 else
                     return this.TargetDevice.CurrentState.IsDetected;
             }
+        }
+
+        public TrainSensorMode Mode
+        {
+            get { return this.TargetDevice.CurrentState.Mode; }
+            set { ModifyState(() => this.TargetDevice.CurrentState.Mode = value); }
+        }
+
+        public float ThresholdVoltage
+        {
+            get { return this.TargetDevice.CurrentState.ThresholdVoltage; }
+            set { ModifyState(() => this.TargetDevice.CurrentState.ThresholdVoltage = value); }
         }
     }
 

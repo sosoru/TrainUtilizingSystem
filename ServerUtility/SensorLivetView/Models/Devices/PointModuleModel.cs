@@ -5,12 +5,11 @@ using System.Text;
 
 using Livet;
 using SensorLibrary;
+using System.Collections.ObjectModel;
 
 namespace SensorLivetView.Models.Devices
 {
-    public class DeviceModel<TDev>
-        : NotifyObject, IDeviceModel<TDev>
-        where TDev: class,  IDevice<IDeviceState<IPacketDeviceData>>
+    public class PointModuleModel : DeviceModel<PointModule>
     {
         /*
          * NotifyObjectはプロパティ変更通知の仕組みを実装したオブジェクトです。
@@ -26,31 +25,28 @@ namespace SensorLivetView.Models.Devices
          * ViewModelへNotificatorを使用した通知を行う場合はViewModelHelperを使用して受信側の登録をしてください。
          */
 
-        public TDev TargetDevice { get; protected set;}
+        public PointModuleModel(PointModule module)
+        {
+            this.TargetDevice = module;            
+        }
 
-        public DeviceID DevID
+        private ReadOnlyObservableCollection<PointModel> _states;
+        public ReadOnlyObservableCollection<PointModel> States
         {
             get
             {
-                return this.TargetDevice.DeviceID;
-            }
-        }
+                if (_states == null)
+                {
+                    var states = new ObservableCollection<PointModel>();
+                    if (this.TargetDevice.CurrentState == null)
+                        return new ReadOnlyObservableCollection<PointModel>(new ObservableCollection<PointModel>());
 
-        internal void ModifyState(Action act)
-        {
-            if (this.TargetDevice == null || this.TargetDevice.CurrentState == null)
-                return;
+                    Enumerable.Range(0, this.TargetDevice.CurrentState.StateLength)
+                              .ForEach(i => states.Add(new PointModel(this, i)));
+                    _states = new ReadOnlyObservableCollection<PointModel>( states);
+                }
 
-            this.TargetDevice.IsHold = true;
-            try
-            {
-                act();
-
-                this.TargetDevice.SendPacket(this.TargetDevice.CurrentState);
-            }
-            finally
-            {
-                this.TargetDevice.IsHold = false;
+                return _states;
             }
         }
     }

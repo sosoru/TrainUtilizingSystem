@@ -30,7 +30,7 @@ namespace SensorLivetView.Models
          * ViewModelへNotificatorを使用した通知を行う場合はViewModelHelperを使用して受信側の登録をしてください。
          */
 
-        public DetectingTrainSensor targetSensor { get; set; }
+        public TrainSensor targetSensor { get; set; }
         public TrainController targetController { get; set; }
 
 
@@ -134,9 +134,9 @@ namespace SensorLivetView.Models
 
                         try
                         {
-                            var resobsv = Observable.SubscribeOn(this.targetSensor.GetSpeedChangedObservable(), Scheduler.NewThread)
+                            var resobsv = Observable.SubscribeOn(this.targetSensor.GetNextObservable(), Scheduler.NewThread)
                                                     .Timeout(new DateTimeOffset(DateTime.Now, new TimeSpan(0, 1, 0)))
-                                                    .Select((f) => f.CalculateSpeed(this.ReflectorInterval))
+                                                    .Select((f) => this.targetSensor.CalculateSpeed(this.ReflectorInterval))
                                                     .Do((val) => this.serialize(ctrlstate, tsstate, val));
                         }
                         catch (TimeoutException)

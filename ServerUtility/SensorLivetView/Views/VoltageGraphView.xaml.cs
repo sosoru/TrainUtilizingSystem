@@ -92,7 +92,11 @@ namespace SensorLivetView.Views
             if (vm == null || vm.DataProvider == null)
                 return;
 
-            RefreshLine(vm.DataProvider.GetNext);
+            var val = vm.DataProvider.GetNext;
+            if (val == double.NaN)
+                val = 0.0;
+
+            RefreshLine(val);
         }
 
         private int refreshind = 0;

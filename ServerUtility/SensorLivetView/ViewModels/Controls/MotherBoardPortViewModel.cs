@@ -11,12 +11,13 @@ using Livet.Messaging.File;
 using Livet.Messaging.Window;
 
 using SensorLivetView.Models;
+using SensorLivetView.Models.Devices;
 using SensorLibrary;
+using System.Collections.ObjectModel;
 
 namespace SensorLivetView.ViewModels.Controls
 {
-    public class RemoteModuleViewModel
-        : DeviceViewModel<RemoteModule>
+    public class MotherBoardPortViewModel : ModeledViewModel<MotherBoardPortModel>
     {
         /*コマンド、プロパティの定義にはそれぞれ 
          * 
@@ -43,14 +44,28 @@ namespace SensorLivetView.ViewModels.Controls
          * 原因となりやすく推奨できません。ViewModelHelperの各静的メソッドの利用を検討してください。
          */
 
-        public RemoteModuleViewModel(RemoteModule dev)
-            : base(dev)
+        public MotherBoardPortViewModel(MotherBoardPortModel model)
+            : base()
         {
+            this.Model = model;
+
+            ViewModelHelper.BindNotifyChanged(this.Model, this,
+                (sender, e) =>
+                {
+                    RaisePropertyChanged(e.PropertyName);
+
+                });
         }
 
-        public RemoteModuleViewModel()
-            : this(null)
+        public int Address
         {
+            get { return this.Model.Address; }
+        }
+
+        public ModuleTypeEnum ModuleType
+        {
+            get { return this.Model.ModuleType; }
+            set { this.Model.ModuleType = value; }
         }
     }
 }

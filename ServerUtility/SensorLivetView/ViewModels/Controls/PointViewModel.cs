@@ -10,16 +10,14 @@ using Livet.Messaging;
 using Livet.Messaging.File;
 using Livet.Messaging.Window;
 
-using SensorLivetView.Models.Devices;
 using SensorLivetView.Models;
-using SensorViewLibrary;
+using SensorLivetView.Models.Devices;
+using SensorLivetView.ViewModels;
 using SensorLibrary;
-using System.Collections.ObjectModel;
 
 namespace SensorLivetView.ViewModels.Controls
 {
-    public class PointModuleViewModel
-        : DeviceViewModel<PointModuleModel>
+    public class PointViewModel : ModeledViewModel<PointModel>
     {
         /*コマンド、プロパティの定義にはそれぞれ 
          * 
@@ -46,38 +44,48 @@ namespace SensorLivetView.ViewModels.Controls
          * 原因となりやすく推奨できません。ViewModelHelperの各静的メソッドの利用を検討してください。
          */
 
-        public PointModuleViewModel(PointModuleModel pm)
-            : base(pm)
+        public PointViewModel(PointModel model)
         {
-            this.Comparer = new GenericComparer<IDeviceState<IPacketDeviceData>>((a, b) =>
-                                                                                {
-                                                                                    var pa = a as PointModuleState; var pb = b as PointModuleState;
-                                                                                    return pa != null && pb != null && pa.Data.Directions.SequenceEqual(pb.Data.Directions);
-                                                                                });
+            this.Model = model;
+
             ViewModelHelper.BindNotifyChanged(this.Model, this,
-                (sender, e) =>
+                (sender, e)
+                     =>
                 {
                     RaisePropertyChanged(e.PropertyName);
 
-                    if (e.PropertyName == "States")
+                    if (e.PropertyName == "State")
                     {
-                        RaisePropertyChanged(() => PointModels);
+                        RaisePropertyChanged(() => IsStraight);
+                        RaisePropertyChanged(() => IsCurve);
                     }
                 });
         }
 
-        public PointModuleViewModel()
-            : this(null)
-        { }
-
-        public IEnumerable<PointViewModel> PointModels
+        public int Address
         {
-            get
+            get { return this.Model.Address; }
+        }
+
+        public bool IsStraight
+        {
+            get { return this.Model.State == PointStateEnum.Straight; }
+            set
             {
-                return this.Model.States.Select((sta) => new PointViewModel(sta));
+                if (value)
+                    this.Model.State = PointStateEnum.Straight;
             }
         }
-        
+
+        public bool IsCurve
+        {
+            get { return this.Model.State == PointStateEnum.Curve; }
+            set
+            {
+                if (value)
+                    this.Model.State = PointStateEnum.Curve;
+            }
+        }
 
     }
 }

@@ -6,15 +6,18 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Threading;
 
+using Livet;
 using SensorLibrary;
 using SensorViewLibrary;
+using SensorLivetView.ViewModels.Controls;
+using SensorLivetView.Models.Devices;
 
 namespace SensorLivetView.ViewModels
 {
-    public class DeviceViewModelDispatcher<TDevice, TState, TVM>
+    internal class DeviceViewModelDispatcher<TDevice, TState>
         where TDevice : class, IDevice<TState>
         where TState : class, IDeviceState<IPacketDeviceData>
-        where TVM : DeviceViewModel<TDevice>
+        //where TVM : DeviceViewModel<IDeviceModel<TDevice>>
     {
         private PacketDispatcherSingle<TDevice, TState> _dispat;
         public PacketDispatcherSingle<TDevice, TState> dispat
@@ -32,8 +35,8 @@ namespace SensorLivetView.ViewModels
             }
         }
 
-        private ObservableWrappingCollection<TDevice, TVM> _projected;
-        public ObservableWrappingCollection<TDevice, TVM> projected
+        private ObservableWrappingCollection<TDevice, IDeviceViewModel<IDeviceModel<IDevice<IDeviceState<IPacketDeviceData>>>>> _projected;
+        public ObservableWrappingCollection<TDevice, IDeviceViewModel<IDeviceModel<IDevice<IDeviceState<IPacketDeviceData>>>>> projected
         {
             get
             {
@@ -48,13 +51,18 @@ namespace SensorLivetView.ViewModels
 
                 this.projected.Projection = (src) =>
                     {
-                        var vm = typeof(TVM).GetConstructor(new Type [] { }).Invoke(null) as TVM;
-                        vm.Model = src;
-                        return vm;
+                        var fact =DeviceViewModelFactory.Factries.FirstOrDefault(f => f.ModuleType == src.ModuleType);
+                        if (fact == null)
+                            throw new InvalidOperationException("factry is not found");
+
+                        var vm = fact.ViewModelCreate(src) as IDeviceViewModel<IDeviceModel<IDevice<IDeviceState<IPacketDeviceData>>>>;
+                        if (vm == null)
+                            throw new InvalidOperationException("invalid viewmodel");
+                        return vm ;
                     };
                 this.projected.InverseProjection = (proj) =>
                     {
-                        return proj.Model;
+                        return proj.Model.TargetDevice as TDevice;
                     };
 
             }

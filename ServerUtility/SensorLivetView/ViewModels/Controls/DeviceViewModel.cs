@@ -12,8 +12,8 @@ using SensorLivetView.Models.Devices;
 namespace SensorLivetView.ViewModels
 {
     public abstract class DeviceViewModel<TModel>
-        : ViewModel
-    where TModel : DeviceModel<IDeviceState<IPacketDeviceData>>
+        : ViewModel, SensorLivetView.ViewModels.Controls.IDeviceViewModel<TModel>
+    where TModel : class, IDeviceModel<IDevice<IDeviceState<IPacketDeviceData>>>
     {
         private TModel _model;
 
@@ -45,11 +45,6 @@ namespace SensorLivetView.ViewModels
             this.Comparer = new DeviceStateComparer();
         }
 
-        protected virtual void ReceivedProcess(IDevice<IDeviceState<IPacketDeviceData>> dev, PacketReceiveEventArgs e)
-        {
-            if (!this.Comparer.Equals(e.beforestate, e.state))
-                this.RaisePropertyChanged("");
-        }
 
         #region SendPacketCommand
         DelegateCommand _SendPacketCommand;
@@ -69,7 +64,7 @@ namespace SensorLivetView.ViewModels
 
         private bool CanSendPacket()
         {
-            return (this.Model != null && this.Model is IDevice<IDeviceState<IPacketDeviceData>> && this.Model.CurrentState != null);
+            return (this.Model != null && this.Model is IDevice<IDeviceState<IPacketDeviceData>> && this.Model.TargetDevice != null);
         }
 
         #endregion
@@ -79,14 +74,9 @@ namespace SensorLivetView.ViewModels
             get
             {
                 if (this.Model != null)
-                    return this.Model.TargetDevice.DeviceID;
+                    return this.Model.DevID;
                 else
                     return new DeviceID();
-            }
-            set
-            {
-                if (this.Model != null)
-                    this.Model.TargetDevice.DeviceID = value;
             }
         }
     }

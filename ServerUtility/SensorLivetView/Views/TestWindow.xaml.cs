@@ -37,12 +37,12 @@ namespace SensorLivetView
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            var tsensvm = new TrainSensorViewModel(new MeisuringTrainSensor() { DeviceID = new DeviceID(0x01, 0x01), });
-            tsensvm.Model.Observe(this.dispatcher);
+            var tsensvm = DeviceViewModelFactory.TrainSensorVmFactory.ViewModelCreate(new TrainSensor() { DeviceID = new DeviceID(0x01, 0x01), });
+            tsensvm.Model.TargetDevice.Observe(this.dispatcher);
             this.tsensview.DataContext = tsensvm;
 
-            var tctrlvm = new TrainControllerViewModel(new TrainController(){ DeviceID = new DeviceID(0x01, 0x06)});
-            tctrlvm.Model.Observe(this.dispatcher);
+            var tctrlvm = DeviceViewModelFactory.TrainControllerVmFactry.ViewModelCreate(new TrainController(){ DeviceID = new DeviceID(0x01, 0x06)});
+            tctrlvm.Model.TargetDevice.Observe(this.dispatcher);
             this.tctrl.DataContext = tctrlvm;
 
             this.server.AddAction(this.dispatcher);

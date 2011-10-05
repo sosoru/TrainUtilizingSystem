@@ -57,7 +57,7 @@ namespace SensorLivetView.Views
 
             var man = new PointManipulator()
             {
-                Target = this.ViewModel.AvailablePointModuleVMs.First().Model,
+                Target = this.ViewModel.AvailablePointModuleVMs.First().Model.TargetDevice,
                 To = state,
             };
 
@@ -66,7 +66,7 @@ namespace SensorLivetView.Views
 
         private void OuterToMiddle_Click(object sender, RoutedEventArgs e)
         {
-            var state = this.ViewModel.AvailablePointModuleVMs.First().Model.CurrentState;
+            var state = this.ViewModel.AvailablePointModuleVMs.First().Model.TargetDevice.CurrentState;
 
             state.SetPointState(0, PointStateEnum.Straight); // A
             state.SetPointState(1, PointStateEnum.Straight); // B
@@ -83,7 +83,7 @@ namespace SensorLivetView.Views
 
         private void InnerToMiddle_Click(object sender, RoutedEventArgs e)
         {
-            var state = this.ViewModel.AvailablePointModuleVMs.First().Model.CurrentState;
+            var state = this.ViewModel.AvailablePointModuleVMs.First().Model.TargetDevice.CurrentState;
 
             state.SetPointState(0, PointStateEnum.Curve); // A
             state.SetPointState(1, PointStateEnum.Curve); // B
@@ -100,7 +100,7 @@ namespace SensorLivetView.Views
 
         private void Independent_Click(object sender, RoutedEventArgs e)
         {
-            var state = this.ViewModel.AvailablePointModuleVMs.First().Model.CurrentState;
+            var state = this.ViewModel.AvailablePointModuleVMs.First().Model.TargetDevice.CurrentState;
 
             state.SetPointState(0, PointStateEnum.Straight); // A
             state.SetPointState(1, PointStateEnum.Straight); // B
@@ -112,6 +112,11 @@ namespace SensorLivetView.Views
             state.SetPointState(7, PointStateEnum.Straight); // H
 
             this.pointmanipulate(state);
+
+        }
+
+        private void tabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
 
         }
 

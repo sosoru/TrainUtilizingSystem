@@ -54,22 +54,22 @@
 			<TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Row="2"><Run Language="ja-jp" Text="Prescale"/><LineBreak/><Run Language="ja-jp"/></TextBlock>
 			<Slider VerticalAlignment="Top" Ticks="{Binding PrescaleSliderTicks}" IsSnapToTickEnabled="True" Maximum="16" Minimum="1" Value="{Binding PrescaleValue, Mode=TwoWay}" AutoToolTipPlacement="TopLeft" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="2"/>
 			<TextBlock HorizontalAlignment="Center" Height="28" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Row="3"><Run Language="ja-jp" Text="Resolution"/><LineBreak/><Run Language="ja-jp"/></TextBlock>
-			<TextBlock TextWrapping="Wrap" Text="{Binding Model.CurrentState.EssentialDutyResolution, Mode=OneWay}" VerticalAlignment="Top" Grid.Column="1" Grid.Row="3"/>
+			<TextBlock TextWrapping="Wrap" Text="{Binding EssentialDutyResolution, Mode=OneWay}" VerticalAlignment="Top" Grid.Column="1" Grid.Row="3"/>
 			<TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.537000000476837,-0.125" Grid.Row="3" Grid.Column="2"><Run Language="ja-jp" Text="PWMFreq"/><LineBreak/><Run Language="ja-jp"/></TextBlock>
-			<TextBlock TextWrapping="Wrap" Text="{Binding Model.CurrentState.PWMFreqency}" VerticalAlignment="Top" Grid.Column="3" Grid.Row="3"/>
+			<TextBlock TextWrapping="Wrap" Text="{Binding PWMFreqency}" VerticalAlignment="Top" Grid.Column="3" Grid.Row="3"/>
 			<Slider Grid.ColumnSpan="3" Grid.Column="1" Grid.Row="4" VerticalAlignment="Top" Value="{Binding DutyValue, Mode=TwoWay}" Maximum="1023" Minimum="0" SmallChange="1" AutoToolTipPlacement="TopLeft"/>
 			<TextBlock Height="32" Grid.Row="4" TextWrapping="Wrap" VerticalAlignment="Bottom" HorizontalAlignment="Center"><Run Language="ja-jp" Text="Duty"/><LineBreak/><Run Language="ja-jp"/></TextBlock>
 			<CheckBox Content="Direction" d:LayoutOverrides="Width, Height" Grid.Row="5" Grid.ColumnSpan="4" IsChecked="{Binding DirectionValue, Mode=TwoWay}"/>
 			<ComboBox d:LayoutOverrides="Height" Grid.Column="1" Width="100" HorizontalAlignment="Left" ItemsSource="{Binding Source={StaticResource TrainControllerMode}}" SelectedValue="{Binding Model.CurrentState.ControllerMode, Mode=TwoWay}"/>
-			<Slider d:LayoutOverrides="Height" Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="3" Maximum="1023" Value="{Binding Model.CurrentState.Voltage}" SmallChange="1"/>
+			<Slider d:LayoutOverrides="Height" Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="3" Maximum="1023" Value="{Binding Voltage}" SmallChange="1"/>
 			<TextBlock Grid.Row="6" TextWrapping="Wrap" Text="Voltage" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-			<ProgressBar Grid.ColumnSpan="3" Grid.Column="1" Grid.Row="7" Maximum="1023" Value="{Binding Model.CurrentState.MeisuredVoltage, Mode=OneWay}" Height="20"/>
+			<ProgressBar Grid.ColumnSpan="3" Grid.Column="1" Grid.Row="7" Maximum="1023" Value="{Binding MeisuredVoltage, Mode=OneWay}" Height="20"/>
 			<Slider Grid.Column="1" Grid.Row="8" Grid.ColumnSpan="3" Maximum="1" Minimum="-1" SmallChange="0.01" LargeChange="0.1" Value="{Binding ParamP, Mode=TwoWay}"/>
             <Slider Grid.Column="1" Grid.Row="9" Grid.ColumnSpan="3" Maximum="1" Minimum="-1"  SmallChange="0.01" LargeChange="0.1" Value="{Binding ParamI, Mode=TwoWay}"/>
 			<TextBlock Grid.Row="7" TextWrapping="Wrap" Text="Voltage" HorizontalAlignment="Center"/>
 			<TextBlock Grid.Row="8" TextWrapping="Wrap" Text="P" HorizontalAlignment="Center"/>
 			<TextBlock Grid.Row="9" TextWrapping="Wrap" Text="I" HorizontalAlignment="Center"/>
-			<ProgressBar Grid.ColumnSpan="3" Grid.Column="1" Grid.Row="10" Height="20" Maximum="1023" Value="{Binding Model.CurrentState.MeisuredVoltage2, Mode=OneWay}"/>
+			<ProgressBar Grid.ColumnSpan="3" Grid.Column="1" Grid.Row="10" Height="20" Maximum="1023" Value="{Binding MeisuredVoltage2, Mode=OneWay}"/>
 		</Grid>
 	</Grid>
 </UserControl>

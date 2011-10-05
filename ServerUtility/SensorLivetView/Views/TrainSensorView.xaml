@@ -60,17 +60,17 @@
     	</StackPanel> -->
     	<StackPanel Orientation="Horizontal" >
     		<TextBlock Text="Mode:"/>
-    		<TextBlock Text="{Binding Model.CurrentState.Mode}"/>
+    		<TextBlock Text="{Binding Mode}"/>
     	</StackPanel>
     	<StackPanel Orientation="Horizontal">
     		<TextBlock Text="ThretholdVoltage:"/>
-			<TextBox x:Name="textBox" Text="{Binding Model.CurrentState.ThresholdVoltage}"/>
+			<TextBox x:Name="textBox" Text="{Binding ThresholdVoltage, Mode=TwoWay}"/>
     	</StackPanel>
     	<StackPanel x:Name="stackPanel1" Orientation="Horizontal">
     		<TextBlock TextWrapping="Wrap" Text="Speed = "/>
     		<TextBlock TextWrapping="Wrap" Text="{Binding Speed}"/>
     	</StackPanel>
-    	<Button Content="change meisuring" Command="{Binding ChangeMeisuringModeCommand, Mode=OneWay}"/>
+    	<Button Content="change meisuring" Command="{Binding ChangeMeisuringModeCommand, Mode=OneWay}" />
     	<Button Content="change detecting" Command="{Binding ChangeDetectingModeCommand, Mode=OneWay}" CommandParameter="{Binding Text, ElementName=textBox}"/>
     	<local:VoltageGraphView Width="200" Height="200" DataContext="{Binding VoltageGraphVm}"/>
 		

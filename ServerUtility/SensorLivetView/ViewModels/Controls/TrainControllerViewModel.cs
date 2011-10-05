@@ -2,116 +2,103 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+
 using SensorLibrary;
 using System.Windows.Media;
+
+using Livet;
+
+using SensorLivetView.Models;
+using SensorLivetView.Models.Devices;
+using System.Collections.ObjectModel;
+
 
 namespace SensorLivetView.ViewModels.Controls
 {
     public class TrainControllerViewModel
-        : DeviceViewModel<TrainController>
+        : DeviceViewModel<TrainControllerModel>
     {
-        public TrainControllerViewModel(TrainController ctrl)
-            : base(ctrl)
-        { }
-
-        public TrainControllerViewModel()
-            : this(null)
-        { }
-
-        protected override void ReceivedProcess(IDevice<IDeviceState<IPacketDeviceData>> dev, PacketReceiveEventArgs e)
+        public TrainControllerViewModel(TrainControllerModel model)
+            : base(model)
         {
-            base.ReceivedProcess(dev, e);
+            ViewModelHelper.BindNotifyChanged(this.Model, this,
+                (sender, e) =>
+                {
+                    RaisePropertyChanged(e.PropertyName);
+                });
         }
 
         public double DutyValue
         {
-            get { return Math.Round((double)this.Model.CurrentState.Duty,0); }
-            set
-            {
-                this.Model.CurrentState.Duty = (int)value;
-                RaisePropertyChanged("DutyValue");
-            }
+            get { return this.Model.DutyValue; }
+            set { this.Model.DutyValue = value; }
         }
 
         public double RegisteredPeriodValue
         {
-            get { return Math.Floor((double)this.Model.CurrentState.DeviceRegisteredPeriod); }
-            set
-            {
-                this.Model.CurrentState.DeviceRegisteredPeriod = (byte)value;
-                RaisePropertyChanged("RegisteredPeriodValue");
-            }
+            get { return RegisteredPeriodValue; }
+            set { this.Model.RegisteredPeriodValue = value; }
         }
 
         public DoubleCollection PrescaleSliderTicks
         {
-            get { return new DoubleCollection(new[] { 1.0, 4.0, 16.0 }); }
+            get { return new DoubleCollection(new [] { 1.0, 4.0, 16.0 }); }
         }
 
         public double PrescaleValue
         {
-            get { return this.Model.CurrentState.PreScale; }
-            set
-            {
-                this.Model.CurrentState.PreScale = (int)value;
-                RaisePropertyChanged("PrescaleValue");
-            }
+            get { return this.Model.PrescaleValue; }
+            set { this.Model.PrescaleValue = value; }
         }
 
         public bool DirectionValue
         {
-            get
-            {
-                return this.Model.CurrentState.Direction == TrainControllerDirection.Positive;
-            }
-            set
-            {
-                this.Model.CurrentState.Direction = (value) ? TrainControllerDirection.Positive : TrainControllerDirection.Negative;
-            }
+            get { return this.Model.DirectionValue; }
+            set { this.Model.DirectionValue = value; }
         }
 
         public float ParamP
         {
-            get { return this.Model.CurrentState.PidParams.paramp; }
-            set
-            {
-                var st = this.Model.CurrentState.PidParams;
-                st.paramp = getLimitedValue(value, -1.0f, 1.0f);
-                this.Model.CurrentState.PidParams = st;
-            }
+            get { return this.Model.ParamP; }
+            set { this.Model.ParamP = value; }
         }
 
         public float ParamI
         {
-            get { return this.Model.CurrentState.PidParams.parami; }
-            set
-            {
-                var st = this.Model.CurrentState.PidParams;
-                st.parami = getLimitedValue(value, -1.0f, 1.0f);
-                this.Model.CurrentState.PidParams = st;
-            }
+            get { return this.Model.ParamI; }
+            set { this.Model.ParamI = value; }
         }
 
         public float ParamD
         {
-            get { return this.Model.CurrentState.PidParams.paramd; }
-            set
-            {
-                var st = this.Model.CurrentState.PidParams;
-                st.paramd = getLimitedValue(value, -1.0f, 1.0f);
-                this.Model.CurrentState.PidParams = st;
-            }
+            get { return this.Model.ParamD; }
+            set { this.Model.ParamD = value; }
         }
 
-        private float getLimitedValue(float val, float min, float max)
+        public double EssentialDutyResolution
         {
-            if (val < min)
-                val = min;
-            else if (val > max)
-                val = max;
-
-            return val;
+            get { return this.Model.EssentialDutyResolution; }
         }
 
+        public double PWMFreqency
+        {
+            get { return this.Model.PWMFreqency; }
+        }
+
+        public double Voltage
+        {
+            get { return this.Model.Voltage; }
+            set { this.Model.Voltage = value; }
+        }
+
+        public double MeisuredVoltage
+        {
+            get { return this.Model.MeisuredVoltage; }
+        }
+
+        public double MeisuredVoltage2
+        {
+            get { return this.Model.MeisuredVoltage2; }
+        }
     }
 }

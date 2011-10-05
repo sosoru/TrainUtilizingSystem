@@ -24,7 +24,7 @@ namespace SensorLibrary
         }
 
         public TrainSensor()
-            : base()
+            : this(new DeviceID())
         { }
 
         //protected void OnTimerOverflowed()
@@ -78,7 +78,7 @@ namespace SensorLibrary
                 return leninterval / sec;
             }
 
-            return double.NaN;
+            return 0.0;
         }
 
         public override void OnNext(IDeviceState<IPacketDeviceData> value)
@@ -87,9 +87,9 @@ namespace SensorLibrary
             if (casted == null)
                 return;
 
-            if (casted.BasePacket.ID.ModuleAddr == this.DeviceID.ModuleAddr && casted.Mode == TrainSensorMode.detecting)
+            if (casted.BasePacket.ID == this.DeviceID)
             {
-                if (casted.IsDetected)
+                if (casted.Mode == TrainSensorMode.detecting && casted.IsDetected)
                 {
                     this.lastDetected = casted;
                     this.firstNotDetected = null;

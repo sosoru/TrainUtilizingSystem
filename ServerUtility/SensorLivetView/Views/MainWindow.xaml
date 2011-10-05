@@ -56,14 +56,6 @@
 				</Border>
 			</Grid>
 		</DataTemplate>
-		<DataTemplate x:Key="RemoteModuleListItemTemplate">
-			<Grid>
-				<DockPanel LastChildFill="True">
-					<TextBlock DockPanel.Dock="Top" Text="{Binding DevID}" />
-					<SensorLivetView:RemoteModuleView HorizontalAlignment="Right" Height="Auto" VerticalAlignment="Bottom" Width="Auto" DataContext="{Binding Mode=OneWay}"/>
-				</DockPanel>
-			</Grid>
-		</DataTemplate>
 	</Window.Resources>
     
     <Window.DataContext>
@@ -95,11 +87,6 @@
 			</TabItem>
 			<TabItem Header="SpeedTest">
 				<SensorLivetView:TransitionTestView DataContext="{Binding SpeedTestVM, Mode=OneWay}" />
-			</TabItem>
-			<TabItem Header="RemoteModule">
-				<Grid Background="#FFE5E5E5">
-					<ListBox ItemsSource="{Binding AvailableRemoteModuleVMs}" ItemTemplate="{DynamicResource RemoteModuleListItemTemplate}"/>
-				</Grid>
 			</TabItem>
 			<TabItem Header="Commands">
 				<StackPanel>

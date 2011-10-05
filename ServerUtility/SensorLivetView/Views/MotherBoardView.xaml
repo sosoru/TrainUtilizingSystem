@@ -28,7 +28,7 @@
     					<ColumnDefinition Width="20"/>
     					<ColumnDefinition Width="100*"/>
     				</Grid.ColumnDefinitions>
-    				<TextBlock Height="Auto" TextWrapping="Wrap" Width="Auto" Text="{Binding ModuleNo}" HorizontalAlignment="Right" MinWidth="20"/>
+    				<TextBlock Height="Auto" TextWrapping="Wrap" Width="Auto" Text="{Binding Address}" HorizontalAlignment="Right" MinWidth="20"/>
     				<ComboBox x:Name="comboBox" Height="Auto" Width="Auto" SelectedValue="{Binding ModuleType, Mode=TwoWay}" ItemsSource="{Binding Mode=OneWay, Source={StaticResource ModuleTypeEnumerable}}" HorizontalAlignment="Right" d:LayoutOverrides="Height" Grid.Column="1" MinWidth="100"/>
     			</Grid>
     	</DataTemplate>
@@ -41,17 +41,10 @@
 			<StackPanel DockPanel.Dock="Top">
 				<StackPanel Orientation="Horizontal">
 					<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="ParentID: "/>
-					<TextBlock TextWrapping="Wrap" Text="{Binding Model.CurrentState.ParentID}"/>
+					<TextBlock TextWrapping="Wrap" Text="{Binding BaseParentID}"/>
 				</StackPanel>
-				<CheckBox Content="Hold" HorizontalAlignment="Left" IsChecked="{Binding Model.IsHold, Mode=TwoWay}">
-					<i:Interaction.Triggers>
-						<i:EventTrigger EventName="Unchecked">
-							<i:InvokeCommandAction Command="{Binding SendPacketCommand}"/>
-						</i:EventTrigger>
-					</i:Interaction.Triggers>
-				</CheckBox>
 			</StackPanel>
-			<ListBox x:Name="listBox" ItemTemplate="{DynamicResource ModuleTypeTemplate}" ItemsSource="{Binding PortMappingEnumerable, Mode=OneWay}" ItemsPanel="{DynamicResource ModuleTypeItemsPanelTemplate}" IsEnabled="{Binding Model.IsHold}"/>
+			<ListBox x:Name="listBox" ItemTemplate="{DynamicResource ModuleTypeTemplate}" ItemsSource="{Binding PortViewModels, Mode=OneWay}" ItemsPanel="{DynamicResource ModuleTypeItemsPanelTemplate}" />
 			
 		</DockPanel>
 </UserControl>

@@ -49,8 +49,8 @@ namespace SensorLivetView.ViewModels.Controls
 
         public bool IsMeisuringMode
         {
-            get{ return this.Model.IsMeisuringMode}
-            set { this.Model.IsMeisuringMode = value;}
+            get { return this.Model.IsMeisuringMode; }
+            set { this.Model.IsMeisuringMode = value; }
         }
 
         public bool IsSensorDetected
@@ -58,17 +58,6 @@ namespace SensorLivetView.ViewModels.Controls
             get { return this.Model.IsDetected; }
         }
 
-        
-        protected override void ReceivedProcess(IDevice<IDeviceState<IPacketDeviceData>> dev, PacketReceiveEventArgs e)
-        {
-            //var now = DateTime.Now;
-            //if ((now - this._beforeraised).Milliseconds > 300)
-            //{
-            //    RaisePropertyChanged("");
-            //    this._beforeraised = now;
-            //}
-            //RaisePropertyChanged("VoltageGraphVm");
-        }
 
         #region ChangeMeisuringModeCommand
         DelegateCommand _ChangeMeisuringModeCommand;
@@ -149,7 +138,7 @@ namespace SensorLivetView.ViewModels.Controls
                 {
                     DataProvider = new GraphPainter<TrainSensor, TrainSensorState>()
                     {
-                        DeterminateFunc = (state) => (state!=null) ? (state.CurrentVoltage - state.ReferenceVoltageMinus) / state.ReferenceVoltagePlus
+                        DeterminateFunc = (state) => (state != null) ? (state.CurrentVoltage - state.ReferenceVoltageMinus) / state.ReferenceVoltagePlus
                                                                     : 0.0,
                         Device = this.Model.TargetDevice
                     },
@@ -175,49 +164,37 @@ namespace SensorLivetView.ViewModels.Controls
         }
 
 
-        public bool IsSpeedCalculatable
-        {
-            get
-            {
-                double tr = double.NaN;
-                try
-                {
-                    tr = this.DetectingModel.CalculateSpeed(this.ReflectorInterval);
-                }
-                catch
-                {
-                    return false;
-                }
-                return tr != double.NaN;
-            }
-        }
-
         public double Speed
         {
             get
             {
-                if (this.DetectingModel == null)
-                    return double.NaN;
+                if (this.Model != null)
+                    return this.Model.Speed;
+                else
+                    return 0.0;
+            }
+        }
 
+        public string Mode
+        {
+            get { return Enum.GetName(typeof(TrainSensorMode), this.Model.Mode); }
+            set
+            {
+                TrainSensorMode name = TrainSensorMode.meisuring;
                 try
                 {
-                    return this.DetectingModel.CalculateSpeed(this.ReflectorInterval);
+                    name = (TrainSensorMode)Enum.Parse(typeof(TrainSensorMode), value);
                 }
-                catch
-                {
-                    return double.NaN;
-                }
+                catch { }
+                this.Model.Mode = name;
             }
+
         }
 
-        public double TrainSpeed
+        public double ThresholdVoltage
         {
-            get
-            {
-                return this.DetectingModel.CalculateSpeed(this.ReflectorInterval);
-            }
+            get { return (double)this.Model.ThresholdVoltage; }
+            set { this.Model.ThresholdVoltage = (float)value; }
         }
-
-
     }
 }

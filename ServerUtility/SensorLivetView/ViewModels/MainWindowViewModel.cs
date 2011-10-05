@@ -18,6 +18,7 @@ using Livet.Messaging.Window;
 
 using SensorLibrary;
 using SensorLivetView.Models;
+using SensorLivetView.Models.Devices;
 using SensorLivetView.ViewModels.Controls;
 
 using LibUsbDotNet;
@@ -53,21 +54,26 @@ namespace SensorLivetView.ViewModels
 
         public UsbDevicesViewModel usbdevVm { get; private set; }
         private Dispatcher _associatedDispatcher;
-        public Dispatcher AssociatedDispatcher 
+        public Dispatcher AssociatedDispatcher
         {
-            get{
+            get
+            {
 
                 return this._associatedDispatcher;
             }
-            set{
+            set
+            {
                 this._associatedDispatcher = value;
 
-                this.motherboardVmDispat = this.createDispat<MotherBoard, MotherBoardState, MotherBoardViewModel>();
-                this.tsensorVmDispat = this.createDispat<TrainSensor, TrainSensorState, TrainSensorViewModel>();
-                this.tcontrollerDispat = this.createDispat<TrainController, TrainControllerState, TrainControllerViewModel>();
-                this.pmoduleDispat = this.createDispat<PointModule, PointModuleState, PointModuleViewModel>();
-                this.remmoduleDispat = this.createDispat<RemoteModule, RemoteModuleState, RemoteModuleViewModel>();
-                RaisePropertyChanged("");
+                this.motherboardVmDispat = this.createDispat<MotherBoard, MotherBoardState>();
+                this.tsensorVmDispat = this.createDispat<TrainSensor, TrainSensorState>();
+                this.tcontrollerDispat = this.createDispat<TrainController, TrainControllerState>();
+                this.pmoduleDispat = this.createDispat<PointModule, PointModuleState>();
+
+                this.motherboardVmDispat.projected.CollectionChanged += (sender, e) => RaisePropertyChanged(() => AvailableMotherBoardVMs);
+                this.tsensorVmDispat.projected.CollectionChanged += (sender, e) => RaisePropertyChanged(() => AvailableTrainSensorVMs);
+                this.tcontrollerDispat.projected.CollectionChanged += (sender, e) => RaisePropertyChanged(() => AvailableTrainControllerVMs);
+                this.pmoduleDispat.projected.CollectionChanged += (sender, e) => RaisePropertyChanged(() => AvailablePointModuleVMs);
             }
         }
 
@@ -78,11 +84,11 @@ namespace SensorLivetView.ViewModels
             this.OpeningServers = new ObservableCollection<PacketServer>();
             this.OpeningServers.CollectionChanged += servlist_CollectionChanged;
 
-//#if TEST
-//            if (!this.OpeningServers.Contains(this.testserv))
-//                this.OpeningServers.Add(this.testserv);
-//#endif
-            
+            //#if TEST
+            //            if (!this.OpeningServers.Contains(this.testserv))
+            //                this.OpeningServers.Add(this.testserv);
+            //#endif
+
         }
 
         void servlist_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -95,7 +101,6 @@ namespace SensorLivetView.ViewModels
                     newserv.AddAction(this.tsensorVmDispat.dispat);
                     newserv.AddAction(this.tcontrollerDispat.dispat);
                     newserv.AddAction(this.pmoduleDispat.dispat);
-                    newserv.AddAction(this.remmoduleDispat.dispat);
                 }
             }
         }
@@ -134,7 +139,7 @@ namespace SensorLivetView.ViewModels
                                                        .SetTrainSensors(new DeviceID(1, 2))
                                                        .SetTrainSensors(new DeviceID(1, 3))
                                                        .SetTrainSensors(new DeviceID(1, 4))
-                                                       .SetPointModules(new DeviceID(1,5))
+                                                       .SetPointModules(new DeviceID(1, 5))
                                                        .ToEnumerable();
                     var testserv = new TestServer(testenum);
                     //testdisp.ReceivedMotherBoardChanged += (sender, e) => this.RaisePropertyChanged("");
@@ -203,62 +208,64 @@ namespace SensorLivetView.ViewModels
             }
         }
 
-        private DeviceViewModelDispatcher<MotherBoard, MotherBoardState, MotherBoardViewModel> motherboardVmDispat
-            = new DeviceViewModelDispatcher<MotherBoard, MotherBoardState, MotherBoardViewModel>();
-        public IList<MotherBoardViewModel> AvailableMotherBoardVMs
+        private DeviceViewModelDispatcher<MotherBoard, MotherBoardState> motherboardVmDispat;
+        public IEnumerable<MotherBoardViewModel> AvailableMotherBoardVMs
         {
             get
             {
-                return this.motherboardVmDispat.projected;
+                if (this.motherboardVmDispat == null)
+                    return new MotherBoardViewModel [] { };
+                else
+                    return this.motherboardVmDispat.projected.Cast<MotherBoardViewModel>();
             }
         }
 
-        private DeviceViewModelDispatcher<TrainSensor, TrainSensorState, TrainSensorViewModel> tsensorVmDispat;
-        public IList<TrainSensorViewModel> AvailableTrainSensorVMs
+        private DeviceViewModelDispatcher<TrainSensor, TrainSensorState> tsensorVmDispat;
+        public IEnumerable<TrainSensorViewModel> AvailableTrainSensorVMs
         {
             get
             {
-                return this.tsensorVmDispat.projected;
+                if (this.tsensorVmDispat == null)
+                    return new TrainSensorViewModel [] { };
+                else
+                    return this.tsensorVmDispat.projected.Cast<TrainSensorViewModel>();
             }
         }
 
-        private DeviceViewModelDispatcher<TrainController, TrainControllerState, TrainControllerViewModel> tcontrollerDispat;
-        public IList<TrainControllerViewModel> AvailableTrainControllerVMs
+        private DeviceViewModelDispatcher<TrainController, TrainControllerState> tcontrollerDispat;
+        public IEnumerable<TrainControllerViewModel> AvailableTrainControllerVMs
         {
             get
             {
-                return this.tcontrollerDispat.projected;
+                if (this.tcontrollerDispat == null)
+                    return new TrainControllerViewModel [] { };
+                else
+                    return this.tcontrollerDispat.projected.Cast<TrainControllerViewModel>();
             }
         }
 
-        private DeviceViewModelDispatcher<PointModule, PointModuleState, PointModuleViewModel> pmoduleDispat;
-        public IList<PointModuleViewModel> AvailablePointModuleVMs
+        private DeviceViewModelDispatcher<PointModule, PointModuleState> pmoduleDispat;
+        public IEnumerable<PointModuleViewModel> AvailablePointModuleVMs
         {
             get
             {
-                return this.pmoduleDispat.projected;
+                if (this.pmoduleDispat == null)
+                    return new PointModuleViewModel [] { };
+                else
+                    return this.pmoduleDispat.projected.Cast<PointModuleViewModel>();
             }
 
         }
 
-        private DeviceViewModelDispatcher<RemoteModule, RemoteModuleState, RemoteModuleViewModel> remmoduleDispat;
-        public IList<RemoteModuleViewModel> AvailableRemoteModuleVMs
-        {
-            get
-            {
-                return this.remmoduleDispat.projected;
-            }
-        }
-
-        private DeviceViewModelDispatcher<TDevice, TState, TVM> createDispat<TDevice, TState, TVM> ()
+        private DeviceViewModelDispatcher<TDevice, TState> createDispat<TDevice, TState>()
             where TDevice : class, IDevice<TState>
             where TState : class, IDeviceState<IPacketDeviceData>
-            where TVM : DeviceViewModel<TDevice>
+        //where TVM : DeviceViewModel<DeviceModel<TDevice>>
         {
-            return new DeviceViewModelDispatcher<TDevice, TState, TVM>()
+            return new DeviceViewModelDispatcher<TDevice, TState>()
             {
                 dispat = new PacketDispatcherSingle<TDevice, TState>(),
-                projected = new ObservableWrappingCollectionOnDispat<TDevice, TVM>()
+                projected = new ObservableWrappingCollectionOnDispat<TDevice, IDeviceViewModel<IDeviceModel<IDevice<IDeviceState<IPacketDeviceData>>>>>()
                 {
                     Dispatcher = this.AssociatedDispatcher,
                 },
@@ -276,7 +283,7 @@ namespace SensorLivetView.ViewModels
                     Model = new TrainSpeedTransitionTest(),
                 };
 
-                return vm;                
+                return vm;
             }
         }
 

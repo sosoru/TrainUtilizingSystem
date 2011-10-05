@@ -84,9 +84,16 @@
     <Compile Include="DataStore\DataStore\DataStore.xaml.cs">
       <DependentUpon>DataStore.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DeviceViewModelFactory.cs" />
     <Compile Include="Models\DeserializeManipulatorModel.cs" />
     <Compile Include="Models\DeviceManipulatorModel.cs" />
     <Compile Include="Models\Devices\DeviceModel.cs" />
+    <Compile Include="Models\Devices\IDeviceModel.cs" />
+    <Compile Include="Models\Devices\MotherBoardModel.cs" />
+    <Compile Include="Models\Devices\MotherBoardPortModel.cs" />
+    <Compile Include="Models\Devices\PointModel.cs" />
+    <Compile Include="Models\Devices\PointModuleModel.cs" />
+    <Compile Include="Models\Devices\TrainControllerModel.cs" />
     <Compile Include="Models\Devices\TrainSensorModel.cs" />
     <Compile Include="Models\UsbDevicesModel.cs" />
     <Compile Include="Models\UsbRegistryModel.cs" />
@@ -96,10 +103,12 @@
     <Compile Include="testServer.cs" />
     <Compile Include="ViewModels\Controls\DeseralizeManipulatorViewModel.cs" />
     <Compile Include="ViewModels\Controls\DeviceSelectViewModel.cs" />
+    <Compile Include="ViewModels\Controls\IDeviceViewModel.cs" />
     <Compile Include="ViewModels\Controls\ManipulatorViewModel.cs" />
+    <Compile Include="ViewModels\Controls\MotherBoardPortViewModel.cs" />
     <Compile Include="ViewModels\Controls\PacketServerViewModel.cs" />
     <Compile Include="ViewModels\Controls\PointModuleViewModel.cs" />
-    <Compile Include="ViewModels\Controls\RemoteModuleViewModel.cs" />
+    <Compile Include="ViewModels\Controls\PointViewModel.cs" />
     <Compile Include="ViewModels\Controls\TestTaskViewModel.cs" />
     <Compile Include="ViewModels\Controls\TrainControllerViewModel.cs" />
     <Compile Include="ViewModels\Controls\UsbDevicesViewModel.cs" />
@@ -107,15 +116,13 @@
     <Compile Include="ViewModels\Controls\VoltageGraphViewModel.cs" />
     <Compile Include="ViewModels\Converters\AlphabetValueConverter.cs" />
     <Compile Include="ViewModels\DeviceViewModelDispatcher.cs" />
+    <Compile Include="ViewModels\ModeledViewModel.cs" />
     <Compile Include="Views\D2DD3DImage.cs" />
     <Compile Include="Views\MotherBoardView.xaml.cs">
       <DependentUpon>MotherBoardView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PointModuleView.xaml.cs">
       <DependentUpon>PointModuleView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\RemoteModuleView.xaml.cs">
-      <DependentUpon>RemoteModuleView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TestWindow.xaml.cs">
       <DependentUpon>TestWindow.xaml</DependentUpon>
@@ -161,10 +168,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\PointModuleView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\RemoteModuleView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
