@@ -41,8 +41,6 @@ namespace SensorLibrary
         protected IDisposable Unsubscriber = null;
         protected IObservable<IDeviceState<IPacketDeviceData>> Observing = null;
 
-        private TState _sentState = null;
-
         public virtual TState CurrentState { get; protected set; }
         public DeviceID DeviceID { get; set; }
         public ModuleTypeEnum ModuleType { get; protected set; }
@@ -141,18 +139,6 @@ namespace SensorLibrary
 
                 if (!this.IsHold)
                     this.CurrentState = casted;
-
-                if (this._sentState != null && this.StateEqualityComparer != null)
-                {
-                    if (!this.StateEqualityComparer.Equals(casted, this._sentState))
-                    {
-                        this.SendPacket(_sentState);
-                    }
-                    else
-                    {
-                        this._sentState = null;
-                    }
-                }
 
                 OnPacketReceived(new PacketReceiveEventArgs() { state = casted, beforestate = before });
 
