@@ -102,7 +102,6 @@ namespace SensorLibrary
             for (int i = 0; i < 2; i++)
                 this.CurrentState.ReceivingServer.SendPacket(state.BasePacket);
 
-            this._sentState = state as TState;
         }
 
         protected DevicePacket CreatePacket<T>(T data)
