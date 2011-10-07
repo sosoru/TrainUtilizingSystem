@@ -8,6 +8,7 @@
 #include <adc.h>
 
 BYTE IsStoring = FALSE;
+BYTE IsCreating = FALSE;
 BYTE SendingPointInd = 0xFF;
 PointModuleSavedState cachePointSaved;
 
@@ -58,8 +59,11 @@ HRESULT CreatePointModuleState(DeviceID * pid, PMODULE_DATA data)
 {
 	PointModuleState * pstate = (PointModuleState * ) data;
 		
+	IsCreating = TRUE;
 	//memset((void*)pstate, 0x00, (size_t)sizeof(PointModuleState));
 	SavedToState(&cachePointSaved, pstate);
+	
+	IsCreating = FALSE;
 	
 	return S_OK | REPEAT_TERMINATE;	
 	
@@ -118,7 +122,7 @@ void InterruptPointModule(DeviceID * pid)
 {
 	BYTE module = (pid->ModuleAddr-1) * PORT_PIN_COUNT + 1;
 	
-	if(IsStoring || g_usingAdc)
+	if(IsStoring || IsCreating || g_usingAdc)
 		return;
 		
 //	if(!getPort(module)) // device ack false

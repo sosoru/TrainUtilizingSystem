@@ -204,7 +204,7 @@ HRESULT InitTrainSensor(DeviceID * pid)
 
 void InterruptTrainSensor(DeviceID * pid)
 {
-	
+
 }
 
 HRESULT StoreTrainSensorSavedState(DeviceID * pid, PMODULE_DATA buf)

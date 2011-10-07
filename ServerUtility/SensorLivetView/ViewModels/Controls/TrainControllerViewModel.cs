@@ -36,7 +36,7 @@ namespace SensorLivetView.ViewModels.Controls
 
         public double RegisteredPeriodValue
         {
-            get { return RegisteredPeriodValue; }
+            get { return this.Model.RegisteredPeriodValue; }
             set { this.Model.RegisteredPeriodValue = value; }
         }
 
@@ -99,6 +99,12 @@ namespace SensorLivetView.ViewModels.Controls
         public double MeisuredVoltage2
         {
             get { return this.Model.MeisuredVoltage2; }
+        }
+
+        public TrainControllerMode Mode
+        {
+            get { return this.Model.Mode; }
+            set { this.Model.Mode = value; }
         }
     }
 }

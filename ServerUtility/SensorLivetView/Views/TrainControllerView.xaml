@@ -60,7 +60,7 @@
 			<Slider Grid.ColumnSpan="3" Grid.Column="1" Grid.Row="4" VerticalAlignment="Top" Value="{Binding DutyValue, Mode=TwoWay}" Maximum="1023" Minimum="0" SmallChange="1" AutoToolTipPlacement="TopLeft"/>
 			<TextBlock Height="32" Grid.Row="4" TextWrapping="Wrap" VerticalAlignment="Bottom" HorizontalAlignment="Center"><Run Language="ja-jp" Text="Duty"/><LineBreak/><Run Language="ja-jp"/></TextBlock>
 			<CheckBox Content="Direction" d:LayoutOverrides="Width, Height" Grid.Row="5" Grid.ColumnSpan="4" IsChecked="{Binding DirectionValue, Mode=TwoWay}"/>
-			<ComboBox d:LayoutOverrides="Height" Grid.Column="1" Width="100" HorizontalAlignment="Left" ItemsSource="{Binding Source={StaticResource TrainControllerMode}}" SelectedValue="{Binding Model.CurrentState.ControllerMode, Mode=TwoWay}"/>
+			<ComboBox d:LayoutOverrides="Height" Grid.Column="1" Width="100" HorizontalAlignment="Left" ItemsSource="{Binding Source={StaticResource TrainControllerMode}}" SelectedValue="{Binding ControllerMode, Mode=TwoWay}"/>
 			<Slider d:LayoutOverrides="Height" Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="3" Maximum="1023" Value="{Binding Voltage}" SmallChange="1"/>
 			<TextBlock Grid.Row="6" TextWrapping="Wrap" Text="Voltage" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 			<ProgressBar Grid.ColumnSpan="3" Grid.Column="1" Grid.Row="7" Maximum="1023" Value="{Binding MeisuredVoltage, Mode=OneWay}" Height="20"/>

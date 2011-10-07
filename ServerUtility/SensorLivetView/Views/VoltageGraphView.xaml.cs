@@ -93,8 +93,6 @@ namespace SensorLivetView.Views
                 return;
 
             var val = vm.DataProvider.GetNext;
-            if (val == double.NaN)
-                val = 0.0;
 
             RefreshLine(val);
         }
@@ -102,13 +100,16 @@ namespace SensorLivetView.Views
         private int refreshind = 0;
         private void RefreshLine(double y)
         {
+            y = (y > 1.0) ? 1.0 : y;
+            if (y == double.NaN)
+                return;
+
             if (refreshind >= lines.Count)
             {
                 refreshind = 0;
                 cnv.Children.Clear();
             }
 
-            y = (y > 1.0) ? 1.0 : y;
 
             var li = lines [refreshind];
             var befli = (refreshind - 1 < 0) ? lines.Last() : lines [refreshind - 1];

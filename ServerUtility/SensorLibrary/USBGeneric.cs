@@ -28,9 +28,10 @@ namespace SensorLibrary
             Device.Open();
 
             Reader = Device.OpenEndpointReader(ReadEndpointID.Ep01, 4096, EndpointType.Bulk);
-
+            
             Writer = Device.OpenEndpointWriter(WriteEndpointID.Ep01);
             Reader.Reset();
+            Writer.Reset();
         }
 
         public override bool CanRead
@@ -174,7 +175,7 @@ namespace SensorLibrary
             if (!this.Reader.IsDisposed)
                 this.Reader.Dispose();
 
-            if (!this.Device.IsOpen)
+            if (this.Device.IsOpen)
                 this.Device.Close();
 
             this.Open();

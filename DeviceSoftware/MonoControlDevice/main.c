@@ -114,7 +114,7 @@ void low_isr()
 			}
 			
 			TMR3H |= ~TMR3H;
-			//TMR3L = 0;
+			TMR3L = 0;
 			PIE2bits.TMR3IE = 1;
 		}
 	}
@@ -278,8 +278,12 @@ void Process()
 	for(i = 0; i < MODULE_COUNT; i++)
 	{
 		BYTE type;
+		BYTE INTCONbuf = INTCON;
 		
+		INTCONbits.PEIE = 0;
 		ReceivingProcessUSB();
+		INTCON = INTCONbuf;
+		
 		type = READ_MBSTATE_MODULETYPE(g_mbState, i);
 		
 		if(type != UNKNOWN_MODULE_TYPE)
@@ -289,7 +293,6 @@ void Process()
 			{		
 				HRESULT res;
 				BYTE k, remoting = (type == REMOTE_MODULE_MODULE_TYPE);
-				
 
 				id.ModuleAddr = i;
 				id.InternalAddr = j;
@@ -298,7 +301,12 @@ void Process()
 				{
 					id.RemoteBit = k;
 					
+					INTCONbuf = INTCON;
+					INTCONbits.PEIE = 0;
+					
 					res = GET_FUNC_TABLE(i)->fncreate(&id, data);
+					INTCON = INTCONbuf;
+					
 					if(SUCCEEDED(res))
 					{
 						AddPacketUSB(&id, type, data);
@@ -342,8 +350,15 @@ void main()
 		{
 			USBDeviceAttach();
 			Delay10KTCYx(200);
+			//Delay10KTCYx(200);
 		}
 		
+//		if(USBDeviceState <= POWERED_STATE)
+//		{
+//			USBDeviceDetach();
+//			Delay10KTCYx(200);
+//		}
+//		
 		Process();	
 	}
 }

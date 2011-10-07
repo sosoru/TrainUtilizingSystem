@@ -20,8 +20,8 @@
 #define FEEDBACK_CHANNELB ADC_CH4
 #define DUTYCONTROL_CHANNEL ADC_CH5
 
-#define PORT_DIRECTION_POS PORTEbits.RE1
-#define PORT_DIRECTION_NEG PORTEbits.RE2
+#define PORT_DIRECTION_POS LATEbits.LATE1
+#define PORT_DIRECTION_NEG LATEbits.LATE2
 #define PORT_FEEDBACKA PORTAbits.RA3
 #define PORT_FEEDBACKB PORTAbits.RA5
 #define PORT_PWMSIGNALB PORTCbits.RC1
@@ -47,6 +47,7 @@
 //single module in a device
 TrainControllerState g_cacheState;
 BYTE settingState = FALSE;
+BYTE creatingState = FALSE;
 BYTE waitingCount = 0;
 
 int voltageDif_1 = 0;
@@ -134,6 +135,7 @@ HRESULT InitTrainController(DeviceID * pid)
 	g_cacheState.voltage = 0;
 	g_cacheState.voltageEnabledBits = VOLTAGE_RESOLUTION_BITCOUNT;
 	g_cacheState.meisuredvoltage = 0;
+	g_cacheState.meisuredvoltage2 = 0;
 	
 	g_cacheState.paramp = 1.0f;
 	g_cacheState.parami = 0.0f;
@@ -177,7 +179,11 @@ HRESULT CreateTrainControllerState(DeviceID * pid, PMODULE_DATA data)
 {
 	TrainControllerState * pstate = (TrainControllerState *)data;
 	
+	creatingState = TRUE;
+	
 	memcpy((void*)pstate, (void*)&g_cacheState, (size_t)sizeof(TrainControllerState));
+	
+	creatingState = FALSE;
 	return S_OK | REPEAT_TERMINATE;
 }
 	
@@ -264,13 +270,12 @@ HRESULT StoreTrainControllerState(DeviceID * pid, PMODULE_DATA data)
 void InterruptTrainController(DeviceID * pid)
 {
 	BYTE i;
-	unsigned int meisuringCount= 5;
+	unsigned int meisuringCount= 1;
 	unsigned int AveVoltage =0;
 	int df=0;
-		
-	if(settingState || g_usingAdc)
-		return;
-		
+
+	if(creatingState || settingState || g_usingAdc)
+		return;	
 	
 	if(++waitingCount < 2)
 		return;
@@ -280,12 +285,13 @@ void InterruptTrainController(DeviceID * pid)
 		
 	#if defined VERSION_REV2
 	{
-		unsigned int tmpvoltA=0, tmpvoltB=0;
+		g_cacheState.meisuredvoltage = 0;
+		g_cacheState.meisuredvoltage2 = 0;
 		
 		PORT_DIRECTION_POS = 1;
 		PORT_DIRECTION_NEG = 1;
 		
-		Delay1KTCYx(20);	
+		Delay1KTCYx(1);	
 		
 		g_usingAdc = TRUE;
 		SetChanADC(FEEDBACK_CHANNELA);
@@ -293,24 +299,21 @@ void InterruptTrainController(DeviceID * pid)
 		{
 			ConvertADC();
 			while(BusyADC());
-			tmpvoltA += ReadADC();
+			g_cacheState.meisuredvoltage += ReadADC();
 		}
-		tmpvoltA /= meisuringCount;
+		g_cacheState.meisuredvoltage /= meisuringCount;
 		
 		SetChanADC(FEEDBACK_CHANNELB);
 		for(i=0; i<meisuringCount; ++i)
 		{
 			ConvertADC();
 			while(BusyADC());
-			tmpvoltB += ReadADC();
+			g_cacheState.meisuredvoltage2 += ReadADC();
 		}
-		tmpvoltB /= meisuringCount;
+		g_cacheState.meisuredvoltage2 /= meisuringCount;
 		
 		g_usingAdc = FALSE;
 		
-		g_cacheState.meisuredvoltage = tmpvoltA;
-		g_cacheState.meisuredvoltage2 = tmpvoltB;
-		//AveVoltage = (tmpvoltA > tmpvoltB) ? tmpvoltA : tmpvoltB;
 	}
 	#endif
 				

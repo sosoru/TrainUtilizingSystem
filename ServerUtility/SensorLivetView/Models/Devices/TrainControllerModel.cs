@@ -104,6 +104,11 @@ namespace SensorLivetView.Models.Devices
                     {
                         RaisePropertyChanged(() => MeisuredVoltage2);
                     }
+
+                    if (bef.ControllerMode != cur.ControllerMode)
+                    {
+                        RaisePropertyChanged(() => Mode);
+                    }
                 };
         }
 
@@ -214,6 +219,19 @@ namespace SensorLivetView.Models.Devices
         public double MeisuredVoltage2
         {
             get { return this.TargetDevice.CurrentState.MeisuredVoltage2; }
+        }
+
+        public TrainControllerMode Mode
+        {
+            get { return this.TargetDevice.CurrentState.ControllerMode; }
+            set
+            {
+                var mode = value;
+                if (mode == TrainControllerMode.OnDevice)
+                    return;
+
+                ModifyState(() => this.TargetDevice.CurrentState.ControllerMode = mode);
+            }
         }
 
     }

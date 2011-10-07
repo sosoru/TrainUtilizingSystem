@@ -20,7 +20,7 @@
 					<ColumnDefinition Width="100"/>
 					<ColumnDefinition Width="100"/>
 				</Grid.ColumnDefinitions>
-				<TextBox Height="Auto" TextWrapping="Wrap" Text="{Binding Address, Converter={StaticResource AlphabetValueConverterDataSource}}" VerticalAlignment="Bottom"/>
+				<TextBlock Height="Auto" TextWrapping="Wrap" Text="{Binding Address, Converter={StaticResource AlphabetValueConverterDataSource}}" VerticalAlignment="Bottom"/>
 				<ToggleButton x:Name="StraightButton" Content="Straight" Height="Auto" Width="Auto" ClickMode="Press" IsChecked="{Binding IsStraight, Mode=TwoWay}" Grid.Column="1"/>
 				<ToggleButton x:Name="CurvedButton" Height="Auto" Width="Auto" Content="Curved" Grid.Column="2" ClickMode="Press" IsChecked="{Binding IsCurved, Mode=TwoWay}"/>
 			</Grid>
