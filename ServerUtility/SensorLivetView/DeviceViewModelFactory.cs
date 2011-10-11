@@ -13,69 +13,78 @@ using SensorLivetView.Models.Devices;
 
 namespace SensorLivetView
 {
-    public interface IDeviceViewModelFactory< in TDev, out TVM>
+    public interface IDeviceViewModelFactory<out TVM, out TM, out TDevice>
+        where TVM : class, IDeviceViewModel<TM>
+        where TM : class, IDeviceModel<TDevice>
     {
-        Func<TDev, TVM> ViewModelCreate { get; }
-        ModuleTypeEnum ModuleType { get; }
+        public Func<TDevice, TM> ModelCreate { get; }
+        public Func<TM, TVM> ViewModelCreate { get; }
+        public ModuleTypeEnum ModuleType { get; }
     }
 
     public sealed class DeviceViewModelFactory
     {
         private DeviceViewModelFactory() { }
 
-        private class internalfactry<TDev, TVM>
-            : IDeviceViewModelFactory<TDev, TVM>
-            where TDev : IDevice<IDeviceState<IPacketDeviceData>>
-            where TVM : ViewModel
+        private class internalfactry<TVM, TM, TDev>
+            : IDeviceViewModelFactory<TVM, TM, TDev>
+            where TVM : class, IDeviceViewModel<TM>
+            where TM :class, IDeviceModel<TDev>
+            where TDev : class, IDevice<IDeviceState<IPacketDeviceData>>
         {
-            public Func<TDev, TVM> ViewModelCreate { get; set; }
-            public ModuleTypeEnum ModuleType { get; set; }
+            public ModuleTypeEnum ModuleType { get;set;}
+            public Func<TDev, TM> ModelCreate { get; set; }
+            public Func<TM, TVM> ViewModelCreate { get; set; }
         }
 
-        public readonly static IDeviceViewModelFactory<IDevice<IDeviceState<IPacketDeviceData>>, MotherBoardViewModel> MotherBoardVmFactory
-            = new internalfactry<IDevice<IDeviceState<IPacketDeviceData>>, MotherBoardViewModel>()
+        public readonly static IDeviceViewModelFactory<MotherBoardViewModel,
+                                                       MotherBoardModel,
+                                                       MotherBoard                                                       > MotherBoardVmFactory
+            = new internalfactry<MotherBoardViewModel,
+                                MotherBoardModel,
+                                MotherBoard>
             {
-                ViewModelCreate = (mb) =>
-                {
-                    var model = new MotherBoardModel(mb as MotherBoard);
-                    var vm = new MotherBoardViewModel(model);
-                    return vm;
-                },
                 ModuleType = ModuleTypeEnum.MotherBoard,
+                ViewModelCreate = (model) => new MotherBoardViewModel(model??DeviceViewModelFactory.MotherBoardVmFactory.ModelCreate(null)),
+                ModelCreate = (device) => new MotherBoardModel(device ?? DeviceFactory.MotherBoardFactory.DeviceCreate()),
             };
 
-        public readonly static IDeviceViewModelFactory<IDevice<IDeviceState<IPacketDeviceData>>, TrainSensorViewModel> TrainSensorVmFactory
-            = new internalfactry<IDevice<IDeviceState<IPacketDeviceData>>, TrainSensorViewModel>()
+        public readonly static IDeviceViewModelFactory<TrainSensorViewModel,
+                                                       TrainSensorModel, 
+                                                       TrainSensor>            TrainSensorVmFactory
+            = new internalfactry<TrainSensorViewModel, TrainSensorModel, TrainSensor> 
             {
-                ViewModelCreate = (tsens) =>
-                    {
-                        return new TrainSensorViewModel(new TrainSensorModel(tsens as TrainSensor));
-                    },
                 ModuleType = ModuleTypeEnum.TrainSensor,
+                ViewModelCreate = (model) => new TrainSensorViewModel(model ?? DeviceViewModelFactory.TrainSensorVmFactory.ModelCreate(null)),
+                ModelCreate = dev => new TrainSensorModel(dev ?? DeviceFactory.TrainSensorFactory.DeviceCreate()),
             };
 
-        public readonly static IDeviceViewModelFactory<IDevice<IDeviceState<IPacketDeviceData>>, PointModuleViewModel> PointModuleVmFactry
-            = new internalfactry<IDevice<IDeviceState<IPacketDeviceData>>, PointModuleViewModel>()
+        public readonly static IDeviceViewModelFactory<PointModuleViewModel,
+                                                       PointModuleModel,
+                                                       PointModule>            PointModuleVmFactry
+            = new internalfactry<PointModuleViewModel, PointModuleModel, PointModule>()
             {
-                ViewModelCreate = (pm) =>
-                    {
-                        return new PointModuleViewModel(new PointModuleModel(pm as PointModule));
-                    },
                 ModuleType = ModuleTypeEnum.PointModule,
+                ViewModelCreate = model => new PointModuleViewModel(model ?? DeviceViewModelFactory.PointModuleVmFactry.ModelCreate(null)),
+                ModelCreate = dev => new PointModuleModel(dev ?? DeviceFactory.PointModuleFactory.DeviceCreate()),
             };
 
-        public readonly static IDeviceViewModelFactory<IDevice<IDeviceState<IPacketDeviceData>>,TrainControllerViewModel> TrainControllerVmFactry
-            = new internalfactry<IDevice<IDeviceState<IPacketDeviceData>>, TrainControllerViewModel>()
+        public readonly static IDeviceViewModelFactory<TrainControllerViewModel,
+                                                       TrainControllerModel,
+                                                       TrainController                                                       > TrainControllerVmFactry
+            = new internalfactry<TrainControllerViewModel, TrainControllerModel, TrainController>()
             {
-                ViewModelCreate = (tcont) =>
-                {
-                    return new TrainControllerViewModel(new TrainControllerModel(tcont as TrainController));
-                },
-                ModuleType = ModuleTypeEnum.TrainController,
+                ModuleType = ModuleTypeEnum.TrainController
+                ViewModelCreate = model => new TrainControllerViewModel(model ?? DeviceViewModelFactory.TrainControllerVmFactry.ModelCreate(null)),
+                ModelCreate = dev => new TrainControllerModel(dev ?? DeviceFactory.TrainControllerFactory.DeviceCreate()),
             };
 
-        public static readonly IEnumerable<IDeviceViewModelFactory<IDevice<IDeviceState<IPacketDeviceData>>, ViewModel>> Factries
-            =  new IDeviceViewModelFactory<IDevice<IDeviceState<IPacketDeviceData>>, ViewModel> [] { MotherBoardVmFactory, TrainSensorVmFactory, PointModuleVmFactry, TrainControllerVmFactry };
+        public static readonly IEnumerable<IDeviceViewModelFactory<IDeviceViewModel<IDeviceModel<IDevice<IDeviceState<IPacketDeviceData>>>>, 
+                                                                    IDeviceModel<IDevice<IDeviceState<IPacketDeviceData>>>,
+                                                                    IDevice<IDeviceState<IPacketDeviceData>>>> Factries
+            =  new IDeviceViewModelFactory<IDeviceViewModel<IDeviceModel<IDevice<IDeviceState<IPacketDeviceData>>>>,
+                                                                    IDeviceModel<IDevice<IDeviceState<IPacketDeviceData>>>,
+                                                                    IDevice<IDeviceState<IPacketDeviceData>>> [] { MotherBoardVmFactory, TrainSensorVmFactory, PointModuleVmFactry, TrainControllerVmFactry };
 
 
     }

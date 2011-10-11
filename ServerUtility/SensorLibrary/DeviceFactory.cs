@@ -7,6 +7,9 @@ using System.Text;
 namespace SensorLibrary
 {
     public interface IDeviceFactory<out TDev, out TState, out TData>
+        where TDev : class, IDevice<TState>
+        where TState : class, IDeviceState<TData>
+        where TData : IPacketDeviceData
     {
         Func<TDev> DeviceCreate { get; }
         Func<TState> DeviceStateCreate { get; }
@@ -20,66 +23,42 @@ namespace SensorLibrary
 
         private class devfactint<TDev, TState, TData>
         : IDeviceFactory<TDev, TState, TData>
-            where TData : class, IPacketDeviceData
-            where TState : IDeviceState<TData>
-            where TDev : IDevice<TState>
+            where TDev : class, IDevice<TState>, new()
+            where TState : class, IDeviceState<TData>, new()
+            where TData : IPacketDeviceData, new()
         {
-            public Func<TDev> DeviceCreate { get; set; }
-            public Func<TState> DeviceStateCreate { get; set; }
-            public Func<TData> DeviceDataCreate { get; set; }
-            public ModuleTypeEnum ModuleType { get; set; }
+            public devfactint()
+            {
+                DeviceCreate = () => new TDev();
+                DeviceStateCreate = () => new TState();
+                DeviceDataCreate = () => new TData();
+            }
+
+            public Func<TDev> DeviceCreate { get; private set; }
+            public Func<TState> DeviceStateCreate { get; private set; }
+            public Func<TData> DeviceDataCreate { get;  private set; }
+            public ModuleTypeEnum ModuleType { get; private set; }
         }
 
         public static readonly IDeviceFactory<MotherBoard, MotherBoardState, MotherBoardData> MotherBoardFactory
-            = new devfactint<MotherBoard, MotherBoardState, MotherBoardData>
-            {
-                DeviceCreate = () => new MotherBoard(),
-                DeviceStateCreate = () => new MotherBoardState(),
-                DeviceDataCreate = () => new MotherBoardData(),
-                ModuleType = ModuleTypeEnum.MotherBoard,
-            };
+            = new devfactint<MotherBoard, MotherBoardState, MotherBoardData>();
 
         public static readonly IDeviceFactory<PointModule, PointModuleState, PointModuleData> PointModuleFactory
-            = new devfactint<PointModule, PointModuleState, PointModuleData>
-            {
-                DeviceCreate = () => new PointModule(),
-                DeviceStateCreate = () => new PointModuleState(),
-                DeviceDataCreate = () => new PointModuleData(),
-                ModuleType = ModuleTypeEnum.PointModule,
-            };
+            = new devfactint<PointModule, PointModuleState, PointModuleData>();
 
         public static readonly IDeviceFactory<TrainSensor, TrainSensorState, TrainSensorData> TrainSensorFactory
-            = new devfactint<TrainSensor, TrainSensorState, TrainSensorData>
-            {
-                DeviceCreate = () => new TrainSensor(),
-                DeviceStateCreate = () => new TrainSensorState(),
-                DeviceDataCreate = () => new TrainSensorData(),
-                ModuleType = ModuleTypeEnum.TrainSensor,
-            };
+            = new devfactint<TrainSensor, TrainSensorState, TrainSensorData>();
 
         public static readonly IDeviceFactory<TrainController, TrainControllerState, TrainControllerData> TrainControllerFactory
-             = new devfactint<TrainController, TrainControllerState, TrainControllerData>
-             {
-                 DeviceCreate = () => new TrainController(),
-                 DeviceStateCreate = () => new TrainControllerState(),
-                 DeviceDataCreate = () => new TrainControllerData(),
-                 ModuleType = ModuleTypeEnum.TrainController,
-             };
+             = new devfactint<TrainController, TrainControllerState, TrainControllerData>();
 
         public static readonly IDeviceFactory<RemoteModule, RemoteModuleState, RemoteModuleData> RemoteModuleFactory
-             = new devfactint<RemoteModule, RemoteModuleState, RemoteModuleData>
-             {
-                 DeviceCreate = () => new RemoteModule(),
-                 DeviceStateCreate = () => new RemoteModuleState(),
-                 DeviceDataCreate = () => new RemoteModuleData(),
-                 ModuleType = ModuleTypeEnum.RemoteModule,
-             };
+             = new devfactint<RemoteModule, RemoteModuleState, RemoteModuleData>();
 
         public static readonly IEnumerable<IDeviceFactory<IDevice<IDeviceState<IPacketDeviceData>>, IDeviceState<IPacketDeviceData>, IPacketDeviceData>> AvailableDeviceTypes
             = new ReadOnlyCollection<IDeviceFactory<IDevice<IDeviceState<IPacketDeviceData>>, IDeviceState<IPacketDeviceData>, IPacketDeviceData>>
             (
-                new IDeviceFactory<IDevice<IDeviceState<IPacketDeviceData>>, IDeviceState<IPacketDeviceData>, IPacketDeviceData>[] 
-                { MotherBoardFactory, PointModuleFactory, TrainSensorFactory, TrainControllerFactory, RemoteModuleFactory }
+                new IDeviceFactory<IDevice<IDeviceState<IPacketDeviceData>>, IDeviceState<IPacketDeviceData>, IPacketDeviceData> [] { MotherBoardFactory, PointModuleFactory, TrainSensorFactory, TrainControllerFactory, RemoteModuleFactory }
             );
     }
 }
