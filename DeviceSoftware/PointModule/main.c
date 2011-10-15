@@ -2,7 +2,7 @@
 #include <timers.h>
 
  /** Configuration Bits *******************************************/
- #pragma config OSC = INTIO67
+ #pragma config OSC = HSPLL
  #pragma config FCMEN = OFF          //Fail-Safe Clock Monitor Enable bit: Disable
  #pragma config IESO = OFF           //Internal/External Oscillator Switchover bit: Disable
  #pragma config PWRT = ON            //Power Up timer enabled

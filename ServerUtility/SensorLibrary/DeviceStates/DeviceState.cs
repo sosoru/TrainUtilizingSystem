@@ -44,16 +44,20 @@ namespace SensorLibrary
             return this.BasePacket.ToString();
         }
 
+        private volatile object lock_Data = new object();
         public T Data
         {
             get
             {
-                if (_deviceStateCache == null)
+                lock (lock_Data)
                 {
-                    var state = this._basepacket.CopyFromData<T>();
-                    this._deviceStateCache = state;
+                    if (_deviceStateCache == null)
+                    {
+                        var state = this._basepacket.CopyFromData<T>();
+                        this._deviceStateCache = state;
+                    }
+                    return this._deviceStateCache;
                 }
-                return this._deviceStateCache;
             }
             set
             {
@@ -94,7 +98,7 @@ namespace SensorLibrary
         //            throw new ArgumentException("Invalid Packet");
         //    }
 
-            //return state;
+        //return state;
 
         //}
 

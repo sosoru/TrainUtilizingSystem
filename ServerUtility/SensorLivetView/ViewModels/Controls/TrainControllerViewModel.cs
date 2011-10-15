@@ -18,14 +18,29 @@ namespace SensorLivetView.ViewModels.Controls
     public class TrainControllerViewModel
         : DeviceViewModel<TrainControllerModel>
     {
-        public TrainControllerViewModel(TrainControllerModel model)
-            : base(model)
+        public TrainControllerViewModel()
+            : base()
         {
-            ViewModelHelper.BindNotifyChanged(this.Model, this,
-                (sender, e) =>
-                {
-                    RaisePropertyChanged(e.PropertyName);
-                });
+        }
+
+        public override TrainControllerModel Model
+        {
+            get
+            {
+                return base.Model;
+            }
+            set
+            {
+                base.Model = value;
+                if (value == null)
+                    return;
+
+                ViewModelHelper.BindNotifyChanged(this.Model, this,
+                   (sender, e) =>
+                   {
+                       RaisePropertyChanged(e.PropertyName);
+                   });
+            }
         }
 
         public double DutyValue

@@ -14,8 +14,9 @@ using SensorLivetView.Models.Devices;
 
 namespace SensorLivetView.ViewModels
 {
-    internal class DeviceViewModelDispatcher<TDevice, TState>
-        where TDevice : class, IDevice<TState>
+    internal class DeviceViewModelDispatcher<TModel, TDevice, TState>
+        where TModel: class, IDeviceModel<IDevice<IDeviceState<IPacketDeviceData>>>
+        where TDevice : class, IDevice<IDeviceState<IPacketDeviceData>>
         where TState : class, IDeviceState<IPacketDeviceData>
         //where TVM : DeviceViewModel<IDeviceModel<TDevice>>
     {
@@ -55,7 +56,9 @@ namespace SensorLivetView.ViewModels
                         if (fact == null)
                             throw new InvalidOperationException("factry is not found");
 
-                        var vm = fact.ViewModelCreate(src) as IDeviceViewModel<IDeviceModel<IDevice<IDeviceState<IPacketDeviceData>>>>;
+                        var vm = fact.ViewModelCreate() as DeviceViewModel<TModel>;
+                        vm.Model = fact.ModelCreate() as TModel;
+                        (vm.Model as DeviceModel<TDevice>).TargetDevice = src;
                         if (vm == null)
                             throw new InvalidOperationException("invalid viewmodel");
                         return vm ;

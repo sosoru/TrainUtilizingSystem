@@ -30,6 +30,7 @@ namespace SensorLibrary
 
         void Observe(IObservable<IDeviceState<IPacketDeviceData>> observable);
         void SendPacket(IDeviceState<IPacketDeviceData> packet);
+        IObservable<EventPattern<PacketReceiveEventArgs>> GetNextObservable { get; }
 
         event PacketReceivedDelegate<TState> PacketReceived;
     }
@@ -145,9 +146,12 @@ namespace SensorLibrary
             }
         }
 
-        public IObservable<EventPattern<PacketReceiveEventArgs>> GetNextObservable()
+        public IObservable<EventPattern<PacketReceiveEventArgs>> GetNextObservable
         {
-            return Observable.FromEventPattern<PacketReceivedDelegate<TState>, PacketReceiveEventArgs>((del) => PacketReceived += del, (del) => PacketReceived -= del);
+            get
+            {
+                return Observable.FromEventPattern<PacketReceivedDelegate<TState>, PacketReceiveEventArgs>((del) => PacketReceived += del, (del) => PacketReceived -= del);
+            }
         }
 
         public override string ToString()
@@ -174,5 +178,12 @@ namespace SensorLibrary
             if (this.Unsubscriber != null)
                 this.Unsubscriber.Dispose();
         }
+
+
+        public void OnNext(TState value)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

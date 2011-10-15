@@ -20,25 +20,40 @@ namespace SensorLivetView.ViewModels.Controls
         : DeviceViewModel<TrainSensorModel>
     {
 
-        public TrainSensorViewModel(TrainSensorModel model)
-            : base(model)
+        public TrainSensorViewModel()
+            : base()
         {
             //this.Model.TimerOverflowed += new EventHandler((sender, e) => RaisePropertyChanged(""));
             this.ReflectorInterval = 5.0;
 
-            ViewModelHelper.BindNotifyChanged(
-                model,
-                this,
-                (sender, e) =>
-                {
-                    RaisePropertyChanged(e.PropertyName);
-                    if (e.PropertyName == "IsMeisuringMode")
-                    {
-                        RaisePropertyChanged(() => VoltageGraphVm);
-                    }
+        }
 
-                }
-            );
+        public override TrainSensorModel Model
+        {
+            get
+            {
+                return base.Model;
+            }
+            set
+            {
+                base.Model = value;
+                if (value == null)
+                    return;
+
+                ViewModelHelper.BindNotifyChanged(
+                    this.Model,
+                    this,
+                    (sender, e) =>
+                    {
+                        RaisePropertyChanged(e.PropertyName);
+                        if (e.PropertyName == "IsMeisuringMode")
+                        {
+                            RaisePropertyChanged(() => VoltageGraphVm);
+                        }
+
+                    }
+                );
+            }
         }
 
         public bool IsDetectingMode
@@ -102,7 +117,7 @@ namespace SensorLivetView.ViewModels.Controls
                 return false;
 
             double castedparam;
-            double.TryParse(parameter as string,out castedparam);
+            double.TryParse(parameter as string, out castedparam);
             if (castedparam == 0.0)
                 return false;
 

@@ -3,7 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using System.Windows;
+using System.Windows.Threading;
+
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+
 using Livet;
+using SensorLibrary;
 
 namespace SensorLivetView.Models.Devices
 {
@@ -22,5 +29,22 @@ namespace SensorLivetView.Models.Devices
          * Model同士でNotificatorを使用した通知を行う場合はNotificatorHelper、
          * ViewModelへNotificatorを使用した通知を行う場合はViewModelHelperを使用して受信側の登録をしてください。
          */
+
+        public DeviceServerModel ParentServer { get; private set; }
+
+        public Func<DeviceModel<IDevice<IDeviceState<IPacketDeviceData>>>, bool> Predicate { get;  set; }
+
+        private  ObservableCollection<IDeviceModel<IDevice<IDeviceState<IPacketDeviceData>>>> activeDevices
+            = new ObservableCollection<IDeviceModel<IDevice<IDeviceState<IPacketDeviceData>>>>();
+        public ReadOnlyObservableCollection<IDeviceModel<IDevice<IDeviceState<IPacketDeviceData>>>> ActiveDevices
+        {
+            get { return new ReadOnlyObservableCollection<IDeviceModel<IDevice<IDeviceState<IPacketDeviceData>>>>(this.activeDevices); }
+        }
+
+        public DeviceServerQueryModel(DeviceServerModel serv)
+        {
+            this.ParentServer = serv;          
+            
+        }
     }
 }

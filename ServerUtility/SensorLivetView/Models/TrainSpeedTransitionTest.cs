@@ -134,7 +134,7 @@ namespace SensorLivetView.Models
 
                         try
                         {
-                            var resobsv = Observable.SubscribeOn(this.targetSensor.GetNextObservable(), Scheduler.NewThread)
+                            var resobsv = Observable.SubscribeOn(this.targetSensor.GetNextObservable, Scheduler.NewThread)
                                                     .Timeout(new DateTimeOffset(DateTime.Now, new TimeSpan(0, 1, 0)))
                                                     .Select((f) => this.targetSensor.CalculateSpeed(this.ReflectorInterval))
                                                     .Do((val) => this.serialize(ctrlstate, tsstate, val));

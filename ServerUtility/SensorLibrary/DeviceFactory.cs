@@ -27,33 +27,34 @@ namespace SensorLibrary
             where TState : class, IDeviceState<TData>, new()
             where TData : IPacketDeviceData, new()
         {
-            public devfactint()
+            public devfactint(ModuleTypeEnum mtype)
             {
                 DeviceCreate = () => new TDev();
                 DeviceStateCreate = () => new TState();
                 DeviceDataCreate = () => new TData();
+
+                this.ModuleType = mtype;
             }
 
             public Func<TDev> DeviceCreate { get; private set; }
             public Func<TState> DeviceStateCreate { get; private set; }
-            public Func<TData> DeviceDataCreate { get;  private set; }
+            public Func<TData> DeviceDataCreate { get; private set; }
             public ModuleTypeEnum ModuleType { get; private set; }
         }
-
         public static readonly IDeviceFactory<MotherBoard, MotherBoardState, MotherBoardData> MotherBoardFactory
-            = new devfactint<MotherBoard, MotherBoardState, MotherBoardData>();
+            = new devfactint<MotherBoard, MotherBoardState, MotherBoardData>(ModuleTypeEnum.MotherBoard);
 
         public static readonly IDeviceFactory<PointModule, PointModuleState, PointModuleData> PointModuleFactory
-            = new devfactint<PointModule, PointModuleState, PointModuleData>();
+            = new devfactint<PointModule, PointModuleState, PointModuleData>(ModuleTypeEnum.PointModule);
 
         public static readonly IDeviceFactory<TrainSensor, TrainSensorState, TrainSensorData> TrainSensorFactory
-            = new devfactint<TrainSensor, TrainSensorState, TrainSensorData>();
+            = new devfactint<TrainSensor, TrainSensorState, TrainSensorData>(ModuleTypeEnum.TrainSensor);
 
         public static readonly IDeviceFactory<TrainController, TrainControllerState, TrainControllerData> TrainControllerFactory
-             = new devfactint<TrainController, TrainControllerState, TrainControllerData>();
+             = new devfactint<TrainController, TrainControllerState, TrainControllerData>(ModuleTypeEnum.TrainController);
 
         public static readonly IDeviceFactory<RemoteModule, RemoteModuleState, RemoteModuleData> RemoteModuleFactory
-             = new devfactint<RemoteModule, RemoteModuleState, RemoteModuleData>();
+             = new devfactint<RemoteModule, RemoteModuleState, RemoteModuleData>(ModuleTypeEnum.RemoteModule);
 
         public static readonly IEnumerable<IDeviceFactory<IDevice<IDeviceState<IPacketDeviceData>>, IDeviceState<IPacketDeviceData>, IPacketDeviceData>> AvailableDeviceTypes
             = new ReadOnlyCollection<IDeviceFactory<IDevice<IDeviceState<IPacketDeviceData>>, IDeviceState<IPacketDeviceData>, IPacketDeviceData>>

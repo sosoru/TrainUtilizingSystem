@@ -29,12 +29,10 @@ namespace SensorLivetView.Models.Devices
          * ViewModelへNotificatorを使用した通知を行う場合はViewModelHelperを使用して受信側の登録をしてください。
          */
 
-        public TrainControllerModel(TrainController controller)
+        public TrainControllerModel()
             : base()
         {
-            this.TargetDevice = controller;
-
-            this.TargetDevice.PacketReceived += (sender, e) =>
+            this.PacketReceivedProcess = (sender, e) =>
                 {
                     var bef  = e.beforestate as TrainControllerState;
                     var cur = e.state as TrainControllerState;
@@ -42,8 +40,10 @@ namespace SensorLivetView.Models.Devices
                     if (bef == null && cur == null)
                         return;
                     else if (bef == null || cur == null)
+                    {
                         RaisePropertyChanged("");
-
+                        return;
+                    }
 
                     if (bef.Duty != cur.Duty)
                     {

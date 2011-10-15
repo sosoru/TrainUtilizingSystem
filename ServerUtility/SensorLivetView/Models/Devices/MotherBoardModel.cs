@@ -25,22 +25,24 @@ namespace SensorLivetView.Models.Devices
          * ViewModelへNotificatorを使用した通知を行う場合はViewModelHelperを使用して受信側の登録をしてください。
          */
 
-        public MotherBoardModel(MotherBoard mboard)
+        public MotherBoardModel()
         {
-            this.TargetDevice = mboard;
-
-            this.TargetDevice.PacketReceived += (sender, e) =>
+            this.PacketReceivedProcess += (sender, e) =>
                 {
                     var bef=  e.beforestate as MotherBoardState;
                     var cur = e.state as MotherBoardState;
                     if (bef == null && cur == null)
                         return;
                     else if (bef == null || cur == null)
+                    {
                         RaisePropertyChanged("");
+                        return;
+                    }
 
                     if (bef.ParentID != cur.ParentID)
                         RaisePropertyChanged(() => BaseParentID);
                 };
+
         }
 
         public byte BaseParentID

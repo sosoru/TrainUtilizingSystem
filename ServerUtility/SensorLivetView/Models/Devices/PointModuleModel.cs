@@ -25,9 +25,9 @@ namespace SensorLivetView.Models.Devices
          * ViewModelへNotificatorを使用した通知を行う場合はViewModelHelperを使用して受信側の登録をしてください。
          */
 
-        public PointModuleModel(PointModule module)
+        public PointModuleModel()
         {
-            this.TargetDevice = module;            
+
         }
 
         private ReadOnlyObservableCollection<PointModel> _states;

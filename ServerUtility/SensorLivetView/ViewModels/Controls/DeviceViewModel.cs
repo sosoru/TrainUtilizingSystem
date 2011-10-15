@@ -38,10 +38,9 @@ namespace SensorLivetView.ViewModels
             }
         }
         
-        public DeviceViewModel(TModel device)
+        public DeviceViewModel()
             : base()
         {
-            this.Model = device;
             this.Comparer = new DeviceStateComparer();
         }
 

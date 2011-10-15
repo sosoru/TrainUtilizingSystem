@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using System.Reactive.Linq;
+
 using Livet;
 using SensorLibrary;
 
@@ -10,7 +12,7 @@ namespace SensorLivetView.Models.Devices
 {
     public class DeviceModel<TDev>
         : NotifyObject, IDeviceModel<TDev>
-        where TDev: class,  IDevice<IDeviceState<IPacketDeviceData>>
+        where TDev : class,  IDevice<IDeviceState<IPacketDeviceData>>
     {
         /*
          * NotifyObjectはプロパティ変更通知の仕組みを実装したオブジェクトです。
@@ -26,7 +28,33 @@ namespace SensorLivetView.Models.Devices
          * ViewModelへNotificatorを使用した通知を行う場合はViewModelHelperを使用して受信側の登録をしてください。
          */
 
-        public TDev TargetDevice { get; protected set;}
+        private IDisposable sunbscribing;
+
+        private TDev targetDevice;
+        public TDev TargetDevice
+        {
+            get
+            {
+                return this.targetDevice;
+            }
+            set
+            {
+                if (this.targetDevice == null)
+                    if (sunbscribing != null)
+                        this.sunbscribing.Dispose();
+
+                this.targetDevice = value;
+
+                if (targetDevice != null)
+                    this.sunbscribing = this.targetDevice.GetNextObservable
+                            .Subscribe((e) =>
+                            {
+                                if (this.TargetDevice != null && this.PacketReceivedProcess != null)
+                                    this.PacketReceivedProcess(this.TargetDevice, e.EventArgs);
+                            });
+
+            }
+        }
 
         public DeviceID DevID
         {
@@ -52,6 +80,25 @@ namespace SensorLivetView.Models.Devices
             {
                 this.TargetDevice.IsHold = false;
             }
+        }
+
+        private PacketReceivedDelegate<IDeviceState<IPacketDeviceData>> packetReceivedProcess;
+        protected PacketReceivedDelegate<IDeviceState<IPacketDeviceData>> PacketReceivedProcess
+        {
+            get
+            {
+                return this.packetReceivedProcess;
+            }
+            set
+            {
+                this.packetReceivedProcess = value;
+            }
+
+        }
+
+        ~DeviceModel()
+        {
+            this.TargetDevice = null;
         }
     }
 }

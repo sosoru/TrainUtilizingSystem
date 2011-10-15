@@ -89,6 +89,7 @@
     <Compile Include="Models\DeviceManipulatorModel.cs" />
     <Compile Include="Models\Devices\DeviceModel.cs" />
     <Compile Include="Models\Devices\DeviceServerModel.cs" />
+    <Compile Include="Models\Devices\DeviceServerQueryModel.cs" />
     <Compile Include="Models\Devices\IDeviceModel.cs" />
     <Compile Include="Models\Devices\MotherBoardModel.cs" />
     <Compile Include="Models\Devices\MotherBoardPortModel.cs" />

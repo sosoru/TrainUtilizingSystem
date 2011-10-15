@@ -77,7 +77,12 @@ namespace SensorLibrary
 
         private float convertVoltage(ushort resolving)
         {
-            return (float)this.Data.ReferenceVoltageMinus + ((float)(this.Data.ReferenceVoltagePlus - this.Data.ReferenceVoltageMinus) * ((float)resolving / (float)(1 << this.Data.VoltageResolution)));
+            try
+            {
+
+                return (float)this.Data.ReferenceVoltageMinus + ((float)(this.Data.ReferenceVoltagePlus - this.Data.ReferenceVoltageMinus) * ((float)resolving / (float)(1 << this.Data.VoltageResolution)));
+            }
+            catch { Console.WriteLine(); return 0.0f; }
         }
 
         private ushort convertResolving(float voltage)

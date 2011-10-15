@@ -46,29 +46,41 @@ namespace SensorLivetView.ViewModels.Controls
          * 原因となりやすく推奨できません。ViewModelHelperの各静的メソッドの利用を検討してください。
          */
 
-        public PointModuleViewModel(PointModuleModel pm)
-            : base(pm)
+        public PointModuleViewModel()
+            : base()
         {
             this.Comparer = new GenericComparer<IDeviceState<IPacketDeviceData>>((a, b) =>
                                                                                 {
                                                                                     var pa = a as PointModuleState; var pb = b as PointModuleState;
                                                                                     return pa != null && pb != null && pa.Data.Directions.SequenceEqual(pb.Data.Directions);
                                                                                 });
-            ViewModelHelper.BindNotifyChanged(this.Model, this,
-                (sender, e) =>
-                {
-                    RaisePropertyChanged(e.PropertyName);
-
-                    if (e.PropertyName == "States")
-                    {
-                        RaisePropertyChanged(() => PointModels);
-                    }
-                });
         }
 
-        public PointModuleViewModel()
-            : this(null)
-        { }
+        public override PointModuleModel Model
+        {
+            get
+            {
+                return base.Model;
+            }
+            set
+            {
+                base.Model = value;
+                if (value == null)
+                    return;
+
+                ViewModelHelper.BindNotifyChanged(this.Model, this,
+                   (sender, e) =>
+                   {
+                       RaisePropertyChanged(e.PropertyName);
+
+                       if (e.PropertyName == "States")
+                       {
+                           RaisePropertyChanged(() => PointModels);
+                       }
+                   });
+            }
+        }
+
 
         public IEnumerable<PointViewModel> PointModels
         {
@@ -77,7 +89,7 @@ namespace SensorLivetView.ViewModels.Controls
                 return this.Model.States.Select((sta) => new PointViewModel(sta));
             }
         }
-        
+
 
     }
 }

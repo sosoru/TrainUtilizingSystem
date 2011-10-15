@@ -15,18 +15,34 @@ namespace SensorLivetView.ViewModels.Controls
     public class MotherBoardViewModel
         : DeviceViewModel<MotherBoardModel>
     {
-        public MotherBoardViewModel(MotherBoardModel model)
-            : base(model)
+        public MotherBoardViewModel()
+            : base()
         {
-            ViewModelHelper.BindNotifyChanged(this.Model, this,
-                (sender, e) =>
-                {
-                    RaisePropertyChanged(e.PropertyName);
-                    if (e.PropertyName == "Ports")
+        }
+
+        public override MotherBoardModel Model
+        {
+            get
+            {
+                return base.Model;
+            }
+            set
+            {
+                base.Model = value;
+
+                if (value == null)
+                    return;
+
+                ViewModelHelper.BindNotifyChanged(this.Model, this,
+                    (sender, e) =>
                     {
-                        RaisePropertyChanged("PortViewModels");
-                    }
-                });
+                        RaisePropertyChanged(e.PropertyName);
+                        if (e.PropertyName == "Ports")
+                        {
+                            RaisePropertyChanged("PortViewModels");
+                        }
+                    });
+            }
         }
 
         public int BaseParentID

@@ -70,7 +70,8 @@ namespace SensorLivetView.Models.Devices
                 dev.Observe(this.Dispatcher);
 
                 var modelfact = DeviceViewModelFactory.Factries.FirstOrDefault(f => f.ModuleType == dev.ModuleType);
-                devmodel = modelfact.ModelCreate(dev);
+                devmodel = modelfact.ModelCreate();
+                //devmodel.TargetDevice = dev;
 
                 this.activeDevices.Add(devmodel);
 

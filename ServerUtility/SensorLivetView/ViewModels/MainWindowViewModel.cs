@@ -65,19 +65,19 @@ namespace SensorLivetView.ViewModels
             {
                 this._associatedDispatcher = value;
 
-                this.motherboardVmDispat = this.createDispat<MotherBoard, MotherBoardState>();
-                this.tsensorVmDispat = this.createDispat<TrainSensor, TrainSensorState>();
-                this.tcontrollerDispat = this.createDispat<TrainController, TrainControllerState>();
-                this.pmoduleDispat = this.createDispat<PointModule, PointModuleState>();
+                this.motherboardVmDispat = this.createDispat<MotherBoardModel, MotherBoard, MotherBoardState>();
+                this.tsensorVmDispat = this.createDispat<TrainSensorModel,  TrainSensor, TrainSensorState>();
+                this.tcontrollerDispat = this.createDispat<TrainControllerModel, TrainController, TrainControllerState>();
+                this.pmoduleDispat = this.createDispat<PointModuleModel, PointModule, PointModuleState>();
 
                 this.motherboardVmDispat.projected.CollectionChanged += (sender, e) => RaisePropertyChanged(() => AvailableMotherBoardVMs);
                 this.tsensorVmDispat.projected.CollectionChanged += (sender, e) => RaisePropertyChanged(() => AvailableTrainSensorVMs);
                 this.tcontrollerDispat.projected.CollectionChanged += (sender, e) => RaisePropertyChanged(() => AvailableTrainControllerVMs);
                 this.pmoduleDispat.projected.CollectionChanged += (sender, e) => RaisePropertyChanged(() => AvailablePointModuleVMs);
-//#if TEST
-//                if (!this.OpeningServers.Contains(this.testserv))
-//                    this.OpeningServers.Add(this.testserv);
-//#endif
+#if TEST
+                if (!this.OpeningServers.Contains(this.testserv))
+                    this.OpeningServers.Add(this.testserv);
+#endif
             }
         }
 
@@ -208,7 +208,7 @@ namespace SensorLivetView.ViewModels
             }
         }
 
-        private DeviceViewModelDispatcher<MotherBoard, MotherBoardState> motherboardVmDispat;
+        private DeviceViewModelDispatcher<MotherBoardModel, MotherBoard, MotherBoardState> motherboardVmDispat;
         public IEnumerable<MotherBoardViewModel> AvailableMotherBoardVMs
         {
             get
@@ -220,7 +220,7 @@ namespace SensorLivetView.ViewModels
             }
         }
 
-        private DeviceViewModelDispatcher<TrainSensor, TrainSensorState> tsensorVmDispat;
+        private DeviceViewModelDispatcher<TrainSensorModel, TrainSensor, TrainSensorState> tsensorVmDispat;
         public IEnumerable<TrainSensorViewModel> AvailableTrainSensorVMs
         {
             get
@@ -232,7 +232,7 @@ namespace SensorLivetView.ViewModels
             }
         }
 
-        private DeviceViewModelDispatcher<TrainController, TrainControllerState> tcontrollerDispat;
+        private DeviceViewModelDispatcher<TrainControllerModel, TrainController, TrainControllerState> tcontrollerDispat;
         public IEnumerable<TrainControllerViewModel> AvailableTrainControllerVMs
         {
             get
@@ -244,7 +244,7 @@ namespace SensorLivetView.ViewModels
             }
         }
 
-        private DeviceViewModelDispatcher<PointModule, PointModuleState> pmoduleDispat;
+        private DeviceViewModelDispatcher<PointModuleModel, PointModule, PointModuleState> pmoduleDispat;
         public IEnumerable<PointModuleViewModel> AvailablePointModuleVMs
         {
             get
@@ -257,12 +257,13 @@ namespace SensorLivetView.ViewModels
 
         }
 
-        private DeviceViewModelDispatcher<TDevice, TState> createDispat<TDevice, TState>()
-            where TDevice : class, IDevice<TState>
+        private DeviceViewModelDispatcher<TModel, TDevice, TState> createDispat<TModel, TDevice, TState>()
+            where TModel: class, IDeviceModel<IDevice<IDeviceState<IPacketDeviceData>>>
+            where TDevice : class, IDevice<IDeviceState<IPacketDeviceData>>
             where TState : class, IDeviceState<IPacketDeviceData>
         //where TVM : DeviceViewModel<DeviceModel<TDevice>>
         {
-            return new DeviceViewModelDispatcher<TDevice, TState>()
+            return new DeviceViewModelDispatcher<TModel, TDevice, TState>()
             {
                 dispat = new PacketDispatcherSingle<TDevice, TState>(),
                 projected = new ObservableWrappingCollectionOnDispat<TDevice, IDeviceViewModel<IDeviceModel<IDevice<IDeviceState<IPacketDeviceData>>>>>()
