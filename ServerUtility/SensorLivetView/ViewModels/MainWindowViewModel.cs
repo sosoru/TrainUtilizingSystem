@@ -66,7 +66,7 @@ namespace SensorLivetView.ViewModels
                 this._associatedDispatcher = value;
 
                 this.motherboardVmDispat = this.createDispat<MotherBoardModel, MotherBoard, MotherBoardState>();
-                this.tsensorVmDispat = this.createDispat<TrainSensorModel,  TrainSensor, TrainSensorState>();
+                this.tsensorVmDispat = this.createDispat<TrainSensorModel, TrainSensor, TrainSensorState>();
                 this.tcontrollerDispat = this.createDispat<TrainControllerModel, TrainController, TrainControllerState>();
                 this.pmoduleDispat = this.createDispat<PointModuleModel, PointModule, PointModuleState>();
 
@@ -74,10 +74,13 @@ namespace SensorLivetView.ViewModels
                 this.tsensorVmDispat.projected.CollectionChanged += (sender, e) => RaisePropertyChanged(() => AvailableTrainSensorVMs);
                 this.tcontrollerDispat.projected.CollectionChanged += (sender, e) => RaisePropertyChanged(() => AvailableTrainControllerVMs);
                 this.pmoduleDispat.projected.CollectionChanged += (sender, e) => RaisePropertyChanged(() => AvailablePointModuleVMs);
-#if TEST
-                if (!this.OpeningServers.Contains(this.testserv))
-                    this.OpeningServers.Add(this.testserv);
-#endif
+//#if TEST
+//                if (!this.OpeningServers.Contains(this.testserv))
+//                {
+//                    this.OpeningServers.Add(this.testserv);
+//                    LoggingStart(this.testserv);
+//                }
+//#endif
             }
         }
 
@@ -140,7 +143,7 @@ namespace SensorLivetView.ViewModels
                                                        .SetTrainSensors(new DeviceID(1, 3))
                                                        .SetTrainSensors(new DeviceID(1, 4))
                                                        .SetPointModules(new DeviceID(1, 5))
-                                                       .SetController(new DeviceID(1,6))
+                                                       .SetController(new DeviceID(1, 6))
                                                        .ToEnumerable();
                     var testserv = new TestServer(testenum);
                     //testdisp.ReceivedMotherBoardChanged += (sender, e) => this.RaisePropertyChanged("");
@@ -150,6 +153,20 @@ namespace SensorLivetView.ViewModels
                 return this._cache_testserv;
             }
         }
+
+#if TEST
+
+        System.IO.StreamWriter logsw = new System.IO.StreamWriter("log.csv");
+        private void LoggingStart(PacketServer serv)
+        {
+
+            var logging = new PacketServerAction((state) => Console.WriteLine(state.ToString()));
+            var putting = new PacketServerAction(state => logsw.WriteLine(state.ToString()));
+            
+            serv.AddAction(logging);
+            serv.AddAction(putting);
+        }
+#endif
 
         private void listenDevice(UsbRegistryModel usbm)
         {
@@ -172,8 +189,7 @@ namespace SensorLivetView.ViewModels
             var serv = new PacketServer(st);
 
 #if TEST
-            var logging = new PacketServerAction((state) => Console.WriteLine(state.ToString()));
-            serv.AddAction(logging);
+            LoggingStart(serv);
 #endif
 
             if (!serv.IsLooping)
@@ -259,7 +275,7 @@ namespace SensorLivetView.ViewModels
         }
 
         private DeviceViewModelDispatcher<TModel, TDevice, TState> createDispat<TModel, TDevice, TState>()
-            where TModel: class, IDeviceModel<IDevice<IDeviceState<IPacketDeviceData>>>
+            where TModel : class, IDeviceModel<IDevice<IDeviceState<IPacketDeviceData>>>
             where TDevice : class, IDevice<IDeviceState<IPacketDeviceData>>
             where TState : class, IDeviceState<IPacketDeviceData>
         //where TVM : DeviceViewModel<DeviceModel<TDevice>>

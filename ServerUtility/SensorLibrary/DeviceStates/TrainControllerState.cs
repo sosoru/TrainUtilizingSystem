@@ -200,5 +200,21 @@ namespace SensorLibrary
 
         }
 
+        public override string ToString()
+        {
+            var str = string.Format("({0}, {1}), Freq={2}, D={3}, Vol={4}, mVol={5}, mVol2={6}, p={7}, i={8}, d={9}",
+                                        this.BasePacket.ID.ParentPart,
+                                        this.BasePacket.ID.ModulePart,
+                                        this.PWMFreqency,
+                                        this.Duty,
+                                        this.Voltage,
+                                        this.MeisuredVoltage,
+                                        this.MeisuredVoltage2,
+                                        this.PidParams.paramp,
+                                        this.PidParams.parami,
+                                        this.PidParams.paramd);
+            return str;
+        }
+
     }
 }

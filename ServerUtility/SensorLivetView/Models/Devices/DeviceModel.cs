@@ -63,6 +63,7 @@ namespace SensorLivetView.Models.Devices
                 return this.TargetDevice.DeviceID;
             }
         }
+       
 
         internal void ModifyState(Action act)
         {
