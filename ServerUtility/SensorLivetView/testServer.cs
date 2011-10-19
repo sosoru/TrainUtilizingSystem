@@ -105,6 +105,24 @@ namespace SensorLivetView
             return setStack(() => new [] { state });
         }
 
+        public TestEnumerable SetController(DeviceID id)
+        {
+            var data  = new TrainControllerData();
+
+            data.mode = TrainControllerMode.Duty;
+            data.duty = 0;
+            data.direction = TrainControllerDirection.Positive;
+
+            var stat = new TrainControllerState()
+            {
+                BasePacket = new DevicePacket() { ID = id, ModuleType = ModuleTypeEnum.TrainController },
+                Data = data,
+
+            };
+
+            return setStack(() => new [] { stat });
+        }
+
         public IEnumerable<DevicePacket> ToEnumerable()
         {
             return this.stacking;
@@ -158,7 +176,7 @@ namespace SensorLivetView
 
         public override bool CanWrite
         {
-            get { return false; }
+            get { return true; }
         }
 
         public override void Flush()

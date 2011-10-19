@@ -349,7 +349,7 @@ void main()
 		if(USBDeviceState == DETACHED_STATE)
 		{
 			USBDeviceAttach();
-			Delay10KTCYx(200);
+			//Delay10KTCYx(200);
 			//Delay10KTCYx(200);
 		}
 		

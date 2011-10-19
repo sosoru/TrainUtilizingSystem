@@ -140,6 +140,7 @@ namespace SensorLivetView.ViewModels
                                                        .SetTrainSensors(new DeviceID(1, 3))
                                                        .SetTrainSensors(new DeviceID(1, 4))
                                                        .SetPointModules(new DeviceID(1, 5))
+                                                       .SetController(new DeviceID(1,6))
                                                        .ToEnumerable();
                     var testserv = new TestServer(testenum);
                     //testdisp.ReceivedMotherBoardChanged += (sender, e) => this.RaisePropertyChanged("");

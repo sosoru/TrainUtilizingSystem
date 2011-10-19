@@ -9,14 +9,14 @@ namespace SensorLibrary
         : DeviceState<TrainControllerData>
     {
         public TrainControllerState()
-            :base()
+            : base()
         {
         }
 
 
         private ushort getmask(byte cnt)
         {
-            return (ushort)((1 << cnt) -1);
+            return (ushort)((1 << cnt) - 1);
         }
 
         private ushort dutyMask
@@ -48,12 +48,12 @@ namespace SensorLibrary
 
         public double EssentialDutyResolution
         {
-            get { return Math.Log10(this.DeviceFrequency / this.PWMFreqency) / Math.Log10(2);}
+            get { return Math.Log10(this.DeviceFrequency / this.PWMFreqency) / Math.Log10(2); }
         }
 
         public bool IsSatisfiedDutyResolution
         {
-            get { return this.EssentialDutyResolution >= this.DutyResolution;}
+            get { return this.EssentialDutyResolution >= this.DutyResolution; }
         }
 
         public byte DeviceRegisteredPeriod
@@ -86,7 +86,7 @@ namespace SensorLibrary
                 if (!(value == 1 || value == 4 || value == 16))
                     throw new InvalidOperationException("invalid prescale");
 
-                TrainControllerPrescale scale = TrainControllerPrescale.PS_1_1 ;
+                TrainControllerPrescale scale = TrainControllerPrescale.PS_1_1;
                 switch (value)
                 {
                     case 1:
@@ -186,19 +186,19 @@ namespace SensorLibrary
             {
                 return new PidParams()
                 {
-                    paramp = this.Data.paramp,
-                    parami = this.Data.parami,
-                    //paramd = this.Data.paramd,
+                    paramp = 1.0f * this.Data.paramp / 255.0f,
+                    parami = 1.0f * this.Data.parami / 255.0f,
+                    paramd = 1.0f * this.Data.paramd / 255.0f,
                 };
             }
             set
             {
-                this.Data.paramp = value.paramp;
-                this.Data.parami = value.parami;
-                //this.Data.paramd = value.paramd;
+                this.Data.paramp = (byte)(value.paramp * 255.0f);
+                this.Data.parami = (byte)(value.parami * 255.0f);
+                this.Data.paramd = (byte)(value.paramd * 255.0f);
             }
-        
+
         }
-        
+
     }
 }

@@ -2,6 +2,7 @@
 #include "../Headers/TrainController.h"
 #include "../Headers/PortMapping.h"
 #include <stdlib.h>
+#include <math.h>
 #include <string.h>
 #include <timers.h>
 #include <delays.h>
@@ -16,26 +17,26 @@
 
 #if defined VERSION_REV2
 
-#define FEEDBACK_CHANNELA ADC_CH3
-#define FEEDBACK_CHANNELB ADC_CH4
+#define FEEDBACK_CHANNEL_A ADC_CH3
+#define FEEDBACK_CHANNEL_B ADC_CH4
 #define DUTYCONTROL_CHANNEL ADC_CH5
 
-#define PORT_DIRECTION_POS LATEbits.LATE1
-#define PORT_DIRECTION_NEG LATEbits.LATE2
-#define PORT_FEEDBACKA PORTAbits.RA3
-#define PORT_FEEDBACKB PORTAbits.RA5
-#define PORT_PWMSIGNALB PORTCbits.RC1
-#define PORT_PWMSIGNALA PORTCbits.RC2
+#define PORT_DIRECTION_A LATEbits.LATE1
+#define PORT_DIRECTION_B LATEbits.LATE2
+#define PORT_FEEDBACK_A PORTAbits.RA3
+#define PORT_FEEDBACK_B PORTAbits.RA5
+#define PORT_PWMSIGNAL_B PORTCbits.RC1
+#define PORT_PWMSIGNAL_A PORTCbits.RC2
 #define PORT_DUTYCONTROL PORTEbits.RE0
 #define PORT_CONTROLSWITCH PORTAbits.RA4
 #define PORT_DIRECTION PORTCbits.RC0
 
-#define TRIS_DIRECTION_POS TRISEbits.TRISE1
-#define TRIS_DIRECTION_NEG TRISEbits.TRISE2
-#define TRIS_FEEDBACKA TRISAbits.TRISA3
-#define TRIS_FEEDBACKB TRISAbits.TRISA5
-#define TRIS_PWMSIGNALB TRISCbits.TRISC1
-#define TRIS_PWMSIGNALA TRISCbits.TRISC2
+#define TRIS_DIRECTION_A TRISEbits.TRISE1
+#define TRIS_DIRECTION_B TRISEbits.TRISE2
+#define TRIS_FEEDBACK_A TRISAbits.TRISA3
+#define TRIS_FEEDBACK_B TRISAbits.TRISA5
+#define TRIS_PWMSIGNAL_B TRISCbits.TRISC1
+#define TRIS_PWMSIGNAL_A TRISCbits.TRISC2
 #define TRIS_DUTYCONTROL TRISEbits.TRISE0
 #define TRIS_CONTROLSWITCH TRISAbits.TRISA4
 #define TRIS_DIRECTION TRISCbits.TRISC0
@@ -71,9 +72,10 @@ void ChangePWM()
 		ClosePWM2();
 #if defined VERSION_REV2
 		
-		//PORT_PWMSIGNALB = 0;
-		PORT_DIRECTION_NEG = 0;
-		PORT_DIRECTION_POS = 1;
+		PORT_PWMSIGNAL_B = 0;
+		PORT_DIRECTION_B = 0;
+		
+		PORT_DIRECTION_A = 1;
 		
 #endif
 		OpenPWM1(g_cacheState.period);
@@ -85,9 +87,10 @@ void ChangePWM()
 
 #if defined VERSION_REV2
 		
-		//PORT_PWMSIGNALA = 0;
-		PORT_DIRECTION_POS = 0;
-		PORT_DIRECTION_NEG = 1;
+		PORT_PWMSIGNAL_A = 0;
+		PORT_DIRECTION_A = 0;
+		
+		PORT_DIRECTION_B = 1;
 
 #endif		
 		OpenPWM2(g_cacheState.period);
@@ -137,28 +140,28 @@ HRESULT InitTrainController(DeviceID * pid)
 	g_cacheState.meisuredvoltage = 0;
 	g_cacheState.meisuredvoltage2 = 0;
 	
-	g_cacheState.paramp = 1.0f;
-	g_cacheState.parami = 0.0f;
+	g_cacheState.paramp = 0.3f;
+	g_cacheState.parami = 0.2f;
 //	g_cacheState.paramd = 0.0f;
 			
 #if defined VERSION_REV2
 
-	TRIS_DIRECTION_POS = OUTPUT_PIN;
-	TRIS_DIRECTION_NEG = OUTPUT_PIN;
-	TRIS_FEEDBACKA = INPUT_PIN;
-	TRIS_FEEDBACKB = INPUT_PIN;
-	TRIS_PWMSIGNALA = OUTPUT_PIN;
-	TRIS_PWMSIGNALB = OUTPUT_PIN;
+	TRIS_DIRECTION_A = OUTPUT_PIN;
+	TRIS_DIRECTION_B = OUTPUT_PIN;
+	TRIS_FEEDBACK_A = INPUT_PIN;
+	TRIS_FEEDBACK_B = INPUT_PIN;
+	TRIS_PWMSIGNAL_A = OUTPUT_PIN;
+	TRIS_PWMSIGNAL_B = OUTPUT_PIN;
 	TRIS_DUTYCONTROL = INPUT_PIN;
 	TRIS_CONTROLSWITCH = INPUT_PIN;
 	TRIS_DIRECTION = INPUT_PIN;
 	
 	OpenADC(ADC_FOSC_64 & ADC_RIGHT_JUST & ADC_8_TAD,
-	FEEDBACK_CHANNELA & ADC_INT_OFF & ADC_VREFPLUS_VDD & ADC_VREFMINUS_VSS,
+	FEEDBACK_CHANNEL_A & ADC_INT_OFF & ADC_VREFPLUS_VDD & ADC_VREFMINUS_VSS,
 	AD_PORT);
 	
 	OpenADC(ADC_FOSC_64 & ADC_RIGHT_JUST & ADC_8_TAD,
-	FEEDBACK_CHANNELB & ADC_INT_OFF & ADC_VREFPLUS_VDD & ADC_VREFMINUS_VSS,
+	FEEDBACK_CHANNEL_B & ADC_INT_OFF & ADC_VREFPLUS_VDD & ADC_VREFMINUS_VSS,
 	AD_PORT);
 	
 	OpenADC(ADC_FOSC_64 & ADC_RIGHT_JUST & ADC_8_TAD,
@@ -270,7 +273,7 @@ HRESULT StoreTrainControllerState(DeviceID * pid, PMODULE_DATA data)
 void InterruptTrainController(DeviceID * pid)
 {
 	BYTE i;
-	unsigned int meisuringCount= 1;
+	unsigned int meisuringCount= 10;
 	unsigned int AveVoltage =0;
 	int df=0;
 
@@ -288,13 +291,13 @@ void InterruptTrainController(DeviceID * pid)
 		g_cacheState.meisuredvoltage = 0;
 		g_cacheState.meisuredvoltage2 = 0;
 		
-		PORT_DIRECTION_POS = 1;
-		PORT_DIRECTION_NEG = 1;
+		PORT_DIRECTION_A = 1;
+		PORT_DIRECTION_B = 1;
 		
-		Delay1KTCYx(1);	
+		Delay1KTCYx(5);	
 		
 		g_usingAdc = TRUE;
-		SetChanADC(FEEDBACK_CHANNELA);
+		SetChanADC(FEEDBACK_CHANNEL_A);
 		for(i=0; i<meisuringCount; ++i)
 		{
 			ConvertADC();
@@ -303,7 +306,7 @@ void InterruptTrainController(DeviceID * pid)
 		}
 		g_cacheState.meisuredvoltage /= meisuringCount;
 		
-		SetChanADC(FEEDBACK_CHANNELB);
+		SetChanADC(FEEDBACK_CHANNEL_B);
 		for(i=0; i<meisuringCount; ++i)
 		{
 			ConvertADC();
@@ -320,7 +323,10 @@ void InterruptTrainController(DeviceID * pid)
 	if (PORT_CONTROLSWITCH)
 	{
 		unsigned int vol;
-		
+		df = (int)g_cacheState.meisuredvoltage - (int)g_cacheState.meisuredvoltage2;
+		if(df<0)
+			df = -df;
+				
 		g_usingAdc = TRUE;
 		
 		SetChanADC(DUTYCONTROL_CHANNEL);
@@ -335,11 +341,23 @@ void InterruptTrainController(DeviceID * pid)
 		else
 			vol -= 150;
 		
-		g_cacheState.duty = vol;
-		g_cacheState.period = 0xFF;
+		df = vol - df;
 		g_cacheState.direction = PORT_DIRECTION;
-		g_cacheState.prescale = PRESCALE_DEFAULT;
 		g_cacheState.mode = MODE_TRAINCONTROLLER_ONDEVICE;
+		
+		internal_duty += ((1.0f * g_cacheState.paramp / 255.0f) * ((float)(df - voltageDif_1))  
+					   + (1.0f * g_cacheState.parami / 255.0f) * ((float)df)) ;
+					   + (1.0f * g_cacheState.paramd / 255.0f) * ((float)((voltageDif_1 - df) - (voltageDif_2 - voltageDif_1))));
+		
+		if(internal_duty < 0.0f)
+			internal_duty = 0.0f;
+		else if (internal_duty > 800.0f)
+			internal_duty = 800.0f;
+
+		voltageDif_2 = voltageDif_1;
+		voltageDif_1 = df;
+				
+		g_cacheState.duty = (unsigned int)internal_duty;				 
 		 
 	}
 	else

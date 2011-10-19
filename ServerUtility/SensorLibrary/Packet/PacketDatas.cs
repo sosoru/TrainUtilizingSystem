@@ -81,9 +81,9 @@ namespace SensorLibrary
         public byte voltageEnabledBits;
         public ushort meisuredVoltage;
 
-        public float paramp;
-        public float parami;
-        //public float paramd;
+        public byte paramp;
+        public byte parami;
+        public byte paramd;
 
         public ushort meisuredVoltage2;
     }

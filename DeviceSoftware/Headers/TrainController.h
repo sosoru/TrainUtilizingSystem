@@ -36,9 +36,9 @@ typedef union tag_TrainControllerState
 		BYTE voltageEnabledBits;
 		unsigned int meisuredvoltage;
 		
-		float paramp;
-		float parami;
-		//float paramd;
+		byte paramp;
+		byte parami;
+		byte paramd;
 		unsigned int meisuredvoltage2;
 		
 	};
