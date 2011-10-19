@@ -35,6 +35,7 @@
 				<RowDefinition Height="Auto"/>
 				<RowDefinition Height="Auto"/>
 				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
 			</Grid.RowDefinitions>
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="80"/>
@@ -64,12 +65,14 @@
 			<Slider d:LayoutOverrides="Height" Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="3" Maximum="1023" Value="{Binding Voltage}" SmallChange="1"/>
 			<TextBlock Grid.Row="6" TextWrapping="Wrap" Text="Voltage" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 			<ProgressBar Grid.ColumnSpan="3" Grid.Column="1" Grid.Row="7" Maximum="1023" Value="{Binding MeisuredVoltage, Mode=OneWay}" Height="20"/>
-			<Slider Grid.Column="1" Grid.Row="8" Grid.ColumnSpan="3" Maximum="1" Minimum="0" SmallChange="0.01" LargeChange="0.1" Value="{Binding ParamP, Mode=TwoWay}"/>
-            <Slider Grid.Column="1" Grid.Row="9" Grid.ColumnSpan="3" Maximum="1" Minimum="0"  SmallChange="0.01" LargeChange="0.1" Value="{Binding ParamI, Mode=TwoWay}"/>
+			<Slider Grid.Column="1" Grid.Row="9" Grid.ColumnSpan="3" Maximum="1" Minimum="0" SmallChange="0.01" LargeChange="0.1" Value="{Binding ParamP, Mode=TwoWay}"/>
+            <Slider Grid.Column="1" Grid.Row="10" Grid.ColumnSpan="3" Maximum="1" Minimum="0"  SmallChange="0.01" LargeChange="0.1" Value="{Binding ParamI, Mode=TwoWay}" Margin="0,-1,0,1"/>
 			<TextBlock Grid.Row="7" TextWrapping="Wrap" Text="Voltage" HorizontalAlignment="Center"/>
-			<TextBlock Grid.Row="8" TextWrapping="Wrap" Text="P" HorizontalAlignment="Center"/>
-			<TextBlock Grid.Row="9" TextWrapping="Wrap" Text="I" HorizontalAlignment="Center"/>
-			<ProgressBar Grid.ColumnSpan="3" Grid.Column="1" Grid.Row="10" Height="20" Maximum="1023" Value="{Binding MeisuredVoltage2, Mode=OneWay}"/>
+			<TextBlock Grid.Row="9" TextWrapping="Wrap" Text="P" HorizontalAlignment="Center"/>
+			<TextBlock Grid.Row="10" TextWrapping="Wrap" Text="I" HorizontalAlignment="Center"/>
+			<ProgressBar Grid.ColumnSpan="3" Grid.Column="1" Grid.Row="8" Height="20" Maximum="1023" Value="{Binding MeisuredVoltage2, Mode=OneWay}"/>
+			<Slider Grid.Column="1" Grid.Row="11" Grid.ColumnSpan="3" Maximum="1" Minimum="0"  SmallChange="0.01" LargeChange="0.1" Value="{Binding ParamD}" Margin="0,-1,0,1"/>
+			<TextBlock Grid.Row="11" TextWrapping="Wrap" Text="D" Margin="36.425,8,38.735,-8" Grid.RowSpan="2" d:LayoutOverrides="Width"/>
 		</Grid>
 	</Grid>
 </UserControl>
