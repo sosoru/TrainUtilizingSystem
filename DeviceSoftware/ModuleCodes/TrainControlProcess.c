@@ -140,9 +140,9 @@ HRESULT InitTrainController(DeviceID * pid)
 	g_cacheState.meisuredvoltage = 0;
 	g_cacheState.meisuredvoltage2 = 0;
 	
-	g_cacheState.paramp = 0.3f;
-	g_cacheState.parami = 0.2f;
-//	g_cacheState.paramd = 0.0f;
+	g_cacheState.paramp = 70;
+	g_cacheState.parami = 60;
+	g_cacheState.paramd = 0;
 			
 #if defined VERSION_REV2
 
@@ -195,15 +195,12 @@ HRESULT StoreTrainControllerState(DeviceID * pid, PMODULE_DATA data)
 	TrainControllerState * pstate = (TrainControllerState *) data;
 	BYTE periodChanged=FALSE, prescaleChanged=FALSE, dutyChanged=FALSE,
 	     modeChanged=FALSE, voltageChanged=FALSE;
-	
-	if(PORT_CONTROLSWITCH)
-		return E_FAIL;     
-	
+		
 	settingState = TRUE;     
 	
 	g_cacheState.paramp = pstate->paramp;
 	g_cacheState.parami = pstate->parami;
-	//g_cacheState.paramd = pstate->paramd;
+	g_cacheState.paramd = pstate->paramd;
 	 
 	if(g_cacheState.mode != pstate->mode)
 	{
@@ -345,9 +342,9 @@ void InterruptTrainController(DeviceID * pid)
 		g_cacheState.direction = PORT_DIRECTION;
 		g_cacheState.mode = MODE_TRAINCONTROLLER_ONDEVICE;
 		
-		internal_duty += ((1.0f * g_cacheState.paramp / 255.0f) * ((float)(df - voltageDif_1))  
-					   + (1.0f * g_cacheState.parami / 255.0f) * ((float)df)) ;
-					   + (1.0f * g_cacheState.paramd / 255.0f) * ((float)((voltageDif_1 - df) - (voltageDif_2 - voltageDif_1))));
+		internal_duty += ((1.0f * (float)g_cacheState.paramp / 255.0f) * ((float)(df - voltageDif_1)) ) 
+					   + ((1.0f * (float)g_cacheState.parami / 255.0f) * ((float)df)) 
+					   + ((1.0f * (float)g_cacheState.paramd / 255.0f) * ((float)((voltageDif_1 - df) - (voltageDif_2 - voltageDif_1))));
 		
 		if(internal_duty < 0.0f)
 			internal_duty = 0.0f;

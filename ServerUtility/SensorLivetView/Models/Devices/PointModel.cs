@@ -58,6 +58,9 @@ namespace SensorLivetView.Models.Devices
             }
             set
             {
+                if (this.Parent.TargetDevice.CurrentState [this.Address] == value)
+                    return;
+
                 this.Parent.TargetDevice.IsHold = true;
                 try
                 {
