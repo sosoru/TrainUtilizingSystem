@@ -314,15 +314,16 @@ void InterruptTrainController(DeviceID * pid)
 		
 		g_usingAdc = FALSE;
 		
+		AveVoltage = (int)g_cacheState.meisuredvoltage - (int)g_cacheState.meisuredvoltage2;
+		if(AveVoltage<0)
+			AveVoltage = -AveVoltage;
+		
 	}
 	#endif
 				
 	if (PORT_CONTROLSWITCH)
 	{
 		unsigned int vol;
-		df = (int)g_cacheState.meisuredvoltage - (int)g_cacheState.meisuredvoltage2;
-		if(df<0)
-			df = -df;
 				
 		g_usingAdc = TRUE;
 		
@@ -338,13 +339,23 @@ void InterruptTrainController(DeviceID * pid)
 		else
 			vol -= 150;
 		
-		df = vol - df;
+		g_cacheState.voltage = vol;
 		g_cacheState.direction = PORT_DIRECTION;
 		g_cacheState.mode = MODE_TRAINCONTROLLER_ONDEVICE;
 		
-		internal_duty += ((1.0f * (float)g_cacheState.paramp / 255.0f) * ((float)(df - voltageDif_1)) ) 
-					   + ((1.0f * (float)g_cacheState.parami / 255.0f) * ((float)df)) 
-					   + ((1.0f * (float)g_cacheState.paramd / 255.0f) * ((float)((voltageDif_1 - df) - (voltageDif_2 - voltageDif_1))));
+		 
+	}
+	else
+	 if(PORT_CONTROLSWITCH || g_cacheState.mode == MODE_TRAINCONTROLLER_FOLLOWING)
+	{
+		if(AveVoltage == 1023) // if train is stopping, the bemf sticks to 0 or 1023
+			AveVoltage = 0;
+			
+		df = ((int)(g_cacheState.voltage)) - ((int)AveVoltage);
+		
+		internal_duty += ((((float)g_cacheState.paramp) / 255.0f) * ((float)(df - voltageDif_1)) ) 
+					   + ((((float)g_cacheState.parami) / 255.0f) * ((float)df)) 
+					   + ((((float)g_cacheState.paramd) / 255.0f) * ((float)((voltageDif_1 - df) - (voltageDif_2 - voltageDif_1))));
 		
 		if(internal_duty < 0.0f)
 			internal_duty = 0.0f;
@@ -355,29 +366,6 @@ void InterruptTrainController(DeviceID * pid)
 		voltageDif_1 = df;
 				
 		g_cacheState.duty = (unsigned int)internal_duty;				 
-		 
-	}
-	else
-	 if(g_cacheState.mode == MODE_TRAINCONTROLLER_FOLLOWING)
-	{
-		if(AveVoltage == 1023) // if train is stopping, the bemf sticks to 0 or 1023
-			AveVoltage = 0;
-			
-		df = ((int)(g_cacheState.voltage)) - ((int)AveVoltage);
-		
-		internal_duty += (g_cacheState.paramp * ((float)(df - voltageDif_1))  
-					   + g_cacheState.parami * ((float)df)) ;
-					   //+ g_cacheState.paramd * ((float)((voltageDif_1 - df) - (voltageDif_2 - voltageDif_1))));
-		
-		voltageDif_2 = voltageDif_1;
-		voltageDif_1 = df;
-		
-		if(internal_duty < 0.0f)
-			internal_duty = 0.0f;
-		else if (internal_duty > 800.0f)
-			internal_duty = 800.0f;
-		
-		g_cacheState.duty = (unsigned int)internal_duty;		
 	}
 	
 	

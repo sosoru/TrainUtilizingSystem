@@ -75,9 +75,10 @@ void ModuleInit();
 void Process();
 void low_isr();
 void high_isr();
+void interruption_call();
 
-#pragma interrupt high_isr //save = PROD
-#pragma interruptlow low_isr save = WREG, BSR, STATUS//, PROD
+#pragma interrupt high_isr save = PROD
+#pragma interruptlow low_isr save = WREG, BSR, STATUS, PROD
 #pragma code LOW_VECTOR = 0x18
 void low_interrupt()
 { _asm GOTO low_isr _endasm}
@@ -93,6 +94,18 @@ DeviceID isr_id;
 
 BYTE tmr3Count = 0;
 
+void interruption_call()
+{
+	isr_id.ParentPart = g_mbState.ParentId;
+	for(isr_i = 0; isr_i < MODULE_COUNT; ++isr_i)
+	{
+		isr_id.ModuleAddr = isr_i;
+		
+		GET_FUNC_TABLE(isr_i)->fninterrupt(&isr_id);
+	}
+
+}
+
 void low_isr()
 {
 
@@ -105,13 +118,7 @@ void low_isr()
 			
 			PIE2bits.TMR3IE = 0;
 			
-			isr_id.ParentPart = g_mbState.ParentId;
-			for(isr_i = 0; isr_i < MODULE_COUNT; ++isr_i)
-			{
-				isr_id.ModuleAddr = isr_i;
-				
-				GET_FUNC_TABLE(isr_i)->fninterrupt(&isr_id);
-			}
+			interruption_call();
 			
 			TMR3H |= ~TMR3H;
 			TMR3L = 0;
@@ -257,7 +264,7 @@ void DeviceInit()
 	//for USB tasks
 	OpenTimer1(TIMER_INT_ON & T1_8BIT_RW & T1_SOURCE_INT & T1_PS_1_8 & T1_OSC1EN_OFF & T1_SYNC_EXT_OFF); 
 	
-	OpenTimer3(TIMER_INT_ON & T3_8BIT_RW & T3_SOURCE_INT & T3_PS_1_8 & T3_SYNC_EXT_OFF);
+	//OpenTimer3(TIMER_INT_ON & T3_8BIT_RW & T3_SOURCE_INT & T3_PS_1_8 & T3_SYNC_EXT_OFF);
 }
 
 void Process()
@@ -305,6 +312,7 @@ void Process()
 					INTCONbits.PEIE = 0;
 					
 					res = GET_FUNC_TABLE(i)->fncreate(&id, data);
+					interruption_call();
 					INTCON = INTCONbuf;
 					
 					if(SUCCEEDED(res))
