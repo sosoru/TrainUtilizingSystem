@@ -271,7 +271,7 @@ void InterruptTrainController(DeviceID * pid)
 {
 	BYTE i;
 	unsigned int meisuringCount= 10;
-	unsigned int AveVoltage =0;
+	 int AveVoltage =0;
 	int df=0;
 
 	if(creatingState || settingState || g_usingAdc)
