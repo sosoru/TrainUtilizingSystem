@@ -84,6 +84,7 @@
     <Compile Include="Manipulators\DeviceManipulater.cs" />
     <Compile Include="Manipulators\IDeviceManipulator.cs" />
     <Compile Include="Manipulators\DeviceStateDeserializer.cs" />
+    <Compile Include="Manipulators\PIDTuningManipulator.cs" />
     <Compile Include="Manipulators\PointManipulator.cs" />
     <Compile Include="Packet\PacketExtensions.cs" />
     <Compile Include="Packet\PacketDatas.cs" />
