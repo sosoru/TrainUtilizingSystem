@@ -9,8 +9,7 @@
 
 BYTE IsStoring = FALSE;
 BYTE IsCreating = FALSE;
-BYTE SendingPointInd = 0xFF;
-PointModuleSavedState cachePointSaved;
+BYTE SendingPointInd = 0x00;
 
 void ReadPointModuleSavedState(DeviceID * pid, PointModuleSavedState * psaved);
 void WritePointModuleSavedState(DeviceID * pid, PointModuleSavedState * psaved);
@@ -58,10 +57,12 @@ HRESULT GetFuncTablePointModule(DeviceID * pid, ModuleFuncTable* table)
 HRESULT CreatePointModuleState(DeviceID * pid, PMODULE_DATA data)
 {
 	PointModuleState * pstate = (PointModuleState * ) data;
+	PointModuleSavedState saved;
 		
 	IsCreating = TRUE;
-	//memset((void*)pstate, 0x00, (size_t)sizeof(PointModuleState));
-	SavedToState(&cachePointSaved, pstate);
+	
+	ReadPointModuleSavedState(pid, &saved);
+	SavedToState(&saved, pstate);
 	
 	IsCreating = FALSE;
 	
@@ -72,11 +73,11 @@ HRESULT CreatePointModuleState(DeviceID * pid, PMODULE_DATA data)
 HRESULT StorePointModuleState(DeviceID * pid, PMODULE_DATA data)
 {
 	PointModuleState* pstate = (PointModuleState*)data;
+	PointModuleSavedState saved;
 	
 	IsStoring = TRUE;
-	StateToSaved(pstate, &cachePointSaved);
-	WritePointModuleSavedState(pid, &cachePointSaved);
-	ReadPointModuleSavedState(pid, &cachePointSaved);
+	StateToSaved(pstate, &saved);
+	WritePointModuleSavedState(pid, &saved);
 	
 	IsStoring = FALSE;
 	
@@ -94,7 +95,6 @@ HRESULT InitPointModule(DeviceID * pid)
 	setTris(module+4, OUTPUT_PIN);
 	setTris(module+5, OUTPUT_PIN);
 
-	ReadPointModuleSavedState(pid, &cachePointSaved);
 	switch(pid->ModuleAddr) 
 	{
 		case 1:
@@ -121,6 +121,7 @@ HRESULT InitPointModule(DeviceID * pid)
 void InterruptPointModule(DeviceID * pid)
 {
 	BYTE module = (pid->ModuleAddr-1) * PORT_PIN_COUNT + 1;
+	PointModuleSavedState saved;
 	
 	if(IsStoring || IsCreating || g_usingAdc)
 		return;
@@ -146,13 +147,15 @@ void InterruptPointModule(DeviceID * pid)
 	
 	if(ReadADC() <= 0x1FF) // device ask false
 		return ;
+		
+	ReadPointModuleSavedState(pid, &saved);
 	
 	if(++SendingPointInd >= POINT_COUNT)
 		SendingPointInd = 0;
 		
 	setLat(module+5, 0); // host ack disable
 	
-	setLat(module+1, cachePointSaved.directions[SendingPointInd]&1);
+	setLat(module+1, saved.directions[SendingPointInd]&1);
 	setLat(module+2, (SendingPointInd&1));
 	setLat(module+3, (SendingPointInd&2)>>1);
 	setLat(module+4, (SendingPointInd&4)>>2);

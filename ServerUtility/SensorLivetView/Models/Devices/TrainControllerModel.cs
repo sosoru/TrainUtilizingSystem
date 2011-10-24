@@ -126,7 +126,16 @@ namespace SensorLivetView.Models.Devices
             get { return Math.Floor((double)this.TargetDevice.CurrentState.DeviceRegisteredPeriod); }
             set
             {
-                ModifyState(() => this.TargetDevice.CurrentState.DeviceRegisteredPeriod = (byte)value);
+                var d= (double)this.TargetDevice.CurrentState.Duty;
+                var pr = (double)this.TargetDevice.CurrentState.DeviceRegisteredPeriod;
+
+                d = d * (value / pr);
+
+                ModifyState(() =>
+                {
+                    this.TargetDevice.CurrentState.DeviceRegisteredPeriod = (byte)value;
+                    this.TargetDevice.CurrentState.Duty = (int)d;
+                });
             }
         }
 

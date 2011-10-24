@@ -15,8 +15,9 @@ namespace SensorLibrary.Manipulators
 
         protected override void ExecuteInternal()
         {
-            var q = Observable.FromEventPattern<PacketReceiveEventArgs>(this.TargetDevice, "PacketReceived")
-                              .SubscribeOn(CurrentThreadScheduler);
+            //var q = Observable.FromEventPattern<PacketReceiveEventArgs>(this.TargetDevice, "PacketReceived")
+            //                  .SubscribeOn(Scheduler.CurrentThread)
+            //                  ;
         }
 
         private PidParams calcParams(IList<TrainControllerState> states)

@@ -200,6 +200,11 @@ namespace SensorLibrary
 
         }
 
+        public int DeviceTime
+        {
+            get { return this.Data.DeviceTime; }
+        }
+
         public override string ToString()
         {
             var str = string.Format("({0}, {1}), Freq={2}, D={3}, Vol={4}, mVol={5}, mVol2={6}, p={7}, i={8}, d={9}",
