@@ -312,7 +312,6 @@ void Process()
 					INTCONbits.PEIE = 0;
 					
 					res = GET_FUNC_TABLE(i)->fncreate(&id, data);
-					interruption_call();
 					INTCON = INTCONbuf;
 					
 					if(SUCCEEDED(res))
@@ -368,5 +367,7 @@ void main()
 //		}
 //		
 		Process();	
+		interruption_call();
+						
 	}
 }

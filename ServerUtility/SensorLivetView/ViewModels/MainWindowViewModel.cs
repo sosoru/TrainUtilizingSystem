@@ -74,13 +74,13 @@ namespace SensorLivetView.ViewModels
                 this.tsensorVmDispat.projected.CollectionChanged += (sender, e) => RaisePropertyChanged(() => AvailableTrainSensorVMs);
                 this.tcontrollerDispat.projected.CollectionChanged += (sender, e) => RaisePropertyChanged(() => AvailableTrainControllerVMs);
                 this.pmoduleDispat.projected.CollectionChanged += (sender, e) => RaisePropertyChanged(() => AvailablePointModuleVMs);
-//#if TEST
-//                if (!this.OpeningServers.Contains(this.testserv))
-//                {
-//                    this.OpeningServers.Add(this.testserv);
-//                    LoggingStart(this.testserv);
-//                }
-//#endif
+                //#if TEST
+                //                if (!this.OpeningServers.Contains(this.testserv))
+                //                {
+                //                    this.OpeningServers.Add(this.testserv);
+                //                    LoggingStart(this.testserv);
+                //                }
+                //#endif
             }
         }
 
@@ -161,8 +161,12 @@ namespace SensorLivetView.ViewModels
         {
 
             var logging = new PacketServerAction((state) => Console.WriteLine(state.ToString()));
-            var putting = new PacketServerAction(state => logsw.WriteLine(state.ToString()));
-            
+            var putting = new PacketServerAction(state =>
+                {
+                    if (state.BasePacket.ModuleType == ModuleTypeEnum.TrainController)
+                        logsw.WriteLine(state.ToString());
+                });
+
             serv.AddAction(logging);
             serv.AddAction(putting);
         }

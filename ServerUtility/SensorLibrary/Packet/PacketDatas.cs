@@ -86,6 +86,7 @@ namespace SensorLibrary
         public byte paramd;
 
         public ushort meisuredVoltage2;
+        public ushort DeviceTime;
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 28)]

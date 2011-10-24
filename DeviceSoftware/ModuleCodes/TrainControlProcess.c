@@ -270,14 +270,14 @@ HRESULT StoreTrainControllerState(DeviceID * pid, PMODULE_DATA data)
 void InterruptTrainController(DeviceID * pid)
 {
 	BYTE i;
-	unsigned int meisuringCount= 10;
+	unsigned int meisuringCount= 5;
 	 int AveVoltage =0;
 	int df=0;
 
 	if(creatingState || settingState || g_usingAdc)
 		return;	
 	
-	if(++waitingCount < 2)
+	if(++waitingCount < 10)
 		return;
 			
 	ClosePWM1();	
@@ -291,25 +291,25 @@ void InterruptTrainController(DeviceID * pid)
 		PORT_DIRECTION_A = 1;
 		PORT_DIRECTION_B = 1;
 		
-		Delay1KTCYx(5);	
+		Delay1KTCYx(1);	
 		
 		g_usingAdc = TRUE;
-		SetChanADC(FEEDBACK_CHANNEL_A);
+		
 		for(i=0; i<meisuringCount; ++i)
 		{
+		
+			SetChanADC(FEEDBACK_CHANNEL_B);
+			ConvertADC();
+			while(BusyADC());
+			g_cacheState.meisuredvoltage2 += ReadADC();
+			
+			SetChanADC(FEEDBACK_CHANNEL_A);
 			ConvertADC();
 			while(BusyADC());
 			g_cacheState.meisuredvoltage += ReadADC();
 		}
-		g_cacheState.meisuredvoltage /= meisuringCount;
 		
-		SetChanADC(FEEDBACK_CHANNEL_B);
-		for(i=0; i<meisuringCount; ++i)
-		{
-			ConvertADC();
-			while(BusyADC());
-			g_cacheState.meisuredvoltage2 += ReadADC();
-		}
+		g_cacheState.meisuredvoltage /= meisuringCount;		
 		g_cacheState.meisuredvoltage2 /= meisuringCount;
 		
 		g_usingAdc = FALSE;
@@ -345,7 +345,7 @@ void InterruptTrainController(DeviceID * pid)
 		
 		 
 	}
-	else
+
 	 if(PORT_CONTROLSWITCH || g_cacheState.mode == MODE_TRAINCONTROLLER_FOLLOWING)
 	{
 		if(AveVoltage == 1023) // if train is stopping, the bemf sticks to 0 or 1023
