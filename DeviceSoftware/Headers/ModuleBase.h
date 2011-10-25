@@ -9,11 +9,12 @@ typedef union tag_DeviceID
 {
 	struct
 	{
-		unsigned GlobalAddr:5;
 		unsigned InDeviceAddr:3;
-		unsigned RemoteBit:1;
-		unsigned ModuleAddr:3;
+		unsigned GlobalAddr:5;
+		
 		unsigned InternalAddr:4;
+		unsigned ModuleAddr:3;
+		unsigned RemoteBit:1;
 	};
 	struct
 	{

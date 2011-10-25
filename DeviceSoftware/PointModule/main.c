@@ -72,7 +72,7 @@ void ApplyPoint(PointInfo * pinfo)
 
 void ReadPointInfo(PointInfo * pinfo)
 {
-	pinfo->data = PORT_RECEIVING;
+	pinfo->data = (PORT_RECEIVING && 0b00011110) >> 1 ;
 }
 
 void LoadSavedDirection(PointInfo* pinfo)
