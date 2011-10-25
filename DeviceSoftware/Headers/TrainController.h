@@ -43,6 +43,9 @@ typedef union tag_TrainControllerState
 		BYTE paramd;
 		unsigned int meisuredvoltage2;
 		
+		BYTE lowerEnable;
+		unsigned int lowerPwmFrequency;
+		
 	};
 	BYTE data[SIZE_DATA];
 } TrainControllerState;

@@ -179,6 +179,13 @@ void high_isr()
 		USBDeviceTasks();	
 	}
 	
+	if(PIR1bits.TMR2IF)
+	{
+		PIR1bits.TMR2IF = 0;
+		
+		TrainControllerTimerInterrupt();
+	}
+	
 //	if(PIR1bits.SSPIF)
 //		Port_SurfaceLedA = 1;
 //	else
@@ -249,10 +256,10 @@ void DeviceInit()
     RCONbits.IPEN = 0;
     //PIE1bits.SSPIE = 1;
 
-    INTCON2bits.TMR0IP = 1; // tmr0 = high interrupt
-    IPR1bits.TMR1IP = 1; //tmr1 = high interrupt
+    //INTCON2bits.TMR0IP = 1; // tmr0 = high interrupt
+    //IPR1bits.TMR1IP = 1; //tmr1 = high interrupt
     //IPR1bits.SSPIP = 0; // ssp = low interrupt
-    IPR2bits.TMR3IP = 0; //tmr3 = low interrupt
+    //IPR2bits.TMR3IP = 0; //tmr3 = low interrupt
 
 	OpenTimer0(TIMER_INT_ON 
 				& T0_16BIT 

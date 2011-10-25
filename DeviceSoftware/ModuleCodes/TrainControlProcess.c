@@ -55,14 +55,73 @@ int voltageDif_1 = 0;
 int voltageDif_2 = 0;
 float internal_duty = 0.0f;
 
+int lowerFreqStoredWaiting = 0;
+int lowerFreqWaiting = 0;
+BYTE lowerFreqMod = 0;
+
 void SetPWM();
 void ChangePWM();
 void ChangeTimer();
+void TrainControllerTimerInterrupt();
+void SetLowerFreq();
 
+void TrainControllerTimerInterrupt()
+{
+	if(g_cacheState.lowerEnable)
+	{
+		--lowerFreqWaiting;
+		
+		if(lowerFreqWaiting ==0 && lowerFreqMod != 0)
+		{
+			TMR2 = ~lowerFreqMod;
+		}
+		else if(lowerFreqWaiting <= 0)
+		{
+			if(g_cacheState.direction == DIRECTION_TRAINCONTROLLER_POSITIVE)
+			{
+				PORT_PWMSIGNAL_A = ~PORT_PWMSIGNAL_A;
+			}
+			else
+			{
+				PORT_PWMSIGNAL_B = ~PORT_PWMSIGNAL_B;
+			}
+			
+			lowerFreqWaiting = lowerFreqStoredWaiting;
+		}
+		
+	}
+}
 
 void ChangeTimer()
 {
-	OpenTimer2(TIMER_INT_OFF & g_cacheState.prescale);	
+	if(g_cacheState.lowerEnable && !PIE1bits.TMR2IE)
+	{
+		OpenTimer2(TIMER_INT_ON & T2_PS_1_16);
+	}
+	else
+	{
+		OpenTimer2(TIMER_INT_OFF & g_cacheState.prescale);	
+	}
+}
+
+void SetLowerFreq()
+{
+	static unsigned int beforeFreq = 0;
+	
+	if(beforeFreq != g_cacheState.lowerPwmFrequency)
+	{
+		//11719 = 48,000,000 / 4,096
+		float fFreq = (11719.0 / (float)g_cacheState.lowerPwmFrequency);
+		int Freq = (int)fFreq;
+		fFreq -= (float)Freq;
+		
+		lowerFreqStoredWaiting = Freq;
+		lowerFreqMod = (BYTE)(fFreq * 255.0);
+		
+		beforeFreq = g_cacheState.lowerPwmFrequency;
+	}
+	
+	ChangeTimer();
 }
 
 void ChangePWM()
@@ -78,24 +137,39 @@ void ChangePWM()
 		PORT_DIRECTION_A = 1;
 		
 #endif
-		OpenPWM1(g_cacheState.period);
-		SetDCPWM1(g_cacheState.duty);
+		if(g_cacheState.lowerEnable)
+		{
+			SetLowerFreq();
+		}
+		else
+		{
+			OpenPWM1(g_cacheState.period);
+			SetDCPWM1(g_cacheState.duty);
+		}
 	}
 	else
 	{
 		ClosePWM1();
 
 #if defined VERSION_REV2
-		
+	
 		PORT_PWMSIGNAL_A = 0;
 		PORT_DIRECTION_A = 0;
 		
 		PORT_DIRECTION_B = 1;
 
 #endif		
-		OpenPWM2(g_cacheState.period);
-		SetDCPWM2(g_cacheState.duty);
+		if(g_cacheState.lowerEnable)
+		{
+			SetLowerFreq();
+		}
+		else
+		{
+			OpenPWM2(g_cacheState.period);
+			SetDCPWM2(g_cacheState.duty);
+		}
 	}
+	
 }
 
 void SetPWM()
@@ -143,6 +217,9 @@ HRESULT InitTrainController(DeviceID * pid)
 	g_cacheState.paramp = 70;
 	g_cacheState.parami = 60;
 	g_cacheState.paramd = 0;
+	
+	g_cacheState.lowerPwmFrequency = 0;
+	g_cacheState.lowerEnable = FALSE;
 			
 #if defined VERSION_REV2
 
@@ -229,14 +306,14 @@ HRESULT StoreTrainControllerState(DeviceID * pid, PMODULE_DATA data)
 	}
 	
 	if(g_cacheState.period != pstate->period
-		|| g_cacheState.direction != pstate->direction)
+		|| g_cacheState.direction != pstate->direction
+		|| g_cacheState.lowerEnable != pstate->lowerEnable
+		|| g_cacheState.lowerPwmFrequency != pstate->lowerPwmFrequency)
 	{		
 		g_cacheState.period = pstate->period;
-			
-		if(pstate->direction > 1)
-			g_cacheState.direction = DIRECTION_TRAINCONTROLLER_POSITIVE;
-		else
-			g_cacheState.direction = pstate->direction;
+		g_cacheState.lowerEnable = pstate->lowerEnable;
+		g_cacheState.lowerPwmFrequency = pstate->lowerPwmFrequency;
+		g_cacheState.direction = pstate->direction & 1;
 		
 		periodChanged = TRUE;
 	}
@@ -282,6 +359,8 @@ void InterruptTrainController(DeviceID * pid)
 			
 	ClosePWM1();	
 	ClosePWM2();
+	PORT_DIRECTION_A = 0;
+	PORT_DIRECTION_B = 0;
 		
 	#if defined VERSION_REV2
 	{
