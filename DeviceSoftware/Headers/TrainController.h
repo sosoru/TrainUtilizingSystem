@@ -18,6 +18,8 @@ HRESULT CreateTrainControllerState(DeviceID* pid, PMODULE_DATA data);
 HRESULT StoreTrainControllerState(DeviceID* pid, PMODULE_DATA data);
 void InterruptTrainController(DeviceID* pid); 
 
+void TrainControllerTimerInterrupt();
+
 typedef union tag_TrainControllerState
 {
 	struct

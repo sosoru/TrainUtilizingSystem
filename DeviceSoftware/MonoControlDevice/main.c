@@ -246,7 +246,7 @@ void DeviceInit()
  	
     INTCONbits.GIE = 1;
     INTCONbits.PEIE = 1;   
-    RCONbits.IPEN = 1;
+    RCONbits.IPEN = 0;
     //PIE1bits.SSPIE = 1;
 
     INTCON2bits.TMR0IP = 1; // tmr0 = high interrupt
