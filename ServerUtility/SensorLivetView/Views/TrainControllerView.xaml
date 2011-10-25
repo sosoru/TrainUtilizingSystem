@@ -28,8 +28,10 @@
 				<RowDefinition Height="Auto"/>
 				<RowDefinition Height="Auto"/>
 				<RowDefinition Height="Auto"/>
-				<RowDefinition Height="Auto"/>
-				<RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
 				<RowDefinition Height="Auto"/>
 				<RowDefinition Height="Auto"/>
 				<RowDefinition Height="Auto"/>
@@ -73,6 +75,9 @@
 			<ProgressBar Grid.ColumnSpan="3" Grid.Column="1" Grid.Row="8" Height="20" Maximum="1023" Value="{Binding MeisuredVoltage2, Mode=OneWay}"/>
 			<Slider Grid.Column="1" Grid.Row="11" Grid.ColumnSpan="3" Maximum="1" Minimum="0"  SmallChange="0.01" LargeChange="0.1" Value="{Binding ParamD}" Margin="0,-1,0,1"/>
 			<TextBlock Grid.Row="11" TextWrapping="Wrap" Text="D" Margin="36.425,8,38.735,-8" Grid.RowSpan="2" d:LayoutOverrides="Width"/>
-		</Grid>
+            <CheckBox Grid.Row="12" IsChecked="{Binding IsLowerFreqEnabled, Mode=TwoWay}" Content="LowerFreq" />
+            <TextBlock Grid.Row="13" Text="LFreq" HorizontalAlignment="Center" />
+            <Slider Grid.Row="13" Grid.Column="1" Value="{Binding LowerFreq, Mode=TwoWay}" Minimum="100" Maximum="3000" />
+        </Grid>
 	</Grid>
 </UserControl>

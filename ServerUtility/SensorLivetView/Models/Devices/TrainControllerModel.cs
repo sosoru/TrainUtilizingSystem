@@ -109,6 +109,16 @@ namespace SensorLivetView.Models.Devices
                     {
                         RaisePropertyChanged(() => Mode);
                     }
+
+                    if (bef.LowerFreqEnable != cur.LowerFreqEnable)
+                    {
+                        RaisePropertyChanged(() => IsLowerFreqEnabled);
+                    }
+
+                    if (bef.LowerFreq != cur.LowerFreq)
+                    {
+                        RaisePropertyChanged(() => LowerFreq);
+                    }
                 };
         }
 
@@ -241,6 +251,18 @@ namespace SensorLivetView.Models.Devices
 
                 ModifyState(() => this.TargetDevice.CurrentState.ControllerMode = mode);
             }
+        }
+
+        public bool IsLowerFreqEnabled
+        {
+            get { return this.TargetDevice.CurrentState.LowerFreqEnable; }
+            set { ModifyState(() => this.TargetDevice.CurrentState.LowerFreqEnable = value); }
+        }
+
+        public int LowerFreq
+        {
+            get { return this.TargetDevice.CurrentState.LowerFreq; }
+            set { ModifyState(() => this.TargetDevice.CurrentState.LowerFreq = value); }
         }
 
     }

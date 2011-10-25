@@ -34,12 +34,12 @@ namespace SensorLibrary
         private byte[] _moduleType;
         public ushort Timer;
 
-        public byte[] ModuleType
+        public byte [] ModuleType
         {
             get
             {
                 if (_moduleType == null)
-                    _moduleType = new byte[2];
+                    _moduleType = new byte [2];
                 return _moduleType;
             }
         }
@@ -52,12 +52,12 @@ namespace SensorLibrary
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 8)]
         private byte[] _directions;
 
-        public byte[] Directions
+        public byte [] Directions
         {
             get
             {
                 if (this._directions == null)
-                    this._directions = new byte[8];
+                    this._directions = new byte [8];
 
                 return this._directions;
             }
@@ -86,6 +86,10 @@ namespace SensorLibrary
         public byte paramd;
 
         public ushort meisuredVoltage2;
+
+        public byte lowerEnable;
+        public ushort lowerPwmFrequency;
+
         public ushort DeviceTime;
     }
 

@@ -121,5 +121,17 @@ namespace SensorLivetView.ViewModels.Controls
             get { return this.Model.Mode; }
             set { this.Model.Mode = value; }
         }
+
+        public bool IsLowerFreqEnabled
+        {
+            get { return this.Model.IsLowerFreqEnabled; }
+            set { this.Model.IsLowerFreqEnabled = value; }
+        }
+
+        public int LowerFreq
+        {
+            get { return this.Model.LowerFreq; }
+            set { this.Model.LowerFreq = value; }
+        }
     }
 }

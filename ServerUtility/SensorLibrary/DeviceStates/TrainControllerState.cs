@@ -205,6 +205,18 @@ namespace SensorLibrary
             get { return this.Data.DeviceTime; }
         }
 
+        public bool LowerFreqEnable
+        {
+            get { return this.Data.lowerEnable != 0; }
+            set { this.Data.lowerEnable = (value) ? (byte)1 : (byte)0; }
+        }
+
+        public int LowerFreq
+        {
+            get { return this.Data.lowerPwmFrequency; }
+            set { this.Data.lowerPwmFrequency = (ushort)value; }
+        }
+
         public override string ToString()
         {
             var str = string.Format("({0}, {1}), Freq={2}, D={3}, Vol={4}, mVol={5}, mVol2={6}, p={7}, i={8}, d={9}",

@@ -149,6 +149,7 @@ namespace SensorLibrary
                 this.Data.VoltageResolution = value;
             }
         }
+
     }
 
 }

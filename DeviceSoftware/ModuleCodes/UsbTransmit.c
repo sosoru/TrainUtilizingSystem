@@ -18,7 +18,7 @@ HRESULT AddPacketUSB(DeviceID* pid, BYTE moduleType, char * data)
 	if(USBDeviceState < CONFIGURED_STATE)
 		return E_FAIL;
 	
-	INTCONbits.PEIE = 0; // disable low-priority interrupts
+	//INTCONbits.PEIE = 0; // disable low-priority interrupts
 
 	ppack = &g_PacketBuffer[g_PacketBufferPos];
 		
@@ -56,8 +56,8 @@ HRESULT SendPacketUSB()
 		return E_FAIL;
 	}
 	
-	INTCONbits.GIE = 0; //disable high-priority interrupts
-	INTCONbits.PEIE = 0; // disable low-priority interrupts
+	//INTCONbits.GIE = 0; //disable high-priority interrupts
+	//INTCONbits.PEIE = 0; // disable low-priority interrupts
 	
 	Port_SurfaceLedB = 0;
 
@@ -85,8 +85,8 @@ HRESULT ReceivingProcessUSB()
     if(USBHandleBusy(USBGenericOutHandle) && (USBDeviceState < CONFIGURED_STATE))	//Check if the endpoint has received any data from the host.
     	return E_FAIL;
 	
-	INTCONbits.GIE = 0; //disable high-priority interrupts
-	INTCONbits.PEIE = 0; // disable low-priority interrupts
+	//INTCONbits.GIE = 0; //disable high-priority interrupts
+	//INTCONbits.PEIE = 0; // disable low-priority interrupts
 
     for(i = 0 ; i < USBGEN_EP_SIZE; i+= sizeof(DevicePacket))
     {

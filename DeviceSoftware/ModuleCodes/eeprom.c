@@ -13,8 +13,8 @@ void EEPROMcpy(unsigned char * dest, unsigned char srcaddr, unsigned char len )
 	unsigned char conCache = INTCON;
 	unsigned char i;
 	
-	INTCONbits.GIE = 0;
-	INTCONbits.PEIE = 0;
+	//INTCONbits.GIE = 0;
+	//INTCONbits.PEIE = 0;
 	
 	if((unsigned char)dest >= 0x400 && (unsigned char)dest < 0x500 )
 	{
@@ -45,8 +45,8 @@ void EEPROMset(unsigned char destaddr, unsigned char* src, unsigned char len)
 {
 	unsigned char i;
   	unsigned char SaveInt=INTCON;             //save interrupt status
-	INTCONbits.GIE=0;           //No interrupts
-    INTCONbits.PEIE=0;
+	//INTCONbits.GIE=0;           //No interrupts
+    //INTCONbits.PEIE=0;
 	for(i = 0; i < len; i++)
 	{
 		WriteEEPROM(destaddr + i, *(src + i));

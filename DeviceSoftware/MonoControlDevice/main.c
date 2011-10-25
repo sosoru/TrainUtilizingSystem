@@ -78,7 +78,7 @@ void high_isr();
 void interruption_call();
 
 #pragma interrupt high_isr save = PROD
-#pragma interruptlow low_isr save = WREG, BSR, STATUS, PROD
+#pragma interruptlow low_isr save = WREG,BSR,STATUS, PROD
 #pragma code LOW_VECTOR = 0x18
 void low_interrupt()
 { _asm GOTO low_isr _endasm}
@@ -109,47 +109,47 @@ void interruption_call()
 void low_isr()
 {
 
-	if(PIR2bits.TMR3IF)
-	{
-		PIR2bits.TMR3IF = 0;
-		if(++tmr3Count>3)
-		{
-			tmr3Count = 0;
-			
-			PIE2bits.TMR3IE = 0;
-			
-			interruption_call();
-			
-			TMR3H |= ~TMR3H;
-			TMR3L = 0;
-			PIE2bits.TMR3IE = 1;
-		}
-	}
-
-	//remoted packets receiving for RemoteModule
-	if(PIR1bits.SSPIF)
-	{
-		SpiPacket packet;
-		DeviceID devid;
-		MODULE_DATA data[SIZE_DATA];
-		BYTE received; 
-		
-		PIR1bits.SSPIF = 0;
-		received = SSPBUF;
-		SSPBUF = 0x00;
-		
-		ReceiveByte(received);
-		
-		if( SUCCEEDED(PacketReady(&packet))
-			&& SUCCEEDED(CreateMessageFromReceived(&packet, &devid, data)))
-		{
-			BYTE addr = devid.ModuleAddr;
-			BYTE type = READ_MBSTATE_MODULETYPE(g_mbState, addr);
-			
-			AddPacketUSB(&devid, type, data);
-		}
-		
-	}
+//	if(PIR2bits.TMR3IF)
+//	{
+//		PIR2bits.TMR3IF = 0;
+//		if(++tmr3Count>3)
+//		{
+//			tmr3Count = 0;
+//			
+//			PIE2bits.TMR3IE = 0;
+//			
+//			interruption_call();
+//			
+//			TMR3H |= ~TMR3H;
+//			TMR3L = 0;
+//			PIE2bits.TMR3IE = 1;
+//		}
+//	}
+//
+//	//remoted packets receiving for RemoteModule
+//	if(PIR1bits.SSPIF)
+//	{
+//		SpiPacket packet;
+//		DeviceID devid;
+//		MODULE_DATA data[SIZE_DATA];
+//		BYTE received; 
+//		
+//		PIR1bits.SSPIF = 0;
+//		received = SSPBUF;
+//		SSPBUF = 0x00;
+//		
+//		ReceiveByte(received);
+//		
+//		if( SUCCEEDED(PacketReady(&packet))
+//			&& SUCCEEDED(CreateMessageFromReceived(&packet, &devid, data)))
+//		{
+//			BYTE addr = devid.ModuleAddr;
+//			BYTE type = READ_MBSTATE_MODULETYPE(g_mbState, addr);
+//			
+//			AddPacketUSB(&devid, type, data);
+//		}
+//		
+//	}
 
 }
 
@@ -169,6 +169,13 @@ void high_isr()
                 Timer0OverflowCount++;
         }        
 	}
+		
+	if(PIR1bits.TMR2IF)
+	{
+		PIR1bits.TMR2IF = 0;
+		
+		TrainControllerTimerInterrupt();
+	}
 	
     if(PIR1bits.TMR1IF)
 	{
@@ -177,13 +184,6 @@ void high_isr()
 		TMR1H |= ~TMR1H;
 					
 		USBDeviceTasks();	
-	}
-	
-	if(PIR1bits.TMR2IF)
-	{
-		PIR1bits.TMR2IF = 0;
-		
-		TrainControllerTimerInterrupt();
 	}
 	
 //	if(PIR1bits.SSPIF)
@@ -253,12 +253,13 @@ void DeviceInit()
  	
     INTCONbits.GIE = 1;
     INTCONbits.PEIE = 1;   
-    RCONbits.IPEN = 0;
+    //RCONbits.IPEN = 1;
     //PIE1bits.SSPIE = 1;
 
     //INTCON2bits.TMR0IP = 1; // tmr0 = high interrupt
     //IPR1bits.TMR1IP = 1; //tmr1 = high interrupt
     //IPR1bits.SSPIP = 0; // ssp = low interrupt
+    //IPR1bits.TMR2IP = 0; //tmr2 = low interrupt
     //IPR2bits.TMR3IP = 0; //tmr3 = low interrupt
 
 	OpenTimer0(TIMER_INT_ON 
@@ -294,7 +295,7 @@ void Process()
 		BYTE type;
 		BYTE INTCONbuf = INTCON;
 		
-		INTCONbits.PEIE = 0;
+		//INTCONbits.PEIE = 0;
 		ReceivingProcessUSB();
 		INTCON = INTCONbuf;
 		
@@ -316,7 +317,7 @@ void Process()
 					id.RemoteBit = k;
 					
 					INTCONbuf = INTCON;
-					INTCONbits.PEIE = 0;
+					//INTCONbits.PEIE = 0;
 					
 					res = GET_FUNC_TABLE(i)->fncreate(&id, data);
 					INTCON = INTCONbuf;
