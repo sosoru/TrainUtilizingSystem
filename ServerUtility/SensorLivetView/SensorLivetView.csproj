@@ -95,7 +95,7 @@
     <Compile Include="Models\Devices\MotherBoardPortModel.cs" />
     <Compile Include="Models\Devices\PointModel.cs" />
     <Compile Include="Models\Devices\PointModuleModel.cs" />
-    <Compile Include="Models\Devices\TrainControllerModel.cs" />
+    <Compile Include="Models\Devices\TrainControllerDeviceModel.cs" />
     <Compile Include="Models\Devices\TrainSensorModel.cs" />
     <Compile Include="Models\UsbDevicesModel.cs" />
     <Compile Include="Models\UsbRegistryModel.cs" />
@@ -112,7 +112,7 @@
     <Compile Include="ViewModels\Controls\PointModuleViewModel.cs" />
     <Compile Include="ViewModels\Controls\PointViewModel.cs" />
     <Compile Include="ViewModels\Controls\TestTaskViewModel.cs" />
-    <Compile Include="ViewModels\Controls\TrainControllerViewModel.cs" />
+    <Compile Include="ViewModels\Controls\TrainControllerDeviceViewModel.cs" />
     <Compile Include="ViewModels\Controls\UsbDevicesViewModel.cs" />
     <Compile Include="ViewModels\Controls\UsbRegistryViewModel.cs" />
     <Compile Include="ViewModels\Controls\VoltageGraphViewModel.cs" />
@@ -129,8 +129,8 @@
     <Compile Include="Views\TestWindow.xaml.cs">
       <DependentUpon>TestWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\TrainControllerView.xaml.cs">
-      <DependentUpon>TrainControllerView.xaml</DependentUpon>
+    <Compile Include="Views\TrainControllerDeviceView.xaml.cs">
+      <DependentUpon>TrainControllerDeviceView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TrainSensorView.xaml.cs">
       <DependentUpon>TrainSensorView.xaml</DependentUpon>
@@ -177,7 +177,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\TrainControllerView.xaml">
+    <Page Include="Views\TrainControllerDeviceView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

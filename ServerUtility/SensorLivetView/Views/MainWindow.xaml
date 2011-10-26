@@ -41,7 +41,7 @@
 				<Border BorderBrush="Black" BorderThickness="1">
 					<DockPanel LastChildFill="True">	
 						<TextBlock DockPanel.Dock="Top" Text="{Binding DevID}" />
-						<v:TrainControllerView DataContext="{Binding .}"/>						
+						<v:TrainControllerDeviceView DataContext="{Binding .}"/>						
 					</DockPanel>
 				</Border>
 			</Grid>

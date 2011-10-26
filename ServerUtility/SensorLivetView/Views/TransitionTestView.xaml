@@ -40,7 +40,7 @@
 				<ColumnDefinition Width="200*"/>
 			</Grid.ColumnDefinitions>
 		<SensorLivetView_Views:TrainSensorView Grid.Row="3" Grid.ColumnSpan="2"/>
-		<SensorLivetView_Views:TrainControllerView Grid.Column="1"/>			
+		<SensorLivetView_Views:TrainControllerDeviceView Grid.Column="1"/>			
 		</Grid>
 	</Grid>
 </UserControl>

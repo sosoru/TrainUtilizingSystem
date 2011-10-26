@@ -56,8 +56,8 @@ namespace SensorLivetView
         public readonly static IDeviceViewModelFactory<PointModuleViewModel, PointModuleModel, PointModule> PointModuleVmFactory
             = new internalfactry<PointModuleViewModel, PointModuleModel, PointModule>(ModuleTypeEnum.PointModule);
 
-        public readonly static IDeviceViewModelFactory<TrainControllerViewModel, TrainControllerModel, TrainController> TrainControllerVmFactory
-            = new internalfactry<TrainControllerViewModel, TrainControllerModel, TrainController>(ModuleTypeEnum.TrainController);
+        public readonly static IDeviceViewModelFactory<TrainControllerDeviceViewModel, TrainControllerDeviceModel, TrainController> TrainControllerVmFactory
+            = new internalfactry<TrainControllerDeviceViewModel, TrainControllerDeviceModel, TrainController>(ModuleTypeEnum.TrainController);
 
         public static readonly IEnumerable<IDeviceViewModelFactory<IDeviceViewModel<IDeviceModel<IDevice<IDeviceState<IPacketDeviceData>>>>, 
                                                                     IDeviceModel<IDevice<IDeviceState<IPacketDeviceData>>>,

@@ -19,7 +19,7 @@
 	<Grid x:Name="LayoutRoot">
 		<DockPanel HorizontalAlignment="Left" VerticalAlignment="Top">
 			<StackPanel>			
-				<SensorLivetView_Views:TrainControllerView x:Name="tctrl" />
+				<SensorLivetView_Views:TrainControllerDeviceView x:Name="tctrl" />
 				<SensorLivetView_Views:TrainSensorView x:Name="tsensview"/>			
 				
 			</StackPanel>

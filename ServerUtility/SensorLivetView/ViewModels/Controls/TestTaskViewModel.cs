@@ -98,9 +98,9 @@ namespace SensorLivetView.ViewModels
         }
 
 
-        IEnumerable<TrainControllerViewModel> _ControllerCandicates;
+        IEnumerable<TrainControllerDeviceViewModel> _ControllerCandicates;
 
-        public IEnumerable<TrainControllerViewModel> ControllerCandicates
+        public IEnumerable<TrainControllerDeviceViewModel> ControllerCandicates
         {
             get
             { return _ControllerCandicates; }

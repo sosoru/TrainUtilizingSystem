@@ -67,7 +67,7 @@ namespace SensorLivetView.ViewModels
 
                 this.motherboardVmDispat = this.createDispat<MotherBoardModel, MotherBoard, MotherBoardState>();
                 this.tsensorVmDispat = this.createDispat<TrainSensorModel, TrainSensor, TrainSensorState>();
-                this.tcontrollerDispat = this.createDispat<TrainControllerModel, TrainController, TrainControllerState>();
+                this.tcontrollerDispat = this.createDispat<TrainControllerDeviceModel, TrainController, TrainControllerState>();
                 this.pmoduleDispat = this.createDispat<PointModuleModel, PointModule, PointModuleState>();
 
                 this.motherboardVmDispat.projected.CollectionChanged += (sender, e) => RaisePropertyChanged(() => AvailableMotherBoardVMs);
@@ -253,15 +253,15 @@ namespace SensorLivetView.ViewModels
             }
         }
 
-        private DeviceViewModelDispatcher<TrainControllerModel, TrainController, TrainControllerState> tcontrollerDispat;
-        public IEnumerable<TrainControllerViewModel> AvailableTrainControllerVMs
+        private DeviceViewModelDispatcher<TrainControllerDeviceModel, TrainController, TrainControllerState> tcontrollerDispat;
+        public IEnumerable<TrainControllerDeviceViewModel> AvailableTrainControllerVMs
         {
             get
             {
                 if (this.tcontrollerDispat == null)
-                    return new TrainControllerViewModel [] { };
+                    return new TrainControllerDeviceViewModel [] { };
                 else
-                    return this.tcontrollerDispat.projected.Cast<TrainControllerViewModel>();
+                    return this.tcontrollerDispat.projected.Cast<TrainControllerDeviceViewModel>();
             }
         }
 
