@@ -121,11 +121,26 @@ namespace SensorLibrary
         {
             //[(PR2) + 1] • 4 • TOSC • (TMR2 Prescale Value)
             get { return ((double)this.DeviceRegisteredPeriod + 1.0) * 4.0 * this.DevicePeriod * (double)this.PreScale; }
+            set
+            {
+                foreach (var i in new [] { 1, 4, 16 })
+                {
+                    this.PreScale = i;
+                    this.DeviceRegisteredPeriod = 255;
+
+                    if (this.DevicePeriod > value)
+                        break;
+                }
+
+                var pr = (value / (this.PreScale * this.DevicePeriod * 4)) - 1.0;
+                this.DeviceRegisteredPeriod = (byte)pr;
+            }
         }
 
         public double PWMFreqency
         {
             get { return 1.0 / this.PWMPeriod; }
+            set { this.PWMPeriod = 1.0 / value; }
         }
 
         public TrainControllerDirection Direction
