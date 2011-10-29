@@ -128,8 +128,8 @@ namespace SensorLibrary
                     this.PreScale = i;
                     this.DeviceRegisteredPeriod = 255;
 
-                    if (this.PWMPeriod > value)
-                        break;
+                   if (this.PWMPeriod > value)
+                       break;
                 }
 
                 var pr = (value / (this.PreScale * this.DevicePeriod * 4)) - 1.0;
