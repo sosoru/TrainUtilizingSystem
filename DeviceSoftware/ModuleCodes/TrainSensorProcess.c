@@ -31,7 +31,7 @@ HRESULT GetFuncTableTrainSensor(DeviceID * pid, ModuleFuncTable* table)
 
 void SetUsingPort(BYTE module, BYTE port)
 {	
-	BYTE base = (module-1) * PORT_PIN_COUNT + 1;
+	BYTE cnt=0,  base = (module-1) * PORT_PIN_COUNT + 1;
 		
 	setLat(base+4, 1);
 	if(port > 8)
@@ -45,7 +45,9 @@ void SetUsingPort(BYTE module, BYTE port)
 //	LATAbits.LATA4 = 0;
 	setLat(base+4, 0);
 	
-	Delay10TCYx(140); // 28us
+	while(!getPort(base+5) || cnt++ < 100);
+	
+	//Delay10TCYx(140); // 28us
 }
 
 void SetMeisureVoltage(BYTE module, BYTE port)
@@ -196,7 +198,7 @@ HRESULT InitTrainSensor(DeviceID * pid)
 	{
 		setTris(base+i, OUTPUT_PIN);
 	}
-
+	setTris(base+5, INPUT_PIN);
 	//setTris(module, INPUT_PIN);
 
 	return S_OK;
