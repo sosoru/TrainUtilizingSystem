@@ -74,13 +74,13 @@ namespace SensorLivetView.ViewModels
                 this.tsensorVmDispat.projected.CollectionChanged += (sender, e) => RaisePropertyChanged(() => AvailableTrainSensorVMs);
                 this.tcontrollerDispat.projected.CollectionChanged += (sender, e) => RaisePropertyChanged(() => AvailableTrainControllerVMs);
                 this.pmoduleDispat.projected.CollectionChanged += (sender, e) => RaisePropertyChanged(() => AvailablePointModuleVMs);
-                //#if TEST
-                //                if (!this.OpeningServers.Contains(this.testserv))
-                //                {
-                //                    this.OpeningServers.Add(this.testserv);
-                //                    LoggingStart(this.testserv);
-                //                }
-                //#endif
+//#if TEST
+//                if (!this.OpeningServers.Contains(this.testserv))
+//                {
+//                    this.OpeningServers.Add(this.testserv);
+//                    LoggingStart(this.testserv);
+//                }
+//#endif
             }
         }
 

@@ -128,7 +128,7 @@ namespace SensorLibrary
                     this.PreScale = i;
                     this.DeviceRegisteredPeriod = 255;
 
-                    if (this.DevicePeriod > value)
+                    if (this.PWMPeriod > value)
                         break;
                 }
 
