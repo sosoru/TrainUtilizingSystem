@@ -114,7 +114,7 @@ void TrainControllerTimerInterrupt()
 
 void ChangeTimer()
 {
-	if(g_cacheState.lowerEnable && !PIE1bits.TMR2IE)
+	if(g_cacheState.lowerEnable)
 	{
 		OpenTimer2(TIMER_INT_ON & T2_PS_1_4 & T2_POST_1_1);
 	}
