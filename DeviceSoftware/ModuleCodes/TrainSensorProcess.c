@@ -46,9 +46,10 @@ void SetUsingPort(BYTE module, BYTE port)
 //	LATAbits.LATA4 = 0;
 	setLat(base+4, 0);
 	
+	Delay100TCYx(5); 
+	
 	while(!getPort(base+5) && cnt++ < 100);
 	
-	//Delay10TCYx(140); // 28us
 }
 
 void SetMeisureVoltage(BYTE module, BYTE port)
@@ -60,7 +61,7 @@ void SetMeisureVoltage(BYTE module, BYTE port)
 	if(convert == E_FAIL)
 		return;
 		
-	OpenADC(ADC_FOSC_4 & ADC_RIGHT_JUST & ADC_20_TAD,
+	OpenADC(ADC_FOSC_64 & ADC_RIGHT_JUST & ADC_20_TAD,
 	channel & ADC_INT_OFF & ADC_VREFPLUS_VDD & ADC_VREFMINUS_VSS,
 	AD_PORT);
 	

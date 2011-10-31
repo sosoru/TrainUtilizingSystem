@@ -129,21 +129,10 @@ namespace SensorLibrary
 
         public virtual void OnNext(IDeviceState<IPacketDeviceData> value)
         {
-            if (this.DeviceID != value.BasePacket.ID)
-                return;
+            var state = value as TState;
 
-            var casted = value as TState;
-            if (casted != null)
-            {
-                var before = this.CurrentState;
-
-                if (!this.IsHold)
-                    this.CurrentState = casted;
-
-                OnPacketReceived(new PacketReceiveEventArgs() { state = casted, beforestate = before });
-
-                OnPropertyChanged("");
-            }
+            if (state != null)
+                this.OnNext(state);
         }
 
         public IObservable<EventPattern<PacketReceiveEventArgs>> GetNextObservable
@@ -182,7 +171,19 @@ namespace SensorLibrary
 
         public void OnNext(TState value)
         {
-            throw new NotImplementedException();
+            if (this.DeviceID != value.BasePacket.ID)
+                return;
+
+            var casted = value;
+            var before = this.CurrentState;
+
+            if (!this.IsHold)
+                this.CurrentState = casted;
+
+            OnPacketReceived(new PacketReceiveEventArgs() { state = casted, beforestate = before });
+
+            OnPropertyChanged("");
+
         }
 
     }

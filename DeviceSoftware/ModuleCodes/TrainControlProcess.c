@@ -147,11 +147,13 @@ void SetLowerFreq()
 		beforeDuty = g_cacheState.duty;
 	}
 	
-	ChangeTimer();
+	//ChangeTimer();
 }
 
 void ChangePWM()
 {
+	ChangeTimer();
+	
 	if(g_cacheState.direction == DIRECTION_TRAINCONTROLLER_POSITIVE)
 	{
 		ClosePWM2();
