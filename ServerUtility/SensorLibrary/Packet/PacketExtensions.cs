@@ -25,9 +25,9 @@ namespace SensorLibrary
             }
 
         }
-        public static byte[] ToByteArray(this object obj)
+        public static byte [] ToByteArray(this object obj)
         {
-            byte[] buffer = new byte[Marshal.SizeOf(obj)];
+            byte[] buffer = new byte [Marshal.SizeOf(obj)];
             var handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
             try
             {
@@ -64,25 +64,32 @@ namespace SensorLibrary
             //while (st.ReadByte() != 0xFF) ;
             st.ReadByte();
 
-            byte[] buf = new byte[31];
+            byte[] buf = new byte [31];
             st.Read(buf, 0, buf.Length);
 
+            return buf.ToDevicePacket();
+
+        }
+
+        public static DevicePacket ToDevicePacket(this byte [] buf)
+        {
             DevicePacket ret = new DevicePacket();
             using (var ms = new MemoryStream(buf))
-            using (var br = new BinaryReader(ms))
+            using (var br= new BinaryReader(ms))
             {
+                ret.ReadMark = br.ReadByte();
                 ret.ID.ParentPart = br.ReadByte();
                 ret.ID.ModulePart = br.ReadByte();
                 ret.ModuleType = (ModuleTypeEnum)br.ReadByte();
                 br.ReadBytes(28).CopyTo(ret.Data, 0);
             }
-            return ret;
 
+            return ret;
         }
 
         public static void WritePacket(this ChunckedStreamController st, DevicePacket pack)
         {
-            byte[] buf = new byte[32];
+            byte[] buf = new byte [32];
             using (var ms = new MemoryStream(buf))
             using (var sw = new BinaryWriter(ms))
             {

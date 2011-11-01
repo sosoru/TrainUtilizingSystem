@@ -130,23 +130,23 @@ namespace SensorLivetView
 
     }
 
-    public class TestServer
-        : PacketServer
-    {
-        public IEnumerable<DevicePacket> SendingPackets { get; set; }
+    //public class TestServer
+    //    : PacketServer
+    //{
+    //    public IEnumerable<DevicePacket> SendingPackets { get; set; }
 
-        public TestServer(IEnumerable<DevicePacket> en)
-            : base(new TestPacketStream(en))
-        {
-            this.SendingPackets = en;
-        }
+    //    public TestServer(IEnumerable<DevicePacket> en)
+    //        : base(new TestPacketStream(en))
+    //    {
+    //        this.SendingPackets = en;
+    //    }
 
-        public void ResetStream()
-        {
-            this.BaseStream.Close();
-        }
+    //    public void ResetStream()
+    //    {
+    //        this.BaseStream.Close();
+    //    }
 
-    }
+    //}
 
     public class TestPacketStream
         : Stream

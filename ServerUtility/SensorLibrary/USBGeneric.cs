@@ -6,140 +6,98 @@ using System.IO;
 using LibUsbDotNet;
 using LibUsbDotNet.Main;
 
+using System.Reactive.Linq;
+using System.Reactive.Concurrency;
+
 namespace SensorLibrary
 {
-    public class USBStream
-        : Stream
+    public class USBDeviceController
     {
         public UsbDevice Device { get; private set; }
         protected UsbEndpointReader Reader { get; private set; }
         protected UsbEndpointWriter Writer { get; private set; }
 
-        public USBStream(UsbDevice dev)
+        private volatile object Lockpacketlist = new object();
+        private Queue<DevicePacket> packetlist = new Queue<DevicePacket>();
+
+        public USBDeviceController(UsbDevice dev)
             : base()
         {
             this.Device = dev;
-            this.ReadTimeout = 500;
-            this.WriteTimeout = 500;
+
         }
 
         public void Open()
         {
             Device.Open();
 
-            Reader = Device.OpenEndpointReader(ReadEndpointID.Ep01, 1024, EndpointType.Bulk);
-            
-            Writer = Device.OpenEndpointWriter(WriteEndpointID.Ep01);
-            Reader.Reset();
-            Writer.Reset();
-        }
+            Reader = Device.OpenEndpointReader(ReadEndpointID.Ep01, 256, EndpointType.Bulk);
 
-        public override bool CanRead
-        {
-            get { return this.Device.IsOpen; }
-        }
+            //Reader.Reset();
 
-        public override bool CanSeek
-        {
-            get { return false; }
-        }
-
-        public override bool CanWrite
-        {
-            get { return this.Device.IsOpen; }
-        }
-
-        public override bool CanTimeout
-        {
-            get
-            {
-                return true;
-            }
-        }
-
-        public override int ReadTimeout { get; set; }
-        public override int WriteTimeout { get; set; }
-
-        public override void Flush()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override long Length
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public override long Position
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public override int Read(byte [] buffer, int offset, int count)
-        {
-            int pos = 0;
-            do
-            {
-                int len = 64;
-                var buf = new byte [len];
-                // we should read data per 64byte and implement double buffer
-
-                var ec = this.Reader.Read(buf, this.ReadTimeout, out len);
-                if (ec != ErrorCode.None)
+            Reader.DataReceivedEnabled = true;
+            Reader.DataReceived += (sender, e)
+                =>
                 {
-                    this.usbReset();
+                    using (var ms = new MemoryStream(e.Buffer))
+                    {
+                        do
+                        {
+                            var buf = new byte [32];
 
-                    ec = this.Reader.Read(buf, this.ReadTimeout, out len);
-                    if (ec != ErrorCode.None)
-                        throw new IOException(Enum.GetName(typeof(ErrorCode), ec));
-                }
-                Array.Copy(buf, 0, buffer, pos + offset, len);
-                pos += len;
-            } while (pos == 0);
+                            ms.Read(buf, 0, 32);
 
-            return pos;
+                            var packet = buf.ToDevicePacket();
+
+                            if (packet.ReadMark == 0xFF)
+                            {
+                                lock (Lockpacketlist)
+                                    this.packetlist.Enqueue(packet);
+                            }
+
+                        } while (e.Count >= ms.Position + 32);
+                    }
+                };
+
+            Writer = Device.OpenEndpointWriter(WriteEndpointID.Ep01);
+            //Writer.Reset();
+        }
+
+        public IObservable<DevicePacket> CreateDevicePacketObservable()
+        {
+            var q = Observable.FromEventPattern(this.Reader, "DataReceived")
+                              .SelectMany(args =>
+                                  {
+                                      var list = new List<DevicePacket>();
+                                      lock (Lockpacketlist)
+                                          while (this.packetlist.Peek() != null)
+                                              list.Add(this.packetlist.Dequeue());
+                                      return list;
+                                  });
+
+            return q;
         }
 
         public DevicePacket ReadPacket()
         {
-            var pack = new DevicePacket();
-            var buffer = new byte [32];
-
-            this.Read(buffer, 0, buffer.Length);
-
-            using (var ms = new MemoryStream(buffer))
-            using (var sr = new BinaryReader(ms))
+            lock (Lockpacketlist)
             {
-                var mark = sr.ReadByte();
-                pack.ID = new DeviceID()
-                {
-                    ParentPart = sr.ReadByte(),
-                    ModulePart = sr.ReadByte(),
-                };
-                pack.ModuleType = (ModuleTypeEnum)sr.ReadByte();
-                sr.ReadBytes(28).CopyTo(pack.Data, 0);
+                if (this.packetlist.Count > 0)
+                    return this.packetlist.Dequeue();
+                else
+                    return null;
             }
-            return pack;
         }
 
-        public override long Seek(long offset, SeekOrigin origin)
+        public void WritePacket(DevicePacket packet)
         {
-            throw new NotImplementedException();
+            var buf = new byte [64];
+
+            packet.ToByteArray().CopyTo(buf, 0);
+            this.Write(buf, 0, buf.Length);
         }
 
-        public override void SetLength(long value)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void Write(byte [] buffer, int offset, int count)
+        public void Write(byte [] buffer, int offset, int count)
         {
             int pos = 0;
 
@@ -149,12 +107,12 @@ namespace SensorLibrary
                 var len = 0;
                 Array.Copy(buffer, offset + pos, trans, 0, trans.Length);
 
-                var ec = this.Writer.Write(trans, this.WriteTimeout, out len);
+                var ec = this.Writer.Write(trans, 500, out len);
                 if (ec != ErrorCode.None)
                 {
                     this.usbReset();
 
-                    ec = this.Writer.Write(trans, this.WriteTimeout, out len);
+                    ec = this.Writer.Write(trans, 500, out len);
 
                     if (ec != ErrorCode.None)
                         throw new IOException(UsbDevice.LastErrorString);

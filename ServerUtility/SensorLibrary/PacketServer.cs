@@ -10,18 +10,20 @@ namespace SensorLibrary
     public class PacketServer
          : IDisposable
     {
-        protected Stream BaseStream { get; private set; }
-        protected ChunckedStreamController StreamController { get; private set; }
+        //protected IDisposable packetObservableDisposable { get; private set; }
+        
         public bool IsLooping { get; private set; }
+        public USBDeviceController Controller { get; set; }
 
         private volatile object lockStream = new object();
         private List<PacketServerAction> actionList = new List<PacketServerAction>();
         private bool cancellation = false;
 
-        public PacketServer(Stream basest)
+        public PacketServer()
         {
-            this.BaseStream = basest;
-            this.StreamController = new ChunckedStreamController(this.BaseStream, 64);
+            //this.DevicePacketObservable = obsv.Subscribe();
+
+            //obsv.Subscribe();
             IsLooping = false;
         }
 
@@ -53,7 +55,7 @@ namespace SensorLibrary
         public void SendPacket(DevicePacket pack)
         {
             lock (lockStream)
-                this.StreamController.WritePacket(pack);
+                this.Controller.WritePacket(pack);
         }
 
         private bool blockLoopStarting = false;
@@ -86,7 +88,13 @@ namespace SensorLibrary
                     try
                     {
                         lock (lockStream)
-                            pack = this.StreamController.ReadPacket();
+                            pack = this.Controller.ReadPacket();
+
+                        if (pack == null)
+                        {
+                            System.Threading.Thread.Sleep(1);
+                            continue;
+                        }
 
                         var state = DeviceFactory.AvailableDeviceTypes.First((f) => f.ModuleType == pack.ModuleType).DeviceStateCreate();
                         state.BasePacket = pack;
@@ -124,16 +132,15 @@ namespace SensorLibrary
 
             }
 
-            if (BaseStream != null)
-            {
-                try
-                {
-                    this.StreamController.Close();
-                    BaseStream.Close();
-                }
-                catch (IOException)
-                { }
-            }
+            //if (this.Controller != null)
+            //{
+            //    try
+            //    {
+            //        this.Controller
+            //    }
+            //    catch (IOException)
+            //    { }
+            //}
 
             //base.Dispose();
             __disposed = true;

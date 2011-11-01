@@ -130,31 +130,31 @@ namespace SensorLivetView.ViewModels
             };
         }
 
-        private PacketServer _cache_testserv = null;
-        private PacketServer testserv
-        {
-            get
-            {
-                if (_cache_testserv == null)
-                {
-                    var testenum = new TestEnumerable().SetMotherBoard(new DeviceID(1, 0))
-                                                       .SetTrainSensors(new DeviceID(1, 1))
-                                                       .SetTrainSensors(new DeviceID(1, 2))
-                                                       .SetTrainSensors(new DeviceID(1, 3))
-                                                       .SetTrainSensors(new DeviceID(1, 4))
-                                                       .SetPointModules(new DeviceID(1, 5))
-                                                       .SetController(new DeviceID(1, 6))
-                                                       .ToEnumerable();
-                    var testserv = new TestServer(testenum);
-                    //testdisp.ReceivedMotherBoardChanged += (sender, e) => this.RaisePropertyChanged("");
-                    testserv.LoopStart();
-                    this._cache_testserv = testserv;
-                }
-                return this._cache_testserv;
-            }
-        }
-
 #if TEST
+        //private PacketServer _cache_testserv = null;
+        //private PacketServer testserv
+        //{
+        //    get
+        //    {
+        //        if (_cache_testserv == null)
+        //        {
+        //            var testenum = new TestEnumerable().SetMotherBoard(new DeviceID(1, 0))
+        //                                               .SetTrainSensors(new DeviceID(1, 1))
+        //                                               .SetTrainSensors(new DeviceID(1, 2))
+        //                                               .SetTrainSensors(new DeviceID(1, 3))
+        //                                               .SetTrainSensors(new DeviceID(1, 4))
+        //                                               .SetPointModules(new DeviceID(1, 5))
+        //                                               .SetController(new DeviceID(1, 6))
+        //                                               .ToEnumerable();
+        //            var testserv = new TestServer(testenum);
+        //            //testdisp.ReceivedMotherBoardChanged += (sender, e) => this.RaisePropertyChanged("");
+        //            testserv.LoopStart();
+        //            this._cache_testserv = testserv;
+        //        }
+        //        return this._cache_testserv;
+        //    }
+        //}
+
 
         System.IO.StreamWriter logsw = new System.IO.StreamWriter("log.csv");
         private void LoggingStart(PacketServer serv)
@@ -187,10 +187,10 @@ namespace SensorLivetView.ViewModels
             if (!dev.IsOpen)
                 return;
 
-            var st = new USBStream(dev);
-            st.Open();
+            var cnt = new USBDeviceController(dev);
+            cnt.Open();
 
-            var serv = new PacketServer(st);
+            var serv = new PacketServer() { Controller = cnt };
 
 #if TEST
             LoggingStart(serv);

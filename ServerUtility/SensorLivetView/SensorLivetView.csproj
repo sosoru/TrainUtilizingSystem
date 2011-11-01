@@ -127,9 +127,6 @@
     <Compile Include="Views\PointModuleView.xaml.cs">
       <DependentUpon>PointModuleView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\TestWindow.xaml.cs">
-      <DependentUpon>TestWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\TrainControllerDeviceView.xaml.cs">
       <DependentUpon>TrainControllerDeviceView.xaml</DependentUpon>
     </Compile>
@@ -171,10 +168,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\PointModuleView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\TestWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
