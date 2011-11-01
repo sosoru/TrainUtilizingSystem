@@ -27,7 +27,7 @@ namespace SensorLibrary
         {
             Device.Open();
 
-            Reader = Device.OpenEndpointReader(ReadEndpointID.Ep01, 4096, EndpointType.Bulk);
+            Reader = Device.OpenEndpointReader(ReadEndpointID.Ep01, 1024, EndpointType.Bulk);
             
             Writer = Device.OpenEndpointWriter(WriteEndpointID.Ep01);
             Reader.Reset();

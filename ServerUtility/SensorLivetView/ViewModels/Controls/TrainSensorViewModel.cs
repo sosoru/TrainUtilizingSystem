@@ -24,7 +24,7 @@ namespace SensorLivetView.ViewModels.Controls
             : base()
         {
             //this.Model.TimerOverflowed += new EventHandler((sender, e) => RaisePropertyChanged(""));
-            this.ReflectorInterval = 5.0;
+            //this.ReflectorInterval = 5.0;
 
         }
 
@@ -122,8 +122,8 @@ namespace SensorLivetView.ViewModels.Controls
 
         public double ReflectorInterval
         {
-            get { return this.ReflectorInterval; }
-            set { this.ReflectorInterval = value; }
+            get { return this.Model.ReflactorInterval; }
+            set { this.Model.ReflactorInterval = value; }
         }
 
         public double Speed
