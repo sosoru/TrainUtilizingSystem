@@ -26,6 +26,7 @@ typedef union tag_DeviceID
 #define INTERNAL_MODULE_COUNT (1<<(3+1))
 
 #define REPEAT_TERMINATE ((HRESULT)0x02)
+#define UNKNOWN ((HRESULT)0x04)
 #define TERMINATED(Status) ((HRESULT)((Status) & REPEAT_TERMINATE)!=0)
 
 #define SIZE_DATA ((BYTE)28)

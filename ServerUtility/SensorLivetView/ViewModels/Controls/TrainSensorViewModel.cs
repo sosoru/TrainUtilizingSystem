@@ -46,9 +46,13 @@ namespace SensorLivetView.ViewModels.Controls
                     (sender, e) =>
                     {
                         RaisePropertyChanged(e.PropertyName);
-                        if (e.PropertyName == "IsMeisuringMode")
+
+                        if (e.PropertyName == "IsMeisuringMode"
+                            || e.PropertyName == "IsDetectingMode")
                         {
                             RaisePropertyChanged(() => VoltageGraphVm);
+                            RaisePropertyChanged(() => GraphVisiblity);
+                            RaisePropertyChanged(() => DetectingVisiblity);
                         }
 
                     }
@@ -68,72 +72,21 @@ namespace SensorLivetView.ViewModels.Controls
             set { this.Model.IsMeisuringMode = value; }
         }
 
-        public bool IsSensorDetected
+        public Visibility GraphVisiblity
+        {
+            get { return (this.IsMeisuringMode) ? Visibility.Visible : Visibility.Collapsed; }
+        }
+
+        public Visibility DetectingVisiblity
+        {
+            get { return (this.IsDetectingMode) ? Visibility.Visible : Visibility.Collapsed; }
+        }
+
+        public bool IsDetected
         {
             get { return this.Model.IsDetected; }
         }
 
-
-        #region ChangeMeisuringModeCommand
-        DelegateCommand _ChangeMeisuringModeCommand;
-
-        public DelegateCommand ChangeMeisuringModeCommand
-        {
-            get
-            {
-                if (_ChangeMeisuringModeCommand == null)
-                    _ChangeMeisuringModeCommand = new DelegateCommand(ChangeMeisuringMode, CanChangeMeisuringMode);
-                return _ChangeMeisuringModeCommand;
-            }
-        }
-
-        private bool CanChangeMeisuringMode()
-        {
-            return this.Model != null;
-        }
-
-        private void ChangeMeisuringMode()
-        {
-            this.Model.IsMeisuringMode = true;
-        }
-        #endregion
-
-        #region ChangeDetectingModeCommand
-        DelegateCommand<object> _ChangeDetectingModeCommand;
-
-        public DelegateCommand<object> ChangeDetectingModeCommand
-        {
-            get
-            {
-                if (_ChangeDetectingModeCommand == null)
-                    _ChangeDetectingModeCommand = new DelegateCommand<object>(ChangeDetectingMode, CanChangeDetectingMode);
-                return _ChangeDetectingModeCommand;
-            }
-        }
-
-        private bool CanChangeDetectingMode(object parameter)
-        {
-            if ((!(parameter is string)) || this.Model == null || this.Model.TargetDevice == null)
-                return false;
-
-            double castedparam;
-            double.TryParse(parameter as string, out castedparam);
-            if (castedparam == 0.0)
-                return false;
-
-            var state = this.Model.TargetDevice.CurrentState;
-            if (state == null)
-                return false;
-
-            var threshold = castedparam;
-            return state.ReferenceVoltageMinus <= threshold && threshold <= state.ReferenceVoltagePlus;
-        }
-
-        private void ChangeDetectingMode(object parameter)
-        {
-            this.Model.IsDetectingMode = true;
-        }
-        #endregion
 
         //public BitmapSource CurrentGraph
         //{
@@ -167,22 +120,11 @@ namespace SensorLivetView.ViewModels.Controls
             }
         }
 
-
-        double _ReflectorInterval;
-
         public double ReflectorInterval
         {
-            get
-            { return _ReflectorInterval; }
-            set
-            {
-                if (_ReflectorInterval == value)
-                    return;
-                _ReflectorInterval = value;
-                RaisePropertyChanged("ReflectorInterval");
-            }
+            get { return this.ReflectorInterval; }
+            set { this.ReflectorInterval = value; }
         }
-
 
         public double Speed
         {

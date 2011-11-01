@@ -46,9 +46,8 @@ void SetUsingPort(BYTE module, BYTE port)
 //	LATAbits.LATA4 = 0;
 	setLat(base+4, 0);
 	
-	Delay100TCYx(5); 
-	
 	while(!getPort(base+5) && cnt++ < 100);
+	Delay10TCYx(30); 
 	
 }
 
@@ -101,7 +100,7 @@ HRESULT CreateTrainSensorState(DeviceID * pid, PMODULE_DATA data)
 	int romdatasize = sizeof(TrainSensorState);
 	unsigned int curTimer;
 	BYTE module = pid->ModuleAddr, port = pid->InternalAddr;
-	HRESULT res = (port==TRAINSENSOR_INNERMODULE_COUNT-1) ? REPEAT_TERMINATE : 0;
+	HRESULT res =UNKNOWN;
 				
 	SetMeisureVoltage(module, port);
 	
@@ -127,7 +126,7 @@ HRESULT CreateTrainSensorState(DeviceID * pid, PMODULE_DATA data)
 	{
 		case MODE_TRAINSENSOR_MEISURING:
 			//sprintf(data, PGMCSTR("Tm=%u,V=%u.%u\n"), curTimer, decVoltage, flacVoltage);
-			res |= S_OK;
+			res = S_OK;
 		break;
 		
 		case MODE_TRAINSENSOR_DETECTING:
@@ -141,7 +140,7 @@ HRESULT CreateTrainSensorState(DeviceID * pid, PMODULE_DATA data)
 				 SET_TIMER_OCCUPIED(module, 1);
 				 argdata->IsDetected = FALSE;
 				 //sprintf(data, PGMCSTR("Tm=%u,TmOf=%lu,Dg\n"), curTimer, Timer0OverflowCount);
-				 res |= S_OK;
+				 res = S_OK;
 			 }
 			 else if(GET_TIMER_OCCUPIED(module) 
 			 		&& (
@@ -153,7 +152,7 @@ HRESULT CreateTrainSensorState(DeviceID * pid, PMODULE_DATA data)
 				 SET_TIMER_OCCUPIED(module, 0);
 				 argdata->IsDetected = TRUE;
 				 //sprintf(data, PGMCSTR("Tm=%u,TmOf=%lu,Dd\n"), curTimer, Timer0OverflowCount);
-			 	 res |= S_OK;
+			 	 res = S_OK;
 			 }
 		break;
 		
@@ -163,12 +162,14 @@ HRESULT CreateTrainSensorState(DeviceID * pid, PMODULE_DATA data)
 			memset((void*)&romdata, 0x00, (size_t)sizeof(TrainSensorSavedModuledState));
 			romdata.Mode = MODE_TRAINSENSOR_MEISURING;
 			WriteTrainSensorSavedModuledState(module, port, &romdata);
-			res |= E_FAIL;
+			res = E_FAIL;
 		break;
 	}
 	
+	if(res == UNKNOWN)
+		res = E_FAIL;
 	
-	return res;
+	return res | (port==TRAINSENSOR_INNERMODULE_COUNT-1) ? REPEAT_TERMINATE : 0;
 }
 
 void ApplyTrainSensorSavedState(TrainSensorState* state, TrainSensorSavedModuledState* savemState)

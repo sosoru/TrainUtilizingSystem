@@ -4,56 +4,6 @@
         xmlns:local="clr-namespace:SensorLivetView.Views" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:SensorLivetView_ViewModels="clr-namespace:SensorLivetView.ViewModels.Controls" xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" mc:Ignorable="d" x:Class="SensorLivetView.Views.TrainSensorView"
         >
     <StackPanel x:Name="stackPanel" HorizontalAlignment="Left" VerticalAlignment="Top">
-    	<i:Interaction.Triggers>
-    		<ei:PropertyChangedTrigger Binding="{Binding IsSensorDetected}">
-    			<i:Interaction.Behaviors>
-    				<ei:ConditionBehavior>
-    					<ei:ConditionalExpression>
-    						<ei:ComparisonCondition LeftOperand="{Binding IsSensorDetected}" RightOperand="True"/>
-    					</ei:ConditionalExpression>
-    				</ei:ConditionBehavior>
-    			</i:Interaction.Behaviors>
-    			<ei:ChangePropertyAction TargetObject="{Binding ElementName=stackPanel, Mode=OneWay}" PropertyName="Background">
-    				<ei:ChangePropertyAction.Value>
-    					<SolidColorBrush Color="#FFF76E6E"/>
-    				</ei:ChangePropertyAction.Value>
-    			</ei:ChangePropertyAction>
-    		</ei:PropertyChangedTrigger>
-    		<ei:PropertyChangedTrigger Binding="{Binding IsSensorDetected}">
-    			<i:Interaction.Behaviors>
-    				<ei:ConditionBehavior>
-    					<ei:ConditionalExpression>
-    						<ei:ComparisonCondition LeftOperand="{Binding IsSensorDetected}" RightOperand="False"/>
-    					</ei:ConditionalExpression>
-    				</ei:ConditionBehavior>
-    			</i:Interaction.Behaviors>
-    			<ei:ChangePropertyAction TargetObject="{Binding ElementName=stackPanel, Mode=OneWay}" PropertyName="Background"/>
-    		</ei:PropertyChangedTrigger>
-    		<ei:PropertyChangedTrigger Binding="{Binding IsDetectingMode}">
-    			<i:Interaction.Behaviors>
-    				<ei:ConditionBehavior>
-    					<ei:ConditionalExpression>
-    						<ei:ComparisonCondition LeftOperand="{Binding IsDetectingMode}" RightOperand="True"/>
-    					</ei:ConditionalExpression>
-    				</ei:ConditionBehavior>
-    			</i:Interaction.Behaviors>
-    			<ei:ChangePropertyAction TargetObject="{Binding ElementName=stackPanel1, Mode=OneWay}" PropertyName="Visibility"/>
-    		</ei:PropertyChangedTrigger>
-    		<ei:PropertyChangedTrigger Binding="{Binding IsDetectingMode}">
-    			<i:Interaction.Behaviors>
-    				<ei:ConditionBehavior>
-    					<ei:ConditionalExpression>
-    						<ei:ComparisonCondition LeftOperand="{Binding IsDetectingMode}" RightOperand="False"/>
-    					</ei:ConditionalExpression>
-    				</ei:ConditionBehavior>
-    			</i:Interaction.Behaviors>
-    			<ei:ChangePropertyAction PropertyName="Visibility" TargetObject="{Binding ElementName=stackPanel1, Mode=OneWay}">
-    				<ei:ChangePropertyAction.Value>
-    					<Visibility>Collapsed</Visibility>
-    				</ei:ChangePropertyAction.Value>
-    			</ei:ChangePropertyAction>
-    		</ei:PropertyChangedTrigger>
-    	</i:Interaction.Triggers>
     	<!-- <StackPanel Orientation="Horizontal">
     		<TextBlock Text="CurrentVoltage:"/>
     		<TextBlock Text="{Binding Model.CurrentState.CurrentVoltage}"/>
@@ -66,13 +16,18 @@
     		<TextBlock Text="ThretholdVoltage:"/>
 			<TextBox x:Name="textBox" Text="{Binding ThresholdVoltage, Mode=TwoWay}"/>
     	</StackPanel>
+		<StackPanel Orientation="Horizontal">
+			<TextBlock Text="Interval =" />
+			<TextBox Text="{Binding ReflectorInterval, Mode=TwoWay}" />
+		</StackPanel>
     	<StackPanel x:Name="stackPanel1" Orientation="Horizontal">
     		<TextBlock TextWrapping="Wrap" Text="Speed = "/>
     		<TextBlock TextWrapping="Wrap" Text="{Binding Speed}"/>
     	</StackPanel>
-    	<Button Content="change meisuring" Command="{Binding ChangeMeisuringModeCommand, Mode=OneWay}" />
-    	<Button Content="change detecting" Command="{Binding ChangeDetectingModeCommand, Mode=OneWay}" CommandParameter="{Binding Text, ElementName=textBox}"/>
-    	<local:VoltageGraphView Width="200" Height="200" DataContext="{Binding VoltageGraphVm}"/>
+    	<ToggleButton Content="change meisuring" IsChecked="{Binding IsMeisuringMode, Mode=TwoWay}"  />
+    	<ToggleButton Content="change detecting" IsChecked="{Binding IsDetectingMode, Mode=TwoWay}"/>
+		<CheckBox Visibility="{Binding DetectingVisiblity}" IsChecked="{Binding IsDetected, Mode=OneWay}" Content="Detected" />
+    	<local:VoltageGraphView Width="200" Height="200" Visibility="{Binding GraphVisiblity}" DataContext="{Binding VoltageGraphVm}"/>
 		
 	</StackPanel>
 </UserControl>

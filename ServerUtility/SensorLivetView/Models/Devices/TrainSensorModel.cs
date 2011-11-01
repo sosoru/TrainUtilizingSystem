@@ -44,6 +44,7 @@ namespace SensorLivetView.Models.Devices
                     if (before.IsDetected != current.IsDetected)
                     {
                         RaisePropertyChanged(() => IsDetected);
+                        RaisePropertyChanged(() => Speed);
                     }
 
                     if (before.Mode != current.Mode)
@@ -57,8 +58,6 @@ namespace SensorLivetView.Models.Devices
                     {
                         RaisePropertyChanged(() => ThresholdVoltage);
                     }
-
-                    this.Speed = this.TargetDevice.CalculateSpeed(this.ReflactorInterval);
 
                 };
 
@@ -76,26 +75,19 @@ namespace SensorLivetView.Models.Devices
                 if (_ReflactorInterval == value)
                     return;
                 _ReflactorInterval = value;
+
                 RaisePropertyChanged("ReflactorInterval");
+                RaisePropertyChanged(() => Speed);
             }
         }
-
-
-        double _Speed;
 
         public double Speed
         {
             get
-            { return _Speed; }
-            private set
             {
-                if (_Speed == value)
-                    return;
-                RaisePropertyChanged("Speed");
-
-                _Speed = value;
+                return this.TargetDevice.CalculateSpeed(this.ReflactorInterval);
             }
-        }
+        }    
 
 
         public bool IsMeisuringMode

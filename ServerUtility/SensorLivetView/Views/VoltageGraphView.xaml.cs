@@ -94,7 +94,8 @@ namespace SensorLivetView.Views
 
             var val = vm.DataProvider.GetNext;
 
-            RefreshLine(val);
+            if (!double.IsNaN(val))
+                RefreshLine(val);
         }
 
         private int refreshind = 0;
@@ -110,35 +111,38 @@ namespace SensorLivetView.Views
                 cnv.Children.Clear();
             }
 
+            try
+            {
+                var li = lines [refreshind];
+                var befli = (refreshind - 1 < 0) ? lines.Last() : lines [refreshind - 1];
+                var lenx = cnv.ActualWidth / ((double)lines.Count);
+                var animateDuration = new Duration(new TimeSpan(0, 0, 0, 0, 500));
 
-            var li = lines [refreshind];
-            var befli = (refreshind - 1 < 0) ? lines.Last() : lines [refreshind - 1];
-            var lenx = cnv.ActualWidth / ((double)lines.Count);
-            var animateDuration = new Duration(new TimeSpan(0, 0, 0, 0, 500));
+                li.X1 = lenx * refreshind;
+                li.X2 = li.X1;
+                var destX = lenx * (refreshind + 1);
 
-            li.X1 = lenx * refreshind;
-            li.X2 = li.X1;
-            var destX = lenx * (refreshind + 1);
+                li.Y1 = befli.Y2; // valid if refrehed before line
+                li.Y2 = li.Y1;
+                var destY = cnv.ActualHeight * (1.0 - y);
 
-            li.Y1 = befli.Y2; // valid if refrehed before line
-            li.Y2 = li.Y1;
-            var destY = cnv.ActualHeight * (1.0 - y);
+                this.lineXanim = new DoubleAnimation(destX, animateDuration);
+                li.ApplyAnimationClock(Line.X2Property, null);
+                this.lineXclock = lineXanim.CreateClock();
+                li.ApplyAnimationClock(Line.X2Property, this.lineXclock);
 
-            this.lineXanim = new DoubleAnimation(destX, animateDuration);
-            li.ApplyAnimationClock(Line.X2Property, null);
-            this.lineXclock = lineXanim.CreateClock();
-            li.ApplyAnimationClock(Line.X2Property, this.lineXclock);
+                this.lineYanim = new DoubleAnimation(destY, animateDuration);
+                li.ApplyAnimationClock(Line.Y2Property, null);
+                this.lineYclock = lineYanim.CreateClock();
+                li.ApplyAnimationClock(Line.Y2Property, this.lineYclock);
 
-            this.lineYanim = new DoubleAnimation(destY, animateDuration);
-            li.ApplyAnimationClock(Line.Y2Property, null);
-            this.lineYclock = lineYanim.CreateClock();
-            li.ApplyAnimationClock(Line.Y2Property, this.lineYclock);
+                cnv.Children.Add(li);
+                this.lineXclock.Controller.Begin();
+                this.lineYclock.Controller.Begin();
 
-            cnv.Children.Add(li);
-            this.lineXclock.Controller.Begin();
-            this.lineYclock.Controller.Begin();
-
-            ++refreshind;
+                ++refreshind;
+            }
+            catch { throw; }
         }
     }
 }
