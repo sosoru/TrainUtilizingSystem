@@ -49,7 +49,7 @@
  #pragma config EBTRB = OFF
  
 unsigned long Timer0OverflowCount=0L;
-unsigned long TimerOccupied=0L;
+unsigned long TimerOccupied[MODULE_COUNT];
 BYTE lightCounter = 0;
 BYTE USBTasksCounter = 0;
 
@@ -155,12 +155,18 @@ void low_isr()
 
 void high_isr()
 {
-
+	BYTE i;
+	
 	if(INTCONbits.T0IF)
 	{
+		BYTE occupied = 0;
+		
 		INTCONbits.T0IF = 0;
 		
-        if(TimerOccupied == 0L)
+		for(i=0; i<MODULE_COUNT; ++i)
+			occupied |= TimerOccupied[i]>0L;
+			
+        if(!occupied)
         {
                 Timer0OverflowCount = 0L;
         }
@@ -261,6 +267,8 @@ void DeviceInit()
     //IPR1bits.SSPIP = 0; // ssp = low interrupt
     //IPR1bits.TMR2IP = 0; //tmr2 = low interrupt
     //IPR2bits.TMR3IP = 0; //tmr3 = low interrupt
+
+	memset(TimerOccupied, 0x00, sizeof(TimerOccupied));
 
 	OpenTimer0(TIMER_INT_ON 
 				& T0_16BIT 

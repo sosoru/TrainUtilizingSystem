@@ -130,26 +130,26 @@ HRESULT CreateTrainSensorState(DeviceID * pid, PMODULE_DATA data)
 		break;
 		
 		case MODE_TRAINSENSOR_DETECTING:
-			if(!GET_TIMER_OCCUPIED(module)
+			if(!GET_TIMER_OCCUPIED(module, port)
 			 && (
 			 	voltage <= romdata.ThresholdVoltage
 			 	)
 			 )
 			 {
 				 //detecting train
-				 SET_TIMER_OCCUPIED(module, 1);
+				 SET_TIMER_OCCUPIED(module, port, 1);
 				 argdata->IsDetected = FALSE;
 				 //sprintf(data, PGMCSTR("Tm=%u,TmOf=%lu,Dg\n"), curTimer, Timer0OverflowCount);
 				 res = S_OK;
 			 }
-			 else if(GET_TIMER_OCCUPIED(module) 
+			 else if(GET_TIMER_OCCUPIED(module, port) 
 			 		&& (
 			 			voltage > romdata.ThresholdVoltage
 					 	)
 					 )
 			 {
 				 //detected train
-				 SET_TIMER_OCCUPIED(module, 0);
+				 SET_TIMER_OCCUPIED(module, port, 0);
 				 argdata->IsDetected = TRUE;
 				 //sprintf(data, PGMCSTR("Tm=%u,TmOf=%lu,Dd\n"), curTimer, Timer0OverflowCount);
 			 	 res = S_OK;

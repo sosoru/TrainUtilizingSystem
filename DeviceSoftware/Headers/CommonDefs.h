@@ -6,12 +6,12 @@
 #define PGMSTR(str) ((rom far char *)str)
 #define PGMCSTR(str) ((const rom far char *)str)
 
-typedef unsigned char HRESULT;
+typedef char HRESULT;
 
 #define S_OK ((HRESULT)0)
-#define E_FAIL ((HRESULT)1)
+#define E_FAIL ((HRESULT)-1)
 
-#define SUCCEEDED(Status) ((HRESULT)((Status) & 1) == 0)
+#define SUCCEEDED(Status) (((HRESULT)(Status)) >= S_OK)
 #define FAILED(Status) (!SUCCEEDED(Status))
 
 #define INPUT_PIN 1

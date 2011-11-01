@@ -14,10 +14,10 @@
 #define WriteTrainSensorSavedModuledState(module, port, pbuf) EEPROMset((unsigned char)ADDRESS_EEPROM_STARTS(module) + sizeof(TrainSensorSavedModuledState) * (port), (unsigned char *)(pbuf), (unsigned char)(sizeof(TrainSensorSavedModuledState)))
 
 extern unsigned long Timer0OverflowCount;
-extern unsigned long TimerOccupied;
+extern unsigned long TimerOccupied[MODULE_COUNT];
 
-#define SET_TIMER_OCCUPIED(pos, val) (TimerOccupied = (TimerOccupied & (~(((unsigned long)1) << ((unsigned long)(pos)))) | (((unsigned long)val) << ((unsigned long)(pos)))))
-#define GET_TIMER_OCCUPIED(pos) ((TimerOccupied & (((unsigned long)0x00000001) << ((unsigned long)(pos)))) > ((unsigned long)0))
+#define SET_TIMER_OCCUPIED(mod, pos, val) (TimerOccupied[(mod)] = (TimerOccupied[(mod)] & (~(((unsigned long)1) << ((unsigned long)(pos)))) | (((unsigned long)val) << ((unsigned long)(pos)))))
+#define GET_TIMER_OCCUPIED(mod, pos) ((TimerOccupied[(mod)] & (((unsigned long)0x00000001) << ((unsigned long)(pos)))) > ((unsigned long)0))
 
 HRESULT GetFuncTableTrainSensor(DeviceID* pid, ModuleFuncTable* table);
 HRESULT InitTrainSensor(DeviceID* pid);
