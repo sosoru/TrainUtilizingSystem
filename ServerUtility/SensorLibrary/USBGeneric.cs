@@ -31,7 +31,7 @@ namespace SensorLibrary
         {
             Device.Open();
 
-            Reader = Device.OpenEndpointReader(ReadEndpointID.Ep01, 256, EndpointType.Bulk);
+            Reader = Device.OpenEndpointReader(ReadEndpointID.Ep01, 1024, EndpointType.Bulk);
 
             //Reader.Reset();
 
@@ -39,24 +39,27 @@ namespace SensorLibrary
             Reader.DataReceived += (sender, e)
                 =>
                 {
-                    using (var ms = new MemoryStream(e.Buffer))
-                    {
-                        do
+                    System.Threading.Tasks.Task.Factory.StartNew(() =>
                         {
-                            var buf = new byte [32];
-
-                            ms.Read(buf, 0, 32);
-
-                            var packet = buf.ToDevicePacket();
-
-                            if (packet.ReadMark == 0xFF)
+                            using (var ms = new MemoryStream(e.Buffer))
                             {
-                                lock (Lockpacketlist)
-                                    this.packetlist.Enqueue(packet);
-                            }
+                                do
+                                {
+                                    var buf = new byte [32];
 
-                        } while (e.Count >= ms.Position + 32);
-                    }
+                                    ms.Read(buf, 0, 32);
+
+                                    var packet = buf.ToDevicePacket();
+
+                                    if (packet.ReadMark == 0xFF)
+                                    {
+                                        lock (Lockpacketlist)
+                                            this.packetlist.Enqueue(packet);
+                                    }
+
+                                } while (e.Count >= ms.Position + 32);
+                            }
+                        });
                 };
 
             Writer = Device.OpenEndpointWriter(WriteEndpointID.Ep01);

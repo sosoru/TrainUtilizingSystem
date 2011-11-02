@@ -17,7 +17,7 @@ extern unsigned long Timer0OverflowCount;
 extern unsigned long TimerOccupied[MODULE_COUNT];
 
 #define SET_TIMER_OCCUPIED(mod, pos, val) (TimerOccupied[(mod)] = (TimerOccupied[(mod)] & (~(((unsigned long)1) << ((unsigned long)(pos)))) | (((unsigned long)val) << ((unsigned long)(pos)))))
-#define GET_TIMER_OCCUPIED(mod, pos) ((TimerOccupied[(mod)] & (((unsigned long)0x00000001) << ((unsigned long)(pos)))) > ((unsigned long)0))
+#define GET_TIMER_OCCUPIED(mod, pos) ((TimerOccupied[(mod)] & (((unsigned long)0x00000001) << ((unsigned long)(pos)))) > ((unsigned long)(0)))
 
 HRESULT GetFuncTableTrainSensor(DeviceID* pid, ModuleFuncTable* table);
 HRESULT InitTrainSensor(DeviceID* pid);
@@ -35,7 +35,8 @@ typedef union tag_TrainSensorState
 		BYTE ReferenceVoltageMinus;
 		BYTE ReferenceVoltagePlus;
 		BYTE VoltageResolution;
-		unsigned int ThresholdVoltage;
+		BYTE ThresholdVoltageLower;
+		BYTE ThresholdVoltageHigher;
 		unsigned int CurrentVoltage;
 		BYTE IsDetected;
 	};
@@ -47,7 +48,8 @@ typedef union tag_TrainSensorSavedModuledState
 	struct 
 	{
 		BYTE Mode;
-		unsigned int ThresholdVoltage;
+		BYTE ThresholdVoltageLower;
+		BYTE ThresholdVoltageHigher;
 	};
 	BYTE data[3];
 } TrainSensorSavedModuledState;

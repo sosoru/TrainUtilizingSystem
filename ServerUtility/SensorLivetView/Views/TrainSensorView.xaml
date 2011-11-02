@@ -13,8 +13,9 @@
     		<TextBlock Text="{Binding Mode}"/>
     	</StackPanel>
     	<StackPanel Orientation="Horizontal">
-    		<TextBlock Text="ThretholdVoltage:"/>
-			<TextBox x:Name="textBox" Text="{Binding ThresholdVoltage, Mode=TwoWay}"/>
+    		<TextBlock Text="ThretholdVolt(L, H):"/>
+			<TextBox x:Name="textBox" Text="{Binding ThresholdVoltageLower, Mode=TwoWay}"/>
+			<TextBox Text="{Binding ThresholdVoltageHigher, Mode=TwoWay}" />
     	</StackPanel>
 		<StackPanel Orientation="Horizontal">
 			<TextBlock Text="Interval =" />

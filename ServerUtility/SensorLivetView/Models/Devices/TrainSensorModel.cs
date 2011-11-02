@@ -54,9 +54,14 @@ namespace SensorLivetView.Models.Devices
                         RaisePropertyChanged(() => IsMeisuringMode);
                     }
 
-                    if (before.ThresholdVoltage != current.ThresholdVoltage)
+                    if (before.ThresholdVoltageLower != current.ThresholdVoltageLower)
                     {
-                        RaisePropertyChanged(() => ThresholdVoltage);
+                        RaisePropertyChanged(() => ThresholdVoltageLower);
+                    }
+
+                    if (before.ThresholdVoltageHigher != current.ThresholdVoltageHigher)
+                    {
+                        RaisePropertyChanged(() => ThresholdVoltageHigher);
                     }
 
                 };
@@ -87,7 +92,7 @@ namespace SensorLivetView.Models.Devices
             {
                 return this.TargetDevice.CalculateSpeed(this.ReflactorInterval);
             }
-        }    
+        }
 
 
         public bool IsMeisuringMode
@@ -131,10 +136,16 @@ namespace SensorLivetView.Models.Devices
             set { ModifyState(() => this.TargetDevice.CurrentState.Mode = value); }
         }
 
-        public float ThresholdVoltage
+        public float ThresholdVoltageLower
         {
-            get { return this.TargetDevice.CurrentState.ThresholdVoltage; }
-            set { ModifyState(() => this.TargetDevice.CurrentState.ThresholdVoltage = value); }
+            get { return this.TargetDevice.CurrentState.ThresholdVoltageLower; }
+            set { ModifyState(() => this.TargetDevice.CurrentState.ThresholdVoltageLower = value); }
+        }
+
+        public float ThresholdVoltageHigher
+        {
+            get { return this.TargetDevice.CurrentState.ThresholdVoltageHigher; }
+            set { ModifyState(() => this.TargetDevice.CurrentState.ThresholdVoltageHigher = value); }
         }
     }
 

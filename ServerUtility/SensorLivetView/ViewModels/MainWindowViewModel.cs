@@ -1,5 +1,5 @@
 ﻿
-#define TEST
+//#define TEST
 
 using System;
 using System.Collections.Generic;
@@ -156,21 +156,23 @@ namespace SensorLivetView.ViewModels
         //}
 
 
+#endif
         System.IO.StreamWriter logsw = new System.IO.StreamWriter("log.csv");
         private void LoggingStart(PacketServer serv)
         {
 
-            var logging = new PacketServerAction((state) => Console.WriteLine(state.ToString()));
+            //var logging = new PacketServerAction((state) => Console.WriteLine(state.ToString()));
             var putting = new PacketServerAction(state =>
                 {
-                    if (state.BasePacket.ModuleType == ModuleTypeEnum.TrainController)
-                        logsw.WriteLine(state.ToString());
+                    var id = state.BasePacket.ID;
+
+                    if(id.InternalAddr == 1 && id.ModuleAddr == 1)
+                        logsw.WriteLine(DateTime.Now.ToString() + state.ToString());
                 });
 
-            serv.AddAction(logging);
+            //serv.AddAction(logging);
             serv.AddAction(putting);
         }
-#endif
 
         private void listenDevice(UsbRegistryModel usbm)
         {
@@ -192,9 +194,9 @@ namespace SensorLivetView.ViewModels
 
             var serv = new PacketServer() { Controller = cnt };
 
-#if TEST
+//#if TEST
             LoggingStart(serv);
-#endif
+//#endif
 
             if (!serv.IsLooping)
                 serv.LoopStart();

@@ -100,12 +100,13 @@ HRESULT CreateTrainSensorState(DeviceID * pid, PMODULE_DATA data)
 	int romdatasize = sizeof(TrainSensorState);
 	unsigned int curTimer;
 	BYTE module = pid->ModuleAddr, port = pid->InternalAddr;
+	BYTE timeroccupied;
 	HRESULT res =UNKNOWN;
 				
 	SetMeisureVoltage(module, port);
 	
 	curTimer = ReadTimer0();
-	memset((void *)data, (unsigned char)0x00, (size_t)SIZE_DATA);
+	//memset((void *)data, (unsigned char)0x00, (size_t)SIZE_DATA);
 	ReadTrainSensorSavedModuledState(module, port, &romdata);
 	ApplyTrainSensorSavedState(argdata, &romdata);
 	
@@ -130,30 +131,31 @@ HRESULT CreateTrainSensorState(DeviceID * pid, PMODULE_DATA data)
 		break;
 		
 		case MODE_TRAINSENSOR_DETECTING:
-			if(!GET_TIMER_OCCUPIED(module, port)
+			timeroccupied = (BYTE)GET_TIMER_OCCUPIED(module, port);
+			if(!timeroccupied
 			 && (
-			 	voltage <= romdata.ThresholdVoltage
+			 	voltage <= (((unsigned int)romdata.ThresholdVoltageLower) <<2)
 			 	)
 			 )
 			 {
 				 //detecting train
+				 timeroccupied = TRUE;
 				 SET_TIMER_OCCUPIED(module, port, 1);
-				 argdata->IsDetected = FALSE;
-				 //sprintf(data, PGMCSTR("Tm=%u,TmOf=%lu,Dg\n"), curTimer, Timer0OverflowCount);
-				 res = S_OK;
 			 }
-			 else if(GET_TIMER_OCCUPIED(module, port) 
-			 		&& (
-			 			voltage > romdata.ThresholdVoltage
+			 else if(timeroccupied
+			 			&& 
+			 			(
+			 			voltage > (((unsigned int)romdata.ThresholdVoltageHigher) <<2)
 					 	)
 					 )
 			 {
 				 //detected train
+				 timeroccupied = FALSE;
 				 SET_TIMER_OCCUPIED(module, port, 0);
-				 argdata->IsDetected = TRUE;
-				 //sprintf(data, PGMCSTR("Tm=%u,TmOf=%lu,Dd\n"), curTimer, Timer0OverflowCount);
-			 	 res = S_OK;
 			 }
+			
+			argdata->IsDetected = timeroccupied;
+			res = S_OK;
 		break;
 		
 		default:
@@ -175,13 +177,15 @@ HRESULT CreateTrainSensorState(DeviceID * pid, PMODULE_DATA data)
 void ApplyTrainSensorSavedState(TrainSensorState* state, TrainSensorSavedModuledState* savemState)
 {
 	state->Mode = savemState->Mode;
-	state->ThresholdVoltage = savemState->ThresholdVoltage;
+	state->ThresholdVoltageLower = savemState->ThresholdVoltageLower;
+	state->ThresholdVoltageHigher = savemState->ThresholdVoltageHigher;
 }
 
 void ApplyTrainSensorState(TrainSensorState * state, TrainSensorSavedModuledState * savemState)
 {
 	savemState->Mode = state->Mode;
-	savemState->ThresholdVoltage = state->ThresholdVoltage;
+	savemState->ThresholdVoltageLower = state->ThresholdVoltageLower;
+	savemState->ThresholdVoltageHigher = state->ThresholdVoltageHigher;
 }
 
 HRESULT InitTrainSensor(DeviceID * pid)

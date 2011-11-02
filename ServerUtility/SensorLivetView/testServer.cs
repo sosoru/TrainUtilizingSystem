@@ -60,7 +60,7 @@ namespace SensorLivetView
                                                   ReferenceVoltageMinus = 0.0F,
                                                   ReferenceVoltagePlus = 5.0F,
                                                   VoltageResolution = 10,
-                                                  ThresholdVoltage = 2.0F,
+                                                  ThresholdVoltageLower = 2.0F,
                                                   CurrentVoltage = (float)(5.0 * (double)i / 256.0),
                                                   Timer = (ushort)(i * 256),
                                               });
@@ -81,7 +81,7 @@ namespace SensorLivetView
                                       ReferenceVoltageMinus = 0.0f,
                                       ReferenceVoltagePlus = 5.0f,
                                       VoltageResolution = 10,
-                                      ThresholdVoltage = 2.5F,
+                                      ThresholdVoltageLower = 2.5F,
                                       CurrentVoltage = i * 2.5f,
                                       Timer = (ushort)(i * 1000),
                                       IsDetected = i == 0,

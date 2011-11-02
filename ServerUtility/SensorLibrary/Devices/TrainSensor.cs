@@ -45,7 +45,7 @@ namespace SensorLibrary
 
         public TrainSensor ChangeDetectingMode()
         {
-            return ChangeDetectingMode(this.CurrentState.ThresholdVoltage);
+            return ChangeDetectingMode(this.CurrentState.ThresholdVoltageLower);
         }
 
         public TrainSensor ChangeDetectingMode(float threshold)
@@ -53,7 +53,7 @@ namespace SensorLibrary
             var state = this.CurrentState;
 
             state.Mode = TrainSensorMode.detecting;
-            state.ThresholdVoltage = threshold;
+            state.ThresholdVoltageLower = threshold;
             this.SendPacket(state);
 
             return this;
@@ -67,12 +67,13 @@ namespace SensorLibrary
 
             if (before != null && current != null)
             {
-                double sec = 0.0f;
+                double sec = 0.0;
                 if (current.Timer - before.Timer < 0)
                     sec = Math.Abs(current.Timer - before.Timer) + ushort.MaxValue;
                 else
                     sec = current.Timer - before.Timer;
 
+                sec *= 256.0;
                 sec /= 48000000.0;
 
                 return leninterval / sec;

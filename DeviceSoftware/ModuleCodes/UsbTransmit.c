@@ -56,7 +56,7 @@ HRESULT SendPacketUSB()
 		return E_FAIL;
 	}
 	
-	//INTCONbits.GIE = 0; //disable high-priority interrupts
+	INTCONbits.GIE = 0; //disable high-priority interrupts
 	//INTCONbits.PEIE = 0; // disable low-priority interrupts
 	
 	Port_SurfaceLedB = 0;

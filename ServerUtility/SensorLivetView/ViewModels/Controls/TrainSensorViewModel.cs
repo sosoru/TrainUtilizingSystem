@@ -153,10 +153,17 @@ namespace SensorLivetView.ViewModels.Controls
 
         }
 
-        public double ThresholdVoltage
+        public double ThresholdVoltageLower
         {
-            get { return (double)this.Model.ThresholdVoltage; }
-            set { this.Model.ThresholdVoltage = (float)value; }
+            get { return (double)this.Model.ThresholdVoltageLower; }
+            set { this.Model.ThresholdVoltageLower = (float)value; }
         }
+
+        public double ThresholdVoltageHigher
+        {
+            get { return (double)this.Model.ThresholdVoltageHigher; }
+            set { this.Model.ThresholdVoltageHigher = (float)value; }
+        }
+
     }
 }

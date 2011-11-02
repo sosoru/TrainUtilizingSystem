@@ -25,7 +25,7 @@ namespace SensorLibrary
                 case TrainSensorMode.meisuring:
                     break;
                 case TrainSensorMode.detecting:
-                    ret += string.Format(", IsDetected = {0}, Threshold = {1}", IsDetected, ThresholdVoltage);
+                    ret += string.Format(", IsDetected = {0}, Threshold = {1}", IsDetected, ThresholdVoltageLower);
                     break;
             }
             return ret;
@@ -90,15 +90,27 @@ namespace SensorLibrary
             return (ushort)((voltage - (float)this.Data.ReferenceVoltageMinus) / (float)(this.Data.ReferenceVoltagePlus - this.Data.ReferenceVoltageMinus) * (float)(1 << this.Data.VoltageResolution));
         }
 
-        public float ThresholdVoltage
+        public float ThresholdVoltageLower
         {
             get
             {
-                return convertVoltage(this.Data.DeviceThresholdVoltage);
+                return convertVoltage((ushort)(this.Data.DeviceThresholdVoltageLower << 2));
             }
             set
             {
-                this.Data.DeviceThresholdVoltage = convertResolving(value);
+                this.Data.DeviceThresholdVoltageLower = (byte)(convertResolving(value) >> 2);
+            }
+        }
+
+        public float ThresholdVoltageHigher
+        {
+            get
+            {
+                return convertVoltage((ushort)(this.Data.DeviceThresholdVoltageHigher << 2));
+            }
+            set
+            {
+                this.Data.DeviceThresholdVoltageHigher = (byte)(convertResolving(value) >> 2);
             }
         }
 

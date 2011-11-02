@@ -153,8 +153,8 @@ namespace TestProject
             foreach (float expected in new float[] { 1.0F, 2.0F, 2.5F, 3.0F, 4.0F })
             {
                 float actual;
-                target.ThresholdVoltage = expected;
-                actual = (float)Math.Round(target.ThresholdVoltage,1);
+                target.ThresholdVoltageLower = expected;
+                actual = (float)Math.Round(target.ThresholdVoltageLower,1);
                 Assert.AreEqual(expected, actual);
             }
         }

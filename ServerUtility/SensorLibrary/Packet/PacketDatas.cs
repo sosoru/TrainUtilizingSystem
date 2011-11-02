@@ -18,7 +18,8 @@ namespace SensorLibrary
         public byte ReferenceVoltageMinus;
         public byte ReferenceVoltagePlus;
         public byte VoltageResolution;
-        public ushort DeviceThresholdVoltage;
+        public byte DeviceThresholdVoltageLower;
+        public byte DeviceThresholdVoltageHigher;
         public ushort DeviceCurrentVoltage;
         public byte IsDetected;
 
