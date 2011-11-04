@@ -67,9 +67,9 @@ namespace SensorLivetView
             return setStack(() => tsenses);
         }
 
-        public TestEnumerable SetTrainDetectingSensors(DeviceID id)
+        public TestEnumerable SetTrainDetectingSensor(DeviceID id)
         {
-            var tsens = Enumerable.Range(0, 2)
+            var tsens = Enumerable.Range(0, 256)
                                   .Select((i) => new TrainSensorState()
                                   {
                                       BasePacket = new DevicePacket()
@@ -82,6 +82,7 @@ namespace SensorLivetView
                                       ReferenceVoltagePlus = 5.0f,
                                       VoltageResolution = 10,
                                       ThresholdVoltageLower = 2.5F,
+                                      ThresholdVoltageHigher = 4.0f,
                                       CurrentVoltage = i * 2.5f,
                                       Timer = (ushort)(i * 1000),
                                       IsDetected = i == 0,
@@ -98,10 +99,10 @@ namespace SensorLivetView
 
             var state = new PointModuleState()
             {
-                BasePacket = new DevicePacket() { ID = id, ModuleType = ModuleTypeEnum.PointModule } ,
+                BasePacket = new DevicePacket() { ID = id, ModuleType = ModuleTypeEnum.PointModule },
                 Data = data,
             };
-            
+
             return setStack(() => new [] { state });
         }
 
@@ -112,12 +113,13 @@ namespace SensorLivetView
             data.mode = TrainControllerMode.Duty;
             data.duty = 0;
             data.direction = TrainControllerDirection.Positive;
-
+            data.paramp = 0xcc;
+            data.parami = 0x11;
+            
             var stat = new TrainControllerState()
             {
                 BasePacket = new DevicePacket() { ID = id, ModuleType = ModuleTypeEnum.TrainController },
                 Data = data,
-
             };
 
             return setStack(() => new [] { stat });
@@ -130,23 +132,36 @@ namespace SensorLivetView
 
     }
 
-    //public class TestServer
-    //    : PacketServer
-    //{
-    //    public IEnumerable<DevicePacket> SendingPackets { get; set; }
+    public class DeviceIoByEnumerable
+        : IDeviceIO
+    {
+        private IEnumerable<DevicePacket> packets;
+        private IEnumerator<DevicePacket> enumerator;
 
-    //    public TestServer(IEnumerable<DevicePacket> en)
-    //        : base(new TestPacketStream(en))
-    //    {
-    //        this.SendingPackets = en;
-    //    }
+        public DeviceIoByEnumerable(IEnumerable<DevicePacket> ie)
+        {
+            this.packets = ie;
 
-    //    public void ResetStream()
-    //    {
-    //        this.BaseStream.Close();
-    //    }
+            this.enumerator = this.packets.GetEnumerator();
+        }
 
-    //}
+        public DevicePacket ReadPacket()
+        {
+            if (this.enumerator.MoveNext())
+                return this.enumerator.Current;
+            else
+            {
+                this.enumerator.Reset();
+                return this.ReadPacket();
+            }
+
+        }
+
+        public void WritePacket(DevicePacket packet)
+        {
+            // do nothing
+        }
+    }
 
     public class TestPacketStream
         : Stream

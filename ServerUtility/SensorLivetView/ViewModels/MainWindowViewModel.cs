@@ -1,5 +1,5 @@
 ﻿
-//#define TEST
+#define TEST
 
 using System;
 using System.Collections.Generic;
@@ -74,13 +74,13 @@ namespace SensorLivetView.ViewModels
                 this.tsensorVmDispat.projected.CollectionChanged += (sender, e) => RaisePropertyChanged(() => AvailableTrainSensorVMs);
                 this.tcontrollerDispat.projected.CollectionChanged += (sender, e) => RaisePropertyChanged(() => AvailableTrainControllerVMs);
                 this.pmoduleDispat.projected.CollectionChanged += (sender, e) => RaisePropertyChanged(() => AvailablePointModuleVMs);
-                //#if TEST
-                //                if (!this.OpeningServers.Contains(this.testserv))
-                //                {
-                //                    this.OpeningServers.Add(this.testserv);
-                //                    LoggingStart(this.testserv);
-                //                }
-                //#endif
+#if TEST
+                if (!this.OpeningServers.Contains(this.testserv))
+                {
+                    this.OpeningServers.Add(this.testserv);
+                    LoggingStart(this.testserv);
+                }
+#endif
             }
         }
 
@@ -135,29 +135,27 @@ namespace SensorLivetView.ViewModels
         }
 
 #if TEST
-        //private PacketServer _cache_testserv = null;
-        //private PacketServer testserv
-        //{
-        //    get
-        //    {
-        //        if (_cache_testserv == null)
-        //        {
-        //            var testenum = new TestEnumerable().SetMotherBoard(new DeviceID(1, 0))
-        //                                               .SetTrainSensors(new DeviceID(1, 1))
-        //                                               .SetTrainSensors(new DeviceID(1, 2))
-        //                                               .SetTrainSensors(new DeviceID(1, 3))
-        //                                               .SetTrainSensors(new DeviceID(1, 4))
-        //                                               .SetPointModules(new DeviceID(1, 5))
-        //                                               .SetController(new DeviceID(1, 6))
-        //                                               .ToEnumerable();
-        //            var testserv = new TestServer(testenum);
-        //            //testdisp.ReceivedMotherBoardChanged += (sender, e) => this.RaisePropertyChanged("");
-        //            testserv.LoopStart();
-        //            this._cache_testserv = testserv;
-        //        }
-        //        return this._cache_testserv;
-        //    }
-        //}
+        private PacketServer _cache_testserv = null;
+        private PacketServer testserv
+        {
+            get
+            {
+                if (_cache_testserv == null)
+                {
+                    var testenum = new TestEnumerable().SetMotherBoard(new DeviceID() { ParentPart = 1, ModuleAddr = 0 })
+                                                       .SetPointModules(new DeviceID() { ParentPart = 1, ModuleAddr = 1 })
+                                                       .SetTrainDetectingSensor(new DeviceID() { ParentPart = 1, ModuleAddr = 2, InternalAddr = 1 })
+                                                       .SetTrainSensors(new DeviceID() { ParentPart = 1, ModuleAddr = 2, InternalAddr = 2 })
+                                                       .SetController(new DeviceID() { ParentPart = 1, ModuleAddr = 3 })
+                                                       .ToEnumerable();
+                    var testserv = new PacketServer() { Controller = new DeviceIoByEnumerable(testenum) };
+                    //testdisp.ReceivedMotherBoardChanged += (sender, e) => this.RaisePropertyChanged("");
+                    testserv.LoopStart();
+                    this._cache_testserv = testserv;
+                }
+                return this._cache_testserv;
+            }
+        }
 
 
 #endif
@@ -321,7 +319,7 @@ namespace SensorLivetView.ViewModels
         {
             get
             {
-                var convm = this.AvailableTrainControllerVMs.FirstOrDefault(vm => vm.DevID.IsMatched(1, 3, -1));
+                var convm = this.AvailableTrainControllerVMs.FirstOrDefault(vm => vm.DevID.IsMatched(1, 3, -1) );
 
                 if (convm == null)
                     return null;
@@ -338,17 +336,20 @@ namespace SensorLivetView.ViewModels
         {
             // todo : for 1117
 
-            var controller = this.AvailableTrainControllerVMs.FirstOrDefault(vm => vm.DevID.IsMatched(1,3,-1));
-            var stoppingsens = this.AvailableTrainSensorVMs.FirstOrDefault(vm => vm.DevID.IsMatched(1, 2, 1));
-            var haltsens = this.AvailableTrainSensorVMs.FirstOrDefault(vm => vm.DevID.IsMatched(1, 2, 2));
+            var controller = this.AvailableTrainControllerVMs.FirstOrDefault(vm => vm.DevID.IsMatched(1, 3, -1) );
+            var stoppingsens = this.AvailableTrainSensorVMs.FirstOrDefault(vm => vm.DevID.IsMatched(1, 2, 1) );
+            var haltsens = this.AvailableTrainSensorVMs.FirstOrDefault(vm => vm.DevID.IsMatched(1, 2, 2) );
 
             if (controller == null || stoppingsens == null || haltsens == null)
                 throw new InvalidOperationException("device not found");
 
-            var sta = new StationViewModel(controller.Model, stoppingsens.Model, haltsens.Model);
-            sta.IntervalStoppingPos = 2000;
-            sta.IsHalt = true;
-            sta.StoppingTime = new TimeSpan(0, 0, 10);
+            var sta = new StationViewModel(controller.Model, stoppingsens.Model, haltsens.Model)
+            {
+                IntervalStoppingPos = 2000,
+                IsHalt = true,
+                StoppingTime = new TimeSpan(0, 0, 10),
+                StationName = "test sta",
+            };
 
             yield return sta;
         }
@@ -358,6 +359,8 @@ namespace SensorLivetView.ViewModels
             // todo : for 1117
 
             var points = this.AvailablePointModuleVMs.FirstOrDefault(vm => vm.DevID.IsMatched(1, 1, -1));
+            if (points == null)
+                throw new InvalidOperationException("point not found");
 
             var pvm = new ManyPointStrategyViewModel()
             {

@@ -13,7 +13,7 @@ namespace SensorLibrary
         //protected IDisposable packetObservableDisposable { get; private set; }
         
         public bool IsLooping { get; private set; }
-        public USBDeviceController Controller { get; set; }
+        public IDeviceIO Controller { get; set; }
 
         private volatile object lockStream = new object();
         private List<PacketServerAction> actionList = new List<PacketServerAction>();
@@ -41,7 +41,7 @@ namespace SensorLibrary
 
         public PacketServerAction AddAction(PacketServerAction act)
         {
-            if (!actionList.Contains(act))
+            if (!actionList.Contains(act) && act != null)
                 this.actionList.Add(act);
 
             return act;

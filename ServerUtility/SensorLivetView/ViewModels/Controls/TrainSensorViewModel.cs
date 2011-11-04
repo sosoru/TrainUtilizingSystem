@@ -111,7 +111,7 @@ namespace SensorLivetView.ViewModels.Controls
                 {
                     DataProvider = new GraphPainter<TrainSensor, TrainSensorState>()
                     {
-                        DeterminateFunc = (state) => (state != null) ? (state.CurrentVoltage - state.ReferenceVoltageMinus) / state.ReferenceVoltagePlus
+                        DeterminateFunc = (state) => (state != null && state.Data != null) ? (state.CurrentVoltage - state.ReferenceVoltageMinus) / state.ReferenceVoltagePlus
                                                                     : 0.0,
                         Device = this.Model.TargetDevice
                     },

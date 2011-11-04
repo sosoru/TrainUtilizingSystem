@@ -79,6 +79,7 @@
     <Compile Include="Devices\TrainSensor.cs" />
     <Compile Include="GenericComparer.cs" />
     <Compile Include="GenericWeakReference.cs" />
+    <Compile Include="IDeviceIO.cs" />
     <Compile Include="LoopingArray.cs" />
     <Compile Include="Manipulators\ControllerManipulator.cs" />
     <Compile Include="Manipulators\DeviceManipulater.cs" />

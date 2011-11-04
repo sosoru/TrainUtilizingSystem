@@ -97,6 +97,11 @@ namespace SensorLivetView.Models.Devices
 
         }
 
+        public bool IsStateReady
+        {
+            get { return this.TargetDevice.CurrentState != null; }
+        }
+
         ~DeviceModel()
         {
             this.TargetDevice = null;

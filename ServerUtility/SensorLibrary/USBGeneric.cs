@@ -11,7 +11,7 @@ using System.Reactive.Concurrency;
 
 namespace SensorLibrary
 {
-    public class USBDeviceController
+    public class USBDeviceController : SensorLibrary.IDeviceIO
     {
         public UsbDevice Device { get; private set; }
         protected UsbEndpointReader Reader { get; private set; }

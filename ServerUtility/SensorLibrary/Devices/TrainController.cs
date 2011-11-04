@@ -14,19 +14,19 @@ namespace SensorLibrary
             this.ModuleType = ModuleTypeEnum.TrainController;
         }
 
-        public override void OnNext(IDeviceState<IPacketDeviceData> value)
-        {
-            var state = value as TrainControllerState;
+        //public override void OnNext(IDeviceState<IPacketDeviceData> value)
+        //{
+        //    var state = value as TrainControllerState;
 
-            if (state != null)
-            {
-                if (state.LowerFreq == 0)
-                    state = this.CurrentState;
+        //    if (state != null)
+        //    {
+        //        if (state.LowerFreq == 0)
+        //            state = this.CurrentState;
 
-                base.OnNext(state);
-            }
-            else
-                base.OnNext(value);
-        }
+        //        base.OnNext(state);
+        //    }
+        //    else
+        //        base.OnNext(value);
+        //}
     }
 }

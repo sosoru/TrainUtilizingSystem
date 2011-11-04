@@ -13,7 +13,7 @@
              <Label Content="{Binding StationName}" Width="100" HorizontalAlignment="Center" VerticalAlignment="Center" Name="label1"  />
             <CheckBox Content="Halt" IsChecked="{Binding IsHalt, Mode=TwoWay}" Width="100" HorizontalAlignment="Center" VerticalAlignment="Center" Name="checkBox1"   />
             <CheckBox Content="Emergency" HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding ImmediateStopFlag, Mode=TwoWay}" />
-            <Label Content="{Binding Mode}" Width="100" HorizontalAlignment="Center" VerticalAlignment="Center"  />
+            <TextBlock TextAlignment="Center" Text="{Binding Mode}" Width="100" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FFACF8AC" />
         </StackPanel>
     </Grid>
 </UserControl>

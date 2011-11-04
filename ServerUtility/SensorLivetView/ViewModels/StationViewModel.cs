@@ -152,7 +152,6 @@ namespace SensorLivetView.ViewModels
             }
         }
 
-
         string _StationName;
 
         public string StationName
@@ -186,12 +185,11 @@ namespace SensorLivetView.ViewModels
 
         private void StoppingSensorNotifyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (this.Controller != null
-                && this.Mode == StationMode.Idle
-                && this.IsHalt
-                && e.PropertyName == "Speed")
+            if (e.PropertyName == "IsDetected")
             {
-                StoppingStation();
+                var sens = sender as TrainSensorModel;
+                if (sens != null && sens.IsDetected)
+                    StoppingStation();
             }
         }
 
@@ -220,7 +218,10 @@ namespace SensorLivetView.ViewModels
 
         private void StoppingStation()
         {
-            if (this.Mode != StationMode.Idle)
+            if (this.Mode != StationMode.Idle || this.Controller == null || !this.Controller.IsStateReady)
+                return;
+
+            if (!this.IsHalt)
                 return;
 
             this.Mode = StationMode.Stopping;
@@ -231,9 +232,9 @@ namespace SensorLivetView.ViewModels
             var remain = 10.0;
             Observable.Range(1, 25)
                       .Delay(new TimeSpan(0, 0, 0, 0, 500), Scheduler.NewThread)
-                      .Do(i =>
+                      .Subscribe(i =>
                       {
-                          if (this.Mode == StationMode.Stopping)
+                          if (this.Mode != StationMode.Stopping)
                               return;
 
                           this.Controller.DutyValue = (duty - remain) / 25.0 + remain;
@@ -244,8 +245,7 @@ namespace SensorLivetView.ViewModels
                           {
                               duty = remain;
                           }
-                      })
-                      .Subscribe();
+                      });
         }
 
         private void LeaveStation()

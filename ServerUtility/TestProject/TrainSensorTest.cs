@@ -73,7 +73,7 @@ namespace TestProject
             get
             {
                 var id = new DeviceID() { ParentPart = 1, ModulePart =1};
-                var packets = new TestEnumerable().SetTrainDetectingSensors(id);
+                var packets = new TestEnumerable().SetTrainDetectingSensor(id);
                 
                 var st = new TestPacketStream(packets.ToEnumerable());
                 var serv = new PacketServer(st);

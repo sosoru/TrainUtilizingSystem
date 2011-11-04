@@ -28,7 +28,7 @@ namespace SensorLibrary
 
         public override void Notify(IDeviceState<IPacketDeviceData> state)
         {
-            if (!(state is TDevState))
+            if (state ==null || !(state is TDevState))
                 return;
 
             var before = this.FoundDeviceList.FirstOrDefault((dev) => dev.DeviceID == state.BasePacket.ID);
