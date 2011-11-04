@@ -15,7 +15,7 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
-    <ExpressionBlendVersion>4.0.20621.0</ExpressionBlendVersion>
+    <ExpressionBlendVersion>4.0.20901.0</ExpressionBlendVersion>
     <Utf8Output>true</Utf8Output>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -97,7 +97,6 @@
     <Compile Include="Models\Devices\PointModuleModel.cs" />
     <Compile Include="Models\Devices\TrainControllerDeviceModel.cs" />
     <Compile Include="Models\Devices\TrainSensorModel.cs" />
-    <Compile Include="Models\TrainControllerModel.cs" />
     <Compile Include="Models\UsbDevicesModel.cs" />
     <Compile Include="Models\UsbRegistryModel.cs" />
     <Compile Include="PlotImage.cs" />
@@ -119,13 +118,26 @@
     <Compile Include="ViewModels\Controls\VoltageGraphViewModel.cs" />
     <Compile Include="ViewModels\Converters\AlphabetValueConverter.cs" />
     <Compile Include="ViewModels\DeviceViewModelDispatcher.cs" />
+    <Compile Include="ViewModels\LineManagerViewModel.cs" />
+    <Compile Include="ViewModels\ManyPointStrategyViewModel.cs" />
     <Compile Include="ViewModels\ModeledViewModel.cs" />
+    <Compile Include="ViewModels\PointStrategyViewModel.cs" />
+    <Compile Include="ViewModels\StationViewModel.cs" />
     <Compile Include="Views\D2DD3DImage.cs" />
+    <Compile Include="Views\LineManagerView.xaml.cs">
+      <DependentUpon>LineManagerView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MotherBoardView.xaml.cs">
       <DependentUpon>MotherBoardView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PointModuleView.xaml.cs">
       <DependentUpon>PointModuleView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PointStrategyView.xaml.cs">
+      <DependentUpon>PointStrategyView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\StationView.xaml.cs">
+      <DependentUpon>StationView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TrainControllerDeviceView.xaml.cs">
       <DependentUpon>TrainControllerDeviceView.xaml</DependentUpon>
@@ -143,6 +155,10 @@
       <DependentUpon>VoltageGraphView.xaml</DependentUpon>
     </Compile>
     <Page Include="DataStore\DataStore\DataStore.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\LineManagerView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -168,6 +184,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\PointModuleView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\PointStrategyView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\StationView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

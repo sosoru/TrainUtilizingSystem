@@ -101,6 +101,12 @@
 
 				</StackPanel>
 			</TabItem>
+            <TabItem Header="Lines">
+                <DockPanel LastChildFill="True">
+                    
+                    <SensorLivetView:LineManagerView DataContext="{Binding Manager}" />
+                </DockPanel>
+            </TabItem>
 		</TabControl>
 	</DockPanel>
 </Window>

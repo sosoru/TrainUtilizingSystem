@@ -78,5 +78,6 @@ namespace SensorLivetView.ViewModels
                     return new DeviceID();
             }
         }
+
     }
 }

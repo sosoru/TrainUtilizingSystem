@@ -74,13 +74,13 @@ namespace SensorLivetView.ViewModels
                 this.tsensorVmDispat.projected.CollectionChanged += (sender, e) => RaisePropertyChanged(() => AvailableTrainSensorVMs);
                 this.tcontrollerDispat.projected.CollectionChanged += (sender, e) => RaisePropertyChanged(() => AvailableTrainControllerVMs);
                 this.pmoduleDispat.projected.CollectionChanged += (sender, e) => RaisePropertyChanged(() => AvailablePointModuleVMs);
-//#if TEST
-//                if (!this.OpeningServers.Contains(this.testserv))
-//                {
-//                    this.OpeningServers.Add(this.testserv);
-//                    LoggingStart(this.testserv);
-//                }
-//#endif
+                //#if TEST
+                //                if (!this.OpeningServers.Contains(this.testserv))
+                //                {
+                //                    this.OpeningServers.Add(this.testserv);
+                //                    LoggingStart(this.testserv);
+                //                }
+                //#endif
             }
         }
 
@@ -100,10 +100,14 @@ namespace SensorLivetView.ViewModels
             {
                 foreach (var newserv in e.NewItems.Cast<PacketServer>())
                 {
-                    newserv.AddAction(this.motherboardVmDispat.dispat);
-                    newserv.AddAction(this.tsensorVmDispat.dispat);
-                    newserv.AddAction(this.tcontrollerDispat.dispat);
-                    newserv.AddAction(this.pmoduleDispat.dispat);
+                    foreach (var dispat in new PacketDispatcher [] { this.motherboardVmDispat.dispat, this.tsensorVmDispat.dispat, this.tcontrollerDispat.dispat, pmoduleDispat.dispat })
+                    {
+                        ViewModelHelper.BindNotifyCollectionChanged(dispat.DeviceFoundNotifier, this, (obj, args) =>
+                            {
+                                RaisePropertyChanged(() => this.Manager);
+                            });
+                        newserv.AddAction(dispat);
+                    }
                 }
             }
         }
@@ -166,7 +170,7 @@ namespace SensorLivetView.ViewModels
                 {
                     var id = state.BasePacket.ID;
 
-                    if(id.InternalAddr == 1 && id.ModuleAddr == 1)
+                    if (id.InternalAddr == 1 && id.ModuleAddr == 1)
                         logsw.WriteLine(DateTime.Now.ToString() + state.ToString());
                 });
 
@@ -194,13 +198,15 @@ namespace SensorLivetView.ViewModels
 
             var serv = new PacketServer() { Controller = cnt };
 
-//#if TEST
+            //#if TEST
             LoggingStart(serv);
-//#endif
+            //#endif
 
             if (!serv.IsLooping)
                 serv.LoopStart();
             this.OpeningServers.Add(serv);
+
+
         }
 
         private void closeDevice(UsbRegistryModel usbm)
@@ -311,6 +317,57 @@ namespace SensorLivetView.ViewModels
             }
         }
 
+        public LineManagerViewModel Manager
+        {
+            get
+            {
+                var convm = this.AvailableTrainControllerVMs.FirstOrDefault(vm => vm.DevID.IsMatched(1, 3, -1));
 
+                if (convm == null)
+                    return null;
+
+                var lvm = new LineManagerViewModel(convm);
+                this.CreateStations(0).ForEach(sta => lvm.Stations.Add(sta));
+                this.CreatePointStrategy(0).ForEach(pt => lvm.PointStrategies.Add(pt));
+
+                return lvm;
+            }
+        }
+
+        public IEnumerable<StationViewModel> CreateStations(int num)
+        {
+            // todo : for 1117
+
+            var controller = this.AvailableTrainControllerVMs.FirstOrDefault(vm => vm.DevID.IsMatched(1,3,-1));
+            var stoppingsens = this.AvailableTrainSensorVMs.FirstOrDefault(vm => vm.DevID.IsMatched(1, 2, 1));
+            var haltsens = this.AvailableTrainSensorVMs.FirstOrDefault(vm => vm.DevID.IsMatched(1, 2, 2));
+
+            if (controller == null || stoppingsens == null || haltsens == null)
+                throw new InvalidOperationException("device not found");
+
+            var sta = new StationViewModel(controller.Model, stoppingsens.Model, haltsens.Model);
+            sta.IntervalStoppingPos = 2000;
+            sta.IsHalt = true;
+            sta.StoppingTime = new TimeSpan(0, 0, 10);
+
+            yield return sta;
+        }
+
+        public IEnumerable<PointStrategyViewModel> CreatePointStrategy(int num)
+        {
+            // todo : for 1117
+
+            var points = this.AvailablePointModuleVMs.FirstOrDefault(vm => vm.DevID.IsMatched(1, 1, -1));
+
+            var pvm = new ManyPointStrategyViewModel()
+            {
+                StrategyName = "test point",
+            };
+
+            pvm.Points.Add(points.PointModels.First().Model);
+            pvm.InversePoints.Add(points.PointModels.Last().Model);
+
+            yield return pvm;
+        }
     }
 }

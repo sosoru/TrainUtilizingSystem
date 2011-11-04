@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 
@@ -19,6 +20,7 @@ namespace SensorLibrary
             }
         }
 
+        public virtual INotifyCollectionChanged DeviceFoundNotifier { get { return null; } }
 
         #region Implemention of IObservable
 

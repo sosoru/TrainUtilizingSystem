@@ -117,6 +117,14 @@ namespace SensorLibrary
             }
         }
 
+        public bool IsMatched(int parent, int module, int inter)
+        {
+            return (this.ParentPart == parent || parent < 0)
+                   && (this.ModuleAddr == module || module < 0)
+                   && (this.InternalAddr == inter || inter < 0);
+        }
+
+
         #region implementation of IEqualable
         public static bool operator ==(DeviceID A, DeviceID B)
         {

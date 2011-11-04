@@ -15,6 +15,10 @@ namespace SensorLibrary
         where TDevice : IDevice<IDeviceState<IPacketDeviceData>>
     {
         public ObservableCollection<TDevice> FoundDeviceList { get; private set; }
+        public override System.Collections.Specialized.INotifyCollectionChanged DeviceFoundNotifier
+        {
+            get { return this.FoundDeviceList; }
+        }
 
         public PacketDispatcherSingle()
             : base()
@@ -32,7 +36,7 @@ namespace SensorLibrary
             if (before == null)
             {
                 var fact = DeviceFactory.AvailableDeviceTypes.First((d) => d.ModuleType == state.BasePacket.ModuleType);
-                
+
                 var dev = (TDevice)fact.DeviceCreate();
                 dev.DeviceID = state.BasePacket.ID;
                 dev.Observe(this);

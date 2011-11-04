@@ -1,0 +1,30 @@
+﻿<UserControl xmlns:my1="clr-namespace:SensorLivetView" 
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d"
+	x:Class="SensorLivetView.LineManagerView"
+	x:Name="UserControl"
+	d:DesignWidth="640" d:DesignHeight="480" xmlns:my="clr-namespace:SensorLivetView.Views">
+	<UserControl.Resources>
+		<DataTemplate x:Key="StationDataTemplate">
+            <Grid >
+                <my1:StationView DataContext="{Binding .}" />
+            </Grid>
+        </DataTemplate>
+		<DataTemplate x:Key="PointStrategyDataTemplate">
+            <Grid>
+                <my1:PointStrategyView DataContext="{Binding .}" />
+            </Grid>
+        </DataTemplate>
+	</UserControl.Resources>
+
+	<Grid x:Name="LayoutRoot">
+        <StackPanel>
+            <my:TrainControllerDeviceView x:Name="trainControllerDeviceView1" DataContext="{Binding ControllerViewModel}" />
+            <ListBox ItemsSource="{Binding Stations}" ItemTemplate="{DynamicResource StationDataTemplate}" />
+            <ListBox ItemsSource="{Binding PointStrategies}" ItemTemplate="{DynamicResource PointStrategyDataTemplate}" />
+        </StackPanel>
+    </Grid>
+</UserControl>
