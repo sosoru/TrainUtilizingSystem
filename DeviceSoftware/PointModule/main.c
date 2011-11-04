@@ -72,7 +72,7 @@ void ApplyPoint(PointInfo * pinfo)
 
 void ReadPointInfo(PointInfo * pinfo)
 {
-	pinfo->data = (PORT_RECEIVING && 0b00011110) >> 1 ;
+	pinfo->data = (PORT_RECEIVING & 0b00011110) >> 1 ;
 }
 
 void LoadSavedDirection(PointInfo* pinfo)
@@ -82,7 +82,7 @@ void LoadSavedDirection(PointInfo* pinfo)
 	INTCONbits.GIE = 0;
 	INTCONbits.PEIE = 0;
 
-	pinfo->PointDirection = ReadEEPROM(pinfo->PointValue);
+	pinfo->PointDirection = ReadEEPROM(pinfo->PointValue) & 1;
 	
 	INTCON = intcache;
 }
@@ -103,8 +103,8 @@ void DeviceInit()
 {
 	PointInfo info;
 	
-	OSCCON = 0x70;
-	OSCTUNE = 0x40;
+//	OSCCON = 0x70;
+//	OSCTUNE = 0x40;
 	ADCON1bits.PCFG = 0b1111; // all digital
 	CMCON = 0x07; //disable comparator
 	

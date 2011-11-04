@@ -1,5 +1,5 @@
 ﻿
-#define TEST
+//#define TEST
 
 using System;
 using System.Collections.Generic;
@@ -337,8 +337,8 @@ namespace SensorLivetView.ViewModels
             // todo : for 1117
 
             var controller = this.AvailableTrainControllerVMs.FirstOrDefault(vm => vm.DevID.IsMatched(1, 3, -1) );
-            var stoppingsens = this.AvailableTrainSensorVMs.FirstOrDefault(vm => vm.DevID.IsMatched(1, 2, 1) );
-            var haltsens = this.AvailableTrainSensorVMs.FirstOrDefault(vm => vm.DevID.IsMatched(1, 2, 2) );
+            var stoppingsens = this.AvailableTrainSensorVMs.FirstOrDefault(vm => vm.DevID.IsMatched(1, 1, 1) );
+            var haltsens = this.AvailableTrainSensorVMs.FirstOrDefault(vm => vm.DevID.IsMatched(1, 1, 2) );
 
             if (controller == null || stoppingsens == null || haltsens == null)
                 throw new InvalidOperationException("device not found");
@@ -358,7 +358,7 @@ namespace SensorLivetView.ViewModels
         {
             // todo : for 1117
 
-            var points = this.AvailablePointModuleVMs.FirstOrDefault(vm => vm.DevID.IsMatched(1, 1, -1));
+            var points = this.AvailablePointModuleVMs.FirstOrDefault(vm => vm.DevID.IsMatched(1, 2, -1));
             if (points == null)
                 throw new InvalidOperationException("point not found");
 
