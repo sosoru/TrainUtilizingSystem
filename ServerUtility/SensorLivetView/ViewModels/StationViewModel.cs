@@ -121,6 +121,38 @@ namespace SensorLivetView.ViewModels
         }
 
 
+        double _LeavingVoltage;
+
+        public double LeavingVoltage
+        {
+            get
+            { return _LeavingVoltage; }
+            set
+            {
+                if (_LeavingVoltage == value)
+                    return;
+                _LeavingVoltage = value;
+                RaisePropertyChanged("LeavingVoltage");
+            }
+        }
+
+
+        double _DutyWhenHalt;
+
+        public double DutyWhenHalt
+        {
+            get
+            { return _DutyWhenHalt; }
+            set
+            {
+                if (_DutyWhenHalt == value)
+                    return;
+                _DutyWhenHalt = value;
+                RaisePropertyChanged("DutyWhenHalt");
+            }
+        }
+
+
         TimeSpan _StoppingTime;
 
         public TimeSpan StoppingTime
@@ -133,6 +165,21 @@ namespace SensorLivetView.ViewModels
                     return;
                 _StoppingTime = value;
                 RaisePropertyChanged("StoppingTime");
+            }
+        }
+
+        int _StepResolution;
+
+        public int StepResolution
+        {
+            get
+            { return _StepResolution; }
+            set
+            {
+                if (_StepResolution == value)
+                    return;
+                _StepResolution = value;
+                RaisePropertyChanged("StepResolution");
             }
         }
 
@@ -195,9 +242,14 @@ namespace SensorLivetView.ViewModels
 
         private void HaltSensorNotifyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (this.Mode == StationMode.Stopping)
+            if (e.PropertyName == "IsDetected")
             {
-                HaltStation();
+                var sens = sender as TrainSensorModel;
+                if (sens != null && sens.IsDetected
+                    && this.Mode == StationMode.Stopping)
+                {
+                    HaltStation();
+                }
             }
         }
 
@@ -205,7 +257,7 @@ namespace SensorLivetView.ViewModels
         {
             if (this.Mode == StationMode.Leaving)
             {
-                if (this.Controller.ActualVoltage >= 300.0 - 10.0)
+                if (this.Controller.ActualVoltage >= LeavingVoltage - DutyWhenHalt)
                 {
                     this.Mode = StationMode.Idle;
                 }
@@ -226,24 +278,28 @@ namespace SensorLivetView.ViewModels
 
             this.Mode = StationMode.Stopping;
 
-            this.Controller.Mode = TrainControllerMode.Duty;
+            this.Controller.Mode = TrainControllerMode.Following;
 
-            var duty = this.Controller.DutyValue;
-            var remain = 10.0;
-            Observable.Range(1, 25)
-                      .Delay(new TimeSpan(0, 0, 0, 0, 500), Scheduler.NewThread)
-                      .Subscribe(i =>
+            var volt = this.Controller.Voltage;
+            var remain = this.DutyWhenHalt;
+
+            Observable.Interval(TimeSpan.FromMilliseconds(100))
+                    .SubscribeOn(Scheduler.ThreadPool)
+                    .TakeWhile(i => i <= this.StepResolution)
+                    .Subscribe(i =>
                       {
                           if (this.Mode != StationMode.Stopping)
                               return;
 
-                          this.Controller.DutyValue = (duty - remain) / 25.0 + remain;
-                          if (i == 25)
-                              HaltStation();
+                          //this.Controller.DutyValue = (duty - remain) / ((double)this.StepResolution) + remain;
+                          this.Controller.Voltage = (volt - 0.1) / ((double)this.StepResolution) + 0.1;
+                          //if (i >= this.StepResolution)
+                          //    HaltStation();
 
                           if (this.ImmediateStopFlag)
                           {
-                              duty = remain;
+                              this.Controller.Mode = TrainControllerMode.Duty;
+                              this.Controller.DutyValue = remain;
                           }
                       });
         }
@@ -258,13 +314,18 @@ namespace SensorLivetView.ViewModels
             if (this.Controller == null)
                 return;
 
-            var voltage = 300.0;
-
-            this.Controller.ParamP = 0.2f;
-            this.Controller.ParamI = 0.1f;
-            this.Controller.Voltage = voltage;
-
             this.Controller.Mode = TrainControllerMode.Following;
+
+            Observable.Interval(TimeSpan.FromMilliseconds(100))
+                .SubscribeOn(Scheduler.ThreadPool)
+                .TakeWhile(i => i <= this.StepResolution)
+                .Subscribe(i =>
+            {
+                if (this.Mode != StationMode.Leaving)
+                    return;
+
+                this.Controller.Voltage = this.LeavingVoltage * (double)i / (double)this.StepResolution;
+            });
 
         }
 
@@ -279,7 +340,7 @@ namespace SensorLivetView.ViewModels
                 return;
 
             this.Controller.Mode = TrainControllerMode.Duty;
-            this.Controller.DutyValue = 10;
+            this.Controller.DutyValue = this.DutyWhenHalt;
 
             Observable.Range(0, 1)
                     .Delay(this.StoppingTime, Scheduler.NewThread)

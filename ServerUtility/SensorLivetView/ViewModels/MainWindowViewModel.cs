@@ -1,5 +1,5 @@
 ﻿
-//#define TEST
+#define TEST
 
 using System;
 using System.Collections.Generic;
@@ -143,9 +143,9 @@ namespace SensorLivetView.ViewModels
                 if (_cache_testserv == null)
                 {
                     var testenum = new TestEnumerable().SetMotherBoard(new DeviceID() { ParentPart = 1, ModuleAddr = 0 })
-                                                       .SetPointModules(new DeviceID() { ParentPart = 1, ModuleAddr = 1 })
-                                                       .SetTrainDetectingSensor(new DeviceID() { ParentPart = 1, ModuleAddr = 2, InternalAddr = 1 })
-                                                       .SetTrainSensors(new DeviceID() { ParentPart = 1, ModuleAddr = 2, InternalAddr = 2 })
+                                                       .SetPointModules(new DeviceID() { ParentPart = 1, ModuleAddr = 2 })
+                                                       .SetTrainDetectingSensor(new DeviceID() { ParentPart = 1, ModuleAddr = 1, InternalAddr = 1 })
+                                                       .SetTrainSensors(new DeviceID() { ParentPart = 1, ModuleAddr = 1, InternalAddr = 2 })
                                                        .SetController(new DeviceID() { ParentPart = 1, ModuleAddr = 3 })
                                                        .ToEnumerable();
                     var testserv = new PacketServer() { Controller = new DeviceIoByEnumerable(testenum) };
@@ -349,6 +349,9 @@ namespace SensorLivetView.ViewModels
                 IsHalt = true,
                 StoppingTime = new TimeSpan(0, 0, 10),
                 StationName = "test sta",
+                DutyWhenHalt = 20.0,
+                LeavingVoltage = 1.3,
+                StepResolution = 100
             };
 
             yield return sta;
