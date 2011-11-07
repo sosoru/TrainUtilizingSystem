@@ -11,27 +11,21 @@ namespace SensorLibrary
     : Device<TrainSensorState>
     {
 
-        //public event EventHandler TimerOverflowed;
-        private TrainSensorState lastDetected = null;
-        private TrainSensorState firstNotDetected = null;
-
+        private TrainSensorState startDetected = null;
+        private TrainSensorState endofUnDetected = null;
+        private DateTime DetectedTime;
 
         public TrainSensor(DeviceID id)
             : base()
         {
             this.ModuleType = ModuleTypeEnum.TrainSensor;
-            //Observable.Range(1, 1024).Do((i) => this.history.Push(new TrainSensorState(new DevicePacket())));
+
+            this.DetectedTime = DateTime.Now;
         }
 
         public TrainSensor()
             : this(new DeviceID())
         { }
-
-        //protected void OnTimerOverflowed()
-        //{            
-        //    if (this.TimerOverflowed != null)
-        //        this.TimerOverflowed(this, new EventArgs());
-        //}
 
         public TrainSensor ChangeMeisuringMode()
         {
@@ -62,10 +56,10 @@ namespace SensorLibrary
         public double CalculateSpeed(double leninterval)
         {
             TrainSensorState before, current;
-            before = this.lastDetected;
-            current = this.firstNotDetected;
+            before = this.startDetected;
+            current = this.endofUnDetected;
 
-            if (before != null && current != null)
+            if (before != null && current != null && this.IsSolidSpeed)
             {
                 double sec = 0.0;
                 if (current.Timer - before.Timer < 0)
@@ -82,6 +76,13 @@ namespace SensorLibrary
             return 0.0;
         }
 
+        public double calcElapsedTimer(TrainSensorState before, TrainSensorState current)
+        {
+            var flowed = current.OverflowedCount - before.OverflowedCount;
+
+            return current.Timer - before.Timer + ushort.MaxValue * flowed;
+        }
+
         public override void OnNext(IDeviceState<IPacketDeviceData> value)
         {
             var casted = value as TrainSensorState;
@@ -92,17 +93,36 @@ namespace SensorLibrary
             {
                 if (casted.Mode == TrainSensorMode.detecting && casted.IsDetected)
                 {
-                    this.lastDetected = casted;
-                    this.firstNotDetected = null;
-                }
-                else if (this.firstNotDetected == null)
-                    this.firstNotDetected = casted;
+                    if (DateTime.Now.Subtract(this.DetectedTime).TotalMilliseconds > 100.0)
+                    {
+                        this.startDetected = casted;
+                    }
 
+                    this.endofUnDetected = casted;
+                    this.DetectedTime = DateTime.Now;
+                }
                 base.OnNext(value);
             }
         }
 
+        public bool IsSolidSpeed
+        {
+            get
+            {
+                return this.DetectedTime.Subtract(DateTime.Now).TotalMilliseconds > 150.0;
+            }
+        }
 
+        private bool isSatisfyInterval(TrainSensorState before, TrainSensorState current)
+        {
+            int interval = current.Timer - before.Timer;
+
+            if (before.Timer > current.Timer)
+                interval += (int)ushort.MaxValue;
+
+            return interval > (uint)Math.Ceiling(48000000.0 / 100.0 / 256.0);
+
+        }
     }
 
 }

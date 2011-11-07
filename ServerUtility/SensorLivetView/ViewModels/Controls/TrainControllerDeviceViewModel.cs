@@ -39,6 +39,11 @@ namespace SensorLivetView.ViewModels.Controls
                    (sender, e) =>
                    {
                        RaisePropertyChanged(e.PropertyName);
+
+                       if (e.PropertyName == "ActualVoltage")
+                       {
+                           //this.Frequency = this.ActualVoltage / 5.0f * 500.0;
+                       }
                    });
             }
         }
