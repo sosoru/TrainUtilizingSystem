@@ -1,0 +1,17 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TusWpfSplashLibrary", "TusWpfSplashLibrary\TusWpfSplashLibrary.csproj", "{c6bffb53-a09b-4e72-9f70-71a7d96142ce}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C6BFFB53-A09B-4E72-9F70-71A7D96142CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6BFFB53-A09B-4E72-9F70-71A7D96142CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6BFFB53-A09B-4E72-9F70-71A7D96142CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6BFFB53-A09B-4E72-9F70-71A7D96142CE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
