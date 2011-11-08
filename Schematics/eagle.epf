@@ -336,7 +336,7 @@ UsedLibrary="microchip.lbr"
 [Win_1]
 Type="Board Editor"
 Loc="75 75 674 474"
-State=3
+State=1
 Number=2
 File="plat_40pinControlSimple.brd"
 View="-21217 -8227 975585 313123"
@@ -375,7 +375,7 @@ Layer=16
 [Win_2]
 Type="Schematic Editor"
 Loc="175 175 774 574"
-State=3
+State=1
 Number=1
 File="plat_40pinControlSimple.sch"
 View="-59059 -130723 1108403 1062563"
