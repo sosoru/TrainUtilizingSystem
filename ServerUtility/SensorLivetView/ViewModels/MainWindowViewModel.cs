@@ -176,6 +176,8 @@ namespace SensorLivetView.ViewModels
             serv.AddAction(putting);
         }
 
+        private Dictionary<UsbRegistryModel, PacketServer> listeingList = new Dictionary<UsbRegistryModel, PacketServer>();
+
         private void listenDevice(UsbRegistryModel usbm)
         {
             if (usbm == null)
@@ -203,14 +205,14 @@ namespace SensorLivetView.ViewModels
             if (!serv.IsLooping)
                 serv.LoopStart();
             this.OpeningServers.Add(serv);
-
+            this.listeingList.Add(usbm, serv);
 
         }
 
         private void closeDevice(UsbRegistryModel usbm)
         {
             if (usbm == null)
-                return;
+                return;                
 
             var dev = usbm.Registry.Device;
             if (dev != null && dev.IsOpen)
@@ -218,6 +220,13 @@ namespace SensorLivetView.ViewModels
                 dev.Close();
             }
 
+            try
+            {
+                var devpair = this.listeingList.First(pair => pair.Key == usbm);
+                devpair.Value.LoopStop();
+                this.listeingList.Remove(devpair.Key);
+            }
+            catch (KeyNotFoundException) { }
         }
 
         ObservableCollection<PacketServer> _OpeningServers;

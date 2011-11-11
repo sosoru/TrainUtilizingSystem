@@ -7,6 +7,23 @@
 	x:Class="TusWpfSplashLibrary.MainControl"
 	x:Name="UserControl"
 	d:DesignWidth="640" d:DesignHeight="480">
+	<UserControl.Resources>
+		<Storyboard x:Key="Storyboard1"/>
+	</UserControl.Resources>
+	<UserControl.Triggers>
+		<EventTrigger RoutedEvent="FrameworkElement.Loaded">
+			<BeginStoryboard Storyboard="{StaticResource Storyboard1}"/>
+		</EventTrigger>
+	</UserControl.Triggers>
 
-	<Grid x:Name="LayoutRoot"/>
+	<Grid x:Name="LayoutRoot" Width="300" Height="100">
+		<TextBlock x:Name="___TextBlock___TUS_" Margin="40,20,70,8" TextWrapping="Wrap" FontSize="48" FontFamily="/TusWpfSplashLibrary;component/Fonts/#Arial" FontStretch="Expanded" RenderTransformOrigin="0.505,0.472" TextAlignment="Justify"><TextBlock.RenderTransform>
+				<TransformGroup>
+					<ScaleTransform/>
+					<SkewTransform/>
+					<RotateTransform/>
+					<TranslateTransform/>
+				</TransformGroup>
+			</TextBlock.RenderTransform><Run Language="ja-jp" Text="T U S"/></TextBlock>
+	</Grid>
 </UserControl>
