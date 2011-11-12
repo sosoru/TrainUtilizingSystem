@@ -23,9 +23,6 @@
 		<ItemsPanelTemplate x:Key="MbListItemsPanelTemplate">
 			<VirtualizingStackPanel IsItemsHost="True" Orientation="Horizontal"/>
 		</ItemsPanelTemplate>
-		<ItemsPanelTemplate x:Key="TrSensorListItemsPanelTemplate">
-				<WrapPanel ItemHeight="200" ItemWidth="200"/>
-		</ItemsPanelTemplate>
 		<DataTemplate x:Key="TrSensorListItemTemplate">
 			<Grid>
 				<Border BorderBrush="Black" BorderThickness="1">
@@ -72,34 +69,40 @@
 					</Grid>
 			</TabItem>
 			<TabItem Header="MotherBoard">
-				<ListBox ItemsSource="{Binding AvailableMotherBoardVMs, Mode=OneWay}" ItemTemplate="{DynamicResource MbListItemTemplate}"  ItemsPanel="{DynamicResource MbListItemsPanelTemplate}"/>
-			</TabItem>
+                <ListBox ItemsSource="{Binding AvailableMotherBoardVMs, Mode=OneWay}"
+                         ItemTemplate="{DynamicResource MbListItemTemplate}">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel ItemHeight="150" ItemWidth="200" />
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                </ListBox>
+            </TabItem>
 			<TabItem Header="TrainSensors">
-		        <ListBox ItemsPanel="{DynamicResource TrSensorListItemsPanelTemplate}" ItemsSource="{Binding AvailableTrainSensorVMs, Mode=OneWay}" ItemTemplate="{DynamicResource TrSensorListItemTemplate}" />
-			</TabItem>
+                <ListBox ItemsSource="{Binding AvailableTrainSensorVMs, Mode=OneWay}"
+                         ItemTemplate="{DynamicResource TrSensorListItemTemplate}"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel ItemHeight="300" ItemWidth="200" />
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                </ListBox>
+            </TabItem>
 			<TabItem Header="PointModule">
 				<Grid>
-					<ListBox ItemsSource="{Binding AvailablePointModuleVMs}" ItemTemplate="{DynamicResource PointModuleListItemTemplate}"/>
-				</Grid>
+                    <ListBox ItemsSource="{Binding AvailablePointModuleVMs}"
+                             ItemTemplate="{DynamicResource PointModuleListItemTemplate}">
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel ItemHeight="300" ItemWidth="300" />
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                    </ListBox>
+                </Grid>
 			</TabItem>
 			<TabItem Header="TrainController">
 				<ListBox ItemsSource="{Binding AvailableTrainControllerVMs}" ItemTemplate="{DynamicResource TrainControllerListItemDataTemplate}" />
-			</TabItem>
-			<TabItem Header="SpeedTest">
-				<SensorLivetView:TransitionTestView DataContext="{Binding SpeedTestVM, Mode=OneWay}" />
-			</TabItem>
-			<TabItem Header="Commands">
-				<StackPanel>
-                    <Button x:Name="OuterToMiddle" Content="外ー中" Click="OuterToMiddle_Click" />
-                    <Button x:Name="InnerToMiddle" Content="内ー中" Click="InnerToMiddle_Click" />
-                    <Button x:Name="Independent" Content="独立" Click="Independent_Click" />
-					<Button Content="" />
-					<Button Content="" />
-					<Button Content="" />
-					<Button Content="" />
-					<Button Content="" />
-
-				</StackPanel>
 			</TabItem>
             <TabItem Header="Lines">
                 <DockPanel LastChildFill="True">
