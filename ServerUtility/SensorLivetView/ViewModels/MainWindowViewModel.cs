@@ -1,5 +1,6 @@
 ﻿
 //#define TEST
+#define LINE2011
 
 using System;
 using System.Collections.Generic;
@@ -212,7 +213,7 @@ namespace SensorLivetView.ViewModels
         private void closeDevice(UsbRegistryModel usbm)
         {
             if (usbm == null)
-                return;                
+                return;
 
             var dev = usbm.Registry.Device;
             if (dev != null && dev.IsOpen)
@@ -328,7 +329,7 @@ namespace SensorLivetView.ViewModels
         {
             get
             {
-                var convm = this.AvailableTrainControllerVMs.FirstOrDefault(vm => vm.DevID.IsMatched(1, 3, -1) );
+                var convm = this.AvailableTrainControllerVMs.FirstOrDefault(vm => vm.DevID.IsMatched(1, 3, -1));
 
                 if (convm == null)
                     return null;
@@ -344,45 +345,79 @@ namespace SensorLivetView.ViewModels
         public IEnumerable<StationViewModel> CreateStations(int num)
         {
             // todo : for 1117
-
-            var controller = this.AvailableTrainControllerVMs.FirstOrDefault(vm => vm.DevID.IsMatched(1, 3, -1) );
-            var stoppingsens = this.AvailableTrainSensorVMs.FirstOrDefault(vm => vm.DevID.IsMatched(1, 1, 1) );
-            var haltsens = this.AvailableTrainSensorVMs.FirstOrDefault(vm => vm.DevID.IsMatched(1, 1, 2) );
-
-            if (controller == null || stoppingsens == null || haltsens == null)
-                throw new InvalidOperationException("device not found");
-
-            var sta = new StationViewModel(controller.Model, stoppingsens.Model, haltsens.Model)
-            {
-                IntervalStoppingPos = 2000,
-                IsHalt = true,
-                StoppingTime = new TimeSpan(0, 0, 10),
-                StationName = "test sta",
-                DutyWhenHalt = 20.0,
-                LeavingVoltage = 1.3,
-                StepResolution = 100
+#if LINE2011
+            var idmap = new [] { new{name = "abiko1" , stp = new int[] {1, 2,(num-1) * 2}, halt =  new int[]{1,2, (num-1)*2+1}},
+                                  new{name = "abiko2", stp = new int[] {2, 2,(num-1)*2}, halt = new int[]{2,2, (num-1)*2+1}},
+                                  new{name = "kashiwa", stp = new int[] {3, 2,(num-1)*2}, halt = new int[]{3,2, (num-1)*2+1}},
+                                  new{name = "kita_kashiwa", stp =new int[] {4, 2,(num-1)*2}, halt= new int[]{4,2, (num-1)*2+1}},
             };
+#else
+            var idmap = new [] { new { name = "test", stp = new int [] { 1, 2, 0 }, halt = new int [] { 1, 2, 1 } } };
+#endif
 
-            yield return sta;
+            var controller = this.AvailableTrainControllerVMs.FirstOrDefault(vm => vm.DevID.IsMatched(num, 3, -1));
+
+            foreach (var map in idmap)
+            {
+                var stoppingsens = this.AvailableTrainSensorVMs.FirstOrDefault(vm => vm.DevID.IsMatched(map.stp [0], map.stp [1], map.stp [2]));
+                var haltsens = this.AvailableTrainSensorVMs.FirstOrDefault(vm => vm.DevID.IsMatched(map.halt [0], map.halt [1], map.halt [2]));
+
+                if (controller == null || stoppingsens == null || haltsens == null)
+                    throw new InvalidOperationException("device not found");
+
+                var sta = new StationViewModel(controller.Model, stoppingsens.Model, haltsens.Model)
+                {
+                    IntervalStoppingPos = 2000,
+                    IsHalt = true,
+                    StoppingTime = new TimeSpan(0, 0, 10),
+                    StationName = map.name,
+                    DutyWhenHalt = 20.0,
+                    LeavingVoltage = 1.3,
+                    StepResolution = 100
+                };
+
+                yield return sta;
+            }
         }
 
         public IEnumerable<PointStrategyViewModel> CreatePointStrategy(int num)
         {
             // todo : for 1117
+#if LINE2011
+            var map = new [] { new { name = "D'", points = Enumerable.Range(0,4).Select(i=> new int[]{1,1,i}).ToArray(), invpoints = new int[][]{} },
+                               new {name = "D", points = new int[][] { new int[] {3,1,1}}, invpoints = Enumerable.Range(0,4).Select(i=> new int[]{1,1,i}).ToArray()},
+                               new {name = "C'", points = Enumerable.Range(4,4).Select(i=>new int[] { 1,1, i}).ToArray(), invpoints = new int[][]{}},
+                               new {name = "C", points = new int[][]{ new int[] {3,1,2}}, invpoints = Enumerable.Range(4,4).Select(i=>new int[]{1,1,i}).ToArray() },
+                               new {name = "B'", points = Enumerable.Range(0,4).Select(i=> new int[] { 2,1,i}).ToArray(), invpoints = new int[][]{}},
+                               new {name="B", points = new int[][] { new int[] {3,1,3}}, invpoints = Enumerable.Range(0,4).Select(i=>new int[]{2,1,i}).ToArray()},
+                               new {name = "A'", points= Enumerable.Range(4,4).Select(i=>new int[] { 2,1,i}).ToArray(), invpoints = new int[][] {}},
+                               new {name = "A", points = new int[][] { new int[]{ 3,1,4}},invpoints = Enumerable.Range(4,4).Select(i=> new int[]{2,1,i}).ToArray()},
+                               };
+#else
+            var map = new [] {new {name = "test", points = new int[][] { new int[] { 1,1,0}}, invpoints = new int[][] { new int[] { 1,1,7} } };
+#endif
 
-            var points = this.AvailablePointModuleVMs.FirstOrDefault(vm => vm.DevID.IsMatched(1, 2, -1));
-            if (points == null)
-                throw new InvalidOperationException("point not found");
-
-            var pvm = new ManyPointStrategyViewModel()
+            foreach (var m in map)
             {
-                StrategyName = "test point",
-            };
 
-            pvm.Points.Add(points.PointModels.First().Model);
-            pvm.InversePoints.Add(points.PointModels.Last().Model);
+                var pvm = new ManyPointStrategyViewModel()
+                {
+                    StrategyName = m.name,
+                };
 
-            yield return pvm;
+                var candicates = this.AvailablePointModuleVMs.SelectMany(vm => vm.PointModels).Select(vm => vm.Model);
+
+                m.points.Select(p => candicates.FirstOrDefault(c => c.Address == p [2] && c.Parent.DevID.IsMatched(p [0], p [1], -1)))
+                        .Where(model => model != null)
+                        .Do(pvm.Points.Add);
+
+                m.invpoints.Select(p => candicates.FirstOrDefault(c => c.Address == p [2] && c.Parent.DevID.IsMatched(p [0], p [1], -1)))
+                            .Where(model => model != null)
+                            .Do(pvm.InversePoints.Add);
+
+                yield return pvm;
+
+            }
         }
     }
 }

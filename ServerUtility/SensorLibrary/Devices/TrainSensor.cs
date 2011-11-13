@@ -70,7 +70,8 @@ namespace SensorLibrary
                 sec *= 256.0;
                 sec /= 48000000.0;
 
-                return leninterval / sec;
+                var ms =  leninterval / sec; // [m/s]
+                return ms * 3.6 * 150.0; // [km/h] sceled
             }
 
             return 0.0;

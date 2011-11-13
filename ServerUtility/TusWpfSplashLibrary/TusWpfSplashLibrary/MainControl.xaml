@@ -16,14 +16,77 @@
 		</EventTrigger>
 	</UserControl.Triggers>
 
-	<Grid x:Name="LayoutRoot" Width="300" Height="100">
-		<TextBlock x:Name="___TextBlock___TUS_" Margin="40,20,70,8" TextWrapping="Wrap" FontSize="48" FontFamily="/TusWpfSplashLibrary;component/Fonts/#Arial" FontStretch="Expanded" RenderTransformOrigin="0.505,0.472" TextAlignment="Justify"><TextBlock.RenderTransform>
+	<Grid x:Name="LayoutRoot" Width="600" Height="200" Background="White">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="0.94*"/>
+			<ColumnDefinition Width="0.06*"/>
+		</Grid.ColumnDefinitions>
+		<TextBlock HorizontalAlignment="Left" Margin="140,71,0,59" TextWrapping="Wrap" Text="T" FontFamily="Verdana" FontSize="64" Width="73" Height="70" Foreground="#FF0B62A7" FontStyle="Italic" FontWeight="Bold"/>
+		<TextBlock Margin="200,71,18,59" TextWrapping="Wrap" FontFamily="Verdana" FontSize="64" Height="70" FontStyle="Italic" Foreground="#FF0B62A7" FontWeight="Bold"><Run Language="ja-jp" Text="U"/></TextBlock>
+		<TextBlock Margin="260,65.157,249,-40.54" FontFamily="Lucida Sans Unicode" FontSize="64" FontStyle="Italic" Foreground="#FF0B62A7" FontWeight="Bold"><Run Language="ja-jp" Text="S"/></TextBlock>
+		<Rectangle HorizontalAlignment="Left" Margin="72.433,0,0,85.5" Stroke="#00000000" Width="68.634" RenderTransformOrigin="0.488,0.5" Height="5.5" VerticalAlignment="Bottom">
+			<Rectangle.RenderTransform>
 				<TransformGroup>
 					<ScaleTransform/>
-					<SkewTransform/>
+					<SkewTransform AngleX="-15"/>
 					<RotateTransform/>
-					<TranslateTransform/>
+					<TranslateTransform X="-0.001"/>
 				</TransformGroup>
-			</TextBlock.RenderTransform><Run Language="ja-jp" Text="T U S"/></TextBlock>
+			</Rectangle.RenderTransform>
+			<Rectangle.Fill>
+				<LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0,0">
+					<GradientStop Color="#FF0B62A7" Offset="1"/>
+					<GradientStop Color="White"/>
+				</LinearGradientBrush>
+			</Rectangle.Fill>
+		</Rectangle>
+		<Rectangle HorizontalAlignment="Left" Margin="147.683,0,0,53" Stroke="#00000000" Width="68.634" RenderTransformOrigin="0.488,0.5" Height="5.5" VerticalAlignment="Bottom">
+			<Rectangle.RenderTransform>
+				<TransformGroup>
+					<ScaleTransform/>
+					<SkewTransform AngleY="13"/>
+					<RotateTransform Angle="-90"/>
+					<TranslateTransform X="-0.001"/>
+				</TransformGroup>
+			</Rectangle.RenderTransform>
+			<Rectangle.Fill>
+				<LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0,0">
+					<GradientStop Color="#FF0B62A7" Offset="1"/>
+					<GradientStop Color="White"/>
+				</LinearGradientBrush>
+			</Rectangle.Fill>
+		</Rectangle>
+		<Rectangle HorizontalAlignment="Left" Margin="134.683,42.5,0,0" Stroke="#00000000" Width="68.634" RenderTransformOrigin="0.488,0.5" Height="5.5" VerticalAlignment="Top">
+			<Rectangle.RenderTransform>
+				<TransformGroup>
+					<ScaleTransform/>
+					<SkewTransform AngleY="13"/>
+					<RotateTransform Angle="90"/>
+					<TranslateTransform X="-0.001"/>
+				</TransformGroup>
+			</Rectangle.RenderTransform>
+			<Rectangle.Fill>
+				<LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0,0">
+					<GradientStop Color="#FF0B62A7" Offset="1"/>
+					<GradientStop Color="White"/>
+				</LinearGradientBrush>
+			</Rectangle.Fill>
+		</Rectangle>
+		<Rectangle Margin="153.04,73.704,271.594,0" Stroke="#00000000" RenderTransformOrigin="0.787,0.227" Height="4.5" VerticalAlignment="Top">
+			<Rectangle.RenderTransform>
+				<TransformGroup>
+					<ScaleTransform/>
+					<SkewTransform AngleX="-15"/>
+					<RotateTransform Angle="180"/>
+					<TranslateTransform X="-41.446" Y="3.003"/>
+				</TransformGroup>
+			</Rectangle.RenderTransform>
+			<Rectangle.Fill>
+				<LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0,0">
+					<GradientStop Color="#FF0B62A7" Offset="1"/>
+					<GradientStop Color="White"/>
+				</LinearGradientBrush>
+			</Rectangle.Fill>
+		</Rectangle>
 	</Grid>
 </UserControl>
