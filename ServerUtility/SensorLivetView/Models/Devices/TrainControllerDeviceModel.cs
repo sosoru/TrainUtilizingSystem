@@ -139,7 +139,8 @@ namespace SensorLivetView.Models.Devices
             get { return Math.Round((double)this.TargetDevice.CurrentState.Duty, 0); }
             set
             {
-                ModifyState(() => this.TargetDevice.CurrentState.Duty = (int)value);
+                ModifyState(() => this.TargetDevice.CurrentState.Duty = (int)value,
+                           s => this.TargetDevice.CurrentState.Duty == (int)value);
             }
         }
 
@@ -240,7 +241,11 @@ namespace SensorLivetView.Models.Devices
         public double Voltage
         {
             get { return this.TargetDevice.CurrentState.Voltage; }
-            set { ModifyState(() => this.TargetDevice.CurrentState.Voltage = (int)value); }
+            set
+            {
+                ModifyState(() => this.TargetDevice.CurrentState.Voltage = (int)value,
+                              s => this.TargetDevice.CurrentState.Voltage != (int)value);
+            }
         }
 
         public double MeisuredVoltage
@@ -258,11 +263,15 @@ namespace SensorLivetView.Models.Devices
             get { return this.TargetDevice.CurrentState.ControllerMode; }
             set
             {
+                if (this.Mode == value)
+                    return;
+
                 var mode = value;
                 if (mode == TrainControllerMode.OnDevice)
                     return;
 
-                ModifyState(() => this.TargetDevice.CurrentState.ControllerMode = mode);
+                ModifyState(() => this.TargetDevice.CurrentState.ControllerMode = mode,
+                            s=> this.TargetDevice.CurrentState.ControllerMode != mode);
             }
         }
 

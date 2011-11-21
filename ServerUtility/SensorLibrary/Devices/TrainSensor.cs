@@ -94,7 +94,8 @@ namespace SensorLibrary
             {
                 if (casted.Mode == TrainSensorMode.detecting && casted.IsDetected)
                 {
-                    if (DateTime.Now.Subtract(this.DetectedTime).TotalMilliseconds > 100.0)
+                    Console.WriteLine(DateTime.Now.ToString() + " detected");
+                    if (this.IsSolidSpeed)
                     {
                         this.startDetected = casted;
                     }
@@ -110,7 +111,7 @@ namespace SensorLibrary
         {
             get
             {
-                return this.DetectedTime.Subtract(DateTime.Now).TotalMilliseconds > 150.0;
+                return DateTime.Now.Subtract(this.DetectedTime).TotalMilliseconds > 100.0;
             }
         }
 

@@ -106,8 +106,22 @@
 			</TabItem>
             <TabItem Header="Lines">
                 <DockPanel LastChildFill="True">
-                    
-                    <SensorLivetView:LineManagerView DataContext="{Binding Manager}" />
+                    <ListBox ItemsSource="{Binding Managers}"
+                             >
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                   <SensorLivetView:LineManagerView DataContext="{Binding .}" />                    
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                        
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel ItemHeight="600"  ItemWidth="500"/>
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                    </ListBox>
                 </DockPanel>
             </TabItem>
 		</TabControl>

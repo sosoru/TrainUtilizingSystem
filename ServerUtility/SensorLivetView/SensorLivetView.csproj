@@ -96,7 +96,7 @@
     <Compile Include="Models\Devices\PointModel.cs" />
     <Compile Include="Models\Devices\PointModuleModel.cs" />
     <Compile Include="Models\Devices\TrainControllerDeviceModel.cs" />
-    <Compile Include="Models\Devices\TrainSensorModel.cs" />
+    <Compile Include="Models\TrainSensorModel.cs" />
     <Compile Include="Models\UsbDevicesModel.cs" />
     <Compile Include="Models\UsbRegistryModel.cs" />
     <Compile Include="PlotImage.cs" />

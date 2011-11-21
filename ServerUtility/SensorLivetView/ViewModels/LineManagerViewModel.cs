@@ -66,6 +66,23 @@ namespace SensorLivetView.ViewModels
             }
         }
 
+
+        string  _Name;
+
+        public string  Name
+        {
+            get
+            { return _Name; }
+            set
+            {
+                if (_Name == value)
+                    return;
+                _Name = value;
+                RaisePropertyChanged("Name");
+            }
+        }
+      
+
         public ObservableCollection<StationViewModel> Stations { get; private set; }
         public ObservableCollection<PointStrategyViewModel> PointStrategies { get; private set; }
 

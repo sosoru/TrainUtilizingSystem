@@ -59,31 +59,47 @@ namespace SensorLivetView.ViewModels
             this.Points = new ObservableCollection<PointModel>();
             this.InversePoints = new ObservableCollection<PointModel>();
 
-            this.PropertyChanged += (sender, e) =>
+        }
+
+        public override void ChangePoint()
+        {
+            PointStateEnum positive, negative;
+
+            if (this.PointState == PointStateEnum.Straight)
             {
-                if (e.PropertyName == "PointState")
+                positive = PointStateEnum.Straight;
+                negative = PointStateEnum.Curve;
+            }
+            else if (this.PointState == PointStateEnum.Curve)
+            {
+                positive = PointStateEnum.Curve;
+                negative = PointStateEnum.Straight;
+            }
+            else
+            {
+                positive = negative = PointStateEnum.Any;
+            }
+
+            var devices = Points.Concat(InversePoints).Select(pt => pt.Parent.TargetDevice)
+                                                      .Distinct();
+
+            devices.ForEach(dev => dev.IsHold = true);
+
+            try
+            {
+                Points.ForEach(pm => pm.State = positive);
+                InversePoints.ForEach(pm => pm.State = negative);
+            }
+            finally
+            {
+                devices.ForEach(dev =>
                 {
-                    PointStateEnum positive, negative;
+                    dev.SendPacket();
+                    dev.IsHold = false;
+                    System.Threading.Thread.Sleep(1000);
+                });
+            }
 
-                    if (this.PointState == PointStateEnum.Straight)
-                    {
-                        positive = PointStateEnum.Straight;
-                        negative = PointStateEnum.Curve;
-                    }
-                    else if (this.PointState == PointStateEnum.Curve)
-                    {
-                        positive = PointStateEnum.Curve;
-                        negative = PointStateEnum.Straight;
-                    }
-                    else
-                    {
-                        positive = negative = PointStateEnum.Any;
-                    }
-
-                    Points.Do(pm => pm.State = positive);
-                    InversePoints.Do(pm => pm.State = negative);
-                }
-            };
         }
     }
 }

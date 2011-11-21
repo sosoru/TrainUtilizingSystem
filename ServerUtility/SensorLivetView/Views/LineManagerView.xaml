@@ -21,10 +21,13 @@
 	</UserControl.Resources>
 
 	<Grid x:Name="LayoutRoot">
-        <StackPanel>
+        <Border BorderBrush="Black" BorderThickness="0,0,0,2" CornerRadius="10">
+         <StackPanel>
+            <TextBlock Text="{Binding Name}"><TextBlock.Background><LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5"><GradientStop Color="White" Offset="0.615" /><GradientStop Color="#FF004EFF" Offset="1" /></LinearGradientBrush></TextBlock.Background></TextBlock>
             <my:TrainControllerDeviceView x:Name="trainControllerDeviceView1" DataContext="{Binding ControllerViewModel}" />
             <ListBox ItemsSource="{Binding Stations}" ItemTemplate="{DynamicResource StationDataTemplate}" />
             <ListBox ItemsSource="{Binding PointStrategies}" ItemTemplate="{DynamicResource PointStrategyDataTemplate}" />
-        </StackPanel>
+        </StackPanel>          
+        </Border>
     </Grid>
 </UserControl>

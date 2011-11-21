@@ -105,7 +105,7 @@ namespace SensorLivetView.ViewModels
                     {
                         ViewModelHelper.BindNotifyCollectionChanged(dispat.DeviceFoundNotifier, this, (obj, args) =>
                             {
-                                RaisePropertyChanged(() => this.Manager);
+                                RaisePropertyChanged(() => this.Managers);
                             });
                         newserv.AddAction(dispat);
                     }
@@ -325,20 +325,24 @@ namespace SensorLivetView.ViewModels
             }
         }
 
-        public LineManagerViewModel Manager
+        public IEnumerable<LineManagerViewModel> Managers
         {
             get
             {
-                var convm = this.AvailableTrainControllerVMs.FirstOrDefault(vm => vm.DevID.IsMatched(1, 3, -1));
+                foreach (var i in new int [] { 2 })
+                {
+                    var convm = this.AvailableTrainControllerVMs.FirstOrDefault(vm => vm.DevID.IsMatched(i, 3, -1));
 
-                if (convm == null)
-                    return null;
+                    if (convm == null)
+                        break;
 
-                var lvm = new LineManagerViewModel(convm);
-                this.CreateStations(0).ForEach(sta => lvm.Stations.Add(sta));
-                this.CreatePointStrategy(0).ForEach(pt => lvm.PointStrategies.Add(pt));
+                    var lvm = new LineManagerViewModel(convm);
+                    lvm.Name = "B";
+                    this.CreateStations(i).ForEach(lvm.Stations.Add);
+                    this.CreatePointStrategy(i).ForEach(lvm.PointStrategies.Add);
 
-                return lvm;
+                    yield return lvm;
+                }
             }
         }
 
@@ -346,11 +350,7 @@ namespace SensorLivetView.ViewModels
         {
             // todo : for 1117
 #if LINE2011
-            var idmap = new [] { new{name = "abiko1" , stp = new int[] {1, 2,(num-1) * 2}, halt =  new int[]{1,2, (num-1)*2+1}},
-                                  new{name = "abiko2", stp = new int[] {2, 2,(num-1)*2}, halt = new int[]{2,2, (num-1)*2+1}},
-                                  new{name = "kashiwa", stp = new int[] {3, 2,(num-1)*2}, halt = new int[]{3,2, (num-1)*2+1}},
-                                  new{name = "kita_kashiwa", stp =new int[] {4, 2,(num-1)*2}, halt= new int[]{4,2, (num-1)*2+1}},
-            };
+            var idmap = new [] { new { name = "abiko", stp = new int [] { 1, 1, 0 }, halt = new int [] { 1, 1, 1 } } };
 #else
             var idmap = new [] { new { name = "test", stp = new int [] { 1, 2, 0 }, halt = new int [] { 1, 2, 1 } } };
 #endif
@@ -363,7 +363,7 @@ namespace SensorLivetView.ViewModels
                 var haltsens = this.AvailableTrainSensorVMs.FirstOrDefault(vm => vm.DevID.IsMatched(map.halt [0], map.halt [1], map.halt [2]));
 
                 if (controller == null || stoppingsens == null || haltsens == null)
-                    throw new InvalidOperationException("device not found");
+                    continue;//throw new InvalidOperationException("device not found");
 
                 var sta = new StationViewModel(controller.Model, stoppingsens.Model, haltsens.Model)
                 {
@@ -372,7 +372,7 @@ namespace SensorLivetView.ViewModels
                     StoppingTime = new TimeSpan(0, 0, 10),
                     StationName = map.name,
                     DutyWhenHalt = 20.0,
-                    LeavingVoltage = 1.3,
+                    LeavingVoltage = 150,
                     StepResolution = 100
                 };
 
@@ -384,17 +384,13 @@ namespace SensorLivetView.ViewModels
         {
             // todo : for 1117
 #if LINE2011
-            var map = new [] { new { name = "D'", points = Enumerable.Range(0,4).Select(i=> new int[]{1,1,i}).ToArray(), invpoints = new int[][]{} },
-                               new {name = "D", points = new int[][] { new int[] {3,1,1}}, invpoints = Enumerable.Range(0,4).Select(i=> new int[]{1,1,i}).ToArray()},
-                               new {name = "C'", points = Enumerable.Range(4,4).Select(i=>new int[] { 1,1, i}).ToArray(), invpoints = new int[][]{}},
-                               new {name = "C", points = new int[][]{ new int[] {3,1,2}}, invpoints = Enumerable.Range(4,4).Select(i=>new int[]{1,1,i}).ToArray() },
-                               new {name = "B'", points = Enumerable.Range(0,4).Select(i=> new int[] { 2,1,i}).ToArray(), invpoints = new int[][]{}},
-                               new {name="B", points = new int[][] { new int[] {3,1,3}}, invpoints = Enumerable.Range(0,4).Select(i=>new int[]{2,1,i}).ToArray()},
-                               new {name = "A'", points= Enumerable.Range(4,4).Select(i=>new int[] { 2,1,i}).ToArray(), invpoints = new int[][] {}},
-                               new {name = "A", points = new int[][] { new int[]{ 3,1,4}},invpoints = Enumerable.Range(4,4).Select(i=> new int[]{2,1,i}).ToArray()},
+            var map = new [] { new {name = "C", points = new int[][] { new int[] {3,1,4}}, invpoints = Enumerable.Range(0,4).Select(i=> new int[]{1,2,i}).ToArray()},
+                               new {name = "D", points = new int[][]{ new int[] {3,1,7}}, invpoints = Enumerable.Range(4,4).Select(i=>new int[]{1,2,i}).ToArray() },
+                               new {name="A", points = new int[][] { new int[] {3,1,6}}, invpoints = Enumerable.Range(0,4).Select(i=>new int[]{2,1,i}).ToArray()},
+                               new {name = "B", points = new int[][] { new int[]{ 3,1,0}},invpoints = Enumerable.Range(4,4).Select(i=> new int[]{2,1,i}).ToArray()},
                                };
 #else
-            var map = new [] {new {name = "test", points = new int[][] { new int[] { 1,1,0}}, invpoints = new int[][] { new int[] { 1,1,7} } };
+            var map = new [] { new { name = "test", points = new int [] [] { new int [] { 1, 1, 0 } }, invpoints = new int [] [] { new int [] { 1, 1, 7 } } } };
 #endif
 
             foreach (var m in map)
@@ -409,11 +405,11 @@ namespace SensorLivetView.ViewModels
 
                 m.points.Select(p => candicates.FirstOrDefault(c => c.Address == p [2] && c.Parent.DevID.IsMatched(p [0], p [1], -1)))
                         .Where(model => model != null)
-                        .Do(pvm.Points.Add);
+                        .ForEach(pvm.Points.Add);
 
                 m.invpoints.Select(p => candicates.FirstOrDefault(c => c.Address == p [2] && c.Parent.DevID.IsMatched(p [0], p [1], -1)))
                             .Where(model => model != null)
-                            .Do(pvm.InversePoints.Add);
+                            .ForEach(pvm.InversePoints.Add);
 
                 yield return pvm;
 

@@ -11,8 +11,8 @@
     <Grid x:Name="LayoutRoot">
         <StackPanel Orientation="Horizontal">
             <Label Width="100"  Content="{Binding StrategyName}" />
-            <ToggleButton Content="Straight" Width="200"  IsEnabled="{Binding IsEnable}" IsChecked="{Binding IsStraight, Mode=TwoWay}" />
-            <ToggleButton Content="Curve" Width="200"  IsEnabled="{Binding IsEnable}" IsChecked="{Binding IsCurved, Mode=TwoWay}" />
+            <Button Content="Straight" Width="200"  IsEnabled="{Binding IsEnable}" Command="{Binding SetStraightCommand}" />
+            <Button Content="Curve" Width="200"  IsEnabled="{Binding IsEnable}" Command="{Binding SetCurvedCommand}" />
         </StackPanel>
     </Grid>
 </UserControl>

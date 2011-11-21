@@ -7,6 +7,10 @@ using SensorLibrary;
 using System.Windows.Media;
 
 using Livet;
+using Livet.Command;
+using Livet.Messaging;
+using Livet.Messaging.File;
+using Livet.Messaging.Window;
 
 using SensorLivetView.Models;
 using SensorLivetView.Models.Devices;
@@ -159,5 +163,64 @@ namespace SensorLivetView.ViewModels.Controls
                 return this.Model.ActualVoltage;
             }
         }
+
+        private TrainControllerState restoreState;
+
+        #region StopTrainCommand
+        DelegateCommand _StopTrainCommand;
+
+        public DelegateCommand StopTrainCommand
+        {
+            get
+            {
+                if (_StopTrainCommand == null)
+                    _StopTrainCommand = new DelegateCommand(StopTrain, CanStopTrain);
+                return _StopTrainCommand;
+            }
+        }
+
+        private bool CanStopTrain()
+        {
+            return true;
+        }
+
+        private void StopTrain()
+        {
+            var rest = this.Model.TargetDevice.CurrentState;
+
+            this.Mode = TrainControllerMode.Duty;
+            this.DutyValue = 0;
+
+            this.restoreState = rest;
+        }
+        #endregion
+
+
+        #region RestoreStateCommand
+        DelegateCommand _RestoreStateCommand;
+
+        public DelegateCommand RestoreStateCommand
+        {
+            get
+            {
+                if (_RestoreStateCommand == null)
+                    _RestoreStateCommand = new DelegateCommand(RestoreState, CanRestoreState);
+                return _RestoreStateCommand;
+            }
+        }
+
+        private bool CanRestoreState()
+        {
+            return this.restoreState != null || this.DutyValue == 0 ;
+        }
+
+        private void RestoreState()
+        {
+            this.Model.TargetDevice.SendPacket(this.restoreState);
+            this.restoreState = null;
+        }
+        #endregion
+      
+      
     }
 }

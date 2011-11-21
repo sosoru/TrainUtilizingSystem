@@ -389,6 +389,9 @@ void InterruptTrainController(DeviceID * pid)
 	
 	if(++waitingCount < 10)
 		return;
+		
+	if(g_cacheState.mode == MODE_TRAINCONTROLLER_DUTY)
+		return;
 			
 	ClosePWM1();	
 	ClosePWM2();

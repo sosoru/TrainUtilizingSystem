@@ -255,13 +255,6 @@ namespace SensorLivetView.ViewModels
 
         private void ControllerNotifyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (this.Mode == StationMode.Leaving)
-            {
-                if (this.Controller.ActualVoltage >= LeavingVoltage - DutyWhenHalt)
-                {
-                    this.Mode = StationMode.Idle;
-                }
-            }
 
         }
         #endregion
@@ -291,16 +284,27 @@ namespace SensorLivetView.ViewModels
                           if (this.Mode != StationMode.Stopping)
                               return;
 
-                          //this.Controller.DutyValue = (duty - remain) / ((double)this.StepResolution) + remain;
-                          this.Controller.Voltage = (volt - 0.1) / ((double)this.StepResolution) + 0.1;
-                          //if (i >= this.StepResolution)
-                          //    HaltStation();
+                          if (this.Controller.Voltage > 0.1)
+                          {
+                              this.Controller.Mode = TrainControllerMode.Following;
+                              this.Controller.Voltage = (double)i * (volt - 0.1) / ((double)this.StepResolution) + 0.1;
+                          }
+                          else
+                          {
+                              this.Controller.Mode = TrainControllerMode.Duty;
+                              this.Controller.DutyValue = this.DutyWhenHalt + 20.0;
+                          }
 
                           if (this.ImmediateStopFlag)
                           {
                               this.Controller.Mode = TrainControllerMode.Duty;
                               this.Controller.DutyValue = remain;
+
+                              HaltStation();
                           }
+
+                          if (i == this.StepResolution)
+                              HaltStation();
                       });
         }
 
@@ -315,17 +319,10 @@ namespace SensorLivetView.ViewModels
                 return;
 
             this.Controller.Mode = TrainControllerMode.Following;
+            this.Controller.Voltage = this.LeavingVoltage;
 
-            Observable.Interval(TimeSpan.FromMilliseconds(100))
-                .SubscribeOn(Scheduler.ThreadPool)
-                .TakeWhile(i => i <= this.StepResolution)
-                .Subscribe(i =>
-            {
-                if (this.Mode != StationMode.Leaving)
-                    return;
+            this.Mode = StationMode.Idle;
 
-                this.Controller.Voltage = this.LeavingVoltage * (double)i / (double)this.StepResolution;
-            });
 
         }
 
@@ -343,7 +340,7 @@ namespace SensorLivetView.ViewModels
             this.Controller.DutyValue = this.DutyWhenHalt;
 
             Observable.Range(0, 1)
-                    .Delay(this.StoppingTime, Scheduler.NewThread)
+                    .Delay(this.StoppingTime, Scheduler.ThreadPool)
                     .Subscribe(t => { while (this.ImmediateStopFlag); LeaveStation(); });
         }
 

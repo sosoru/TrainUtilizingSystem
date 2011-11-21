@@ -67,6 +67,7 @@ void ApplyPoint(PointInfo * pinfo)
 	Delay(0xFFFF);
 	Delay(0xFFFF);
 
+
 	*pUsingPort = 0xFF;
 }
 
@@ -157,6 +158,7 @@ void main()
 		for(i=0; i<200; ++i)
 		{
 			Delay(0xFFFF);
+			//Delay(0xFFFF);
 			
 			if(g_interrupted)
 			{

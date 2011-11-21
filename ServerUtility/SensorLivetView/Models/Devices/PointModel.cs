@@ -58,20 +58,13 @@ namespace SensorLivetView.Models.Devices
             }
             set
             {
-                if (this.Parent.TargetDevice.CurrentState [this.Address] == value)
-                    return;
+                //if (this.Parent.TargetDevice.CurrentState [this.Address] == value)
+                //    return;
 
-                this.Parent.TargetDevice.IsHold = true;
-                try
-                {
-                    var state = this.Parent.TargetDevice.CurrentState;
-                    state [this.Address] = value;
+                var state = this.Parent.TargetDevice.CurrentState;
+                state [this.Address] = value;
+                if (!this.Parent.TargetDevice.IsHold)
                     this.Parent.TargetDevice.SendPacket(state);
-                }
-                finally
-                {
-                    this.Parent.TargetDevice.IsHold = false;
-                }
             }
         }
     }

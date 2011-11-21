@@ -28,6 +28,11 @@ namespace SensorLivetView.Models.Devices
          * ViewModelへNotificatorを使用した通知を行う場合はViewModelHelperを使用して受信側の登録をしてください。
          */
 
+        public DeviceModel()
+        {
+            this.WaitingList = new List<Func<IDeviceState<IPacketDeviceData>, bool>>();
+        }
+
         private IDisposable sunbscribing;
 
         private TDev targetDevice;
@@ -49,12 +54,31 @@ namespace SensorLivetView.Models.Devices
                     this.sunbscribing = this.targetDevice.GetNextObservable
                             .Subscribe((e) =>
                             {
-                                if (this.TargetDevice != null && this.PacketReceivedProcess != null)
+                                if (this.TargetDevice == null || this.PacketReceivedProcess == null)
+                                    return;
+
+                                bool breaker = false;
+                                foreach (var q in this.WaitingList.ToArray())
+                                {
+                                    var res = q(e.EventArgs.state);
+
+                                    if (!res) // waiting complete
+                                    {
+                                        this.WaitingList.Remove(q);
+                                    }
+                                    else
+                                        breaker = true;
+
+                                }
+
+                                if (!breaker)
                                     this.PacketReceivedProcess(this.TargetDevice, e.EventArgs);
                             });
 
             }
         }
+
+        internal List<Func<IDeviceState<IPacketDeviceData>, bool>> WaitingList { get; set; }
 
         public DeviceID DevID
         {
@@ -63,11 +87,18 @@ namespace SensorLivetView.Models.Devices
                 return this.TargetDevice.DeviceID;
             }
         }
-       
 
         internal void ModifyState(Action act)
         {
+            this.ModifyState(act, d => false);
+        }
+
+        internal void ModifyState(Action act, Func<IDeviceState<IPacketDeviceData>, bool> waitingPredicate)
+        {
             if (this.TargetDevice == null || this.TargetDevice.CurrentState == null)
+                return;
+
+            if (this.TargetDevice.IsHold)
                 return;
 
             this.TargetDevice.IsHold = true;
@@ -75,12 +106,19 @@ namespace SensorLivetView.Models.Devices
             {
                 act();
 
+                RegisterWaiting(waitingPredicate);
                 this.TargetDevice.SendPacket(this.TargetDevice.CurrentState);
             }
             finally
             {
                 this.TargetDevice.IsHold = false;
             }
+        }
+
+        internal void RegisterWaiting(Func<IDeviceState<IPacketDeviceData>, bool > predicate)
+        {
+            var d = DateTime.Now.AddSeconds(1);
+            this.WaitingList.Add( s=> d <= DateTime.Now && predicate(s));
         }
 
         private PacketReceivedDelegate<IDeviceState<IPacketDeviceData>> packetReceivedProcess;

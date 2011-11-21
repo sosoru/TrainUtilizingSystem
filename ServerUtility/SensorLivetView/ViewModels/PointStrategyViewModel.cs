@@ -59,6 +59,9 @@ namespace SensorLivetView.ViewModels
                 if (_PointState == value)
                     return;
                 _PointState = value;
+
+                this.ChangePoint();
+
                 RaisePropertyChanged("PointState");
             }
         }
@@ -81,6 +84,10 @@ namespace SensorLivetView.ViewModels
             set { this.PointState = PointStateEnum.Curve; }
         }
 
+        public virtual void ChangePoint()
+        {
+            this.PointState = this.PointState;
+        }
 
         string _StrategyName;
 
@@ -96,7 +103,47 @@ namespace SensorLivetView.ViewModels
                 RaisePropertyChanged("StrategyName");
             }
         }
+
+
+        #region SetStraightCommand
+        DelegateCommand _SetStraightCommand;
+
+        public DelegateCommand SetStraightCommand
+        {
+            get
+            {
+                if (_SetStraightCommand == null)
+                    _SetStraightCommand = new DelegateCommand(SetStraight);
+                return _SetStraightCommand;
+            }
+        }
+
+        private void SetStraight()
+        {
+            this.IsStraight = true;
+        }
+        #endregion
+
+
+        #region SetCurvedCommand
+        DelegateCommand _SetCurvedCommand;
+
+        public DelegateCommand SetCurvedCommand
+        {
+            get
+            {
+                if (_SetCurvedCommand == null)
+                    _SetCurvedCommand = new DelegateCommand(SetCurved);
+                return _SetCurvedCommand;
+            }
+        }
+
+        private void SetCurved()
+        {
+            this.IsCurved = true;
+        }
+        #endregion
       
-            
+      
     }
 }
