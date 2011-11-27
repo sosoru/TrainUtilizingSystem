@@ -101,8 +101,8 @@ namespace RouteVisualizer.Models
                     return null;
 
                 Geometry geo = null;
-                var castedprev = this.PreviousGate as RailConnection;
-                var castednext = this.NextGate as RailConnection;
+                var castedprev = this.PreviousGate as RailGate;
+                var castednext = this.NextGate as RailGate;
 
                 if (castedprev == null || castednext == null)
                     throw new InvalidOperationException("undrawable connection");
@@ -146,7 +146,7 @@ namespace RouteVisualizer.Models
                 if (this.BaseData == null)
                     return new Rect();
 
-                var castedgate = this.PreviousGate as RailConnection;
+                var castedgate = this.PreviousGate as RailGate;
                 if (castedgate == null)
                     throw new InvalidOperationException("undrawable connection");
 

@@ -1,18 +1,19 @@
-﻿using SensorLibrary;
+﻿using RouteVisualizer.Railroader;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Linq;
+using RailroaderIO;
+using RouteVisualizer.Models;
 
 namespace TestProject
 {
 
 
     /// <summary>
-    ///PointModuleStateTest のテスト クラスです。すべての
-    ///PointModuleStateTest 単体テストをここに含めます
+    ///RailroaderExtensionsTest のテスト クラスです。すべての
+    ///RailroaderExtensionsTest 単体テストをここに含めます
     ///</summary>
     [TestClass()]
-    public class PointModuleStateTest
+    public class RailroaderExtensionsTest
     {
 
 
@@ -64,43 +65,25 @@ namespace TestProject
         //
         #endregion
 
-        public static PointModuleState TestState
+        private RailroaderMap examplemap
         {
             get
             {
-                return new PointModuleState();//return TestPacketProvider.TestPointModuleState;
+                var map = new RailroaderMap("Sample2.rrf");
+                return map;
             }
-
-        }
-
-
-        /// <summary>
-        ///PointModuleState コンストラクター のテスト
-        ///</summary>
-        [TestMethod()]
-        public void PointModuleStateConstructorTest()
-        {
-            var packet = new DevicePacket();
-            packet.ModuleType = ModuleTypeEnum.PointModule;
-            PointModuleState target = new PointModuleState() { BasePacket = packet };
         }
 
         /// <summary>
-        ///Item のテスト
+        ///ToLayout のテスト
         ///</summary>
         [TestMethod()]
-        public void ItemTest()
+        public void ToLayoutTest()
         {
-            PointModuleState target = TestState;
-            var expected = Enumerable.Repeat(PointStateEnum.Curve, target.Data.Directions.Length * 8).ToList();
-            PointStateEnum actual;
-            foreach (var exp in expected)
-            {
-                int addr = expected.IndexOf(exp);
-                target[addr] = exp;
-                actual = target[addr];
-                Assert.AreEqual(exp, actual);
-            }
+            RailroaderMap map = examplemap; 
+            LayoutModel actual;
+            actual = RailroaderExtensions.ToLayout(map);
+
         }
     }
 }

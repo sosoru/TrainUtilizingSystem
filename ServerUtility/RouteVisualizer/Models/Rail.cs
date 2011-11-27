@@ -13,16 +13,22 @@ namespace RouteVisualizer.Models
     public class Rail
         : IDrawable
     {
-        public Rail()
+        public Rail(RailData data)
         {
+            this.BaseData = data;
         }
+
+        public Rail()
+        { }
+
+        public LayoutModel Layout { get; set; }
 
         private RailData _baseData;
         public RailData BaseData
         {
             get
             {
-                return this._baseData;
+                return this._baseData ?? (this._baseData = new RailData());
             }
             set
             {
@@ -36,7 +42,7 @@ namespace RouteVisualizer.Models
 
                 if (this._baseData != null)
                 {
-                    this.Connections = this._baseData.Gates.Select((g) => new RailConnection()
+                    this.Connections = this._baseData.Gates.Select((g) => new RailGate()
                                         {
                                             BaseData = g,
                                         }).ToList();
@@ -55,11 +61,11 @@ namespace RouteVisualizer.Models
 
         public ICollection<PysicalPath> Pathes { get; private set; }
 
-        public ICollection<RailConnection> Connections { get; private set; }
+        public ICollection<RailGate> Connections { get; private set; }
 
         public double Rotation { get; set; }
         public bool IsMirrored { get; set; }
-        public virtual RailConnection BaseConnection { get; set; }
+        public virtual RailGate BaseConnection { get; set; }
 
         public bool IsPathValidated
         {

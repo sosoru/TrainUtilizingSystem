@@ -94,6 +94,8 @@
     <Compile Include="RailConnectionTest.cs" />
     <Compile Include="RailDataViewModelTest.cs" />
     <Compile Include="RailEditorViewModelTest.cs" />
+    <Compile Include="RailroaderExtensionsTest.cs" />
+    <Compile Include="RailroaderMapTest.cs" />
     <Compile Include="RailTest.cs" />
     <Compile Include="TestPacketProvider.cs" />
     <Compile Include="TrainControllerStateTest.cs" />
@@ -112,6 +114,10 @@
     <ProjectReference Include="..\CodePack_DirectX\DirectX.vcxproj">
       <Project>{446B1E21-65A1-4F56-AA2C-D2E24058B2B8}</Project>
       <Name>DirectX</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RailroaderIO\RailroaderIO.csproj">
+      <Project>{9C902CD5-20AE-45C4-918A-863F7D6064A0}</Project>
+      <Name>RailroaderIO</Name>
     </ProjectReference>
     <ProjectReference Include="..\RouteVisualizer\RouteVisualizer.csproj">
       <Project>{E366CBAE-EDDF-4486-87A2-826A07E1D9CC}</Project>

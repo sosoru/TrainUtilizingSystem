@@ -68,7 +68,7 @@ namespace TestProject
         {
             get
             {
-                return TestPacketProvider.TestMotherBoardState;
+                return new MotherBoardState();//return TestPacketProvider.TestMotherBoardState;
             }
         }
 

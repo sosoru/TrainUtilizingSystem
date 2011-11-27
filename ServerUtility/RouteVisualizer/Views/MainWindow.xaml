@@ -7,7 +7,6 @@
     
     <Grid>
         
-    	<RouteVisualizer:DrawablesView DataContext="{Binding dwViewModel, Mode=OneWay}"/>
         
     </Grid>
 </Window>

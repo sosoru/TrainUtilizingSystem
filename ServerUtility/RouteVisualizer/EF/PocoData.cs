@@ -53,4 +53,14 @@ namespace RouteVisualizer.EF
 
     }
 
+    public class GateConnectionData
+    {
+        public GateConnectionData() { }
+
+        public int ID { get; set; }
+
+        public virtual ICollection<GateData> ConnectedGates { get; set; }
+
+    }
+
 }

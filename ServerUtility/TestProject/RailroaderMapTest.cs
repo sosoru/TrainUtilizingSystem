@@ -1,18 +1,17 @@
-﻿using SensorLibrary;
+﻿using RailroaderIO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Linq;
 
 namespace TestProject
 {
-
-
+    
+    
     /// <summary>
-    ///PointModuleStateTest のテスト クラスです。すべての
-    ///PointModuleStateTest 単体テストをここに含めます
+    ///RailroaderMapTest のテスト クラスです。すべての
+    ///RailroaderMapTest 単体テストをここに含めます
     ///</summary>
     [TestClass()]
-    public class PointModuleStateTest
+    public class RailroaderMapTest
     {
 
 
@@ -64,43 +63,16 @@ namespace TestProject
         //
         #endregion
 
-        public static PointModuleState TestState
-        {
-            get
-            {
-                return new PointModuleState();//return TestPacketProvider.TestPointModuleState;
-            }
-
-        }
-
 
         /// <summary>
-        ///PointModuleState コンストラクター のテスト
+        ///RailroaderMap コンストラクター のテスト
         ///</summary>
         [TestMethod()]
-        public void PointModuleStateConstructorTest()
+        public void RailroaderMapConstructorTest()
         {
-            var packet = new DevicePacket();
-            packet.ModuleType = ModuleTypeEnum.PointModule;
-            PointModuleState target = new PointModuleState() { BasePacket = packet };
-        }
-
-        /// <summary>
-        ///Item のテスト
-        ///</summary>
-        [TestMethod()]
-        public void ItemTest()
-        {
-            PointModuleState target = TestState;
-            var expected = Enumerable.Repeat(PointStateEnum.Curve, target.Data.Directions.Length * 8).ToList();
-            PointStateEnum actual;
-            foreach (var exp in expected)
-            {
-                int addr = expected.IndexOf(exp);
-                target[addr] = exp;
-                actual = target[addr];
-                Assert.AreEqual(exp, actual);
-            }
+            string path = @"C:\Users\root\Desktop\ppp.rrf";
+            RailroaderMap target = new RailroaderMap(path);
+            
         }
     }
 }

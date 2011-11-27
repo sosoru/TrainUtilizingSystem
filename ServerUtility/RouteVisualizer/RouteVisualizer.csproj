@@ -89,6 +89,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\GateConnectionModel.cs" />
+    <Compile Include="Models\LayoutModel.cs" />
     <Compile Include="ObservableWrappingCollection.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="RailEditor\ViewModels\GateDataViewModel.cs" />
@@ -111,6 +113,7 @@
     <Compile Include="RailEditor\Views\SettingWindow.xaml.cs">
       <DependentUpon>SettingWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Railroader\RailroaderExtensions.cs" />
     <Compile Include="Views\RailView.xaml.cs">
       <DependentUpon>RailView.xaml</DependentUpon>
     </Compile>
@@ -133,10 +136,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\DrawablesView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -154,9 +153,6 @@
     <Compile Include="Models\RailConnection.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\DrawablesViewModel.cs" />
-    <Compile Include="Views\DrawablesView.xaml.cs">
-      <DependentUpon>DrawablesView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -189,6 +185,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="Models\ClassDiagram1.cd" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -196,6 +193,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="TestSamples\Sample2.rrf" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="InfrastructureAssemblies\Design\Livet.Design.dll" />
@@ -231,6 +229,10 @@
     <Folder Include="RailEditor\Models\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\RailroaderIO\RailroaderIO.csproj">
+      <Project>{9C902CD5-20AE-45C4-918A-863F7D6064A0}</Project>
+      <Name>RailroaderIO</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SensorLibrary\SensorLibrary.csproj">
       <Project>{160A1D77-985C-4DDD-BB20-46C8EBADF62F}</Project>
       <Name>SensorLibrary</Name>

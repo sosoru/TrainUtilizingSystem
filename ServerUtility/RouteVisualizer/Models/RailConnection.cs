@@ -9,10 +9,10 @@ using RouteVisualizer.EF;
 
 namespace RouteVisualizer.Models
 {
-    public class RailConnection
+    public class RailGate
         : IGate, IDrawable
     {
-        public RailConnection()
+        public RailGate()
         {
             this._connectedPathes = new List<IPath>();
         }

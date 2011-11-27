@@ -123,7 +123,6 @@
     <Compile Include="ViewModels\ModeledViewModel.cs" />
     <Compile Include="ViewModels\PointStrategyViewModel.cs" />
     <Compile Include="ViewModels\StationViewModel.cs" />
-    <Compile Include="Views\D2DD3DImage.cs" />
     <Compile Include="Views\LineManagerView.xaml.cs">
       <DependentUpon>LineManagerView.xaml</DependentUpon>
     </Compile>
@@ -263,10 +262,6 @@
     <ProjectReference Include="..\SensorViewLibrary\SensorViewLibrary.csproj">
       <Project>{67364770-A9D3-42C1-ADB9-DF160FB38A27}</Project>
       <Name>SensorViewLibrary</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SurfaceQueueInteropHelper\SurfaceQueueInteropHelper.vcxproj">
-      <Project>{93ABD028-4151-42B4-83C3-0E9630C6AA46}</Project>
-      <Name>SurfaceQueueInteropHelper</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

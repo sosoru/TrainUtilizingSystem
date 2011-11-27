@@ -142,8 +142,8 @@ namespace TestProject
                 var path = new PysicalPath()
                 {
                     BaseData = pathA,
-                    PreviousGate = new RailConnection() { BaseData = gateA },
-                    NextGate = new RailConnection() { BaseData = gateB },
+                    PreviousGate = new RailGate() { BaseData = gateA },
+                    NextGate = new RailGate() { BaseData = gateB },
                 };
 
                 return path;
