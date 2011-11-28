@@ -51,7 +51,7 @@ namespace RailroaderIO
             //data[32];
             this.StartGradient = int.Parse(data [33]);
             this.EndGradient = int.Parse(data [34]);
-            //data[35];
+            this.ThirdGradient = int.Parse(data [35]);
             //data[36];
             this.CurveRadian = float.Parse(data [37]);
             //data[38];
@@ -133,6 +133,7 @@ namespace RailroaderIO
 
         public int StartGradient { get; set; }
         public int EndGradient { get; set; }
+        public int ThirdGradient { get; set; }
 
         public float CurveRadian { get; set; }
 
@@ -154,7 +155,9 @@ namespace RailroaderIO
         Curve = 1,
         Point = 2,
 
-        CombinatedRailMaster = 50,
-        CombinatedRailSlave = 60
+        CombinatedRailMasterStraight = 50,
+        CombinatedRailMasterCurve = 51,
+        CombinatedRailSlaveStraight = 60,
+        CombinatedRailSlaveCurved = 61,
     }
 }

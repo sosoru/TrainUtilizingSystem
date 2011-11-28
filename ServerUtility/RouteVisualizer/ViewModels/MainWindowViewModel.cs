@@ -12,6 +12,7 @@ using Livet.Messaging.File;
 using Livet.Messaging.Window;
 
 using RouteVisualizer.Models;
+using RouteVisualizer.Railroader;
 
 namespace RouteVisualizer.ViewModels
 {
@@ -42,14 +43,21 @@ namespace RouteVisualizer.ViewModels
          * 原因となりやすく推奨できません。ViewModelHelperの各静的メソッドの利用を検討してください。
          */
 
-        public DrawablesViewModel dwViewModel
+        public MainWindowViewModel()
         {
-            get
-            {
-                return new DrawablesViewModel()
-                {
-                };
-            }
+            var path = @"C:\Users\root\Documents\TrainUtilizingSystem\ServerUtility\RouteVisualizer\TestSamples\Sample2.rrf";
+
+            var map = new RailroaderIO.RailroaderMap(path);
+
+            var layout = map.ToLayout();
+            this.LayoutVm = new LayoutViewModel(layout);
+
+        }
+
+        public LayoutViewModel LayoutVm
+        {
+            get;
+            private set;
         }
 
     }

@@ -31,7 +31,7 @@ namespace RouteVisualizer
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             //TODO:ロギング処理など
-
+#if !DEBUG
             MessageBox.Show(
                 "不明なエラーが発生しました。アプリケーションを終了します。",
                 "エラー",
@@ -39,6 +39,7 @@ namespace RouteVisualizer
                 MessageBoxImage.Error);
 
             Environment.Exit(1);
+#endif
         }
 
         internal static Settings Settings

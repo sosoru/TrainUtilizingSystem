@@ -174,7 +174,7 @@ namespace RouteVisualizer.RailEditor.ViewModels
             {
                 if (this.Model != null)
                 {
-                    return this.Model.StraightLength;
+                    return this.Model.Length;
                 }
                 else
                     return double.NaN;
@@ -183,8 +183,8 @@ namespace RouteVisualizer.RailEditor.ViewModels
             {
                 if (this.Model != null)
                 {
-                    this.Model.StraightLength = value;
-                    RaisePropertyChanged("StraightLength");
+                    this.Model.Length = value;
+                    RaisePropertyChanged("Length");
                 }
             }
         }
@@ -195,7 +195,7 @@ namespace RouteVisualizer.RailEditor.ViewModels
             {
                 if (this.Model != null)
                 {
-                    return this.Model.Radius;
+                    return this.Model.ViewRadius;
                 }
                 else
                     return double.NaN;
@@ -204,8 +204,8 @@ namespace RouteVisualizer.RailEditor.ViewModels
             {
                 if (this.Model != null)
                 {
-                    this.Model.Radius = value;
-                    RaisePropertyChanged("Radius");
+                    this.Model.ViewRadius = value;
+                    RaisePropertyChanged("ViewRadius");
                 }
             }
         }
@@ -225,7 +225,7 @@ namespace RouteVisualizer.RailEditor.ViewModels
             {
                 if (this.Model != null)
                 {
-                    this.Model.Angle = value;
+                    this.Model.EndAngle = value + this.Model.StartAngle;
                     RaisePropertyChanged("Angle");
                 }
             }

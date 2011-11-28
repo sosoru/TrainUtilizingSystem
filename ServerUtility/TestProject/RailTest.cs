@@ -117,7 +117,7 @@ namespace TestProject
                     GateEnd = gateB,
                     RailID = railid,
                     IsStraight = true,
-                    StraightLength = 240,
+                    Length = 240,
                 };
 
                 var pathB = new PathData()
@@ -127,8 +127,8 @@ namespace TestProject
                     GateEnd = gateC,
                     RailID = railid,
                     IsStraight = false,
-                    Angle = 15,
-                    Radius = 340,
+                    EndAngle = 15,
+                    ViewRadius = 340,
                 };
 
                 data.Gates.Add(gateA);

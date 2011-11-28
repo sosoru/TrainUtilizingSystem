@@ -42,10 +42,7 @@ namespace RouteVisualizer.Models
 
                 if (this._baseData != null)
                 {
-                    this.Connections = this._baseData.Gates.Select((g) => new RailGate()
-                                        {
-                                            BaseData = g,
-                                        }).ToList();
+                    this.Connections = this._baseData.Gates.Select((g) => new RailGate(g)).ToList();
 
                     this.Pathes = this._baseData.Pathes.Select((p) => new PysicalPath()
                                         {
@@ -93,7 +90,7 @@ namespace RouteVisualizer.Models
 
             var dict = new Dictionary<IGate, Point>();
             foreach (var conn in this.Connections)
-                dict.Add(conn, new Point());
+                dict.Add(conn, conn.BasePosition);
 
             //check isolated gate
             if (this.Connections.Any((conn) => conn.ConnectedPathes.Count == 0))
@@ -101,19 +98,20 @@ namespace RouteVisualizer.Models
 
             foreach (var path in this.Pathes)
             {
-                Point sentpoint = path.Bound.TopRight;
+                var sentvec = path.Bound.BottomLeft - path.Bound.TopRight;
+
                 var basepoint = dict [path.PreviousGate];
 
-                sentpoint.Offset(basepoint.X, basepoint.Y);
+                // basepoint += sentvec;
 
                 //check overwrite
-                var zero = new Point();
-                if (dict [path.NextGate] != zero && dict [path.NextGate] != sentpoint)
-                {
-                    throw new InvalidOperationException(string.Format("gate position mismatching : {0}", path.NextGate.ToString()));
-                }
+                //var zero = new Point();
+                //if (dict [path.NextGate] != zero && dict [path.NextGate] != sentvec)
+                //{
+                //    throw new InvalidOperationException(string.Format("gate position mismatching : {0}", path.NextGate.ToString()));
+                //}
 
-                dict [path.NextGate] = sentpoint;
+                dict [path.NextGate] = basepoint + sentvec;
             }
 
             return dict;
@@ -124,12 +122,11 @@ namespace RouteVisualizer.Models
             get
             {
                 var geogroup = new GeometryGroup();
-                var gateposes = this.LocateGate();
+                //var gateposes = this.LocateGate();
 
                 foreach (var conn in this.Connections)
                 {
-                    conn.BasePosition = gateposes [conn];
-
+                    //conn.BasePosition = gateposes [conn];
                     var geo  = conn.CurrentGeometry;
                     geogroup.Children.Add(geo);
                 }

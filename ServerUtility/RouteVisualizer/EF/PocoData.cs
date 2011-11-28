@@ -17,8 +17,8 @@ namespace RouteVisualizer.EF
         public virtual GateData BottomGate { get; set; }
 
         public virtual ICollection<GateData> Gates { get; set; }
-        
-        public virtual ICollection<PathData> Pathes {get;set;}
+
+        public virtual ICollection<PathData> Pathes { get; set; }
     }
 
     public class GateData
@@ -30,7 +30,9 @@ namespace RouteVisualizer.EF
 
         public string GateName { get; set; }
 
-        public int RailID { get;set;}
+        public virtual ICollection<double> Position { get; set; }
+
+        public int RailID { get; set; }
     }
 
     public class PathData
@@ -46,11 +48,17 @@ namespace RouteVisualizer.EF
 
         public bool IsStraight { get; set; }
 
-        public double StraightLength { get; set; }
+        public double Length { get; set; }
 
-        public double Radius { get; set; }
-        public double Angle { get; set; }
+        public double ViewRadius { get; set; }
+        public double Angle
+        {
+            get { return (this.EndAngle - this.StartAngle) % 360; }
+        }
 
+        public double StartAngle { get; set; }
+        public double EndAngle { get; set; }
+        public ICollection<double> CurveCenter { get; set; }
     }
 
     public class GateConnectionData

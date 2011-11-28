@@ -35,11 +35,11 @@ namespace RouteVisualizer.Models
 
                 if (this.BaseData.IsStraight)
                 {
-                    return this.BaseData.StraightLength;
+                    return this.BaseData.Length;
                 }
                 else
                 {
-                    return this.BaseData.Angle.dtor() * this.BaseData.Radius;
+                    return this.BaseData.Angle.dtor() * this.BaseData.ViewRadius;
                 }
             }
         }
@@ -109,27 +109,34 @@ namespace RouteVisualizer.Models
 
                 if (this.BaseData.IsStraight)
                 {
-
+                    //todo : calc
                     var startpos = castedprev.BasePosition;
-                    var endpos = startpos;
-                    endpos.Offset(this.BaseData.StraightLength, 0.0);
+                    var endpos = castednext.BasePosition;
+                    //endpos.Offset(this.BaseData.Length, 0.0);
                     geo = new LineGeometry(startpos, endpos);
 
                 }
                 else
                 {
-                    var r = this.BaseData.Radius;
-                    var t = this.BaseData.Angle.dtor();
+                    var r = this.BaseData.ViewRadius;
+                    var t =  this.BaseData.Angle.dtor();
                     var startpos = castedprev.BasePosition;
-                    var endpos = new Point(r * Math.Sin(t), r * (1.0 - Math.Cos(t)));
-                    endpos.Offset(startpos.X, startpos.Y);
+                    var endpos = castednext.BasePosition;
 
                     //a = sqrt(2) * b * sqrt( 1- cos(t))
+
+                    var centervec = new Point(this.BaseData.CurveCenter.First(), this.BaseData.CurveCenter.Last()) - startpos;
+                    centervec.Normalize();
+                    var tovec = endpos - startpos;
+                    tovec.Normalize();
+
+                    var clockwise = centervec.Y * tovec.X - centervec.X * tovec.Y >= 0.0;
+
                     var segment = new ArcSegment(endpos,
                                                   new Size(r, r),
-                                                  t,
+                                                  0,
                                                   false,
-                                                  SweepDirection.Clockwise,
+                                                  (clockwise) ? SweepDirection.Clockwise : SweepDirection.Counterclockwise,
                                                   true);
                     geo = new PathGeometry(new [] { new PathFigure(startpos, new [] { segment }, false) });
 
@@ -154,13 +161,19 @@ namespace RouteVisualizer.Models
                 {
                     if (this.BaseData.IsStraight)
                     {
-                        return new Rect(castedgate.BasePosition, new Size(this.BaseData.StraightLength, 0.0));
+                        return new Rect(castedgate.BasePosition, new Size(this.BaseData.Length, 0.0));
                     }
                     else
                     {
-                        var r = this.BaseData.Radius;
-                        var t = this.BaseData.Angle.dtor();
-                        return new Rect(castedgate.BasePosition, new Size(r * Math.Sin(t), r * (1.0 - Math.Cos(t))));
+                        var r = this.BaseData.ViewRadius;
+                        var sta = this.BaseData.StartAngle.dtor();
+                        var end = this.BaseData.EndAngle.dtor();
+
+                        var vecx = r * (Math.Sin(end) - Math.Sin(sta));
+                        var vecy = r * (Math.Cos(end) - Math.Cos(sta));
+
+                         //todo:impl calc
+                       return new Rect(castedgate.BasePosition, (this.NextGate as RailGate).BasePosition);
                     }
                 }
 

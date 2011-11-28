@@ -2,11 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.ComponentModel;
 using System.Collections.ObjectModel;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows;
 
 using Livet;
 using Livet.Command;
@@ -18,7 +14,7 @@ using RouteVisualizer.Models;
 
 namespace RouteVisualizer.ViewModels
 {
-    public class DrawablesViewModel : ViewModel
+    public class RailViewModel : DrawablesViewModel
     {
         /*コマンド、プロパティの定義にはそれぞれ 
          * 
@@ -45,43 +41,18 @@ namespace RouteVisualizer.ViewModels
          * 原因となりやすく推奨できません。ViewModelHelperの各静的メソッドの利用を検討してください。
          */
 
-        public virtual ReadOnlyObservableCollection<IDrawable> Drawables { get; protected set; }
+        private Rail _model;
 
-        public Size DrawingSize { get; set; }
-
-        public DrawablesViewModel()
-            : base()
+        public RailViewModel(Rail model)
         {
+            this._model = model;
         }
 
-        private GeometryDrawing _curdrawing;
-        public Drawing CurrentDrawing
+        public override ReadOnlyObservableCollection<IDrawable> Drawables
         {
-            get
-            {
-                var drawables = this.Drawables.ToList();
-                var group = new GeometryGroup();
-                
-                foreach (var d in drawables)
-                {
-                    var geo = d.CurrentGeometry;
-                    
-                    group.Children.Add(d.CurrentGeometry);
-                }
-
-                if (_curdrawing == null)
-                {
-                    var dr = new GeometryDrawing();
-                    dr.Brush = Brushes.White;
-                    dr.Pen = new Pen(Brushes.Black, 1.0);
-                    this._curdrawing = dr;
-                }
-
-                _curdrawing.Geometry = group;
-
-                return this._curdrawing;
-            }
+            get;
+            protected set;
         }
-
+        
     }
 }

@@ -12,22 +12,14 @@ namespace RouteVisualizer.Models
     public class RailGate
         : IGate, IDrawable
     {
-        public RailGate()
+        public RailGate(GateData data)
         {
+            this.BaseData = data;
+
             this._connectedPathes = new List<IPath>();
         }
 
-        private GateData _baseData;
-        public GateData BaseData
-        {
-            get { return this._baseData; }
-            set
-            {
-                this._baseData = value;
-
-                this._connectedPathes.Clear();
-            }
-        }
+        public GateData BaseData { get; private set;}
 
         private IList<IPath> _connectedPathes;
         public IList<IPath> ConnectedPathes
@@ -39,7 +31,7 @@ namespace RouteVisualizer.Models
         {
             get
             {
-                var geo = new EllipseGeometry(new Rect(this.BasePosition, new Size(35.0, 35.0)));
+                var geo = new EllipseGeometry(this.Bound);
 
                 return geo;
             }
@@ -49,11 +41,16 @@ namespace RouteVisualizer.Models
         {
             get
             {
-                return new Rect(this.BasePosition, new Size(35.0, 35.0));
+                return new Rect(this.BasePosition - new Vector(2.5, 2.5), new Size(5.0, 5.0));
             }
         }
 
-        public Point BasePosition { get; set; }
+        private Point? _basePosition = null;
+        public Point BasePosition
+        {
+            get { return (_basePosition ?? (_basePosition = new Point(this.BaseData.Position.First(), this.BaseData.Position.Last()))).Value;}
+            set { this._basePosition = value; }
+        }
 
         public override string ToString()
         {

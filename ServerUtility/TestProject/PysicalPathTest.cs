@@ -117,7 +117,7 @@ namespace TestProject
                     GateEnd = gateB,
                     RailID = railid,
                     IsStraight = true,
-                    StraightLength = 240,
+                    Length = 240,
                 };
 
                 var pathB = new PathData()
@@ -127,8 +127,8 @@ namespace TestProject
                     GateEnd = gateC,
                     RailID = railid,
                     IsStraight = false,
-                    Angle = 15,
-                    Radius = 340,
+                    EndAngle = 15,
+                    ViewRadius = 340,
                 };
 
                 data.Gates.Add(gateA);
@@ -142,8 +142,8 @@ namespace TestProject
                 var path = new PysicalPath()
                 {
                     BaseData = pathA,
-                    PreviousGate = new RailGate() { BaseData = gateA },
-                    NextGate = new RailGate() { BaseData = gateB },
+                    PreviousGate = new RailGate(gateA),
+                    NextGate = new RailGate(gateB),
                 };
 
                 return path;
@@ -181,13 +181,13 @@ namespace TestProject
 
             var stlen = 10;
             path.BaseData.IsStraight = true;
-            path.BaseData.StraightLength = stlen;
+            path.BaseData.Length = stlen;
             Assert.IsTrue(path.Length == stlen);
 
             var cvlen = 10 * Math.PI;
             path.BaseData.IsStraight = false;
-            path.BaseData.Radius = 10;
-            path.BaseData.Angle = 180;
+            path.BaseData.ViewRadius = 10;
+            path.BaseData.EndAngle = 180;
             Assert.IsTrue(path.Length == cvlen);
         }
 

@@ -2,10 +2,11 @@
         Title="MainWindow" Height="350" Width="525">
     
     <Window.DataContext>
-        <vm:MainWindowViewModel/>
+    	<vm:MainWindowViewModel/>
     </Window.DataContext>
     
     <Grid>
+    	<RouteVisualizer:LayoutView DataContext="{Binding LayoutVm, Mode=OneWay}"/>
         
         
     </Grid>

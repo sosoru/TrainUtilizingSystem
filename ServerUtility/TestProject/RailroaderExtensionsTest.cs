@@ -69,7 +69,7 @@ namespace TestProject
         {
             get
             {
-                var map = new RailroaderMap("Sample2.rrf");
+                var map = new RailroaderMap(@"C:\Users\root\Desktop\cu.rrf");
                 return map;
             }
         }
