@@ -86,7 +86,6 @@ namespace RouteVisualizer.Railroader
                        IsStraight = false,
                        Length= rail.CurveLength,
 
-                       ViewRadius = r,
                        CurveCenter = new [] {(double)rail.CurveCenterPos_x, (double)rail.CurveCenterPos_y},
                    };
                 }

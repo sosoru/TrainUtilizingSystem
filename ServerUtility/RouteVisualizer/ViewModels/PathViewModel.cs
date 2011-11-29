@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.ComponentModel;
+using System.Windows;
+using System.Windows.Media;
 
 using Livet;
 using Livet.Command;
@@ -46,7 +48,130 @@ namespace RouteVisualizer.ViewModels
         public PathViewModel(PathModel path)
         {
             this._model = path;
-            
+
+            ViewModelHelper.BindNotifyChanged(this._model, this,
+                    (sender, e) =>
+                    {
+                        RaisePropertyChanged(e.PropertyName);
+                    });
+
+            this.PreviousGate = new GateViewModel(this._model.PreviousGate);
+            this.NextGate = new GateViewModel(this._model.NextGate);
+
+        }
+
+        public GateViewModel PreviousGate
+        {
+            get;
+            private set;
+        }
+
+        public GateViewModel NextGate
+        {
+            get;
+            private set;
+        }
+
+        public bool IsStraight
+        {
+            get { return this._model.IsStraight; }
+        }
+
+        public double Angle
+        {
+            get { return this._model.Angle; }
+        }
+
+        public double Length
+        {
+            get { return this._model.Length; }
+        }
+
+        public double Radius
+        {
+            get { return this._model.Radius; }
+        }
+
+        public double StartAngle
+        { get { return this._model.StartAngle; } }
+
+        public Point CenterPosition
+        {
+            get { return this._model.CurveCenter; }
+        }
+
+        public Geometry CurrentGeometry
+        {
+            get
+            {
+                Geometry geo = null;
+                var castedprev = this.PreviousGate;
+                var castednext = this.NextGate;
+
+                if (castedprev == null || castednext == null)
+                    throw new InvalidOperationException("undrawable connection");
+
+                if (this._model.IsStraight)
+                {
+                    //todo : calc
+                    var startpos = castedprev.Position;
+                    var endpos = castednext.Position;
+                    //endpos.Offset(this.BaseData.Length, 0.0);
+                    geo = new LineGeometry(startpos, endpos);
+
+                }
+                else
+                {
+                    var r = this.Radius;
+                    var t =  this.Angle.dtor();
+                    var startpos = castedprev.Position;
+                    var endpos = castednext.Position;
+
+                    //a = sqrt(2) * b * sqrt( 1- cos(t))
+
+                    var centervec =this.CenterPosition - startpos;
+                    centervec.Normalize();
+                    var tovec = endpos - startpos;
+                    tovec.Normalize();
+
+                    var clockwise = centervec.Y * tovec.X - centervec.X * tovec.Y >= 0.0;
+
+                    var segment = new ArcSegment(endpos,
+                                                  new Size(r, r),
+                                                  0,
+                                                  false,
+                                                  (clockwise) ? SweepDirection.Clockwise : SweepDirection.Counterclockwise,
+                                                  true);
+                    geo = new PathGeometry(new [] { new PathFigure(startpos, new [] { segment }, false) });
+
+                }
+
+                return geo;
+            }
+        }
+
+        public Rect Bound
+        {
+            get
+            {
+                if (this._model.IsStraight)
+                {
+                    return new Rect(this.PreviousGate.Position, new Size(this._model.Length, 0.0));
+                }
+                else
+                {
+                    var r = this.Radius;
+                    var sta = this.StartAngle.dtor();
+                    var end = (this.Angle + this.StartAngle).dtor();
+
+                    var vecx = r * (Math.Sin(end) - Math.Sin(sta));
+                    var vecy = r * (Math.Cos(end) - Math.Cos(sta));
+
+                    //todo:impl calc
+                    return new Rect(this.PreviousGate.Position, this.NextGate.Position);
+                }
+
+            }
         }
 
     }

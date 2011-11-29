@@ -50,7 +50,6 @@ namespace RouteVisualizer.EF
 
         public double Length { get; set; }
 
-        public double ViewRadius { get; set; }
         public double Angle
         {
             get { return (this.EndAngle - this.StartAngle) % 360; }

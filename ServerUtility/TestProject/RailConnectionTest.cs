@@ -98,7 +98,7 @@ namespace TestProject
                     RailID = railid,
                     IsStraight  =false,
                     EndAngle = 15,
-                    ViewRadius = 340,
+                    Length= 340,
                 };
 
                 data.Gates.Add(gateA);
@@ -145,42 +145,5 @@ namespace TestProject
         //
         #endregion
 
-
-        /// <summary>
-        ///ToString のテスト
-        ///</summary>
-        [TestMethod()]
-        public void ToStringTest()
-        {
-            var conn = sampleconn;
-
-            Assert.IsTrue(conn.ToString().Contains(conn.BaseData.GateName));
-        }
-
-        /// <summary>
-        ///Bound のテスト
-        ///</summary>
-        [TestMethod()]
-        public void BoundTest()
-        {
-            var conn = sampleconn;
-
-            // ignore a shape this bound returns
-
-            var actual = conn.Bound;
-        }
-
-        /// <summary>
-        ///CurrentGeometry のテスト
-        ///</summary>
-        [TestMethod()]
-        public void CurrentGeometryTest()
-        {
-            var conn = sampleconn;
-
-            // ignore a shape this bound returns
-
-            var actual = conn.CurrentGeometry;
-        }
     }
 }

@@ -128,7 +128,7 @@ namespace TestProject
                     RailID = railid,
                     IsStraight = false,
                     EndAngle = 15,
-                    ViewRadius = 340,
+                    Length = 340,
                 };
 
                 data.Gates.Add(gateA);
@@ -170,12 +170,5 @@ namespace TestProject
             Assert.Fail();
         }
 
-        [TestMethod()]
-        public void ValidationCheckTest()
-        {
-            var rail = samplerail;
-            Assert.IsTrue(rail.IsPathValidated);
-
-        }
     }
 }

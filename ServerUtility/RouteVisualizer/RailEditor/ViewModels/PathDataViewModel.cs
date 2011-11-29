@@ -195,7 +195,7 @@ namespace RouteVisualizer.RailEditor.ViewModels
             {
                 if (this.Model != null)
                 {
-                    return this.Model.ViewRadius;
+                    return this.Model.Length;
                 }
                 else
                     return double.NaN;
@@ -204,7 +204,7 @@ namespace RouteVisualizer.RailEditor.ViewModels
             {
                 if (this.Model != null)
                 {
-                    this.Model.ViewRadius = value;
+                    this.Model.Length = value;
                     RaisePropertyChanged("ViewRadius");
                 }
             }

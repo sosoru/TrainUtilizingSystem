@@ -128,7 +128,7 @@ namespace TestProject
                     RailID = railid,
                     IsStraight = false,
                     EndAngle = 15,
-                    ViewRadius = 340,
+                    Length= 340,
                 };
 
                 data.Gates.Add(gateA);
@@ -139,88 +139,11 @@ namespace TestProject
                 data.Pathes.Add(pathB);
                 data.BottomGate = gateA;
 
-                var path = new PathModel()
-                {
-                    BaseData = pathA,
-                    PreviousGate = new GateModel(gateA),
-                    NextGate = new GateModel(gateB),
-                };
+                var path = new PathModel(pathA);
 
                 return path;
             }
         }
 
-
-        /// <summary>
-        ///Bound のテスト
-        ///</summary>
-        [TestMethod()]
-        public void BoundTest()
-        {
-            var path = samplepath;
-            var target = path.Bound;
-        }
-
-        /// <summary>
-        ///CurrentGeometry のテスト
-        ///</summary>
-        [TestMethod()]
-        public void CurrentGeometryTest()
-        {
-            var path = samplepath;
-            var target = path.CurrentGeometry;
-        }
-
-        /// <summary>
-        ///Length のテスト
-        ///</summary>
-        [TestMethod()]
-        public void LengthTest()
-        {
-            var path = samplepath;
-
-            var stlen = 10;
-            path.BaseData.IsStraight = true;
-            path.BaseData.Length = stlen;
-            Assert.IsTrue(path.Length == stlen);
-
-            var cvlen = 10 * Math.PI;
-            path.BaseData.IsStraight = false;
-            path.BaseData.ViewRadius = 10;
-            path.BaseData.EndAngle = 180;
-            Assert.IsTrue(path.Length == cvlen);
-        }
-
-        /// <summary>
-        ///NextGate のテスト
-        ///</summary>
-        [TestMethod()]
-        public void NextGateTest()
-        {
-            var path = samplepath;
-            var gate = path.NextGate;
-
-            path.NextGate = null;
-            Assert.IsTrue(!gate.ConnectedPathes.Contains(path));
-
-            path.NextGate = gate;
-            Assert.IsTrue(gate.ConnectedPathes.Contains(path));
-        }
-
-        /// <summary>
-        ///PreviousGate のテスト
-        ///</summary>
-        [TestMethod()]
-        public void PreviousGateTest()
-        {
-            var path = samplepath;
-            var gate = path.PreviousGate;
-
-            path.PreviousGate = null;
-            Assert.IsTrue(!gate.ConnectedPathes.Contains(path));
-
-            path.PreviousGate = gate;
-            Assert.IsTrue(gate.ConnectedPathes.Contains(path));
-        }
     }
 }

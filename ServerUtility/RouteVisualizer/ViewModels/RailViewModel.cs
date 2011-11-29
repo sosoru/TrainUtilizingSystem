@@ -57,7 +57,7 @@ namespace RouteVisualizer.ViewModels
             this.Gates = ViewModelHelper.CreateReadOnlyNotifyDispatcherCollection(this._model.Connections,
                                                                                 conn => new GateViewModel(conn),
                                                                                 DispatcherHelper.UIDispatcher);
-            
+
             ViewModelHelper.BindNotifyChanged(this._model, this, (sender, e) =>
                 {
                     RaisePropertyChanged(e.PropertyName);
@@ -73,11 +73,6 @@ namespace RouteVisualizer.ViewModels
             get { return this._model.IsMirrored; }
             set { this._model.IsMirrored = value; }
 
-        }
-
-        public bool IsPathValidated
-        {
-            get { return this._model.IsPathValidated; }
         }
 
         public virtual Geometry CurrentGeometry
@@ -119,6 +114,51 @@ namespace RouteVisualizer.ViewModels
         }
 
 
-        
+        public IDictionary<GateViewModel, Point> LocateGate()
+        {
+            if (this.Pathes == null || this.Pathes.Count == 0)
+                return new Dictionary<GateViewModel, Point>();
+
+            var dict = new Dictionary<GateViewModel, Point>();
+            foreach (var conn in this.Gates)
+                dict.Add(conn, conn.Position);
+
+            foreach (var path in this.Pathes)
+            {
+                var sentvec = path.Bound.BottomLeft - path.Bound.TopRight;
+
+                var basepoint = dict [path.PreviousGate];
+
+                // basepoint += sentvec;
+
+                //check overwrite
+                //var zero = new Point();
+                //if (dict [path.NextGate] != zero && dict [path.NextGate] != sentvec)
+                //{
+                //    throw new InvalidOperationException(string.Format("gate position mismatching : {0}", path.NextGate.ToString()));
+                //}
+
+                dict [path.NextGate] = basepoint + sentvec;
+            }
+
+            return dict;
+        }
+
+        public bool IsPathValidated
+        {
+            get
+            {
+                try
+                {
+                    LocateGate();
+                }
+                catch
+                {
+                    return false;
+                }
+                return true;
+            }
+        }
+
     }
 }

@@ -10,19 +10,49 @@ using RouteVisualizer.EF;
 namespace RouteVisualizer.Models
 {
     public class PathModel
-        : IPath, IDrawable
+        : Model, IPath
     {
-        private PathData _cache_baseData;
-        public PathData BaseData
+        private PathData _baseData;
+
+        public PathModel(PathData path)
+        {
+            this._baseData = path;
+
+            this.PreviousGate = new GateModel(path.GateStart);
+            this.NextGate = new GateModel(path.GateEnd);
+
+            this.CurveCenter = new Point(this._baseData.CurveCenter.First(), this._baseData.CurveCenter.Last());
+        }
+
+        public bool IsStraight
+        {
+            get { return this._baseData.IsStraight; }
+        }
+
+        public double Angle
+        {
+            get { return this._baseData.Angle; }
+        }
+
+        public double StartAngle
+        {
+            get { return this._baseData.StartAngle; }
+        }
+
+        public Point CurveCenter
+        {
+            get;
+            private set;
+        }
+
+        public double Radius
         {
             get
             {
-                return this._cache_baseData;
-            }
-            set
-            {
-                this._cache_baseData = value;
-
+                if (this.IsStraight)
+                    return this._baseData.Length / 2.0;
+                else
+                    return this._baseData.Length;
             }
         }
 
@@ -30,156 +60,43 @@ namespace RouteVisualizer.Models
         {
             get
             {
-                if (this.BaseData == null)
-                    return double.NaN;
-
-                if (this.BaseData.IsStraight)
+                if (this._baseData.IsStraight)
                 {
-                    return this.BaseData.Length;
+                    return this._baseData.Length;
                 }
                 else
                 {
-                    return this.BaseData.Angle.dtor() * this.BaseData.ViewRadius;
+                    return Math.Abs( this._baseData.Angle.dtor() * this._baseData.Length);
                 }
             }
         }
 
-        private IGate _previousGate;
-        public IGate PreviousGate
+        public GateModel PreviousGate { get; private set; }
+        public GateModel NextGate { get; private set; }
+
+        bool _ElectricalConnection;
+
+        public bool ElectricalConnection
         {
             get
-            {
-                return this._previousGate;
-            }
+            { return _ElectricalConnection; }
             set
             {
-                if (this._previousGate != null)
-                {
-                    this._previousGate.ConnectedPathes.Remove(this);
-                }
-
-                if (value != null)
-                {
-                    value.ConnectedPathes.Add(this);
-                }
-
-                this._previousGate = value;
+                if (_ElectricalConnection == value)
+                    return;
+                _ElectricalConnection = value;
+                RaisePropertyChanged("ElectricalConnection");
             }
         }
 
-        private IGate _nextGate;
-        public IGate NextGate
+        IGate IPath.PreviousGate
         {
-            get
-            {
-                return this._nextGate;
-            }
-            set
-            {
-                if (this._nextGate != null)
-                {
-                    this._nextGate.ConnectedPathes.Remove(this);
-                }
-
-                if (value != null)
-                {
-                    value.ConnectedPathes.Add(this);
-                }
-
-                this._nextGate = value;
-            }
-
+            get { return ((PathModel)this).PreviousGate; }
         }
 
-        public bool ElectricalConnection { get; set; }
-
-        public Geometry CurrentGeometry
+        IGate IPath.NextGate
         {
-            get
-            {
-                if (this.BaseData == null)
-                    return null;
-
-                Geometry geo = null;
-                var castedprev = this.PreviousGate as GateModel;
-                var castednext = this.NextGate as GateModel;
-
-                if (castedprev == null || castednext == null)
-                    throw new InvalidOperationException("undrawable connection");
-
-                if (this.BaseData.IsStraight)
-                {
-                    //todo : calc
-                    var startpos = castedprev.BasePosition;
-                    var endpos = castednext.BasePosition;
-                    //endpos.Offset(this.BaseData.Length, 0.0);
-                    geo = new LineGeometry(startpos, endpos);
-
-                }
-                else
-                {
-                    var r = this.BaseData.ViewRadius;
-                    var t =  this.BaseData.Angle.dtor();
-                    var startpos = castedprev.BasePosition;
-                    var endpos = castednext.BasePosition;
-
-                    //a = sqrt(2) * b * sqrt( 1- cos(t))
-
-                    var centervec = new Point(this.BaseData.CurveCenter.First(), this.BaseData.CurveCenter.Last()) - startpos;
-                    centervec.Normalize();
-                    var tovec = endpos - startpos;
-                    tovec.Normalize();
-
-                    var clockwise = centervec.Y * tovec.X - centervec.X * tovec.Y >= 0.0;
-
-                    var segment = new ArcSegment(endpos,
-                                                  new Size(r, r),
-                                                  0,
-                                                  false,
-                                                  (clockwise) ? SweepDirection.Clockwise : SweepDirection.Counterclockwise,
-                                                  true);
-                    geo = new PathGeometry(new [] { new PathFigure(startpos, new [] { segment }, false) });
-
-                }
-
-                return geo;
-            }
+            get { return ((PathModel)this).NextGate; }
         }
-
-        public Rect Bound
-        {
-            get
-            {
-                if (this.BaseData == null)
-                    return new Rect();
-
-                var castedgate = this.PreviousGate as GateModel;
-                if (castedgate == null)
-                    throw new InvalidOperationException("undrawable connection");
-
-                else
-                {
-                    if (this.BaseData.IsStraight)
-                    {
-                        return new Rect(castedgate.BasePosition, new Size(this.BaseData.Length, 0.0));
-                    }
-                    else
-                    {
-                        var r = this.BaseData.ViewRadius;
-                        var sta = this.BaseData.StartAngle.dtor();
-                        var end = this.BaseData.EndAngle.dtor();
-
-                        var vecx = r * (Math.Sin(end) - Math.Sin(sta));
-                        var vecy = r * (Math.Cos(end) - Math.Cos(sta));
-
-                         //todo:impl calc
-                       return new Rect(castedgate.BasePosition, (this.NextGate as GateModel).BasePosition);
-                    }
-                }
-
-            }
-        }
-
-        public RailModel OwnerRail { get; set; }
     }
 }

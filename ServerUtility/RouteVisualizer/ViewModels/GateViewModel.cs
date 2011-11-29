@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.ComponentModel;
+using System.Windows;
+using System.Windows.Media;
 
 using Livet;
 using Livet.Command;
@@ -46,6 +48,29 @@ namespace RouteVisualizer.ViewModels
         public GateViewModel(GateModel model)
         {
             this._model = model;
+        }
+
+        public Geometry CurrentGeometry
+        {
+            get
+            {
+                var geo = new EllipseGeometry(this.Bound);
+
+                return geo;
+            }
+        }
+
+        public Rect Bound
+        {
+            get
+            {
+                return new Rect(this.Position - new Vector(2.5, 2.5), new Size(5.0, 5.0));
+            }
+        }
+
+        public Point Position
+        {
+            get { return this._model.Position; }
         }
 
 

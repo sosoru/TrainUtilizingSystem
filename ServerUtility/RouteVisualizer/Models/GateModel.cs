@@ -10,16 +10,16 @@ using RouteVisualizer.EF;
 namespace RouteVisualizer.Models
 {
     public class GateModel
-        : IGate, IDrawable
+        : IGate
     {
+        private GateData BaseData;
         public GateModel(GateData data)
         {
             this.BaseData = data;
 
             this._connectedPathes = new List<IPath>();
+            this.Position = new Point(data.Position.First(), data.Position.Last());
         }
-
-        public GateData BaseData { get; private set;}
 
         private IList<IPath> _connectedPathes;
         public IList<IPath> ConnectedPathes
@@ -27,29 +27,10 @@ namespace RouteVisualizer.Models
             get { return this._connectedPathes; }
         }
 
-        public Geometry CurrentGeometry
+        public Point Position
         {
-            get
-            {
-                var geo = new EllipseGeometry(this.Bound);
-
-                return geo;
-            }
-        }
-
-        public Rect Bound
-        {
-            get
-            {
-                return new Rect(this.BasePosition - new Vector(2.5, 2.5), new Size(5.0, 5.0));
-            }
-        }
-
-        private Point? _basePosition = null;
-        public Point BasePosition
-        {
-            get { return (_basePosition ?? (_basePosition = new Point(this.BaseData.Position.First(), this.BaseData.Position.Last()))).Value;}
-            set { this._basePosition = value; }
+            get;
+            private set;
         }
 
         public override string ToString()
