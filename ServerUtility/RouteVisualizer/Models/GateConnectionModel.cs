@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 
@@ -9,7 +10,7 @@ using Livet;
 
 namespace RouteVisualizer.Models
 {
-    public class GateConnectionModel : NotifyObject
+    public class GateConnectionModel : Model
     {
         /*
          * NotifyObjectはプロパティ変更通知の仕組みを実装したオブジェクトです。
@@ -26,13 +27,20 @@ namespace RouteVisualizer.Models
          */
 
         GateConnectionData _BaseData;
-        public GateConnectionData BaseData
+
+        public GateConnectionModel(GateConnectionData data)
         {
-            get{ return _BaseData ?? (this._BaseData = new GateConnectionData());}
-            set
-            {
-                this._BaseData = value;
-            }
+            this._BaseData = data;
+
+            this.Gates = new ObservableCollection<GateModel>(data.ConnectedGates.Select(g => new GateModel(g)).ToList());
+
         }
+
+        public ObservableCollection<GateModel> Gates
+        {
+            get;
+            private set;
+        }
+
     }
 }

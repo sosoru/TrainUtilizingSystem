@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.ComponentModel;
@@ -45,7 +46,21 @@ namespace RouteVisualizer.ViewModels
         public GateConnectionViewModel(GateConnectionModel model)
         {
             this._model = model;
+
+            ViewModelHelper.BindNotifyChanged(model, this,
+                (sender, e)
+                     =>
+                {
+                    RaisePropertyChanged(e.PropertyName);
+                });
+
+            this.Gates = ViewModelHelper.CreateReadOnlyNotifyDispatcherCollection
+                (model.Gates, g => new GateViewModel(g), DispatcherHelper.UIDispatcher);
         }
+
+        public ReadOnlyObservableCollection<GateViewModel> Gates
+        { get; private set; }
+
 
     }
 }
