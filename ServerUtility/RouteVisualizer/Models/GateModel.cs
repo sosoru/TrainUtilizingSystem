@@ -12,7 +12,7 @@ using Livet;
 namespace RouteVisualizer.Models
 {
     public class GateModel
-        : Model, IGate 
+        : Model, IGate , IEquatable<GateModel>
     {
         private GateData BaseData;
         public GateModel(GateData data)
@@ -49,12 +49,47 @@ namespace RouteVisualizer.Models
                 _Name = value;
                 RaisePropertyChanged("Name");
             }
-        }
-      
+        }   
         
         public override string ToString()
         {
             return string.Format("Name : {0}", this.BaseData.GateName);
         }
+
+        #region implementation of IEqualable
+        public static bool operator ==(GateModel A, GateModel B)
+        {
+            if (ReferenceEquals(A, B))
+                return true;
+            else if ((object)A == null || (object)B == null)
+                return false;
+            else
+                return (A.BaseData.ID == B.BaseData.ID);
+        }
+        public static bool operator !=(GateModel A, GateModel B) { return !(A == B); }
+
+        public bool Equals(GateModel other)
+        {
+            return (this == other);
+        }
+
+        public override int GetHashCode()
+        {
+            return this.BaseData.ID.GetHashCode() ^ this.BaseData.ID.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            try
+            {
+                return this == (GateModel)obj;
+            }
+            catch (InvalidCastException)
+            {
+                return false;
+            }
+        }
+        #endregion
+
     }
 }

@@ -127,11 +127,9 @@ namespace RouteVisualizer.ViewModels
             {
                 var sentvec = path.Bound.BottomLeft - path.Bound.TopRight;
 
-                var basepair = dict.FirstOrDefault(g => g.Key.Name == path.PreviousGate.Name);
+                var basepoint = dict [path.PreviousGate];
 
-                var next = dict.FirstOrDefault(g => g.Key.Name == path.NextGate.Name);
-
-                dict [next.Key] = basepair.Value + sentvec;
+                dict [path.NextGate] = basepoint + sentvec;
             }
 
             return dict;
@@ -152,6 +150,40 @@ namespace RouteVisualizer.ViewModels
                 return true;
             }
         }
+        #region implementation of IEqualable
+        public static bool operator ==(RailViewModel A, RailViewModel B)
+        {
+            if (ReferenceEquals(A, B))
+                return true;
+            else if ((object)A == null || (object)B == null)
+                return false;
+            else
+                return (A._model == B._model);
+        }
+        public static bool operator !=(RailViewModel A, RailViewModel B) { return !(A == B); }
+
+        public bool Equals(RailViewModel other)
+        {
+            return (this == other);
+        }
+
+        public override int GetHashCode()
+        {
+            return this._model.GetHashCode() ^ this._model.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            try
+            {
+                return this == (RailViewModel)obj;
+            }
+            catch (InvalidCastException)
+            {
+                return false;
+            }
+        }
+        #endregion
 
     }
 }

@@ -10,7 +10,7 @@ using RouteVisualizer.EF;
 namespace RouteVisualizer.Models
 {
     public class PathModel
-        : Model, IPath
+        : Model, IPath, IEquatable<PathModel>
     {
         private PathData _baseData;
 
@@ -100,6 +100,40 @@ namespace RouteVisualizer.Models
             get { return ((PathModel)this).NextGate; }
         }
 
+        #region implementation of IEqualable
+        public static bool operator ==(PathModel A, PathModel B)
+        {
+            if (ReferenceEquals(A, B))
+                return true;
+            else if ((object)A == null || (object)B == null)
+                return false;
+            else
+                return (A._baseData.ID== B._baseData.ID );
+        }
+        public static bool operator !=(PathModel A, PathModel B) { return !(A == B); }
+
+        public bool Equals(PathModel other)
+        {
+            return (this == other);
+        }
+
+        public override int GetHashCode()
+        {
+            return this._baseData.ID.GetHashCode() ^ this._baseData.ID.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            try
+            {
+                return this == (PathModel)obj;
+            }
+            catch (InvalidCastException)
+            {
+                return false;
+            }
+        }
+        #endregion
 
     }
 }

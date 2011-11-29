@@ -150,7 +150,7 @@ namespace RouteVisualizer.Railroader
                                    ID = g.Key,
                                    ConnectedGates = g.Select(pair => pair.Value).ToList(),
                                })
-                       .Select(data => new GateConnectionModel() { BaseData = data })
+                       .Select(data => new GateConnectionModel(data))
                        .ToList()
                        .ForEach(layout.Connections.Add);
 

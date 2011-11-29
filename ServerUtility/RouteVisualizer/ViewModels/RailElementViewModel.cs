@@ -14,7 +14,7 @@ using RouteVisualizer.Models;
 
 namespace RouteVisualizer.ViewModels
 {
-    public class RailElementViewModel : ViewModel, IDrawable
+    public class RailElementViewModel: ViewModel, IDrawable
     {
         /*コマンド、プロパティの定義にはそれぞれ 
          * 

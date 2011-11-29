@@ -16,7 +16,7 @@ using RouteVisualizer.Models;
 
 namespace RouteVisualizer.ViewModels
 {
-    public class GateViewModel : RailElementViewModel
+    public class GateViewModel : RailElementViewModel, IEquatable<GateViewModel>
     {
         /*コマンド、プロパティの定義にはそれぞれ 
          * 
@@ -86,6 +86,41 @@ namespace RouteVisualizer.ViewModels
         {
             get { return this._model.Position; }
         }
+
+        #region implementation of IEqualable
+        public static bool operator ==(GateViewModel A, GateViewModel B)
+        {
+            if (ReferenceEquals(A, B))
+                return true;
+            else if ((object)A == null || (object)B == null)
+                return false;
+            else
+                return (A._model == B._model);
+        }
+        public static bool operator !=(GateViewModel A, GateViewModel B) { return !(A == B); }
+
+        public bool Equals(GateViewModel other)
+        {
+            return (this == other);
+        }
+
+        public override int GetHashCode()
+        {
+            return this._model.GetHashCode() ^ this._model.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            try
+            {
+                return this == (GateViewModel)obj;
+            }
+            catch (InvalidCastException)
+            {
+                return false;
+            }
+        }
+        #endregion
 
 
     }

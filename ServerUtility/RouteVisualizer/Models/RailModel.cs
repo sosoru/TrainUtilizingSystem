@@ -14,7 +14,7 @@ using Livet;
 namespace RouteVisualizer.Models
 {
     public class RailModel
-        : Model
+        : Model, IEquatable<RailModel>
     {
         public RailModel(RailData data)
         {
@@ -52,6 +52,41 @@ namespace RouteVisualizer.Models
                 RaisePropertyChanged("IsMirrored");
             }
         }
+        #region implementation of IEqualable
+        public static bool operator ==(RailModel A, RailModel B)
+        {
+            if (ReferenceEquals(A, B))
+                return true;
+            else if ((object)A == null || (object)B == null)
+                return false;
+            else
+                return (A.BaseData.ID == B.BaseData.ID);
+        }
+        public static bool operator !=(RailModel A, RailModel B) { return !(A == B); }
+
+        public bool Equals(RailModel other)
+        {
+            return (this == other);
+        }
+
+        public override int GetHashCode()
+        {
+            return this._baseData.ID.GetHashCode() ^ this._baseData.ID.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            try
+            {
+                return this == (RailModel)obj;
+            }
+            catch (InvalidCastException)
+            {
+                return false;
+            }
+        }
+        #endregion
+
 
     }
 
