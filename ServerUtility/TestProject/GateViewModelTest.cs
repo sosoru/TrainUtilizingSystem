@@ -1,19 +1,27 @@
-﻿using RouteVisualizer.Railroader;
+﻿using RouteVisualizer.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using RailroaderIO;
 using RouteVisualizer.Models;
+using System.Windows;
+using System.Collections.Generic;
+using System.Windows.Media;
+
+using RailroaderIO;
+using RouteVisualizer.Railroader;
+using System.Linq;
+
+using Livet;
 
 namespace TestProject
 {
-
-
+    
+    
     /// <summary>
-    ///RailroaderExtensionsTest のテスト クラスです。すべての
-    ///RailroaderExtensionsTest 単体テストをここに含めます
+    ///GateViewModelTest のテスト クラスです。すべての
+    ///GateViewModelTest 単体テストをここに含めます
     ///</summary>
     [TestClass()]
-    public class RailroaderExtensionsTest
+    public class GateViewModelTest
     {
 
 
@@ -65,25 +73,64 @@ namespace TestProject
         //
         #endregion
 
-        private RailroaderMap examplemap
+        GateModel sampleGate
         {
             get
             {
-                var map = new RailroaderMap(@"C:\Users\root\Documents\TrainUtilizingSystem\ServerUtility\RouteVisualizer\TestSamples\Sample2.rrf");
-                return map;
+                var map = new RailroaderMap(@"C:\Users\root\Desktop\rail\cu.rrf");
+                var l = map.ToLayout();
+
+                return l.Rails.First().Pathes.First().PreviousGate;
             }
         }
 
+
         /// <summary>
-        ///ToLayout のテスト
+        ///Bound のテスト
         ///</summary>
         [TestMethod()]
-        public void ToLayoutTest()
+        public void BoundTest()
         {
-            RailroaderMap map = examplemap; 
-            LayoutModel actual;
-            actual = RailroaderExtensions.ToLayout(map);
+            GateModel model = sampleGate;
+            GateViewModel target = new GateViewModel(model);
+            Rect actual;
+            actual = target.Bound;
+        }
 
+        /// <summary>
+        ///CurrentGeometry のテスト
+        ///</summary>
+        [TestMethod()]
+        public void CurrentGeometryTest()
+        {
+            GateModel model = sampleGate;
+            GateViewModel target = new GateViewModel(model);
+            Geometry actual;
+            actual = target.CurrentGeometry;
+        }
+
+        /// <summary>
+        ///Name のテスト
+        ///</summary>
+        [TestMethod()]
+        public void NameTest()
+        {
+            GateModel model = sampleGate;
+            GateViewModel target = new GateViewModel(model);
+            string actual;
+            actual = target.Name;
+        }
+
+        /// <summary>
+        ///Position のテスト
+        ///</summary>
+        [TestMethod()]
+        public void PositionTest()
+        {
+            GateModel model = sampleGate;
+            GateViewModel target = new GateViewModel(model);
+            Point actual;
+            actual = target.Position;
         }
     }
 }

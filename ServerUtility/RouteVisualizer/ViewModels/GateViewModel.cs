@@ -48,9 +48,15 @@ namespace RouteVisualizer.ViewModels
         public GateViewModel(GateModel model)
         {
             this._model = model;
+
+            ViewModelHelper.BindNotifyChanged(model, this,
+                (sender, e) =>
+                {
+                    RaisePropertyChanged(e.PropertyName);
+                });
         }
 
-        public Geometry CurrentGeometry
+        public override Geometry CurrentGeometry
         {
             get
             {
@@ -60,7 +66,15 @@ namespace RouteVisualizer.ViewModels
             }
         }
 
-        public Rect Bound
+        public string Name
+        {
+            get
+            {
+                return this._model.Name;
+            }
+        }
+
+        public override Rect Bound
         {
             get
             {

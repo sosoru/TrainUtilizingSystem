@@ -7,10 +7,12 @@ using System.Windows.Media;
 using RouteVisualizer;
 using RouteVisualizer.EF;
 
+using Livet;
+
 namespace RouteVisualizer.Models
 {
     public class GateModel
-        : IGate
+        : Model, IGate 
     {
         private GateData BaseData;
         public GateModel(GateData data)
@@ -33,6 +35,23 @@ namespace RouteVisualizer.Models
             private set;
         }
 
+
+        string _Name;
+
+        public string Name
+        {
+            get
+            { return _Name; }
+            set
+            {
+                if (_Name == value)
+                    return;
+                _Name = value;
+                RaisePropertyChanged("Name");
+            }
+        }
+      
+        
         public override string ToString()
         {
             return string.Format("Name : {0}", this.BaseData.GateName);

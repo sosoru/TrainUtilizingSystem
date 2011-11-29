@@ -100,7 +100,7 @@ namespace RouteVisualizer.ViewModels
             get { return this._model.CurveCenter; }
         }
 
-        public Geometry CurrentGeometry
+        public override Geometry CurrentGeometry
         {
             get
             {
@@ -150,7 +150,7 @@ namespace RouteVisualizer.ViewModels
             }
         }
 
-        public Rect Bound
+        public override Rect Bound
         {
             get
             {
@@ -173,6 +173,8 @@ namespace RouteVisualizer.ViewModels
 
             }
         }
+
+
 
     }
 }

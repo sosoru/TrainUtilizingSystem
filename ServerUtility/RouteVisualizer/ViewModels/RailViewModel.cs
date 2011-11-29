@@ -75,7 +75,7 @@ namespace RouteVisualizer.ViewModels
 
         }
 
-        public virtual Geometry CurrentGeometry
+        public override Geometry CurrentGeometry
         {
             get
             {
@@ -99,7 +99,7 @@ namespace RouteVisualizer.ViewModels
             }
         }
 
-        public virtual Rect Bound
+        public override Rect Bound
         {
             get
             {
@@ -127,18 +127,11 @@ namespace RouteVisualizer.ViewModels
             {
                 var sentvec = path.Bound.BottomLeft - path.Bound.TopRight;
 
-                var basepoint = dict [path.PreviousGate];
+                var basepair = dict.FirstOrDefault(g => g.Key.Name == path.PreviousGate.Name);
 
-                // basepoint += sentvec;
+                var next = dict.FirstOrDefault(g => g.Key.Name == path.NextGate.Name);
 
-                //check overwrite
-                //var zero = new Point();
-                //if (dict [path.NextGate] != zero && dict [path.NextGate] != sentvec)
-                //{
-                //    throw new InvalidOperationException(string.Format("gate position mismatching : {0}", path.NextGate.ToString()));
-                //}
-
-                dict [path.NextGate] = basepoint + sentvec;
+                dict [next.Key] = basepair.Value + sentvec;
             }
 
             return dict;

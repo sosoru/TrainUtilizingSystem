@@ -21,7 +21,8 @@ namespace RouteVisualizer.Models
             this.PreviousGate = new GateModel(path.GateStart);
             this.NextGate = new GateModel(path.GateEnd);
 
-            this.CurveCenter = new Point(this._baseData.CurveCenter.First(), this._baseData.CurveCenter.Last());
+            if (this._baseData.CurveCenter != null)
+                this.CurveCenter = new Point(this._baseData.CurveCenter.First(), this._baseData.CurveCenter.Last());
         }
 
         public bool IsStraight
@@ -66,7 +67,7 @@ namespace RouteVisualizer.Models
                 }
                 else
                 {
-                    return Math.Abs( this._baseData.Angle.dtor() * this._baseData.Length);
+                    return Math.Abs(this._baseData.Angle.dtor() * this._baseData.Length);
                 }
             }
         }
@@ -98,5 +99,7 @@ namespace RouteVisualizer.Models
         {
             get { return ((PathModel)this).NextGate; }
         }
+
+
     }
 }

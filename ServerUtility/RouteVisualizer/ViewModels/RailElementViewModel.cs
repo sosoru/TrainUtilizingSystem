@@ -40,12 +40,12 @@ namespace RouteVisualizer.ViewModels
          * Modelからの変更通知などの各種イベントをそのままViewModelで購読する事はメモリリークの
          * 原因となりやすく推奨できません。ViewModelHelperの各静的メソッドの利用を検討してください。
          */
-        public System.Windows.Media.Geometry CurrentGeometry
+        public virtual System.Windows.Media.Geometry CurrentGeometry
         {
             get { throw new NotImplementedException(); }
         }
 
-        public System.Windows.Rect Bound
+        public virtual System.Windows.Rect Bound
         {
             get { throw new NotImplementedException(); }
         }

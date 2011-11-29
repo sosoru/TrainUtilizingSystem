@@ -80,6 +80,7 @@
   <ItemGroup>
     <Compile Include="ChunckedStreamTest.cs" />
     <Compile Include="ConvertExtenstionsTest.cs" />
+    <Compile Include="GateViewModelTest.cs" />
     <Compile Include="LoopingArrayTest.cs" />
     <Compile Include="ManipulatorViewModelTest.cs" />
     <Compile Include="MotherBoardDataTest.cs" />
@@ -87,6 +88,7 @@
     <Compile Include="MotherBoardViewModelTest.cs" />
     <Compile Include="PacketDispatcherSingleTest.cs" />
     <Compile Include="PathDataViewModelTest.cs" />
+    <Compile Include="PathViewModelTest.cs" />
     <Compile Include="PointModuleDataTest.cs" />
     <Compile Include="PointModuleStateTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -97,6 +99,7 @@
     <Compile Include="RailroaderExtensionsTest.cs" />
     <Compile Include="RailroaderMapTest.cs" />
     <Compile Include="RailTest.cs" />
+    <Compile Include="RailViewModelTest.cs" />
     <Compile Include="TestPacketProvider.cs" />
     <Compile Include="TrainControllerStateTest.cs" />
     <Compile Include="TrainSensorDataTest.cs" />
