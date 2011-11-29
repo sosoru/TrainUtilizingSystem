@@ -116,9 +116,9 @@ namespace RouteVisualizer.Railroader
                         break;
                     case Sort.Point : //neighbor2が常にstraight
                         straightpath.GateStart = firstgate;
-                        straightpath.GateEnd = thirdgate;
+                        straightpath.GateEnd = secondgate;
                         curvepath.GateStart = firstgate;
-                        curvepath.GateEnd = secondgate;
+                        curvepath.GateEnd = thirdgate;
 
                         straightpath.StartAngle = (rail.StartGradient-90) % 360;
                         straightpath.EndAngle = (rail.EndGradient+90) % 360;
