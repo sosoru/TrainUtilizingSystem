@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.ComponentModel;
@@ -49,8 +50,18 @@ namespace RouteVisualizer.ViewModels
         {
             this._model = model;
 
+            this.Rails = ViewModelHelper.CreateReadOnlyNotifyDispatcherCollection(this._model.Rails,
+                                                                                    m => new RailViewModel(m, this),
+                                                                                    DispatcherHelper.UIDispatcher);
+            this.Gates = ViewModelHelper.CreateReadOnlyNotifyDispatcherCollection(this._model.Connections,
+                                                                                    conn => new GateConnectionViewModel(conn),
+                                                                                    DispatcherHelper.UIDispatcher);
+
             RefreshDrawing();
         }
+
+        public ReadOnlyObservableCollection<RailViewModel> Rails { get; private set; }
+        public ReadOnlyObservableCollection<GateConnectionViewModel> Gates { get; private set; }
 
         public Drawing CurrentDrwaing
         {
@@ -70,7 +81,7 @@ namespace RouteVisualizer.ViewModels
         {
             var dr = new DrawingGroup();
 
-            this._model.Rails.ToList()
+            this.Rails.ToList()
                     .ForEach(r => dr.Children.Add(new GeometryDrawing(Brushes.Transparent, new Pen(Brushes.Black, 1.0), r.CurrentGeometry)));
 
             this.CurrentDrwaing = dr;

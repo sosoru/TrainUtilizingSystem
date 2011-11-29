@@ -14,7 +14,7 @@ using RouteVisualizer.Models;
 
 namespace RouteVisualizer.ViewModels
 {
-    public class PathViewModel : RailElementViewModel
+    public class RailElementViewModel : ViewModel, IDrawable
     {
         /*コマンド、プロパティの定義にはそれぞれ 
          * 
@@ -40,14 +40,14 @@ namespace RouteVisualizer.ViewModels
          * Modelからの変更通知などの各種イベントをそのままViewModelで購読する事はメモリリークの
          * 原因となりやすく推奨できません。ViewModelHelperの各静的メソッドの利用を検討してください。
          */
-
-        private PathModel _model;
-
-        public PathViewModel(PathModel path)
+        public System.Windows.Media.Geometry CurrentGeometry
         {
-            this._model = path;
-            
+            get { throw new NotImplementedException(); }
         }
 
+        public System.Windows.Rect Bound
+        {
+            get { throw new NotImplementedException(); }
+        }
     }
 }

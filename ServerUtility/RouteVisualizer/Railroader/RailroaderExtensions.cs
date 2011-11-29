@@ -141,8 +141,7 @@ namespace RouteVisualizer.Railroader
                     }
                 }
 
-                var railmodel = new Rail(raildata);
-                var geo = railmodel.CurrentGeometry;
+                var railmodel = new RailModel(raildata);
                 layout.Rails.Add(railmodel);
             }
 

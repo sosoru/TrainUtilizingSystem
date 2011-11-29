@@ -38,7 +38,7 @@ namespace TestProject
             }
         }
 
-        public RailGate sampleconn
+        public GateModel sampleconn
         {
             get
             {
@@ -109,7 +109,7 @@ namespace TestProject
                 data.Pathes.Add(pathB);
                 data.BottomGate = gateA;
 
-                var conn = new RailGate(gateA);
+                var conn = new GateModel(gateA);
 
                 return conn;
             }

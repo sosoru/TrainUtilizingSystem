@@ -14,7 +14,7 @@ using RouteVisualizer.Models;
 
 namespace RouteVisualizer.ViewModels
 {
-    public class PathViewModel : RailElementViewModel
+    public class GateViewModel : RailElementViewModel
     {
         /*コマンド、プロパティの定義にはそれぞれ 
          * 
@@ -41,13 +41,13 @@ namespace RouteVisualizer.ViewModels
          * 原因となりやすく推奨できません。ViewModelHelperの各静的メソッドの利用を検討してください。
          */
 
-        private PathModel _model;
+        private GateModel _model;
 
-        public PathViewModel(PathModel path)
+        public GateViewModel(GateModel model)
         {
-            this._model = path;
-            
+            this._model = model;
         }
+
 
     }
 }

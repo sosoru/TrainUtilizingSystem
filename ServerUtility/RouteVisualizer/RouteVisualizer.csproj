@@ -117,8 +117,11 @@
       <DependentUpon>SettingWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Railroader\RailroaderExtensions.cs" />
+    <Compile Include="ViewModels\GateConnectionViewModel.cs" />
+    <Compile Include="ViewModels\GateViewModel.cs" />
     <Compile Include="ViewModels\LayoutViewModel.cs" />
     <Compile Include="ViewModels\PathViewModel.cs" />
+    <Compile Include="ViewModels\RailElementViewModel.cs" />
     <Compile Include="ViewModels\RailViewModel.cs" />
     <Compile Include="Views\LayoutView.xaml.cs">
       <DependentUpon>LayoutView.xaml</DependentUpon>
@@ -161,9 +164,9 @@
     <Compile Include="EF\PocoData.cs" />
     <Compile Include="Models\BasicInterfaces.cs" />
     <Compile Include="Models\Model.cs" />
-    <Compile Include="Models\PysicalPath.cs" />
-    <Compile Include="Models\Rail.cs" />
-    <Compile Include="Models\RailConnection.cs" />
+    <Compile Include="Models\PathModel.cs" />
+    <Compile Include="Models\RailModel.cs" />
+    <Compile Include="Models\GateModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\DrawablesViewModel.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">

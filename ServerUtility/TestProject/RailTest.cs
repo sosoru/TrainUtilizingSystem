@@ -68,7 +68,7 @@ namespace TestProject
         //
         #endregion
 
-        public Rail samplerail
+        public RailModel samplerail
         {
             get
             {
@@ -139,10 +139,7 @@ namespace TestProject
                 data.Pathes.Add(pathB);
                 data.BottomGate = gateA;
 
-                var rail = new Rail()
-                {
-                    BaseData = data,
-                };
+                var rail = new RailModel(data);
 
                 return rail;
             }
@@ -153,9 +150,11 @@ namespace TestProject
         ///</summary>
         [TestMethod()]
         public void BoundTest()
-        {
-            var rail = samplerail;
-            var target = rail.Bound;
+        { //todo: viewmodel test
+            //var rail = samplerail;
+            //var target = rail.Bound;
+
+            Assert.Fail();
         }
 
         /// <summary>
@@ -164,8 +163,11 @@ namespace TestProject
         [TestMethod()]
         public void CurrentGeometryTest()
         {
-            var rail = samplerail;
-            var target = rail.CurrentGeometry;
+            //todo: viewmodel test
+            //var rail = samplerail;
+            //var target = rail.CurrentGeometry;
+
+            Assert.Fail();
         }
 
         [TestMethod()]

@@ -7,7 +7,7 @@ using Livet;
 
 namespace RouteVisualizer.Models
 {
-    internal class Model : NotifyObject
+    public class Model : NotifyObject
     {
         /*
          * NotifyObjectはプロパティ変更通知の仕組みを実装したオブジェクトです。

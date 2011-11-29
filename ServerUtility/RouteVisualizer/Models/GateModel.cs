@@ -9,10 +9,10 @@ using RouteVisualizer.EF;
 
 namespace RouteVisualizer.Models
 {
-    public class RailGate
+    public class GateModel
         : IGate, IDrawable
     {
-        public RailGate(GateData data)
+        public GateModel(GateData data)
         {
             this.BaseData = data;
 

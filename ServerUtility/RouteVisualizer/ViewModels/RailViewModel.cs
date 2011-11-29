@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Collections.ObjectModel;
+using System.Windows;
+using System.Windows.Media;
 
 using Livet;
 using Livet.Command;
@@ -14,7 +16,7 @@ using RouteVisualizer.Models;
 
 namespace RouteVisualizer.ViewModels
 {
-    public class RailViewModel : DrawablesViewModel
+    public class RailViewModel : RailElementViewModel
     {
         /*コマンド、プロパティの定義にはそれぞれ 
          * 
@@ -41,18 +43,82 @@ namespace RouteVisualizer.ViewModels
          * 原因となりやすく推奨できません。ViewModelHelperの各静的メソッドの利用を検討してください。
          */
 
-        private Rail _model;
+        private RailModel _model;
+        private LayoutViewModel _layoutvm;
 
-        public RailViewModel(Rail model)
+        public RailViewModel(RailModel model, LayoutViewModel lyout)
         {
             this._model = model;
+            this._layoutvm = lyout;
+
+            this.Pathes = ViewModelHelper.CreateReadOnlyNotifyDispatcherCollection(this._model.Pathes,
+                                                                                    m => new PathViewModel(m),
+                                                                                    DispatcherHelper.UIDispatcher);
+            this.Gates = ViewModelHelper.CreateReadOnlyNotifyDispatcherCollection(this._model.Connections,
+                                                                                conn => new GateViewModel(conn),
+                                                                                DispatcherHelper.UIDispatcher);
+            
+            ViewModelHelper.BindNotifyChanged(this._model, this, (sender, e) =>
+                {
+                    RaisePropertyChanged(e.PropertyName);
+                });
         }
 
-        public override ReadOnlyObservableCollection<IDrawable> Drawables
+        public ReadOnlyObservableCollection<PathViewModel> Pathes { get; private set; }
+
+        public ReadOnlyObservableCollection<GateViewModel> Gates { get; private set; }
+
+        public bool IsMirrored
         {
-            get;
-            protected set;
+            get { return this._model.IsMirrored; }
+            set { this._model.IsMirrored = value; }
+
         }
+
+        public bool IsPathValidated
+        {
+            get { return this._model.IsPathValidated; }
+        }
+
+        public virtual Geometry CurrentGeometry
+        {
+            get
+            {
+                var geogroup = new GeometryGroup();
+                //var gateposes = this.LocateGate();
+
+                foreach (var gate in this.Gates)
+                {
+                    //conn.BasePosition = gateposes [conn];
+                    var geo  = gate.CurrentGeometry;
+                    geogroup.Children.Add(geo);
+                }
+
+                foreach (var path in this.Pathes)
+                {
+                    var geo  =path.CurrentGeometry;
+                    geogroup.Children.Add(geo);
+                }
+
+                return geogroup;
+            }
+        }
+
+        public virtual Rect Bound
+        {
+            get
+            {
+                var rect = new Rect();
+                foreach (var p in this.Pathes)
+                    rect.Union(p.Bound);
+                foreach (var conn in this.Gates)
+                    rect.Union(conn.Bound);
+
+                return rect;
+            }
+        }
+
+
         
     }
 }

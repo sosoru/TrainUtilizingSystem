@@ -68,7 +68,7 @@ namespace TestProject
         //
         #endregion
 
-        public PysicalPath samplepath
+        public PathModel samplepath
         {
             get
             {
@@ -139,11 +139,11 @@ namespace TestProject
                 data.Pathes.Add(pathB);
                 data.BottomGate = gateA;
 
-                var path = new PysicalPath()
+                var path = new PathModel()
                 {
                     BaseData = pathA,
-                    PreviousGate = new RailGate(gateA),
-                    NextGate = new RailGate(gateB),
+                    PreviousGate = new GateModel(gateA),
+                    NextGate = new GateModel(gateB),
                 };
 
                 return path;

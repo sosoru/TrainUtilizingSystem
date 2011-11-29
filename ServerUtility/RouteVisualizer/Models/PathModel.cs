@@ -9,7 +9,7 @@ using RouteVisualizer.EF;
 
 namespace RouteVisualizer.Models
 {
-    public class PysicalPath
+    public class PathModel
         : IPath, IDrawable
     {
         private PathData _cache_baseData;
@@ -101,8 +101,8 @@ namespace RouteVisualizer.Models
                     return null;
 
                 Geometry geo = null;
-                var castedprev = this.PreviousGate as RailGate;
-                var castednext = this.NextGate as RailGate;
+                var castedprev = this.PreviousGate as GateModel;
+                var castednext = this.NextGate as GateModel;
 
                 if (castedprev == null || castednext == null)
                     throw new InvalidOperationException("undrawable connection");
@@ -153,7 +153,7 @@ namespace RouteVisualizer.Models
                 if (this.BaseData == null)
                     return new Rect();
 
-                var castedgate = this.PreviousGate as RailGate;
+                var castedgate = this.PreviousGate as GateModel;
                 if (castedgate == null)
                     throw new InvalidOperationException("undrawable connection");
 
@@ -173,13 +173,13 @@ namespace RouteVisualizer.Models
                         var vecy = r * (Math.Cos(end) - Math.Cos(sta));
 
                          //todo:impl calc
-                       return new Rect(castedgate.BasePosition, (this.NextGate as RailGate).BasePosition);
+                       return new Rect(castedgate.BasePosition, (this.NextGate as GateModel).BasePosition);
                     }
                 }
 
             }
         }
 
-        public Rail OwnerRail { get; set; }
+        public RailModel OwnerRail { get; set; }
     }
 }

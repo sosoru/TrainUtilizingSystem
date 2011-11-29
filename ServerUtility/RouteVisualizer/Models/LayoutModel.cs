@@ -27,11 +27,11 @@ namespace RouteVisualizer.Models
          */
         public LayoutModel ()
         {
-            this.Rails = new ObservableCollection<Rail>();
+            this.Rails = new ObservableCollection<RailModel>();
             this.Connections = new ObservableCollection<GateConnectionModel>();
         }
 
-        public ObservableCollection<Rail> Rails{get; private set;}
+        public ObservableCollection<RailModel> Rails{get; private set;}
 
         public ObservableCollection<GateConnectionModel> Connections{get;private set;}
 
