@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows;
+using System.Windows.Media;
 
 using RouteVisualizer;
 using RouteVisualizer.EF;
@@ -153,6 +155,8 @@ namespace RouteVisualizer.Railroader
                        .Select(data => new GateConnectionModel(data))
                        .ToList()
                        .ForEach(layout.Connections.Add);
+
+            layout.LayoutSize = new Size(map.LayoutWidth, map.LayoutHeight);
 
             return layout;
         }

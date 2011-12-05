@@ -63,6 +63,7 @@ namespace TestProject
         //
         #endregion
 
+        string path = @"C:\Users\root\Documents\TrainUtilizingSystem\ServerUtility\RouteVisualizer\TestSamples\Sample2.rrf";
 
         /// <summary>
         ///RailroaderMap コンストラクター のテスト
@@ -70,9 +71,34 @@ namespace TestProject
         [TestMethod()]
         public void RailroaderMapConstructorTest()
         {
-            string path = @"C:\Users\root\Desktop\ppp.rrf";
+            string path = this.path ;
             RailroaderMap target = new RailroaderMap(path);
             
+        }
+
+        /// <summary>
+        ///LayoutWidth のテスト
+        ///</summary>
+        [TestMethod()]
+        public void LayoutWidthTest()
+        {
+            string path = this.path;
+            RailroaderMap target = new RailroaderMap(path);
+
+            int actual = 2200;
+            actual = target.LayoutWidth;
+        }
+
+        /// <summary>
+        ///LayoutHeight のテスト
+        ///</summary>
+        [TestMethod()]
+        public void LayoutHeightTest()
+        {
+            string path = this.path;
+            RailroaderMap target = new RailroaderMap(path);
+            int actual = 1000;
+            actual = target.LayoutHeight;
         }
     }
 }

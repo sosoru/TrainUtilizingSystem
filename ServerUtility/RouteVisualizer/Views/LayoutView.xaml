@@ -9,6 +9,25 @@
 	d:DesignWidth="640" d:DesignHeight="480">
 
 	<Grid x:Name="LayoutRoot">
-		<Canvas Background="{Binding CurrentBrush}"/>
+		<ListBox ItemsSource="{Binding Rails}" >
+			<ListBox.ItemsPanel>
+				<ItemsPanelTemplate>
+					<Canvas IsItemsHost="True" 
+					HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+				</ItemsPanelTemplate>
+			</ListBox.ItemsPanel>
+			
+			<ListBox.ItemTemplate>
+				<DataTemplate>
+					<Grid Background="{Binding CurrentBrush}"
+					 		Canvas.Left="{Binding PositionLeft}"
+							Canvas.Top="{Binding PositionTop}"
+							Width="{Binding PositionWidth}"
+							Height="{Binding PositionHeight}">
+							
+					</Grid>
+				</DataTemplate>
+			</ListBox.ItemTemplate>
+        </ListBox>
 	</Grid>
 </UserControl>

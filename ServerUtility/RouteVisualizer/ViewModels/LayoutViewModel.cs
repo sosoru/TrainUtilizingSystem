@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.ComponentModel;
 
+using System.Windows;
 using System.Windows.Media;
 
 using Livet;
@@ -50,18 +51,28 @@ namespace RouteVisualizer.ViewModels
         {
             this._model = model;
 
+            ViewModelHelper.BindNotifyChanged(this._model, this, (sender, e) =>
+                {
+                    this.RaisePropertyChanged(e.PropertyName); 
+                });
+
             this.Rails = ViewModelHelper.CreateReadOnlyNotifyDispatcherCollection(this._model.Rails,
                                                                                     m => new RailViewModel(m, this),
                                                                                     DispatcherHelper.UIDispatcher);
             this.Gates = ViewModelHelper.CreateReadOnlyNotifyDispatcherCollection(this._model.Connections,
                                                                                     conn => new GateConnectionViewModel(conn),
                                                                                     DispatcherHelper.UIDispatcher);
-
             RefreshDrawing();
         }
 
         public ReadOnlyObservableCollection<RailViewModel> Rails { get; private set; }
         public ReadOnlyObservableCollection<GateConnectionViewModel> Gates { get; private set; }
+
+        public Size LayoutSize
+        {
+            get { return this._model.LayoutSize; }
+            set { this._model.LayoutSize = value; }
+        }
 
         public Drawing CurrentDrwaing
         {

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.ComponentModel;
+using System.Windows;
+using System.Windows.Media;
 
 using Livet;
 using Livet.Command;
@@ -14,7 +16,7 @@ using RouteVisualizer.Models;
 
 namespace RouteVisualizer.ViewModels
 {
-    public class RailElementViewModel: ViewModel, IDrawable
+    public class RailElementViewModel : ViewModel, IDrawable
     {
         /*コマンド、プロパティの定義にはそれぞれ 
          * 
@@ -40,14 +42,51 @@ namespace RouteVisualizer.ViewModels
          * Modelからの変更通知などの各種イベントをそのままViewModelで購読する事はメモリリークの
          * 原因となりやすく推奨できません。ViewModelHelperの各静的メソッドの利用を検討してください。
          */
-        public virtual System.Windows.Media.Geometry CurrentGeometry
+
+        public RailElementViewModel()
+        {
+        }
+
+        public virtual Geometry CurrentGeometry
         {
             get { throw new NotImplementedException(); }
         }
 
-        public virtual System.Windows.Rect Bound
+        public virtual Brush CurrentBrush
+        {
+            get
+            {
+                var dr = new GeometryDrawing(Brushes.Transparent, new Pen(Brushes.Black, 1.0), this.CurrentGeometry);
+                var b= new DrawingBrush(dr);
+
+                return b;
+            }
+        }
+
+        public virtual Rect Bound
         {
             get { throw new NotImplementedException(); }
         }
+
+        public double PositionLeft
+        {
+            get { return this.Bound.Left; }
+        }
+
+        public double PositionWidth
+        {
+            get { return this.Bound.Width; }
+        }
+
+        public double PositionTop
+        {
+            get { return this.Bound.Top; }
+        }
+
+        public double PositionHeight
+        {
+            get { return this.Bound.Height; }
+        }
+
     }
 }

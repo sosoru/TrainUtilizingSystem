@@ -103,7 +103,7 @@ namespace RouteVisualizer.ViewModels
         {
             get
             {
-                var rect = new Rect();
+                var rect = this.Pathes.First().Bound;
                 foreach (var p in this.Pathes)
                     rect.Union(p.Bound);
                 foreach (var conn in this.Gates)

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Windows;
+using System.Windows.Media;
 
 using RouteVisualizer.Models;
 
@@ -29,12 +31,28 @@ namespace RouteVisualizer.Models
         {
             this.Rails = new ObservableCollection<RailModel>();
             this.Connections = new ObservableCollection<GateConnectionModel>();
+
         }
 
         public ObservableCollection<RailModel> Rails{get; private set;}
 
         public ObservableCollection<GateConnectionModel> Connections{get;private set;}
 
+        Size _LayoutSize;
+
+        public Size LayoutSize
+        {
+            get
+            { return _LayoutSize; }
+            set
+            {
+                if (_LayoutSize == value)
+                    return;
+                _LayoutSize = value;
+                RaisePropertyChanged("LayoutSize");
+            }
+        }
+      
         
     }
 }

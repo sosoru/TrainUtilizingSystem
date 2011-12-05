@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace RailroaderIO
 {
@@ -30,6 +31,40 @@ namespace RailroaderIO
         }
 
         public string Header { get; set; }
+
+        public int LayoutHeight
+        {
+            get
+            {
+                var reg = new Regex("Width : (\\d+)");
+                var mat = reg.Match(this.Header);
+
+                if(mat.Success && mat.Length>= 1)
+                {
+                    var h = int.Parse(mat.Groups[1].Value);
+
+                    return h;
+                }else
+                    return 0;
+                
+            }
+        }
+        
+        public int LayoutWidth
+        {
+        get{
+            var reg = new Regex("Height : (\\d+)");
+            var mat = reg.Match(this.Header);
+
+            if(mat.Success && mat.Length>=1)
+            {
+                var h  = int.Parse(mat.Groups[1].Value);
+                return h;
+            }else
+                return 0;
+            }
+        }
+
 
         private ReadOnlyCollection<RailroaderRailData> rails_;
         public ReadOnlyCollection<RailroaderRailData> Rails
