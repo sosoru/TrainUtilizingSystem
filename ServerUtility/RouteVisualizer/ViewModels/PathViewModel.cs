@@ -154,23 +154,7 @@ namespace RouteVisualizer.ViewModels
         {
             get
             {
-                if (this._model.IsStraight)
-                {
-                    return new Rect(this.PreviousGate.Position, new Size(this._model.Length, 0.0));
-                }
-                else
-                {
-                    var r = this.Radius;
-                    var sta = this.StartAngle.dtor();
-                    var end = (this.Angle + this.StartAngle).dtor();
-
-                    var vecx = r * (Math.Sin(end) - Math.Sin(sta));
-                    var vecy = r * (Math.Cos(end) - Math.Cos(sta));
-
-                    //todo:impl calc
-                    return new Rect(this.PreviousGate.Position, this.NextGate.Position);
-                }
-
+                return new Rect(this.PreviousGate.Position, this.NextGate.Position);
             }
         }
 

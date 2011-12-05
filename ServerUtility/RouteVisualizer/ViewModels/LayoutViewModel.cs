@@ -113,6 +113,15 @@ namespace RouteVisualizer.ViewModels
                     return;
                 _SelectedRail = value;
                 RaisePropertyChanged("SelectedRail");
+                RaisePropertyChanged(() => Railinfo);
+            }
+        }
+
+        public string Railinfo
+        {
+            get
+            {
+                return this.Rails.IndexOf(this.SelectedRail).ToString();
             }
         }
       

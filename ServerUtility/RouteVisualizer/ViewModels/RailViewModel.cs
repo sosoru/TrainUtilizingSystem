@@ -99,17 +99,23 @@ namespace RouteVisualizer.ViewModels
             }
         }
 
+        private Rect _rectCache = Rect.Empty;
         public override Rect Bound
         {
             get
             {
-                var rect = this.Pathes.First().Bound;
-                foreach (var p in this.Pathes)
-                    rect.Union(p.Bound);
-                foreach (var conn in this.Gates)
-                    rect.Union(conn.Bound);
+                if (this._rectCache == Rect.Empty)
+                {
+                    var rect = this.Pathes.First().Bound;
+                    foreach (var p in this.Pathes)
+                        rect.Union(p.Bound);
+                    foreach (var conn in this.Gates)
+                        rect.Union(conn.Bound);
 
-                return rect;
+                    this._rectCache = rect;
+                }
+
+                return this._rectCache;
             }
         }
 
@@ -165,7 +171,12 @@ namespace RouteVisualizer.ViewModels
 
         public double PositionLeft
         {
-            get { return this.Bound.Left * ratioWidth; }
+            get
+            {
+                var ratio = ratioWidth;
+
+                return this.Bound.Left * ratioWidth;
+            }
         }
 
         public double PositionTop
@@ -217,10 +228,5 @@ namespace RouteVisualizer.ViewModels
             }
         }
         #endregion
-
-        public override string ToString()
-        {
-            return string.Format("{0}, {1}, {2}, {3}", this.PositionLeft, this.PositionTop, this.PositionWidth, this.PositionHeight);
-        }
     }
 }

@@ -50,7 +50,7 @@ namespace RouteVisualizer.ViewModels
             var map = new RailroaderIO.RailroaderMap(path);
 
             var layout = map.ToLayout();
-            this.LayoutVm = new LayoutViewModel(layout) { DrawingSize = new System.Windows.Size(500, 1100) };
+            this.LayoutVm = new LayoutViewModel(layout) { DrawingSize = new System.Windows.Size(500, 500) };
 
         }
 
