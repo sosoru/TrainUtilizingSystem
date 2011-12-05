@@ -68,25 +68,5 @@ namespace RouteVisualizer.ViewModels
             get { throw new NotImplementedException(); }
         }
 
-        public double PositionLeft
-        {
-            get { return this.Bound.Left; }
-        }
-
-        public double PositionWidth
-        {
-            get { return this.Bound.Width; }
-        }
-
-        public double PositionTop
-        {
-            get { return this.Bound.Top; }
-        }
-
-        public double PositionHeight
-        {
-            get { return this.Bound.Height; }
-        }
-
     }
 }

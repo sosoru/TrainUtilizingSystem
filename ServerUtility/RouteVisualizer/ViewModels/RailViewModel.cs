@@ -113,7 +113,6 @@ namespace RouteVisualizer.ViewModels
             }
         }
 
-
         public IDictionary<GateViewModel, Point> LocateGate()
         {
             if (this.Pathes == null || this.Pathes.Count == 0)
@@ -150,6 +149,40 @@ namespace RouteVisualizer.ViewModels
                 return true;
             }
         }
+
+        public double PositionWidth
+        {
+            get
+            {
+                return this.Bound.Width * ratioWidth;
+            }
+        }
+
+        public double PositionHeight
+        {
+            get { return this.Bound.Height * ratioHeight; }
+        }
+
+        public double PositionLeft
+        {
+            get { return this.Bound.Left * ratioWidth; }
+        }
+
+        public double PositionTop
+        {
+            get { return this.Bound.Top * ratioHeight; }
+        }
+
+        private double ratioWidth
+        {
+            get { return this._layoutvm.DrawingSize.Width / this._layoutvm.LayoutSize.Width; }
+        }
+
+        private double ratioHeight
+        {
+            get { return this._layoutvm.DrawingSize.Height / this._layoutvm.LayoutSize.Height; }
+        }
+
         #region implementation of IEqualable
         public static bool operator ==(RailViewModel A, RailViewModel B)
         {
@@ -185,5 +218,9 @@ namespace RouteVisualizer.ViewModels
         }
         #endregion
 
+        public override string ToString()
+        {
+            return string.Format("{0}, {1}, {2}, {3}", this.PositionLeft, this.PositionTop, this.PositionWidth, this.PositionHeight);
+        }
     }
 }

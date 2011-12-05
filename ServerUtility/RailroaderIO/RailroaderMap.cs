@@ -36,7 +36,7 @@ namespace RailroaderIO
         {
             get
             {
-                var reg = new Regex("Width : (\\d+)");
+                var reg = new Regex("Width\\s*?:\\s*?(\\d+)");
                 var mat = reg.Match(this.Header);
 
                 if(mat.Success && mat.Length>= 1)
@@ -53,7 +53,7 @@ namespace RailroaderIO
         public int LayoutWidth
         {
         get{
-            var reg = new Regex("Height : (\\d+)");
+            var reg = new Regex("Height\\s*?:\\s*?(\\d+)");
             var mat = reg.Match(this.Header);
 
             if(mat.Success && mat.Length>=1)

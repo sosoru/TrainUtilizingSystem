@@ -62,6 +62,8 @@ namespace RouteVisualizer.ViewModels
             this.Gates = ViewModelHelper.CreateReadOnlyNotifyDispatcherCollection(this._model.Connections,
                                                                                     conn => new GateConnectionViewModel(conn),
                                                                                     DispatcherHelper.UIDispatcher);
+
+            this.SelectedRail = this.Rails.First();
             RefreshDrawing();
         }
 
@@ -97,6 +99,39 @@ namespace RouteVisualizer.ViewModels
 
             this.CurrentDrwaing = dr;
         }
+
+
+        RailViewModel _SelectedRail;
+
+        public RailViewModel SelectedRail
+        {
+            get
+            { return _SelectedRail; }
+            set
+            {
+                if (_SelectedRail == value)
+                    return;
+                _SelectedRail = value;
+                RaisePropertyChanged("SelectedRail");
+            }
+        }
+      
+
+        Size _DrawingSize;
+
+        public Size DrawingSize
+        {
+            get
+            { return _DrawingSize; }
+            set
+            {
+                if (_DrawingSize == value)
+                    return;
+                _DrawingSize = value;
+                RaisePropertyChanged("DrawingSize");
+            }
+        }
+      
 
     }
 }

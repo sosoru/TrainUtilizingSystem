@@ -9,10 +9,10 @@
 	d:DesignWidth="640" d:DesignHeight="480">
 
 	<Grid x:Name="LayoutRoot">
-		<ListBox ItemsSource="{Binding Rails}" >
+		<ListBox ItemsSource="{Binding Rails}" SelectedItem="{Binding SelectedRail, Mode=TwoWay}" >
 			<ListBox.ItemsPanel>
 				<ItemsPanelTemplate>
-					<Canvas IsItemsHost="True" 
+					<Canvas IsItemsHost="True"
 					HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
 				</ItemsPanelTemplate>
 			</ListBox.ItemsPanel>
@@ -20,14 +20,21 @@
 			<ListBox.ItemTemplate>
 				<DataTemplate>
 					<Grid Background="{Binding CurrentBrush}"
-					 		Canvas.Left="{Binding PositionLeft}"
-							Canvas.Top="{Binding PositionTop}"
 							Width="{Binding PositionWidth}"
 							Height="{Binding PositionHeight}">
 							
 					</Grid>
 				</DataTemplate>
 			</ListBox.ItemTemplate>
+			
+			<ListBox.ItemContainerStyle>
+				<Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">  
+                    <Setter Property="Canvas.Top" Value="{Binding Path=PositionTop}" />  
+                    <Setter Property="Canvas.Left" Value="{Binding Path=PositionLeft}" /> 
+                </Style>  
+			</ListBox.ItemContainerStyle>
         </ListBox>
+		
+		<TextBlock Text="{Binding SelectedRail}" />
 	</Grid>
 </UserControl>

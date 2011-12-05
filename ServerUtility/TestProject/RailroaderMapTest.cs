@@ -87,6 +87,8 @@ namespace TestProject
 
             int actual = 2200;
             actual = target.LayoutWidth;
+
+            Assert.AreNotEqual(0, actual);
         }
 
         /// <summary>
@@ -99,6 +101,8 @@ namespace TestProject
             RailroaderMap target = new RailroaderMap(path);
             int actual = 1000;
             actual = target.LayoutHeight;
+
+            Assert.AreNotEqual(0, actual);
         }
     }
 }
