@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>5.0</ProjectVersion>
     <ProjectGuid>{99b24970-9312-4ea7-a97e-cde90d2e6281}</ProjectGuid>
-    <avrdevice>ATmega328P</avrdevice>
+    <avrdevice>ATmega64</avrdevice>
     <avrdeviceseries>none</avrdeviceseries>
     <OutputType>Executable</OutputType>
     <Language>C</Language>
@@ -21,7 +21,8 @@
     <AssemblyName>EthernetBridge</AssemblyName>
     <Name>EthernetBridge</Name>
     <RootNamespace>EthernetBridge</RootNamespace>
-    <avrtool>com.atmel.avrdbg.tool.simulator</avrtool>
+    <avrtool>
+    </avrtool>
     <com_atmel_avrdbg_tool_simulator>
       <ToolType xmlns="">com.atmel.avrdbg.tool.simulator</ToolType>
       <ToolName xmlns="">AVR Simulator</ToolName>
@@ -80,53 +81,43 @@
     <GenerateEepFile>True</GenerateEepFile>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="Makefile">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="README.htm">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="traffic_tcp.cap">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="traffic_tcp.txt">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="traffic_udp.cap">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="traffic_udp.txt">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="win_cmp.bat">
-      <SubType>compile</SubType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="avr_compat.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="enc28j60.c">
+    <Compile Include="eth\enc28j60.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="enc28j60.h">
+    <Compile Include="eth\enc28j60.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="ip_arp_udp_tcp.c">
+    <Compile Include="eth\ip_arp_udp_tcp.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="ip_arp_udp_tcp.h">
+    <Compile Include="eth\ip_arp_udp_tcp.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="eth\main.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="eth\net.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="eth\timeout.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="lcd_sc2004\sc2004.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="lcd_sc2004\sc2004.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="main.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="net.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="timeout.h">
-      <SubType>compile</SubType>
-    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="eth" />
+    <Folder Include="lcd_sc2004" />
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\AvrGCC.targets" />
 </Project>

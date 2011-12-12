@@ -1,7 +1,7 @@
 [Eagle]
 Version="05 11 00"
 Platform="Windows"
-Serial="62191E841E-LSR-WLM-1EL"
+Serial="0CFEB0B44B-LSR-WLM-NCP"
 Globals="Globals"
 Desktop="Desktop"
 
@@ -332,11 +332,15 @@ UsedLibrary="myparts.lbr"
 UsedLibrary="C:/Users/root/TOG.lbr"
 UsedLibrary="C:/Users/root/microchip_pic16f716.lbr"
 UsedLibrary="microchip.lbr"
+UsedLibrary="avr-7.lbr"
+UsedLibrary="avr-4.lbr"
+UsedLibrary="SparkFun.lbr"
+UsedLibrary="microchip-6.lbr"
 
 [Win_1]
 Type="Control Panel"
-Loc="175 175 774 574"
-State=1
+Loc="0 0 1365 745"
+State=2
 Number=0
 
 [Desktop]

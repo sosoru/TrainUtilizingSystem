@@ -33,7 +33,5 @@
                 </Style>  
 			</ListBox.ItemContainerStyle>
         </ListBox>
-		
-		<TextBlock Text="{Binding Railinfo}" />
 	</Grid>
 </UserControl>

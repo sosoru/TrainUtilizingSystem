@@ -22,6 +22,7 @@
 #include "timeout.h"
 #include "avr_compat.h"
 #include "net.h"
+#include <lcd.h>
 
 // please modify the following two lines. mac and ip have to be unique
 // in your local area network. You can not have the same numbers in
@@ -34,7 +35,7 @@ static uint8_t myip[4] = {192,168,2,24};
 #define MYWWWPORT 80
 //
 // listen port for udp
-#define MYUDPPORT 1200
+#define MYUDPPORT 0x0F00
 
 #define BUFFER_SIZE 550
 static uint8_t buf[BUFFER_SIZE+1];
