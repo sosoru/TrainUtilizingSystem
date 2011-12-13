@@ -138,11 +138,11 @@ void LCDInit()
     //         +------- ICNC1          0
     //         |+------ ICES1          0
     //         || ++--- WGM13:WGM12    01  îgå`ê∂ê¨éÌï (4bitÇÃè„à 2bit) CTC top=OCR1A
-    //         || ||+++ CS12:CS11:CS10 101 1024ï™é¸
-    TCCR1B = 0b00001101;
+    //         || ||+++ CS12:CS11:CS10 010 8ï™é¸
+    TCCR1B = 0b00001010;
 
     TIMSK = 0b00010000;
-	OCR1A = 100;
+	OCR1A = 250;
 	sei();
 }
 
