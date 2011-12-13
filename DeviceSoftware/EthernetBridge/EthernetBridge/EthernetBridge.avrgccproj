@@ -21,8 +21,7 @@
     <AssemblyName>EthernetBridge</AssemblyName>
     <Name>EthernetBridge</Name>
     <RootNamespace>EthernetBridge</RootNamespace>
-    <avrtool>
-    </avrtool>
+    <avrtool>com.atmel.avrdbg.tool.simulator</avrtool>
     <com_atmel_avrdbg_tool_simulator>
       <ToolType xmlns="">com.atmel.avrdbg.tool.simulator</ToolType>
       <ToolName xmlns="">AVR Simulator</ToolName>
@@ -63,17 +62,28 @@
   <avrgcc.compiler.directories.IncludePaths>
     <ListValues>
       <Value>C:\Program Files (x86)\Atmel\AVR Studio 5.0\AVR ToolChain\avr\include\avr</Value>
-      <Value>C:\Program Files (x86)\AVRlib</Value>
+      <Value>D:\avr\include</Value>
     </ListValues>
   </avrgcc.compiler.directories.IncludePaths>
   <avrgcc.compiler.optimization.PackStructureMembers>True</avrgcc.compiler.optimization.PackStructureMembers>
   <avrgcc.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcc.compiler.optimization.AllocateBytesNeededForEnum>
   <avrgcc.compiler.optimization.DebugLevel>Default (-g2)</avrgcc.compiler.optimization.DebugLevel>
   <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
+  <avrgcc.linker.libraries.LibrarySearchPaths>
+    <ListValues>
+      <Value>C:\Program Files (x86)\Atmel\AVR Studio 5.0\AVR Toolchain\lib</Value>
+      <Value>D:\avr\lib</Value>
+    </ListValues>
+  </avrgcc.linker.libraries.LibrarySearchPaths>
   <avrgcc.assembler.debugging.DebugLevel>Default (-g2)</avrgcc.assembler.debugging.DebugLevel>
 </AvrGcc>
     </ToolchainSettings>
     <MemorySettings>
+      <MemorySegments>
+  <InitialStack IsEnabled="0">
+    <Address>0xff00</Address>
+  </InitialStack>
+</MemorySegments>
     </MemorySettings>
     <GenerateHexFile>True</GenerateHexFile>
     <GenerateMapFile>True</GenerateMapFile>
@@ -81,7 +91,13 @@
     <GenerateEepFile>True</GenerateEepFile>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="avr_compat.h">
+    <Compile Include="avrlibdefs.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="avrlibtypes.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="eth\avr_compat.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="eth\enc28j60.c">
@@ -96,13 +112,13 @@
     <Compile Include="eth\ip_arp_udp_tcp.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="eth\main.c">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="eth\net.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="eth\timeout.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="global.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="lcd_sc2004\sc2004.c">
@@ -112,6 +128,12 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="main.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="rprintf.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="rprintf.h">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>
