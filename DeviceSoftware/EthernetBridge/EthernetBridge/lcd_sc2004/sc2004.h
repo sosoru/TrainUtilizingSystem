@@ -9,7 +9,9 @@
 #ifndef SC2004_H_
 #define SC2004_H_
 
+#include "../global.h"
 #include <avr/io.h>
+#include <util/delay.h>
 
 typedef struct rec_sc2004_port
 {
@@ -35,14 +37,6 @@ typedef struct rec_sc2004_port
 	
 } sc2004_port;
 
-#ifndef sbi
-#define sbi(PORT,BIT) ((PORT) |= _BV(BIT)) //set high
-#endif
-
-#ifndef cbi
-#define cbi(PORT,BIT) ((PORT) &=~_BV(BIT)) //set low
-#endif
-
 #define SET_REC_RS(rec, val) ((val) ? sbi(*(rec)->pport_rs, (rec)->portno_rs) : cbi(*(rec)->pport_rs, (rec)->portno_rs) )
 #define SET_REC_RW(rec, val) ((val) ? sbi(*(rec)->pport_rw, (rec)->portno_rw) : cbi(*(rec)->pport_rw, (rec)->portno_rw) )
 #define SET_REC_ENABLE(rec, val) ((val) ? sbi(*(rec)->pport_enable, (rec)->portno_enable) : cbi(*(rec)->pport_enable, (rec)->portno_enable) )
@@ -52,7 +46,7 @@ typedef struct rec_sc2004_port
 
 #define SET_REC_DDR_DATA(rec, dir) (*((rec)->pddr_data) = (dir))
 
-#define ENABLE_NOP asm volatile ("nop\n nop\n nop\n nop\n") // for 16Mhz
+#define ENABLE_NOP _delay_us(1) // asm volatile ("nop\n nop\n nop\n nop\n") // for 16Mhz
 
 #define DB0 0
 #define DB1 1

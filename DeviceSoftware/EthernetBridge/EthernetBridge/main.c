@@ -12,7 +12,9 @@
  *
  * Chip type           : Atmega88 or Atmega168 or Atmega328 with ENC28J60
  * Note: there is a version number in the text. Search for tuxgraphics
+ 
  *********************************************/
+#include "global.h"
 #include <avr/io.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -50,18 +52,16 @@ void timer_interrupt();
 
 ISR(TIMER1_COMPA_vect)
 {
-	uint8_t addr;
-	
-	if(sc2004_ReadBusyAndAddress(&addr))
-		return; // busy
-		
+	//if(sc2004_ReadBusyAndAddress(0))
+		//return; // busy
+				
 	if(bufptr >= LCD_BUF_SIZE)
 	{
 		bufptr = 0;
 		sc2004_SetAddr_DDRAM(0);
 	}
 			
-	sc2004_WriteData(buf[bufptr]);
+	sc2004_WriteData(lcd_buf[bufptr++]);
 }
 
 void EthernetInit()
@@ -113,15 +113,16 @@ void LCDInit()
 	port_sc2004.pport_rw = &PORTE;
 	port_sc2004.ppin_rw = &PINE;
 	port_sc2004.pddr_rw = &DDRE;
-	port_sc2004.portno_rw = 5;
+	port_sc2004.portno_rw = 3;
 	
 	port_sc2004.pport_enable = &PORTE;
 	port_sc2004.ppin_enable = &PINE;
 	port_sc2004.pddr_enable = &DDRE;
-	port_sc2004.portno_enable = 4;
+	port_sc2004.portno_enable = 2;
 	
 	sc2004_setPort(&port_sc2004);
 	sc2004_init();
+
 	memset(lcd_buf, 0x20, LCD_BUF_SIZE);
 	
 	//timer0Init();
@@ -148,8 +149,24 @@ void LCDInit()
 
 void BoardInit()
 {
-	//EthernetInit();
+	DDRA = 1;
+	DDRB = 1;
+	DDRC = 1;
+	DDRD = 1;
+	DDRE = 1;
+	DDRF = 1;
+	DDRG = 1;
 	
+	PORTA = 0;
+	PORTB = 0;
+	PORTC = 0;
+	PORTD = 0;
+	PORTE = 0;
+	PORTF = 0;
+	PORTG = 0;
+	
+	//EthernetInit();
+	sbi(PORTA, 0);
 	LCDInit();
 } 
 
@@ -251,7 +268,7 @@ int main(void)
 	int count = 0;
 	
     BoardInit();
-
+	
 	while(1)
 	{
 		char str[64];
@@ -261,16 +278,19 @@ int main(void)
 			memset(lcd_buf, 0x20, LCD_BUF_SIZE);
 			count = 0;
 		}
-				
+					
+		sprintf(str, "Hello, world. peropero %d", count);
+		
+		cli();
+		strcpy(lcd_buf, str);
+		sei();
+		
 		_delay_ms(255);
 		_delay_ms(255);		
-		
-		sprintf(str, "Hello, world. peropero %d", count);
-		strcpy(lcd_buf, str);
 		
 		++count;
 		//EthernetLoop();
 	}			
-		
+					
     return (0);
 }

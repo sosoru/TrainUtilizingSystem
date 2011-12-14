@@ -5,6 +5,7 @@
  *  Author: root
  */ 
 
+#include "../global.h"
 #include "sc2004.h"
 #include <avr/io.h>
 #include <util/delay.h>
@@ -16,16 +17,16 @@
 #define SET_DATA(val) (SET_REC_DATA(pcurrent_port, val))
 #define GET_DATA (GET_REC_DATA(pcurrent_port))
 
-#define SET_DDR_DATA_OUT (SET_REC_DDR_DATA(pcurrent_port, 0x00))
-#define SET_DDR_DATA_IN (SET_REC_DDR_DATA(pcurrent_port, 0xff))
+#define SET_DDR_DATA_OUT (SET_REC_DDR_DATA(pcurrent_port, 0xff))
+#define SET_DDR_DATA_IN (SET_REC_DDR_DATA(pcurrent_port, 0x00))
 
 sc2004_port *pcurrent_port;
 
 inline void sc2004_setPort(sc2004_port * rec)
 {
-	cbi(*rec->pddr_rs, rec->portno_rs); //init port direction
-	cbi(*rec->pddr_rw, rec->portno_rw);
-	cbi(*rec->pddr_enable, rec->portno_enable);
+	sbi(*rec->pddr_rs, rec->portno_rs); //init port direction
+	sbi(*rec->pddr_rw, rec->portno_rw);
+	sbi(*rec->pddr_enable, rec->portno_enable);
 	
 	SET_DDR_DATA_OUT;
 	SET_RS(0);
@@ -39,13 +40,13 @@ inline void sc2004_setPort(sc2004_port * rec)
 inline void sc2004_PulseEnable(void)
 {
 	SET_ENABLE(0);
-	ENABLE_NOP;
+	//ENABLE_NOP;
 	
 	SET_ENABLE(1);
 	ENABLE_NOP;
 
 	SET_ENABLE(0);
-	ENABLE_NOP;	
+	//ENABLE_NOP;	
 }
 
 
@@ -169,7 +170,7 @@ inline uint8_t sc2004_ReadBusyAndAddress(uint8_t * addr)
 	if(addr)
 		*addr = data & 0b01111111;
 		
-	return data & DB7;
+	return data & (1 << DB7);
 };
 
 inline void sc2004_WriteData(uint8_t data)
@@ -189,7 +190,7 @@ inline uint8_t sc2004_ReadData()
 	SET_DDR_DATA_IN;
 	
 	SET_RS(1);
-	SET_RS(1);
+	SET_RW(1);
 	
 	sc2004_PulseEnable();
 	
@@ -201,17 +202,20 @@ inline void sc2004_init()
 	// busy flag cannot be read before initialization completed.
 	
 	_delay_ms(15);
-	sc2004_FunctionSet(1, 1, 1);
+	sc2004_FunctionSet(1, 0, 0);
 	_delay_ms(5);
-	sc2004_FunctionSet(1, 1, 1);
-	_delay_us(100);
-	sc2004_FunctionSet(1, 1, 1);
-	_delay_us(37);
+	sc2004_FunctionSet(1, 0, 0);
+	_delay_ms(5);
+	sc2004_FunctionSet(1, 0, 0);
+	_delay_ms(5);
 
-	sc2004_FunctionSet(1, 1, 1);
+	sc2004_FunctionSet(1, 0, 0);
 	_delay_us(37);
 	
-	sc2004_DisplayMode(0, 0, 0);
+	sc2004_FunctionSet(1, 1, 1);
+	_delay_us(37);
+		
+	sc2004_DisplayMode(1, 0, 0);
 	_delay_us(37);
 
 	sc2004_ClearDisplay();
