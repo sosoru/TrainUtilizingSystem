@@ -8,100 +8,32 @@ using System.IO.Ports;
 
 namespace SensorLibrary
 {
-    [StructLayout(LayoutKind.Sequential, Size = 2)]
+    [StructLayout(LayoutKind.Sequential, Size = 4)]
     public struct DeviceID
         : IEquatable<DeviceID>
     {
-        public DeviceID(byte parent, byte module)
+        public DeviceID(ushort parent, ushort module)
         {
             this.ParentPart = parent;
             this.ModulePart = module;
         }
 
-        public byte ParentPart;
-        public byte ModulePart;
-
-        private int getmask(int from, int end)
-        {
-            int frommask = (1 << ((int)from)) - 1;
-            int endmask = (1 << ((int)end + 1)) - 1;
-            return (endmask & (~frommask));
-
-        }
-
-        private byte getval(int from, int end, byte val)
-        {
-            if (from > end)
-                throw new ArgumentException("from > end");
-
-            int ret = (val & getmask(from, end)) >> from;
-
-            if (ret > 0xFF || ret < 0)
-                throw new InvalidCastException("shift failed");
-
-            return (byte)ret;
-        }
-
-        private int setval(int from, int end, int dest, int val)
-        {
-            if (from > end)
-                throw new ArgumentException("from > end");
-
-            if (val >= (1 << end))
-                throw new ArgumentException("val > (1<<end)");
-
-            int mask = getmask(from, end);
-            dest &= ~mask;
-            dest |= val << from;
-
-            return dest;
-        }
-
-        public byte GlobalAddr
-        {
-            get
-            {
-                return getval(3, 7, this.ParentPart);
-            }
-            set
-            {
-                this.ParentPart = (byte)setval(3, 7, this.ParentPart, value);
-            }
-        }
-
-        public byte InDeviceAddr
-        {
-            get
-            {
-                return getval(0, 2, this.ParentPart);
-            }
-            set
-            {
-                this.ParentPart = (byte)setval(0, 2, this.ParentPart, value);
-            }
-        }
-
-        public bool RemoteBit
-        {
-            get
-            {
-                return getval(7, 7, this.ModulePart) != 0;
-            }
-            set
-            {
-                this.ModulePart = (byte)setval(7, 7, this.ModulePart, ((value) ? 1 : 0));
-            }
-        }
+        public ushort ParentPart;
+        //subnetaddr : 16
+        public ushort ModulePart;
+        //moduleaddr : 8
+        //internaladdr : 8
 
         public byte ModuleAddr
         {
             get
             {
-                return (byte)getval(4, 6, this.ModulePart);
+                return (byte)(this.ModulePart >> 8);
             }
             set
             {
-                this.ModulePart = (byte)setval(4, 6, this.ModulePart, value);
+                this.ModulePart &= 0xff00;
+                this.ModulePart |= (ushort)(value << 8);
             }
         }
 
@@ -109,11 +41,12 @@ namespace SensorLibrary
         {
             get
             {
-                return (byte)getval(0, 3, this.ModulePart);
+                return (byte)(this.ModulePart & 0x00ff);
             }
             set
             {
-                this.ModulePart = (byte)setval(0, 3, this.ModulePart, value);
+                this.ModulePart &= 0x00ff;
+                this.ModulePart |= (ushort)(value);
             }
         }
 

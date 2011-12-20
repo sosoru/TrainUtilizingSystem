@@ -68,12 +68,10 @@
     <Compile Include="DeviceStates\DeviceStateComparer.cs" />
     <Compile Include="DeviceStates\MotherBoardState.cs" />
     <Compile Include="DeviceStates\PointModuleState.cs" />
-    <Compile Include="DeviceStates\RemoteModuleState.cs" />
     <Compile Include="DeviceStates\TrainControllerState.cs" />
     <Compile Include="DeviceStates\TrainSensorState.cs" />
     <Compile Include="Devices\MotherBoard.cs" />
     <Compile Include="Devices\PointModule.cs" />
-    <Compile Include="Devices\RemoteModule.cs" />
     <Compile Include="Devices\TrainController.cs" />
     <Compile Include="Devices\TrainSensor.cs" />
     <Compile Include="GenericComparer.cs" />
