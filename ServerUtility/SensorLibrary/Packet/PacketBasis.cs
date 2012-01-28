@@ -150,7 +150,72 @@ namespace SensorLibrary
         }
     }
 
+    [StructLayout(LayoutKind.Sequential, Size = 156)]
+    public class EthPacket
+    {
+        //DeviceID srcId; 
+        //DeviceID destId; 
+
+        //BYTE command; 
+        //BYTE error; 
+
+        //char message[ETH_MSG_LEN]; 
+        //BYTE pdata[ETH_DATA_LEN]; 
+
+        public DeviceID srcId;
+        public DeviceID destId;
+
+        byte command;
+        byte error;
+
+        //ascII is expected
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
+        private byte[] _msg = new byte [16];
+        public byte [] InternalMessage
+        {
+            get
+            {
+                return _msg;
+            }
+        }
+
+        private static Encoding msgEncoding = System.Text.ASCIIEncoding.ASCII;
+        public string Message
+        {
+            get { return msgEncoding.GetString(this.InternalMessage); }
+            set
+            {
+                var buf = msgEncoding.GetBytes(value);
+                var len = (buf.Length < _msg.Length) ? buf.Length : _msg.Length;
+                Array.Copy(buf, _msg, len);
+            }
+        }
+
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 128)]
+        private byte[] _data = new byte [128];
+        public byte [] Data
+        {
+            get
+            {
+                return _data;
+            }
+        }
+
+    }
+
     public interface IPacketDeviceData
+    {
+
+    }
+
+    public enum EthCommandEnum
+        : byte
+    {
+
+    }
+
+    public enum EthErrorEnum
+        : byte
     {
 
     }

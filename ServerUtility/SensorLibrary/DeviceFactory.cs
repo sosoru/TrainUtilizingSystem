@@ -53,13 +53,10 @@ namespace SensorLibrary
         public static readonly IDeviceFactory<TrainController, TrainControllerState, TrainControllerData> TrainControllerFactory
              = new devfactint<TrainController, TrainControllerState, TrainControllerData>(ModuleTypeEnum.TrainController);
 
-        public static readonly IDeviceFactory<RemoteModule, RemoteModuleState, RemoteModuleData> RemoteModuleFactory
-             = new devfactint<RemoteModule, RemoteModuleState, RemoteModuleData>(ModuleTypeEnum.RemoteModule);
-
         public static readonly IEnumerable<IDeviceFactory<IDevice<IDeviceState<IPacketDeviceData>>, IDeviceState<IPacketDeviceData>, IPacketDeviceData>> AvailableDeviceTypes
             = new ReadOnlyCollection<IDeviceFactory<IDevice<IDeviceState<IPacketDeviceData>>, IDeviceState<IPacketDeviceData>, IPacketDeviceData>>
             (
-                new IDeviceFactory<IDevice<IDeviceState<IPacketDeviceData>>, IDeviceState<IPacketDeviceData>, IPacketDeviceData> [] { MotherBoardFactory, PointModuleFactory, TrainSensorFactory, TrainControllerFactory, RemoteModuleFactory }
+                new IDeviceFactory<IDevice<IDeviceState<IPacketDeviceData>>, IDeviceState<IPacketDeviceData>, IPacketDeviceData> [] { MotherBoardFactory, PointModuleFactory, TrainSensorFactory, TrainControllerFactory }
             );
     }
 }

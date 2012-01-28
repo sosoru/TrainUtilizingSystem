@@ -80,6 +80,7 @@
   <ItemGroup>
     <Compile Include="ChunckedStreamTest.cs" />
     <Compile Include="ConvertExtenstionsTest.cs" />
+    <Compile Include="EthClientTest.cs" />
     <Compile Include="GateViewModelTest.cs" />
     <Compile Include="LoopingArrayTest.cs" />
     <Compile Include="ManipulatorViewModelTest.cs" />

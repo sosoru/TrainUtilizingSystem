@@ -72,7 +72,7 @@ namespace TestProject
         {
             get
             {
-                Database.DefaultConnectionFactory = new System.Data.Entity.Infrastructure.SqlCeConnectionFactory("System.Data.SqlServerCe.4.0");
+                Database.DefaultConnectionFactory = new System.Data.Entity.Infrastructure.SqlCeConnectionFactory("System.InternalMessage.SqlServerCe.4.0");
                 Database.SetInitializer(new DropCreateDatabaseIfModelChanges<ModelingDatabase>());
 
                 var context = new ModelingDatabase(string.Format("{0}\\test - {1}.sdf", this.TestContext.TestDir, DateTime.Now.ToString().Replace("/", "-").Replace(":", "-")));

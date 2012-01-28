@@ -74,6 +74,7 @@
     <Compile Include="Devices\PointModule.cs" />
     <Compile Include="Devices\TrainController.cs" />
     <Compile Include="Devices\TrainSensor.cs" />
+    <Compile Include="Eth\EthClient.cs" />
     <Compile Include="GenericComparer.cs" />
     <Compile Include="GenericWeakReference.cs" />
     <Compile Include="IDeviceIO.cs" />
