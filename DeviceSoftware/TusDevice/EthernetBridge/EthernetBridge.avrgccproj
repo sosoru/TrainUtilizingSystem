@@ -1,0 +1,198 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>5.0</ProjectVersion>
+    <ProjectGuid>{99b24970-9312-4ea7-a97e-cde90d2e6281}</ProjectGuid>
+    <avrdevice>ATmega64</avrdevice>
+    <avrdeviceseries>none</avrdeviceseries>
+    <OutputType>Executable</OutputType>
+    <Language>C</Language>
+    <OutputFile>$(MSBuildProjectName).elf</OutputFile>
+    <OutputDirectory>$(MSBuildProjectDirectory)\$(Configuration)</OutputDirectory>
+    <UseGlobalToolchain>True</UseGlobalToolchain>
+    <ToolchainDirPath>
+    </ToolchainDirPath>
+    <MakeDirPath>
+    </MakeDirPath>
+    <GlobalToolchainPath>C:\Program Files (x86)\Atmel\AVR Studio 5.0\AVR ToolChain\bin</GlobalToolchainPath>
+    <AvrGccProjectExtensions>
+    </AvrGccProjectExtensions>
+    <AssemblyName>EthernetBridge</AssemblyName>
+    <Name>EthernetBridge</Name>
+    <RootNamespace>EthernetBridge</RootNamespace>
+    <avrtool>com.atmel.avrdbg.tool.jtagicemkii</avrtool>
+    <com_atmel_avrdbg_tool_simulator>
+      <ToolType xmlns="">com.atmel.avrdbg.tool.simulator</ToolType>
+      <ToolName xmlns="">AVR Simulator</ToolName>
+      <ToolNumber xmlns="">
+      </ToolNumber>
+      <Channel xmlns="">
+        <host>127.0.0.1</host>
+        <port>12255</port>
+        <ssl>False</ssl>
+      </Channel>
+    </com_atmel_avrdbg_tool_simulator>
+    <avrtoolinterface>JTAG</avrtoolinterface>
+    <com_atmel_avrdbg_tool_jtagicemkii>
+      <ToolType>com.atmel.avrdbg.tool.jtagicemkii</ToolType>
+      <ToolName>JTAGICE mkII</ToolName>
+      <ToolNumber>00A000403708</ToolNumber>
+      <Channel>
+        <host>127.0.0.1</host>
+        <port>1034</port>
+        <ssl>False</ssl>
+      </Channel>
+      <ToolOptions>
+        <InterfaceName>JTAG</InterfaceName>
+        <InterfaceProperties>
+          <JtagDbgClock>0</JtagDbgClock>
+          <JtagProgClock>1000000</JtagProgClock>
+          <IspClock>150000</IspClock>
+          <JtagInChain>false</JtagInChain>
+          <JtagEnableExtResetOnStartSession>false</JtagEnableExtResetOnStartSession>
+          <JtagDevicesBefore>0</JtagDevicesBefore>
+          <JtagDevicesAfter>0</JtagDevicesAfter>
+          <JtagInstrBitsBefore>0</JtagInstrBitsBefore>
+          <JtagInstrBitsAfter>0</JtagInstrBitsAfter>
+        </InterfaceProperties>
+      </ToolOptions>
+    </com_atmel_avrdbg_tool_jtagicemkii>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <ToolchainSettings>
+      <AvrGcc>
+        <avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>
+        <avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>
+        <avrgcc.compiler.optimization.level>Optimize most (-O3)</avrgcc.compiler.optimization.level>
+        <avrgcc.compiler.optimization.PackStructureMembers>True</avrgcc.compiler.optimization.PackStructureMembers>
+        <avrgcc.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcc.compiler.optimization.AllocateBytesNeededForEnum>
+        <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
+        <avrgcc.compiler.miscellaneous.DoNotDeleteTemporaryFiles>True</avrgcc.compiler.miscellaneous.DoNotDeleteTemporaryFiles>
+        <avrgcc.linker.libraries.LibrarySearchPaths>
+          <ListValues>
+            <Value>../common</Value>
+          </ListValues>
+        </avrgcc.linker.libraries.LibrarySearchPaths>
+      </AvrGcc>
+    </ToolchainSettings>
+    <MemorySettings>
+      <MemorySegments>
+        <InitialStack IsEnabled="0">
+          <Address>0xff00</Address>
+        </InitialStack>
+      </MemorySegments>
+    </MemorySettings>
+    <GenerateHexFile>True</GenerateHexFile>
+    <GenerateMapFile>True</GenerateMapFile>
+    <GenerateListFile>True</GenerateListFile>
+    <GenerateEepFile>True</GenerateEepFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <ToolchainSettings>
+      <AvrGcc>
+        <avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>
+        <avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>
+        <avrgcc.compiler.directories.IncludePaths>
+          <ListValues>
+            <Value>C:\Program Files (x86)\Atmel\AVR Studio 5.0\AVR ToolChain\avr\include\avr</Value>
+            <Value>D:\avr\include</Value>
+          </ListValues>
+        </avrgcc.compiler.directories.IncludePaths>
+        <avrgcc.compiler.optimization.PackStructureMembers>True</avrgcc.compiler.optimization.PackStructureMembers>
+        <avrgcc.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcc.compiler.optimization.AllocateBytesNeededForEnum>
+        <avrgcc.compiler.optimization.DebugLevel>Default (-g2)</avrgcc.compiler.optimization.DebugLevel>
+        <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
+        <avrgcc.linker.libraries.LibrarySearchPaths>
+          <ListValues>
+            <Value>C:\Program Files (x86)\Atmel\AVR Studio 5.0\AVR Toolchain\lib</Value>
+            <Value>D:\avr\lib</Value>
+          </ListValues>
+        </avrgcc.linker.libraries.LibrarySearchPaths>
+        <avrgcc.assembler.debugging.DebugLevel>Default (-g2)</avrgcc.assembler.debugging.DebugLevel>
+      </AvrGcc>
+    </ToolchainSettings>
+    <MemorySettings>
+      <MemorySegments>
+        <InitialStack IsEnabled="0">
+          <Address>0xff00</Address>
+        </InitialStack>
+      </MemorySegments>
+    </MemorySettings>
+    <GenerateHexFile>True</GenerateHexFile>
+    <GenerateMapFile>True</GenerateMapFile>
+    <GenerateListFile>True</GenerateListFile>
+    <GenerateEepFile>True</GenerateEepFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="EthernetBridge.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="eth\arp_table.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="eth\arp_table.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="eth\enc28j60.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="eth\enc28j60.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="eth\ip_arp_udp_tcp.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="eth\ip_arp_udp_tcp.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="eth\net.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="eth\timeout.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="global.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="IdTable.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="lcd_sc2004\sc2004.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="lcd_sc2004\sc2004.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="main.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="rprintf.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="rprintf.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="tus_mst\dispat_packet.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="tus_mst\dispat_packet.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="tus_mst\tus_mstcfg.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="tus_mst\tus_mstspi.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="tus_mst\tus_mstspi.h">
+      <SubType>compile</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="eth" />
+    <Folder Include="lcd_sc2004" />
+    <Folder Include="tus_mst" />
+  </ItemGroup>
+  <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\AvrGCC.targets" />
+</Project>
