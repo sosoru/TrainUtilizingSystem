@@ -3416,6 +3416,15 @@ Source: www.bourns.com .. 6000_series.pdf</description>
 <pad name="5" x="5.08" y="0" drill="0.8" shape="square"/>
 <text x="-7.62" y="-3.81" size="1.27" layer="21">&gt;VALUE</text>
 </package>
+<package name="SIGNEL_CONNECTOR">
+<pad name="GND" x="-3.81" y="0" drill="0.5"/>
+<pad name="1" x="-2.54" y="0" drill="0.5"/>
+<pad name="2" x="-1.27" y="0" drill="0.5"/>
+<pad name="3" x="0" y="0" drill="0.5"/>
+<pad name="4" x="0" y="1.27" drill="0.5"/>
+<pad name="5" x="-1.27" y="1.27" drill="0.5"/>
+<pad name="6" x="-2.54" y="1.27" drill="0.5"/>
+</package>
 </packages>
 <symbols>
 <symbol name="DIODE_ARRAY_1">
@@ -4475,6 +4484,27 @@ Source: www.bourns.com .. 6000_series.pdf</description>
 <pin name="A" x="5.08" y="0" visible="off" length="point"/>
 <text x="-7.62" y="5.08" size="1.27" layer="94">&gt;NAME</text>
 <text x="-7.62" y="3.556" size="1.27" layer="94">&gt;VALUE</text>
+</symbol>
+<symbol name="SIGNAL_CONNECTOR">
+<wire x1="-2.54" y1="22.86" x2="-2.54" y2="-15.24" width="0.254" layer="94"/>
+<wire x1="2.54" y1="22.86" x2="2.54" y2="-15.24" width="0.254" layer="94"/>
+<wire x1="-2.54" y1="22.86" x2="0" y2="25.4" width="0.254" layer="94" curve="-90"/>
+<wire x1="0" y1="25.4" x2="2.54" y2="22.86" width="0.254" layer="94" curve="-90"/>
+<wire x1="-2.54" y1="-15.24" x2="0" y2="-17.78" width="0.254" layer="94" curve="90"/>
+<wire x1="0" y1="-17.78" x2="2.54" y2="-15.24" width="0.254" layer="94" curve="90"/>
+<circle x="0" y="17.78" radius="2.54" width="0.254" layer="94"/>
+<circle x="0" y="12.7" radius="2.54" width="0.254" layer="94"/>
+<circle x="0" y="7.62" radius="2.54" width="0.254" layer="94"/>
+<circle x="0" y="2.54" radius="2.54" width="0.254" layer="94"/>
+<circle x="0" y="-2.54" radius="2.54" width="0.254" layer="94"/>
+<circle x="0" y="-7.62" radius="2.54" width="0.254" layer="94"/>
+<pin name="A" x="-7.62" y="17.78" length="middle"/>
+<pin name="B" x="-7.62" y="12.7" length="middle"/>
+<pin name="C" x="-7.62" y="7.62" length="middle"/>
+<pin name="D" x="-7.62" y="2.54" length="middle"/>
+<pin name="E" x="-7.62" y="-2.54" length="middle"/>
+<pin name="F" x="-7.62" y="-7.62" length="middle"/>
+<pin name="GND" x="0" y="-22.86" visible="pin" length="middle" rot="R90"/>
 </symbol>
 </symbols>
 <devicesets>
@@ -6626,6 +6656,27 @@ Source: www.pulseeng.com .. PulseJack-J402.pdf</description>
 <connects>
 <connect gate="G$1" pin="A" pad="A"/>
 <connect gate="G$1" pin="C" pad="C"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="SIGNAL_CONNECTOR">
+<gates>
+<gate name="G$1" symbol="SIGNAL_CONNECTOR" x="0" y="0"/>
+</gates>
+<devices>
+<device name="" package="SIGNEL_CONNECTOR">
+<connects>
+<connect gate="G$1" pin="A" pad="1"/>
+<connect gate="G$1" pin="B" pad="2"/>
+<connect gate="G$1" pin="C" pad="3"/>
+<connect gate="G$1" pin="D" pad="4"/>
+<connect gate="G$1" pin="E" pad="5"/>
+<connect gate="G$1" pin="F" pad="6"/>
+<connect gate="G$1" pin="GND" pad="GND"/>
 </connects>
 <technologies>
 <technology name=""/>

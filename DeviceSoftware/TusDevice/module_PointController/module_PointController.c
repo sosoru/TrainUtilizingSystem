@@ -46,7 +46,6 @@ void DeviceInit()
 void toggle(TUPLE_PORT *ppt)
 {
 	uint8_t en_time = 200;
-	uint16_t cycle = 500;
 	
 	brake(ppt);
 	
@@ -56,14 +55,20 @@ void toggle(TUPLE_PORT *ppt)
 	
 	change_delay;
 	brake(ppt);
-	_delay_ms(cycle-en_time);
+	_delay_ms(255);
+	_delay_ms(255);
+	_delay_ms(255);
+	_delay_ms(255);
 	
 	change_delay;
 	neg(ppt);
 	_delay_ms(en_time);
 	
 	stop(ppt);
-	_delay_ms(cycle-en_time);
+	_delay_ms(255);
+	_delay_ms(255);
+	_delay_ms(255);
+	_delay_ms(255);
 }
 
 int main(void)

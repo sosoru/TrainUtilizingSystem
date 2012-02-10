@@ -39,29 +39,32 @@ namespace RailroaderIO
                 var reg = new Regex("Width\\s*?:\\s*?(\\d+)");
                 var mat = reg.Match(this.Header);
 
-                if(mat.Success && mat.Length>= 1)
+                if (mat.Success && mat.Length >= 1)
                 {
-                    var h = int.Parse(mat.Groups[1].Value);
+                    var h = int.Parse(mat.Groups [1].Value);
 
                     return h;
-                }else
+                }
+                else
                     return 0;
-                
+
             }
         }
-        
+
         public int LayoutWidth
         {
-        get{
-            var reg = new Regex("Height\\s*?:\\s*?(\\d+)");
-            var mat = reg.Match(this.Header);
-
-            if(mat.Success && mat.Length>=1)
+            get
             {
-                var h  = int.Parse(mat.Groups[1].Value);
-                return h;
-            }else
-                return 0;
+                var reg = new Regex("Height\\s*?:\\s*?(\\d+)");
+                var mat = reg.Match(this.Header);
+
+                if (mat.Success && mat.Length >= 1)
+                {
+                    var h  = int.Parse(mat.Groups [1].Value);
+                    return h;
+                }
+                else
+                    return 0;
             }
         }
 

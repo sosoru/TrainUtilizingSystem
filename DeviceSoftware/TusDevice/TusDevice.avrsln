@@ -6,8 +6,13 @@ EndProject
 Project("{D1100916-62DA-4D80-A9B4-55A1E7CCEEB3}") = "module_PointController", "module_PointController\module_PointController.avrgccproj", "{34F9C60B-D5D3-420B-8BEA-730B4585DEB0}"
 EndProject
 Project("{D1100916-62DA-4D80-A9B4-55A1E7CCEEB3}") = "module_SensorControl", "module_SensorControl\module_SensorControl.avrgccproj", "{E120C0A4-BDF5-402B-ACD8-1F406428C29B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3D121C5B-155C-47B1-B93C-761A9952C20F} = {3D121C5B-155C-47B1-B93C-761A9952C20F}
+	EndProjectSection
 EndProject
 Project("{D1100916-62DA-4D80-A9B4-55A1E7CCEEB3}") = "libtus", "libtus\libtus.avrgccproj", "{3D121C5B-155C-47B1-B93C-761A9952C20F}"
+EndProject
+Project("{D1100916-62DA-4D80-A9B4-55A1E7CCEEB3}") = "ph_TrainSensor", "ph_TrainSensor\ph_TrainSensor.avrgccproj", "{57B2F66E-D108-4394-BAEA-2C54820E76BA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +36,10 @@ Global
 		{3D121C5B-155C-47B1-B93C-761A9952C20F}.Debug|AVR.Build.0 = Debug|AVR
 		{3D121C5B-155C-47B1-B93C-761A9952C20F}.Release|AVR.ActiveCfg = Release|AVR
 		{3D121C5B-155C-47B1-B93C-761A9952C20F}.Release|AVR.Build.0 = Release|AVR
+		{57B2F66E-D108-4394-BAEA-2C54820E76BA}.Debug|AVR.ActiveCfg = Debug|AVR
+		{57B2F66E-D108-4394-BAEA-2C54820E76BA}.Debug|AVR.Build.0 = Debug|AVR
+		{57B2F66E-D108-4394-BAEA-2C54820E76BA}.Release|AVR.ActiveCfg = Release|AVR
+		{57B2F66E-D108-4394-BAEA-2C54820E76BA}.Release|AVR.Build.0 = Release|AVR
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

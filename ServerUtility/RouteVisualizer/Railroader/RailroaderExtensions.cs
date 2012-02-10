@@ -40,7 +40,7 @@ namespace RouteVisualizer.Railroader
                     ID = (rail.id << 16) + 1,
                     RailID = rail.id,
                     GateName = string.Format("id:{0} first on railroader", rail.id),
-                    Position = new [] { (double)rail.CornerPos1X, (double)rail.CornerPos1Y},
+                    Position = new [] { (double)rail.CornerPos1X, (double)rail.CornerPos1Y },
                 };
                 var secondgate = new GateData()
                 {
@@ -79,19 +79,19 @@ namespace RouteVisualizer.Railroader
                 {
                     var xL = rail.CornerPos1X - rail.CurveCenterPos_x;
                     var yL = rail.CornerPos1Y - rail.CurveCenterPos_y;
-                    var r = Math.Sqrt(xL*xL + yL*yL);
+                    var r = Math.Sqrt(xL * xL + yL * yL);
 
                     curvepath = new PathData()
                    {
                        ID = (rail.id << 16) + 2,
                        RailID = rail.id,
                        IsStraight = false,
-                       Length= rail.CurveLength,
+                       Length = rail.CurveLength,
 
-                       CurveCenter = new [] {(double)rail.CurveCenterPos_x, (double)rail.CurveCenterPos_y},
+                       CurveCenter = new [] { (double)rail.CurveCenterPos_x, (double)rail.CurveCenterPos_y },
                    };
                 }
-                
+
                 switch (rail.sort)
                 {
                     case Sort.Straight:
@@ -100,8 +100,8 @@ namespace RouteVisualizer.Railroader
                         straightpath.GateStart = firstgate;
                         straightpath.GateEnd = secondgate;
 
-                        straightpath.StartAngle = (rail.StartGradient-90) % 360;
-                        straightpath.EndAngle = (rail.EndGradient+90) % 360;
+                        straightpath.StartAngle = (rail.StartGradient - 90) % 360;
+                        straightpath.EndAngle = (rail.EndGradient + 90) % 360;
 
                         raildata.Pathes.Add(straightpath);
                         break;
@@ -111,22 +111,22 @@ namespace RouteVisualizer.Railroader
                         curvepath.GateStart = firstgate;
                         curvepath.GateEnd = secondgate;
 
-                        curvepath.StartAngle = (rail.StartGradient-90) % 360;
-                        curvepath.EndAngle = (rail.EndGradient+90) % 360;
+                        curvepath.StartAngle = (rail.StartGradient - 90) % 360;
+                        curvepath.EndAngle = (rail.EndGradient + 90) % 360;
 
                         raildata.Pathes.Add(curvepath);
                         break;
-                    case Sort.Point : //neighbor2が常にstraight
+                    case Sort.Point: //neighbor2が常にstraight
                         straightpath.GateStart = firstgate;
                         straightpath.GateEnd = secondgate;
                         curvepath.GateStart = firstgate;
                         curvepath.GateEnd = thirdgate;
 
-                        straightpath.StartAngle = (rail.StartGradient-90) % 360;
-                        straightpath.EndAngle = (rail.EndGradient+90) % 360;
-                        curvepath.StartAngle = (rail.StartGradient-90) % 360;
-                        curvepath.EndAngle = (rail.ThirdGradient+90) % 360;
-                        
+                        straightpath.StartAngle = (rail.StartGradient - 90) % 360;
+                        straightpath.EndAngle = (rail.EndGradient + 90) % 360;
+                        curvepath.StartAngle = (rail.StartGradient - 90) % 360;
+                        curvepath.EndAngle = (rail.ThirdGradient + 90) % 360;
+
                         raildata.Pathes.Add(straightpath);
                         raildata.Pathes.Add(curvepath);
                         break;

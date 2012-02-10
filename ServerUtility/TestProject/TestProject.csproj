@@ -83,6 +83,7 @@
     <Compile Include="EthClientTest.cs" />
     <Compile Include="GateViewModelTest.cs" />
     <Compile Include="LoopingArrayTest.cs" />
+    <Compile Include="LoopModelTest.cs" />
     <Compile Include="ManipulatorViewModelTest.cs" />
     <Compile Include="MotherBoardDataTest.cs" />
     <Compile Include="MotherBoardStateTest.cs" />
