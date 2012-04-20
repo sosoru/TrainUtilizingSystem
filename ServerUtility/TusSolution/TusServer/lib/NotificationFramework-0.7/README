@@ -1,0 +1,9 @@
+The NotificationFramework is a python implementation of the "Observer"
+Design Pattern, allowing one-to-many dependency between objects even when
+they have no idea of who and where the other objects live.
+
+The complete documentation can found in module NotificationCenter, or
+at http://modeling.sourceforge.net/API/Notification-API/index.html
+
+It is distributed under a 3-clause BSD-style license;
+see the LICENSE file for details.

@@ -1,0 +1,15 @@
+Metadata-Version: 1.0
+Name: NotificationFramework
+Version: 0.7
+Summary: Notification Framework: Observer Design Pattern
+Home-page: http://modeling.sourceforge.net/API/Notification-API/index.html
+Author: Sebastien Bigaret
+Author-email: sbigaret@users.sourceforge.net
+License: BSD License
+Description: The Notification Framework allows one-to-many dependency between objects,
+        where an object (the subject) can tell to an unknown number of objects (the
+        observers) that an event occurred (typically, that the object has changed),
+        without having any idea of who the observers are and where they live
+        (abstract, minimal coupling).
+        
+Platform: UNKNOWN

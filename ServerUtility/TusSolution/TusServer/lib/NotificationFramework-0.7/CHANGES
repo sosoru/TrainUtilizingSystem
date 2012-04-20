@@ -1,0 +1,75 @@
+0.7 [2004/06/22]
+
+  Now distributed under a 3-clause BSD-style license, see LICENSE for details
+
+  - All docstrings updated for epydoc + reStructuredText
+
+  - Added attribute __version__ to package NotificationFramework
+
+  - Updated the files to conform to PEP-0263: source encoding is iso-8859-1
+
+0.6.1 [2004/02/01]
+
+  - Fixed bug #885596 reported by Thorsten Kohnhorst: import __builtin__
+    missing. The initial bug report showed that the bug was triggered in
+    mems_lib.isinstance(). However, the workarounds proposed in the module
+    mems_lib are for python2.1 only, since the builtins isinstance() and
+    issubclass() behave as expected in python2.2 and up. The module has
+    been changed so that it returns the builtins for py2.2 and up.
+
+0.6 [2003/09/28]
+
+  - Added full support for new-style classes observers.
+
+0.5 [2003/05/25]
+
+  - RFE #742511 Added the ability to register multiple callbacks for an
+      object, triggered by env. variable
+      NOTIFICATION_CENTER_MULTIPLE_CALLBACKS_PER_OBSERVER (it is NOT enabled
+      by default)
+
+    Fixed addObserver() which did not inform the user that a single callback
+      can be registered per object --> this possibly led to buggy
+      behaviour. Now it raises ValueError when this happens (this could make
+      existing code fails because of that --be prepared to correct this.
+
+  - Added script tests/compare_perfs.py which calculates the performance
+    penalty implied by the activation of the ability to handle multiple
+    callbacks per object
+
+  - Fixed: when generic and specific observers were registered,
+      postNotification() made the list of observers grow (observers are copied
+      back to the list). This slowed down the framework and a observer could
+      then be notified more than once for the same notification.
+
+  - Fixed test_Notification.py and test_NotificationCenter.py: they couldn't
+    be executed as stand-alone scripts. Added tests for RFE #742511 and fixed
+    bugs
+
+0.4
+    Now distributed under the GNU General Public License
+    + Added MANIFEST.in
+
+0.3.1
+
+    - fixed a typo in NotificationCenter.postNotification()
+
+0.3
+    - changed the default behaviour of 'addObserver()': now only allows one
+      and only one observer to be registered for a given
+      Notification. Former behaviour is still available through the new
+      parameter 'sameObserverRegistersOnce' in addObserver's signature.
+
+    - Notification instances now caches their hash value
+
+    - Documentation updated and augmented.
+
+0.2
+    - InstanceType are now weakly referenced
+
+    - corrected a bug causing some observers not to be notified when an
+      observer was removing it from the list of observers at reception of a
+      notification
+
+0.1
+    Initial release
