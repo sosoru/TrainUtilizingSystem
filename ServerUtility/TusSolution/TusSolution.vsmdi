@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<TestLists xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <TestList name="test" id="3eb0b6bc-28a1-4ca0-9e17-6a404993bc43" parentListId="8c43106b-9dc1-4907-a29f-aa66a61bf5b6" />
+  <TestList name="テストの一覧" id="8c43106b-9dc1-4907-a29f-aa66a61bf5b6" />
+</TestLists>
