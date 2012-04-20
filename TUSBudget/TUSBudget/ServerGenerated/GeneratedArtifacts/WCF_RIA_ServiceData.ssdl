@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="WCF_RIA_ServiceDataStore" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+  <EntityContainer Name="WCF_RIA_ServiceDataStore">
+    <EntitySet Name="GetAllNeededParts" EntityType="WCF_RIA_ServiceDataStore.EagleBomPartsItem" store:Type="Tables" Schema="dbo" Table="WCF_RIA_Project.EagleBomParts" />
+  </EntityContainer>
+  <EntityType Name="EagleBomPartsItem">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="PartsID" Type="int" Nullable="false" />
+    <Property Name="Board" Type="nvarchar(max)" />
+    <Property Name="Qty" Type="int" Nullable="false" />
+    <Property Name="Value" Type="nvarchar(max)" />
+    <Property Name="Device" Type="nvarchar(max)" />
+    <Property Name="Parts" Type="nvarchar(max)" />
+  </EntityType>
+</Schema>

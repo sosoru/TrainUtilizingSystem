@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Namespace="WCF_RIA_ServiceData" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+  <EntityType Name="EagleBomPartsItem">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" Nullable="false" MaxLength="Max" ConcurrencyMode="Fixed" />
+    <Property Name="PartsID" Type="Int32" Nullable="false" ConcurrencyMode="Fixed" />
+    <Property Name="Board" Type="String" MaxLength="Max" ConcurrencyMode="Fixed" />
+    <Property Name="Qty" Type="Int32" Nullable="false" ConcurrencyMode="Fixed" />
+    <Property Name="Value" Type="String" MaxLength="Max" ConcurrencyMode="Fixed" />
+    <Property Name="Device" Type="String" MaxLength="Max" ConcurrencyMode="Fixed" />
+    <Property Name="Parts" Type="String" MaxLength="Max" ConcurrencyMode="Fixed" />
+  </EntityType>
+  <EntityContainer Name="WCF_RIA_ServiceDataObjectContext">
+    <EntitySet Name="EagleBomParts" EntityType="WCF_RIA_ServiceData.EagleBomPartsItem" />
+  </EntityContainer>
+</Schema>

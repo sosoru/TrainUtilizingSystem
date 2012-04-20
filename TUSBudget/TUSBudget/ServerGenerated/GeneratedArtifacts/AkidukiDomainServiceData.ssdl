@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="AkidukiDomainServiceDataStore" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+  <EntityContainer Name="AkidukiDomainServiceDataStore">
+    <EntitySet Name="GetDefault" EntityType="AkidukiDomainServiceDataStore.PartsInfoItem" store:Type="Tables" Schema="dbo" Table="akiduki.Web.PartsInfo" />
+  </EntityContainer>
+  <EntityType Name="PartsInfoItem">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="nvarchar(max)" />
+    <Property Name="LongName" Type="nvarchar(max)" />
+    <Property Name="Comment" Type="nvarchar(max)" />
+    <Property Name="PartsImageUri" Type="nvarchar(max)" />
+  </EntityType>
+</Schema>

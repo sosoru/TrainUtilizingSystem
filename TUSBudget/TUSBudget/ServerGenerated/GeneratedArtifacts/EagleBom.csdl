@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Namespace="EagleBom" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+  <EntityType Name="EagleBomPartsItem">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" ConcurrencyMode="Fixed" />
+    <Property Name="Board" Type="String" MaxLength="Max" ConcurrencyMode="Fixed" />
+    <Property Name="Qty" Type="Int32" Nullable="false" ConcurrencyMode="Fixed" />
+    <Property Name="Value" Type="String" MaxLength="Max" ConcurrencyMode="Fixed" />
+    <Property Name="Device" Type="String" MaxLength="Max" ConcurrencyMode="Fixed" />
+    <Property Name="Parts" Type="String" MaxLength="Max" ConcurrencyMode="Fixed" />
+  </EntityType>
+  <EntityContainer Name="EagleBomObjectContext">
+    <EntitySet Name="EagleBomParts" EntityType="EagleBom.EagleBomPartsItem" />
+  </EntityContainer>
+</Schema>

@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="C__Users_Administrator_Desktop_rail_MyDatabase_1_sdfDataStore" Alias="Self" Provider="Microsoft.SqlServerCe.Client.3.5" ProviderManifestToken="3.5" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+  <EntityContainer Name="C__Users_Administrator_Desktop_rail_MyDatabase_1_sdfDataStore" />
+</Schema>

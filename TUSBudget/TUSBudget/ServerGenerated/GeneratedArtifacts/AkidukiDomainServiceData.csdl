@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Namespace="AkidukiDomainServiceData" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+  <EntityType Name="PartsInfoItem">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" ConcurrencyMode="Fixed" />
+    <Property Name="Name" Type="String" MaxLength="Max" ConcurrencyMode="Fixed" />
+    <Property Name="LongName" Type="String" MaxLength="Max" ConcurrencyMode="Fixed" />
+    <Property Name="Comment" Type="String" MaxLength="Max" ConcurrencyMode="Fixed" />
+    <Property Name="PartsImageUri" Type="String" MaxLength="Max" ConcurrencyMode="Fixed" />
+  </EntityType>
+  <EntityContainer Name="AkidukiDomainServiceDataObjectContext">
+    <EntitySet Name="PartsInfo" EntityType="AkidukiDomainServiceData.PartsInfoItem" />
+  </EntityContainer>
+</Schema>

@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+  <EntityContainerMapping CdmEntityContainer="AkidukiDomainServiceDataObjectContext" StorageEntityContainer="AkidukiDomainServiceDataStore">
+    <EntitySetMapping Name="PartsInfo">
+      <EntityTypeMapping TypeName="IsTypeOf(AkidukiDomainServiceData.PartsInfoItem)">
+        <MappingFragment StoreEntitySet="GetDefault">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="LongName" ColumnName="LongName" />
+          <ScalarProperty Name="Comment" ColumnName="Comment" />
+          <ScalarProperty Name="PartsImageUri" ColumnName="PartsImageUri" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

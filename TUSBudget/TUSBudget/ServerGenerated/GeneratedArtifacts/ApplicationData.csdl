@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Namespace="ApplicationData" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+  <Association Name="PriceInfo_StoreInfo">
+    <End Role="StoreInfo" Type="ApplicationData.StoreInfo" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="PriceInfo" Type="ApplicationData.PriceInfo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="StoreInfo">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PriceInfo">
+        <PropertyRef Name="PriceInfo_StoreInfo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="AvailableParts_PriceInfo">
+    <End Role="AvailableParts" Type="ApplicationData.AvailableParts" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="PriceInfo" Type="ApplicationData.PriceInfo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AvailableParts">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PriceInfo">
+        <PropertyRef Name="AvailableParts_PriceInfo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="NeededBoards_NeededParts">
+    <End Role="NeededParts" Type="ApplicationData.NeededParts" Multiplicity="0..1" />
+    <End Role="NeededBoards" Type="ApplicationData.NeededBoards" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="NeededParts">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="NeededBoards">
+        <PropertyRef Name="NeededBoards_NeededParts" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="NeededParts_AvailableParts">
+    <End Role="AvailableParts" Type="ApplicationData.AvailableParts" Multiplicity="0..1" />
+    <End Role="NeededParts" Type="ApplicationData.NeededParts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AvailableParts">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="NeededParts">
+        <PropertyRef Name="NeededParts_AvailableParts" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="NeededParts">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" ConcurrencyMode="Fixed" />
+    <Property Name="Board" Type="String" Nullable="false" MaxLength="255" ConcurrencyMode="Fixed" />
+    <Property Name="Value" Type="String" MaxLength="255" ConcurrencyMode="Fixed" />
+    <Property Name="Device" Type="String" Nullable="false" MaxLength="255" ConcurrencyMode="Fixed" />
+    <Property Name="Parts" Type="String" Nullable="false" MaxLength="255" ConcurrencyMode="Fixed" />
+    <Property Name="Qty" Type="Int32" Nullable="false" ConcurrencyMode="Fixed" />
+    <Property Name="NeededParts_AvailableParts" Type="Int32" ConcurrencyMode="Fixed" />
+    <NavigationProperty Name="NeededBoardsCollection" Relationship="ApplicationData.NeededBoards_NeededParts" ToRole="NeededBoards" FromRole="NeededParts" />
+    <NavigationProperty Name="AvailableParts" Relationship="ApplicationData.NeededParts_AvailableParts" ToRole="AvailableParts" FromRole="NeededParts" />
+  </EntityType>
+  <EntityType Name="AvailableParts">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" ConcurrencyMode="Fixed" />
+    <Property Name="Category" Type="String" Nullable="false" MaxLength="255" ConcurrencyMode="Fixed" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="255" ConcurrencyMode="Fixed" />
+    <Property Name="LongName" Type="String" MaxLength="255" ConcurrencyMode="Fixed" />
+    <Property Name="Comment" Type="String" Nullable="false" MaxLength="255" ConcurrencyMode="Fixed" />
+    <Property Name="PartsUri" Type="String" Nullable="false" MaxLength="255" ConcurrencyMode="Fixed" />
+    <Property Name="PartsImageUri" Type="String" Nullable="false" MaxLength="255" ConcurrencyMode="Fixed" />
+    <NavigationProperty Name="PriceInfoCollection" Relationship="ApplicationData.AvailableParts_PriceInfo" ToRole="PriceInfo" FromRole="AvailableParts" />
+    <NavigationProperty Name="NeededPartsCollection" Relationship="ApplicationData.NeededParts_AvailableParts" ToRole="NeededParts" FromRole="AvailableParts" />
+  </EntityType>
+  <EntityType Name="PriceInfo">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" ConcurrencyMode="Fixed" />
+    <Property Name="Unit" Type="String" Nullable="false" MaxLength="255" ConcurrencyMode="Fixed" />
+    <Property Name="Price" Type="Int32" Nullable="false" ConcurrencyMode="Fixed" />
+    <Property Name="Qty" Type="Int32" Nullable="false" ConcurrencyMode="Fixed" />
+    <Property Name="PriceInfo_StoreInfo" Type="Int32" Nullable="false" ConcurrencyMode="Fixed" />
+    <Property Name="AvailableParts_PriceInfo" Type="Int32" Nullable="false" ConcurrencyMode="Fixed" />
+    <NavigationProperty Name="StoreInfo" Relationship="ApplicationData.PriceInfo_StoreInfo" ToRole="StoreInfo" FromRole="PriceInfo" />
+    <NavigationProperty Name="AvailableParts" Relationship="ApplicationData.AvailableParts_PriceInfo" ToRole="AvailableParts" FromRole="PriceInfo" />
+  </EntityType>
+  <EntityType Name="StoreInfo">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" ConcurrencyMode="Fixed" />
+    <Property Name="StoreName" Type="String" Nullable="false" MaxLength="255" ConcurrencyMode="Fixed" />
+    <Property Name="StoreUri" Type="String" Nullable="false" MaxLength="255" ConcurrencyMode="Fixed" />
+    <NavigationProperty Name="PriceInfoCollection" Relationship="ApplicationData.PriceInfo_StoreInfo" ToRole="PriceInfo" FromRole="StoreInfo" />
+  </EntityType>
+  <EntityType Name="NeededBoards">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" ConcurrencyMode="Fixed" />
+    <Property Name="BoardName" Type="String" Nullable="false" MaxLength="255" ConcurrencyMode="Fixed" />
+    <Property Name="Count" Type="Int32" Nullable="false" ConcurrencyMode="Fixed" />
+    <Property Name="NeededBoards_NeededParts" Type="Int32" ConcurrencyMode="Fixed" />
+    <NavigationProperty Name="NeededParts" Relationship="ApplicationData.NeededBoards_NeededParts" ToRole="NeededParts" FromRole="NeededBoards" />
+  </EntityType>
+  <EntityType Name="Table1Item">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" ConcurrencyMode="Fixed" />
+  </EntityType>
+  <EntityContainer Name="ApplicationDataObjectContext">
+    <EntitySet Name="NeededPartsSet" EntityType="ApplicationData.NeededParts" />
+    <EntitySet Name="AvailablePartsSet" EntityType="ApplicationData.AvailableParts" />
+    <EntitySet Name="PriceInfoSet" EntityType="ApplicationData.PriceInfo" />
+    <EntitySet Name="StoreInfoSet" EntityType="ApplicationData.StoreInfo" />
+    <EntitySet Name="NeededBoardsSet" EntityType="ApplicationData.NeededBoards" />
+    <EntitySet Name="Table1ItemSet" EntityType="ApplicationData.Table1Item" />
+    <AssociationSet Name="PriceInfo_StoreInfo" Association="ApplicationData.PriceInfo_StoreInfo">
+      <End Role="StoreInfo" EntitySet="StoreInfoSet" />
+      <End Role="PriceInfo" EntitySet="PriceInfoSet" />
+    </AssociationSet>
+    <AssociationSet Name="AvailableParts_PriceInfo" Association="ApplicationData.AvailableParts_PriceInfo">
+      <End Role="AvailableParts" EntitySet="AvailablePartsSet" />
+      <End Role="PriceInfo" EntitySet="PriceInfoSet" />
+    </AssociationSet>
+    <AssociationSet Name="NeededBoards_NeededParts" Association="ApplicationData.NeededBoards_NeededParts">
+      <End Role="NeededParts" EntitySet="NeededPartsSet" />
+      <End Role="NeededBoards" EntitySet="NeededBoardsSet" />
+    </AssociationSet>
+    <AssociationSet Name="NeededParts_AvailableParts" Association="ApplicationData.NeededParts_AvailableParts">
+      <End Role="AvailableParts" EntitySet="AvailablePartsSet" />
+      <End Role="NeededParts" EntitySet="NeededPartsSet" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+  <EntityContainerMapping CdmEntityContainer="EagleBomObjectContext" StorageEntityContainer="EagleBomStore">
+    <EntitySetMapping Name="EagleBomParts">
+      <EntityTypeMapping TypeName="IsTypeOf(EagleBom.EagleBomPartsItem)">
+        <MappingFragment StoreEntitySet="GetAllNeededParts">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Board" ColumnName="Board" />
+          <ScalarProperty Name="Qty" ColumnName="Qty" />
+          <ScalarProperty Name="Value" ColumnName="Value" />
+          <ScalarProperty Name="Device" ColumnName="Device" />
+          <ScalarProperty Name="Parts" ColumnName="Parts" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

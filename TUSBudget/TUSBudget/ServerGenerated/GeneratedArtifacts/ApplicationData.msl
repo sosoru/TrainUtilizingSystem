@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+  <EntityContainerMapping CdmEntityContainer="ApplicationDataObjectContext" StorageEntityContainer="ApplicationDataStore">
+    <EntitySetMapping Name="NeededPartsSet">
+      <EntityTypeMapping TypeName="IsTypeOf(ApplicationData.NeededParts)">
+        <MappingFragment StoreEntitySet="NeededPartsSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Board" ColumnName="Board" />
+          <ScalarProperty Name="Value" ColumnName="Value" />
+          <ScalarProperty Name="Device" ColumnName="Device" />
+          <ScalarProperty Name="Parts" ColumnName="Parts" />
+          <ScalarProperty Name="Qty" ColumnName="Qty" />
+          <ScalarProperty Name="NeededParts_AvailableParts" ColumnName="NeededParts_AvailableParts" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AvailablePartsSet">
+      <EntityTypeMapping TypeName="IsTypeOf(ApplicationData.AvailableParts)">
+        <MappingFragment StoreEntitySet="AvailablePartsSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Category" ColumnName="Category" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="LongName" ColumnName="LongName" />
+          <ScalarProperty Name="Comment" ColumnName="Comment" />
+          <ScalarProperty Name="PartsUri" ColumnName="PartsUri" />
+          <ScalarProperty Name="PartsImageUri" ColumnName="PartsImageUri" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PriceInfoSet">
+      <EntityTypeMapping TypeName="IsTypeOf(ApplicationData.PriceInfo)">
+        <MappingFragment StoreEntitySet="PriceInfoSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Unit" ColumnName="Unit" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+          <ScalarProperty Name="Qty" ColumnName="Qty" />
+          <ScalarProperty Name="PriceInfo_StoreInfo" ColumnName="PriceInfo_StoreInfo" />
+          <ScalarProperty Name="AvailableParts_PriceInfo" ColumnName="AvailableParts_PriceInfo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="StoreInfoSet">
+      <EntityTypeMapping TypeName="IsTypeOf(ApplicationData.StoreInfo)">
+        <MappingFragment StoreEntitySet="StoreInfoSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="StoreName" ColumnName="StoreName" />
+          <ScalarProperty Name="StoreUri" ColumnName="StoreUri" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="NeededBoardsSet">
+      <EntityTypeMapping TypeName="IsTypeOf(ApplicationData.NeededBoards)">
+        <MappingFragment StoreEntitySet="NeededBoardsSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="BoardName" ColumnName="BoardName" />
+          <ScalarProperty Name="Count" ColumnName="Count" />
+          <ScalarProperty Name="NeededBoards_NeededParts" ColumnName="NeededBoards_NeededParts" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Table1ItemSet">
+      <EntityTypeMapping TypeName="IsTypeOf(ApplicationData.Table1Item)">
+        <MappingFragment StoreEntitySet="Table1ItemSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

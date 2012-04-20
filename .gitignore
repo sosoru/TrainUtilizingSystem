@@ -3,7 +3,6 @@ obj/
 Debug/
 Release/
 
-*.*sdf
 TestResults/
 packages/
 
@@ -22,3 +21,5 @@ packages/
 *.l#*
 
 *.pyc
+
+
