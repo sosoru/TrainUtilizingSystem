@@ -2459,15 +2459,15 @@ design rules under a new name.
 <attribute name="NAME" x="137.16" y="12.065" size="1.27" layer="25" font="vector" ratio="10"/>
 <attribute name="VALUE" x="137.16" y="2.0066" size="1.27" layer="27" font="vector"/>
 </element>
-<element name="C5" library="rcl" package="E5-10,5" value="470u" x="7.62" y="35.814" smashed="yes" rot="R180">
+<element name="C5" library="rcl" package="E5-10,5" value="1000u" x="7.62" y="35.814" smashed="yes" rot="R180">
 <attribute name="NAME" x="4.5466" y="31.0388" size="1.27" layer="25" font="vector" ratio="10" rot="R180"/>
 <attribute name="VALUE" x="10.7442" y="39.0398" size="1.27" layer="27" font="vector" ratio="10" rot="R180"/>
 </element>
-<element name="C6" library="rcl" package="E5-10,5" value="470u" x="30.6832" y="57.15" smashed="yes" rot="R90">
+<element name="C6" library="rcl" package="E5-10,5" value="1000u" x="30.6832" y="57.15" smashed="yes" rot="R90">
 <attribute name="NAME" x="27.94" y="61.849" size="1.27" layer="25" font="vector" ratio="10" rot="R90"/>
 <attribute name="VALUE" x="33.909" y="54.0258" size="1.27" layer="27" font="vector" ratio="10" rot="R90"/>
 </element>
-<element name="C7" library="rcl" package="E5-10,5" value="470u" x="33.02" y="33.6296" smashed="yes" rot="R180">
+<element name="C7" library="rcl" package="E5-10,5" value="1000u" x="33.02" y="33.6296" smashed="yes" rot="R180">
 <attribute name="NAME" x="28.321" y="30.8864" size="1.27" layer="25" font="vector" ratio="10" rot="R180"/>
 <attribute name="VALUE" x="36.1442" y="36.8554" size="1.27" layer="27" font="vector" ratio="10" rot="R180"/>
 </element>

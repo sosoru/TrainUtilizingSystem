@@ -20,6 +20,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		TusSolution.vsmdi = TusSolution.vsmdi
 	EndProjectSection
 EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "TusServer", "TusServer\TusServer.pyproj", "{D58C2A9E-FB74-4D92-87A9-67E47AEA7007}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = TusSolution.vsmdi
@@ -105,6 +107,12 @@ Global
 		{AFD2FB98-D65E-4EA1-9D6C-C7B68B26ADDA}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{AFD2FB98-D65E-4EA1-9D6C-C7B68B26ADDA}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{AFD2FB98-D65E-4EA1-9D6C-C7B68B26ADDA}.Release|x86.ActiveCfg = Release|Any CPU
+		{D58C2A9E-FB74-4D92-87A9-67E47AEA7007}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D58C2A9E-FB74-4D92-87A9-67E47AEA7007}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{D58C2A9E-FB74-4D92-87A9-67E47AEA7007}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D58C2A9E-FB74-4D92-87A9-67E47AEA7007}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D58C2A9E-FB74-4D92-87A9-67E47AEA7007}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{D58C2A9E-FB74-4D92-87A9-67E47AEA7007}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

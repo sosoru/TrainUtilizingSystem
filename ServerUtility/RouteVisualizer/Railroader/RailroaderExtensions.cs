@@ -132,13 +132,31 @@ namespace RouteVisualizer.Railroader
                         break;
                 }
 
-                foreach (var neighbor in new [] {new {neighbor=rail.NeighborRail1, cnt = rail.NeighborRail1Cnt, gate = firstgate},
-                                                new {neighbor=rail.NeighborRail2, cnt = rail.NeighborRail2Cnt, gate = secondgate},
-                                                new {neighbor=rail.NeighborRail3, cnt= rail.NeighborRail3Cnt, gate = thirdgate},})
+                foreach (var neighbor in new [] {new {neighbor=rail.NeighborRail1, gate = firstgate},
+                                                new {neighbor=rail.NeighborRail2, gate = secondgate},
+                                                new {neighbor=rail.NeighborRail3, gate = thirdgate},})
                 {
                     if (neighbor.neighbor != 0)
                     {
-                        connections.Add((neighbor.neighbor << 16) + neighbor.cnt, neighbor.gate);
+                        var i = 0;
+
+                        for(;;)
+                        {
+                            var id = (neighbor.neighbor << 16) + i;
+                            var val = neighbor.gate;
+
+                            if (connections.ContainsKey(id))
+                            {
+                                i++;
+                                continue;
+                            }
+                            else
+                            {
+                                connections.Add(id, val);
+                                break;
+                            }
+                        }
+
                     }
                 }
 
@@ -154,7 +172,7 @@ namespace RouteVisualizer.Railroader
                                })
                        .Select(data => new GateConnectionModel(data))
                        .ToList()
-                       .ForEach(layout.Connections.Add);
+                       .ForEach(layout.PhysicalConnections.Add);
 
             layout.LayoutSize = new Size(map.LayoutWidth, map.LayoutHeight);
 

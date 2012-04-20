@@ -21,26 +21,34 @@ void dispat_init_buffer(uint8_t id)
 
 uint8_t dispat_inc_buffer(uint8_t id, EthPacket** pppacket)
 {
-	if(id > DEVICES_COUNT)
+	DEVICE_BUFFER *pstored = &dev_buffers[id];
+	
+	if(id >= DEVICES_COUNT)
 		return FALSE;
 	
-	if(dev_buffers[id].buffer_cnt >= PACKET_BUFFER_COUNT)
+	if(pstored->buffer_cnt >= PACKET_BUFFER_COUNT)
 		return FALSE;
 		
-	*pppacket = &dev_buffers[id].buffer[dev_buffers[id].buffer_cnt++];
+	*pppacket = &pstored->buffer[pstored->buffer_cnt];
+	pstored->buffer_cnt++;
+	
 	return TRUE;
 }
 
 uint8_t dispat_pop_buffer(uint8_t id, EthPacket ** pppacket)
 {
-	if(id > DEVICES_COUNT)
+	DEVICE_BUFFER *pstored = &dev_buffers[id];
+	
+	if(id >= DEVICES_COUNT)
 		return FALSE;
 	
 	if(dev_buffers[id].buffer_cnt == 0)
 		return FALSE;
 		
-	*pppacket = &dev_buffers[id].buffer[dev_buffers[id].buffer_cnt--];
-	return FALSE;
+	pstored->buffer_cnt--;
+	*pppacket = &pstored->buffer[pstored->buffer_cnt];
+	
+	return TRUE;
 	
 }
 

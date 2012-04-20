@@ -110,12 +110,6 @@
     <Compile Include="module_PointController.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="packet.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="PointController.h">
-      <SubType>compile</SubType>
-    </Compile>
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\AvrGCC.targets" />
 </Project>

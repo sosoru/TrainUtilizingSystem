@@ -10,7 +10,7 @@ using RouteVisualizer.EF;
 namespace RouteVisualizer.Models
 {
     public class PathModel
-        : Model, IPath, IEquatable<PathModel>
+        : Model, IEdge<GateModel, PathModel>, IEquatable<PathModel>
     {
         private PathData _baseData;
 
@@ -72,9 +72,6 @@ namespace RouteVisualizer.Models
             }
         }
 
-        public GateModel PreviousGate { get; private set; }
-        public GateModel NextGate { get; private set; }
-
         bool _ElectricalConnection;
 
         public bool ElectricalConnection
@@ -88,16 +85,6 @@ namespace RouteVisualizer.Models
                 _ElectricalConnection = value;
                 RaisePropertyChanged("ElectricalConnection");
             }
-        }
-
-        IGate IPath.PreviousGate
-        {
-            get { return ((PathModel)this).PreviousGate; }
-        }
-
-        IGate IPath.NextGate
-        {
-            get { return ((PathModel)this).NextGate; }
         }
 
         #region implementation of IEqualable
@@ -135,5 +122,17 @@ namespace RouteVisualizer.Models
         }
         #endregion
 
+
+        public GateModel NextGate
+        {
+            get;
+            private set;
+        }
+
+        public GateModel PreviousGate
+        {
+            get;
+            private set;
+        }
     }
 }

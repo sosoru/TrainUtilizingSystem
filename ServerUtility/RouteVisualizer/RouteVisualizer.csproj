@@ -94,7 +94,8 @@
     </ApplicationDefinition>
     <Compile Include="Models\GateConnectionModel.cs" />
     <Compile Include="Models\LayoutModel.cs" />
-    <Compile Include="Models\LoopModel.cs" />
+    <Compile Include="Graph\Route.cs" />
+    <Compile Include="Models\RouteFactoryModel.cs" />
     <Compile Include="ObservableWrappingCollection.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="RailEditor\ViewModels\GateDataViewModel.cs" />

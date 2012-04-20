@@ -61,24 +61,33 @@
     <GenerateEepFile>True</GenerateEepFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="avrlibdefs.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="avrlibtypes.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="libtus.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="tus\tus.h">
+    <Compile Include="net.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="tus\tus_cfg.h">
+    <Compile Include="packet.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="tus\tus_spi.c">
+    <Compile Include="tus.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="tus\tus_spi.h">
+    <Compile Include="tus_cfg.h">
       <SubType>compile</SubType>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="tus\" />
+    <Compile Include="tus_spi.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="tus_spi.h">
+      <SubType>compile</SubType>
+    </Compile>
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\AvrGCC.targets" />
 </Project>

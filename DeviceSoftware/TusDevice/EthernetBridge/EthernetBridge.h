@@ -9,7 +9,7 @@
 #ifndef ETHERNETBRIDGE_H_
 #define ETHERNETBRIDGE_H_
 
-#include "../common/packet.h"
+#include "../libtus/packet.h"
 
 extern BYTE g_parentid;
 

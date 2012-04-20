@@ -161,9 +161,6 @@ void make_eth(uint8_t *buf, uint8_t *pdestmac)
 {
         uint8_t i=0;
 		
-		buf[ETH_TYPE_L_P] = ETHTYPE_ARP_L_V;
-		buf[ETH_TYPE_H_P] = ETHTYPE_ARP_H_V;
-        //
         //copy the destination mac from the source and fill my mac into src
 		if(pdestmac == NULL)
 		{
@@ -180,6 +177,8 @@ void make_arp(uint8_t *buf, uint8_t *pdestmac, uint8_t *pdestip)
 {
     uint8_t i=0;
 
+	buf[ETH_TYPE_L_P] = ETHTYPE_ARP_L_V;
+	buf[ETH_TYPE_H_P] = ETHTYPE_ARP_H_V;
 	buf[ETH_ARP_HTYPE_L_P] = ETH_ARP_HTYPE_L_V;
 	buf[ETH_ARP_HTYPE_H_P] = ETH_ARP_HTYPE_H_V;
 	buf[ETH_ARP_PTYPE_L_P] = ETH_ARP_PTYPE_L_V;
@@ -232,6 +231,9 @@ void make_ip(uint8_t *buf)
 void make_ip_from_arp(uint8_t *buf, arp_record* prec)
 {
 	uint8_t i;
+	buf[IP_P]	= 0x45;
+	buf[IP_P+1] = 0x00;
+	
 	for(i=0; i<4; ++i)
 	{
 		buf[IP_DST_P+i] = prec->ipAddr[i];
@@ -287,9 +289,14 @@ void make_udp_request(uint8_t *buf, char *data, uint8_t datalen,uint16_t srcport
 	make_eth(buf, parp->macAddr);
 	if(datalen>220)
 		datalen=220;
+	
+	buf[ETH_TYPE_H_P] = ETHTYPE_IP_H_V;
+	buf[ETH_TYPE_L_P] = ETHTYPE_IP_L_V;
 		
 	buf[IP_TOTLEN_H_P] = 0;
 	buf[IP_TOTLEN_L_P] = IP_HEADER_LEN+UDP_HEADER_LEN+datalen;
+	buf[IP_PROTO_P]	   = IP_PROTO_UDP_V;
+	
 	make_ip_from_arp(buf, parp);
 	
 	buf[UDP_DST_PORT_H_P] = dstport >> 8;

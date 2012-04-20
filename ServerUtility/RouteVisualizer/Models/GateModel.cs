@@ -12,21 +12,17 @@ using Livet;
 namespace RouteVisualizer.Models
 {
     public class GateModel
-        : Model, IGate , IEquatable<GateModel>
+        : Model, IGate<GateModel ,PathModel> , IEquatable<GateModel>
     {
+        private IList<IEdge<GateModel, PathModel>> _connectedPathes;
         private GateData BaseData;
+
         public GateModel(GateData data)
         {
             this.BaseData = data;
 
-            this._connectedPathes = new List<IPath>();
+            this._connectedPathes = new List<IEdge<GateModel, PathModel>>();
             this.Position = new Point(data.Position.First(), data.Position.Last());
-        }
-
-        private IList<IPath> _connectedPathes;
-        public IList<IPath> ConnectedPathes
-        {
-            get { return this._connectedPathes; }
         }
 
         public Point Position
@@ -91,5 +87,15 @@ namespace RouteVisualizer.Models
         }
         #endregion
 
+
+        public IEnumerator<PathModel> GetEnumerator()
+        {
+            throw new NotImplementedException();
+        }
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

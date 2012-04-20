@@ -13698,9 +13698,9 @@ naming: grid - package width</description>
 <part name="GND22" library="SparkFun" deviceset="GND" device=""/>
 <part name="GND23" library="SparkFun" deviceset="GND" device=""/>
 <part name="GND24" library="SparkFun" deviceset="GND" device=""/>
-<part name="C5" library="rcl" deviceset="CPOL-EU" device="E5-10.5" value="470u"/>
-<part name="C6" library="rcl" deviceset="CPOL-EU" device="E5-10.5" value="470u"/>
-<part name="C7" library="rcl" deviceset="CPOL-EU" device="E5-10.5" value="470u"/>
+<part name="C5" library="rcl" deviceset="CPOL-EU" device="E5-10.5" value="1000u"/>
+<part name="C6" library="rcl" deviceset="CPOL-EU" device="E5-10.5" value="1000u"/>
+<part name="C7" library="rcl" deviceset="CPOL-EU" device="E5-10.5" value="1000u"/>
 <part name="GND25" library="SparkFun" deviceset="GND" device=""/>
 <part name="GND26" library="SparkFun" deviceset="GND" device=""/>
 <part name="GND27" library="SparkFun" deviceset="GND" device=""/>

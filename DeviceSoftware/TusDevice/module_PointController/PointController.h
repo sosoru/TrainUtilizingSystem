@@ -11,7 +11,7 @@
 
 #define F_CPU        24000000               		// 24MHz processor
 
-#include "../common/global.h"
+#include "global.h"
 
 
 

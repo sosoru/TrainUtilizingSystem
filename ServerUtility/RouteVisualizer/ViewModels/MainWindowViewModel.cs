@@ -45,13 +45,20 @@ namespace RouteVisualizer.ViewModels
 
         public MainWindowViewModel()
         {
-            var path = @"C:\Users\root\Documents\TrainUtilizingSystem\ServerUtility\RouteVisualizer\TestSamples\Sample2.rrf";
+            try
+            {
+                var path = @"C:\Users\root\Desktop\val_point.rrf";
 
-            var map = new RailroaderIO.RailroaderMap(path);
+                var map = new RailroaderIO.RailroaderMap(path);
 
-            var layout = map.ToLayout();
-            this.LayoutVm = new LayoutViewModel(layout) { DrawingSize = new System.Windows.Size(500,1100) };
+                var layout = map.ToLayout();
+                this.LayoutVm = new LayoutViewModel(layout) { DrawingSize = new System.Windows.Size(500, 1100) };
 
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
         }
 
         public LayoutViewModel LayoutVm

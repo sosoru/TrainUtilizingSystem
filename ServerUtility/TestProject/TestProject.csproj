@@ -137,11 +137,12 @@
       <Name>SensorViewLibrary</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="テストの参照\" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="Signification.pfx" />
-    <Shadow Include="テストの参照\RouteVisualizer.accessor" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

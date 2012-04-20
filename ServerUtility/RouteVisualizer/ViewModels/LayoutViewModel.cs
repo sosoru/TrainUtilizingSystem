@@ -59,7 +59,7 @@ namespace RouteVisualizer.ViewModels
             this.Rails = ViewModelHelper.CreateReadOnlyNotifyDispatcherCollection(this._model.Rails,
                                                                                     m => new RailViewModel(m, this),
                                                                                     DispatcherHelper.UIDispatcher);
-            this.Gates = ViewModelHelper.CreateReadOnlyNotifyDispatcherCollection(this._model.Connections,
+            this.Gates = ViewModelHelper.CreateReadOnlyNotifyDispatcherCollection(this._model.PhysicalConnections,
                                                                                     conn => new GateConnectionViewModel(conn),
                                                                                     DispatcherHelper.UIDispatcher);
 

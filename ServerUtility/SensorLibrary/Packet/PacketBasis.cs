@@ -12,10 +12,11 @@ namespace SensorLibrary
     public struct DeviceID
         : IEquatable<DeviceID>
     {
-        public DeviceID(ushort parent, ushort module)
+        public DeviceID(ushort parent, byte module)
         {
             this.ParentPart = parent;
-            this.ModulePart = module;
+            this.ModulePart = 0;
+            this.ModuleAddr = module;
         }
 
         public ushort ParentPart;
@@ -150,7 +151,7 @@ namespace SensorLibrary
         }
     }
 
-    [StructLayout(LayoutKind.Sequential, Size = 156)]
+    [StructLayout(LayoutKind.Sequential, Size = 73)]
     public class EthPacket
     {
         //DeviceID srcId; 
@@ -166,33 +167,9 @@ namespace SensorLibrary
         public DeviceID destId;
 
         byte command;
-        byte error;
 
-        //ascII is expected
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
-        private byte[] _msg = new byte [16];
-        public byte [] InternalMessage
-        {
-            get
-            {
-                return _msg;
-            }
-        }
-
-        private static Encoding msgEncoding = System.Text.ASCIIEncoding.ASCII;
-        public string Message
-        {
-            get { return msgEncoding.GetString(this.InternalMessage); }
-            set
-            {
-                var buf = msgEncoding.GetBytes(value);
-                var len = (buf.Length < _msg.Length) ? buf.Length : _msg.Length;
-                Array.Copy(buf, _msg, len);
-            }
-        }
-
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 128)]
-        private byte[] _data = new byte [128];
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 64)]
+        private byte[] _data = new byte [64];
         public byte [] Data
         {
             get

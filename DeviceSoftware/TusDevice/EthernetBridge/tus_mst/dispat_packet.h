@@ -12,8 +12,7 @@
 #include "tus_mstcfg.h"
 #include "../packet.h"
 
-#define DEVICES_COUNT 8
-#define PACKET_BUFFER_COUNT 2
+#define PACKET_BUFFER_COUNT 1
 #define PACKET_MESSAGE_SIZE 64
 
 typedef struct tag_DEVICE_BUFFER

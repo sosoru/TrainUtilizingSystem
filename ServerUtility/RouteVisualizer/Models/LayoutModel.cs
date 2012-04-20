@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Media;
 
 using RouteVisualizer.Models;
+using RouteVisualizer.Graph;
 
 using Livet;
 
@@ -27,16 +28,18 @@ namespace RouteVisualizer.Models
          * Model同士でNotificatorを使用した通知を行う場合はNotificatorHelper、
          * ViewModelへNotificatorを使用した通知を行う場合はViewModelHelperを使用して受信側の登録をしてください。
          */
-        public LayoutModel ()
+        public LayoutModel()
         {
             this.Rails = new ObservableCollection<RailModel>();
-            this.Connections = new ObservableCollection<GateConnectionModel>();
-
+            this.PhysicalConnections = new ObservableCollection<GateConnectionModel>();
+            this.TheoreticalConnections = new ObservableCollection<GateConnectionModel>();
         }
 
-        public ObservableCollection<RailModel> Rails{get; private set;}
+        public ObservableCollection<RailModel> Rails { get; private set; }
 
-        public ObservableCollection<GateConnectionModel> Connections{get;private set;}
+        public ObservableCollection<GateConnectionModel> PhysicalConnections { get; private set; }
+
+        public ObservableCollection<GateConnectionModel> TheoreticalConnections { get; private set; }
 
         Size _LayoutSize;
 
@@ -52,7 +55,12 @@ namespace RouteVisualizer.Models
                 RaisePropertyChanged("LayoutSize");
             }
         }
-      
-        
+
+        public void InitializeTheoreticalConnections()
+        {
+
+        }
+
+
     }
 }

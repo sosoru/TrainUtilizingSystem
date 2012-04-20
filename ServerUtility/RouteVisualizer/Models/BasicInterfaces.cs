@@ -8,16 +8,19 @@ using System.Windows;
 
 namespace RouteVisualizer.Models
 {
-    public interface IPath
+    public interface IEdge<out Tgate, out Tedge>
+        where Tgate : IGate<Tgate, Tedge>
+        where Tedge : IEdge<Tgate, Tedge>
     {
-        double Length { get; }
-        IGate PreviousGate { get; }
-        IGate NextGate { get; }
+        Tgate PreviousGate { get; }
+        Tgate NextGate { get; }
     }
 
-    public interface IGate
+    public interface IGate<out Tgate, out Tedge>
+        : IEnumerable<Tedge>
+        where Tgate : IGate<Tgate, Tedge>
+        where Tedge : IEdge<Tgate, Tedge>
     {
-        IList<IPath> ConnectedPathes { get; }
     }
 
     public interface IDrawable

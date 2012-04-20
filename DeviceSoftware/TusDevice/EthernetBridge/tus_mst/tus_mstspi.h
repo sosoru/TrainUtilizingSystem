@@ -9,12 +9,12 @@
 #ifndef TUS_MSTSPI_H_
 #define TUS_MSTSPI_H_
 
-#include "../packet.h"
+#include "../../libtus/packet.h"
 #include "tus_mstcfg.h"
 
 
-void tus_mstspi_slave_init(SPI_SLAVE_PORT *pport, SPI_SLAVE_DIRECTION *pdir);
-void tus_mstspi_trans_init(SPI_TRANS_PORT *pport, SPI_TRANS_DIRECTION *pdir);
+void tus_mstspi_slave_init(uint8_t id);
+void tus_mstspi_trans_init();
 void tus_mstspi_trans(EthPacket *ppack, EthPacket *preceived);
 
 
