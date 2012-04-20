@@ -22,4 +22,5 @@ packages/
 
 *.pyc
 
-
+!/TUSBudget/TUSBudget/Bin/Data/ApplicationDatabase.mdf
+!/TUSBudget/TUSBudget/Bin/Data/ApplicationDatabase_log.ldf
