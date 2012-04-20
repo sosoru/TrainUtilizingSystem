@@ -1,0 +1,62 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# AvrStudio Solution File, Format Version 11.00
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "EthernetBridge", "EthernetBridge\EthernetBridge.cproj", "{99B24970-9312-4EA7-A97E-CDE90D2E6281}"
+EndProject
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "module_PointController", "module_PointController\module_PointController.cproj", "{34F9C60B-D5D3-420B-8BEA-730B4585DEB0}"
+EndProject
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "libtus", "libtus\libtus.cproj", "{3D121C5B-155C-47B1-B93C-761A9952C20F}"
+EndProject
+Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "cpptest", "cpptest\cpptest.cppproj", "{24D7C01D-BE5B-4757-AC7F-9E88F5124861}"
+EndProject
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "ph_TrainSensor", "ph_TrainSensor\ph_TrainSensor.cproj", "{57B2F66E-D108-4394-BAEA-2C54820E76BA}"
+EndProject
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "_module_MotorController", "module_MotorController\_module_MotorController.cproj", "{6E83F947-511F-461E-90DB-45B18C1A0345}"
+EndProject
+Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "module_UartControl", "module_UartControl\module_UartControl.cppproj", "{A6CD0F21-E6AA-4920-8440-6D7A8CF9DF5B}"
+EndProject
+Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "module_MotorController", "module_MotorController\module_MotorController.cppproj", "{28E3BD3E-1C21-4B26-A20F-AAE3CB7B9AB8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|AVR = Debug|AVR
+		Release|AVR = Release|AVR
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{99B24970-9312-4EA7-A97E-CDE90D2E6281}.Debug|AVR.ActiveCfg = Debug|AVR
+		{99B24970-9312-4EA7-A97E-CDE90D2E6281}.Debug|AVR.Build.0 = Debug|AVR
+		{99B24970-9312-4EA7-A97E-CDE90D2E6281}.Release|AVR.ActiveCfg = Release|AVR
+		{99B24970-9312-4EA7-A97E-CDE90D2E6281}.Release|AVR.Build.0 = Release|AVR
+		{34F9C60B-D5D3-420B-8BEA-730B4585DEB0}.Debug|AVR.ActiveCfg = Debug|AVR
+		{34F9C60B-D5D3-420B-8BEA-730B4585DEB0}.Debug|AVR.Build.0 = Debug|AVR
+		{34F9C60B-D5D3-420B-8BEA-730B4585DEB0}.Release|AVR.ActiveCfg = Release|AVR
+		{34F9C60B-D5D3-420B-8BEA-730B4585DEB0}.Release|AVR.Build.0 = Release|AVR
+		{3D121C5B-155C-47B1-B93C-761A9952C20F}.Debug|AVR.ActiveCfg = Debug|AVR
+		{3D121C5B-155C-47B1-B93C-761A9952C20F}.Debug|AVR.Build.0 = Debug|AVR
+		{3D121C5B-155C-47B1-B93C-761A9952C20F}.Release|AVR.ActiveCfg = Release|AVR
+		{3D121C5B-155C-47B1-B93C-761A9952C20F}.Release|AVR.Build.0 = Release|AVR
+		{24D7C01D-BE5B-4757-AC7F-9E88F5124861}.Debug|AVR.ActiveCfg = Debug|AVR
+		{24D7C01D-BE5B-4757-AC7F-9E88F5124861}.Debug|AVR.Build.0 = Debug|AVR
+		{24D7C01D-BE5B-4757-AC7F-9E88F5124861}.Release|AVR.ActiveCfg = Release|AVR
+		{24D7C01D-BE5B-4757-AC7F-9E88F5124861}.Release|AVR.Build.0 = Release|AVR
+		{57B2F66E-D108-4394-BAEA-2C54820E76BA}.Debug|AVR.ActiveCfg = Debug|AVR
+		{57B2F66E-D108-4394-BAEA-2C54820E76BA}.Debug|AVR.Build.0 = Debug|AVR
+		{57B2F66E-D108-4394-BAEA-2C54820E76BA}.Release|AVR.ActiveCfg = Release|AVR
+		{57B2F66E-D108-4394-BAEA-2C54820E76BA}.Release|AVR.Build.0 = Release|AVR
+		{6E83F947-511F-461E-90DB-45B18C1A0345}.Debug|AVR.ActiveCfg = Debug|AVR
+		{6E83F947-511F-461E-90DB-45B18C1A0345}.Debug|AVR.Build.0 = Debug|AVR
+		{6E83F947-511F-461E-90DB-45B18C1A0345}.Release|AVR.ActiveCfg = Release|AVR
+		{6E83F947-511F-461E-90DB-45B18C1A0345}.Release|AVR.Build.0 = Release|AVR
+		{A6CD0F21-E6AA-4920-8440-6D7A8CF9DF5B}.Debug|AVR.ActiveCfg = Debug|AVR
+		{A6CD0F21-E6AA-4920-8440-6D7A8CF9DF5B}.Debug|AVR.Build.0 = Debug|AVR
+		{A6CD0F21-E6AA-4920-8440-6D7A8CF9DF5B}.Release|AVR.ActiveCfg = Release|AVR
+		{A6CD0F21-E6AA-4920-8440-6D7A8CF9DF5B}.Release|AVR.Build.0 = Release|AVR
+		{28E3BD3E-1C21-4B26-A20F-AAE3CB7B9AB8}.Debug|AVR.ActiveCfg = Debug|AVR
+		{28E3BD3E-1C21-4B26-A20F-AAE3CB7B9AB8}.Debug|AVR.Build.0 = Debug|AVR
+		{28E3BD3E-1C21-4B26-A20F-AAE3CB7B9AB8}.Release|AVR.ActiveCfg = Release|AVR
+		{28E3BD3E-1C21-4B26-A20F-AAE3CB7B9AB8}.Release|AVR.Build.0 = Release|AVR
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

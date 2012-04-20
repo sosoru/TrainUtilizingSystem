@@ -21,3 +21,4 @@ packages/
 *.s#*
 *.l#*
 
+*.pyc
