@@ -10,7 +10,7 @@
 #define MOTORPROCESS_H_
 
 #include <avr/io.h>
-#include "module_MotorController.hpp"
+#include "mtrPacket.hpp"
 #include "Pulse.hpp"
 #include "Motor.hpp"
 
@@ -23,46 +23,82 @@ namespace MotorController
 					 class Out1Port,	
 					 class Out2Port,	
 					 class AlertPort,	
-					 class AdcNum,
+					 uint8_t AdcNum,
 					 class Pulse
 				>
 	class MotorProcess
 	{
 		private :
 			
+			typedef Pulse PulseGenerator;
 			typedef Motor<StandByPort, 
 						 Out1Port, 
 						 Out2Port, 
-						 AlertPort,
+						 AlertPort
 						> AssociatedMotor;
 		
 			float fb_bef2;
 			float fb_bef;
 			float fb_cur;
 			float internal_duty;
-			
+		
+			ControlMode m_mode;			
+			Direction m_dir;
 		public :
 			
 			uint8_t duty;
+			
 			MotorProcess()
 				: fb_bef(0.0f), fb_bef2(0.0f), fb_cur(0.0f), internal_duty(0.0f), duty(0)
 			{
 			}
 			
+			void set_Packet(MtrControllerPacket *ppacket)
+			{
+				switch(ppacket->get_Direction())
+				{
+					case Positive:
+						AssociatedMotor::SetPositive();
+						break;
+					case Negative:
+						AssociatedMotor::SetNegative();
+						break;
+					case Standby:
+					default:
+						AssociatedMotor::SetStandby();
+						break;	
+				}
+				
+				this->m_dir = ppacket->get_Direction();
+				this->internal_duty = ppacket->get_VoltageValue();
+				this->m_mode = ppacket->get_ControlMode();
+				Pulse::SetDuty(ppacket->get_DutyValue());
+			}				
+			
+			void get_Packet(MtrControllerPacket *ppacket)
+			{
+				ppacket->set_ControlMode(this->m_mode);
+				ppacket->set_Direciton(this->m_dir);
+				ppacket->set_VoltageValue(this->internal_duty);
+				ppacket->set_DutyValue(typename Pulse::GetDuty());
+			}
+			
 			void Init()
 			{		
-				PulseGenerator<Timer>::InitGenerator();
+				PulseGenerator::InitGenerator();
 				AssociatedMotor::SetStandby();		
 			}
 		
 			void Process()
-			{				
-				
+			{								
+				if(this->m_mode != CurrentFeedBackMode)
+					return;
+					
 				{
 					float result;
 					
 					AnalogToDigital::ControlSetUp(ADCEnable, StartLater, FreeRunStopped, InterruptDisable, Div128);
-					AnalogToDigital::SelectionSetUp(AVCC, AlignLeft, AdcNum);		
+					AnalogToDigital::SelectionSetUp(AVCC, AlignLeft, (AnalogChannel)AdcNum);		
 					AnalogToDigital::StartConversion();
 					AnalogToDigital::WaitWhileConverting();
 					

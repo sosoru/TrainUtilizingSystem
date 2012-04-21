@@ -9,7 +9,7 @@
 #ifndef MOTOR_H_
 #define MOTOR_H_
 
-#include "module_MotorController.hpp"
+#include "avr_base.hpp"
 
 namespace MotorController
 {

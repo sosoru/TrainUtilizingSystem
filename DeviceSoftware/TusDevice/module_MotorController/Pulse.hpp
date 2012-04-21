@@ -9,7 +9,8 @@
 #ifndef PULSE_H_
 #define PULSE_H_
 
-#include "module_MotorController.hpp"
+#include "avr_base.hpp"
+#include <Timer.h>
 
 namespace MotorController
 {
@@ -22,6 +23,11 @@ namespace MotorController
 		B
 	};
 	
+	template<class Timer>
+	inline void SetupTimer()
+	{
+	}		
+		
 	template<>
 	inline void SetupTimer<TimerCounter1>()
 	{
@@ -33,12 +39,23 @@ namespace MotorController
 	}
 	
 	template<>
-	inline void SetUpTimer<TimerCounter2>()
+	inline void SetupTimer<TimerCounter2>()
 	{
 		TimerCounter2::Synchronous::ChannelAPin::InitOutput();
 		TimerCounter2::Synchronous::ChannelBPin::InitOutput();
 		
-		TimerCounter2::Synchronous::SetUp(NoPrescaleA, FastPWM8, ClearA, ClearA);
+		TimerCounter2::Synchronous::SetUp(NoPrescaleA, FastPWM8, ClearA, ClearB);
+	}
+	
+	template<class Timer, Channel dir>
+	inline void SetDuty(uint8_t duty)
+	{
+	}
+	
+	template<class Timer, Channel dir>
+	inline uint8_t GetDuty()
+	{
+		return 0;
 	}
 	
 	template<>
@@ -48,22 +65,51 @@ namespace MotorController
 	}
 	
 	template<>
+	inline uint8_t GetDuty<TimerCounter1, A>()
+	{
+		return TimerCounter1::OutputCompareA::Get();
+	}
+	
+	template<>
 	inline void SetDuty<TimerCounter1, B>(uint8_t duty)
 	{
 		TimerCounter1::OutputCompareB::Set(duty);
 	}
 	
 	template<>
-	inline void SetDuty<TimerCounter2, A>(uint8_t duty)
+	inline uint8_t GetDuty<TimerCounter1, B>()
 	{
-		TimerCounter2::Synchronous::OutputCompareA::Set(duty);
+		return TimerCounter1::OutputCompareB::Get();
 	}
 	
 	template<>
+	inline void SetDuty<TimerCounter2, A>(uint8_t duty)
+	{
+		TimerCounter2::Synchronous::OutputCompareA reg;
+		reg.Set(duty);
+	}
+	
+	template<>
+	inline uint8_t GetDuty<TimerCounter2, A>()
+	{
+		TimerCounter2::Synchronous::OutputCompareA reg;
+		return reg.Get();
+	}
+
+	template<>
 	inline void SetDuty<TimerCounter2, B>(uint8_t duty)
 	{
-		TimerCounter2::Synchronous::OutputCompareB::Set(duty);
+		TimerCounter2::Synchronous::OutputCompareB reg;
+		reg.Set(duty);
 	}
+	
+	template<>
+	inline uint8_t GetDuty<TimerCounter2, B>()
+	{
+		TimerCounter2::Synchronous::OutputCompareB reg;
+		return reg.Get();
+	}
+
 	
 	template<class TimerCounter, Channel chn>
 	class PulseGenerator
@@ -77,7 +123,12 @@ namespace MotorController
 		
 		static inline void SetDuty(uint8_t duty)
 		{
-			SetDuty(duty);
+			MotorController::SetDuty<TimerCounter, chn>(duty);
+		}
+		
+		static inline uint8_t GetDuty()
+		{
+			return MotorController::GetDuty<TimerCounter, chn>();
 		}
 	};
 }
