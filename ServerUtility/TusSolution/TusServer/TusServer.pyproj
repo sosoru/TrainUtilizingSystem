@@ -26,6 +26,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="lib\device_controllers\__init__.py" />
+    <Compile Include="lib\layout\command.py" />
     <Compile Include="lib\layout\detector.py" />
     <Compile Include="lib\layout\models.py" />
     <Compile Include="lib\layout\train.py" />

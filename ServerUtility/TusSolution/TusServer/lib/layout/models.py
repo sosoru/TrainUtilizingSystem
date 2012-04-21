@@ -22,7 +22,7 @@ class Signal(object):
     
 class Section(object):
 
-    def __init__(self, tuple_juncs, signal):
+    def __init__(self, tuple_juncs):
         self.__juncs = tuple_juncs
         self.__detector = self._create_detector()
 
