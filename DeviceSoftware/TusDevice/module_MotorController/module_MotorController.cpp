@@ -32,9 +32,14 @@ int main(void)
 	while(1){
 		
 		mtrA.Init();
+		setPacket(&packet);
 		mtrA.set_Packet(&packet);
 		
 		mtrA.Process();
 		
+		while(1)
+		{
+			_delay_ms(1);
+		}			
     }
 }
