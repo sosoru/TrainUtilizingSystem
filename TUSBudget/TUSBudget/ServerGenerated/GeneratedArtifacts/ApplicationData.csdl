@@ -77,6 +77,7 @@
     <Property Name="Comment" Type="String" Nullable="false" MaxLength="255" ConcurrencyMode="Fixed" />
     <Property Name="PartsUri" Type="String" Nullable="false" MaxLength="255" ConcurrencyMode="Fixed" />
     <Property Name="PartsImageUri" Type="String" Nullable="false" MaxLength="255" ConcurrencyMode="Fixed" />
+    <Property Name="Stock" Type="Int32" Nullable="false" ConcurrencyMode="Fixed" />
     <NavigationProperty Name="PriceInfoCollection" Relationship="ApplicationData.AvailableParts_PriceInfo" ToRole="PriceInfo" FromRole="AvailableParts" />
     <NavigationProperty Name="NeededPartsCollection" Relationship="ApplicationData.NeededParts_AvailableParts" ToRole="NeededParts" FromRole="AvailableParts" />
   </EntityType>

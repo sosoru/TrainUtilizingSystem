@@ -17,11 +17,6 @@
           <ShowScreenMethod TargetScreen="AvailablePartsSetListDetail" />
         </ApplicationMethod.Attributes>
       </ApplicationMethod>
-      <ApplicationMethod Name="ShowStoreInfoSetListDetail">
-        <ApplicationMethod.Attributes>
-          <ShowScreenMethod TargetScreen="StoreInfoSetListDetail" />
-        </ApplicationMethod.Attributes>
-      </ApplicationMethod>
       <ApplicationMethod Name="ShowNeededBoardsSetListDetail">
         <ApplicationMethod.Attributes>
           <ShowScreenMethod TargetScreen="NeededBoardsSetListDetail" />
@@ -42,8 +37,6 @@
                                    Name="NeededPartsSetListDetail" />
         <ApplicationNavigationLink Command="!module/Commands[ScreenCommandShowAvailablePartsSetListDetail]"
                                    Name="AvailablePartsSetListDetail" />
-        <ApplicationNavigationLink Command="!module/Commands[ScreenCommandShowStoreInfoSetListDetail]"
-                                   Name="StoreInfoSetListDetail" />
         <ApplicationNavigationLink Command="!module/Commands[ScreenCommandShowNeededBoardsSetListDetail]"
                                    Name="NeededBoardsSetListDetail" />
       </ApplicationNavigationGroup>
@@ -61,8 +54,6 @@
                         Target="!module/Methods[ShowNeededPartsSetListDetail]" />
     <ApplicationCommand Name="ScreenCommandShowAvailablePartsSetListDetail"
                         Target="!module/Methods[ShowAvailablePartsSetListDetail]" />
-    <ApplicationCommand Name="ScreenCommandShowStoreInfoSetListDetail"
-                        Target="!module/Methods[ShowStoreInfoSetListDetail]" />
     <ApplicationCommand Name="ScreenCommandShowNeededBoardsSetListDetail"
                         Target="!module/Methods[ShowNeededBoardsSetListDetail]" />
   </Application>
@@ -927,6 +918,14 @@
                           FromEnd="AvailableParts"
                           Name="NeededPartsCollection"
                           ToEnd="NeededParts" />
+      <EntityProperty Name="Stock"
+                      PropertyType=":Int32">
+        <EntityProperty.Attributes>
+          <NotSearchable />
+          <Range Minimum="0" />
+          <Required />
+        </EntityProperty.Attributes>
+      </EntityProperty>
     </EntityType.Properties>
   </EntityType>
 
@@ -1504,6 +1503,17 @@
                       </ScreenExpressionTree>
                     </ContentItem.DataSource>
                   </ContentItem>
+                  <ContentItem DataType=":Int32"
+                               Kind="Value"
+                               Name="Stock">
+                    <ContentItem.DataSource>
+                      <ScreenExpressionTree>
+                        <ChainExpression>
+                          <MemberExpression Member="AvailableParts/Properties[Stock]" />
+                        </ChainExpression>
+                      </ScreenExpressionTree>
+                    </ContentItem.DataSource>
+                  </ContentItem>
                 </ContentItem>
               </ContentItem>
               <ContentItem DataType="AvailableParts"
@@ -1579,6 +1589,17 @@
                     <ScreenExpressionTree>
                       <ChainExpression>
                         <MemberExpression Member="AvailableParts/Properties[PartsImageUri]" />
+                      </ChainExpression>
+                    </ScreenExpressionTree>
+                  </ContentItem.DataSource>
+                </ContentItem>
+                <ContentItem DataType=":Int32"
+                             Kind="Value"
+                             Name="Stock1">
+                  <ContentItem.DataSource>
+                    <ScreenExpressionTree>
+                      <ChainExpression>
+                        <MemberExpression Member="AvailableParts/Properties[Stock]" />
                       </ChainExpression>
                     </ScreenExpressionTree>
                   </ContentItem.DataSource>
@@ -1845,6 +1866,17 @@
                     </ScreenExpressionTree>
                   </ContentItem.DataSource>
                 </ContentItem>
+                <ContentItem DataType=":Int32"
+                             Kind="Value"
+                             Name="Stock">
+                  <ContentItem.DataSource>
+                    <ScreenExpressionTree>
+                      <ChainExpression>
+                        <MemberExpression Member="AvailableParts/Properties[Stock]" />
+                      </ChainExpression>
+                    </ScreenExpressionTree>
+                  </ContentItem.DataSource>
+                </ContentItem>
               </ContentItem>
             </ContentItem>
           </ContentItem>
@@ -1954,6 +1986,17 @@
                   <ScreenExpressionTree>
                     <ChainExpression>
                       <MemberExpression Member="AvailableParts/Properties[PartsImageUri]" />
+                    </ChainExpression>
+                  </ScreenExpressionTree>
+                </ContentItem.DataSource>
+              </ContentItem>
+              <ContentItem DataType=":Int32"
+                           Kind="Value"
+                           Name="Stock1">
+                <ContentItem.DataSource>
+                  <ScreenExpressionTree>
+                    <ChainExpression>
+                      <MemberExpression Member="AvailableParts/Properties[Stock]" />
                     </ChainExpression>
                   </ScreenExpressionTree>
                 </ContentItem.DataSource>
@@ -2154,265 +2197,7 @@
       </KeyProperty>
     </EntityType.Properties>
   </EntityType>
-  <Screen Name="StoreInfoSetListDetail">
-    <Screen.Attributes>
-      <SaveChangesTo DataService="ApplicationDataMapping" />
-    </Screen.Attributes>
-    <Screen.Methods>
-      <ScreenMethod Name="Save">
-        <ScreenMethod.Attributes>
-          <DisplayMethodByDefault Display="True" />
-          <Generated />
-          <ImageResource ResourceId="Microsoft.LightSwitch.BuiltInImageResources::BuiltInResources/Save.png" />
-        </ScreenMethod.Attributes>
-      </ScreenMethod>
-      <ScreenMethod Name="Refresh">
-        <ScreenMethod.Attributes>
-          <DisplayMethodByDefault Display="True" />
-          <Generated />
-          <ImageResource ResourceId="Microsoft.LightSwitch.BuiltInImageResources::BuiltInResources/Refresh.png" />
-        </ScreenMethod.Attributes>
-      </ScreenMethod>
-      <ScreenMethod Name="Close">
-        <ScreenMethod.Attributes>
-          <DisplayMethodByDefault Display="True" />
-          <Generated />
-        </ScreenMethod.Attributes>
-      </ScreenMethod>
-    </Screen.Methods>
-    <Screen.Properties>
-      <ScreenCollectionProperty Name="StoreInfoSet"
-                                PageSize="45"
-                                PropertyType="CollectionView$StoreInfo">
-        <ScreenCollectionProperty.Query>
-          <ScreenQueryDefinition Name="StoreInfoSetQuery"
-                                 ReturnType="StoreInfo*">
-            <ScreenQueryDefinition.FilterExpression>
-              <QueryFilterExpressionTree />
-            </ScreenQueryDefinition.FilterExpression>
-            <ScreenQueryDefinition.Source>
-              <QuerySourceExpressionTree>
-                <MemberExpression Member="ApplicationData/Members[StoreInfoSet_All]" />
-              </QuerySourceExpressionTree>
-            </ScreenQueryDefinition.Source>
-          </ScreenQueryDefinition>
-        </ScreenCollectionProperty.Query>
-        <ScreenExpressionTree>
-          <ChainExpression>
-            <CallExpression Target="StoreInfoSetListDetail/Properties[StoreInfoSet]/Query" />
-          </ChainExpression>
-        </ScreenExpressionTree>
-      </ScreenCollectionProperty>
-    </Screen.Properties>
-    <Screen.RootContentItem>
-      <ContentItem Kind="Screen"
-                   Name="RootContentItem">
-        <ContentItem.CommandItems>
-          <ContentItem Kind="Command"
-                       Name="Save">
-            <ContentItem.DataSource>
-              <ScreenExpressionTree>
-                <ChainExpression>
-                  <CallExpression Target="StoreInfoSetListDetail/Methods[Save]" />
-                </ChainExpression>
-              </ScreenExpressionTree>
-            </ContentItem.DataSource>
-          </ContentItem>
-          <ContentItem Kind="Command"
-                       Name="Refresh">
-            <ContentItem.DataSource>
-              <ScreenExpressionTree>
-                <ChainExpression>
-                  <CallExpression Target="StoreInfoSetListDetail/Methods[Refresh]" />
-                </ChainExpression>
-              </ScreenExpressionTree>
-            </ContentItem.DataSource>
-          </ContentItem>
-        </ContentItem.CommandItems>
-        <ContentItem Kind="Group"
-                     Name="ScreenLayout"
-                     View="Microsoft.LightSwitch:ColumnsLayout">
-          <ContentItem Kind="Group"
-                       Name="ListColumn">
-            <ContentItem.PropertySources>
-              <ControlPropertySource Property=":ColumnsLayout/Properties[WeightedColumnWidth]">
-                <ScreenExpressionTree>
-                  <ChainExpression>
-                    <ConstantExpression ResultType=":Double"
-                                        Value="2" />
-                  </ChainExpression>
-                </ScreenExpressionTree>
-              </ControlPropertySource>
-            </ContentItem.PropertySources>
-            <ContentItem DataType="CollectionView$StoreInfo"
-                         Kind="Collection"
-                         Name="StoreInfoList"
-                         View="Microsoft.LightSwitch:List">
-              <ContentItem.CommandItems>
-                <ContentItem Kind="Command"
-                             Name="StoreInfoSet_AddAndEditNew">
-                  <ContentItem.DataSource>
-                    <ScreenExpressionTree>
-                      <ChainExpression>
-                        <MemberExpression Member="StoreInfoSetListDetail/Properties[StoreInfoSet]" />
-                        <CallExpression Target="AddAndEditNew" />
-                      </ChainExpression>
-                    </ScreenExpressionTree>
-                  </ContentItem.DataSource>
-                </ContentItem>
-                <ContentItem Kind="Command"
-                             Name="StoreInfoSet_EditSelected">
-                  <ContentItem.DataSource>
-                    <ScreenExpressionTree>
-                      <ChainExpression>
-                        <MemberExpression Member="StoreInfoSetListDetail/Properties[StoreInfoSet]" />
-                        <CallExpression Target="EditSelected" />
-                      </ChainExpression>
-                    </ScreenExpressionTree>
-                  </ContentItem.DataSource>
-                </ContentItem>
-                <ContentItem Kind="Command"
-                             Name="StoreInfoSet_DeleteSelected">
-                  <ContentItem.DataSource>
-                    <ScreenExpressionTree>
-                      <ChainExpression>
-                        <MemberExpression Member="StoreInfoSetListDetail/Properties[StoreInfoSet]" />
-                        <CallExpression Target="DeleteSelected" />
-                      </ChainExpression>
-                    </ScreenExpressionTree>
-                  </ContentItem.DataSource>
-                </ContentItem>
-              </ContentItem.CommandItems>
-              <ContentItem.DataSource>
-                <ScreenExpressionTree>
-                  <ChainExpression>
-                    <MemberExpression Member="StoreInfoSetListDetail/Properties[StoreInfoSet]" />
-                  </ChainExpression>
-                </ScreenExpressionTree>
-              </ContentItem.DataSource>
-              <ContentItem.PropertySources>
-                <ControlPropertySource Property=":RootControl/Properties[AttachedLabelPosition]">
-                  <ScreenExpressionTree>
-                    <ChainExpression>
-                      <ConstantExpression ResultType=":String"
-                                          Value="Collapsed" />
-                    </ChainExpression>
-                  </ScreenExpressionTree>
-                </ControlPropertySource>
-                <ControlPropertySource Property=":RootControl/Properties[VerticalAlignment]">
-                  <ScreenExpressionTree>
-                    <ChainExpression>
-                      <ConstantExpression ResultType=":String"
-                                          Value="Stretch" />
-                    </ChainExpression>
-                  </ScreenExpressionTree>
-                </ControlPropertySource>
-              </ContentItem.PropertySources>
-              <ContentItem DataType="StoreInfo"
-                           Kind="Details"
-                           Name="RowTemplate">
-                <ContentItem.DataSource>
-                  <ScreenExpressionTree>
-                    <ChainExpression />
-                  </ScreenExpressionTree>
-                </ContentItem.DataSource>
-                <ContentItem DataType=":String"
-                             Kind="Value"
-                             Name="StoreName">
-                  <ContentItem.DataSource>
-                    <ScreenExpressionTree>
-                      <ChainExpression>
-                        <MemberExpression Member="StoreInfo/Properties[StoreName]" />
-                      </ChainExpression>
-                    </ScreenExpressionTree>
-                  </ContentItem.DataSource>
-                </ContentItem>
-                <ContentItem DataType=":String"
-                             Kind="Value"
-                             Name="StoreUri">
-                  <ContentItem.DataSource>
-                    <ScreenExpressionTree>
-                      <ChainExpression>
-                        <MemberExpression Member="StoreInfo/Properties[StoreUri]" />
-                      </ChainExpression>
-                    </ScreenExpressionTree>
-                  </ContentItem.DataSource>
-                </ContentItem>
-              </ContentItem>
-            </ContentItem>
-          </ContentItem>
-          <ContentItem Kind="Group"
-                       Name="DetailsColumn">
-            <ContentItem.PropertySources>
-              <ControlPropertySource Property=":ScrollableControl/Properties[IsVerticalScrollBarEnabled]">
-                <ScreenExpressionTree>
-                  <ChainExpression>
-                    <ConstantExpression ResultType=":Boolean"
-                                        Value="True" />
-                  </ChainExpression>
-                </ScreenExpressionTree>
-              </ControlPropertySource>
-              <ControlPropertySource Property=":ColumnsLayout/Properties[WeightedColumnWidth]">
-                <ScreenExpressionTree>
-                  <ChainExpression>
-                    <ConstantExpression ResultType=":Double"
-                                        Value="3" />
-                  </ChainExpression>
-                </ScreenExpressionTree>
-              </ControlPropertySource>
-            </ContentItem.PropertySources>
-            <ContentItem DataType="StoreInfo"
-                         Kind="Details"
-                         Name="StoreInfoDetails">
-              <ContentItem.Attributes>
-                <DisplayName Value="Store Info Details" />
-              </ContentItem.Attributes>
-              <ContentItem.DataSource>
-                <ScreenExpressionTree>
-                  <ChainExpression>
-                    <MemberExpression Member="StoreInfoSetListDetail/Properties[StoreInfoSet]" />
-                    <MemberExpression Member="SelectedItem" />
-                  </ChainExpression>
-                </ScreenExpressionTree>
-              </ContentItem.DataSource>
-              <ContentItem.PropertySources>
-                <ControlPropertySource Property=":RootControl/Properties[VerticalAlignment]">
-                  <ScreenExpressionTree>
-                    <ChainExpression>
-                      <ConstantExpression ResultType=":String"
-                                          Value="Top" />
-                    </ChainExpression>
-                  </ScreenExpressionTree>
-                </ControlPropertySource>
-              </ContentItem.PropertySources>
-              <ContentItem DataType=":String"
-                           Kind="Value"
-                           Name="StoreName1">
-                <ContentItem.DataSource>
-                  <ScreenExpressionTree>
-                    <ChainExpression>
-                      <MemberExpression Member="StoreInfo/Properties[StoreName]" />
-                    </ChainExpression>
-                  </ScreenExpressionTree>
-                </ContentItem.DataSource>
-              </ContentItem>
-              <ContentItem DataType=":String"
-                           Kind="Value"
-                           Name="StoreUri1">
-                <ContentItem.DataSource>
-                  <ScreenExpressionTree>
-                    <ChainExpression>
-                      <MemberExpression Member="StoreInfo/Properties[StoreUri]" />
-                    </ChainExpression>
-                  </ScreenExpressionTree>
-                </ContentItem.DataSource>
-              </ContentItem>
-            </ContentItem>
-          </ContentItem>
-        </ContentItem>
-      </ContentItem>
-    </Screen.RootContentItem>
-  </Screen>
+  
 
   <Association Name="NeededParts_AvailableParts">
     <AssociationEnd EntityType="NeededParts"

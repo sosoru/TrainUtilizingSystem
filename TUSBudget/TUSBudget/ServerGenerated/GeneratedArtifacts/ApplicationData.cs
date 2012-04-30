@@ -244,7 +244,8 @@ namespace ApplicationData.Implementation
         /// <param name="comment">Comment プロパティの初期値。</param>
         /// <param name="partsUri">PartsUri プロパティの初期値。</param>
         /// <param name="partsImageUri">PartsImageUri プロパティの初期値。</param>
-        public static AvailableParts CreateAvailableParts(global::System.Int32 id, global::System.String category, global::System.String name, global::System.String comment, global::System.String partsUri, global::System.String partsImageUri)
+        /// <param name="stock">Stock プロパティの初期値。</param>
+        public static AvailableParts CreateAvailableParts(global::System.Int32 id, global::System.String category, global::System.String name, global::System.String comment, global::System.String partsUri, global::System.String partsImageUri, global::System.Int32 stock)
         {
             AvailableParts availableParts = new AvailableParts();
             availableParts.Id = id;
@@ -253,6 +254,7 @@ namespace ApplicationData.Implementation
             availableParts.Comment = comment;
             availableParts.PartsUri = partsUri;
             availableParts.PartsImageUri = partsImageUri;
+            availableParts.Stock = stock;
             return availableParts;
         }
 
@@ -429,6 +431,30 @@ namespace ApplicationData.Implementation
         private global::System.String _PartsImageUri;
         partial void OnPartsImageUriChanging(global::System.String value);
         partial void OnPartsImageUriChanged();
+    
+        /// <summary>
+        /// 使用できるメタデータ ドキュメントはありません。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 Stock
+        {
+            get
+            {
+                return _Stock;
+            }
+            set
+            {
+                OnStockChanging(value);
+                ReportPropertyChanging("Stock");
+                _Stock = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Stock");
+                OnStockChanged();
+            }
+        }
+        private global::System.Int32 _Stock;
+        partial void OnStockChanging(global::System.Int32 value);
+        partial void OnStockChanged();
 
         #endregion
     

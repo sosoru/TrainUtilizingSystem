@@ -47,6 +47,7 @@
     <Property Name="Comment" Type="nvarchar" Nullable="false" MaxLength="255" />
     <Property Name="PartsUri" Type="nvarchar" Nullable="false" MaxLength="255" />
     <Property Name="PartsImageUri" Type="nvarchar" Nullable="false" MaxLength="255" />
+    <Property Name="Stock" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="PriceInfo">
     <Key>

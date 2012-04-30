@@ -24,6 +24,7 @@
           <ScalarProperty Name="Comment" ColumnName="Comment" />
           <ScalarProperty Name="PartsUri" ColumnName="PartsUri" />
           <ScalarProperty Name="PartsImageUri" ColumnName="PartsImageUri" />
+          <ScalarProperty Name="Stock" ColumnName="Stock" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

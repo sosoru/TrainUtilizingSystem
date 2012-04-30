@@ -251,6 +251,30 @@ namespace LightSwitchApplication
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.LightSwitch.BuildTasks.CodeGen", "10.0.0.0")]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public int Stock
+        {
+            get
+            {
+                return global::LightSwitchApplication.AvailableParts.DetailsClass.GetValue(this, global::LightSwitchApplication.AvailableParts.DetailsClass.PropertySetProperties.Stock);
+            }
+            set
+            {
+                global::LightSwitchApplication.AvailableParts.DetailsClass.SetValue(this, global::LightSwitchApplication.AvailableParts.DetailsClass.PropertySetProperties.Stock, value);
+            }
+        }
+        
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+        partial void Stock_IsReadOnly(ref bool result);
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+        partial void Stock_Validate(global::Microsoft.LightSwitch.EntityValidationResultsBuilder results);
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+        partial void Stock_Changed();
+
+        /// <summary>
+        /// No Modeled Description Available
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.LightSwitch.BuildTasks.CodeGen", "10.0.0.0")]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         public global::Microsoft.LightSwitch.Framework.EntityCollection<global::LightSwitchApplication.PriceInfo> PriceInfoCollection
         {
             get
@@ -430,6 +454,14 @@ namespace LightSwitchApplication
                     }
                 }
                 
+                public global::Microsoft.LightSwitch.Details.Framework.EntityStorageProperty<global::LightSwitchApplication.AvailableParts, global::LightSwitchApplication.AvailableParts.DetailsClass, int> Stock
+                {
+                    get
+                    {
+                        return base.GetItem(global::LightSwitchApplication.AvailableParts.DetailsClass.PropertySetProperties.Stock) as global::Microsoft.LightSwitch.Details.Framework.EntityStorageProperty<global::LightSwitchApplication.AvailableParts, global::LightSwitchApplication.AvailableParts.DetailsClass, int>;
+                    }
+                }
+                
                 public global::Microsoft.LightSwitch.Details.Framework.EntityCollectionProperty<global::LightSwitchApplication.AvailableParts, global::LightSwitchApplication.AvailableParts.DetailsClass, global::LightSwitchApplication.PriceInfo> PriceInfoCollection
                 {
                     get
@@ -459,6 +491,7 @@ namespace LightSwitchApplication
                 new string Comment { get; set; }
                 new string PartsUri { get; set; }
                 new string PartsImageUri { get; set; }
+                new int Stock { get; set; }
                 new global::System.Collections.IEnumerable PriceInfoCollection { get; }
                 new global::System.Collections.IEnumerable NeededPartsCollection { get; }
             }
@@ -730,6 +763,43 @@ namespace LightSwitchApplication
                 }
     
                 [global::System.Diagnostics.DebuggerBrowsable(global::System.Diagnostics.DebuggerBrowsableState.Never)]
+                public static readonly global::Microsoft.LightSwitch.Details.Framework.EntityStorageProperty<global::LightSwitchApplication.AvailableParts, global::LightSwitchApplication.AvailableParts.DetailsClass, int>.Entry
+                    Stock = new global::Microsoft.LightSwitch.Details.Framework.EntityStorageProperty<global::LightSwitchApplication.AvailableParts, global::LightSwitchApplication.AvailableParts.DetailsClass, int>.Entry(
+                        "Stock",
+                        global::LightSwitchApplication.AvailableParts.DetailsClass.PropertySetProperties._Stock_Stub,
+                        global::LightSwitchApplication.AvailableParts.DetailsClass.PropertySetProperties._Stock_ComputeIsReadOnly,
+                        global::LightSwitchApplication.AvailableParts.DetailsClass.PropertySetProperties._Stock_Validate,
+                        global::LightSwitchApplication.AvailableParts.DetailsClass.PropertySetProperties._Stock_GetImplementationValue,
+                        global::LightSwitchApplication.AvailableParts.DetailsClass.PropertySetProperties._Stock_SetImplementationValue,
+                        global::LightSwitchApplication.AvailableParts.DetailsClass.PropertySetProperties._Stock_OnValueChanged);
+                private static void _Stock_Stub(global::Microsoft.LightSwitch.Details.Framework.Base.DetailsCallback<global::LightSwitchApplication.AvailableParts.DetailsClass, global::Microsoft.LightSwitch.Details.Framework.EntityStorageProperty<global::LightSwitchApplication.AvailableParts, global::LightSwitchApplication.AvailableParts.DetailsClass, int>.Data> c, global::LightSwitchApplication.AvailableParts.DetailsClass d, object sf)
+                {
+                    c(d, ref d._Stock, sf);
+                }
+                private static bool _Stock_ComputeIsReadOnly(global::LightSwitchApplication.AvailableParts e)
+                {
+                    bool result = false;
+                    e.Stock_IsReadOnly(ref result);
+                    return result;
+                }
+                private static void _Stock_Validate(global::LightSwitchApplication.AvailableParts e, global::Microsoft.LightSwitch.EntityValidationResultsBuilder r)
+                {
+                    e.Stock_Validate(r);
+                }
+                private static int _Stock_GetImplementationValue(global::LightSwitchApplication.AvailableParts.DetailsClass d)
+                {
+                    return d.ImplementationEntity.Stock;
+                }
+                private static void _Stock_SetImplementationValue(global::LightSwitchApplication.AvailableParts.DetailsClass d, int v)
+                {
+                    d.ImplementationEntity.Stock = v;
+                }
+                private static void _Stock_OnValueChanged(global::LightSwitchApplication.AvailableParts e)
+                {
+                    e.Stock_Changed();
+                }
+    
+                [global::System.Diagnostics.DebuggerBrowsable(global::System.Diagnostics.DebuggerBrowsableState.Never)]
                 public static readonly global::Microsoft.LightSwitch.Details.Framework.EntityCollectionProperty<global::LightSwitchApplication.AvailableParts, global::LightSwitchApplication.AvailableParts.DetailsClass, global::LightSwitchApplication.PriceInfo>.Entry
                     PriceInfoCollection = new global::Microsoft.LightSwitch.Details.Framework.EntityCollectionProperty<global::LightSwitchApplication.AvailableParts, global::LightSwitchApplication.AvailableParts.DetailsClass, global::LightSwitchApplication.PriceInfo>.Entry(
                         "PriceInfoCollection",
@@ -791,6 +861,9 @@ namespace LightSwitchApplication
             
             [global::System.Diagnostics.DebuggerBrowsable(global::System.Diagnostics.DebuggerBrowsableState.Never)]
             private global::Microsoft.LightSwitch.Details.Framework.EntityStorageProperty<global::LightSwitchApplication.AvailableParts, global::LightSwitchApplication.AvailableParts.DetailsClass, string>.Data _PartsImageUri;
+            
+            [global::System.Diagnostics.DebuggerBrowsable(global::System.Diagnostics.DebuggerBrowsableState.Never)]
+            private global::Microsoft.LightSwitch.Details.Framework.EntityStorageProperty<global::LightSwitchApplication.AvailableParts, global::LightSwitchApplication.AvailableParts.DetailsClass, int>.Data _Stock;
             
             [global::System.Diagnostics.DebuggerBrowsable(global::System.Diagnostics.DebuggerBrowsableState.Never)]
             private global::Microsoft.LightSwitch.Details.Framework.EntityCollectionProperty<global::LightSwitchApplication.AvailableParts, global::LightSwitchApplication.AvailableParts.DetailsClass, global::LightSwitchApplication.PriceInfo>.Data _PriceInfoCollection;

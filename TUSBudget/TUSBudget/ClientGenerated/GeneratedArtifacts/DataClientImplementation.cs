@@ -459,6 +459,27 @@ namespace LightSwitchApplication.Implementation
         }
         private string _PartsImageUri;
         
+        [global::System.Runtime.Serialization.DataMember()]
+        [global::System.ComponentModel.DataAnnotations.RoundtripOriginal()]
+        public int Stock
+        {
+            get
+            {
+                return this._Stock;
+            }
+            set
+            {
+                if (this._Stock != value)
+                {
+                    this.RaiseDataMemberChanging("Stock");
+                    this.ValidateProperty("Stock", value);
+                    this._Stock = value;
+                    this.RaiseDataMemberChanged("Stock");
+                }
+            }
+        }
+        private int _Stock;
+        
         [global::System.ComponentModel.DataAnnotations.Association("AvailableParts_PriceInfo", "Id", "AvailableParts_PriceInfo")]
         [global::System.Xml.Serialization.XmlIgnore()]
         public global::System.ServiceModel.DomainServices.Client.EntityCollection<PriceInfo> PriceInfoCollection
