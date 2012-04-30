@@ -18,10 +18,10 @@ MotorControllerC mtrC;
 MotorControllerD mtrD;
 
 template <Direction dir>
-void setPacket(MtrControllerPacket *ppacket)
+void setPacket(MtrControllerPacket *ppacket, uint8_t duty)
 {
 	ppacket->set_Direciton(dir);
-	ppacket->set_DutyValue(100);
+	ppacket->set_DutyValue(duty);
 	ppacket->set_ControlMode(DutySpecifiedMode);
 }
 
@@ -32,49 +32,55 @@ inline void sample_init(t_cnt *pcnt)
 }
 
 template < class t_cnt, Direction dir>
-inline void sample_process(t_cnt *pcnt)
+inline void sample_process(t_cnt *pcnt, uint8_t duty)
 {
 	MtrControllerPacket packet;
 	
-	setPacket<dir>(&packet);
+	setPacket<dir>(&packet, duty);
 	pcnt->set_Packet(&packet);
 	pcnt->Process();
 	
 };
 
-#define SAMPLING_FREQ  19531.25f
 int main(void)
 {	
+	uint8_t i;
 	
 	MCUCR = 0b01100000; //todo: turn off bods
 	MCUSR = 0; // Do not omit to clear this resistor, otherwise suffer a terrible reseting cause.
-	
+
 	sample_init<MotorControllerA>(&mtrA);
 	sample_init<MotorControllerB>(&mtrB);
 	sample_init<MotorControllerC>(&mtrC);
 	sample_init<MotorControllerD>(&mtrD);
-	while(1){
-			
-		sample_process<MotorControllerA, Positive>(&mtrA);
-		sample_process<MotorControllerB, Positive>(&mtrB);
-		sample_process<MotorControllerC, Positive>(&mtrC);
-		sample_process<MotorControllerD, Positive>(&mtrD);
-		
-		_delay_ms(3000);
-		
-		sample_process<MotorControllerA, Negative>(&mtrA);
-		sample_process<MotorControllerB, Negative>(&mtrB);
-		sample_process<MotorControllerC, Negative>(&mtrC);
-		sample_process<MotorControllerD, Negative>(&mtrD);
-
-		_delay_ms(3000);
-
-		sample_process<MotorControllerA, Standby>(&mtrA);
-		sample_process<MotorControllerB, Standby>(&mtrB);
-		sample_process<MotorControllerC, Standby>(&mtrC);
-		sample_process<MotorControllerD, Standby>(&mtrD);
 	
-		_delay_ms(5000);
+	while(1)
+	{	
+		sample_process<MotorControllerB, Positive>(&mtrB, 200);
+		_delay_ms(1000);
+		//for(i=0; i<150; ++i)
+		//{
+			//sample_process<MotorControllerC, Positive>(&mtrC, i);
+			//_delay_ms(200);
+		//}
+		//
+		//for(i=150; i>0; --i)
+		//{	
+			//sample_process<MotorControllerC, Positive>(&mtrC, i);
+			//_delay_ms(200);
+		//}			
+		//
+		//for(i=0; i<150; ++i)
+		//{
+			//sample_process<MotorControllerC, Negative>(&mtrC, i);
+			//_delay_ms(200);
+		//}
+		//
+		//for(i=150; i>0; --i)
+		//{	
+			//sample_process<MotorControllerC, Negative>(&mtrC, i);
+			//_delay_ms(200);
+		//}			
 
     }
 }

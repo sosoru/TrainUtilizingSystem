@@ -44,12 +44,12 @@ namespace MotorController
 		
 			ControlMode m_mode;			
 			Direction m_dir;
+			uint8_t m_voltage;
+			
 		public :
-			
-			uint8_t duty;
-			
+						
 			MotorProcess()
-				: fb_bef(0.0f), fb_bef2(0.0f), fb_cur(0.0f), internal_duty(0.0f), duty(0)
+				: fb_bef(0.0f), fb_bef2(0.0f), fb_cur(0.0f), internal_duty(0.0f), m_voltage(0), m_mode(DutySpecifiedMode), m_dir(Standby)
 			{
 			}
 			
@@ -70,7 +70,7 @@ namespace MotorController
 				}
 				
 				this->m_dir = ppacket->get_Direction();
-				this->internal_duty = ppacket->get_VoltageValue();
+				this->m_voltage = ppacket->get_VoltageValue();
 				this->m_mode = ppacket->get_ControlMode();
 				Pulse::SetDuty(ppacket->get_DutyValue());
 			}				
@@ -79,7 +79,7 @@ namespace MotorController
 			{
 				ppacket->set_ControlMode(this->m_mode);
 				ppacket->set_Direciton(this->m_dir);
-				ppacket->set_VoltageValue(this->internal_duty);
+				ppacket->set_VoltageValue(this->m_voltage);
 				ppacket->set_DutyValue(typename Pulse::GetDuty());
 			}
 			
@@ -97,6 +97,8 @@ namespace MotorController
 				{
 					float result;
 					
+					InputPins<PortA, AdcNum>::InitInput();
+					
 					AnalogToDigital::ControlSetUp(ADCEnable, StartLater, FreeRunStopped, InterruptDisable, Div128);
 					AnalogToDigital::SelectionSetUp(AVCC, AlignLeft, (AnalogChannel)AdcNum);		
 					AnalogToDigital::StartConversion();
@@ -106,9 +108,9 @@ namespace MotorController
 					
 					//fb_bef2 = fb_bef;
 					fb_bef = fb_cur;
-					fb_cur = (float)(duty) - result;
+					fb_cur = (float)(m_voltage) - result;
 		
-					internal_duty +=  ((fb_cur - fb_bef) * 0.5f)  + (fb_cur * 0.1f);
+					internal_duty +=  ((fb_cur - fb_bef) * 0.1f)  + (fb_cur * 0.3f);
 					
 					if(internal_duty > 150.0f)
 						internal_duty = 150.0f;

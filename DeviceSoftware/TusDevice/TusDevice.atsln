@@ -17,6 +17,10 @@ Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "module_UartControl", "modul
 EndProject
 Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "module_MotorController", "module_MotorController\module_MotorController.cppproj", "{28E3BD3E-1C21-4B26-A20F-AAE3CB7B9AB8}"
 EndProject
+Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "libtuspp", "libtuspp\libtuspp.cppproj", "{6A87787C-55EA-47E3-9359-1827E8F637B0}"
+EndProject
+Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "EthernetBridgePp", "EthernetBridgePp\EthernetBridgePp.cppproj", "{1267818C-5A51-4E46-A843-2688E1945EA0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|AVR = Debug|AVR
@@ -55,6 +59,14 @@ Global
 		{28E3BD3E-1C21-4B26-A20F-AAE3CB7B9AB8}.Debug|AVR.Build.0 = Debug|AVR
 		{28E3BD3E-1C21-4B26-A20F-AAE3CB7B9AB8}.Release|AVR.ActiveCfg = Release|AVR
 		{28E3BD3E-1C21-4B26-A20F-AAE3CB7B9AB8}.Release|AVR.Build.0 = Release|AVR
+		{6A87787C-55EA-47E3-9359-1827E8F637B0}.Debug|AVR.ActiveCfg = Debug|AVR
+		{6A87787C-55EA-47E3-9359-1827E8F637B0}.Debug|AVR.Build.0 = Debug|AVR
+		{6A87787C-55EA-47E3-9359-1827E8F637B0}.Release|AVR.ActiveCfg = Release|AVR
+		{6A87787C-55EA-47E3-9359-1827E8F637B0}.Release|AVR.Build.0 = Release|AVR
+		{1267818C-5A51-4E46-A843-2688E1945EA0}.Debug|AVR.ActiveCfg = Debug|AVR
+		{1267818C-5A51-4E46-A843-2688E1945EA0}.Debug|AVR.Build.0 = Debug|AVR
+		{1267818C-5A51-4E46-A843-2688E1945EA0}.Release|AVR.ActiveCfg = Release|AVR
+		{1267818C-5A51-4E46-A843-2688E1945EA0}.Release|AVR.Build.0 = Release|AVR
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

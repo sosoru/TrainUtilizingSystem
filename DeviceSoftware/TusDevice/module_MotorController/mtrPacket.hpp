@@ -45,8 +45,8 @@ namespace MotorController
 		uint8_t get_DutyValue()				{ return pdata[2]; }
 		void set_DutyValue(uint8_t val)		{ pdata[2] = val; }	
 			
-		float get_VoltageValue()			{ return *((float*)&pdata[7]); }
-		void set_VoltageValue(float val)	{ *((float*)&pdata[7]) = val; }
+		uint8_t get_VoltageValue()			{ return *((uint8_t*)&pdata[7]); }
+		void set_VoltageValue(uint8_t val)	{ *((uint8_t*)&pdata[7]) = val; }
 	}; 
 	
 }

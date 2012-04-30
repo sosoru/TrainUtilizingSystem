@@ -14,27 +14,26 @@
  * Note: there is a version number in the text. Search for tuxgraphics
  
  *********************************************/
-#include "global.h"
+#include "EthernetBridge.hpp"
 #include <avr/io.h>
+#include "avr_base.hpp"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <avr/pgmspace.h>
 #include <avr/interrupt.h>
 #include <avr/wdt.h>
-#include "timer.h"
-#include "lcd_sc2004/sc2004.h"
-#include "eth/ip_arp_udp_tcp.h"
-#include "eth/enc28j60.h"
-#include "eth/timeout.h"
-#include "eth/avr_compat.h"
-#include "eth/net.h"
-#include "eth/arp_table.h"
+#include "eth/ip_arp_udp_tcp.hpp"
+#include "eth/enc28j60.hpp"
+#include "eth/timeout.hpp"
+#include "eth/avr_compat.hpp"
+#include "eth/net.hpp"
+#include "eth/arp_table.hpp"
 
-#include "EthernetBridge.h"
-#include "tus_mst/tus_mstcfg.h"
-#include "tus_mst/tus_mstspi.h"
-#include "tus_mst/dispat_packet.h"
+#include "tus_mst/tus_mstcfg.hpp"
+
+using namespace EthernetBridge;
+
 // please modify the following two lines. mac and ip have to be unique
 // in your local area network. You can not have the same numbers in
 // two devices:
@@ -50,16 +49,6 @@ BYTE g_parentid = 24;
 #define BUFFER_SIZE 128
 static uint8_t buf[BUFFER_SIZE+1];
 
-static sc2004_port port_sc2004;
-
-#define LCD_BUF_SIZE (LCD_HEIGHT * LCD_WIDTH)
-static char lcd_buf[LCD_BUF_SIZE];
-static uint8_t bufptr = 0;
-
-#define	TRANS_LCD(p)	cli(); \
-						memcpy((void*)lcd_buf, (void*)(p), LCD_BUF_SIZE); \
-						sei();
-
 //
 //SPI_TRANS_PORT g_spi_trans_port = SPI_TRANS_PORTINST;
 //
@@ -68,17 +57,14 @@ static uint8_t bufptr = 0;
 void timer_interrupt();
 
 ISR(TIMER1_COMPA_vect)
-{
-	//if(sc2004_ReadBusyAndAddress(0))
-		//return; // busy
-				
-	if(bufptr >= LCD_BUF_SIZE)
-	{
-		bufptr = 0;
-		sc2004_SetAddr_DDRAM(0);
-	}
-			
-	sc2004_WriteData(lcd_buf[bufptr++]);
+{				
+	//if(bufptr >= LCD_BUF_SIZE)
+	//{
+		//bufptr = 0;
+		//sc2004_SetAddr_DDRAM(0);
+	//}
+			//
+	//sc2004_WriteData(lcd_buf[bufptr++]);
 }
 
 void EthernetInit()
@@ -86,7 +72,7 @@ void EthernetInit()
     _delay_loop_1(50); // 12ms
 
     /* enable PD4, as input */
-    DDRD&= ~(1<<DDRD4);
+	AVRCpp::InputPin4<AVRCpp::PortD>::InitInput();
 
     /*initialize enc28j60*/
     enc28j60Init(mymac);
@@ -108,54 +94,6 @@ void EthernetInit()
     //init the ethernet/ip layer:
     init_ip_arp_udp_tcp(mymac,myip,80);
 
-}
-
-void LCDInit()
-{
-	port_sc2004.pport_data = &PORTC;
-	port_sc2004.ppin_data = &PINC;
-	port_sc2004.pddr_data = &DDRC;
-	
-	port_sc2004.pport_rs = &PORTF;
-	port_sc2004.ppin_rs = &PINF;
-	port_sc2004.pddr_rs = &DDRF;
-	port_sc2004.portno_rs = 6;
-	
-	port_sc2004.pport_rw = &PORTE;
-	port_sc2004.ppin_rw = &PINE;
-	port_sc2004.pddr_rw = &DDRE;
-	port_sc2004.portno_rw = 3;
-	
-	port_sc2004.pport_enable = &PORTE;
-	port_sc2004.ppin_enable = &PINE;
-	port_sc2004.pddr_enable = &DDRE;
-	port_sc2004.portno_enable = 2;
-	
-	sc2004_setPort(&port_sc2004);
-	sc2004_init();
-
-	memset(lcd_buf, 0x20, LCD_BUF_SIZE);
-	
-	//timer0Init();
-	//timer0SetPrescaler(TIMER_CLK_DIV8);
-	//timerAttach(TIMER0OUTCOMPARE_INT, timer_interrupt);
-	
-	    // 15.11.1 タイマ／カウンタ1制御レジスタA (初期値は0x00なので必要ない)
-    //         ++-------COM1A1:COM1A0 00 OC1A切断
-    //         ||++---- COM1B1:COM1B0 00 OC1B切断
-    //         ||||  ++ WGM11:WGM10   00 波形生成種別(4bitの下位2bit)
-    TCCR1A = 0b00000000;
-
-    // 15.11.2 タイマ／カウンタ1制御レジスタB
-    //         +------- ICNC1          0
-    //         |+------ ICES1          0
-    //         || ++--- WGM13:WGM12    01  波形生成種別(4bitの上位2bit) CTC top=OCR1A
-    //         || ||+++ CS12:CS11:CS10 010 8分周
-    TCCR1B = 0b00001100;
-
-    TIMSK = 0b00010000;
-	OCR1A = 250;
-	sei();
 }
 
 void BoardInit()
@@ -181,20 +119,54 @@ void BoardInit()
 	EthernetInit();
 	//LCDInit();
 	
-	for(i=0; i<DEVICES_COUNT; ++i)
-	{
-		dispat_init_buffer(i);
-	}
-	
-	//spi
-	tus_mstspi_trans_init();
-	for(i=0; i<DEVICES_COUNT; ++i)
-	{
-		tus_mstspi_slave_init(i);
-	}
+	SpiToModule::Init();
+	// for module in range(A, H):
+	ModuleA::Init();	
+	ModuleB::Init();	
+	ModuleC::Init();	
+	ModuleD::Init();	
+	ModuleE::Init();	
+	ModuleF::Init();	
+	ModuleG::Init();	
+	ModuleH::Init();	
 	
 	
 } 
+
+inline bool IsForChildren(const EthPacket &packet)
+{
+	return packet.destId.SubnetAddr == g_parentid;
+}
+
+bool SendToChildren(EthPacket &received)
+{	
+	bool result = false;
+	
+	// for m in modules : m.transmit()
+	if(ModuleA::Transmit(received)){result = true;}
+	else if (ModuleB::Transmit(received)){result = true;}
+	else if (ModuleC::Transmit(received)){result = true;}
+	else if (ModuleD::Transmit(received)){result = true;}
+	else if (ModuleE::Transmit(received)){result = true;}
+	else if (ModuleF::Transmit(received)){result = true;}
+	else if (ModuleG::Transmit(received)){result = true;}
+	else if (ModuleH::Transmit(received)){result = true;}
+	
+	return result;
+}
+
+void StockToChildren(const EthPacket* ppacket)
+{	
+	if(ModuleA::Stock(ppacket)){}
+	else if(ModuleB::Stock(ppacket)){}
+	else if(ModuleC::Stock(ppacket)){}
+	else if(ModuleD::Stock(ppacket)){}
+	else if(ModuleE::Stock(ppacket)){}
+	else if(ModuleF::Stock(ppacket)){}
+	else if(ModuleG::Stock(ppacket)){}
+	else if(ModuleH::Stock(ppacket)){}
+
+}
 
 uint8_t ReceiveFromEthernet()
 {
@@ -208,7 +180,7 @@ uint8_t ReceiveFromEthernet()
 	/*plen will ne unequal to zero if there is a valid 
 		* packet (without crc error) */
 	if(plen==0){
-			return FALSE;
+			return false;
 	}
     	                    
 	// arp is broadcast if unknown but a host may also
@@ -218,18 +190,18 @@ uint8_t ReceiveFromEthernet()
 			make_arp_answer_from_request(buf);
 			arp_record * rec = (arp_record*)&buf[ETH_ARP_DST_MAC_P];
 			eth_arptable_add(rec);
-			return TRUE;
+			return true;
 	}
 
 	// check if ip packets are for us:
 	if(eth_type_is_ip_and_my_ip(buf,plen)==0){
-			return TRUE;
+			return true;
 	}
                 
 	if(buf[IP_PROTO_P]==IP_PROTO_ICMP_V && buf[ICMP_TYPE_P]==ICMP_TYPE_ECHOREQUEST_V){
 			// a ping packet, let's send pong
 			make_echo_reply_from_request(buf,plen);
-			return TRUE;
+			return true;
 	}
 	//
 	// udp start, we listen on udp port 8000=0x1F40
@@ -237,46 +209,38 @@ uint8_t ReceiveFromEthernet()
 			payloadlen=buf[UDP_LEN_L_P]-UDP_HEADER_LEN;
 			
 			EthPacket * ppacket = (EthPacket*)&buf[UDP_DATA_P];
-			if(ppacket->destId.ParentPart == g_parentid)
+			if(IsForChildren((const EthPacket&)ppacket))
 			{
-				uint8_t id = ppacket->destId.ModuleAddr;
-				EthPacket * pdest;
-	
-				if(dispat_inc_buffer(id, &pdest))
-				{					
-					PORTB ^= _BV(PORTB5);
-					memcpy((void*)pdest, (void*)ppacket, sizeof(EthPacket));
-				}	
-				
-				return TRUE;
+				StockToChildren(ppacket);
+				return true;
 			}							
 	}			
 	
-	return FALSE;
+	return false;
 //ANSWER:
 			//make_udp_reply_from_request(buf,str,strlen(str),MYUDPPORT);
 	//
 }  
 
-uint8_t FindArcRecord(EthPacket *ppacket, arp_record *parc)
+uint8_t FindArcRecord(const EthPacket *ppacket, arp_record *parc)
 {	
 	memcpy((void*)&parc->ipAddr, (void*)myip, 4);
 	parc->ipAddr[3] = 105;// ppacket->destId.SubnetAddr; // Parent part of device id equals last of Ip address
 	
 	if(eth_arptable_get(parc))
 	{
-		return TRUE;
+		return true;
 	}
 	else
 	{
 		make_arp_request(buf, parc->ipAddr);
-		return FALSE;
+		return false;
 	}
 }
 
 void SendPacket(EthPacket *ppacket, arp_record *parc)
 {
-	make_udp_request(buf, (uint8_t*)ppacket, sizeof(EthPacket), MYUDPPORT, MYUDPPORT, parc);
+	make_udp_request(buf, (char*)ppacket->raw_array, (uint8_t)sizeof(EthPacket), (uint16_t)MYUDPPORT, (uint16_t)MYUDPPORT, (parc));
 }
 
 void CreateEthPacketFromReceived(EthPacket * pdest, EthPacket * psrc)
@@ -289,7 +253,40 @@ void CreateEthPacketFromReceived(EthPacket * pdest, EthPacket * psrc)
 	
 }
 
-void main(void)
+bool SendToEthernet(EthPacket *ppacket)
+{
+	arp_record rec;
+	
+	if(FindArcRecord(ppacket, &rec))
+	{
+		SendPacket(ppacket, &rec);
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+void DispatchProcess()
+{
+	EthPacket received;
+	
+	while(SendToChildren(received))
+	{
+		if(IsForChildren(received))
+		{
+			StockToChildren(&received);
+		}
+		else
+		{
+			SendToEthernet(&received);
+		}			
+			
+	}
+}
+
+int main(void)
 {
 	uint8_t i,j;
 	
@@ -299,7 +296,7 @@ void main(void)
 #ifndef DEBUG
 	DDRB = 0xff;
 	PORTB |= _BV(PORTB4);
-	_delay_ms(1000);
+	//_delay_ms(1000);
 	PORTB = 0;
 #endif
 	
@@ -307,60 +304,10 @@ void main(void)
 		
 	while(1)
 	{
-		ReceiveFromEthernet();		
-				
-		//spi process
-		for(i=0; i<DEVICES_COUNT; ++i) // except device number of itself
-		{
-			EthPacket buffer[PACKET_BUFFER_COUNT];
-			EthPacket *psend;
-			
-			tus_mstspi_slave_init(i);
-				
-			for(j=0; j<PACKET_BUFFER_COUNT; ++j)
-			{
-				buffer[j].raw_array[0] = 0x00; //init			
-			
-				if(dispat_pop_buffer(i, &psend))
-				{
-					PORTB ^= _BV(PORTB6);
-					tus_mstspi_trans(psend, &buffer[j]);						
-				}
-				else
-				{
-					tus_mstspi_trans(NULL, &buffer[j]);
-				}
-			}
-						
-			for(j=0; j<PACKET_BUFFER_COUNT; ++j)
-			{
-				EthPacket *pwrite;
-				if(buffer[j].raw_array[0] == 0) //nothing was received
-					continue;
-					
-				buffer[j].srcId.SubnetAddr = g_parentid;
-				buffer[j].srcId.ModuleAddr = i;
-					
-				if(dispat_inc_buffer(i, &pwrite))
-				{
-					memcpy((void*)pwrite, (void*)&buffer[j], sizeof(EthPacket));	
-				}
-			}
-		}
+		while(ReceiveFromEthernet());		
 		
-		//eth send process
-		for(i=0; i<DEVICES_COUNT; ++i)
-		{
-			arp_record rec;
-			EthPacket *ppacket;
-				
-			while(dispat_pop_buffer(i, &ppacket))
-			{
-				if(FindArcRecord(ppacket, &rec))
-				{
-					SendPacket(ppacket, &rec);
-				}
-			}
-		}
+		DispatchProcess();
 	}			
+	
+	return 0;
 }
