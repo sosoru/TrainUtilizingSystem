@@ -1,13 +1,13 @@
 /*
- * avr_base.hpp
+ * module_PointController.hpp
  *
- * Created: 2012/04/21 11:37:41
+ * Created: 2012/04/30 22:10:39
  *  Author: Administrator
  */ 
 
 
-#ifndef AVR_BASE_H_
-#define AVR_BASE_H_
+#ifndef MODULE_POINTCONTROLLER_H_
+#define MODULE_POINTCONTROLLER_H_
 
 #include <IO.h>
 #include <DiverseIO.h>
@@ -26,7 +26,8 @@
 #include <PeekableStaticQueue.h>
 
 #include <math.h>
+#include "../libtus/packet.h"
 
-#define F_CPU 16000000
+#define F_CPU 20000000
 
-#endif /* AVR_BASE_H_ */
+#endif /* MODULE_POINTCONTROLLER_H_ */
