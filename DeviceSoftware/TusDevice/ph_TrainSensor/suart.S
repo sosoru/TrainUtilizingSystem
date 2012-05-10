@@ -20,8 +20,8 @@
 #define	BPS	68	/* Bit delay. (see above table) */
 #define	BIDIR	0	/* 0:Separated Tx/Rx, 1:Shared Tx/Rx */
 
-#define	OUT_1		sbi _SFR_IO_ADDR(DDRB), 2	/* Output 1 */
-#define	OUT_0		cbi _SFR_IO_ADDR(DDRB), 2	/* Output 0 */
+#define	OUT_1		sbi _SFR_IO_ADDR(PORTB), 2	/* Output 1 */
+#define	OUT_0		cbi _SFR_IO_ADDR(PORTB), 2	/* Output 0 */
 #define	SKIP_IN_1	sbis _SFR_IO_ADDR(PINB), 1	/* Skip if 1 */
 #define	SKIP_IN_0	sbic _SFR_IO_ADDR(PINB), 1	/* Skip if 0 */
 
@@ -66,6 +66,8 @@ xmit:
 
 	com	r24		;C = start bit
 	ldi	r25, 10		;Bit counter
+	ldi r26, 0		;parity check
+
 	cli			;Start critical section
 
 1:	ldi	r23, BPS-1	;----- Bit transferring loop 
@@ -95,12 +97,13 @@ xmit:
 .func rcvr
 rcvr:
 	in	r17, _SFR_IO_ADDR(SREG)	;Save flags
-
 	ldi	r24, 0x80	;Receiving shift reg
+
 	cli			;Start critical section
 
 1:	SKIP_IN_1		;Wait for idle
 	rjmp	1b
+
 2:	SKIP_IN_0		;Wait for start bit
 	rjmp	2b
 	ldi	r25, BPS/2	;Wait for half bit time

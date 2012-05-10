@@ -49,16 +49,17 @@ namespace module_PointController
 		static inline void Brake()
 		{
 			ControllApin::Set();
-			ControllBpin::Clear();
+			ControllBpin::Set();
 		}
 		
 		static inline void Positive()
 		{
+			Stop(); _delay_us(100);
 			Brake();
 			_dynamic_delay_ms<1>(State.DeadTime);
 			
+			Stop(); _delay_us(100);
 			ControllApin::Set();
-			ControllBpin::Clear();
 			
 			_dynamic_delay_ms<10>(State.ChangingTime);
 			Stop();
@@ -66,10 +67,11 @@ namespace module_PointController
 		
 		static inline void Negative()
 		{
+			Stop(); _delay_us(100);
 			Brake();
 			_dynamic_delay_ms<1>(State.DeadTime);
 			
-			ControllApin::Clear();
+			Stop(); _delay_us(100);
 			ControllBpin::Set();
 			
 			_dynamic_delay_ms<10>(State.ChangingTime);

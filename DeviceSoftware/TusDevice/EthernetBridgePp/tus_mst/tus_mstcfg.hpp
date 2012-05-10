@@ -71,6 +71,11 @@ namespace EthernetBridge{
 					SpiToModule::SelectSlave<slave_module>();
 				}
 				
+				static inline bool IsStocked()
+				{
+					return Dispatcher::Count() != 0;
+				}
+				
 				static inline bool Stock(const EthPacket* ppacket)
 				{
 					if(ppacket->destId.ModuleAddr != device_child_id)
@@ -84,6 +89,11 @@ namespace EthernetBridge{
 					
 					return true;
 				}
+				
+				static inline bool IsReceivedCorrectly(EthPacket& packet)
+				{
+					return packet.srcId.InternalAddr == device_child_id;
+				}					
 								
 				static inline bool Transmit(EthPacket& received)
 				{
@@ -97,7 +107,7 @@ namespace EthernetBridge{
 						SpiToModule::TransData<slave_module>(NULL, received);
 					}			
 					
-					return true;
+					return IsReceivedCorrectly(received);
 				}
 		};
 	}	

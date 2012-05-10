@@ -99,6 +99,10 @@ void EthernetInit()
 void BoardInit()
 {
 	uint8_t i;
+	
+#ifndef DEBUG
+	_delay_ms(100);
+#endif
 			
 	DDRA = 0xff;
 	DDRB = 0xff;
@@ -118,7 +122,7 @@ void BoardInit()
 	
 	EthernetInit();
 	//LCDInit();
-	
+
 	SpiToModule::Init();
 	// for module in range(A, H):
 	ModuleA::Init();	
@@ -136,23 +140,6 @@ void BoardInit()
 inline bool IsForChildren(const EthPacket &packet)
 {
 	return packet.destId.SubnetAddr == g_parentid;
-}
-
-bool SendToChildren(EthPacket &received)
-{	
-	bool result = false;
-	
-	// for m in modules : m.transmit()
-	if(ModuleA::Transmit(received)){result = true;}
-	else if (ModuleB::Transmit(received)){result = true;}
-	else if (ModuleC::Transmit(received)){result = true;}
-	else if (ModuleD::Transmit(received)){result = true;}
-	else if (ModuleE::Transmit(received)){result = true;}
-	else if (ModuleF::Transmit(received)){result = true;}
-	else if (ModuleG::Transmit(received)){result = true;}
-	else if (ModuleH::Transmit(received)){result = true;}
-	
-	return result;
 }
 
 void StockToChildren(const EthPacket* ppacket)
@@ -268,22 +255,39 @@ bool SendToEthernet(EthPacket *ppacket)
 	}
 }
 
-void DispatchProcess()
+template < class t_module >
+void DispatchModulePackets()
 {
 	EthPacket received;
 	
-	while(SendToChildren(received))
+	do
 	{
-		if(IsForChildren(received))
+		if(t_module::Transmit(received))
 		{
-			StockToChildren(&received);
+			if(IsForChildren(received))
+			{
+				StockToChildren(&received);
+			}
+			else
+			{
+				SendToEthernet(&received);
+			}			
 		}
-		else
-		{
-			SendToEthernet(&received);
-		}			
-			
-	}
+		
+	}while(t_module::IsStocked());
+	
+}
+
+void DispatchProcess()
+{
+	DispatchModulePackets<ModuleA>();
+	DispatchModulePackets<ModuleB>();
+	DispatchModulePackets<ModuleC>();
+	DispatchModulePackets<ModuleD>();
+	DispatchModulePackets<ModuleE>();
+	DispatchModulePackets<ModuleF>();
+	DispatchModulePackets<ModuleG>();
+	DispatchModulePackets<ModuleH>();
 }
 
 int main(void)

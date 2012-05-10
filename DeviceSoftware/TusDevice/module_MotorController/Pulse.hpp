@@ -34,8 +34,9 @@ namespace MotorController
 		TimerCounter1::ChannelAPin::InitOutput();
 		TimerCounter1::ChannelBPin::InitOutput();
 		
-		TimerCounter1::SetUp(NoPrescaleB, FastPWM16BitsCount8, ClearA, ClearB ,Off, Fall);
-		
+		TimerCounter1::SetUp(NoPrescaleB, FastPWM16BitsCount8, ClearA, ClearB, Off, Fall);
+		TimerCounter1::CompareMatchAInterrupt::IsEnabled();
+			
 	}
 	
 	template<>

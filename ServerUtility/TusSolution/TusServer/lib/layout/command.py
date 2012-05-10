@@ -8,8 +8,6 @@ class Command(object):
     def Execute(self, train):
         self.__train = train
 
-    
-
     @property
     def Description(self):
         return "base command"

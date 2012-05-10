@@ -56,7 +56,7 @@ int main(void)
 	
 	while(1)
 	{	
-		sample_process<MotorControllerB, Positive>(&mtrB, 200);
+		sample_process<MotorControllerA, Positive>(&mtrA, 200);
 		_delay_ms(1000);
 		//for(i=0; i<150; ++i)
 		//{

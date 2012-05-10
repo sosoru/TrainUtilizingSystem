@@ -49,6 +49,23 @@ void InitBoard()
 	DDRD = 0xFF; // PortA and PortD are set to output for point module 
 }
 
+void test_packet(ptrPacket& packet, PositionEnum pos)
+{
+	uint8_t i;
+	PointModuleState *pstates;
+	
+	memset((void*)&packet, 0x00, sizeof(ptrPacket));
+	packet.set_StateArrayLength(8);
+	pstates = packet.get_StateArray();
+	
+	for(i=0; i<8; ++i)
+	{
+		pstates[i].DeadTime = 50;
+		pstates[i].ChangingTime = 20;
+		pstates[i].Position = pos;
+	}
+}
+
 int main(void)
 {
 	ptrPacket packet;
@@ -57,21 +74,18 @@ int main(void)
 	MCUCR = 0b01100000; //todo: turn off bods
 	MCUSR = 0; // Do not omit to clear this resistor, otherwise suffer a terrible reseting cause.
 	
-	InitBoard();
-	
-	memset((void*)&packet, 0x00, sizeof(ptrPacket));
-	packet.set_StateArrayLength(8);
-	pstates = packet.get_StateArray();
-	
-	pstates[0].DeadTime = 50;
-	pstates[0].ChangingTime = 20;
-	pstates[0].Position = PositivePosition;
-	
-	ApplyState(packet);
+	InitBoard();	
     
 	while(1)
     {
+		test_packet(packet, PositivePosition);
+		ApplyState(packet);
 		Execute();
+		_delay_ms(1000);
+		
+		test_packet(packet, NegativePosition);
+		ApplyState(packet);
+		Execute();	
 		_delay_ms(1000);
 	}
 	
