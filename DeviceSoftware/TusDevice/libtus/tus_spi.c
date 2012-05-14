@@ -9,12 +9,13 @@
 #define BUF_COUNT 4
 
 // nSS is set to low while the hardwares are communicating.
-#define IS_SPI_COMMUNICATING !(TUS_COTROL_PIN & (1 << TUS_CONTROL_SS))
+#define IS_SPI_COMMUNICATING !(TUS_CONTROL_PIN & (1 << TUS_CONTROL_SS))
 
 #include "tus.h"
 #include "tus_cfg.h"
 #include "packet.h"
 #include "tus_spi.h"
+#include <stdint.h>
 #include <stdlib.h>
 #include <avr/io.h>
 #include <avr/delay.h>
@@ -26,6 +27,7 @@ static uint8_t is_communicated = FALSE;
 
 static EthPacket recv_buffer[BUF_COUNT];
 static uint16_t recv_buffer_bytepos = 0;
+#define RECEIVE_BUFFER_BYTESIZE ((uint16_t)((uint16_t)sizeof(EthPacket) * (uint16_t)BUF_COUNT))
 
 static spi_send_object send_buffer[BUF_COUNT];
 static uint8_t send_buffer_pos = 0;
@@ -37,16 +39,14 @@ ISR(SPI_STC_vect)
 {
 	uint8_t i;
 	uint8_t received = SPDR;
-	uint8_t recvPosSize = sizeof(EthPacket) * BUF_COUNT;
-	uint8_t sendPosSize = sizeof(EthPacket) * BUF_COUNT;
 		
 	sbi(TUS_CONTROL_DDR, TUS_CONTROL_MISO);
 	//receive
-	if(recv_buffer_bytepos < recvPosSize)
+	if(recv_buffer_bytepos < RECEIVE_BUFFER_BYTESIZE)
 	{
 		((uint8_t*)recv_buffer)[recv_buffer_bytepos++] = received;
 		
-		if(recv_buffer_bytepos >= recvPosSize)
+		if(recv_buffer_bytepos >= RECEIVE_BUFFER_BYTESIZE)
 		{
 			recv_buffer_bytepos = 0;
 		}
@@ -66,6 +66,13 @@ ISR(SPI_STC_vect)
 
 void tus_spi_init()
 {
+	uint8_t i;
+	
+	for(i=0; i<BUF_COUNT; ++i)
+	{
+		send_buffer[i].is_sent = TRUE;
+	}
+	
 	//init spi on slave mode
 	cbi(TUS_CONTROL_DDR, TUS_CONTROL_SS); // set them input(0)
 	cbi(TUS_CONTROL_DDR, TUS_CONTROL_MOSI);

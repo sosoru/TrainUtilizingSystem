@@ -11,6 +11,11 @@
 
 #include "packet.h"
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 typedef struct tag_args_received
 {
 	EthPacket *ppack;
@@ -26,9 +31,13 @@ typedef struct tag_spi_send_object
 
 typedef void (*spi_received_handler)(args_received* e) ;
 
+
 void tus_spi_init();
 void tus_spi_process_packets();
 void tus_spi_set_handler(spi_received_handler handler);
 uint8_t tus_spi_lock_send_buffer(spi_send_object ** ppsendobj);
 
+#ifdef __cplusplus
+}	// end of extern
+#endif
 #endif /* TUS_SPI_H_ */

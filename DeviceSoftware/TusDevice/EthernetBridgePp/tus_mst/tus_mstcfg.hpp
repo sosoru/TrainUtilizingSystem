@@ -80,10 +80,10 @@ namespace EthernetBridge{
 				{
 					if(ppacket->destId.ModuleAddr != device_child_id)
 						return false;
-						
+											
 					EthPacket* pbuffer;
 					if(Dispatcher::PushPacket(&pbuffer))
-					{
+					{					
 						memcpy((void*)pbuffer, (void*)(ppacket), sizeof(EthPacket));
 					}
 					
@@ -92,7 +92,7 @@ namespace EthernetBridge{
 				
 				static inline bool IsReceivedCorrectly(EthPacket& packet)
 				{
-					return packet.srcId.InternalAddr == device_child_id;
+					return packet.srcId.ModuleAddr == device_child_id;
 				}					
 								
 				static inline bool Transmit(EthPacket& received)
@@ -101,8 +101,10 @@ namespace EthernetBridge{
 										
 					if(Dispatcher::PopPacket(&psend))
 					{
+						 PORTB |= _BV(PORTB7);
 						SpiToModule::TransData<slave_module>(psend, received);
-					}else
+					}
+					else
 					{
 						SpiToModule::TransData<slave_module>(NULL, received);
 					}			

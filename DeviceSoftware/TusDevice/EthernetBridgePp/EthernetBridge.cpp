@@ -133,8 +133,6 @@ void BoardInit()
 	ModuleF::Init();	
 	ModuleG::Init();	
 	ModuleH::Init();	
-	
-	
 } 
 
 inline bool IsForChildren(const EthPacket &packet)
@@ -262,8 +260,10 @@ void DispatchModulePackets()
 	
 	do
 	{
+		
 		if(t_module::Transmit(received))
 		{
+
 			if(IsForChildren(received))
 			{
 				StockToChildren(&received);
@@ -297,14 +297,13 @@ int main(void)
 	MCUCSR = 0;
 	wdt_disable();
 	
-#ifndef DEBUG
+//#ifndef DEBUG
 	DDRB = 0xff;
-	PORTB |= _BV(PORTB4);
 	//_delay_ms(1000);
-	PORTB = 0;
-#endif
+//#endif
 	
     BoardInit();
+	PORTB |= _BV(PORTB4);
 		
 	while(1)
 	{

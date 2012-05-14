@@ -94,7 +94,7 @@ namespace EthernetBridge
 			template <uint8_t i>
 			inline static void _trans_byte(uint8_t &data, uint8_t &receive)
 			{				
-				if(data & 1)
+				if((data>>7) & 1)
 				{
 					MOSIpin::Set();
 				}
@@ -103,10 +103,10 @@ namespace EthernetBridge
 					MOSIpin::Clear();
 				}
 		
-				data >>= 1;	
+				data <<= 1;	
 		
 				SCKpin::Set();
-				receive |= MISOpin::IsSet() << (7 - i);
+				receive |= MISOpin::IsSet() << (7-i);
 				SCKpin::Clear();		
 			}
 

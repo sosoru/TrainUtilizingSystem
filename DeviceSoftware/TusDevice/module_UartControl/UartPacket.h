@@ -13,24 +13,23 @@
 extern "C"{	
 #endif
 
-struct TrainSensorPacket_rcev
+typedef union tag_TrainSensorPacket_xmit
 {
-	union{
-		struct{
-			uint8_t number;
-			uint8_t adc;
-			uint8_t checksum;
-		};
-		uint8_t rawdata[3];
+	struct{
+		uint8_t number[3];
 	};
-};	
+	uint8_t rawdata[3];
+} TrainSensorPacket_xmit;	
 		
-struct TrainSensorPacket_xmit
+typedef union tag_TrainSensorPacket_rcev
 {
-	uint8_t number;
-	uint8_t prescale;
-	uint8_t checksum;
-};
+	struct{
+		uint8_t number;
+		uint8_t result;
+		uint8_t checksum;			
+	};
+	uint8_t rawdata[3];
+} TrainSensorPacket_rcev;
 		
 #ifdef __cplusplus
 };

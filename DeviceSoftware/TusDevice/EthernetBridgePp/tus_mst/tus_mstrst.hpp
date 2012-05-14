@@ -23,7 +23,7 @@ namespace EthernetBridge
 		static inline void Init()
 		{
 			RESETpin::InitOutput();	// nRESET
-			RESETpin::Clear();
+			RESETpin::Set();
 			
 		}
 		

@@ -35,7 +35,7 @@ namespace module_UartControl
 			static inline void UartInit()
 			{
 				t_uart::SetupAsynchronous(t_baudrate, ReceiverEnable, TransmitterEnable,
-				EvenParity, NormalStopBit, CharacterSize8,
+				NoParityCheck, NormalStopBit, CharacterSize8,
 				DoubleSpeed, SingleProcessor);
 			}
 		};
@@ -58,11 +58,18 @@ namespace module_UartControl
 			public :
 				static TrainSensorPacket_rcev ReceivedArray[t_module_count];
 				static TrainSensorPacket_xmit TransmitData;
+				
+				static inline void SetTransmitNumber(uint8_t number)
+				{
+					memset(TransmitData.rawdata, number, sizeof(TransmitData));
+				}
 			
 				static void Init()
 				{
 					t_module_enable_pin::InitOutput();
 					t_module_led_pin::InitOutput();
+					
+					t_module_enable_pin::Clear();
 				}
 				
 				static void TimerInit()
@@ -70,27 +77,45 @@ namespace module_UartControl
 					t_timer::ChannelAPin::InitOutput();
 					t_timer::ChannelBPin::InitOutput();
 		
+					t_timer::OutputCompareA::Set(0x61);
 					t_timer::SetUp(Prescale1024B, FastPWM16BitsCount8, NormalPortOperationA, NormalPortOperationB, Off, Fall);
-					t_timer::OutputCompareA::Set(97); //5msec
 				}
 				
 				static inline void LedOn() { t_module_led_pin::Set(); }
 				static inline void LedOff() { t_module_led_pin::Clear(); }
 			
 				static inline bool Communicate()
-				{
-					t_uart::SendArray((void*)&TransmitData, sizeof(TransmitData));
+				{										
+					//t_module_enable_pin::Clear();
+					t_uart::Send(TransmitData);
+					t_timer::OutputCompareA::Set(0x61); //5msec
 					
-					for(uint8_t m=0; m<t_module_count; ++m)
+					uint8_t m;
+					for(m=0; m<t_module_count; ++m)
 					{
+						uint8_t chksum = 0x00;
+						
 						for(uint8_t i=0; i<sizeof(TrainSensorPacket_rcev); ++i)
+						{							
+							uint8_t received;
+							
+							if(!TimeoutedReceive(received))
+							{
+								break;
+							}				
+							
+							chksum ^= received;
+							ReceivedArray[m].rawdata[i] = received;
+						}
+						
+						if(ReceivedArray[m].checksum != chksum)
 						{
-							if(!TimeoutedReceive(ReceivedArray[m].rawdata[i]))
-								return false;
+							break;				
 						}
 					}	
-					
-					return true;
+										
+					//t_module_enable_pin::Set();
+					return m == t_module_count;
 				}
 				
 				private:

@@ -9,6 +9,7 @@
 #include <util/delay.h>
 #include <stdlib.h>
 #include <avr/interrupt.h>
+#include <tus.h>
 
 using namespace MotorController;
 
@@ -17,30 +18,15 @@ MotorControllerB mtrB;
 MotorControllerC mtrC;
 MotorControllerD mtrD;
 
-template <Direction dir>
-void setPacket(MtrControllerPacket *ppacket, uint8_t duty)
+void spi_received(args_received *e)
 {
-	ppacket->set_Direciton(dir);
-	ppacket->set_DutyValue(duty);
-	ppacket->set_ControlMode(DutySpecifiedMode);
-}
-
-template <class t_cnt>
-inline void sample_init(t_cnt *pcnt)
-{
-	pcnt->Init();
-}
-
-template < class t_cnt, Direction dir>
-inline void sample_process(t_cnt *pcnt, uint8_t duty)
-{
-	MtrControllerPacket packet;
+	if(e->ppack->destId.ModuleAddr != 1)
+		return;
+		
+	MtrControllerPacket *ppacket = (MtrControllerPacket*)e->ppack;
 	
-	setPacket<dir>(&packet, duty);
-	pcnt->set_Packet(&packet);
-	pcnt->Process();
-	
-};
+	mtrA.set_Packet(ppacket);
+}
 
 int main(void)
 {	
@@ -48,16 +34,21 @@ int main(void)
 	
 	MCUCR = 0b01100000; //todo: turn off bods
 	MCUSR = 0; // Do not omit to clear this resistor, otherwise suffer a terrible reseting cause.
-
-	sample_init<MotorControllerA>(&mtrA);
-	sample_init<MotorControllerB>(&mtrB);
-	sample_init<MotorControllerC>(&mtrC);
-	sample_init<MotorControllerD>(&mtrD);
+	
+	tus_spi_init();
+	tus_spi_set_handler(spi_received);
+	
+	mtrA.Init();
+	mtrB.Init();
+	mtrC.Init();
+	mtrD.Init();
 	
 	while(1)
 	{	
-		sample_process<MotorControllerA, Positive>(&mtrA, 200);
-		_delay_ms(1000);
+		tus_spi_process_packets();
+		mtrA.Process();
+		
+		_delay_ms(1);
 		//for(i=0; i<150; ++i)
 		//{
 			//sample_process<MotorControllerC, Positive>(&mtrC, i);

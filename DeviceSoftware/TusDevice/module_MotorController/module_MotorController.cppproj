@@ -35,7 +35,7 @@
       <ToolNumber>00A000403708</ToolNumber>
       <Channel>
         <host>127.0.0.1</host>
-        <port>49520</port>
+        <port>65446</port>
         <ssl>False</ssl>
       </Channel>
       <ToolOptions>
@@ -81,6 +81,7 @@
         <avrgcccpp.linker.libraries.Libraries>
           <ListValues>
             <Value>m</Value>
+            <Value>liblibtus</Value>
           </ListValues>
         </avrgcccpp.linker.libraries.Libraries>
         <avrgcccpp.linker.libraries.LibrarySearchPaths>
@@ -119,6 +120,7 @@
         <avrgcccpp.linker.libraries.Libraries>
           <ListValues>
             <Value>m</Value>
+            <Value>liblibtus</Value>
           </ListValues>
         </avrgcccpp.linker.libraries.Libraries>
         <avrgcccpp.linker.libraries.LibrarySearchPaths>

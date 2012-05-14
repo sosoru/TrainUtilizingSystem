@@ -26,7 +26,7 @@
       </ToolNumber>
       <Channel>
         <host>127.0.0.1</host>
-        <port>52749</port>
+        <port>53676</port>
         <ssl>False</ssl>
       </Channel>
     </com_atmel_avrdbg_tool_simulator>
@@ -36,15 +36,15 @@
       <ToolNumber>00A000403708</ToolNumber>
       <Channel>
         <host>127.0.0.1</host>
-        <port>52749</port>
+        <port>65446</port>
         <ssl>False</ssl>
       </Channel>
       <ToolOptions>
         <InterfaceName>JTAG</InterfaceName>
         <InterfaceProperties>
-          <JtagDbgClock>125000</JtagDbgClock>
+          <JtagDbgClock>200000</JtagDbgClock>
           <JtagProgClock>1000000</JtagProgClock>
-          <IspClock>150000</IspClock>
+          <IspClock>125000</IspClock>
           <JtagInChain>false</JtagInChain>
           <JtagEnableExtResetOnStartSession>false</JtagEnableExtResetOnStartSession>
           <JtagDevicesBefore>0</JtagDevicesBefore>
@@ -79,14 +79,16 @@
         <avrgcccpp.compiler.warnings.AllWarnings>True</avrgcccpp.compiler.warnings.AllWarnings>
         <avrgcccpp.linker.libraries.Libraries>
           <ListValues>
-            <Value>m</Value>
+            <Value>liblibtus</Value>
           </ListValues>
         </avrgcccpp.linker.libraries.Libraries>
         <avrgcccpp.linker.libraries.LibrarySearchPaths>
           <ListValues>
             <Value>C:\WinAVR-20070525\avr\lib\cpp\atmega644p</Value>
+            <Value>../../libtus/Release</Value>
           </ListValues>
         </avrgcccpp.linker.libraries.LibrarySearchPaths>
+        <avrgcccpp.linker.memorysettings.InitialStack>0x3FFF</avrgcccpp.linker.memorysettings.InitialStack>
       </AvrGccCpp>
     </ToolchainSettings>
   </PropertyGroup>
@@ -100,10 +102,9 @@
             <Value>../../libtus</Value>
           </ListValues>
         </avrgcc.compiler.directories.IncludePaths>
-        <avrgcc.compiler.optimization.level>Optimize (-O1)</avrgcc.compiler.optimization.level>
         <avrgcc.compiler.optimization.PackStructureMembers>True</avrgcc.compiler.optimization.PackStructureMembers>
         <avrgcc.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcc.compiler.optimization.AllocateBytesNeededForEnum>
-        <avrgcc.compiler.optimization.DebugLevel>Default (-g2)</avrgcc.compiler.optimization.DebugLevel>
+        <avrgcc.compiler.optimization.DebugLevel>Maximum (-g3)</avrgcc.compiler.optimization.DebugLevel>
         <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
         <avrgcccpp.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultCharTypeUnsigned>
         <avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>
@@ -121,11 +122,13 @@
         <avrgcccpp.linker.libraries.Libraries>
           <ListValues>
             <Value>m</Value>
+            <Value>liblibtus</Value>
           </ListValues>
         </avrgcccpp.linker.libraries.Libraries>
         <avrgcccpp.linker.libraries.LibrarySearchPaths>
           <ListValues>
             <Value>C:\WinAVR-20070525\avr\lib\cpp\atmega644p</Value>
+            <Value>../../libtus/Debug</Value>
           </ListValues>
         </avrgcccpp.linker.libraries.LibrarySearchPaths>
         <avrgcccpp.linker.memorysettings.InitialStack>0x3FFF</avrgcccpp.linker.memorysettings.InitialStack>

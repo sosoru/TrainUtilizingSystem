@@ -9,7 +9,7 @@
 #ifndef TUS_CFG_H_
 #define TUS_CFG_H_
 
-#define TUS_COTROL_PIN		PINB
+#define TUS_CONTROL_PIN		PINB
 #define TUS_CONTROL_PORT	PORTB
 #define TUS_CONTROL_DDR		DDRB
 #define TUS_CONTROL_MOSI	5
