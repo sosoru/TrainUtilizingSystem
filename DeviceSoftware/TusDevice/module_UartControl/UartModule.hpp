@@ -36,7 +36,11 @@ namespace module_UartControl
 			{
 				t_uart::SetupAsynchronous(t_baudrate, ReceiverEnable, TransmitterEnable,
 				NoParityCheck, NormalStopBit, CharacterSize8,
-				DoubleSpeed, SingleProcessor);
+				NormalSpeed, SingleProcessor);
+				
+				//t_uart::SetupMasterSync(t_baudrate, ReceiverEnable, TransmitterEnable,
+										//NoParityCheck, NormalStopBit, CharacterSize8,
+										//ReceiveOnFall, SingleProcessor);
 			}
 		};
 		
@@ -51,7 +55,7 @@ namespace module_UartControl
 			: public UartModule<	t_module_enable_pin,
 									t_module_led_pin,
 									t_uart,
-									64
+									32
 									 >
 		{
 			
@@ -61,7 +65,7 @@ namespace module_UartControl
 				
 				static inline void SetTransmitNumber(uint8_t number)
 				{
-					memset(TransmitData.rawdata, number, sizeof(TransmitData));
+					memset(TransmitData.rawdata, number, sizeof(TransmitData.rawdata));
 				}
 			
 				static void Init()
@@ -77,24 +81,29 @@ namespace module_UartControl
 					t_timer::ChannelAPin::InitOutput();
 					t_timer::ChannelBPin::InitOutput();
 		
-					t_timer::OutputCompareA::Set(0x61);
+					t_timer::OutputCompareA::Set(0x61); //5msec
 					t_timer::SetUp(Prescale1024B, FastPWM16BitsCount8, NormalPortOperationA, NormalPortOperationB, Off, Fall);
 				}
 				
 				static inline void LedOn() { t_module_led_pin::Set(); }
 				static inline void LedOff() { t_module_led_pin::Clear(); }
+					
+				static inline void ModuleOff()
+				{
+					LedOff();
+					t_module_enable_pin::Set();
+				}
 			
 				static inline bool Communicate()
 				{										
-					//t_module_enable_pin::Clear();
 					t_uart::Send(TransmitData);
-					t_timer::OutputCompareA::Set(0x61); //5msec
-					
-					uint8_t m;
-					for(m=0; m<t_module_count; ++m)
-					{
+					//
+					uint8_t m=0;
+					//for(m=0; m<t_module_count; ++m)
+					//{
 						uint8_t chksum = 0x00;
-						
+						//
+						while(!t_uart::IsTransferCompleted());
 						for(uint8_t i=0; i<sizeof(TrainSensorPacket_rcev); ++i)
 						{							
 							uint8_t received;
@@ -110,11 +119,10 @@ namespace module_UartControl
 						
 						if(ReceivedArray[m].checksum != chksum)
 						{
-							break;				
+							return false;				
 						}
-					}	
+					//}	
 										
-					//t_module_enable_pin::Set();
 					return m == t_module_count;
 				}
 				
@@ -123,7 +131,9 @@ namespace module_UartControl
 				static inline bool TimeoutedReceive(uint8_t &data)
 				{
 					t_timer::Counter::Set(0);
-					while(t_uart::IsReceiveCompleted())
+					//t_timer::CompareMatchAInterrupt::ClearFlag();
+					
+					while(!t_uart::IsReceiveCompleted())
 					{
 						if(t_timer::CompareMatchAInterrupt::IsTriggered())
 						{

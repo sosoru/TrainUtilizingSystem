@@ -45,6 +45,13 @@ int main(void)
 	
 	tus_spi_init();
 	
+	InputPin0<PortD>::InitDefaultInput();
+	OutputPin1<PortD>::InitOutput();
+	
+	TrainSensorB::ModuleOff();
+	TrainSensorC::ModuleOff();
+	TrainSensorD::ModuleOff();
+	
 	TrainSensorA::Init();
 	TrainSensorA::UartInit();
 	TrainSensorA::TimerInit();
@@ -52,26 +59,23 @@ int main(void)
 	TrainSensorA::LedOn();
 	
     while(1)
-    {		
-		for(uint8_t i=0; i<250; ++i)
-		{
-			
+    {					
 			_delay_ms(5);
+			send_mtr(TrainSensorA::ReceivedArray[0].result);
+			
+			tus_spi_process_packets();
+			
 			TrainSensorA::SetTransmitNumber(1);
 			
 			//if(!TrainSensorA::Communicate())
 				//continue;
-			
+			//
 			cli();
 			TrainSensorA::Communicate();
 			sei();
 			
-			send_mtr(TrainSensorA::ReceivedArray[0].result);
-			
-			tus_spi_process_packets();
 				
 			//_delay_ms(20);
-		}
 		
     }
 }
