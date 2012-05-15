@@ -17032,6 +17032,7 @@ Source: www.sumida.com/products/pdf/CEP125.pdf</description>
 <segment>
 <pinref part="CONN1" gate="G$1" pin="14_MISO"/>
 <wire x1="15.24" y1="121.92" x2="12.7" y2="121.92" width="0.1524" layer="91"/>
+<label x="12.7" y="121.92" size="1.27" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
 <net name="MOSI" class="0">
@@ -17043,6 +17044,7 @@ Source: www.sumida.com/products/pdf/CEP125.pdf</description>
 <segment>
 <pinref part="CONN1" gate="G$1" pin="16_MOSI"/>
 <wire x1="15.24" y1="119.38" x2="12.7" y2="119.38" width="0.1524" layer="91"/>
+<label x="12.7" y="119.38" size="1.27" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
 <net name="SCK" class="0">
@@ -17054,6 +17056,7 @@ Source: www.sumida.com/products/pdf/CEP125.pdf</description>
 <segment>
 <pinref part="CONN1" gate="G$1" pin="13_SCK"/>
 <wire x1="15.24" y1="116.84" x2="12.7" y2="116.84" width="0.1524" layer="91"/>
+<label x="12.7" y="116.84" size="1.27" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
 <net name="!SS" class="0">
@@ -17065,6 +17068,7 @@ Source: www.sumida.com/products/pdf/CEP125.pdf</description>
 <segment>
 <pinref part="CONN1" gate="G$1" pin="11_!SS"/>
 <wire x1="15.24" y1="114.3" x2="12.7" y2="114.3" width="0.1524" layer="91"/>
+<label x="12.7" y="114.3" size="1.27" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
 <net name="!RESET" class="0">
@@ -17082,6 +17086,7 @@ Source: www.sumida.com/products/pdf/CEP125.pdf</description>
 <segment>
 <pinref part="CONN1" gate="G$1" pin="15_!RESET"/>
 <wire x1="15.24" y1="111.76" x2="12.7" y2="111.76" width="0.1524" layer="91"/>
+<label x="12.7" y="111.76" size="1.27" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
 <net name="+5V" class="1">
