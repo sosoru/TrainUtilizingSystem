@@ -24,7 +24,7 @@ void spi_received(args_received *e)
 		return;
 		
 	MtrControllerPacket *ppacket = (MtrControllerPacket*)e->ppack;
-	
+
 	mtrA.set_Packet(ppacket);
 }
 

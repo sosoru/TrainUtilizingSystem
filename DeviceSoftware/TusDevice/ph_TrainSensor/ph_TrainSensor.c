@@ -14,6 +14,9 @@
 
 #define UARTDEV_ID_TRAINSENSOR 0x01
 
+#define SET_PARENT_TRANSFER		sbi(DDRB, 1);
+#define LEAVE_PANRET_TRANSFER	cbi(DDRB, 1);
+
 TrainSensorPacket_xmit received;
 TrainSensorPacket_rcev sending;
 
@@ -54,10 +57,12 @@ void send_parent_packet()
 	sending.checksum ^= (sending.number = received.number[0]);
 	sending.checksum ^= (sending.result = ADCL);
 	
+	SET_PARENT_TRANSFER
 	for(i=0; i<sizeof(sending); ++i)
 	{
 		xmit_parent(sending.rawdata[i]);
 	}
+	LEAVE_PANRET_TRANSFER
 }
 
 void receive_packet()
@@ -86,7 +91,8 @@ uint8_t validate_received_packet()
 
 void device_init()
 {	
-	DDRB	= 0b11110011;
+	PUEB	= 0b00000001;
+	DDRB	= 0b11110001;
 
 	// Timer 0 initializing
 	OCR0AL = 126;			// 4msec at 8MHz

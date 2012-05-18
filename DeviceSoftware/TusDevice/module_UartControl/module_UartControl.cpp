@@ -60,7 +60,12 @@ int main(void)
 	
     while(1)
     {					
-			_delay_ms(5);
+			_delay_ms(10);
+			//send_mtr(200);
+			cli();
+			if(TrainSensorA::ReceivedArray[0].result > 200)
+				TrainSensorA::ReceivedArray[0].result = 200;
+				
 			send_mtr(TrainSensorA::ReceivedArray[0].result);
 			
 			tus_spi_process_packets();
@@ -70,7 +75,6 @@ int main(void)
 			//if(!TrainSensorA::Communicate())
 				//continue;
 			//
-			cli();
 			TrainSensorA::Communicate();
 			sei();
 			
