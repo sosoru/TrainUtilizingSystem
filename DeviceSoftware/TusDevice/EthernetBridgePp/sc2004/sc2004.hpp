@@ -48,14 +48,14 @@ namespace EthernetBridge
 		
 		enum ShiftOf
 		{
-			ShiftDisplay = 1,
-			ShiftCursor = 0,
+			ShiftDisplay = 0,
+			ShiftCursor = 1,
 		};
 		
 		enum ShiftDirection
 		{
-			ShiftToLeft = 1,
-			ShiftToRight = 0,
+			ShiftToLeft = 0,
+			ShiftToRight = 1,
 		};
 		
 		template<
