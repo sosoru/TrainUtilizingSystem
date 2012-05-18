@@ -31,6 +31,7 @@
 #include "eth/arp_table.hpp"
 
 #include "tus_mst/tus_mstcfg.hpp"
+#include "LcdCfg.hpp"
 
 using namespace EthernetBridge;
 

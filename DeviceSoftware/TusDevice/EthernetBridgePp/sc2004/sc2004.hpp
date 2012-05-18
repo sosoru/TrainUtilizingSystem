@@ -64,7 +64,7 @@ namespace EthernetBridge
 				class t_rw_outpin,
 				class t_enable_outpin
 				>
-		class Lcd
+		class Lcd_sc2004
 		{
 			private :
 			
@@ -116,7 +116,7 @@ namespace EthernetBridge
 			{
 				SetSystemCommandFlag();
 				SetReadFlag();
-				InData()
+				InData();
 				
 				PulseEnable();
 				
@@ -242,7 +242,7 @@ namespace EthernetBridge
 				return GetData();
 			}
 			
-			static LcdInit()
+			static void LcdInit()
 			{
 				// busy flag cannot be read before initialization completed.
 	
@@ -266,7 +266,7 @@ namespace EthernetBridge
 				ClearDisplay();
 				_delay_ms(2);
 
-				sc2004_EntryMode(DirectionLeft, DisplayShiftDisable);
+				EntryMode(DirectionLeft, DisplayShiftDisable);
 				_delay_us(37);
 
 			}
