@@ -146,6 +146,9 @@
     <Compile Include="avr_base.hpp">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="EthConfig.hpp">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="EthernetBridge.cpp">
       <SubType>compile</SubType>
     </Compile>
