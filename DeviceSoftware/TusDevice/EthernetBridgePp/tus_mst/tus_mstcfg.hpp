@@ -92,7 +92,7 @@ namespace EthernetBridge{
 				
 				static inline bool IsReceivedCorrectly(EthPacket& packet)
 				{
-					return packet.srcId.ModuleAddr == device_child_id;
+					return packet.srcId.SubnetAddr == 24 && packet.srcId.ModuleAddr == device_child_id;
 				}					
 								
 				static inline bool Transmit(EthPacket& received)

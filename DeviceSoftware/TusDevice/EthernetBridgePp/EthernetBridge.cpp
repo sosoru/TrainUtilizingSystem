@@ -266,10 +266,7 @@ void DispatchModulePackets()
 		{
 			if(IsForChildren(received))
 			{
-				if(received.destId.ModuleAddr <= 8)
-				{
-					StockToChildren(&received);					
-				}
+				StockToChildren(&received);					
 			}
 			else
 			{
@@ -310,7 +307,7 @@ int main(void)
 		
 	while(1)
 	{
-		while(ReceiveFromEthernet());		
+		//while(ReceiveFromEthernet());		
 		
 		DispatchProcess();
 	}			
