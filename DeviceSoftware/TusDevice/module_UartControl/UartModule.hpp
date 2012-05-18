@@ -110,20 +110,19 @@ namespace module_UartControl
 							
 							if(!TimeoutedReceive(received))
 							{
-								break;
+								return false;
 							}				
 							
-							chksum ^= received;
 							ReceivedArray[m].rawdata[i] = received;
 						}
 						
-						if(ReceivedArray[m].checksum != chksum)
+						if(ReceivedArray[m].number ^ ReceivedArray[m].result != chksum)
 						{
 							return false;				
 						}
 					//}	
 										
-					return m == t_module_count;
+					return true; //m == t_module_count;
 				}
 				
 				private:
@@ -131,7 +130,7 @@ namespace module_UartControl
 				static inline bool TimeoutedReceive(uint8_t &data)
 				{
 					t_timer::Counter::Set(0);
-					//t_timer::CompareMatchAInterrupt::ClearFlag();
+					t_timer::CompareMatchAInterrupt::ClearFlag();
 					
 					while(!t_uart::IsReceiveCompleted())
 					{
@@ -139,7 +138,6 @@ namespace module_UartControl
 						{
 							return false;
 						}
-						_delay_us(1);
 					}
 					
 					data = t_uart::Data::Get();

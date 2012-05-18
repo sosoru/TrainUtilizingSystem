@@ -264,14 +264,16 @@ void DispatchModulePackets()
 		
 		if(t_module::Transmit(received))
 		{
-
 			if(IsForChildren(received))
 			{
-				StockToChildren(&received);
+				if(received.destId.ModuleAddr <= 8)
+				{
+					StockToChildren(&received);					
+				}
 			}
 			else
 			{
-				SendToEthernet(&received);
+				//SendToEthernet(&received);
 			}			
 		}
 		

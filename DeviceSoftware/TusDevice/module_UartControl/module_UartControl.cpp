@@ -63,19 +63,17 @@ int main(void)
 			_delay_ms(10);
 			//send_mtr(200);
 			cli();
-			if(TrainSensorA::ReceivedArray[0].result > 200)
-				TrainSensorA::ReceivedArray[0].result = 200;
+			TrainSensorA::SetTransmitNumber(1);				
+			if(TrainSensorA::Communicate())
+			{
+				if(TrainSensorA::ReceivedArray[0].result > 200)
+					TrainSensorA::ReceivedArray[0].result = 200;
 				
-			send_mtr(TrainSensorA::ReceivedArray[0].result);
+				send_mtr(TrainSensorA::ReceivedArray[0].result);
 			
-			tus_spi_process_packets();
+				tus_spi_process_packets();
 			
-			TrainSensorA::SetTransmitNumber(1);
-			
-			//if(!TrainSensorA::Communicate())
-				//continue;
-			//
-			TrainSensorA::Communicate();
+			}
 			sei();
 			
 				
