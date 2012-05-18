@@ -29,7 +29,7 @@
 #include "EthConfig.hpp"
 
 using namespace EthernetBridge;
-
+using namespace EthernetBridge::Eth;
 
 //
 //SPI_TRANS_PORT g_spi_trans_port = SPI_TRANS_PORTINST;
@@ -93,25 +93,6 @@ void BoardInit()
 	ModuleH::Init();	
 } 
 
-inline bool IsForChildren(const EthPacket &packet)
-{
-	return packet.destId.SubnetAddr == g_parentid;
-}
-
-void StockToChildren(const EthPacket* ppacket)
-{	
-	if(ModuleA::Stock(ppacket)){}
-	else if(ModuleB::Stock(ppacket)){}
-	else if(ModuleC::Stock(ppacket)){}
-	else if(ModuleD::Stock(ppacket)){}
-	else if(ModuleE::Stock(ppacket)){}
-	else if(ModuleF::Stock(ppacket)){}
-	else if(ModuleG::Stock(ppacket)){}
-	else if(ModuleH::Stock(ppacket)){}
-
-}
-
-
 template < class t_module >
 void DispatchModulePackets()
 {
@@ -123,13 +104,13 @@ void DispatchModulePackets()
 		if(t_module::Transmit(received))
 		{
 
-			if(IsForChildren(received))
+			if(EthDevice::IsForChildren(received))
 			{
-				StockToChildren(&received);
+				EthDevice::StockToChildren(&received);
 			}
 			else
 			{
-				SendToEthernet(&received);
+				EthDevice::SendToEthernet(&received);
 			}			
 		}
 		
