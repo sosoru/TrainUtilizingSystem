@@ -139,6 +139,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="eth" />
+    <Folder Include="switch" />
     <Folder Include="sc2004" />
     <Folder Include="tus_mst" />
   </ItemGroup>
@@ -189,6 +190,9 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="sc2004\sc2004.hpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="switch\dirswitch.hpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="tus_mst\dispat_packet.hpp">

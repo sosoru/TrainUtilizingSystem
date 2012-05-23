@@ -17,6 +17,8 @@ namespace EthernetBridge
 	namespace Lcd
 	{
 		typedef Lcd_sc2004< PortC, OutputPin6<PortF>, OutputPin3<PortE>, OutputPin2<PortE> > Display;
+		
+		
 	}
 }
 
