@@ -24,6 +24,7 @@ void spi_received(args_received *e)
 		return;
 		
 	MtrControllerPacket *ppacket = (MtrControllerPacket*)e->ppack;
+	ppacket->set_Direciton(Positive);
 
 	mtrA.set_Packet(ppacket);
 }

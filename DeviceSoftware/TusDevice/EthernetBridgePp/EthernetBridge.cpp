@@ -264,14 +264,13 @@ void DispatchModulePackets()
 		
 		if(t_module::Transmit(received))
 		{
-
 			if(IsForChildren(received))
 			{
-				StockToChildren(&received);
+				StockToChildren(&received);					
 			}
 			else
 			{
-				SendToEthernet(&received);
+				//SendToEthernet(&received);
 			}			
 		}
 		
@@ -308,7 +307,7 @@ int main(void)
 		
 	while(1)
 	{
-		while(ReceiveFromEthernet());		
+		//while(ReceiveFromEthernet());		
 		
 		DispatchProcess();
 	}			

@@ -38,8 +38,53 @@ void send_mtr(uint8_t duty)
 	
 }
 
+uint8_t get_value(bool &error)
+{
+	if(TrainSensorA::Communicate())
+	{
+		error = false;
+		return TrainSensorA::ReceivedArray[0].result;
+	}
+	error = true;
+	return 0;
+}
+
+bool is_train_there()
+{
+	uint8_t i;
+	uint16_t before, current=0;
+	bool errored;
+	uint8_t succeeded = 0;
+	
+	TrainSensorA::SetTransmitNumber(1);		
+	TrainSensorA::LedOn();		
+	//_delay_ms(1);
+	
+	for(i=0; i<3; ++i)
+	{
+		current += get_value(errored);
+		
+		if(!errored)
+			succeeded++;
+	} 
+	
+	current /= succeeded;
+	
+	return current > 220;
+
+}
+
+void int_delay(uint16_t d)
+{
+	sei();
+	_delay_ms(d);
+	cli();
+}
+
 int main(void)
 {
+	uint16_t i;
+	
 	MCUCR = 0b01100000; //todo: turn off bods
 	MCUSR = 0; // Do not omit to clear this resistor, otherwise suffer a terrible reseting cause.
 	
@@ -59,27 +104,32 @@ int main(void)
 	TrainSensorA::LedOn();
 	
     while(1)
-    {					
-			_delay_ms(10);
-			//send_mtr(200);
-			cli();
-			if(TrainSensorA::ReceivedArray[0].result > 200)
-				TrainSensorA::ReceivedArray[0].result = 200;
-				
-			send_mtr(TrainSensorA::ReceivedArray[0].result);
+    {			
+		//_delay_ms(5);				
+		cli();
+		if(is_train_there())
+		{
+			for(i=0; i<50; ++i)
+			{
+				send_mtr(0);
+				tus_spi_process_packets();
+				int_delay(100);				
+			}
 			
+			for(i=0; i<20; ++i)
+			{
+				send_mtr(140);
+				tus_spi_process_packets();
+				int_delay(100);
+				
+			}		
+		}
+		else
+		{
+			send_mtr(140);
 			tus_spi_process_packets();
-			
-			TrainSensorA::SetTransmitNumber(1);
-			
-			//if(!TrainSensorA::Communicate())
-				//continue;
-			//
-			TrainSensorA::Communicate();
-			sei();
-			
-				
-			//_delay_ms(20);
+		}
+		sei();
 		
     }
 }

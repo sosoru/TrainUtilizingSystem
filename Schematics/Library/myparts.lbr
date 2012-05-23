@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.05" unitdist="inch" unit="mm" style="lines" multiple="1" display="yes" altdistance="0.025" altunitdist="inch" altunit="inch"/>
+<grid distance="0.005" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="0.0025" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
 <layer number="2" name="Route2" color="1" fill="3" visible="no" active="no"/>
@@ -3365,17 +3365,17 @@ Source: www.bourns.com .. 6000_series.pdf</description>
 <text x="-5.461" y="-2.667" size="1.27" layer="25" ratio="10" rot="R90">&gt;NAME</text>
 </package>
 <package name="SOT-23">
-<smd name="1" x="-1.2" y="-0.95" dx="0.7" dy="1" layer="1"/>
-<smd name="6" x="-1.2" y="0.95" dx="0.7" dy="1" layer="1"/>
-<smd name="4" x="1.2" y="0.95" dx="0.7" dy="1" layer="1"/>
-<smd name="5" x="0" y="0.95" dx="0.7" dy="1" layer="1"/>
-<smd name="2" x="0" y="-0.95" dx="0.7" dy="1" layer="1"/>
-<smd name="3" x="1.2" y="-0.95" dx="0.7" dy="1" layer="1"/>
+<smd name="1" x="-1.2" y="-0.95" dx="0.7" dy="1.254" layer="1"/>
+<smd name="6" x="-1.2" y="0.95" dx="0.7" dy="1.254" layer="1"/>
+<smd name="4" x="1.2" y="0.95" dx="0.7" dy="1.254" layer="1"/>
+<smd name="5" x="0" y="0.95" dx="0.7" dy="1.254" layer="1"/>
+<smd name="2" x="0" y="-0.95" dx="0.7" dy="1.254" layer="1"/>
+<smd name="3" x="1.2" y="-0.95" dx="0.7" dy="1.254" layer="1"/>
 <polygon width="0" layer="21">
-<vertex x="-1.5" y="-0.1" curve="90"/>
-<vertex x="-1.6" y="-0.2" curve="90"/>
-<vertex x="-1.5" y="-0.3" curve="90"/>
-<vertex x="-1.4" y="-0.2" curve="90"/>
+<vertex x="-1.805" y="-0.23" curve="90"/>
+<vertex x="-1.705" y="-0.33" curve="90"/>
+<vertex x="-1.605" y="-0.23" curve="90"/>
+<vertex x="-1.705" y="-0.13" curve="90"/>
 </polygon>
 <wire x1="-2" y1="2" x2="-2" y2="-2" width="0.127" layer="21"/>
 <wire x1="-2" y1="-2" x2="2" y2="-2" width="0.127" layer="21"/>
@@ -3854,6 +3854,19 @@ package type SS</description>
 <pad name="18" x="-10.16" y="3.81" drill="0.8128" shape="long" rot="R90"/>
 <text x="-11.684" y="-3.048" size="1.27" layer="25" ratio="10" rot="R90">&gt;NAME</text>
 <text x="-9.525" y="-0.635" size="1.27" layer="27" ratio="10">&gt;VALUE</text>
+</package>
+<package name="SERIAL_5_THROUGH">
+<pad name="P$1" x="-6.35" y="0" drill="0.8" shape="long" rot="R90"/>
+<pad name="P$2" x="-3.81" y="0" drill="0.8" shape="long" rot="R90"/>
+<pad name="P$3" x="-1.27" y="0" drill="0.8" shape="long" rot="R90"/>
+<pad name="P$4" x="1.27" y="0" drill="0.8" shape="long" rot="R90"/>
+<pad name="P$5" x="3.81" y="0" drill="0.8" shape="long" rot="R90"/>
+<polygon width="0.127" layer="21">
+<vertex x="-7.493" y="-0.635" curve="90"/>
+<vertex x="-7.62" y="-0.762" curve="90"/>
+<vertex x="-7.493" y="-0.889" curve="90"/>
+<vertex x="-7.366" y="-0.762" curve="90"/>
+</polygon>
 </package>
 </packages>
 <symbols>
@@ -7210,8 +7223,8 @@ Source: www.pulseeng.com .. PulseJack-J402.pdf</description>
 <connect gate="G$1" pin="(PCINT0/TPIDATA/OC0A/ADC0/AIN0)PB0" pad="1"/>
 <connect gate="G$1" pin="(PCINT1/TPICLK/CLKI/ICP0/OC0B/ADC1/AIN1)PB1" pad="3"/>
 <connect gate="G$1" pin="(T0/CLKO/PCINT2/INT0/ADC2)PB2" pad="4"/>
-<connect gate="G$1" pin="GND" pad="5"/>
-<connect gate="G$1" pin="VCC" pad="2"/>
+<connect gate="G$1" pin="GND" pad="2"/>
+<connect gate="G$1" pin="VCC" pad="5"/>
 </connects>
 <technologies>
 <technology name=""/>
@@ -7243,6 +7256,18 @@ Source: www.pulseeng.com .. PulseJack-J402.pdf</description>
 <connect gate="G$1" pin="TRANS" pad="3"/>
 <connect gate="G$1" pin="VCC" pad="2"/>
 <connect gate="G$1" pin="VLED" pad="1"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="TH" package="SERIAL_5_THROUGH">
+<connects>
+<connect gate="G$1" pin="CHAIN" pad="P$4"/>
+<connect gate="G$1" pin="GND" pad="P$5"/>
+<connect gate="G$1" pin="TRANS" pad="P$3"/>
+<connect gate="G$1" pin="VCC" pad="P$2"/>
+<connect gate="G$1" pin="VLED" pad="P$1"/>
 </connects>
 <technologies>
 <technology name=""/>

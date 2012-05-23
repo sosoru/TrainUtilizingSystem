@@ -17,7 +17,7 @@
     <RootNamespace>EthernetBridgePp</RootNamespace>
     <ToolchainFlavour>Native</ToolchainFlavour>
     <AsfVersion>2.11.1</AsfVersion>
-    <avrtoolinterface>ISP</avrtoolinterface>
+    <avrtoolinterface>JTAG</avrtoolinterface>
     <avrtool>com.atmel.avrdbg.tool.jtagicemkii</avrtool>
     <com_atmel_avrdbg_tool_simulator>
       <ToolType xmlns="">com.atmel.avrdbg.tool.simulator</ToolType>
@@ -31,18 +31,18 @@
       </Channel>
     </com_atmel_avrdbg_tool_simulator>
     <com_atmel_avrdbg_tool_jtagicemkii>
-      <ToolType xmlns="">com.atmel.avrdbg.tool.jtagicemkii</ToolType>
-      <ToolName xmlns="">JTAGICE mkII</ToolName>
-      <ToolNumber xmlns="">00A000403708</ToolNumber>
-      <Channel xmlns="">
+      <ToolType>com.atmel.avrdbg.tool.jtagicemkii</ToolType>
+      <ToolName>JTAGICE mkII</ToolName>
+      <ToolNumber>00A000403708</ToolNumber>
+      <Channel>
         <host>127.0.0.1</host>
-        <port>53676</port>
+        <port>49218</port>
         <ssl>False</ssl>
       </Channel>
-      <ToolOptions xmlns="">
-        <InterfaceName>ISP</InterfaceName>
+      <ToolOptions>
+        <InterfaceName>JTAG</InterfaceName>
         <InterfaceProperties>
-          <JtagDbgClock>200000</JtagDbgClock>
+          <JtagDbgClock>125000</JtagDbgClock>
           <JtagProgClock>1000000</JtagProgClock>
           <IspClock>125000</IspClock>
           <JtagInChain>false</JtagInChain>
