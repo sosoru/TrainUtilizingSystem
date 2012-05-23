@@ -79,7 +79,8 @@ void BoardInit()
 	EthDevice::Parameters.port = 8000;	
 	
 	EthDevice::EthernetInit();
-	//LCDInit();
+	
+	Lcd::Display::LcdInit();
 
 	SpiToModule::Init();
 	// for module in range(A, H):
@@ -110,8 +111,11 @@ void DispatchModulePackets()
 			}
 			else
 			{
+				PORTB |= _BV(PORTB7);
 				EthDevice::SendToEthernet(&received);
 			}			
+			
+			
 		}
 		
 	}while(t_module::IsStocked());
@@ -150,6 +154,8 @@ int main(void)
 		while(EthDevice::ReceiveFromEthernet());		
 		
 		DispatchProcess();
+		
+		Lcd::Display::WriteData((uint8_t)'A');
 	}			
 	
 	return 0;

@@ -80,7 +80,8 @@ namespace EthernetBridge
 
 			static inline bool IsForChildren(const EthPacket &packet)
 			{
-				return packet.destId.SubnetAddr == Parameters.ipaddress[3];
+				return packet.destId.SubnetAddr == Parameters.ipaddress[3]
+						&& packet.destId.ModuleAddr <= 8;
 			}
 
 			static uint8_t ReceiveFromEthernet()

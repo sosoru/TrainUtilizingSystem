@@ -68,15 +68,15 @@ namespace EthernetBridge
 		{
 			private :
 			
-			static inline void OutData(uint8_t data)	 { t_data_port::InitOutput(); t_data_port::Output::Set(data); }
-			static inline void InData()				 { t_data_port::InitInput(); }
+			static inline void OutData(uint8_t data)	 { t_data_port::SetAsOutput(0xff); t_data_port::Output::Set(data); }
+			static inline void InData()				 { t_data_port::SetAsInput(0xff); }
 			static inline uint8_t GetData()				 { return t_data_port::Input::Get(); }
 			
-			static inline void SetReadFlag() { t_rw_outpin::Set(1); }
-			static inline void SetWriteFlag() { t_rw_outpin::Set(0); }
+			static inline void SetReadFlag() { t_rw_outpin::Set(); }
+			static inline void SetWriteFlag() { t_rw_outpin::Clear(); }
 			
-			static inline void SetSystemCommandFlag() { t_rs_outpin::Set(0); }
-			static inline void SetDataCommandFlag() { t_rs_outpin::Set(1);}
+			static inline void SetSystemCommandFlag() { t_rs_outpin::Clear(); }
+			static inline void SetDataCommandFlag() { t_rs_outpin::Set();}
 				
 			static inline void SetEnable() {t_enable_outpin::Set();}
 			static inline void ClearEnable() {t_enable_outpin::Clear();}
@@ -244,6 +244,7 @@ namespace EthernetBridge
 			
 			static void LcdInit()
 			{
+				InitPort();
 				// busy flag cannot be read before initialization completed.
 	
 				_delay_ms(15);
