@@ -77,7 +77,7 @@ namespace TestProject
             EthPacket packet = new EthPacket()
             {
                 srcId = new DeviceID(1, 0),
-                destId = new DeviceID(24, 0),
+                destId = new DeviceID(24, 1),
             };
             
             for (int i=0; i < packet.Data.Length; ++i)

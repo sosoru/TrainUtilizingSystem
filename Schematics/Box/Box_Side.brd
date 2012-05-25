@@ -68,16 +68,16 @@
 <wire x1="0" y1="85" x2="0" y2="0" width="0.4064" layer="20"/>
 <text x="10" y="80" size="1.778" layer="20">LCD</text>
 <polygon width="0.4064" layer="20">
-<vertex x="100" y="39"/>
-<vertex x="100" y="23"/>
-<vertex x="117" y="23"/>
-<vertex x="117" y="39"/>
+<vertex x="98" y="37"/>
+<vertex x="98" y="21"/>
+<vertex x="115" y="21"/>
+<vertex x="115" y="37"/>
 </polygon>
 <polygon width="0.4064" layer="20">
-<vertex x="145" y="20"/>
-<vertex x="145" y="10"/>
-<vertex x="180" y="10"/>
-<vertex x="180" y="20"/>
+<vertex x="134" y="20"/>
+<vertex x="134" y="10"/>
+<vertex x="174" y="10"/>
+<vertex x="174" y="20"/>
 </polygon>
 </plain>
 <libraries>

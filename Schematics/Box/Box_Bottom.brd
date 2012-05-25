@@ -152,14 +152,14 @@
 <hole x="110" y="15" drill="3.2"/>
 <hole x="190" y="15" drill="3.2"/>
 <hole x="190" y="85" drill="3.2"/>
-<wire x1="5" y1="180" x2="85" y2="180" width="0.4064" layer="20"/>
-<wire x1="85" y1="180" x2="85" y2="10" width="0.4064" layer="20"/>
-<wire x1="85" y1="10" x2="5" y2="10" width="0.4064" layer="20"/>
+<wire x1="5" y1="180" x2="90" y2="180" width="0.4064" layer="20"/>
+<wire x1="90" y1="180" x2="90" y2="10" width="0.4064" layer="20"/>
+<wire x1="90" y1="10" x2="5" y2="10" width="0.4064" layer="20"/>
 <wire x1="5" y1="10" x2="5" y2="180" width="0.4064" layer="20"/>
 <hole x="10" y="175" drill="3.2"/>
-<hole x="80" y="175" drill="3.2"/>
+<hole x="85" y="175" drill="3.2"/>
 <hole x="10" y="15" drill="3.2"/>
-<hole x="80" y="15" drill="3.2"/>
+<hole x="85" y="15" drill="3.2"/>
 </plain>
 <libraries>
 </libraries>
