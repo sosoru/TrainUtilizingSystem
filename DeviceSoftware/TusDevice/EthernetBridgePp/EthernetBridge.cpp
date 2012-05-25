@@ -80,8 +80,6 @@ void BoardInit()
 	
 	EthDevice::EthernetInit();
 	
-	Lcd::Display::LcdInit();
-
 	SpiToModule::Init();
 	// for module in range(A, H):
 	ModuleA::Init();	
@@ -92,6 +90,8 @@ void BoardInit()
 	ModuleF::Init();	
 	ModuleG::Init();	
 	ModuleH::Init();	
+		
+	Lcd::Display::LcdInit();
 } 
 
 template < class t_module >
@@ -136,7 +136,7 @@ void DispatchProcess()
 
 int main(void)
 {
-	uint8_t i,j;
+	uint8_t i=0,j;
 	
 	MCUCSR = 0;
 	wdt_disable();
@@ -149,13 +149,21 @@ int main(void)
     BoardInit();
 	PORTB |= _BV(PORTB4);
 		
+	Lcd::Display::ReturnHome();
 	while(1)
 	{
 		while(EthDevice::ReceiveFromEthernet());		
 		
 		DispatchProcess();
 		
-		Lcd::Display::WriteData((uint8_t)'A');
+		(Lcd::Display::IsBusyAndReadAddress(i));
+		Lcd::Display::WriteData(0x41+i);
+		
+		if(i > 30)
+		{
+			Lcd::Display::ReturnHome();
+			//i=0;
+		}		
 	}			
 	
 	return 0;

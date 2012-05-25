@@ -69,7 +69,7 @@ namespace EthernetBridge
 			private :
 			
 			static inline void OutData(uint8_t data)	 { t_data_port::SetAsOutput(0xff); t_data_port::Output::Set(data); }
-			static inline void InData()				 { t_data_port::SetAsInput(0xff); }
+			static inline void InData()				 { t_data_port::SetAsInput(0x00); }
 			static inline uint8_t GetData()				 { return t_data_port::Input::Get(); }
 			
 			static inline void SetReadFlag() { t_rw_outpin::Set(); }
@@ -87,10 +87,14 @@ namespace EthernetBridge
 				t_rw_outpin::InitOutput();
 				t_enable_outpin::InitOutput();
 				
-				InData();
+				t_rs_outpin::Clear();
+				t_rw_outpin::Clear();	
+				t_enable_outpin::Clear();
+				
+				OutData(0);
 			}
 			
-			static void PulseEnable()
+			static inline void PulseEnable()
 			{
 				ClearEnable();
 				
@@ -120,12 +124,14 @@ namespace EthernetBridge
 				
 				PulseEnable();
 				
+				uint8_t received = GetData();
+				
 				if(!t_busy_only)
 				{
-					addr = GetData() & 0b01111111;
+					addr = received & 0b01111111;
 				}					
 				
-				return GetData() & 0b10000000;
+				return (received >> 7) &1;
 					
 			}
 
@@ -212,7 +218,8 @@ namespace EthernetBridge
 			
 			static bool IsBusy()
 			{
-				return IsBusyAndReadAddressInner<true>(0);
+				uint8_t tmp;
+				return IsBusyAndReadAddressInner<true>(tmp);
 			}		
 			
 			static bool IsBusyAndReadAddress(uint8_t &addr)
@@ -263,11 +270,14 @@ namespace EthernetBridge
 		
 				SetFunction(0b100);
 				_delay_us(37);
-
+				
+				DisplayMode(DisplayOn, CursorHidden, CursorNotBlinking);
+				_delay_us(37);
+				
 				ClearDisplay();
 				_delay_ms(2);
 
-				EntryMode(DirectionLeft, DisplayShiftDisable);
+				EntryMode(DirectionRight, DisplayShiftDisable);
 				_delay_us(37);
 
 			}
