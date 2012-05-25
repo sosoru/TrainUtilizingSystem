@@ -115,6 +115,9 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="EthernetBridge.c">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="EthernetBridge.h">
       <SubType>compile</SubType>
     </Compile>
@@ -152,9 +155,6 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="lcd_sc2004\sc2004.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="main.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="rprintf.c">
