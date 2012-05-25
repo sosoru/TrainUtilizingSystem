@@ -265,11 +265,10 @@ namespace EthernetBridge
 				SetFunction(0b100);
 				_delay_us(37);
 	
-				SetFunction(0b111);
+				//8-bit, dual line, 5x8 dots
+				SetFunction(0b110);
 				_delay_us(37);
 		
-				SetFunction(0b100);
-				_delay_us(37);
 				
 				DisplayMode(DisplayOn, CursorHidden, CursorNotBlinking);
 				_delay_us(37);

@@ -150,20 +150,27 @@ int main(void)
 	PORTB |= _BV(PORTB4);
 		
 	Lcd::Display::ReturnHome();
+	_delay_ms(3);
+	Lcd::Display::SetAddressOfDDRAM(0x40);
+	_delay_us(37);
+	
 	while(1)
 	{
 		while(EthDevice::ReceiveFromEthernet());		
 		
 		DispatchProcess();
 		
-		(Lcd::Display::IsBusyAndReadAddress(i));
-		Lcd::Display::WriteData(0x41+i);
-		
-		if(i > 30)
+		//if(!Lcd::Display::IsBusy())
 		{
-			Lcd::Display::ReturnHome();
-			//i=0;
-		}		
+			Lcd::Display::WriteData(0x41+i);
+		
+			if(++i > 0x27)
+			{
+				_delay_us(37);
+				Lcd::Display::SetAddressOfDDRAM(0x00);
+				i=0;
+			}					
+		}
 	}			
 	
 	return 0;
