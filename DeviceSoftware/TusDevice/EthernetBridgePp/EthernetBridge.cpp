@@ -173,11 +173,7 @@ int main(void)
 	memset(lcd_buf, 0x20, sizeof(lcd_buf));
 	while(1)
 	{
-<<<<<<< HEAD
-		//while(ReceiveFromEthernet());		
-=======
 		while(EthDevice::ReceiveFromEthernet());		
->>>>>>> impl_eth_config
 		
 		DispatchProcess();
 		
