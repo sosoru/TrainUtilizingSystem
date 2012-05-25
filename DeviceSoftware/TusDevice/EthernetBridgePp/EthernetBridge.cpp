@@ -36,7 +36,8 @@ using namespace EthernetBridge::Eth;
 //
 //SPI_SLAVE_PORT g_spi_slave_ports[] = SPI_SLAVE_PORT_ARRAY;
 //
-void timer_interrupt();
+
+char lcd_buf [0x27];
 
 ISR(TIMER1_COMPA_vect)
 {				
@@ -49,6 +50,21 @@ ISR(TIMER1_COMPA_vect)
 	//sc2004_WriteData(lcd_buf[bufptr++]);
 }
 
+void refresh_lcd()
+{
+	uint8_t i;
+	
+	Lcd::Display::ClearDisplay();
+	_delay_ms(2);
+	for(i=0; i<sizeof(lcd_buf); ++i)
+	{
+		if(lcd_buf[i] == NULL)
+			break;
+		
+		Lcd::Display::WriteData(lcd_buf[i]);
+		_delay_us(37);
+	}
+}
 
 void BoardInit()
 {
@@ -79,6 +95,7 @@ void BoardInit()
 	EthDevice::Parameters.port = 8000;	
 	
 	EthDevice::EthernetInit();
+	EthDevice::NicParameterInit();
 	
 	SpiToModule::Init();
 	// for module in range(A, H):
@@ -111,7 +128,6 @@ void DispatchModulePackets()
 			}
 			else
 			{
-				PORTB |= _BV(PORTB7);
 				EthDevice::SendToEthernet(&received);
 			}			
 			
@@ -154,23 +170,14 @@ int main(void)
 	Lcd::Display::SetAddressOfDDRAM(0x40);
 	_delay_us(37);
 	
+	memset(lcd_buf, 0x20, sizeof(lcd_buf));
 	while(1)
 	{
 		while(EthDevice::ReceiveFromEthernet());		
 		
 		DispatchProcess();
 		
-		//if(!Lcd::Display::IsBusy())
-		{
-			Lcd::Display::WriteData(0x41+i);
-		
-			if(++i > 0x27)
-			{
-				_delay_us(37);
-				Lcd::Display::SetAddressOfDDRAM(0x00);
-				i=0;
-			}					
-		}
+		refresh_lcd();
 	}			
 	
 	return 0;

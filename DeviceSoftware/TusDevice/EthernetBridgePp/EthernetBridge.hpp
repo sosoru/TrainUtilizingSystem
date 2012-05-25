@@ -12,8 +12,7 @@
 #include "avr_base.hpp"
 #include "../libtus/packet.h"
 
-extern BYTE g_parentid;
-
+extern char lcd_buf[];
 
 
 #endif /* ETHERNETBRIDGE_H_ */

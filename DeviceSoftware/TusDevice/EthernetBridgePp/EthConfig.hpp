@@ -97,7 +97,7 @@ namespace EthernetBridge
 				if(plen==0){
 						return false;
 				}
-    	                    
+				
 				// arp is broadcast if unknown but a host may also
 				// verify the mac address by sending it to 
 				// a unicast address.
@@ -112,20 +112,22 @@ namespace EthernetBridge
 				if(eth_type_is_ip_and_my_ip(buf,plen)==0){
 						return true;
 				}
-                
+				              
 				if(buf[IP_PROTO_P]==IP_PROTO_ICMP_V && buf[ICMP_TYPE_P]==ICMP_TYPE_ECHOREQUEST_V){
 						// a ping packet, let's send pong
 						make_echo_reply_from_request(buf,plen);
 						return true;
 				}
+				
+				
 				//
 				// udp start, we listen on udp port 8000=0x1F40
 				if (buf[IP_PROTO_P]==IP_PROTO_UDP_V
-					&& buf[UDP_DST_PORT_H_P]==(Parameters.port>>8)
-					&& buf[UDP_DST_PORT_L_P]==(Parameters.port))
+					&& buf[UDP_DST_PORT_H_P]==(uint8_t)(Parameters.port>>8)
+					&& buf[UDP_DST_PORT_L_P]==(uint8_t)(Parameters.port))
 				{
 						payloadlen = buf[UDP_LEN_L_P] - UDP_HEADER_LEN;
-			
+							
 						EthPacket * ppacket = (EthPacket*)&buf[UDP_DATA_P];
 						if(IsForChildren((const EthPacket&)ppacket))
 						{
