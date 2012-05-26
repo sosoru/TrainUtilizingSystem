@@ -27,6 +27,8 @@
 #include "tus_mst/tus_mstcfg.hpp"
 #include "LcdCfg.hpp"
 #include "EthConfig.hpp"
+#include "UI/UIbase.hpp"
+#include "ui/setting/test_setting.hpp"
 
 using namespace EthernetBridge;
 using namespace EthernetBridge::Eth;
@@ -58,7 +60,7 @@ void refresh_lcd()
 	_delay_ms(2);
 	for(i=0; i<sizeof(lcd_buf); ++i)
 	{
-		if(lcd_buf[i] == NULL)
+		if(lcd_buf[i] == 0x00)
 			break;
 		
 		Lcd::Display::WriteData(lcd_buf[i]);
@@ -152,6 +154,8 @@ void DispatchProcess()
 
 int main(void)
 {
+	using namespace UI;
+	
 	uint8_t i=0,j;
 	
 	MCUCSR = 0;
