@@ -191,6 +191,9 @@
     <Compile Include="LcdCfg.hpp">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="sc2004\LcdController.hpp">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="sc2004\sc2004.hpp">
       <SubType>compile</SubType>
     </Compile>
