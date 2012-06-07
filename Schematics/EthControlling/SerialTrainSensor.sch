@@ -6346,6 +6346,8 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <part name="U$2" library="myparts" deviceset="ATTINY10" device=""/>
 <part name="SMD1" library="myparts" deviceset="SERIAL_SENSOR" device="HALF"/>
 <part name="SMD2" library="myparts" deviceset="SERIAL_SENSOR" device="HALF"/>
+<part name="R7" library="rcl" deviceset="R-EU_" device="R0603"/>
+<part name="P+2" library="supply1" deviceset="VCC" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -6387,6 +6389,8 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <instance part="U$2" gate="G$1" x="40.64" y="30.48"/>
 <instance part="SMD1" gate="G$1" x="10.16" y="99.06"/>
 <instance part="SMD2" gate="G$1" x="55.88" y="99.06"/>
+<instance part="R7" gate="G$1" x="91.44" y="60.96" rot="R270"/>
+<instance part="P+2" gate="VCC" x="91.44" y="68.58"/>
 </instances>
 <busses>
 </busses>
@@ -6496,6 +6500,8 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <wire x1="91.44" y1="33.02" x2="73.66" y2="33.02" width="0.1524" layer="91"/>
 <pinref part="U$1" gate="G$1" pin="(T0/CLKO/PCINT2/INT0/ADC2)PB2"/>
 <pinref part="U$2" gate="G$1" pin="(PCINT1/TPICLK/CLKI/ICP0/OC0B/ADC1/AIN1)PB1"/>
+<pinref part="R7" gate="G$1" pin="2"/>
+<junction x="91.44" y="55.88"/>
 </segment>
 </net>
 <net name="SENS_A" class="0">
@@ -6635,6 +6641,10 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <wire x1="167.64" y1="96.52" x2="167.64" y2="91.44" width="0.1524" layer="91"/>
 <junction x="167.64" y="96.52"/>
 <pinref part="IC2" gate="P" pin="V+"/>
+</segment>
+<segment>
+<pinref part="R7" gate="G$1" pin="1"/>
+<pinref part="P+2" gate="VCC" pin="VCC"/>
 </segment>
 </net>
 <net name="VLED" class="1">
