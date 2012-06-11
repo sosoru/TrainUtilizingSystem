@@ -38,6 +38,11 @@ namespace EthernetBridge
 				return t_input_pins::flags & dir;
 			}
 			
+			static inline uint8_t get_Flags()
+			{
+				return t_input_pins::flags;
+			}
+			
 			static inline bool IsAnyPressed()
 			{
 				return t_input_pins::IsAnySet();

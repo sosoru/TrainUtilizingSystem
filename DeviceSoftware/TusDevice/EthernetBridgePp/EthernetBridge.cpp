@@ -55,17 +55,9 @@ ISR(TIMER1_COMPA_vect)
 void refresh_lcd()
 {
 	uint8_t i;
-	
-	Lcd::Display::ClearDisplay();
-	_delay_ms(2);
-	for(i=0; i<sizeof(lcd_buf); ++i)
-	{
-		if(lcd_buf[i] == 0x00)
-			break;
-		
-		Lcd::Display::WriteData(lcd_buf[i]);
-		_delay_us(37);
-	}
+
+	Lcd::Display::StepRendering();	
+
 }
 
 void BoardInit()
@@ -110,7 +102,7 @@ void BoardInit()
 	ModuleG::Init();	
 	ModuleH::Init();	
 		
-	Lcd::Display::LcdInit();
+	Lcd::Display::Init();
 } 
 
 template < class t_module >
@@ -169,12 +161,9 @@ int main(void)
     BoardInit();
 	PORTB |= _BV(PORTB4);
 		
-	Lcd::Display::ReturnHome();
-	_delay_ms(3);
-	Lcd::Display::SetAddressOfDDRAM(0x40);
-	_delay_us(37);
+	UI::Ui_View_testconfig::RefreshUiParameters();
+	UI::UIView::SetLcdBuffer();	
 	
-	memset(lcd_buf, 0x20, sizeof(lcd_buf));
 	while(1)
 	{
 		while(EthDevice::ReceiveFromEthernet());		
