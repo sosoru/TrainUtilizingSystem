@@ -78,6 +78,7 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BlockParserTest.cs" />
     <Compile Include="ChunckedStreamTest.cs" />
     <Compile Include="ConvertExtenstionsTest.cs" />
     <Compile Include="EthClientTest.cs" />
@@ -135,6 +136,10 @@
     <ProjectReference Include="..\SensorViewLibrary\SensorViewLibrary.csproj">
       <Project>{67364770-A9D3-42C1-ADB9-DF160FB38A27}</Project>
       <Name>SensorViewLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TusSolution\RouteLibrary\RouteLibrary.csproj">
+      <Project>{39E73A78-039D-45DD-AD32-879B81EA567E}</Project>
+      <Name>RouteLibrary</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
