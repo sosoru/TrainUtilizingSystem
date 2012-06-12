@@ -120,8 +120,8 @@
 <wire x1="13" y1="0" x2="13" y2="23" width="0" layer="20"/>
 <wire x1="13" y1="23" x2="0" y2="23" width="0" layer="20"/>
 <wire x1="0" y1="23" x2="0" y2="0" width="0" layer="20"/>
-<text x="11.3792" y="8.128" size="0.6096" layer="22" font="vector" rot="MR270">TrSensor Rev.B</text>
-<text x="12.3952" y="3.2512" size="0.6096" layer="22" font="vector" rot="MR270">T.U.S.</text>
+<text x="11.5824" y="7.7216" size="0.6096" layer="21" font="vector" rot="R270">TrSensor Rev.B</text>
+<text x="10.3632" y="2.8448" size="0.6096" layer="21" font="vector" rot="R270">T.U.S.</text>
 </plain>
 <libraries>
 <library name="myparts">
