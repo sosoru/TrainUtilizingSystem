@@ -119,6 +119,12 @@
     </Key>
     <Property Name="Id" Type="Int32" Nullable="false" ConcurrencyMode="Fixed" />
   </EntityType>
+  <EntityType Name="Table2Item">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" ConcurrencyMode="Fixed" />
+  </EntityType>
   <EntityContainer Name="ApplicationDataObjectContext">
     <EntitySet Name="NeededPartsSet" EntityType="ApplicationData.NeededParts" />
     <EntitySet Name="AvailablePartsSet" EntityType="ApplicationData.AvailableParts" />
@@ -126,6 +132,7 @@
     <EntitySet Name="StoreInfoSet" EntityType="ApplicationData.StoreInfo" />
     <EntitySet Name="NeededBoardsSet" EntityType="ApplicationData.NeededBoards" />
     <EntitySet Name="Table1ItemSet" EntityType="ApplicationData.Table1Item" />
+    <EntitySet Name="Table2ItemSet" EntityType="ApplicationData.Table2Item" />
     <AssociationSet Name="PriceInfo_StoreInfo" Association="ApplicationData.PriceInfo_StoreInfo">
       <End Role="StoreInfo" EntitySet="StoreInfoSet" />
       <End Role="PriceInfo" EntitySet="PriceInfoSet" />

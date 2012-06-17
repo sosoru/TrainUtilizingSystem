@@ -97,7 +97,7 @@ namespace MotorController
 				{
 					float result;
 					
-					InputPins<PortA, AdcNum>::InitInput();
+					InputPins<PortA, AdcNum>::InitDefaultInput();
 					
 					AnalogToDigital::ControlSetUp(ADCEnable, StartLater, FreeRunStopped, InterruptDisable, Div128);
 					AnalogToDigital::SelectionSetUp(AVCC, AlignLeft, (AnalogChannel)AdcNum);		

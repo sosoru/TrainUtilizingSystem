@@ -205,6 +205,36 @@ namespace LightSwitchApplication.Implementation
         }
     #endregion
     
+    #region Table2Item
+    
+        public void InsertTable2Item(global::ApplicationData.Implementation.Table2Item entity)
+        {
+            if (entity.EntityState != global::System.Data.EntityState.Detached)
+            {
+                this.ObjectContext.ObjectStateManager.ChangeObjectState(entity, global::System.Data.EntityState.Added);
+            }
+            else
+            {
+                this.ObjectContext.Table2ItemSet.AddObject(entity);
+            }
+        }
+    
+        public void UpdateTable2Item(global::ApplicationData.Implementation.Table2Item currentEntity)
+        {
+            global::System.ServiceModel.DomainServices.EntityFramework.ObjectContextExtensions.AttachAsModified(this.ObjectContext.Table2ItemSet, currentEntity, this.ChangeSet.GetOriginal(currentEntity));
+        }
+    
+        public void DeleteTable2Item(global::ApplicationData.Implementation.Table2Item entity)
+        {
+            if (entity.EntityState == global::System.Data.EntityState.Detached)
+            {
+                this.ObjectContext.Table2ItemSet.Attach(entity);
+            }
+    
+            this.DeleteEntity(entity);
+        }
+    #endregion
+    
     #region Queries
         public global::System.Linq.IQueryable<global::ApplicationData.Implementation.NeededParts> NeededPartsSet_Single(string frameworkOperators, global::System.Nullable<int> Id)
         {
@@ -299,6 +329,21 @@ namespace LightSwitchApplication.Implementation
         public global::System.Linq.IQueryable<global::ApplicationData.Implementation.Table1Item> Table1ItemSet_All(string frameworkOperators)
         {
             return this.GetQuery<global::ApplicationData.Implementation.Table1Item>("Table1ItemSet_All", frameworkOperators);
+        }
+    
+        public global::System.Linq.IQueryable<global::ApplicationData.Implementation.Table2Item> Table2ItemSet_Single(string frameworkOperators, global::System.Nullable<int> Id)
+        {
+            return this.GetQuery<global::ApplicationData.Implementation.Table2Item>("Table2ItemSet_Single", frameworkOperators, Id);
+        }
+    
+        public global::System.Linq.IQueryable<global::ApplicationData.Implementation.Table2Item> Table2ItemSet_SingleOrDefault(string frameworkOperators, global::System.Nullable<int> Id)
+        {
+            return this.GetQuery<global::ApplicationData.Implementation.Table2Item>("Table2ItemSet_SingleOrDefault", frameworkOperators, Id);
+        }
+    
+        public global::System.Linq.IQueryable<global::ApplicationData.Implementation.Table2Item> Table2ItemSet_All(string frameworkOperators)
+        {
+            return this.GetQuery<global::ApplicationData.Implementation.Table2Item>("Table2ItemSet_All", frameworkOperators);
         }
     
     #endregion
@@ -493,6 +538,31 @@ namespace LightSwitchApplication.Implementation
             return query;
         }
     
+        public global::System.Linq.IQueryable<global::ApplicationData.Implementation.Table2Item> Table2ItemSet_Single(global::System.Nullable<int> Id)
+        {
+            global::System.Linq.IQueryable<global::ApplicationData.Implementation.Table2Item> query;
+            query = global::System.Linq.Queryable.Where(
+                this.GetQuery<global::ApplicationData.Implementation.Table2Item>("Table2ItemSet_All"),
+                (t) => (Id.HasValue && (t.Id == Id)));
+            return query;
+        }
+    
+        public global::System.Linq.IQueryable<global::ApplicationData.Implementation.Table2Item> Table2ItemSet_SingleOrDefault(global::System.Nullable<int> Id)
+        {
+            global::System.Linq.IQueryable<global::ApplicationData.Implementation.Table2Item> query;
+            query = global::System.Linq.Queryable.Where(
+                this.GetQuery<global::ApplicationData.Implementation.Table2Item>("Table2ItemSet_All"),
+                (t) => (Id.HasValue && (t.Id == Id)));
+            return query;
+        }
+    
+        public global::System.Linq.IQueryable<global::ApplicationData.Implementation.Table2Item> Table2ItemSet_All()
+        {
+            global::System.Linq.IQueryable<global::ApplicationData.Implementation.Table2Item> query;
+            query = base.CreateQuery<global::ApplicationData.Implementation.Table2Item>("[Table2ItemSet]").AsQueryable();
+            return query;
+        }
+    
     #endregion
 
     #region Protected Methods
@@ -521,6 +591,10 @@ namespace LightSwitchApplication.Implementation
             if (type == typeof(global::ApplicationData.Implementation.Table1Item))
             {
                 return new global::ApplicationData.Implementation.Table1Item();
+            }
+            if (type == typeof(global::ApplicationData.Implementation.Table2Item))
+            {
+                return new global::ApplicationData.Implementation.Table2Item();
             }
     
             return base.CreateObject(type);
@@ -559,6 +633,10 @@ namespace LightSwitchApplication.Implementation
             if (typeof(T) == typeof(global::LightSwitchApplication.Table1Item))
             {
                 return new global::ApplicationData.Implementation.Table1Item();
+            }
+            if (typeof(T) == typeof(global::LightSwitchApplication.Table2Item))
+            {
+                return new global::ApplicationData.Implementation.Table2Item();
             }
             return null;
         }
@@ -628,6 +706,10 @@ namespace LightSwitchApplication.Implementation
             if (typeof(global::LightSwitchApplication.Table1Item) == definitionType)
             {
                 return typeof(global::ApplicationData.Implementation.Table1Item);
+            }
+            if (typeof(global::LightSwitchApplication.Table2Item) == definitionType)
+            {
+                return typeof(global::ApplicationData.Implementation.Table2Item);
             }
             return null;
         }
@@ -961,6 +1043,39 @@ namespace ApplicationData.Implementation
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     public partial class Table1Item :
         global::LightSwitchApplication.Table1Item.DetailsClass.IImplementation
+    {
+    
+        #region IEntityImplementation Members
+        private global::Microsoft.LightSwitch.Internal.IEntityImplementationHost __host;
+        
+        global::Microsoft.LightSwitch.Internal.IEntityImplementationHost global::Microsoft.LightSwitch.Internal.IEntityImplementation.Host
+        {
+            get
+            {
+                return this.__host;
+            }
+        }
+        
+        void global::Microsoft.LightSwitch.Internal.IEntityImplementation.Initialize(global::Microsoft.LightSwitch.Internal.IEntityImplementationHost host)
+        {
+            this.__host = host;
+        }
+        
+        protected override void OnPropertyChanged(string propertyName)
+        {
+            base.OnPropertyChanged(propertyName);
+            if (this.__host != null)
+            {
+                this.__host.RaisePropertyChanged(propertyName);
+            }
+        }
+        #endregion
+    }
+    
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.LightSwitch.BuildTasks.CodeGen", "10.0.0.0")]
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+    public partial class Table2Item :
+        global::LightSwitchApplication.Table2Item.DetailsClass.IImplementation
     {
     
         #region IEntityImplementation Members

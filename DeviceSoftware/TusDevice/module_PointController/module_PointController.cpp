@@ -58,13 +58,11 @@ void test_packet(ptrPacket& packet, PositionEnum pos)
 	packet.set_StateArrayLength(8);
 	pstates = packet.get_StateArray();
 	
-	//for(i=2; i<8; ++i)
+	for(i=0; i<8; ++i)
 	{
-		uint8_t i = 2;
-		
 		pstates[i].DeadTime = 50;
 		pstates[i].ChangingTime = 20;
-		pstates[i].Position = pos;
+		pstates[i].Position = pos;		
 	}
 	
 }

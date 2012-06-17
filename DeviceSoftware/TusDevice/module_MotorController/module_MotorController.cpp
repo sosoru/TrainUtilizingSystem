@@ -18,6 +18,17 @@ MotorControllerB mtrB;
 MotorControllerC mtrC;
 MotorControllerD mtrD;
 
+void sample_process()
+{
+	MtrControllerPacket pack;
+	
+	pack.set_ControlMode(DutySpecifiedMode);
+	pack.set_Direciton(Positive);
+	pack.set_DutyValue(250);
+	
+	mtrA.set_Packet(&pack);
+}
+
 void spi_received(args_received *e)
 {
 	if(e->ppack->destId.ModuleAddr != 1)
@@ -46,33 +57,11 @@ int main(void)
 	
 	while(1)
 	{	
-		tus_spi_process_packets();
+		sample_process();
+		//tus_spi_process_packets();
 		mtrA.Process();
 		
 		_delay_ms(1);
-		//for(i=0; i<150; ++i)
-		//{
-			//sample_process<MotorControllerC, Positive>(&mtrC, i);
-			//_delay_ms(200);
-		//}
-		//
-		//for(i=150; i>0; --i)
-		//{	
-			//sample_process<MotorControllerC, Positive>(&mtrC, i);
-			//_delay_ms(200);
-		//}			
-		//
-		//for(i=0; i<150; ++i)
-		//{
-			//sample_process<MotorControllerC, Negative>(&mtrC, i);
-			//_delay_ms(200);
-		//}
-		//
-		//for(i=150; i>0; --i)
-		//{	
-			//sample_process<MotorControllerC, Negative>(&mtrC, i);
-			//_delay_ms(200);
-		//}			
 
     }
 }

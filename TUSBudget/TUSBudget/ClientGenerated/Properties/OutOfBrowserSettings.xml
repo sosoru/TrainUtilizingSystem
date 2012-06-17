@@ -1,7 +1,7 @@
 <OutOfBrowserSettings ShortName="TUSBudget" EnableGPUAcceleration="False" ShowInstallMenuItem="False">
   <OutOfBrowserSettings.Blurb>TUSBudget</OutOfBrowserSettings.Blurb>
   <OutOfBrowserSettings.WindowSettings>
-    <WindowSettings Title="TUSBudget" WindowStartupLocation="Manual" Top="0" Left="0"/>
+    <WindowSettings Title="TUSBudget" Top="0" Left="0" WindowStartupLocation="Manual" />
   </OutOfBrowserSettings.WindowSettings>
   <OutOfBrowserSettings.SecuritySettings>
     <SecuritySettings ElevatedPermissions="Required" />

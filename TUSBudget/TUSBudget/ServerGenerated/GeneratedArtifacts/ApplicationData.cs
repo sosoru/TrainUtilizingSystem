@@ -165,6 +165,22 @@ namespace ApplicationData.Implementation
             }
         }
         private ObjectSet<Table1Item> _Table1ItemSet;
+    
+        /// <summary>
+        /// 使用できるメタデータ ドキュメントはありません。
+        /// </summary>
+        public ObjectSet<Table2Item> Table2ItemSet
+        {
+            get
+            {
+                if ((_Table2ItemSet == null))
+                {
+                    _Table2ItemSet = base.CreateObjectSet<Table2Item>("Table2ItemSet");
+                }
+                return _Table2ItemSet;
+            }
+        }
+        private ObjectSet<Table2Item> _Table2ItemSet;
 
         #endregion
         #region AddTo メソッド
@@ -215,6 +231,14 @@ namespace ApplicationData.Implementation
         public void AddToTable1ItemSet(Table1Item table1Item)
         {
             base.AddObject("Table1ItemSet", table1Item);
+        }
+    
+        /// <summary>
+        /// Table2ItemSet EntitySet に新しいオブジェクトを追加するための非推奨のメソッドです。代わりに、関連付けられている ObjectSet&lt;T&gt; プロパティの .Add メソッドを使用してください。
+        /// </summary>
+        public void AddToTable2ItemSet(Table2Item table2Item)
+        {
+            base.AddObject("Table2ItemSet", table2Item);
         }
 
         #endregion
@@ -1364,6 +1388,61 @@ namespace ApplicationData.Implementation
             Table1Item table1Item = new Table1Item();
             table1Item.Id = id;
             return table1Item;
+        }
+
+        #endregion
+        #region プリミティブ プロパティ
+    
+        /// <summary>
+        /// 使用できるメタデータ ドキュメントはありません。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 Id
+        {
+            get
+            {
+                return _Id;
+            }
+            set
+            {
+                if (_Id != value)
+                {
+                    OnIdChanging(value);
+                    ReportPropertyChanging("Id");
+                    _Id = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("Id");
+                    OnIdChanged();
+                }
+            }
+        }
+        private global::System.Int32 _Id;
+        partial void OnIdChanging(global::System.Int32 value);
+        partial void OnIdChanged();
+
+        #endregion
+    
+    }
+    
+    /// <summary>
+    /// 使用できるメタデータ ドキュメントはありません。
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="ApplicationData", Name="Table2Item")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class Table2Item : EntityObject
+    {
+        #region ファクトリ メソッド
+    
+        /// <summary>
+        /// 新しい Table2Item オブジェクトを作成します。
+        /// </summary>
+        /// <param name="id">Id プロパティの初期値。</param>
+        public static Table2Item CreateTable2Item(global::System.Int32 id)
+        {
+            Table2Item table2Item = new Table2Item();
+            table2Item.Id = id;
+            return table2Item;
         }
 
         #endregion

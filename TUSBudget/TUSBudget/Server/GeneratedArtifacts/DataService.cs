@@ -258,6 +258,39 @@ namespace LightSwitchApplication
         partial void Table1ItemSet_Validate(global::LightSwitchApplication.Table1Item entity, global::Microsoft.LightSwitch.EntitySetValidationResultsBuilder results);
     
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+        partial void Table2ItemSet_CanInsert(ref bool result);
+    
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+        partial void Table2ItemSet_CanUpdate(ref bool result);
+    
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+        partial void Table2ItemSet_CanDelete(ref bool result);
+    
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+        partial void Table2ItemSet_CanRead(ref bool result);
+    
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+        partial void Table2ItemSet_Inserting(global::LightSwitchApplication.Table2Item entity);
+    
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+        partial void Table2ItemSet_Inserted(global::LightSwitchApplication.Table2Item entity);
+    
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+        partial void Table2ItemSet_Updating(global::LightSwitchApplication.Table2Item entity);
+    
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+        partial void Table2ItemSet_Updated(global::LightSwitchApplication.Table2Item entity);
+    
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+        partial void Table2ItemSet_Deleting(global::LightSwitchApplication.Table2Item entity);
+    
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+        partial void Table2ItemSet_Deleted(global::LightSwitchApplication.Table2Item entity);
+    
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+        partial void Table2ItemSet_Validate(global::LightSwitchApplication.Table2Item entity, global::Microsoft.LightSwitch.EntitySetValidationResultsBuilder results);
+    
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
         partial void SaveChanges_CanExecute(ref bool result);
     
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -553,6 +586,51 @@ namespace LightSwitchApplication
     
         [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
         partial void Table1ItemSet_All_ExecuteFailed(global::System.Exception exception);
+    
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+        partial void Table2ItemSet_Single_CanExecute(ref bool result);
+    
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+        partial void Table2ItemSet_Single_Executing(global::System.Nullable<int> Id);
+    
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+        partial void Table2ItemSet_Single_PreprocessQuery(global::System.Nullable<int> Id, ref global::System.Linq.IQueryable<global::LightSwitchApplication.Table2Item> query);
+    
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+        partial void Table2ItemSet_Single_Executed(global::System.Nullable<int> Id, global::System.Collections.Generic.IEnumerable<global::LightSwitchApplication.Table2Item> result);
+    
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+        partial void Table2ItemSet_Single_ExecuteFailed(global::System.Nullable<int> Id, global::System.Exception exception);
+    
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+        partial void Table2ItemSet_SingleOrDefault_CanExecute(ref bool result);
+    
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+        partial void Table2ItemSet_SingleOrDefault_Executing(global::System.Nullable<int> Id);
+    
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+        partial void Table2ItemSet_SingleOrDefault_PreprocessQuery(global::System.Nullable<int> Id, ref global::System.Linq.IQueryable<global::LightSwitchApplication.Table2Item> query);
+    
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+        partial void Table2ItemSet_SingleOrDefault_Executed(global::System.Nullable<int> Id, global::System.Collections.Generic.IEnumerable<global::LightSwitchApplication.Table2Item> result);
+    
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+        partial void Table2ItemSet_SingleOrDefault_ExecuteFailed(global::System.Nullable<int> Id, global::System.Exception exception);
+    
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+        partial void Table2ItemSet_All_CanExecute(ref bool result);
+    
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+        partial void Table2ItemSet_All_Executing();
+    
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+        partial void Table2ItemSet_All_PreprocessQuery(ref global::System.Linq.IQueryable<global::LightSwitchApplication.Table2Item> query);
+    
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+        partial void Table2ItemSet_All_Executed(global::System.Collections.Generic.IEnumerable<global::LightSwitchApplication.Table2Item> result);
+    
+        [global::System.ComponentModel.EditorBrowsable(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+        partial void Table2ItemSet_All_ExecuteFailed(global::System.Exception exception);
     
         #endregion
     
@@ -974,6 +1052,74 @@ namespace LightSwitchApplication
             private static void __Table1ItemSet_Validate(global::LightSwitchApplication.ApplicationDataService d, global::LightSwitchApplication.Table1Item e, global::Microsoft.LightSwitch.EntitySetValidationResultsBuilder r)
             {
                 d.Table1ItemSet_Validate(e, r);
+            }
+            
+            [global::System.Diagnostics.DebuggerBrowsable(global::System.Diagnostics.DebuggerBrowsableState.Never)]
+            private static readonly global::Microsoft.LightSwitch.Details.Framework.Server.EntitySetEntry<global::LightSwitchApplication.ApplicationDataService, global::LightSwitchApplication.Table2Item>
+                __Table2ItemSetEntry = new global::Microsoft.LightSwitch.Details.Framework.Server.EntitySetEntry<global::LightSwitchApplication.ApplicationDataService, global::LightSwitchApplication.Table2Item>(
+                    "Table2ItemSet",
+                    global::LightSwitchApplication.ApplicationDataService.DetailsClass.__Table2ItemSet_CanInsert,
+                    global::LightSwitchApplication.ApplicationDataService.DetailsClass.__Table2ItemSet_CanUpdate,
+                    global::LightSwitchApplication.ApplicationDataService.DetailsClass.__Table2ItemSet_CanDelete,
+                    global::LightSwitchApplication.ApplicationDataService.DetailsClass.__Table2ItemSet_CanRead,
+                    global::LightSwitchApplication.ApplicationDataService.DetailsClass.__Table2ItemSet_Inserting,
+                    global::LightSwitchApplication.ApplicationDataService.DetailsClass.__Table2ItemSet_Inserted,
+                    global::LightSwitchApplication.ApplicationDataService.DetailsClass.__Table2ItemSet_Updating,
+                    global::LightSwitchApplication.ApplicationDataService.DetailsClass.__Table2ItemSet_Updated,
+                    global::LightSwitchApplication.ApplicationDataService.DetailsClass.__Table2ItemSet_Deleting,
+                    global::LightSwitchApplication.ApplicationDataService.DetailsClass.__Table2ItemSet_Deleted,
+                    global::LightSwitchApplication.ApplicationDataService.DetailsClass.__Table2ItemSet_Validate);
+            private static bool __Table2ItemSet_CanInsert(global::LightSwitchApplication.ApplicationDataService d)
+            {
+                bool result = true;
+                d.Table2ItemSet_CanInsert(ref result);
+                return result;
+            }
+            private static bool __Table2ItemSet_CanUpdate(global::LightSwitchApplication.ApplicationDataService d)
+            {
+                bool result = true;
+                d.Table2ItemSet_CanUpdate(ref result);
+                return result;
+            }
+            private static bool __Table2ItemSet_CanDelete(global::LightSwitchApplication.ApplicationDataService d)
+            {
+                bool result = true;
+                d.Table2ItemSet_CanDelete(ref result);
+                return result;
+            }
+            private static bool __Table2ItemSet_CanRead(global::LightSwitchApplication.ApplicationDataService d)
+            {
+                bool result = true;
+                d.Table2ItemSet_CanRead(ref result);
+                return result;
+            }
+            private static void __Table2ItemSet_Inserting(global::LightSwitchApplication.ApplicationDataService d, global::LightSwitchApplication.Table2Item e)
+            {
+                d.Table2ItemSet_Inserting(e);
+            }
+            private static void __Table2ItemSet_Inserted(global::LightSwitchApplication.ApplicationDataService d, global::LightSwitchApplication.Table2Item e)
+            {
+                d.Table2ItemSet_Inserted(e);
+            }
+            private static void __Table2ItemSet_Updating(global::LightSwitchApplication.ApplicationDataService d, global::LightSwitchApplication.Table2Item e)
+            {
+                d.Table2ItemSet_Updating(e);
+            }
+            private static void __Table2ItemSet_Updated(global::LightSwitchApplication.ApplicationDataService d, global::LightSwitchApplication.Table2Item e)
+            {
+                d.Table2ItemSet_Updated(e);
+            }
+            private static void __Table2ItemSet_Deleting(global::LightSwitchApplication.ApplicationDataService d, global::LightSwitchApplication.Table2Item e)
+            {
+                d.Table2ItemSet_Deleting(e);
+            }
+            private static void __Table2ItemSet_Deleted(global::LightSwitchApplication.ApplicationDataService d, global::LightSwitchApplication.Table2Item e)
+            {
+                d.Table2ItemSet_Deleted(e);
+            }
+            private static void __Table2ItemSet_Validate(global::LightSwitchApplication.ApplicationDataService d, global::LightSwitchApplication.Table2Item e, global::Microsoft.LightSwitch.EntitySetValidationResultsBuilder r)
+            {
+                d.Table2ItemSet_Validate(e, r);
             }
             
             [global::System.Diagnostics.DebuggerBrowsable(global::System.Diagnostics.DebuggerBrowsableState.Never)]
@@ -1626,6 +1772,105 @@ namespace LightSwitchApplication
             {
                 global::System.Linq.IQueryable<global::LightSwitchApplication.Table1Item> query = (global::System.Linq.IQueryable<global::LightSwitchApplication.Table1Item>)args[0];
                 d.Table1ItemSet_All_PreprocessQuery(ref query);
+                return query;
+            }
+            
+            [global::System.Diagnostics.DebuggerBrowsable(global::System.Diagnostics.DebuggerBrowsableState.Never)]
+            private static readonly global::Microsoft.LightSwitch.Details.Framework.Server.QueryOperationEntry<global::LightSwitchApplication.ApplicationDataService, global::LightSwitchApplication.Table2Item>
+                __Table2ItemSet_SingleEntry = new global::Microsoft.LightSwitch.Details.Framework.Server.QueryOperationEntry<global::LightSwitchApplication.ApplicationDataService, global::LightSwitchApplication.Table2Item>(
+                    "Table2ItemSet_Single",
+                    global::LightSwitchApplication.ApplicationDataService.DetailsClass.__Table2ItemSet_Single_CanExecute,
+                    global::LightSwitchApplication.ApplicationDataService.DetailsClass.__Table2ItemSet_Single_Executing,
+                    global::LightSwitchApplication.ApplicationDataService.DetailsClass.__Table2ItemSet_Single_Executed,
+                    global::LightSwitchApplication.ApplicationDataService.DetailsClass.__Table2ItemSet_Single_Failed,
+                    global::LightSwitchApplication.ApplicationDataService.DetailsClass.__Table2ItemSet_Single_PreprocessQuery);
+            private static bool __Table2ItemSet_Single_CanExecute(global::LightSwitchApplication.ApplicationDataService d, bool r)
+            {
+                d.Table2ItemSet_Single_CanExecute(ref r);
+                return r;
+            }
+            private static void __Table2ItemSet_Single_Executing(global::LightSwitchApplication.ApplicationDataService d, object[] args)
+            {
+                d.Table2ItemSet_Single_Executing((global::System.Nullable<int>)args[0]);
+            }
+            private static void __Table2ItemSet_Single_Executed(global::LightSwitchApplication.ApplicationDataService d, object[] args)
+            {
+                d.Table2ItemSet_Single_Executed((global::System.Nullable<int>)args[0], (global::System.Collections.Generic.IEnumerable<global::LightSwitchApplication.Table2Item>)args[1]);
+            }
+            private static void __Table2ItemSet_Single_Failed(global::LightSwitchApplication.ApplicationDataService d, object[] args, global::System.Exception ex)
+            {
+                d.Table2ItemSet_Single_ExecuteFailed((global::System.Nullable<int>)args[0], ex);
+            }
+            private static global::System.Linq.IQueryable __Table2ItemSet_Single_PreprocessQuery(global::LightSwitchApplication.ApplicationDataService d, object[] args)
+            {
+                global::System.Linq.IQueryable<global::LightSwitchApplication.Table2Item> query = (global::System.Linq.IQueryable<global::LightSwitchApplication.Table2Item>)args[1];
+                d.Table2ItemSet_Single_PreprocessQuery((global::System.Nullable<int>)args[0], ref query);
+                return query;
+            }
+            
+            [global::System.Diagnostics.DebuggerBrowsable(global::System.Diagnostics.DebuggerBrowsableState.Never)]
+            private static readonly global::Microsoft.LightSwitch.Details.Framework.Server.QueryOperationEntry<global::LightSwitchApplication.ApplicationDataService, global::LightSwitchApplication.Table2Item>
+                __Table2ItemSet_SingleOrDefaultEntry = new global::Microsoft.LightSwitch.Details.Framework.Server.QueryOperationEntry<global::LightSwitchApplication.ApplicationDataService, global::LightSwitchApplication.Table2Item>(
+                    "Table2ItemSet_SingleOrDefault",
+                    global::LightSwitchApplication.ApplicationDataService.DetailsClass.__Table2ItemSet_SingleOrDefault_CanExecute,
+                    global::LightSwitchApplication.ApplicationDataService.DetailsClass.__Table2ItemSet_SingleOrDefault_Executing,
+                    global::LightSwitchApplication.ApplicationDataService.DetailsClass.__Table2ItemSet_SingleOrDefault_Executed,
+                    global::LightSwitchApplication.ApplicationDataService.DetailsClass.__Table2ItemSet_SingleOrDefault_Failed,
+                    global::LightSwitchApplication.ApplicationDataService.DetailsClass.__Table2ItemSet_SingleOrDefault_PreprocessQuery);
+            private static bool __Table2ItemSet_SingleOrDefault_CanExecute(global::LightSwitchApplication.ApplicationDataService d, bool r)
+            {
+                d.Table2ItemSet_SingleOrDefault_CanExecute(ref r);
+                return r;
+            }
+            private static void __Table2ItemSet_SingleOrDefault_Executing(global::LightSwitchApplication.ApplicationDataService d, object[] args)
+            {
+                d.Table2ItemSet_SingleOrDefault_Executing((global::System.Nullable<int>)args[0]);
+            }
+            private static void __Table2ItemSet_SingleOrDefault_Executed(global::LightSwitchApplication.ApplicationDataService d, object[] args)
+            {
+                d.Table2ItemSet_SingleOrDefault_Executed((global::System.Nullable<int>)args[0], (global::System.Collections.Generic.IEnumerable<global::LightSwitchApplication.Table2Item>)args[1]);
+            }
+            private static void __Table2ItemSet_SingleOrDefault_Failed(global::LightSwitchApplication.ApplicationDataService d, object[] args, global::System.Exception ex)
+            {
+                d.Table2ItemSet_SingleOrDefault_ExecuteFailed((global::System.Nullable<int>)args[0], ex);
+            }
+            private static global::System.Linq.IQueryable __Table2ItemSet_SingleOrDefault_PreprocessQuery(global::LightSwitchApplication.ApplicationDataService d, object[] args)
+            {
+                global::System.Linq.IQueryable<global::LightSwitchApplication.Table2Item> query = (global::System.Linq.IQueryable<global::LightSwitchApplication.Table2Item>)args[1];
+                d.Table2ItemSet_SingleOrDefault_PreprocessQuery((global::System.Nullable<int>)args[0], ref query);
+                return query;
+            }
+            
+            [global::System.Diagnostics.DebuggerBrowsable(global::System.Diagnostics.DebuggerBrowsableState.Never)]
+            private static readonly global::Microsoft.LightSwitch.Details.Framework.Server.QueryOperationEntry<global::LightSwitchApplication.ApplicationDataService, global::LightSwitchApplication.Table2Item>
+                __Table2ItemSet_AllEntry = new global::Microsoft.LightSwitch.Details.Framework.Server.QueryOperationEntry<global::LightSwitchApplication.ApplicationDataService, global::LightSwitchApplication.Table2Item>(
+                    "Table2ItemSet_All",
+                    global::LightSwitchApplication.ApplicationDataService.DetailsClass.__Table2ItemSet_All_CanExecute,
+                    global::LightSwitchApplication.ApplicationDataService.DetailsClass.__Table2ItemSet_All_Executing,
+                    global::LightSwitchApplication.ApplicationDataService.DetailsClass.__Table2ItemSet_All_Executed,
+                    global::LightSwitchApplication.ApplicationDataService.DetailsClass.__Table2ItemSet_All_Failed,
+                    global::LightSwitchApplication.ApplicationDataService.DetailsClass.__Table2ItemSet_All_PreprocessQuery);
+            private static bool __Table2ItemSet_All_CanExecute(global::LightSwitchApplication.ApplicationDataService d, bool r)
+            {
+                d.Table2ItemSet_All_CanExecute(ref r);
+                return r;
+            }
+            private static void __Table2ItemSet_All_Executing(global::LightSwitchApplication.ApplicationDataService d, object[] args)
+            {
+                d.Table2ItemSet_All_Executing();
+            }
+            private static void __Table2ItemSet_All_Executed(global::LightSwitchApplication.ApplicationDataService d, object[] args)
+            {
+                d.Table2ItemSet_All_Executed((global::System.Collections.Generic.IEnumerable<global::LightSwitchApplication.Table2Item>)args[0]);
+            }
+            private static void __Table2ItemSet_All_Failed(global::LightSwitchApplication.ApplicationDataService d, object[] args, global::System.Exception ex)
+            {
+                d.Table2ItemSet_All_ExecuteFailed(ex);
+            }
+            private static global::System.Linq.IQueryable __Table2ItemSet_All_PreprocessQuery(global::LightSwitchApplication.ApplicationDataService d, object[] args)
+            {
+                global::System.Linq.IQueryable<global::LightSwitchApplication.Table2Item> query = (global::System.Linq.IQueryable<global::LightSwitchApplication.Table2Item>)args[0];
+                d.Table2ItemSet_All_PreprocessQuery(ref query);
                 return query;
             }
     
