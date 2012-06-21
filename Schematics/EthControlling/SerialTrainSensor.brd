@@ -122,6 +122,7 @@
 <wire x1="0" y1="23" x2="0" y2="0" width="0" layer="20"/>
 <text x="11.5824" y="7.7216" size="0.6096" layer="21" font="vector" rot="R270">TrSensor Rev.B</text>
 <text x="10.3632" y="2.8448" size="0.6096" layer="21" font="vector" rot="R270">T.U.S.</text>
+<text x="8.7376" y="11.5824" size="1.016" layer="26" rot="MR0">D53371</text>
 </plain>
 <libraries>
 <library name="myparts">
