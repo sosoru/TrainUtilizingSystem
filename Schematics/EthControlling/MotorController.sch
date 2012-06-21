@@ -17778,7 +17778,7 @@ high speed (Philips)</description>
 <part name="LED4" library="led" deviceset="LED" device="3MM" value="O"/>
 <part name="LED3" library="led" deviceset="LED" device="3MM" value="G"/>
 <part name="R16" library="resistor" deviceset="R-EU_" device="R0603" value="3.3k"/>
-<part name="R6" library="resistor" deviceset="R-EU_" device="R0603" value="500"/>
+<part name="R6" library="resistor" deviceset="R-EU_" device="R0603" value="1k"/>
 <part name="GND8" library="supply1" deviceset="GND" device=""/>
 <part name="P+7" library="supply1" deviceset="+12V" device=""/>
 <part name="A_PREV" library="myparts" deviceset="XH-2" device=""/>
@@ -17816,7 +17816,7 @@ high speed (Philips)</description>
 <part name="LED6" library="led" deviceset="LED" device="3MM" value="O"/>
 <part name="LED5" library="led" deviceset="LED" device="3MM" value="G"/>
 <part name="R21" library="resistor" deviceset="R-EU_" device="R0603" value="3.3k"/>
-<part name="R32" library="resistor" deviceset="R-EU_" device="R0603" value="500"/>
+<part name="R32" library="resistor" deviceset="R-EU_" device="R0603" value="1k"/>
 <part name="GND16" library="supply1" deviceset="GND" device=""/>
 <part name="P+12" library="supply1" deviceset="+12V" device=""/>
 <part name="C_PREV" library="myparts" deviceset="XH-2" device=""/>
@@ -17849,7 +17849,7 @@ high speed (Philips)</description>
 <part name="LED2" library="led" deviceset="LED" device="3MM" value="O"/>
 <part name="LED1" library="led" deviceset="LED" device="3MM" value="G"/>
 <part name="R14" library="resistor" deviceset="R-EU_" device="R0603" value="3.3k"/>
-<part name="R7" library="resistor" deviceset="R-EU_" device="R0603" value="500"/>
+<part name="R7" library="resistor" deviceset="R-EU_" device="R0603" value="1k"/>
 <part name="GND26" library="supply1" deviceset="GND" device=""/>
 <part name="P+17" library="supply1" deviceset="+12V" device=""/>
 <part name="B_PREV" library="myparts" deviceset="XH-2" device=""/>
@@ -17881,7 +17881,7 @@ high speed (Philips)</description>
 <part name="LED8" library="led" deviceset="LED" device="3MM" value="O"/>
 <part name="LED7" library="led" deviceset="LED" device="3MM" value="G"/>
 <part name="R23" library="resistor" deviceset="R-EU_" device="R0603" value="3.3k"/>
-<part name="R33" library="resistor" deviceset="R-EU_" device="R0603" value="500"/>
+<part name="R33" library="resistor" deviceset="R-EU_" device="R0603" value="1k"/>
 <part name="GND35" library="supply1" deviceset="GND" device=""/>
 <part name="P+22" library="supply1" deviceset="+12V" device=""/>
 <part name="D_PREV" library="myparts" deviceset="XH-2" device=""/>

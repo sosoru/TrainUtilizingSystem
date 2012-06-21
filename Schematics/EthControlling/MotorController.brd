@@ -4025,7 +4025,7 @@ design rules under a new name.
 <attribute name="NAME" x="52.695" y="44.767" size="1.27" layer="25" font="vector" rot="R90"/>
 <attribute name="VALUE" x="55.616" y="44.767" size="1.27" layer="27" font="vector" rot="R90"/>
 </element>
-<element name="R6" library="resistor" package="R0603" value="500" x="45.8768" y="62.8288" smashed="yes">
+<element name="R6" library="resistor" package="R0603" value="1k" x="45.8768" y="62.8288" smashed="yes">
 <attribute name="NAME" x="44.9878" y="63.7178" size="1.27" layer="25" font="vector"/>
 <attribute name="VALUE" x="44.9878" y="60.7968" size="1.27" layer="27" font="vector"/>
 </element>
@@ -4115,7 +4115,7 @@ design rules under a new name.
 <attribute name="NAME" x="29.1338" y="34.8234" size="1.27" layer="25" font="vector" rot="R270"/>
 <attribute name="VALUE" x="29.2608" y="33.6042" size="1.27" layer="27" font="vector" rot="R270"/>
 </element>
-<element name="R32" library="resistor" package="R0603" value="500" x="42.4688" y="19.304" smashed="yes">
+<element name="R32" library="resistor" package="R0603" value="1k" x="42.4688" y="19.304" smashed="yes">
 <attribute name="NAME" x="40.9702" y="20.193" size="1.27" layer="25" font="vector"/>
 <attribute name="VALUE" x="41.5798" y="17.272" size="1.27" layer="27" font="vector"/>
 </element>
@@ -4197,7 +4197,7 @@ design rules under a new name.
 <attribute name="NAME" x="16.7894" y="44.6278" size="1.27" layer="25" font="vector" rot="R90"/>
 <attribute name="VALUE" x="19.7104" y="44.6278" size="1.27" layer="27" font="vector" rot="R90"/>
 </element>
-<element name="R7" library="resistor" package="R0603" value="500" x="45.9232" y="59.3344" smashed="yes" rot="R180">
+<element name="R7" library="resistor" package="R0603" value="1k" x="45.9232" y="59.3344" smashed="yes" rot="R180">
 <attribute name="NAME" x="47.8282" y="61.4934" size="1.27" layer="25" font="vector" rot="R180"/>
 <attribute name="VALUE" x="46.8122" y="61.3664" size="1.27" layer="27" font="vector" rot="R180"/>
 </element>
@@ -4277,7 +4277,7 @@ design rules under a new name.
 <attribute name="NAME" x="63.6778" y="30.353" size="1.27" layer="25" font="vector" rot="R270"/>
 <attribute name="VALUE" x="63.3984" y="32.1818" size="1.27" layer="27" font="vector" rot="R270"/>
 </element>
-<element name="R33" library="resistor" package="R0603" value="500" x="47.752" y="19.304" smashed="yes" rot="R180">
+<element name="R33" library="resistor" package="R0603" value="1k" x="47.752" y="19.304" smashed="yes" rot="R180">
 <attribute name="NAME" x="49.657" y="21.463" size="1.27" layer="25" font="vector" rot="R180"/>
 <attribute name="VALUE" x="48.641" y="21.336" size="1.27" layer="27" font="vector" rot="R180"/>
 </element>
