@@ -20,7 +20,7 @@
     <ApplicationClientType>Desktop</ApplicationClientType>
     <ApplicationServerType>LocalHost</ApplicationServerType>
     <RequireSecureConnection>true</RequireSecureConnection>
-    <AuthenticationType>None</AuthenticationType>
+    <AuthenticationType>Windows</AuthenticationType>
     <ApplicationName>TUSBudget</ApplicationName>
     <AssemblyVersion>1.0.1.0</AssemblyVersion>
     <ServiceDefinitionFile>ServiceDefinition.csdef</ServiceDefinitionFile>
@@ -28,7 +28,7 @@
     <SqlExpressInstanceName>SQLEXPRESS</SqlExpressInstanceName>
     <AllowAllWindowsUsers>true</AllowAllWindowsUsers>
     <AdministratorFullName />
-    <AdministratorUserName />
+    <AdministratorUserName>peropero</AdministratorUserName>
     <AllowUntrustedCertificate>False</AllowUntrustedCertificate>
     <AddAdministrator>True</AddAdministrator>
     <BootstrapperComponentsUrl />
