@@ -14535,7 +14535,7 @@ Based on the following sources:
 <part name="P+33" library="supply1" deviceset="+5V" device=""/>
 <part name="IC4" library="40xx" deviceset="4066" device="D"/>
 <part name="F2" library="myparts" deviceset="POLYSWITCH" device=""/>
-<part name="C3" library="rcl" deviceset="CPOL-EU" device="E2.5-5"/>
+<part name="C3" library="rcl" deviceset="CPOL-EU" device="E2.5-5" value="100u"/>
 <part name="GND14" library="supply1" deviceset="GND" device=""/>
 <part name="P+1" library="supply1" deviceset="+5V" device=""/>
 <part name="F3" library="myparts" deviceset="POLYSWITCH" device=""/>
