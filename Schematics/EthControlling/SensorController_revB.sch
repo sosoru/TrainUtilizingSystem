@@ -14545,7 +14545,7 @@ Based on the following sources:
 <part name="R8" library="rcl" deviceset="R-EU_" device="R0603" value="1k"/>
 <part name="R11" library="rcl" deviceset="R-EU_" device="R0603" value="1k"/>
 <part name="R12" library="rcl" deviceset="R-EU_" device="R0603" value="1k"/>
-<part name="T4" library="zetex" deviceset="NMOSSOT23" device=""/>
+<part name="T4" library="zetex" deviceset="NMOSSOT23" device="" value="BSS138"/>
 <part name="GND5" library="supply1" deviceset="GND" device=""/>
 <part name="R1" library="rcl" deviceset="R-EU_" device="R0603" value="100k"/>
 <part name="GND7" library="supply1" deviceset="GND" device=""/>
@@ -14556,7 +14556,7 @@ Based on the following sources:
 <part name="P+5" library="supply1" deviceset="+5V" device=""/>
 <part name="P+6" library="supply1" deviceset="+5V" device=""/>
 <part name="F1" library="myparts" deviceset="POLYSWITCH" device=""/>
-<part name="T1" library="zetex" deviceset="NMOSSOT23" device=""/>
+<part name="T1" library="zetex" deviceset="NMOSSOT23" device="" value="BSS138"/>
 <part name="GND9" library="supply1" deviceset="GND" device=""/>
 <part name="R4" library="rcl" deviceset="R-EU_" device="R0603" value="100k"/>
 <part name="GND10" library="supply1" deviceset="GND" device=""/>
@@ -14571,7 +14571,7 @@ Based on the following sources:
 <part name="GND12" library="supply1" deviceset="GND" device=""/>
 <part name="P+9" library="supply1" deviceset="+5V" device=""/>
 <part name="C4" library="rcl" deviceset="C-EU" device="C1608" value="0.1u"/>
-<part name="T2" library="zetex" deviceset="NMOSSOT23" device=""/>
+<part name="T2" library="zetex" deviceset="NMOSSOT23" device="" value="BSS138"/>
 <part name="GND13" library="supply1" deviceset="GND" device=""/>
 <part name="R13" library="rcl" deviceset="R-EU_" device="R0603" value="100k"/>
 <part name="GND16" library="supply1" deviceset="GND" device=""/>
@@ -14582,7 +14582,7 @@ Based on the following sources:
 <part name="P+10" library="supply1" deviceset="+5V" device=""/>
 <part name="P+11" library="supply1" deviceset="+5V" device=""/>
 <part name="F5" library="myparts" deviceset="POLYSWITCH" device=""/>
-<part name="T3" library="zetex" deviceset="NMOSSOT23" device=""/>
+<part name="T3" library="zetex" deviceset="NMOSSOT23" device="" value="BSS138"/>
 <part name="GND18" library="supply1" deviceset="GND" device=""/>
 <part name="R16" library="rcl" deviceset="R-EU_" device="R0603" value="100k"/>
 <part name="GND19" library="supply1" deviceset="GND" device=""/>
@@ -14597,7 +14597,7 @@ Based on the following sources:
 <part name="GND21" library="supply1" deviceset="GND" device=""/>
 <part name="P+14" library="supply1" deviceset="+5V" device=""/>
 <part name="C5" library="rcl" deviceset="C-EU" device="C1608" value="0.1u"/>
-<part name="T5" library="zetex" deviceset="NMOSSOT23" device=""/>
+<part name="T5" library="zetex" deviceset="NMOSSOT23" device="" value="BSS138"/>
 <part name="GND22" library="supply1" deviceset="GND" device=""/>
 <part name="R19" library="rcl" deviceset="R-EU_" device="R0603" value="100k"/>
 <part name="GND23" library="supply1" deviceset="GND" device=""/>
@@ -14608,7 +14608,7 @@ Based on the following sources:
 <part name="P+15" library="supply1" deviceset="+5V" device=""/>
 <part name="P+16" library="supply1" deviceset="+5V" device=""/>
 <part name="F7" library="myparts" deviceset="POLYSWITCH" device=""/>
-<part name="T6" library="zetex" deviceset="NMOSSOT23" device=""/>
+<part name="T6" library="zetex" deviceset="NMOSSOT23" device="" value="BSS138"/>
 <part name="GND25" library="supply1" deviceset="GND" device=""/>
 <part name="R22" library="rcl" deviceset="R-EU_" device="R0603" value="100k"/>
 <part name="GND26" library="supply1" deviceset="GND" device=""/>
@@ -14623,7 +14623,7 @@ Based on the following sources:
 <part name="GND28" library="supply1" deviceset="GND" device=""/>
 <part name="P+19" library="supply1" deviceset="+5V" device=""/>
 <part name="C9" library="rcl" deviceset="C-EU" device="C1608" value="0.1u"/>
-<part name="T7" library="zetex" deviceset="NMOSSOT23" device=""/>
+<part name="T7" library="zetex" deviceset="NMOSSOT23" device="" value="BSS138"/>
 <part name="GND29" library="supply1" deviceset="GND" device=""/>
 <part name="R25" library="rcl" deviceset="R-EU_" device="R0603" value="100k"/>
 <part name="GND30" library="supply1" deviceset="GND" device=""/>
@@ -14634,7 +14634,7 @@ Based on the following sources:
 <part name="P+20" library="supply1" deviceset="+5V" device=""/>
 <part name="P+21" library="supply1" deviceset="+5V" device=""/>
 <part name="F9" library="myparts" deviceset="POLYSWITCH" device=""/>
-<part name="T8" library="zetex" deviceset="NMOSSOT23" device=""/>
+<part name="T8" library="zetex" deviceset="NMOSSOT23" device="" value="BSS138"/>
 <part name="GND32" library="supply1" deviceset="GND" device=""/>
 <part name="R28" library="rcl" deviceset="R-EU_" device="R0603" value="100k"/>
 <part name="GND33" library="supply1" deviceset="GND" device=""/>
