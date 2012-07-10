@@ -17793,7 +17793,7 @@ high speed (Philips)</description>
 <part name="P+8" library="supply1" deviceset="+12V" device=""/>
 <part name="R12" library="resistor" deviceset="R-EU_" device="R1206" value="0.1"/>
 <part name="R19" library="resistor" deviceset="R-EU_" device="R0603" value="1k"/>
-<part name="R20" library="resistor" deviceset="R-EU_" device="R0603" value="25k"/>
+<part name="R20" library="resistor" deviceset="R-EU_" device="R0603" value="33k"/>
 <part name="GND10" library="supply1" deviceset="GND" device=""/>
 <part name="GND11" library="supply1" deviceset="GND" device=""/>
 <part name="P+9" library="supply1" deviceset="+5V" device=""/>
@@ -17830,7 +17830,7 @@ high speed (Philips)</description>
 <part name="P+13" library="supply1" deviceset="+12V" device=""/>
 <part name="R29" library="resistor" deviceset="R-EU_" device="R1206" value="0.1"/>
 <part name="R26" library="resistor" deviceset="R-EU_" device="R0603" value="1k"/>
-<part name="R27" library="resistor" deviceset="R-EU_" device="R0603" value="25k"/>
+<part name="R27" library="resistor" deviceset="R-EU_" device="R0603" value="33k"/>
 <part name="GND19" library="supply1" deviceset="GND" device=""/>
 <part name="R30" library="resistor" deviceset="R-EU_" device="R0603" value="3.3k"/>
 <part name="C17" library="rcl" deviceset="C-EU" device="C0603" value="4.7u"/>
@@ -17863,7 +17863,7 @@ high speed (Philips)</description>
 <part name="P+18" library="supply1" deviceset="+12V" device=""/>
 <part name="R15" library="resistor" deviceset="R-EU_" device="R1206" value="0.1"/>
 <part name="R17" library="resistor" deviceset="R-EU_" device="R0603" value="1k"/>
-<part name="R18" library="resistor" deviceset="R-EU_" device="R0603" value="25k"/>
+<part name="R18" library="resistor" deviceset="R-EU_" device="R0603" value="33k"/>
 <part name="GND28" library="supply1" deviceset="GND" device=""/>
 <part name="R2" library="resistor" deviceset="R-EU_" device="R0603" value="3.3k"/>
 <part name="C9" library="rcl" deviceset="C-EU" device="C0603" value="4.7u"/>
@@ -17895,7 +17895,7 @@ high speed (Philips)</description>
 <part name="P+23" library="supply1" deviceset="+12V" device=""/>
 <part name="R35" library="resistor" deviceset="R-EU_" device="R1206" value="0.1"/>
 <part name="R25" library="resistor" deviceset="R-EU_" device="R0603" value="1k"/>
-<part name="R24" library="resistor" deviceset="R-EU_" device="R0603" value="25k"/>
+<part name="R24" library="resistor" deviceset="R-EU_" device="R0603" value="33k"/>
 <part name="GND37" library="supply1" deviceset="GND" device=""/>
 <part name="R36" library="resistor" deviceset="R-EU_" device="R0603" value="3.3k"/>
 <part name="C23" library="rcl" deviceset="C-EU" device="C0603" value="4.7u"/>
