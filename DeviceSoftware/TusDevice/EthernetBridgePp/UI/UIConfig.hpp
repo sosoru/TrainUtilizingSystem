@@ -13,17 +13,17 @@
 #include "UIbase.hpp"
 #include "setting/mac_addr.hpp"
 
-#include <boost/mpl/list.hpp>
+//#include <boost/mpl/list.hpp>
 
 namespace EthernetBridge { namespace UI
 {
-	using namespace boost;
+	//using namespace boost;
 	
-	typedef mpl::list<
-			Ui_View_mac_addr,
-			Ui_View_testconfig
-			> control_list;
-	
+	//typedef mpl::list<
+			//Ui_View_mac_addr,
+			//Ui_View_testconfig
+			//> control_list;
+	//
 }}
 
 

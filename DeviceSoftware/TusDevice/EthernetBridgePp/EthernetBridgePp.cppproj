@@ -66,6 +66,11 @@
         <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
         <avrgcccpp.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultCharTypeUnsigned>
         <avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>
+        <avrgcccpp.compiler.symbols.DefSymbols>
+          <ListValues>
+            <Value>BOOST_NO_STDLIB_CONFIG</Value>
+          </ListValues>
+        </avrgcccpp.compiler.symbols.DefSymbols>
         <avrgcccpp.compiler.directories.IncludePaths>
           <ListValues>
             <Value>../libtus</Value>
@@ -115,6 +120,7 @@
             <Value>C:\WinAVR-20070525\avr\include\avr\cpp\atmega128</Value>
             <Value>C:\WinAVR-20070525\avr\include\avr\cpp\Collection</Value>
             <Value>../../libtus</Value>
+            <Value>C:\boost_1_49_0</Value>
           </ListValues>
         </avrgcccpp.compiler.directories.IncludePaths>
         <avrgcccpp.compiler.optimization.PackStructureMembers>True</avrgcccpp.compiler.optimization.PackStructureMembers>
@@ -140,6 +146,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="eth" />
+    <Folder Include="config" />
     <Folder Include="UI" />
     <Folder Include="switch" />
     <Folder Include="sc2004" />
@@ -148,6 +155,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="avr_base.hpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="config\SwitchCfg.hpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="EthConfig.hpp">
@@ -192,11 +202,7 @@
     <Compile Include="LcdCfg.hpp">
       <SubType>compile</SubType>
     </Compile>
-<<<<<<< HEAD
     <Compile Include="LcdController.hpp">
-=======
-    <Compile Include="sc2004\LcdController.hpp">
->>>>>>> edit_new_uart_schematics
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="sc2004\sc2004.hpp">

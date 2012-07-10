@@ -10,7 +10,7 @@
 #define MAC_ADDR_H_
 
 #include "../../EthernetBridge.hpp"
-#include "UIbase.hpp"
+#include "../UIbase.hpp"
 #include "../../EthConfig.hpp"
 #include "../../switch/dirswitch.hpp"
 #include <stdio.h>
@@ -18,22 +18,23 @@
 
 namespace EthernetBridge { namespace UI
 {	
+	using namespace Lcd;
+	
 	namespace data_mac_addr
 	{
-		char PROGMEM title = "<Change MAC Address>";
-		char PROGMEM disp = "";
+		char PROGMEM *title = "<Change MAC Address>";
+		char PROGMEM *disp = "";
 	}
 	
 	class Ui_View_mac_addr
 		: public UIView
 	{
-		using namespace Lcd;
 		
 		private:
 		
 		static const uint8_t INDENT_WIDTH =2;
-		static char str_mac_addr[INDENT_WIDTH + 5 + 2*6 + 2];
-		static uint8_t str_addr_pos;
+		char str_mac_addr[INDENT_WIDTH + 5 + 2*6 + 2];
+		uint8_t str_addr_pos;
 		
 		static inline uint8_t get_max_addr_pos()
 		{
@@ -74,10 +75,10 @@ namespace EthernetBridge { namespace UI
 				return c + 'a';
 			}
 			
-			return '';
+			return '0';
 		}
 		
-		void refresh_str_mac_addr(const uint8_t &addr)
+		void refresh_str_mac_addr(const uint8_t *paddr)
 		{
 			uint8_t pos=0;
 			
@@ -88,7 +89,7 @@ namespace EthernetBridge { namespace UI
 			
 			for(uint8_t i=0; i<6; ++i)
 			{
-				uint8_t val = addr[i];
+				uint8_t val = paddr[i];
 				
 				pos += sprintf(&str_mac_addr[pos], "\2.x:", val);
 			}
@@ -101,7 +102,7 @@ namespace EthernetBridge { namespace UI
 			//shift guard
 			if(get_min_addr_pos() < str_addr_pos && str_addr_pos < get_max_addr_pos() -1)
 			{				
-				Display::CursorDisplayShift(ShiftCursor, shiftdir);
+				Display::CursorDisplayShift(ShiftCursor, dir);
 
 				if(dir == ShiftToRight) // increment dir is right
 				{
@@ -187,7 +188,7 @@ namespace EthernetBridge { namespace UI
 			str_addr_pos = INDENT_WIDTH;
 		}
 		
-		void LeaveScreen()
+		void LeavingScreen()
 		{
 			Display::DisplayMode(DisplayOn, CursorHidden, CursorNotBlinking);
 			_delay_us(37);

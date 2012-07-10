@@ -10,7 +10,6 @@
 #define UIBASE_H_
 
 #include "../EthernetBridge.hpp"
-#include "../LcdController.hpp"
 
 namespace EthernetBridge
 {
@@ -25,20 +24,17 @@ namespace EthernetBridge
 		class UIView
 		{
 			protected:
-			
-			static UIViewParameters _Parameters;
-			
+						
 			public:
-						
-			static void SetLcdBuffer()
-			{								
-				//Lcd::Display::WriteStringProg(_Parameters.ptitle, 0);
-				//Lcd::Display::WriteStringProg(_Parameters.pdesc, 1);
-			}
-						
+									
+			virtual void RefreshScreen(const UIViewParameters &params){}// =0;
+			virtual void EnteringScreen()	{}//=0;
+			virtual void LeavingScreen()		{}//=0;
+
 		};
+	
 		
-		UIViewParameters UIView::_Parameters;
+
 	}
 }
 

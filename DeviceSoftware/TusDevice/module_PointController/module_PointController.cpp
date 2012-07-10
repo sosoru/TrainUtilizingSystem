@@ -60,8 +60,8 @@ void test_packet(ptrPacket& packet, PositionEnum pos)
 	
 	for(i=0; i<8; ++i)
 	{
-		pstates[i].DeadTime = 50;
-		pstates[i].ChangingTime = 20;
+		pstates[i].DeadTime = 10;
+		pstates[i].ChangingTime = 2;
 		pstates[i].Position = pos;		
 	}
 	
@@ -82,12 +82,12 @@ int main(void)
 		test_packet(packet, PositivePosition);
 		ApplyState(packet);
 		Execute();
-		_delay_ms(2000);
+		_delay_ms(500);
 		
 		test_packet(packet, NegativePosition);
 		ApplyState(packet);
 		Execute();	
-		_delay_ms(2000);
+		_delay_ms(500);
 	}
 	
 }

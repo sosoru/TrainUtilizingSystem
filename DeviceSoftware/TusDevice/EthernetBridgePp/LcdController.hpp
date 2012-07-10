@@ -87,12 +87,12 @@ namespace EthernetBridge
 						
 			static uint8_t WriteString(char* buf, uint8_t line)
 			{
-				writeStringInner((char*)buf, line, memcpy);
+				return writeStringInner((char*)buf, line, memcpy);
 			}
 			
 			static uint8_t WriteStringProg(const prog_char* buf, uint8_t line)
 			{
-				writeStringInner((prog_char*)buf, line, memcpy_P);
+				return writeStringInner((prog_char*)buf, line, memcpy_P);
 			}
 		
 		};

@@ -26,7 +26,7 @@ namespace EthernetBridge
 		}
 		
 		class Ui_View_testconfig
-			: UIView
+			: public UIView
 		{
 			public:
 			

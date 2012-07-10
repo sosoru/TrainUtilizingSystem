@@ -28,7 +28,9 @@
 #include "LcdCfg.hpp"
 #include "EthConfig.hpp"
 #include "UI/UIbase.hpp"
-#include "ui/setting/test_setting.hpp"
+//#include "ui/setting/test_setting.hpp"
+#include "ui/UIController.hpp"
+#include "ui/setting/mac_addr.hpp"
 
 using namespace EthernetBridge;
 using namespace EthernetBridge::Eth;
@@ -50,14 +52,6 @@ ISR(TIMER1_COMPA_vect)
 	//}
 			//
 	//sc2004_WriteData(lcd_buf[bufptr++]);
-}
-
-void refresh_lcd()
-{
-	uint8_t i;
-
-	Lcd::Display::StepRendering();	
-
 }
 
 void BoardInit()
@@ -144,34 +138,40 @@ void DispatchProcess()
 	DispatchModulePackets<ModuleH>();
 }
 
-int main(void)
+extern "C"
 {
-	using namespace UI;
-	
-	uint8_t i=0,j;
-	
-	MCUCSR = 0;
-	wdt_disable();
-	
-//#ifndef DEBUG
-	DDRB = 0xff;
-	//_delay_ms(1000);
-//#endif
-	
-    BoardInit();
-	PORTB |= _BV(PORTB4);
-		
-	UI::Ui_View_testconfig::RefreshUiParameters();
-	UI::UIView::SetLcdBuffer();	
-	
-	while(1)
+
+	int main(void)
 	{
-		while(EthDevice::ReceiveFromEthernet());		
-		
-		DispatchProcess();
-		
-		refresh_lcd();
-	}			
+		using namespace UI;
 	
-	return 0;
+		Ui_View_mac_addr ui_mac;
+		UIController uicnt(ui_mac);
+		
+		MCUCSR = 0;
+		wdt_disable();
+	
+	//#ifndef DEBUG
+		DDRB = 0xff;
+		//_delay_ms(1000);
+	//#endif
+	
+		BoardInit();
+		PORTB |= _BV(PORTB4);
+		
+	
+		while(1)
+		{
+			while(EthDevice::ReceiveFromEthernet());		
+		
+			DispatchProcess();
+		
+			uicnt.Refresh();
+		}			
+	
+		return 0;
+	}
+
+	
+};
 }
