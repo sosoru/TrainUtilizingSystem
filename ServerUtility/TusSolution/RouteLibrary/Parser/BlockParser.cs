@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace RouteLibrary
+namespace RouteLibrary.Parser
 {
-    public class Class1
+    class BlockParser
     {
     }
 }

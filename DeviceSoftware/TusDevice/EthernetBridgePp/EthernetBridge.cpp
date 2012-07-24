@@ -150,7 +150,7 @@ extern "C"
 		
 		MCUCSR = 0;
 		wdt_disable();
-	
+		fprintf(stderr, "hoge");
 	//#ifndef DEBUG
 		DDRB = 0xff;
 		//_delay_ms(1000);

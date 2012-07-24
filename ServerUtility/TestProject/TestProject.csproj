@@ -71,6 +71,9 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="WindowsBase" />
+    <Reference Include="YamlSerializer">
+      <HintPath>..\..\..\..\Desktop\YamlSerializer0902\YamlSerializer.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDependentAssemblyPaths Condition=" '$(VS100COMNTOOLS)' != '' " Include="$(VS100COMNTOOLS)..\IDE\PrivateAssemblies">
@@ -78,9 +81,10 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BlockParserTest.cs" />
+    <Compile Include="BlockYamlTest.cs" />
     <Compile Include="ChunckedStreamTest.cs" />
     <Compile Include="ConvertExtenstionsTest.cs" />
+    <Compile Include="DeviceIdParserTest.cs" />
     <Compile Include="EthClientTest.cs" />
     <Compile Include="GateViewModelTest.cs" />
     <Compile Include="LoopingArrayTest.cs" />
@@ -103,6 +107,7 @@
     <Compile Include="RailroaderMapTest.cs" />
     <Compile Include="RailTest.cs" />
     <Compile Include="RailViewModelTest.cs" />
+    <Compile Include="RouteParserTest.cs" />
     <Compile Include="TestPacketProvider.cs" />
     <Compile Include="TrainControllerStateTest.cs" />
     <Compile Include="TrainSensorDataTest.cs" />
@@ -142,12 +147,11 @@
       <Name>RouteLibrary</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="テストの参照\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="app.config" />
     <None Include="Signification.pfx" />
+    <Shadow Include="テストの参照\RouteLibrary.accessor" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

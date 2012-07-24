@@ -38,10 +38,18 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="YamlSerializer">
+      <HintPath>..\..\..\..\..\Desktop\YamlSerializer0902\YamlSerializer.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base\BlockBases.cs" />
     <Compile Include="Class1.cs" />
     <Compile Include="Parser\BlockParser.cs" />
+    <Compile Include="Parser\BlockYaml.cs" />
+    <Compile Include="Parser\DeviceIdParser.cs" />
+    <Compile Include="Parser\RegexExtention.cs" />
+    <Compile Include="Parser\RouteParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -50,6 +58,7 @@
       <Name>SensorLibrary</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

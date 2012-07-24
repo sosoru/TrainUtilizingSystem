@@ -33,7 +33,7 @@ namespace SensorLibrary
             }
             set
             {
-                this.ModulePart &= 0xff00;
+                this.ModulePart &= 0x00ff;
                 this.ModulePart |= (ushort)(value << 8);
             }
         }
@@ -46,7 +46,7 @@ namespace SensorLibrary
             }
             set
             {
-                this.ModulePart &= 0x00ff;
+                this.ModulePart &= 0xff00;
                 this.ModulePart |= (ushort)(value);
             }
         }
