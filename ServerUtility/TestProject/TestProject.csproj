@@ -93,6 +93,7 @@
     <Compile Include="MotherBoardDataTest.cs" />
     <Compile Include="MotherBoardStateTest.cs" />
     <Compile Include="MotherBoardViewModelTest.cs" />
+    <Compile Include="MotorStateTest.cs" />
     <Compile Include="PacketDispatcherSingleTest.cs" />
     <Compile Include="PathDataViewModelTest.cs" />
     <Compile Include="PathViewModelTest.cs" />
@@ -108,6 +109,8 @@
     <Compile Include="RailTest.cs" />
     <Compile Include="RailViewModelTest.cs" />
     <Compile Include="RouteParserTest.cs" />
+    <Compile Include="SensorStateTest.cs" />
+    <Compile Include="SwitchStateTest.cs" />
     <Compile Include="TestPacketProvider.cs" />
     <Compile Include="TrainControllerStateTest.cs" />
     <Compile Include="TrainSensorDataTest.cs" />

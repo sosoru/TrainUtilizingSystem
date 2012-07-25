@@ -206,6 +206,10 @@ namespace SensorLibrary
         TrainController = 0x03,
         RemoteModule = 0x04,
 
+        AvrMotor = 0x12,
+        AvrSwitch = 0x13,
+        AvrSensor = 0x14,
+
         Unknown = 0x0F,
     }
 

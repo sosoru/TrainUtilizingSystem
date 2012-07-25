@@ -64,12 +64,17 @@
     <Compile Include="DeviceCommands\DeviceCommand.cs" />
     <Compile Include="DeviceCommands\IDeviceCommand.cs" />
     <Compile Include="DeviceFactory.cs" />
+    <Compile Include="DeviceStates\AvrDevices\MotorState.cs" />
+    <Compile Include="DeviceStates\AvrDevices\SensorState.cs" />
+    <Compile Include="DeviceStates\AvrDevices\SwitchState.cs" />
     <Compile Include="DeviceStates\DeviceState.cs" />
     <Compile Include="DeviceStates\DeviceStateComparer.cs" />
     <Compile Include="DeviceStates\MotherBoardState.cs" />
     <Compile Include="DeviceStates\PointModuleState.cs" />
     <Compile Include="DeviceStates\TrainControllerState.cs" />
     <Compile Include="DeviceStates\TrainSensorState.cs" />
+    <Compile Include="Devices\AvrDevices\Motor.cs" />
+    <Compile Include="Devices\AvrDevices\Switch.cs" />
     <Compile Include="Devices\MotherBoard.cs" />
     <Compile Include="Devices\PointModule.cs" />
     <Compile Include="Devices\TrainController.cs" />
@@ -85,6 +90,7 @@
     <Compile Include="Manipulators\DeviceStateDeserializer.cs" />
     <Compile Include="Manipulators\PIDTuningManipulator.cs" />
     <Compile Include="Manipulators\PointManipulator.cs" />
+    <Compile Include="Packet\AvrPacketDatas.cs" />
     <Compile Include="Packet\PacketExtensions.cs" />
     <Compile Include="Packet\PacketDatas.cs" />
     <Compile Include="PacketDispatcher.cs" />
@@ -93,6 +99,7 @@
     <Compile Include="PacketServer.cs" />
     <Compile Include="Packet\PacketBasis.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Eth\TusEthernetIO.cs" />
     <Compile Include="USBGeneric.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -44,7 +44,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base\BlockBases.cs" />
-    <Compile Include="Class1.cs" />
     <Compile Include="Parser\BlockParser.cs" />
     <Compile Include="Parser\BlockYaml.cs" />
     <Compile Include="Parser\DeviceIdParser.cs" />
