@@ -4,8 +4,10 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Threading.Tasks;
+using SensorLibrary.Packet.IO;
+using SensorLibrary.Devices;
 
-namespace SensorLibrary
+namespace SensorLibrary.Packet.Control
 {
     public class PacketServer
          : IDisposable

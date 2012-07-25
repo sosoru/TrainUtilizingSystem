@@ -3,6 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SensorLibrary;
+using SensorLibrary.Packet;
+using SensorLibrary.Packet.IO;
+using SensorLibrary.Packet.Data;
+using SensorLibrary.Devices;
+using SensorLibrary.Devices.PicUsbDevices;
+
 using System.IO;
 
 namespace SensorLivetView

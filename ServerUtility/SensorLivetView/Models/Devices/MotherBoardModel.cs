@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 using Livet;
-using SensorLibrary;
+using SensorLibrary.Devices.PicUsbDevices;
 using System.Collections.ObjectModel;
 
 namespace SensorLivetView.Models.Devices

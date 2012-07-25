@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace SensorLibrary
+using SensorLibrary.Packet.Data;
+
+namespace SensorLibrary.Devices.PicUsbDevices
 {
     public class PointModule
     : Device<PointModuleState>

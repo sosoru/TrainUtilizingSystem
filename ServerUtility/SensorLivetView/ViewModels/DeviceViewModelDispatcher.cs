@@ -8,6 +8,8 @@ using System.Windows.Threading;
 
 using Livet;
 using SensorLibrary;
+using SensorLibrary.Devices;
+using SensorLibrary.Packet.Control;
 using SensorViewLibrary;
 using SensorLivetView.ViewModels.Controls;
 using SensorLivetView.Models.Devices;

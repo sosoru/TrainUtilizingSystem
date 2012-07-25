@@ -5,6 +5,7 @@ using System.Text;
 using System.Runtime.InteropServices;
 using System.IO;
 using System.IO.Ports;
+using SensorLibrary.Packet;
 
 namespace SensorLibrary
 {

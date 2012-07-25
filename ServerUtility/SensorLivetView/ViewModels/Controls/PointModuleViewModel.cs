@@ -14,6 +14,9 @@ using SensorLivetView.Models.Devices;
 using SensorLivetView.Models;
 using SensorViewLibrary;
 using SensorLibrary;
+using SensorLibrary.Devices;
+using SensorLibrary.Devices.PicUsbDevices;
+using SensorLibrary.Packet.Data;
 using System.Collections.ObjectModel;
 
 namespace SensorLivetView.ViewModels.Controls

@@ -5,7 +5,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.IO;
 
-namespace SensorLibrary
+using SensorLibrary.Packet.Control;
+
+namespace SensorLibrary.Devices
 {
     public interface IDeviceState<out T>
     {

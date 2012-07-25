@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 using System.IO;
 using System.IO.Ports;
 
-namespace SensorLibrary
+namespace SensorLibrary.Packet.Data
 {
     [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 28)]
     public class TrainSensorData

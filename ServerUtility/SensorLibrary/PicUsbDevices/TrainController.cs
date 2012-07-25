@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace SensorLibrary
+namespace SensorLibrary.Devices.PicUsbDevices
 {
     public class TrainController
         : Device<TrainControllerState>

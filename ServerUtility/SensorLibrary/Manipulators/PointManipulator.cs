@@ -5,7 +5,8 @@ using System.Text;
 using System.Reactive;
 using System.Reactive.Linq;
 
-using SensorLibrary;
+using SensorLibrary.Devices.PicUsbDevices;
+using SensorLibrary.Packet.Data;
 
 namespace SensorLibrary.Manipulators
 {

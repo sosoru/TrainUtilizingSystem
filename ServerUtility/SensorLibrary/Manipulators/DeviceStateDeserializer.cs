@@ -6,6 +6,7 @@ using System.Reactive;
 using System.Reactive.Linq;
 
 using SensorLibrary;
+using SensorLibrary.Devices;
 
 namespace SensorLibrary.Manipulators
 {

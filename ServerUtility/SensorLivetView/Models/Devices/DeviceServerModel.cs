@@ -7,6 +7,9 @@ using System.Collections.ObjectModel;
 
 using Livet;
 using SensorLibrary;
+using SensorLibrary.Packet.Data;
+using SensorLibrary.Devices;
+using SensorLibrary.Packet.Control;
 
 namespace SensorLivetView.Models.Devices
 {

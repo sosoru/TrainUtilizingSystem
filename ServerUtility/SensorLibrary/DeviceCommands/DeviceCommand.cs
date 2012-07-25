@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using System.Linq;
 using System.Text;
-using SensorLibrary;
+using SensorLibrary.Devices;
 
 namespace SensorLibrary.DeviceCommands
 {

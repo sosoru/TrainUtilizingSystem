@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SensorLibrary;
-using SensorLibrary.Packet;
+using SensorLibrary.Packet.Data;
 
-namespace SensorLibrary.DeviceStates.AvrDevices
+namespace SensorLibrary.Devices.TusAvrDevices
 {
     public class SwitchState
         : DeviceState<SwitchData>

@@ -6,6 +6,8 @@ using System.Reactive.Linq;
 using System.Reactive.Concurrency;
 
 using SensorLibrary;
+using SensorLibrary.Devices.PicUsbDevices;
+using SensorLibrary.Packet.Data;
 
 namespace SensorLibrary.Manipulators
 {

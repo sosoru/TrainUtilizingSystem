@@ -8,7 +8,7 @@ using System.Drawing;
 using System.ComponentModel;
 using System.Reactive.Linq;
 
-namespace SensorLibrary
+namespace SensorLibrary.Devices.PicUsbDevices
 {
     public class MotherBoard
         : Device<MotherBoardState>

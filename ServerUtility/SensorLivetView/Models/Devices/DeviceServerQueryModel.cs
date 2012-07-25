@@ -11,6 +11,7 @@ using System.Collections.Specialized;
 
 using Livet;
 using SensorLibrary;
+using SensorLibrary.Devices;
 
 namespace SensorLivetView.Models.Devices
 {

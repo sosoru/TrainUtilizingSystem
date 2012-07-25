@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using SensorLibrary.DeviceStates.AvrDevices;
 
-namespace SensorLibrary.Devices.AvrDevices
+namespace SensorLibrary.Devices.TusAvrDevices
 {
     public class Switch
         :Device<SwitchState>

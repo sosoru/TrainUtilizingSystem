@@ -4,8 +4,9 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
+using SensorLibrary.Devices;
 
-namespace SensorLibrary
+namespace SensorLibrary.Packet.Control
 {
     using obsvType = IObserver<IDeviceState<IPacketDeviceData>>;
 

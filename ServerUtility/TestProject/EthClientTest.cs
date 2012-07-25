@@ -1,4 +1,4 @@
-﻿using SensorLibrary.Eth;
+﻿using SensorLibrary.Packet.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Net;

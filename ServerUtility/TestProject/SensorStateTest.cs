@@ -1,4 +1,5 @@
-﻿using SensorLibrary.DeviceStates.AvrDevices;
+﻿using SensorLibrary.Devices.TusAvrDevices;
+using SensorLibrary.Packet.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using SensorLibrary.Packet;

@@ -1,8 +1,9 @@
-﻿using SensorLibrary.DeviceStates.AvrDevices;
+﻿using SensorLibrary.Devices.TusAvrDevices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using SensorLibrary;
 using SensorLibrary.Packet;
+using SensorLibrary.Packet.Data;
 
 namespace TestProject
 {

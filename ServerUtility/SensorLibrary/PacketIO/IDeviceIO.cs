@@ -1,5 +1,5 @@
 ﻿using System;
-namespace SensorLibrary
+namespace SensorLibrary.Packet.IO
 {
     public interface IDeviceIO
     {

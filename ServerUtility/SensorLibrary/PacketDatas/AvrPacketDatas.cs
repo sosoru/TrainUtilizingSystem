@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Runtime.InteropServices;
 
-namespace SensorLibrary.Packet
+namespace SensorLibrary.Packet.Data
 {
     // pdata:
 	//	ControlMode : 1 byte

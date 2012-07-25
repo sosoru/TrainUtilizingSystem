@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 
 using SensorLibrary;
+using SensorLibrary.Packet.Data;
+using SensorLibrary.Devices.PicUsbDevices;
 using System.Windows.Media;
 
 using Livet;

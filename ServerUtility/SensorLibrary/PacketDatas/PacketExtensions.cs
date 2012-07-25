@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 using System.Runtime.InteropServices;
 using System.IO;
 
-namespace SensorLibrary
+namespace SensorLibrary.Packet
 {
     public static class ConvertExtenstions
     {

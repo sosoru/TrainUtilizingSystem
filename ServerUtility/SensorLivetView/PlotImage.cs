@@ -4,6 +4,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using SensorLibrary;
+using SensorLibrary.Devices;
 using Livet;
 using Livet.Command;
 using System.ComponentModel;

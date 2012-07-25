@@ -6,6 +6,9 @@ using System.IO;
 
 using Livet;
 using SensorLibrary;
+using SensorLibrary.Devices;
+using SensorLibrary.Devices.PicUsbDevices;
+using SensorLibrary.Packet.Data;
 using System.Reactive.Linq;
 using System.Reactive;
 using System.Reactive.Concurrency;

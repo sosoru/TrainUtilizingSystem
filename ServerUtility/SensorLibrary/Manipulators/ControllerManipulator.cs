@@ -6,6 +6,9 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading;
 
+using SensorLibrary.Packet.Data;
+using SensorLibrary.Devices.PicUsbDevices;
+
 namespace SensorLibrary.Manipulators
 {
     public class ControllerManipulator

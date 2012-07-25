@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Reactive;
 using System.Reactive.Linq;
+using SensorLibrary.Packet.Data;
 
-namespace SensorLibrary
+namespace SensorLibrary.Devices.PicUsbDevices
 {
     public class TrainSensor
     : Device<TrainSensorState>

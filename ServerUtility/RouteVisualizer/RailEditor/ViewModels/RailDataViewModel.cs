@@ -6,7 +6,10 @@ using System.ComponentModel;
 using System.Collections.ObjectModel;
 using System.Windows;
 
-using SensorLibrary;
+using SensorLibrary.Devices;
+using SensorLibrary.Devices.PicUsbDevices;
+using SensorLibrary.Packet;
+
 using System.Data.Entity;
 using RouteVisualizer.Views;
 using RouteVisualizer.ViewModels;

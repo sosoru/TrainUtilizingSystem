@@ -17,12 +17,18 @@ using Livet.Messaging;
 using Livet.Messaging.File;
 using Livet.Messaging.Window;
 
-using SensorLibrary;
 using SensorLivetView.Models;
 using SensorLivetView.Models.Devices;
 using SensorLivetView.ViewModels.Controls;
 
 using LibUsbDotNet;
+
+using SensorLibrary.Devices;
+using SensorLibrary.Devices.PicUsbDevices;
+using SensorLibrary.Packet.Control;
+using SensorLibrary.Packet.IO;
+using SensorLibrary.Packet;
+using SensorLibrary;
 
 namespace SensorLivetView.ViewModels
 {

@@ -5,7 +5,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.IO;
 
-namespace SensorLibrary
+using SensorLibrary.Packet.Data;
+
+namespace SensorLibrary.Devices.PicUsbDevices
 {
     public class TrainSensorState
     : DeviceState<TrainSensorData>

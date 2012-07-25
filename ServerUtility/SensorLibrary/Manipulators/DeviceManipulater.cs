@@ -5,6 +5,8 @@ using System.Text;
 using System.Reactive;
 using System.Reactive.Linq;
 
+using SensorLibrary.Devices;
+
 namespace SensorLibrary.Manipulators
 {
     public class DeviceManipulater<TDevice, TState>

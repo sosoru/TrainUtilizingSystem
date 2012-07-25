@@ -6,6 +6,7 @@ using System.Text;
 using Livet;
 
 using SensorLibrary;
+using SensorLibrary.Devices;
 using SensorLibrary.Manipulators;
 
 namespace SensorLivetView.Models

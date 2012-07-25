@@ -9,9 +9,9 @@ using LibUsbDotNet.Main;
 using System.Reactive.Linq;
 using System.Reactive.Concurrency;
 
-namespace SensorLibrary
+namespace SensorLibrary.Packet.IO
 {
-    public class USBDeviceController : SensorLibrary.IDeviceIO
+    public class USBDeviceController : IDeviceIO
     {
         public UsbDevice Device { get; private set; }
         protected UsbEndpointReader Reader { get; private set; }

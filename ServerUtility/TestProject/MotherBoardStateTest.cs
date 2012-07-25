@@ -1,4 +1,7 @@
-﻿using SensorLibrary;
+﻿using SensorLibrary.Devices.PicUsbDevices;
+using SensorLibrary.Packet.Data;
+using SensorLibrary.Devices;
+using SensorLibrary;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;

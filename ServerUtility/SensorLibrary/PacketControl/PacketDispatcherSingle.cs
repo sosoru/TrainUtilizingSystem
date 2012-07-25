@@ -6,9 +6,9 @@ using System.Text;
 using System.Reflection;
 using System.Reactive.Linq;
 
-using SensorLibrary;
+using SensorLibrary.Devices;
 
-namespace SensorLibrary
+namespace SensorLibrary.Packet.Control
 {
     public class PacketDispatcherSingle<TDevice, TDevState>
         : PacketDispatcher
