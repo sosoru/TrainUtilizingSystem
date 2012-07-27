@@ -16,16 +16,16 @@ namespace SensorLibrary.Packet.Control
         
         public bool IsLooping { get; private set; }
         public IDeviceIO Controller { get; set; }
+        public DeviceFactoryProvider FactoryProvider { get; set; }
 
         private volatile object lockStream = new object();
         private List<PacketServerAction> actionList = new List<PacketServerAction>();
         private bool cancellation = false;
 
-        public PacketServer()
+        public PacketServer(DeviceFactoryProvider factory)
         {
-            //this.DevicePacketObservable = obsv.Subscribe();
+            this.FactoryProvider = factory;
 
-            //obsv.Subscribe();
             IsLooping = false;
         }
 
@@ -98,7 +98,7 @@ namespace SensorLibrary.Packet.Control
                             continue;
                         }
 
-                        var state = DeviceFactory.AvailableDeviceTypes.First((f) => f.ModuleType == pack.ModuleType).DeviceStateCreate();
+                        var state = this.FactoryProvider.AvailableDeviceTypes.First((f) => f.ModuleType == pack.ModuleType).DeviceStateCreate();
                         state.BasePacket = pack;
                         state.ReceivingServer = this;
 

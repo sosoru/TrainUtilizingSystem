@@ -13,6 +13,7 @@ using SensorLibrary.Packet.Control;
 
 namespace SensorLivetView.Models.Devices
 {
+    //todo : integrate PacketDispatcherSingle
     internal class DeviceServerModel : NotifyObject, IObserver<IDeviceState<IPacketDeviceData>>
     {
         /*
@@ -64,7 +65,7 @@ namespace SensorLivetView.Models.Devices
 
             if (devmodel == null)
             {
-                var fact = DeviceFactory.AvailableDeviceTypes.FirstOrDefault(f => f.ModuleType == value.BasePacket.ModuleType);
+                var fact = new PicDeviceFactoryProvider().AvailableDeviceTypes.FirstOrDefault(f => f.ModuleType == value.BasePacket.ModuleType);
                 if (fact == null)
                     throw new InvalidOperationException(" unknown module type packet ");
 

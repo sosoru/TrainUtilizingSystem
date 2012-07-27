@@ -61,53 +61,53 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Misc\ChunckedStream.cs" />
-    <Compile Include="DeviceCommands\DeviceCommand.cs" />
-    <Compile Include="DeviceCommands\IDeviceCommand.cs" />
-    <Compile Include="BasicDevices\DeviceFactory.cs" />
-    <Compile Include="BasicDevices\DeviceState.cs" />
-    <Compile Include="BasicDevices\DeviceStateComparer.cs" />
-    <Compile Include="PicUsbDevices\MotherBoardState.cs" />
-    <Compile Include="PicUsbDevices\PointModuleState.cs" />
-    <Compile Include="PicUsbDevices\TrainControllerState.cs" />
-    <Compile Include="PicUsbDevices\TrainSensorState.cs" />
-    <Compile Include="TusAvrDevices\Motor.cs" />
-    <Compile Include="TusAvrDevices\Sensor.cs" />
-    <Compile Include="TusAvrDevices\Switch.cs" />
-    <Compile Include="PicUsbDevices\MotherBoard.cs" />
-    <Compile Include="PicUsbDevices\PointModule.cs" />
-    <Compile Include="PicUsbDevices\TrainController.cs" />
-    <Compile Include="PicUsbDevices\TrainSensor.cs" />
-    <Compile Include="PacketIO\EthClient.cs" />
+    <Compile Include="Devices\DeviceCommands\DeviceCommand.cs" />
+    <Compile Include="Devices\DeviceCommands\IDeviceCommand.cs" />
+    <Compile Include="Devices\BasicDevices\DeviceFactory.cs" />
+    <Compile Include="Devices\BasicDevices\DeviceState.cs" />
+    <Compile Include="Devices\BasicDevices\DeviceStateComparer.cs" />
+    <Compile Include="Devices\PicUsbDevices\MotherBoardState.cs" />
+    <Compile Include="Devices\PicUsbDevices\PointModuleState.cs" />
+    <Compile Include="Devices\PicUsbDevices\TrainControllerState.cs" />
+    <Compile Include="Devices\PicUsbDevices\TrainSensorState.cs" />
+    <Compile Include="Devices\TusAvrDevices\Motor.cs" />
+    <Compile Include="Devices\TusAvrDevices\Sensor.cs" />
+    <Compile Include="Devices\TusAvrDevices\Switch.cs" />
+    <Compile Include="Devices\PicUsbDevices\MotherBoard.cs" />
+    <Compile Include="Devices\PicUsbDevices\PointModule.cs" />
+    <Compile Include="Devices\PicUsbDevices\TrainController.cs" />
+    <Compile Include="Devices\PicUsbDevices\TrainSensor.cs" />
+    <Compile Include="Packet\PacketIO\EthClient.cs" />
     <Compile Include="Misc\GenericComparer.cs" />
     <Compile Include="Misc\GenericWeakReference.cs" />
-    <Compile Include="PacketIO\IDeviceIO.cs" />
+    <Compile Include="Packet\PacketIO\IDeviceIO.cs" />
     <Compile Include="Misc\LoopingArray.cs" />
-    <Compile Include="Manipulators\ControllerManipulator.cs" />
-    <Compile Include="Manipulators\DeviceManipulater.cs" />
-    <Compile Include="Manipulators\IDeviceManipulator.cs" />
-    <Compile Include="Manipulators\DeviceStateDeserializer.cs" />
-    <Compile Include="Manipulators\PIDTuningManipulator.cs" />
-    <Compile Include="Manipulators\PointManipulator.cs" />
-    <Compile Include="PacketDatas\AvrPacketDatas.cs" />
-    <Compile Include="PacketDatas\PacketExtensions.cs" />
-    <Compile Include="PacketDatas\PacketDatas.cs" />
-    <Compile Include="PacketControl\PacketDispatcher.cs" />
-    <Compile Include="PacketControl\PacketDispatcherSingle.cs" />
-    <Compile Include="BasicDevices\Device.cs" />
-    <Compile Include="PacketControl\PacketServer.cs" />
-    <Compile Include="PacketDatas\PacketBasis.cs" />
+    <Compile Include="Devices\Manipulators\ControllerManipulator.cs" />
+    <Compile Include="Devices\Manipulators\DeviceManipulater.cs" />
+    <Compile Include="Devices\Manipulators\IDeviceManipulator.cs" />
+    <Compile Include="Devices\Manipulators\DeviceStateDeserializer.cs" />
+    <Compile Include="Devices\Manipulators\PIDTuningManipulator.cs" />
+    <Compile Include="Devices\Manipulators\PointManipulator.cs" />
+    <Compile Include="Packet\PacketDatas\AvrPacketDatas.cs" />
+    <Compile Include="Packet\PacketDatas\PacketExtensions.cs" />
+    <Compile Include="Packet\PacketDatas\PacketDatas.cs" />
+    <Compile Include="Packet\PacketControl\PacketDispatcher.cs" />
+    <Compile Include="Packet\PacketControl\PacketDispatcherSingle.cs" />
+    <Compile Include="Devices\BasicDevices\Device.cs" />
+    <Compile Include="Packet\PacketControl\PacketServer.cs" />
+    <Compile Include="Packet\PacketDatas\PacketBasis.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PacketIO\TusEthernetIO.cs" />
-    <Compile Include="TusAvrDevices\MotorState.cs">
+    <Compile Include="Packet\PacketIO\TusEthernetIO.cs" />
+    <Compile Include="Devices\TusAvrDevices\MotorState.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="TusAvrDevices\SensorState.cs">
+    <Compile Include="Devices\TusAvrDevices\SensorState.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="TusAvrDevices\SwitchState.cs">
+    <Compile Include="Devices\TusAvrDevices\SwitchState.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="PacketIO\USBGeneric.cs" />
+    <Compile Include="Packet\PacketIO\USBGeneric.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\..\..\Program Files\LibUsbDotNet\Src\LibWinUsb\LibUsbDotNet.csproj">
@@ -120,7 +120,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="DeviceCommands\TrainSensor\" />
+    <Folder Include="Devices\DeviceCommands\TrainSensor\" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">

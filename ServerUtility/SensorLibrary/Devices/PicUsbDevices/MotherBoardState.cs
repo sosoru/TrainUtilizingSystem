@@ -52,7 +52,7 @@ namespace SensorLibrary.Devices.PicUsbDevices
         public IDevice<IDeviceState<IPacketDeviceData>> GetDevice(int addr)
         {
             var mtype =  GetModuleType(addr);
-            var fact = DeviceFactory.AvailableDeviceTypes.FirstOrDefault((f) => f.ModuleType == mtype);
+            var fact = new PicDeviceFactoryProvider().AvailableDeviceTypes.FirstOrDefault((f) => f.ModuleType == mtype);
 
             if (fact == null)
                 return null; // throw new InvalidCastException("invalid packet thrown considering strange module type");

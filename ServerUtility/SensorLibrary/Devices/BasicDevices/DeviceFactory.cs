@@ -6,6 +6,7 @@ using System.Text;
 using SensorLibrary.Packet.Data;
 
 using SensorLibrary.Devices.PicUsbDevices;
+using SensorLibrary.Devices.TusAvrDevices;
 
 namespace SensorLibrary.Devices
 {
@@ -20,12 +21,10 @@ namespace SensorLibrary.Devices
         ModuleTypeEnum ModuleType { get; }
     }
 
-    public sealed class DeviceFactory
+    public abstract class DeviceFactoryProvider
     {
-        private DeviceFactory() { }
-
         private class devfactint<TDev, TState, TData>
-        : IDeviceFactory<TDev, TState, TData>
+          : IDeviceFactory<TDev, TState, TData>
             where TDev : class, IDevice<TState>, new()
             where TState : class, IDeviceState<TData>, new()
             where TData : IPacketDeviceData, new()
@@ -44,22 +43,72 @@ namespace SensorLibrary.Devices
             public Func<TData> DeviceDataCreate { get; private set; }
             public ModuleTypeEnum ModuleType { get; private set; }
         }
+
+        protected static IDeviceFactory<TDev, TState, TData>  DefaultFactory<TDev, TState, TData> (ModuleTypeEnum mtype)
+            where TDev : class, IDevice<TState>, new()
+            where TState : class, IDeviceState<TData>, new()
+            where TData : IPacketDeviceData, new()
+        {
+            return new devfactint<TDev, TState, TData>(mtype);
+        }
+
+        public abstract IEnumerable<IDeviceFactory<IDevice<IDeviceState<IPacketDeviceData>>, IDeviceState<IPacketDeviceData>, IPacketDeviceData>> AvailableDeviceTypes { get; }
+
+    }
+
+    public sealed class PicDeviceFactoryProvider
+        : DeviceFactoryProvider
+    {
+        public PicDeviceFactoryProvider() { }
+
         public static readonly IDeviceFactory<MotherBoard, MotherBoardState, MotherBoardData> MotherBoardFactory
-            = new devfactint<MotherBoard, MotherBoardState, MotherBoardData>(ModuleTypeEnum.MotherBoard);
+            = DefaultFactory<MotherBoard, MotherBoardState, MotherBoardData>(ModuleTypeEnum.MotherBoard);
 
         public static readonly IDeviceFactory<PointModule, PointModuleState, PointModuleData> PointModuleFactory
-            = new devfactint<PointModule, PointModuleState, PointModuleData>(ModuleTypeEnum.PointModule);
+            = DefaultFactory<PointModule, PointModuleState, PointModuleData>(ModuleTypeEnum.PointModule);
 
         public static readonly IDeviceFactory<TrainSensor, TrainSensorState, TrainSensorData> TrainSensorFactory
-            = new devfactint<TrainSensor, TrainSensorState, TrainSensorData>(ModuleTypeEnum.TrainSensor);
+            = DefaultFactory<TrainSensor, TrainSensorState, TrainSensorData>(ModuleTypeEnum.TrainSensor);
 
         public static readonly IDeviceFactory<TrainController, TrainControllerState, TrainControllerData> TrainControllerFactory
-             = new devfactint<TrainController, TrainControllerState, TrainControllerData>(ModuleTypeEnum.TrainController);
+             = DefaultFactory<TrainController, TrainControllerState, TrainControllerData>(ModuleTypeEnum.TrainController);
 
-        public static readonly IEnumerable<IDeviceFactory<IDevice<IDeviceState<IPacketDeviceData>>, IDeviceState<IPacketDeviceData>, IPacketDeviceData>> AvailableDeviceTypes
+        private static readonly IEnumerable<IDeviceFactory<IDevice<IDeviceState<IPacketDeviceData>>, IDeviceState<IPacketDeviceData>, IPacketDeviceData>> _AvailableDeviceTypes
             = new ReadOnlyCollection<IDeviceFactory<IDevice<IDeviceState<IPacketDeviceData>>, IDeviceState<IPacketDeviceData>, IPacketDeviceData>>
             (
                 new IDeviceFactory<IDevice<IDeviceState<IPacketDeviceData>>, IDeviceState<IPacketDeviceData>, IPacketDeviceData> [] { MotherBoardFactory, PointModuleFactory, TrainSensorFactory, TrainControllerFactory }
             );
+
+        public override IEnumerable<IDeviceFactory<IDevice<IDeviceState<IPacketDeviceData>>, IDeviceState<IPacketDeviceData>, IPacketDeviceData>> AvailableDeviceTypes
+        {
+            get { return _AvailableDeviceTypes; }
+        }
+    }
+
+    public sealed class AvrDeviceFactoryProvider
+        : DeviceFactoryProvider
+    {
+        private AvrDeviceFactoryProvider() {}
+
+        public static readonly IDeviceFactory<Motor, MotorState, MotorData> MotorModuleFactory
+            = DefaultFactory<Motor, MotorState, MotorData>(ModuleTypeEnum.AvrMotor);
+     
+        public static readonly IDeviceFactory<Switch, SwitchState, SwitchData> SwitchModuleFactory
+            = DefaultFactory<Switch, SwitchState, SwitchData>(ModuleTypeEnum.AvrSwitch);
+
+        public static readonly IDeviceFactory<Sensor, SensorState, SensorData> SensorModuleFactory
+            = DefaultFactory<Sensor, SensorState, SensorData>(ModuleTypeEnum.AvrSensor);
+
+        private static readonly IEnumerable<IDeviceFactory<IDevice<IDeviceState<IPacketDeviceData>>, IDeviceState<IPacketDeviceData>, IPacketDeviceData>> _AvailableDeviceTypes
+            = new ReadOnlyCollection<IDeviceFactory<IDevice<IDeviceState<IPacketDeviceData>>, IDeviceState<IPacketDeviceData>, IPacketDeviceData>>
+            (
+                new IDeviceFactory<IDevice<IDeviceState<IPacketDeviceData>>, IDeviceState<IPacketDeviceData>, IPacketDeviceData>[]
+                { MotorModuleFactory, SwitchModuleFactory, SensorModuleFactory}
+            );
+
+        public override IEnumerable<IDeviceFactory<IDevice<IDeviceState<IPacketDeviceData>>,IDeviceState<IPacketDeviceData>,IPacketDeviceData>>  AvailableDeviceTypes
+        {
+	        get { return _AvailableDeviceTypes; }
+        }
     }
 }

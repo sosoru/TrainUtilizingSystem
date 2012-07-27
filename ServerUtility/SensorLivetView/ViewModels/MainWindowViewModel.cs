@@ -203,7 +203,7 @@ namespace SensorLivetView.ViewModels
             var cnt = new USBDeviceController(dev);
             cnt.Open();
 
-            var serv = new PacketServer() { Controller = cnt };
+            var serv = new PacketServer(new PicDeviceFactoryProvider()) { Controller = cnt };
 
             //#if TEST
             LoggingStart(serv);
@@ -308,7 +308,7 @@ namespace SensorLivetView.ViewModels
         {
             return new DeviceViewModelDispatcher<TModel, TDevice, TState>()
             {
-                dispat = new PacketDispatcherSingle<TDevice, TState>(),
+                dispat = new PacketDispatcherSingle<TDevice, TState>(new PicDeviceFactoryProvider()),
                 projected = new ObservableWrappingCollectionOnDispat<TDevice, IDeviceViewModel<IDeviceModel<IDevice<IDeviceState<IPacketDeviceData>>>>>()
                 {
                     Dispatcher = this.AssociatedDispatcher,

@@ -45,7 +45,7 @@ namespace SensorLivetView
                 ID = id,
                 ModuleType = ModuleTypeEnum.MotherBoard,
             };
-            var state = DeviceFactory.MotherBoardFactory.DeviceStateCreate();
+            var state = PicDeviceFactoryProvider.MotherBoardFactory.DeviceStateCreate();
             state.BasePacket = packet;
             state.Data.ModuleType [0] = 0x10; //mb, sens
 
