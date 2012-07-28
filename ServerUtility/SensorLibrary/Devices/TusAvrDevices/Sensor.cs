@@ -14,6 +14,12 @@ namespace SensorLibrary.Devices.TusAvrDevices
             this.ModuleType = ModuleTypeEnum.AvrSensor;
         }
 
-        
+        public bool IsDetected
+        {
+            get
+            {
+                return this.CurrentState.Voltage > 0.5;
+            }
+        }
     }
 }

@@ -6,7 +6,7 @@ using SensorLibrary;
 
 namespace RouteLibrary.Base
 {
-    public class Route
+    public class RouteSegment
     {
         public BlockInfo From { get; set; }
         public BlockInfo To { get; set; }
@@ -15,15 +15,15 @@ namespace RouteLibrary.Base
     public class MotorInfo
     {
         public DeviceID Address { get; set; }
-        public Route RoutePositive { get; set; }
-        public Route RouteNegative { get; set; }
+        public RouteSegment RoutePositive { get; set; }
+        public RouteSegment RouteNegative { get; set; }
     }
 
     public class SwitchInfo
     {
         public DeviceID Address { get; set; }
-        public Route DirStraight { get; set; }
-        public Route DirCurved { get; set; }
+        public RouteSegment DirStraight { get; set; }
+        public RouteSegment DirCurved { get; set; }
     }
 
     public class SensorInfo
@@ -34,7 +34,7 @@ namespace RouteLibrary.Base
     public class BlockInfo
     {
         public string Name { get; set; }
-        public IList<Route> Route { get; set; }
+        public IList<RouteSegment> Route { get; set; }
         public MotorInfo Motor { get; set; }
         public SwitchInfo Switch { get; set; }
         public SensorInfo Sensor { get; set; }

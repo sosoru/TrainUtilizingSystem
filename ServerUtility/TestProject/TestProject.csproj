@@ -81,6 +81,8 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BlockSheetTest.cs" />
+    <Compile Include="BlockTest.cs" />
     <Compile Include="BlockYamlTest.cs" />
     <Compile Include="ChunckedStreamTest.cs" />
     <Compile Include="ConvertExtenstionsTest.cs" />
@@ -117,6 +119,7 @@
     <Compile Include="TrainSensorStateTest.cs" />
     <Compile Include="TrainSensorTest.cs" />
     <Compile Include="TrainSensorViewModelTest.cs" />
+    <Compile Include="EqualTest.cs" />
     <Compile Include="UsbDeviceConverterTest.cs" />
     <Compile Include="UsbDevicesViewModelTest.cs" />
   </ItemGroup>

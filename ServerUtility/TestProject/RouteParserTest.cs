@@ -103,22 +103,22 @@ namespace TestProject
             RouteParser target = new RouteParser() { ReferencedBlocks = blocks };
             string context = sample_context;
 
-            IEnumerable<Route> expected =
-                new Route[] {
-                    new Route() { From = blocks[1], To = blocks[3]},
-                    new Route() { From = blocks[1], To = blocks[4]},
-                    new Route() { From = blocks[2], To = blocks[3]},
-                    new Route() { From = blocks[2], To = blocks[4]},
-                    new Route() { From = blocks[3], To = blocks[1]},
-                    new Route() { From = blocks[3], To = blocks[2]},
-                    new Route() { From = blocks[4], To = blocks[1]},
-                    new Route() { From = blocks[4], To = blocks[2]},
+            IEnumerable<RouteSegment> expected =
+                new RouteSegment[] {
+                    new RouteSegment() { From = blocks[1], To = blocks[3]},
+                    new RouteSegment() { From = blocks[1], To = blocks[4]},
+                    new RouteSegment() { From = blocks[2], To = blocks[3]},
+                    new RouteSegment() { From = blocks[2], To = blocks[4]},
+                    new RouteSegment() { From = blocks[3], To = blocks[1]},
+                    new RouteSegment() { From = blocks[3], To = blocks[2]},
+                    new RouteSegment() { From = blocks[4], To = blocks[1]},
+                    new RouteSegment() { From = blocks[4], To = blocks[2]},
 
-                    new Route() { From = blocks[2], To = blocks[1]},
-                    new Route() { From = blocks[3], To = blocks[4]},
+                    new RouteSegment() { From = blocks[2], To = blocks[1]},
+                    new RouteSegment() { From = blocks[3], To = blocks[4]},
                 };
 
-            IEnumerable<Route> actual;
+            IEnumerable<RouteSegment> actual;
             actual = target.FromString(context).ToList();
 
             var c = actual.Select(s => expected.FirstOrDefault(r => r.From.Name == s.From.Name && r.To.Name == s.To.Name))
