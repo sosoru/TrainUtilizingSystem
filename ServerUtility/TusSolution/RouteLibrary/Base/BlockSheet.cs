@@ -15,6 +15,7 @@ namespace RouteLibrary.Base
     public class BlockSheet
         : IEquatable<BlockSheet>
     {
+
         public string Name { get; set; }
         public ReadOnlyCollection<Block> InnerBlocks { get; private set; }
         public PacketDispatcher Dispatcher { get; private set; }
@@ -23,7 +24,9 @@ namespace RouteLibrary.Base
         {
             this.Dispatcher = dispat;
 
-            var blocks = blockinfos.Select( i => new Block(i, this));
+            var blocks = blockinfos.Select(i => new Block(i, this));
+
+            this.Name = "";
             this.InnerBlocks = new ReadOnlyCollection<Block>(blocks.ToList());
         }
 
@@ -38,7 +41,7 @@ namespace RouteLibrary.Base
                 return (A.Name == B.Name);
         }
         public static bool operator !=(BlockSheet A, BlockSheet B) { return !(A == B); }
-        
+
         public bool Equals(BlockSheet other)
         {
             return (this == other);
@@ -65,10 +68,11 @@ namespace RouteLibrary.Base
             }
 
             // TODO: write your implementation of Equals() here
-            return this.Equals((BlockSheet)obj);   
+            return this.Equals((BlockSheet)obj);
         }
 
         #endregion
+
 
     }
 }

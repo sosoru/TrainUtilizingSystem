@@ -107,29 +107,10 @@ int main(void)
     {			
 		//_delay_ms(5);				
 		cli();
-		if(is_train_there())
-		{
-			for(i=0; i<50; ++i)
-			{
-				send_mtr(0);
-				tus_spi_process_packets();
-				int_delay(100);				
-			}
-			
-			for(i=0; i<20; ++i)
-			{
-				send_mtr(140);
-				tus_spi_process_packets();
-				int_delay(100);
-				
-			}		
-		}
-		else
-		{
-			send_mtr(140);
-			tus_spi_process_packets();
-		}
+		TrainSensorA::Communicate();
 		sei();
+		
+		_delay_ms(50);
 		
     }
 }

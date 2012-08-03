@@ -111,6 +111,7 @@
     <Compile Include="RailTest.cs" />
     <Compile Include="RailViewModelTest.cs" />
     <Compile Include="RouteParserTest.cs" />
+    <Compile Include="RouteTest.cs" />
     <Compile Include="SensorStateTest.cs" />
     <Compile Include="SwitchStateTest.cs" />
     <Compile Include="TestPacketProvider.cs" />

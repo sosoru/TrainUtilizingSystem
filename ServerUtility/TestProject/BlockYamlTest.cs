@@ -66,12 +66,17 @@ namespace TestProject
         //
         #endregion
 
-        public string PathSample
+        public static string PathSample
         {
             get
             {
                 return @"C:\Users\Administrator\Desktop\新しいフォルダー (2)\815.yaml";
             }
+        }
+
+        public static string LoopSample
+        {
+            get { return @"C:\Users\Administrator\Desktop\新しいフォルダー (2)\route_test.yaml"; }
         }
 
         /// <summary>
@@ -113,6 +118,16 @@ namespace TestProject
 
             actual = actual;
             //Assert.AreEqual(expected, actual);
+        }
+
+        /// <summary>
+        ///BlockYaml コンストラクター のテスト
+        ///</summary>
+        [TestMethod()]
+        public void BlockYamlConstructorTest()
+        {
+            BlockYaml target = new BlockYaml();
+            Assert.Inconclusive("TODO: ターゲットを確認するためのコードを実装してください");
         }
     }
 }

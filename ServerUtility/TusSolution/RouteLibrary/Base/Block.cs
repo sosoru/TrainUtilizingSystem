@@ -3,96 +3,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Collections.ObjectModel;
+using SensorLibrary.Devices;
 using SensorLibrary.Devices.TusAvrDevices;
+using SensorLibrary.Packet;
 using SensorLibrary.Packet.Data;
-
+using SensorLibrary;
 namespace RouteLibrary.Base
 {
     public class CommandInfo
     {
-        public Route Route { get; set; }
+        public RouteSegmentInfo Route { get; set; }
         public float Speed { get; set; }
 
     }
 
-    public class MotorEffector
-        : IDeviceEffector
+    public class DetectorState
     {
-        public BlockSheet Sheet { get; private set; }
-        public MotorInfo Info { get; private set; }
-        public Motor Device { get; private set; }
-
-        public MotorEffector(MotorInfo info, BlockSheet sheet)
-        {
-            this.Info = info;
-
-            this.Device = new Motor()
-                {
-                    DeviceID = info.Address,
-                };
-
-            this.Device.Observe(sheet.Dispatcher);
-        }
-
-        public void EffectByRoute(CommandInfo cmd)
-        {
-            var state = new MotorState();
-
-            if (cmd.Route.Current == this.Info.RoutePositive)
-            {
-                state.Direction = MotorDirection.Positive;
-            }
-            else if (cmd.Route.Current == this.Info.RouteNegative)
-            {
-                state.Direction = MotorDirection.Negative;
-            }
-
-            state.Duty = cmd.Speed;
-            this.Device.SendPacket(state);
-        }
-    }
-
-    public class SwitchEffector
-        : IDeviceEffector
-    {
-        public BlockSheet Sheet { get; private set; }
-        public SwitchInfo Info { get; private set; }
-        public Switch Device { get; private set; }
-
-        public SwitchEffector(SwitchInfo info, BlockSheet sheet)
-        {
-            this.Sheet = sheet;
-            this.Info = info;
-
-            this.Device = new Switch() { DeviceID = info.Address };
-            this.Device.Observe(sheet.Dispatcher);
-        }
-
-        public void EffectByRoute(CommandInfo cmd)
-        {
-            var state = new SwitchState();
-
-            if (cmd.Route.Current == this.Info.DirStraight)
-            {
-                state.Position = PointStateEnum.Straight;
-            }
-            else if (cmd.Route.Current == this.Info.DirCurved)
-            {
-                state.Position = PointStateEnum.Curve;
-            }
-            else
-            {
-                state.Position = PointStateEnum.Any;
-            }
-
-            state.ChangingTime = 250;
-            state.DeadTime = 50;
-
-            this.Device.SendPacket(state);
-        }
+        public bool IsDetected { get; set; }
     }
 
     public class SensorDetector
+        : IObservable<DetectorState>
     {
         public BlockSheet Sheet { get; private set; }
         public SensorInfo Info { get; private set; }
@@ -109,18 +40,56 @@ namespace RouteLibrary.Base
             this.devices = devs;
         }
 
-
-        public bool IsDetected
+        protected virtual void Notify()
         {
-            get
+            var state = new DetectorState() { IsDetected = this.devices.Any(a => a.IsDetected) };
+
+            this.observerList.ForEach(d => d.OnNext(state));
+        }
+
+        #region Implemention of IObservable
+
+        protected List<IObserver<DetectorState>> observerList = new List<IObserver<DetectorState>>();
+        public IDisposable Subscribe(IObserver<DetectorState> observer)
+        {
+            observerList.Add(observer);
+
+            return new UnSubscriber(() => this.observerList.Remove(observer));
+        }
+
+        #region UnSubscriber class
+        private class UnSubscriber
+            : IDisposable
+        {
+            private Action disposingFunc;
+            private bool disposed = false;
+            public UnSubscriber(Action disposingFunc)
             {
-                return this.devices.Any(s => s.IsDetected);
+                this.disposingFunc = disposingFunc;
+            }
+
+            public void Dispose()
+            {
+                if (!disposed)
+                {
+                    disposingFunc();
+                    disposed = true;
+                }
+            }
+
+            ~UnSubscriber()
+            {
+                this.Dispose();
             }
         }
+        #endregion
+        #endregion
+    
     }
 
     public class Block
     {
+
         private BlockInfo info;
 
         public string Name { get; private set; }
@@ -134,10 +103,27 @@ namespace RouteLibrary.Base
             this.Name = info.Name;
             this.Sheet = sheet;
 
-            var effs = new IDeviceEffector[] { new MotorEffector(info.Motor, sheet), new SwitchEffector(info.Switch, sheet) };
+            var effs = new List<IDeviceEffector>();
+            if(info.Motor != null)
+                effs.Add(new MotorEffector(info.Motor, sheet));
+
+            if(info.Switch !=null)
+                effs.Add(new SwitchEffector(info.Switch, sheet));
+
             this.Effectors = new ReadOnlyCollection<IDeviceEffector>(effs);
         }
 
+        public void Effect(IEnumerable<CommandInfo> infos)
+        {
+            var list_infos = infos.ToList();
+
+            this.Effectors.ToList().ForEach(e =>
+            {
+                list_infos.ForEach(i => e.ApplyCommand(i));
+                e.ExecuteCommand();
+            });
+
+        }
 
 
         #region implementation of IEqualable
@@ -183,5 +169,13 @@ namespace RouteLibrary.Base
 
         #endregion
 
+
+        public bool HasMotor
+        {
+            get
+            {
+                return this.info.Motor != null;
+            }
+        }
     }
 }

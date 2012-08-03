@@ -79,6 +79,12 @@ namespace RouteLibrary.Parser
             }
         }
 
+        public IEnumerable<BlockInfo> Parse(string path)
+        {
+            var objs = this.ParseFrom(path);
+            return this.Parse(objs);
+        }
+
         public IEnumerable<BlockInfo> Parse(IEnumerable<object> src)
         {
             var ab = ParseAbstract(src).ToList();

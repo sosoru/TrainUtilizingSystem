@@ -46,9 +46,10 @@
     <Compile Include="Base\Block.cs" />
     <Compile Include="Base\BlockBases.cs" />
     <Compile Include="Base\BlockSheet.cs" />
-    <Compile Include="Base\IDeviceEffector.cs" />
+    <Compile Include="Base\DeviceEffector.cs" />
+    <Compile Include="Base\Layout.cs" />
     <Compile Include="Base\Route.cs" />
-    <Compile Include="Parser\BlockParser.cs" />
+    <Compile Include="Base\Vehicle.cs" />
     <Compile Include="Parser\BlockYaml.cs" />
     <Compile Include="Parser\DeviceIdParser.cs" />
     <Compile Include="Parser\RegexExtention.cs" />

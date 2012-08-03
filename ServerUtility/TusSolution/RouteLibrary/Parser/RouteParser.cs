@@ -10,15 +10,15 @@ namespace RouteLibrary.Parser
     {
         public IList<BlockInfo> ReferencedBlocks { get; set; }
 
-        private IEnumerable<RouteSegment> parse_route(IEnumerable<string> from, string dir, IEnumerable<string> to)
+        private IEnumerable<RouteSegmentInfo> parse_route(IEnumerable<string> from, string dir, IEnumerable<string> to)
         {
             var b_from = from.Select(s => ReferencedBlocks.First(b => b.Name == s.Trim()));
             var b_to = to.Select(s => ReferencedBlocks.First(b => b.Name == s.Trim()));
 
-            var pairs_ltor = b_from.SelectMany(f => b_to.Select(t => new RouteSegment() { From = f, To = t }));
-            var pairs_rtol = b_from.SelectMany(f => b_to.Select(t => new RouteSegment() { From = t, To = f }));
+            var pairs_ltor = b_from.SelectMany(f => b_to.Select(t => new RouteSegmentInfo() { From = f, To = t }));
+            var pairs_rtol = b_from.SelectMany(f => b_to.Select(t => new RouteSegmentInfo() { From = t, To = f }));
 
-            var e = Enumerable.Empty<RouteSegment>();
+            var e = Enumerable.Empty<RouteSegmentInfo>();
 
             if (dir.Contains('>'))
                 e = e.Concat(pairs_ltor);
@@ -30,7 +30,7 @@ namespace RouteLibrary.Parser
         }
 
 
-        private IEnumerable<RouteSegment> spilt_route(string context)
+        private IEnumerable<RouteSegmentInfo> spilt_route(string context)
         {
             var reg = new Regex(@"(.+?)([\<\>]+)(.+)");
 
@@ -39,7 +39,7 @@ namespace RouteLibrary.Parser
             return parse_route(mat.Groups[1].Value.Split(','), mat.Groups[2].Value, mat.Groups[3].Value.Split(','));
         }
 
-        public IEnumerable<RouteSegment> FromString(string context)
+        public IEnumerable<RouteSegmentInfo> FromString(string context)
         {
             var q = context.Split(';')
                            .SelectMany(s => spilt_route(s));

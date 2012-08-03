@@ -73,7 +73,7 @@ namespace module_UartControl
 					t_module_enable_pin::InitOutput();
 					t_module_led_pin::InitOutput();
 					
-					t_module_enable_pin::Clear();
+					t_module_enable_pin::Set(); // but on board rev1, change enable pin to low
 				}
 				
 				static void TimerInit()
@@ -91,7 +91,7 @@ namespace module_UartControl
 				static inline void ModuleOff()
 				{
 					LedOff();
-					t_module_enable_pin::Set();
+					t_module_enable_pin::Clear(); // but on board rev1, change enable pin to high
 				}
 			
 				static inline bool Communicate()

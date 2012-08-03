@@ -103,22 +103,22 @@ namespace TestProject
             RouteParser target = new RouteParser() { ReferencedBlocks = blocks };
             string context = sample_context;
 
-            IEnumerable<RouteSegment> expected =
-                new RouteSegment[] {
-                    new RouteSegment() { From = blocks[1], To = blocks[3]},
-                    new RouteSegment() { From = blocks[1], To = blocks[4]},
-                    new RouteSegment() { From = blocks[2], To = blocks[3]},
-                    new RouteSegment() { From = blocks[2], To = blocks[4]},
-                    new RouteSegment() { From = blocks[3], To = blocks[1]},
-                    new RouteSegment() { From = blocks[3], To = blocks[2]},
-                    new RouteSegment() { From = blocks[4], To = blocks[1]},
-                    new RouteSegment() { From = blocks[4], To = blocks[2]},
+            IEnumerable<RouteSegmentInfo> expected =
+                new RouteSegmentInfo[] {
+                    new RouteSegmentInfo() { From = blocks[1], To = blocks[3]},
+                    new RouteSegmentInfo() { From = blocks[1], To = blocks[4]},
+                    new RouteSegmentInfo() { From = blocks[2], To = blocks[3]},
+                    new RouteSegmentInfo() { From = blocks[2], To = blocks[4]},
+                    new RouteSegmentInfo() { From = blocks[3], To = blocks[1]},
+                    new RouteSegmentInfo() { From = blocks[3], To = blocks[2]},
+                    new RouteSegmentInfo() { From = blocks[4], To = blocks[1]},
+                    new RouteSegmentInfo() { From = blocks[4], To = blocks[2]},
 
-                    new RouteSegment() { From = blocks[2], To = blocks[1]},
-                    new RouteSegment() { From = blocks[3], To = blocks[4]},
+                    new RouteSegmentInfo() { From = blocks[2], To = blocks[1]},
+                    new RouteSegmentInfo() { From = blocks[3], To = blocks[4]},
                 };
 
-            IEnumerable<RouteSegment> actual;
+            IEnumerable<RouteSegmentInfo> actual;
             actual = target.FromString(context).ToList();
 
             var c = actual.Select(s => expected.FirstOrDefault(r => r.From.Name == s.From.Name && r.To.Name == s.To.Name))
