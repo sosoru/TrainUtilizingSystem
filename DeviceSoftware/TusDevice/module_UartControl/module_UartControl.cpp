@@ -110,7 +110,7 @@ int main(void)
 		TrainSensorA::Communicate();
 		sei();
 		
-		_delay_ms(50);
+		_delay_ms(10);
 		
     }
 }

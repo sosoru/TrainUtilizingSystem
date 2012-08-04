@@ -14,8 +14,8 @@
 
 #define UARTDEV_ID_TRAINSENSOR 0x01
 
-#define SET_PARENT_TRANSFER		sbi(DDRB, 1);
-#define LEAVE_PANRET_TRANSFER	cbi(DDRB, 1);
+#define ENTER_PARENT_TRANSFER	sbi(DDRB, 3);
+#define LEAVE_PANRET_TRANSFER	cbi(DDRB, 3);
 
 TrainSensorPacket_xmit received;
 TrainSensorPacket_rcev sending;
@@ -57,7 +57,7 @@ void send_parent_packet()
 	sending.checksum ^= (sending.number = received.number[0]);
 	sending.checksum ^= (sending.result = ADCL);
 	
-	SET_PARENT_TRANSFER
+	ENTER_PARENT_TRANSFER
 	for(i=0; i<sizeof(sending); ++i)
 	{
 		xmit_parent(sending.rawdata[i]);
@@ -92,7 +92,7 @@ uint8_t validate_received_packet()
 void device_init()
 {	
 	PUEB	= 0b00000001;
-	DDRB	= 0b11110001;
+	DDRB	= 0b11110100;
 
 	// Timer 0 initializing
 	OCR0AL = 126;			// 4msec at 8MHz
@@ -103,8 +103,8 @@ void device_init()
 		
 	// adc initialzing
 	sbi(ADCSRA, ADIE); // ADC interrupt enable	
-	ADMUX = 2;			
-	sbi(DIDR0, ADC2D); // ADC2 enable
+	ADMUX = 0;			
+	sbi(DIDR0, ADC0D); // ADC0 enable
 	ADCSRA |= 0b00000111; // CK/128
 	ADCSRB = 0b100;		// triggering source is timer0 overflowing
 	sbi(ADCSRA, ADATE); // Auto-trigger enabled
