@@ -13,23 +13,29 @@
 extern "C"{	
 #endif
 
-typedef union tag_TrainSensorPacket_xmit
-{
-	struct{
-		uint8_t number[3];
-	};
-	uint8_t rawdata[3];
-} TrainSensorPacket_xmit;	
+#define MAX_SIZE_USARTDATA 16
 		
-typedef union tag_TrainSensorPacket_rcev
+typedef union tag_UsartChildPacket_Header
 {
 	struct{
+		uint8_t type;
+		uint8_t packet_size;
 		uint8_t number;
-		uint8_t result;
-		uint8_t checksum;			
+		uint8_t checksum_all;			
 	};
-	uint8_t rawdata[3];
-} TrainSensorPacket_rcev;
+	uint8_t rawdata[4];
+} UsartDevicePacket_Header;
+
+typedef struct tag_Usart_sensor
+{
+	uint8_t result;
+} UsartPacket_sensor;
+
+typedef struct tag_UsartDevicePacket
+{
+	UsartDevicePacket_Header header;
+	uint8_t data[MAX_SIZE_USARTDATA];
+} UsartPacket;
 		
 #ifdef __cplusplus
 };

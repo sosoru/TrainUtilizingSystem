@@ -15,75 +15,22 @@ using namespace AVRCpp;
 using namespace module_UartControl;
 using namespace module_UartControl::Config;
 
-void send_mtr(uint8_t duty)
-{
-	using namespace MotorController;
-	
-	spi_send_object *spi_send;
-	MtrControllerPacket *packet;
-	
-	tus_spi_lock_send_buffer(&spi_send);
-	
-	packet = (MtrControllerPacket *)&spi_send->packet;
-	packet->srcId.ParentPart = 24;
-	packet->srcId.ModuleAddr = 2;
-	packet->destId.ParentPart = 24;
-	packet->destId.ModuleAddr = 1;
-	
-	packet->set_ControlMode(DutySpecifiedMode);
-	packet->set_Direciton(Positive);
-	packet->set_DutyValue(duty);
-	
-	spi_send->is_locked = FALSE;
-	
-}
 
-uint8_t get_value(bool &error)
+void CreatePacket(UsartPacket &packet)
 {
-	if(TrainSensorA::Communicate())
+	packet.header.type = 0;
+	packet.header.number = 0;
+	packet.header.packet_size = 4;
+	for(uint8_t i=0; i<packet.header.packet_size; ++i)
 	{
-		error = false;
-		return TrainSensorA::ReceivedArray[0].result;
+		packet.data[i] = 'a' + i;
 	}
-	error = true;
-	return 0;
-}
-
-bool is_train_there()
-{
-	uint8_t i;
-	uint16_t before, current=0;
-	bool errored;
-	uint8_t succeeded = 0;
-	
-	TrainSensorA::SetTransmitNumber(1);		
-	TrainSensorA::LedOn();		
-	//_delay_ms(1);
-	
-	for(i=0; i<3; ++i)
-	{
-		current += get_value(errored);
-		
-		if(!errored)
-			succeeded++;
-	} 
-	
-	current /= succeeded;
-	
-	return current > 220;
-
-}
-
-void int_delay(uint16_t d)
-{
-	sei();
-	_delay_ms(d);
-	cli();
 }
 
 int main(void)
 {
 	uint16_t i;
+	UsartPacket pack;
 	
 	MCUCR = 0b01100000; //todo: turn off bods
 	MCUSR = 0; // Do not omit to clear this resistor, otherwise suffer a terrible reseting cause.
@@ -107,10 +54,11 @@ int main(void)
     {			
 		//_delay_ms(5);				
 		cli();
-		TrainSensorA::Communicate();
+		CreatePacket(pack);
+		TrainSensorA::Communicate(pack);
 		sei();
 		
-		_delay_ms(10);
+		_delay_ms(3);
 		
     }
 }

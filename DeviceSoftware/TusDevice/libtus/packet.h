@@ -17,7 +17,7 @@
 #define ETHCMD_REPLY 0
 #define ETHCMD_MESSAGE 1
 
-#define ETH_DATA_LEN 64
+#define ETH_DATA_LEN 32
 
 typedef union tag_DeviceID
 {

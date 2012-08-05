@@ -55,19 +55,13 @@ namespace module_UartControl
 			: public UartModule<	t_module_enable_pin,
 									t_module_led_pin,
 									t_uart,
-									32
+									10
 									 >
 		{
 			
 			public :
-				static TrainSensorPacket_rcev ReceivedArray[t_module_count];
-				static TrainSensorPacket_xmit TransmitData;
-				
-				static inline void SetTransmitNumber(uint8_t number)
-				{
-					memset(TransmitData.rawdata, number, sizeof(TransmitData.rawdata));
-				}
-			
+				static UsartPacket ReceivedArray[t_module_count];
+							
 				static void Init()
 				{
 					t_module_enable_pin::InitOutput();
@@ -90,43 +84,88 @@ namespace module_UartControl
 					
 				static inline void ModuleOff()
 				{
-					LedOff();
 					t_module_enable_pin::Clear(); // but on board rev1, change enable pin to high
 				}
+				
+				static inline void ModuleOn()
+				{
+					t_module_enable_pin::Set();
+				}
+				
+				static inline void SendUartPacket(UsartPacket &packet)
+				{
+					packet.header.checksum_all = CalcChecksum(packet);
+					
+					for(uint8_t i=0; i<sizeof(packet.header); ++i)
+					{
+						t_uart::Send(packet.header.rawdata[i]);
+					}
+					for(uint8_t i=0; i<packet.header.packet_size; ++i)
+					{
+						t_uart::Send(packet.data[i]);
+					}
+				}
 			
-				static inline bool Communicate()
-				{										
-					t_uart::Send(TransmitData);
-					//
-					uint8_t m=0;
-					//for(m=0; m<t_module_count; ++m)
-					//{
-						uint8_t chksum = 0x00;
-						//
+				static inline int8_t Communicate(UsartPacket &pack_x)
+				{
+					SendUartPacket(pack_x);
+
+					uint8_t received;
+					int8_t m;
+					for(m=0; m<t_module_count; ++m)
+					{
 						while(!t_uart::IsTransferCompleted());
-						for(uint8_t i=0; i<sizeof(TrainSensorPacket_rcev); ++i)
-						{							
-							uint8_t received;
-							
+						
+						for(uint8_t i=0; i<sizeof(UsartDevicePacket_Header); ++i)
+						{												
 							if(!TimeoutedReceive(received))
 							{
-								return false;
-							}				
-							
-							ReceivedArray[m].rawdata[i] = received;
+								return m-1;
+							}									
+							ReceivedArray[m].header.rawdata[i] = received;
 						}
 						
-						if(ReceivedArray[m].number ^ ReceivedArray[m].result != chksum)
+						
+						uint8_t datasize = ReceivedArray[m].header.packet_size;
+						if(datasize > MAX_SIZE_USARTDATA)
+							datasize = MAX_SIZE_USARTDATA;
+							
+						for(uint8_t i=0; i<datasize; ++i)
 						{
-							return false;				
+							if(!TimeoutedReceive(received))
+							{
+								return m-1;
+							}
+							ReceivedArray[m].data[i] = received;
 						}
-					//}	
+						
+						if(CalcChecksum(ReceivedArray[m]) != ReceivedArray[m].header.checksum_all)
+						{
+							return m-1;				
+						}
+					}	
 										
-					return true; //m == t_module_count;
+					return m-1;
 				}
 				
 				private:
-				
+								
+				static inline uint8_t CalcChecksum(UsartPacket& packet)
+				{
+					uint8_t chksum = 0;
+					
+					chksum ^= packet.header.type;
+					chksum ^= packet.header.number;
+					chksum ^= packet.header.packet_size;
+					
+					for(uint8_t i=0; i<packet.header.packet_size; ++i)
+					{
+						chksum ^= packet.data[i];
+					}
+					
+					return chksum;
+				}
+							
 				static inline bool TimeoutedReceive(uint8_t &data)
 				{
 					t_timer::Counter::Set(0);
@@ -152,7 +191,7 @@ namespace module_UartControl
 				class t_timer,
 				uint8_t t_module_count
 			>
-		TrainSensorPacket_rcev
+		UsartPacket
 		 TrainSensorModule<
 				t_module_enable_pin,
 				t_module_led_pin,
@@ -160,23 +199,6 @@ namespace module_UartControl
 				t_timer,
 				t_module_count>
 				::ReceivedArray[t_module_count];
-
-		template <
-				class t_module_enable_pin,
-				class t_module_led_pin,
-				class t_uart,
-				class t_timer,
-				uint8_t t_module_count
-			>
-		TrainSensorPacket_xmit
-		 TrainSensorModule<
-				t_module_enable_pin,
-				t_module_led_pin,
-				t_uart,
-				t_timer,
-				t_module_count>
-				::TransmitData;
-
 	}
 }
 

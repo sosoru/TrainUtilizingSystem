@@ -17,7 +17,7 @@
 #include <avr/io.h>
 .list
 
-#define	BPS	68	/* Bit delay. (see above table) */
+#define	BPS	21	/* Bit delay. (see above table) */
 #define	BIDIR	0	/* 0:Separated Tx/Rx, 1:Shared Tx/Rx */
 
 #define	OUT_1		sbi _SFR_IO_ADDR(PORTB), 2	/* Output 1 */
