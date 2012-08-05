@@ -114,26 +114,29 @@ namespace EthernetBridge
 				}
 				              
 				if(buf[IP_PROTO_P]==IP_PROTO_ICMP_V && buf[ICMP_TYPE_P]==ICMP_TYPE_ECHOREQUEST_V){
-						// a ping packet, let's send pong
-						make_echo_reply_from_request(buf,plen);
-						return true;
+					// a ping packet, let's send pong
+					make_echo_reply_from_request(buf,plen);
+					return true;
 				}
 				
-				
-				//
 				// udp start, we listen on udp port 8000=0x1F40
 				if (buf[IP_PROTO_P]==IP_PROTO_UDP_V
 					&& buf[UDP_DST_PORT_H_P]==(uint8_t)(Parameters.port>>8)
 					&& buf[UDP_DST_PORT_L_P]==(uint8_t)(Parameters.port))
 				{
-						payloadlen = buf[UDP_LEN_L_P] - UDP_HEADER_LEN;
+					payloadlen = buf[UDP_LEN_L_P] - UDP_HEADER_LEN;
 							
-						EthPacket * ppacket = (EthPacket*)&buf[UDP_DATA_P];
-						if(IsForChildren((const EthPacket&)ppacket))
-						{
-							StockToChildren(ppacket);
-							return true;
-						}							
+					EthPacket * ppacket = (EthPacket*)&buf[UDP_DATA_P];
+						
+					PORTB ^= _BV(PORTB5);
+					if(ppacket->destId.InternalAddr == 1)
+						PORTB ^= _BV(PORTB6);
+
+					if(IsForChildren((const EthPacket&)ppacket))
+					{
+						StockToChildren(ppacket);
+						return true;
+					}							
 				}			
 	
 				return false;

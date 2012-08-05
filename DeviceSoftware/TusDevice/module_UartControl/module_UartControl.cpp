@@ -15,16 +15,27 @@ using namespace AVRCpp;
 using namespace module_UartControl;
 using namespace module_UartControl::Config;
 
+uint8_t received=0;
+DeviceID src_id;
+DeviceID dst_id;
 
 void CreatePacket(UsartPacket &packet)
 {
 	packet.header.type = 0;
 	packet.header.number = 0;
-	packet.header.packet_size = 4;
-	for(uint8_t i=0; i<packet.header.packet_size; ++i)
-	{
-		packet.data[i] = 'a' + i;
-	}
+	packet.header.packet_size = 0;
+}
+
+void spi_received(args_received *e)
+{
+	if(e->ppack->destId.ModuleAddr != 1)
+		return;
+	
+	src_id.raw = e->ppack->srcId.raw;
+	dst_id.raw = e->ppack->destId.raw;
+	
+	received++;
+
 }
 
 int main(void)
@@ -36,6 +47,7 @@ int main(void)
 	MCUSR = 0; // Do not omit to clear this resistor, otherwise suffer a terrible reseting cause.
 	
 	tus_spi_init();
+	tus_spi_set_handler(spi_received);
 	
 	InputPin0<PortD>::InitDefaultInput();
 	OutputPin1<PortD>::InitOutput();
@@ -52,13 +64,27 @@ int main(void)
 	
     while(1)
     {			
-		//_delay_ms(5);				
-		cli();
+		while(!received)
+		{
+			//waiting
+		}
+		
+		UsartPacket pack;
+		spi_send_object *pspi_send;
+		EthPacket *packet;
+		
 		CreatePacket(pack);
 		TrainSensorA::Communicate(pack);
-		sei();
 		
-		_delay_ms(3);
+		tus_spi_lock_send_buffer(&pspi_send);
+		packet = &pspi_send->packet;
 		
+		packet->srcId.raw = dst_id.raw;
+		packet->destId.raw = src_id.raw;	
+		packet->pdata[0] = pack.data[0];
+		
+		pspi_send->is_locked = FALSE;
+		
+		received = 0;
     }
 }

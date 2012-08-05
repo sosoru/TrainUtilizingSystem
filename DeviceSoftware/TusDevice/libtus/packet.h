@@ -24,8 +24,8 @@ typedef union tag_DeviceID
 	struct
 	{
 		uint16_t SubnetAddr;
-		BYTE ModuleAddr;
 		BYTE InternalAddr;
+		BYTE ModuleAddr;
 	};
 	struct
 	{

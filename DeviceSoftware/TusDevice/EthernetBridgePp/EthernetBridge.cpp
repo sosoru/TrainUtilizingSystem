@@ -96,7 +96,7 @@ void BoardInit()
 	ModuleG::Init();	
 	ModuleH::Init();	
 		
-	Lcd::Display::Init();
+	//Lcd::Display::Init();
 } 
 
 template < class t_module >
@@ -109,7 +109,6 @@ void DispatchModulePackets()
 		
 		if(t_module::Transmit(received))
 		{
-
 			if(EthDevice::IsForChildren(received))
 			{
 				EthDevice::StockToChildren(&received);
@@ -145,8 +144,8 @@ extern "C"
 	{
 		using namespace UI;
 	
-		Ui_View_mac_addr ui_mac;
-		UIController uicnt(ui_mac);
+		//Ui_View_mac_addr ui_mac;
+		//UIController uicnt(ui_mac);
 		
 		MCUCSR = 0;
 		wdt_disable();
@@ -158,12 +157,11 @@ extern "C"
 	
 		BoardInit();
 		PORTB |= _BV(PORTB4);
-		
 	
 		while(1)
 		{
 			while(EthDevice::ReceiveFromEthernet());		
-		
+				
 			DispatchProcess();
 		
 			//uicnt.Refresh();
