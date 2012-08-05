@@ -66,7 +66,7 @@ int main(void)
     {			
 		while(!received)
 		{
-			//waiting
+			tus_spi_process_packets();
 		}
 		
 		UsartPacket pack;
@@ -81,7 +81,8 @@ int main(void)
 		
 		packet->srcId.raw = dst_id.raw;
 		packet->destId.raw = src_id.raw;	
-		packet->pdata[0] = pack.data[0];
+		packet->pdata[0] = TrainSensorA::ReceivedArray[0].data[0];
+		packet->pdata[1] = TrainSensorA::ReceivedArray[1].data[0];
 		
 		pspi_send->is_locked = FALSE;
 		

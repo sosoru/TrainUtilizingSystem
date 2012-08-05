@@ -102,7 +102,7 @@ namespace EthernetBridge{
 										
 					if(Dispatcher::PopPacket(&psend))
 					{
-						 PORTB |= _BV(PORTB7);
+						PORTB ^= _BV(PORTB6);
 						SpiToModule::TransData<slave_module>(psend, received);
 					}
 					else

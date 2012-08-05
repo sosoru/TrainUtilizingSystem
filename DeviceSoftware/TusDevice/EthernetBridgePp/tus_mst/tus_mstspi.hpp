@@ -11,6 +11,7 @@
 
 #include "../EthernetBridge.hpp"
 #include "../avr_base.hpp"
+#include <avr/delay.h>
 
 namespace EthernetBridge
 {
@@ -65,8 +66,9 @@ namespace EthernetBridge
 					}
 		
 					byte_recev = TransByte(send);
-		
+				
 					received.raw_array[i] = byte_recev;
+					_delay_us(10);
 				}
 	
 				SSpin::Set();

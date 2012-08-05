@@ -98,6 +98,9 @@ namespace EthernetBridge
 						return false;
 				}
 				
+				//a packet is comming
+				PORTB ^= _BV(PORTB5);
+				
 				// arp is broadcast if unknown but a host may also
 				// verify the mac address by sending it to 
 				// a unicast address.
@@ -127,12 +130,8 @@ namespace EthernetBridge
 					payloadlen = buf[UDP_LEN_L_P] - UDP_HEADER_LEN;
 							
 					EthPacket * ppacket = (EthPacket*)&buf[UDP_DATA_P];
-						
-					PORTB ^= _BV(PORTB5);
-					if(ppacket->destId.InternalAddr == 1)
-						PORTB ^= _BV(PORTB6);
-
-					if(IsForChildren((const EthPacket&)ppacket))
+												
+					if(IsForChildren(*ppacket))
 					{
 						StockToChildren(ppacket);
 						return true;

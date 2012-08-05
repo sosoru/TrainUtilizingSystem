@@ -6322,15 +6322,15 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <part name="U$100" library="myparts" deviceset="TPR-105F" device=""/>
 <part name="D2" library="myparts" deviceset="S-1*3T" device=""/>
 <part name="GND7" library="supply1" deviceset="GND" device=""/>
-<part name="R3" library="rcl" deviceset="R-EU_" device="R0603"/>
-<part name="R1" library="rcl" deviceset="R-EU_" device="R0603"/>
+<part name="R3" library="rcl" deviceset="R-EU_" device="R0603" value="33k"/>
+<part name="R1" library="rcl" deviceset="R-EU_" device="R0603" value="1k"/>
 <part name="GND8" library="supply1" deviceset="GND" device=""/>
-<part name="R2" library="rcl" deviceset="R-EU_" device="R0603"/>
+<part name="R2" library="rcl" deviceset="R-EU_" device="R0603" value="100k"/>
 <part name="GND9" library="supply1" deviceset="GND" device=""/>
-<part name="R6" library="rcl" deviceset="R-EU_" device="R0603"/>
+<part name="R6" library="rcl" deviceset="R-EU_" device="R0603" value="100k"/>
 <part name="GND10" library="supply1" deviceset="GND" device=""/>
-<part name="R4" library="rcl" deviceset="R-EU_" device="R0603"/>
-<part name="R5" library="rcl" deviceset="R-EU_" device="R0603"/>
+<part name="R4" library="rcl" deviceset="R-EU_" device="R0603" value="33k"/>
+<part name="R5" library="rcl" deviceset="R-EU_" device="R0603" value="1k"/>
 <part name="GND11" library="supply1" deviceset="GND" device=""/>
 <part name="P+1" library="supply1" deviceset="VCC" device=""/>
 <part name="P+9" library="supply1" deviceset="VCC" device=""/>
@@ -6346,7 +6346,7 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <part name="U$2" library="myparts" deviceset="ATTINY10" device=""/>
 <part name="SMD1" library="myparts" deviceset="SERIAL_SENSOR" device="HALF"/>
 <part name="SMD2" library="myparts" deviceset="SERIAL_SENSOR" device="HALF"/>
-<part name="R7" library="rcl" deviceset="R-EU_" device="R0603"/>
+<part name="R7" library="rcl" deviceset="R-EU_" device="R0603" value="10k"/>
 <part name="P+2" library="supply1" deviceset="VCC" device=""/>
 </parts>
 <sheets>

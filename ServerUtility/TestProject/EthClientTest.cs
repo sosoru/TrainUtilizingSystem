@@ -76,7 +76,7 @@ namespace TestProject
             target.Address = new IPAddress(new byte [] { 192, 168, 2, 24 });
             EthPacket packet = new EthPacket()
             {
-                srcId = new DeviceID(1, 0),
+                srcId = new DeviceID(100, 0),
                 destId = new DeviceID(24, 1),
             };
             
@@ -88,7 +88,7 @@ namespace TestProject
                 //packet.Message = string.Format("pero {0} times", i);
 
                 target.Send(packet);
-                System.Threading.Thread.Sleep(10);
+                System.Threading.Thread.Sleep(500);
             }
             Assert.Inconclusive("値を返さないメソッドは確認できません。");
         }

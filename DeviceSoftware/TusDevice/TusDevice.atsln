@@ -12,12 +12,21 @@ EndProject
 Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "_module_MotorController", "module_MotorController\_module_MotorController.cproj", "{6E83F947-511F-461E-90DB-45B18C1A0345}"
 EndProject
 Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "module_UartControl", "module_UartControl\module_UartControl.cppproj", "{A6CD0F21-E6AA-4920-8440-6D7A8CF9DF5B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3D121C5B-155C-47B1-B93C-761A9952C20F} = {3D121C5B-155C-47B1-B93C-761A9952C20F}
+	EndProjectSection
 EndProject
 Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "module_MotorController", "module_MotorController\module_MotorController.cppproj", "{28E3BD3E-1C21-4B26-A20F-AAE3CB7B9AB8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3D121C5B-155C-47B1-B93C-761A9952C20F} = {3D121C5B-155C-47B1-B93C-761A9952C20F}
+	EndProjectSection
 EndProject
 Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "libtuspp", "libtuspp\libtuspp.cppproj", "{6A87787C-55EA-47E3-9359-1827E8F637B0}"
 EndProject
 Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "EthernetBridgePp", "EthernetBridgePp\EthernetBridgePp.cppproj", "{1267818C-5A51-4E46-A843-2688E1945EA0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3D121C5B-155C-47B1-B93C-761A9952C20F} = {3D121C5B-155C-47B1-B93C-761A9952C20F}
+	EndProjectSection
 EndProject
 Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "module_PointController", "module_PointController\module_PointController.cppproj", "{A17B6A09-278F-4C5D-9500-B8F673401C54}"
 EndProject

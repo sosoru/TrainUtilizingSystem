@@ -38,9 +38,21 @@ static spi_received_handler SpiReceive = 0;
 ISR(SPI_STC_vect)
 {
 	uint8_t i;
+	uint8_t spi_status = SPSR;
 	uint8_t received = SPDR;
-		
+			
 	sbi(TUS_CONTROL_DDR, TUS_CONTROL_MISO);
+	//send	
+	if(psending_obj != NULL && send_buffer_pos < sizeof(EthPacket))
+	{
+		uint8_t wdata = psending_obj->packet.raw_array[send_buffer_pos++];
+		SPDR = 	wdata;
+	}
+	else
+	{
+		SPDR = 0x00;
+	}
+	
 	//receive
 	if(recv_buffer_bytepos < RECEIVE_BUFFER_BYTESIZE)
 	{
@@ -50,16 +62,6 @@ ISR(SPI_STC_vect)
 		{
 			recv_buffer_bytepos = 0;
 		}
-	}
-	
-	//send	
-	if(psending_obj != NULL && send_buffer_pos < sizeof(EthPacket))
-	{
-		SPDR = ((uint8_t*)&(psending_obj->packet))[send_buffer_pos++];	
-	}
-	else
-	{
-		SPDR = 0x00;
 	}
 	
 }
@@ -163,7 +165,8 @@ void tus_spi_set_handler(spi_received_handler handler)
 
 uint8_t tus_spi_lock_send_buffer(spi_send_object ** ppsendobj)
 {	
-	uint8_t i, reg_cache;	
+	uint8_t i;
+	uint8_t reg_cache = SREG;	
 
 	while(IS_SPI_COMMUNICATING) { _delay_us(100);}		
 	

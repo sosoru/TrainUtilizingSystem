@@ -106,9 +106,9 @@ void DispatchModulePackets()
 	
 	do
 	{
-		
 		if(t_module::Transmit(received))
 		{
+			PORTB ^= _BV(PORTB7);
 			if(EthDevice::IsForChildren(received))
 			{
 				EthDevice::StockToChildren(&received);
@@ -116,11 +116,8 @@ void DispatchModulePackets()
 			else
 			{
 				EthDevice::SendToEthernet(&received);
-			}			
-			
-			
+			}						
 		}
-		
 	}while(t_module::IsStocked());
 	
 }

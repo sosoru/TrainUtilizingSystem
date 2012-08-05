@@ -152,7 +152,7 @@ namespace SensorLibrary
         }
     }
 
-    [StructLayout(LayoutKind.Sequential, Size = 73)]
+    [StructLayout(LayoutKind.Sequential, Size = 40)]
     public class EthPacket
     {
         //DeviceID srcId; 
@@ -169,8 +169,8 @@ namespace SensorLibrary
 
         byte command;
 
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 64)]
-        private byte[] _data = new byte [64];
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]
+        private byte[] _data = new byte [32];
         public byte [] Data
         {
             get
