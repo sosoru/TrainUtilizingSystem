@@ -88,7 +88,7 @@ namespace SensorLibrary.Devices
     public sealed class AvrDeviceFactoryProvider
         : DeviceFactoryProvider
     {
-        private AvrDeviceFactoryProvider() {}
+        public AvrDeviceFactoryProvider() {}
 
         public static readonly IDeviceFactory<Motor, MotorState, MotorData> MotorModuleFactory
             = DefaultFactory<Motor, MotorState, MotorData>(ModuleTypeEnum.AvrMotor);

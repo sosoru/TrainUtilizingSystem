@@ -20,6 +20,14 @@ namespace SensorLibrary
             this.ModuleAddr = module;
         }
 
+        public DeviceID(ushort parent, byte module, byte inter)
+        {
+            this.ParentPart = parent;
+            this.ModulePart = 0;
+            this.ModuleAddr = module;
+            this.InternalAddr = inter;
+        }
+
         public ushort ParentPart;
         //subnetaddr : 16
         public ushort ModulePart;
@@ -105,18 +113,23 @@ namespace SensorLibrary
     [StructLayout(LayoutKind.Sequential, Size = 32)]
     public class DevicePacket
     {
-        public byte ReadMark = 0xFF;
+        //[MarshalAs(UnmanagedType.U1, SizeConst = 1)]
+        //public byte ReadMark = 0xFF;
+
+        [MarshalAs(UnmanagedType.Struct, SizeConst=4)]
         public DeviceID ID;
+
+        [MarshalAs(UnmanagedType.U1, SizeConst = 1)]
         public ModuleTypeEnum ModuleType;
 
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 28)]
-        private byte[] _data = new byte [28];
-        public byte [] Data
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 26)]
+        private byte[] _data = new byte[26];
+        public byte[] Data
         {
             get
             {
                 if (_data == null)
-                    _data = new byte [28];
+                    _data = new byte[26];
 
                 return _data;
             }
@@ -155,29 +168,15 @@ namespace SensorLibrary
     [StructLayout(LayoutKind.Sequential, Size = 40)]
     public class EthPacket
     {
-        //DeviceID srcId; 
-        //DeviceID destId; 
-
-        //BYTE command; 
-        //BYTE error; 
-
-        //char message[ETH_MSG_LEN]; 
-        //BYTE pdata[ETH_DATA_LEN]; 
+        public EthPacket()
+        {
+            this.DataPacket = new DevicePacket();
+        }
 
         public DeviceID srcId;
         public DeviceID destId;
 
-        byte command;
-
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]
-        private byte[] _data = new byte [32];
-        public byte [] Data
-        {
-            get
-            {
-                return _data;
-            }
-        }
+        public DevicePacket DataPacket;
 
     }
 

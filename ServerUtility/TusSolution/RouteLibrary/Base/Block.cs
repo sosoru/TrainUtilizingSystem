@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Reactive;
+using System.Reactive.Linq;
+
 using System.Collections.ObjectModel;
 using SensorLibrary.Devices;
 using SensorLibrary.Devices.TusAvrDevices;
@@ -12,79 +15,41 @@ namespace RouteLibrary.Base
 {
     public class CommandInfo
     {
-        public RouteSegmentInfo Route { get; set; }
+        public Route Route { get; set; }
         public float Speed { get; set; }
 
     }
 
-    public class DetectorState
-    {
-        public bool IsDetected { get; set; }
-    }
-
     public class SensorDetector
-        : IObservable<DetectorState>
     {
-        public BlockSheet Sheet { get; private set; }
+        public Block ParentBlock { get; private set; }
         public SensorInfo Info { get; private set; }
         private List<Sensor> devices { get; set; }
         public ReadOnlyCollection<Sensor> Devices { get { return new ReadOnlyCollection<Sensor>(this.devices); } }
 
-        public SensorDetector(SensorInfo info, BlockSheet sheet)
+        public SensorDetector(SensorInfo info, Block block)
         {
-            this.Sheet = sheet;
+            this.ParentBlock = block;
             this.Info = info;
 
             var devs = info.Addresses.Select(id => new Sensor() { DeviceID = id }).ToList();
-            devs.ForEach(d => d.Observe(sheet.Dispatcher));
+            devs.ForEach(d => d.Observe(block.Sheet.Dispatcher));
             this.devices = devs;
         }
 
-        protected virtual void Notify()
+        public void SendCheckCommand()
         {
-            var state = new DetectorState() { IsDetected = this.devices.Any(a => a.IsDetected) };
-
-            this.observerList.ForEach(d => d.OnNext(state));
+            this.devices.ForEach(d =>
+                                     {
+                                         d.CurrentState.ReceivingServer = this.ParentBlock.Sheet.Server;
+                                         d.SendPacket();
+                                     });
         }
 
-        #region Implemention of IObservable
-
-        protected List<IObserver<DetectorState>> observerList = new List<IObserver<DetectorState>>();
-        public IDisposable Subscribe(IObserver<DetectorState> observer)
+        public bool IsDetected
         {
-            observerList.Add(observer);
-
-            return new UnSubscriber(() => this.observerList.Remove(observer));
+            get { return this.devices.Any(d => d.IsDetected); }
         }
-
-        #region UnSubscriber class
-        private class UnSubscriber
-            : IDisposable
-        {
-            private Action disposingFunc;
-            private bool disposed = false;
-            public UnSubscriber(Action disposingFunc)
-            {
-                this.disposingFunc = disposingFunc;
-            }
-
-            public void Dispose()
-            {
-                if (!disposed)
-                {
-                    disposingFunc();
-                    disposed = true;
-                }
-            }
-
-            ~UnSubscriber()
-            {
-                this.Dispose();
-            }
-        }
-        #endregion
-        #endregion
-    
     }
 
     public class Block
@@ -96,6 +61,7 @@ namespace RouteLibrary.Base
         public BlockSheet Sheet { get; private set; }
 
         public IList<IDeviceEffector> Effectors { get; private set; }
+        public IList<SensorDetector> Detectors { get; private set; }
 
         public Block(BlockInfo info, BlockSheet sheet)
         {
@@ -104,13 +70,19 @@ namespace RouteLibrary.Base
             this.Sheet = sheet;
 
             var effs = new List<IDeviceEffector>();
-            if(info.Motor != null)
-                effs.Add(new MotorEffector(info.Motor, sheet));
+            var decs = new List<SensorDetector>();
+            if (info.Motor != null)
+                effs.Add(new MotorEffector(info.Motor, this));
 
-            if(info.Switch !=null)
-                effs.Add(new SwitchEffector(info.Switch, sheet));
+            if (info.Switch != null)
+                effs.Add(new SwitchEffector(info.Switch, this));
+
+            if (info.Sensor != null)
+                decs.Add(new SensorDetector(info.Sensor, this));
 
             this.Effectors = new ReadOnlyCollection<IDeviceEffector>(effs);
+            this.Detectors = new ReadOnlyCollection<SensorDetector>(decs);
+
         }
 
         public void Effect(IEnumerable<CommandInfo> infos)
@@ -175,6 +147,24 @@ namespace RouteLibrary.Base
             get
             {
                 return this.info.Motor != null;
+            }
+        }
+
+        public bool HasSensor
+        {
+            get { return this.info.Sensor != null; }
+        }
+
+        public bool IsDetectingTrain
+        {
+            get
+            {
+                if (!this.HasSensor)
+                {
+                    throw new InvalidOperationException("this block is not allocated a sensor module");
+                }
+
+                return this.Detectors.Any(s => s.IsDetected);
             }
         }
     }

@@ -77,11 +77,11 @@ namespace SensorLibrary.Packet
             using (var ms = new MemoryStream(buf))
             using (var br= new BinaryReader(ms))
             {
-                ret.ReadMark = br.ReadByte();
+                //ret.ReadMark = br.ReadByte();
                 ret.ID.ParentPart = br.ReadByte();
                 ret.ID.ModulePart = br.ReadByte();
                 ret.ModuleType = (ModuleTypeEnum)br.ReadByte();
-                br.ReadBytes(28).CopyTo(ret.Data, 0);
+                br.ReadBytes(26).CopyTo(ret.Data, 0);
             }
 
             return ret;

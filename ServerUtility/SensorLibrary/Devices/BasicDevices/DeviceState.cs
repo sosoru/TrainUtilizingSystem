@@ -33,6 +33,7 @@ namespace SensorLibrary.Devices
             set
             {
                 this._basepacket = value;
+                this._deviceStateCache = default(T);
             }
         }
         public PacketServer ReceivingServer { get; set; }

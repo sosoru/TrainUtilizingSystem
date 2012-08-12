@@ -1,7 +1,16 @@
 ﻿using RouteLibrary.Base;
+using RouteLibrary.Parser;
+using SensorLibrary.Packet;
+using SensorLibrary.Packet.Data;
+using SensorLibrary.Packet.IO;
+using SensorLibrary.Packet.Control;
+using SensorLibrary.Devices;
+using SensorLibrary.Devices.TusAvrDevices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using System.Net;
+using System.Linq;
 
 namespace TestProject
 {
@@ -74,6 +83,48 @@ namespace TestProject
                 sheet.Name = "pero";
                 return sheet;
             }
+        }
+
+        PacketServer sample_server
+        {
+            get
+            {
+                var io = new TusEthernetIO(new IPAddress(new byte[] { 192, 168, 2, 24 }),
+                            new IPAddress(new byte[] { 255, 255, 255, 0 }))
+                            {
+                                SourceID = new SensorLibrary.DeviceID(100, 1),
+                            };
+                var serv = new PacketServer(new AvrDeviceFactoryProvider()) { Controller = io };
+                var disp = new PacketDispatcher();
+
+                serv.LoopStart();
+
+                return serv;
+            }
+        }
+
+        [TestMethod()]
+        public void MotorTestFromSheet()
+        {
+            var serv = sample_server;
+            var infos = new BlockYaml().Parse(BlockYamlTest.PathSample);
+            var sheet = new BlockSheet(infos, serv);
+
+            var r = new Route(sheet, new[] { "AT1", "PT2", "BT1", "PT3", "CT1", "PT4", "DT1", "PT1" });
+            var cmd = new CommandInfo()
+            {
+                Route = r,
+                Speed = 0.5f,
+            };
+
+            sheet.Effect(cmd);
+
+            var cmd1 = new CommandInfo()
+                          {
+                              Route = r,
+                              Speed = 0.3f,
+                          };
+            sheet.Effect(cmd1);
         }
 
         /// <summary>

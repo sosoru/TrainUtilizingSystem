@@ -73,14 +73,14 @@ namespace EthernetBridge{
 					return true;
 				}
 				
-				static inline uint8_t SetMessage(const EthPacket& packet)
-				{
-					if(packet.command != ETHCMD_MESSAGE)
-						return false;
-
-					memcpy((void*)last_message, (void*)packet.pdata, message_size );	
-					return true;	
-				}
+				//static inline uint8_t SetMessage(const EthPacket& packet)
+				//{
+					//if(packet.command != ETHCMD_MESSAGE)
+						//return false;
+//
+					//memcpy((void*)last_message, (void*)packet.pdata, message_size );	
+					//return true;	
+				//}
 				
 				static inline char* GetMessage() 
 				{

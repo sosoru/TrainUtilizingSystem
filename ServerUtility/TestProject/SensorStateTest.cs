@@ -77,37 +77,5 @@ namespace TestProject
             }
         }
 
-        /// <summary>
-        ///Voltage のテスト
-        ///</summary>
-        [TestMethod()]
-        public void VoltageTest()
-        {
-            SensorState target = sample_state;
-
-            target.Data.Voltage = 127;
-            Assert.AreEqual(target.Voltage, 127.0f / 255.0f);
-
-            target.Voltage = 0.3f;
-            Assert.AreEqual(target.Data.Voltage, Math.Round( 0.3f * 255.0f));
-
-            target.Voltage = 0;
-            try
-            {
-                target.Voltage = -1;
-                Assert.Fail();
-            }
-            catch (ArgumentOutOfRangeException e) { }
-
-            target.Voltage = 1;
-            try
-            {
-                target.Voltage = 1.1f;
-                Assert.Fail();
-            }
-            catch (ArgumentOutOfRangeException e) { }
-
-                
-        }
     }
 }

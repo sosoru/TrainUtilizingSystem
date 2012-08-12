@@ -24,6 +24,8 @@ Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "TusServer", "TusServer\TusS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RouteLibrary", "RouteLibrary\RouteLibrary.csproj", "{39E73A78-039D-45DD-AD32-879B81EA567E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RouteServerConsole", "RouteServerConsole\RouteServerConsole.csproj", "{59D80A24-B488-46D2-9A1A-514166D20AEA}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = TusSolution.vsmdi
@@ -125,6 +127,16 @@ Global
 		{39E73A78-039D-45DD-AD32-879B81EA567E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{39E73A78-039D-45DD-AD32-879B81EA567E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{39E73A78-039D-45DD-AD32-879B81EA567E}.Release|x86.ActiveCfg = Release|Any CPU
+		{59D80A24-B488-46D2-9A1A-514166D20AEA}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{59D80A24-B488-46D2-9A1A-514166D20AEA}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{59D80A24-B488-46D2-9A1A-514166D20AEA}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{59D80A24-B488-46D2-9A1A-514166D20AEA}.Debug|x86.ActiveCfg = Debug|x86
+		{59D80A24-B488-46D2-9A1A-514166D20AEA}.Debug|x86.Build.0 = Debug|x86
+		{59D80A24-B488-46D2-9A1A-514166D20AEA}.Release|Any CPU.ActiveCfg = Release|x86
+		{59D80A24-B488-46D2-9A1A-514166D20AEA}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{59D80A24-B488-46D2-9A1A-514166D20AEA}.Release|Mixed Platforms.Build.0 = Release|x86
+		{59D80A24-B488-46D2-9A1A-514166D20AEA}.Release|x86.ActiveCfg = Release|x86
+		{59D80A24-B488-46D2-9A1A-514166D20AEA}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -17,7 +17,7 @@
 #define ETHCMD_REPLY 0
 #define ETHCMD_MESSAGE 1
 
-#define ETH_DATA_LEN 32
+#define ETH_DATA_LEN 26 
 
 typedef union tag_DeviceID
 {
@@ -41,14 +41,15 @@ typedef struct tag_EthPacket
 		struct {
 			DeviceID srcId; 
 			DeviceID destId; 
-		
-			BYTE command; 
+					
+			DeviceID devID;
+			BYTE moduletype;
 	
 			BYTE pdata[ETH_DATA_LEN]; 
 		};
 		
 		//todo : how to read the size of unnamed structs or unions 
-		BYTE raw_array[sizeof(DeviceID) + sizeof(DeviceID) + sizeof(BYTE) + ETH_DATA_LEN];
+		BYTE raw_array[40];
 	};
 } EthPacket;
 

@@ -54,7 +54,7 @@ namespace EthernetBridge{
 		class ChildModule
 		{
 			private:
-				static const uint8_t buffer_count = 2;
+				static const uint8_t buffer_count = 8;
 				static const uint8_t message_size = 64;
 			public:
 				typedef reset_module Reset;

@@ -12,7 +12,7 @@ namespace SensorLibrary.Packet.Data
 	//	DutyValue	: 1 byte
 	//	VoltageValue: 4 byte
 	//	
-    [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 28)]
+    [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 26)]
     public class MotorData
         : IPacketDeviceData
     {
@@ -28,7 +28,7 @@ namespace SensorLibrary.Packet.Data
     //    uint8_t ChangingTime;
     //    PositionEnum Position;
     //};
-    [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 28)]
+    [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 26)]
     public class SwitchData
         : IPacketDeviceData
     {
@@ -37,10 +37,13 @@ namespace SensorLibrary.Packet.Data
         public byte Position;
     }
 
-    [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 28)]
+    [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 26)]
     public class SensorData
         : IPacketDeviceData
     {
-        public byte Voltage;
+        public byte VoltageOn;
+        public byte VoltageOff;
+        public byte Threshold;
+
     }
 }

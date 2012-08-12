@@ -11,22 +11,24 @@ namespace SensorLibrary.Devices.TusAvrDevices
     {
         public SensorState()
             : base()
-        { }
+        {
+            this.BasePacket = new DevicePacket();
+            this.BasePacket.ModuleType = ModuleTypeEnum.AvrSensor;
+            this.Data = new SensorData();
+        }
 
         public float Voltage
         {
             get
             {
-                return (float)this.Data.Voltage / 255.0f;
+                return ((float)Math.Abs(this.Data.VoltageOn - this.Data.VoltageOff)) / 255.0f;
             }
-            set
-            {
-                var raw = Math.Round(value * 255.0f);
-                if (raw < 0 || raw > 255)
-                    throw new ArgumentOutOfRangeException("Voltage must be in [0, 1]");
+        }
 
-                this.Data.Voltage = (byte)raw;
-            }
+        public float Threshold
+        {
+            get { return (float)this.Data.Threshold / 255.0f; }
+            set { this.Data.Threshold = (byte)(value * 255.0f); }
         }
     }
 }

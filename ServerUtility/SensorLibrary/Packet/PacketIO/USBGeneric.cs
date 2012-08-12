@@ -51,7 +51,7 @@ namespace SensorLibrary.Packet.IO
 
                                     var packet = buf.ToDevicePacket();
 
-                                    if (packet.ReadMark == 0xFF)
+                                    if (true)//packet.ReadMark == 0xFF)
                                     {
                                         lock (Lockpacketlist)
                                             this.packetlist.Enqueue(packet);

@@ -13,7 +13,7 @@ namespace SensorLibrary.Packet.Control
          : IDisposable
     {
         //protected IDisposable packetObservableDisposable { get; private set; }
-        
+
         public bool IsLooping { get; private set; }
         public IDeviceIO Controller { get; set; }
         public DeviceFactoryProvider FactoryProvider { get; set; }
@@ -67,7 +67,7 @@ namespace SensorLibrary.Packet.Control
             {
                 blockLoopStarting = true;
                 if (!IsLooping)
-                    Task.Factory.StartNew(() => listeningLoop());
+                    Task.Factory.StartNew(() => ListeningLoop());
 
                 blockLoopStarting = false;
             }
@@ -78,7 +78,29 @@ namespace SensorLibrary.Packet.Control
             this.cancellation = true;
         }
 
-        private void listeningLoop()
+        private void avr_sensor_spliter(DevicePacket packet)
+        {
+            for(int i=0; i<8; i++)
+            {
+                var data = new SensorLibrary.Packet.Data.SensorData()
+                               {
+                                   VoltageOn = packet.Data[i*2],
+                                   VoltageOff = packet.Data[i*2 + 1],
+                               };
+                var state = new SensorLibrary.Devices.TusAvrDevices.SensorState()
+                                {
+                                    Data = data,
+                                };
+                state.FlushDataState();
+
+                state.BasePacket.ID = packet.ID;
+                state.BasePacket.ID.InternalAddr += (byte)i;
+                state.ReceivingServer = this;
+                this.actionList.ForEach(a => a.Act(state));
+            }
+        }
+
+        private void ListeningLoop()
         {
             this.IsLooping = true;
             while (!cancellation)
@@ -98,16 +120,36 @@ namespace SensorLibrary.Packet.Control
                             continue;
                         }
 
-                        var state = this.FactoryProvider.AvailableDeviceTypes.First((f) => f.ModuleType == pack.ModuleType).DeviceStateCreate();
-                        state.BasePacket = pack;
-                        state.ReceivingServer = this;
+                        var f = this.FactoryProvider.AvailableDeviceTypes.FirstOrDefault(a => a.ModuleType == pack.ModuleType);
+                        if (f != null)
+                        {
+                            if (pack.ModuleType == ModuleTypeEnum.AvrSensor)
+                            {
+                                this.avr_sensor_spliter(pack);
+                            }
+                            else
+                            {
+                                var state = f.DeviceStateCreate();
+                                var data = f.DeviceDataCreate();
 
-                        this.actionList.ForEach((item) => item.Act(state));
+                                state.BasePacket = pack;
+                                state.ReceivingServer = this;
+
+                                //Console.WriteLine(state.ToString());
+
+                                this.actionList.ForEach((item) => item.Act(state));
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("pero");
+                        }
                     }
                     catch (Exception ex)
                     {
                         Console.WriteLine(ex.ToString());
-                        Console.WriteLine(pack.ToString());
+                        if (pack != null)
+                            Console.WriteLine(pack.ToString());
                     }
                 }
                 catch (EndOfStreamException)

@@ -26,16 +26,60 @@ void CreatePacket(UsartPacket &packet)
 	packet.header.packet_size = 0;
 }
 
+template
+<class t_sens, uint8_t t_mnum>
+void SensorProcess()
+{
+	UsartPacket pack;
+	spi_send_object *pspi_send;
+	EthPacket *packet;
+	BYTE offdata [8];
+		
+	t_sens::LedOff();
+	CreatePacket(pack);
+	t_sens::Communicate(pack);
+	
+	for(uint8_t i=0; i<4; ++i)
+	{
+		offdata[i] = t_sens::ReceivedArray[i].data[0];
+	}		
+	
+	t_sens::LedOn();
+	CreatePacket(pack);
+	t_sens::Communicate(pack);
+	
+	tus_spi_lock_send_buffer(&pspi_send);
+	packet = &pspi_send->packet;
+		
+	packet->srcId.raw = dst_id.raw;
+	packet->srcId.InternalAddr = (t_mnum << 4);	
+	packet->destId.raw = src_id.raw;
+	packet->moduletype = 0x14;
+	packet->devID.raw = packet->srcId.raw;
+	
+	for(uint8_t i=0; i<4; ++i)
+	{		
+		packet->pdata[i<<1] = t_sens::ReceivedArray[i].data[0];
+		packet->pdata[(i<<1)+1] = offdata[i];		
+	}		
+	
+	pspi_send->is_locked = FALSE;
+	tus_spi_process_packets();
+	//_delay_ms(10);
+	
+}
+
 void spi_received(args_received *e)
 {
-	if(e->ppack->destId.ModuleAddr != 1)
+	if(e->ppack->destId.ModuleAddr == 0)
 		return;
 	
 	src_id.raw = e->ppack->srcId.raw;
 	dst_id.raw = e->ppack->destId.raw;
 	
+	dst_id.InternalAddr = 0;
+		
 	received++;
-
 }
 
 int main(void)
@@ -67,24 +111,10 @@ int main(void)
 		while(!received)
 		{
 			tus_spi_process_packets();
-		}
+		}				
 		
-		UsartPacket pack;
-		spi_send_object *pspi_send;
-		EthPacket *packet;
-		
-		CreatePacket(pack);
-		TrainSensorA::Communicate(pack);
-		
-		tus_spi_lock_send_buffer(&pspi_send);
-		packet = &pspi_send->packet;
-		
-		packet->srcId.raw = dst_id.raw;
-		packet->destId.raw = src_id.raw;	
-		packet->pdata[0] = TrainSensorA::ReceivedArray[0].data[0];
-		packet->pdata[1] = TrainSensorA::ReceivedArray[1].data[0];
-		
-		pspi_send->is_locked = FALSE;
+		SensorProcess<TrainSensorA, 1>();
+		SensorProcess<TrainSensorB, 2>();
 		
 		received = 0;
     }

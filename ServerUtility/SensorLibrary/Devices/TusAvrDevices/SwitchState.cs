@@ -13,6 +13,9 @@ namespace SensorLibrary.Devices.TusAvrDevices
         public SwitchState()
             : base()
         {
+            this.BasePacket = new DevicePacket();
+            this.BasePacket.ModuleType = ModuleTypeEnum.AvrSwitch;
+            this.Data = new SwitchData();
         }
 
         //unit : msec

@@ -6,6 +6,9 @@ using System.Text;
 using System.Collections.Specialized;
 using System.Collections.ObjectModel;
 
+using System.Reactive;
+using System.Reactive.Linq;
+
 using SensorLibrary;
 using SensorLibrary.Packet;
 using SensorLibrary.Packet.Control;
@@ -18,11 +21,14 @@ namespace RouteLibrary.Base
 
         public string Name { get; set; }
         public ReadOnlyCollection<Block> InnerBlocks { get; private set; }
+        public PacketServer Server { get; private set; }
         public PacketDispatcher Dispatcher { get; private set; }
 
-        public BlockSheet(IEnumerable<BlockInfo> blockinfos, PacketDispatcher dispat)
+        public BlockSheet(IEnumerable<BlockInfo> blockinfos, PacketServer server)
         {
-            this.Dispatcher = dispat;
+            this.Server = server;
+            this.Dispatcher = new PacketDispatcher();
+            this.Server.AddAction(this.Dispatcher);
 
             var blocks = blockinfos.Select(i => new Block(i, this));
 
@@ -73,6 +79,18 @@ namespace RouteLibrary.Base
 
         #endregion
 
+        public void Effect(CommandInfo cmd)
+        {
+            this.Effect(new[] { cmd });
+        }
 
+        public void Effect(IEnumerable<CommandInfo> cmds)
+        {
+            this.InnerBlocks.ToObservable().Do(b =>
+                                                   {
+                                                       b.Effect(cmds);
+                                                       b.Detectors.ForEach(d => d.SendCheckCommand());
+                                                   }).Subscribe();
+        }
     }
 }

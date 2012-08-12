@@ -10,7 +10,12 @@ namespace SensorLibrary.Devices.TusAvrDevices
         : DeviceState<MotorData>
     {
         public MotorState()
-            : base() { }
+            : base()
+        {
+            this.BasePacket = new DevicePacket();
+            this.BasePacket.ModuleType = ModuleTypeEnum.AvrMotor;
+            this.Data = new MotorData();        
+        }
 
         public MotorControlMode ControlMode
         {

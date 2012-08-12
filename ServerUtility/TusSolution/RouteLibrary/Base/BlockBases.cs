@@ -20,6 +20,9 @@ namespace RouteLibrary.Base
             this.To = to;
         }
 
+        public bool IsFromAny { get { return this.From == null; }}
+        public bool IsToAny { get { return this.To == null; } }
+
         public Block From { get; private set; }
         public Block To { get; private set; }
     }
