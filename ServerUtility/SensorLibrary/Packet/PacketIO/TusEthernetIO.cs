@@ -70,6 +70,13 @@ namespace SensorLibrary.Packet.IO
             this.Client.Send(eth);
             //this.Client.Close();
         }
+
+
+        public IObservable<DevicePacket> GetReadingPacket()
+        {
+            return this.Client.AsyncReceive()
+                                .Select(p => p.DataPacket);
+        }
     }
 
 }

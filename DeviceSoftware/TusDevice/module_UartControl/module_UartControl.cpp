@@ -33,18 +33,18 @@ void SensorProcess()
 	UsartPacket pack;
 	spi_send_object *pspi_send;
 	EthPacket *packet;
-	BYTE offdata [8];
+	BYTE ondata [8];
 		
-	t_sens::LedOff();
+	t_sens::LedOn();
 	CreatePacket(pack);
 	t_sens::Communicate(pack);
 	
 	for(uint8_t i=0; i<4; ++i)
 	{
-		offdata[i] = t_sens::ReceivedArray[i].data[0];
+		ondata[i] = t_sens::ReceivedArray[i].data[0];
 	}		
 	
-	t_sens::LedOn();
+	t_sens::LedOff();
 	CreatePacket(pack);
 	t_sens::Communicate(pack);
 	
@@ -59,12 +59,12 @@ void SensorProcess()
 	
 	for(uint8_t i=0; i<4; ++i)
 	{		
-		packet->pdata[i<<1] = t_sens::ReceivedArray[i].data[0];
-		packet->pdata[(i<<1)+1] = offdata[i];		
+		packet->pdata[i*2] = ondata[i];
+		packet->pdata[i*2+1] = t_sens::ReceivedArray[i].data[0];	
 	}		
 	
 	pspi_send->is_locked = FALSE;
-	tus_spi_process_packets();
+	//tus_spi_process_packets();
 	//_delay_ms(10);
 	
 }
@@ -96,7 +96,8 @@ int main(void)
 	InputPin0<PortD>::InitDefaultInput();
 	OutputPin1<PortD>::InitOutput();
 	
-	TrainSensorB::ModuleOff();
+	TrainSensorA::ModuleOn();
+	TrainSensorB::ModuleOn();
 	TrainSensorC::ModuleOff();
 	TrainSensorD::ModuleOff();
 	

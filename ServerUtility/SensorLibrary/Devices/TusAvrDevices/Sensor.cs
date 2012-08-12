@@ -19,7 +19,7 @@ namespace SensorLibrary.Devices.TusAvrDevices
         {
             get
             {
-                return this.CurrentState.Voltage > 0.2f;
+                return this.CurrentState.Voltage > 0.5f;
             }
         }
             }

@@ -141,6 +141,12 @@ namespace SensorLibrary.Packet.IO
 
             this.Open();
         }
+
+
+        public IObservable<DevicePacket> GetReadingPacket()
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }

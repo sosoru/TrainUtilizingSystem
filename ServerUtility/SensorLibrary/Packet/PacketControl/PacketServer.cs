@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using System.Reactive;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 using SensorLibrary.Packet.IO;
 using SensorLibrary.Devices;
@@ -63,11 +65,51 @@ namespace SensorLibrary.Packet.Control
         private bool blockLoopStarting = false;
         public void LoopStart()
         {
+
             if (!blockLoopStarting)
             {
                 blockLoopStarting = true;
                 if (!IsLooping)
-                    Task.Factory.StartNew(() => ListeningLoop());
+                {
+                      this.IsLooping = true;
+                    //todo : stopping
+                    Observable.Defer(this.Controller.GetReadingPacket)
+                        .Do(pack =>
+                                {
+                                    var f =
+                                        this.FactoryProvider.AvailableDeviceTypes.FirstOrDefault(
+                                            a => a.ModuleType == pack.ModuleType);
+                                    if (f != null)
+                                    {
+                                        if (pack.ModuleType == ModuleTypeEnum.AvrSensor)
+                                        {
+                                            this.avr_sensor_spliter(pack);
+                                        }
+                                        else
+                                        {
+                                            var state = f.DeviceStateCreate();
+                                            var data = f.DeviceDataCreate();
+
+                                            state.BasePacket = pack;
+                                            state.ReceivingServer = this;
+
+                                            //Console.WriteLine(state.ToString());
+
+                                            this.actionList.ForEach((item) => item.Act(state));
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("pero");
+                                    }
+                                })
+                        .ObserveOn(System.Reactive.Concurrency.Scheduler.NewThread)
+                        .Repeat()
+                        .Subscribe(pack => { }, (Exception ex) => Console.WriteLine(ex.ToString()));
+
+
+                }
+               //     Task.Factory.StartNew(() => ListeningLoop());
 
                 blockLoopStarting = false;
             }
@@ -80,7 +122,8 @@ namespace SensorLibrary.Packet.Control
 
         private void avr_sensor_spliter(DevicePacket packet)
         {
-            for(int i=0; i<8; i++)
+            //Console.WriteLine(packet.ToString());
+            for(int i=0; i<4; i++)
             {
                 var data = new SensorLibrary.Packet.Data.SensorData()
                                {
@@ -120,30 +163,6 @@ namespace SensorLibrary.Packet.Control
                             continue;
                         }
 
-                        var f = this.FactoryProvider.AvailableDeviceTypes.FirstOrDefault(a => a.ModuleType == pack.ModuleType);
-                        if (f != null)
-                        {
-                            if (pack.ModuleType == ModuleTypeEnum.AvrSensor)
-                            {
-                                this.avr_sensor_spliter(pack);
-                            }
-                            else
-                            {
-                                var state = f.DeviceStateCreate();
-                                var data = f.DeviceDataCreate();
-
-                                state.BasePacket = pack;
-                                state.ReceivingServer = this;
-
-                                //Console.WriteLine(state.ToString());
-
-                                this.actionList.ForEach((item) => item.Act(state));
-                            }
-                        }
-                        else
-                        {
-                            Console.WriteLine("pero");
-                        }
                     }
                     catch (Exception ex)
                     {

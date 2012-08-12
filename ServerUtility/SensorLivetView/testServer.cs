@@ -167,6 +167,12 @@ namespace SensorLivetView
         {
             // do nothing
         }
+
+
+        public IObservable<DevicePacket> GetReadingPacket()
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class TestPacketStream
