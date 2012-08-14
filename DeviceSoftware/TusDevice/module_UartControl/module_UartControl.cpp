@@ -19,42 +19,14 @@ uint8_t received=0;
 DeviceID src_id;
 DeviceID dst_id;
 
-void CreatePacket(UsartPacket &packet)
-{
-	packet.header.type = 0;
-	packet.header.number = 0;
-	packet.header.packet_size = 0;
-}
-
 template
 <class t_sens, uint8_t t_mnum>
 void SensorProcess()
 {
-	UsartPacket pack;
 	spi_send_object *pspi_send;
 	EthPacket *packet;
-	BYTE offdata [8];
-		
-	cli();	
-		
-	t_sens::ModuleOn();
-	CreatePacket(pack);
-	//t_sens::Communicate(pack);
-	while(3 != t_sens::Communicate(pack));
-	t_sens::LedOn();
-	_delay_ms(20);
-	
-	for(uint8_t i=0; i<4; ++i)
-	{
-		offdata[i] = t_sens::ReceivedArray[i].data[0];
-	}		
-	
-	CreatePacket(pack);
-	//t_sens::Communicate(pack);
-	while(3 != t_sens::Communicate(pack));
-	t_sens::LedOff();
-	t_sens::ModuleOff();
-	
+				
+	cli();
 	tus_spi_lock_send_buffer(&pspi_send);
 	packet = &pspi_send->packet;
 		
@@ -66,15 +38,29 @@ void SensorProcess()
 	
 	for(uint8_t i=0; i<4; ++i)
 	{		
-		packet->pdata[i*2] = t_sens::ReceivedArray[i].data[0];	
-		packet->pdata[i*2+1] = offdata[i];
+		packet->pdata[i*2] = t_sens::OnState[i];	
+		packet->pdata[i*2+1] = t_sens::OffState[i];
 	}		
 	
 	pspi_send->is_locked = FALSE;
 	sei();
-	//tus_spi_process_packets();
 	//_delay_ms(10);
 	
+}
+
+uint8_t check_buf[2];
+
+template
+<class t_sens, uint8_t t_mnum>
+void MonitoringProcess()
+{
+	uint8_t curr = t_sens::CheckSensors() ;
+	
+	if(curr > 0 || check_buf[t_mnum]++ > 5)
+	{
+		SensorProcess<t_sens, t_mnum>();
+		check_buf[t_mnum] = 0;
+	}
 }
 
 void spi_received(args_received *e)
@@ -121,17 +107,19 @@ int main(void)
 	TrainSensorA::LedOff();
 	TrainSensorB::LedOff();
 	
+	src_id.ParentPart = 102;
+	src_id.ModuleAddr = 0;
+	
+	dst_id.ParentPart = 24;
+	dst_id.ModuleAddr = 3;
+	
     while(1)
     {			
-		while(!received)
-		{
-			tus_spi_process_packets();
-		}				
-		
-		//_delay_ms(2);
-		SensorProcess<TrainSensorA, 1>();
-		//_delay_ms(2);
-		SensorProcess<TrainSensorB, 2>();
+			
+		MonitoringProcess<TrainSensorA, 1>();
+		tus_spi_process_packets();		
+		MonitoringProcess<TrainSensorB, 2>();
+		tus_spi_process_packets();
 		
 		received = 0;
     }

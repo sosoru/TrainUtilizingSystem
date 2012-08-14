@@ -20,7 +20,7 @@ namespace RouteLibrary.Base
             this.To = to;
         }
 
-        public bool IsFromAny { get { return this.From == null; }}
+        public bool IsFromAny { get { return this.From == null; } }
         public bool IsToAny { get { return this.To == null; } }
 
         public Block From { get; private set; }
@@ -42,8 +42,8 @@ namespace RouteLibrary.Base
     public class SwitchInfo
         : DeviceInfo
     {
-        public RouteSegmentInfo DirStraight { get; set; }
-        public RouteSegmentInfo DirCurved { get; set; }
+        public IEnumerable<RouteSegmentInfo> DirStraight { get; set; }
+        public IEnumerable<RouteSegmentInfo> DirCurved { get; set; }
     }
 
     public class SensorInfo

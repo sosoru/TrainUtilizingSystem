@@ -40,23 +40,25 @@ namespace SensorLibrary.Devices.TusAvrDevices
         {
             get
             {
-                IList<SensorState> hist;
-                lock (hist_lock)
-                    hist = this.packet_history.ToArray();
+                return this.CurrentState.Voltage > 0.4f;
 
-                if (hist.Any(s => s.Voltage > 0.45f || s.OnVoltage > 200))
-                {
-                    return true;
-                }
+                //IList<SensorState> hist;
+                //lock (hist_lock)
+                //    hist = this.packet_history.ToArray();
 
-                if (hist.All(s => s.Voltage > 0.30f))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                //if (hist.Any(s => s.Voltage > 0.45f || s.OnVoltage > 200))
+                //{
+                //    return true;
+                //}
+
+                //if (hist.All(s => s.Voltage > 0.30f))
+                //{
+                //    return true;
+                //}
+                //else
+                //{
+                //    return false;
+                //}
 
             }
         }

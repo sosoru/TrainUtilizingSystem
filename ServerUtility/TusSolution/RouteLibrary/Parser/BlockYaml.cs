@@ -50,8 +50,8 @@ namespace RouteLibrary.Parser
             var pt = new SwitchInfo()
             {
                 Address = pr_addr.FromString((string)src["addr"]).First(),
-                DirStraight = pr_route.FromString((string)src["s"]).First(),
-                DirCurved = pr_route.FromString((string)src["c"]).First(),
+                DirStraight = pr_route.FromString((string)src["s"]),
+                DirCurved = pr_route.FromString((string)src["c"]),
             };
 
             return pt;
