@@ -20,8 +20,8 @@ namespace module_UartControl
 		using namespace USART;
 		using namespace Timer;
 		
-		typedef UartControl::TrainSensorModule<OutputPin1<PortA>, OutputPin2<PortA>, USART0, TimerCounter1, 8> TrainSensorA;
-		typedef UartControl::TrainSensorModule<OutputPin0<PortA>, OutputPin3<PortA>, USART0, TimerCounter1, 8> TrainSensorB;
+		typedef UartControl::TrainSensorModule<OutputPin1<PortA>, OutputPin2<PortA>, USART0, TimerCounter1, 4> TrainSensorA;
+		typedef UartControl::TrainSensorModule<OutputPin0<PortA>, OutputPin3<PortA>, USART0, TimerCounter1, 4> TrainSensorB;
 		typedef UartControl::TrainSensorModule<OutputPin4<PortA>, OutputPin5<PortA>, USART0, TimerCounter1, 8> TrainSensorC;
 		typedef UartControl::TrainSensorModule<OutputPin7<PortA>, OutputPin6<PortA>, USART0, TimerCounter1, 8> TrainSensorD;
 		

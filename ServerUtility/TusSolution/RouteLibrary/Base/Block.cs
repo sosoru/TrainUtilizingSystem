@@ -155,6 +155,11 @@ namespace RouteLibrary.Base
             get { return this.info.Sensor != null; }
         }
 
+        public bool HasSwitch
+        {
+            get { return this.info.Switch != null; }
+        }
+
         public bool IsDetectingTrain
         {
             get

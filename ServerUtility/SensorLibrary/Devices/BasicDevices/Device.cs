@@ -102,7 +102,7 @@ namespace SensorLibrary.Devices
             if (!(state is TState))
                 throw new InvalidOperationException("invalid state");
 
-            for (int i = 0; i < 3; i++)
+            //for (int i = 0; i < 3; i++)
                 this.CurrentState.ReceivingServer.SendPacket(state.BasePacket);
 
         }

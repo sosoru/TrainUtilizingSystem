@@ -21,7 +21,7 @@ namespace SensorLibrary.Packet.IO
         protected EthClient Client { get; private set; }
 
         public TusEthernetIO(IPAddress ipbase, IPAddress mask)
-        : this(BitConverter.ToUInt32(ipbase.GetAddressBytes(),0), BitConverter.ToUInt32(mask.GetAddressBytes(),0)){}
+            : this(BitConverter.ToUInt32(ipbase.GetAddressBytes(), 0), BitConverter.ToUInt32(mask.GetAddressBytes(), 0)) { }
 
         public TusEthernetIO(UInt32 ipbase, UInt32 mask)
         {
@@ -48,11 +48,11 @@ namespace SensorLibrary.Packet.IO
 
                 return ob.DataPacket;
             }
-            catch(TimeoutException ex)
+            catch (TimeoutException ex)
             {
                 return null;
             }
-            
+
         }
 
         public void WritePacket(DevicePacket packet)
@@ -71,6 +71,18 @@ namespace SensorLibrary.Packet.IO
             //this.Client.Close();
         }
 
+        public IObservable<Unit> GetWritingPacket(DevicePacket pack)
+        {
+            this.Client.Address = ToEndPoint(pack.ID).Address;
+            var eth = new EthPacket()
+                          {
+                              srcId = SourceID,
+                              destId = pack.ID,
+                              DataPacket = pack,
+                          };
+            return this.Client.AsyncSend(eth)
+                                .Delay(TimeSpan.FromMilliseconds(20));
+        }
 
         public IObservable<DevicePacket> GetReadingPacket()
         {

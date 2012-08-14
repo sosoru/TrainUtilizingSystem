@@ -126,7 +126,7 @@ namespace RouteLibrary.Base
             get
             {
                 // IsSectionFinished And the locked units of this route reach the end of them
-                return this.ind_end == this.LockedBlocks.Count() - 1 && this.IsSectionFinished;
+                return this.ind_end == this.LockingUnit.Count() - 1 && this.IsSectionFinished;
             }
         }
     }

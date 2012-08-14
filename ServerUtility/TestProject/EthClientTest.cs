@@ -121,7 +121,7 @@ namespace TestProject
 
             var mtrpacket = new EthPacket()
             {
-                srcId = new DeviceID(100, 0),
+                srcId = new DeviceID(102, 0),
                 destId = new DeviceID(24, 2, 4),
             };
             var mtrdata = new MotorData();

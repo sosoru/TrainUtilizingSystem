@@ -33,20 +33,27 @@ void SensorProcess()
 	UsartPacket pack;
 	spi_send_object *pspi_send;
 	EthPacket *packet;
-	BYTE ondata [8];
+	BYTE offdata [8];
 		
-	t_sens::LedOn();
+	cli();	
+		
+	t_sens::ModuleOn();
 	CreatePacket(pack);
-	t_sens::Communicate(pack);
+	//t_sens::Communicate(pack);
+	while(3 != t_sens::Communicate(pack));
+	t_sens::LedOn();
+	_delay_ms(20);
 	
 	for(uint8_t i=0; i<4; ++i)
 	{
-		ondata[i] = t_sens::ReceivedArray[i].data[0];
+		offdata[i] = t_sens::ReceivedArray[i].data[0];
 	}		
 	
-	t_sens::LedOff();
 	CreatePacket(pack);
-	t_sens::Communicate(pack);
+	//t_sens::Communicate(pack);
+	while(3 != t_sens::Communicate(pack));
+	t_sens::LedOff();
+	t_sens::ModuleOff();
 	
 	tus_spi_lock_send_buffer(&pspi_send);
 	packet = &pspi_send->packet;
@@ -59,11 +66,12 @@ void SensorProcess()
 	
 	for(uint8_t i=0; i<4; ++i)
 	{		
-		packet->pdata[i*2] = ondata[i];
-		packet->pdata[i*2+1] = t_sens::ReceivedArray[i].data[0];	
+		packet->pdata[i*2] = t_sens::ReceivedArray[i].data[0];	
+		packet->pdata[i*2+1] = offdata[i];
 	}		
 	
 	pspi_send->is_locked = FALSE;
+	sei();
 	//tus_spi_process_packets();
 	//_delay_ms(10);
 	
@@ -72,6 +80,9 @@ void SensorProcess()
 void spi_received(args_received *e)
 {
 	if(e->ppack->destId.ModuleAddr == 0)
+		return;
+	
+	if(received > 0)
 		return;
 	
 	src_id.raw = e->ppack->srcId.raw;
@@ -96,16 +107,19 @@ int main(void)
 	InputPin0<PortD>::InitDefaultInput();
 	OutputPin1<PortD>::InitOutput();
 	
-	TrainSensorA::ModuleOn();
-	TrainSensorB::ModuleOn();
-	TrainSensorC::ModuleOff();
-	TrainSensorD::ModuleOff();
-	
 	TrainSensorA::Init();
+	TrainSensorB::Init();
+	
 	TrainSensorA::UartInit();
 	TrainSensorA::TimerInit();
 	
-	TrainSensorA::LedOn();
+	TrainSensorA::ModuleOff();
+	TrainSensorB::ModuleOff();
+	TrainSensorC::ModuleOff();
+	TrainSensorD::ModuleOff();
+	
+	TrainSensorA::LedOff();
+	TrainSensorB::LedOff();
 	
     while(1)
     {			
@@ -114,7 +128,9 @@ int main(void)
 			tus_spi_process_packets();
 		}				
 		
+		//_delay_ms(2);
 		SensorProcess<TrainSensorA, 1>();
+		//_delay_ms(2);
 		SensorProcess<TrainSensorB, 2>();
 		
 		received = 0;

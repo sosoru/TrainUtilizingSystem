@@ -173,6 +173,12 @@ namespace SensorLivetView
         {
             throw new NotImplementedException();
         }
+
+
+        public IObservable<System.Reactive.Unit> GetWritingPacket(DevicePacket pack)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class TestPacketStream

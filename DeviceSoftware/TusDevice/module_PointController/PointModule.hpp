@@ -106,7 +106,7 @@ namespace module_PointController
 		{
 			PointModuleState* pstate = (PointModuleState*)packet.pdata;
 			
-			if(pstate->Position != State.Position)
+			//if(pstate->Position != State.Position)
 			{
 				IsChanged = false;
 			}

@@ -24,6 +24,8 @@ namespace SensorLibrary.Packet.Control
         private List<PacketServerAction> actionList = new List<PacketServerAction>();
         private bool cancellation = false;
 
+        private Queue<DevicePacket> sending_queue = new Queue<DevicePacket>();
+
         public PacketServer(DeviceFactoryProvider factory)
         {
             this.FactoryProvider = factory;
@@ -58,8 +60,24 @@ namespace SensorLibrary.Packet.Control
 
         public void SendPacket(DevicePacket pack)
         {
-            lock (lockStream)
-                this.Controller.WritePacket(pack);
+            //todo : thread control (reading and writing on the same thread)
+            //lock (lockStream)
+
+            if (pack == null)
+                return;
+
+            try
+            {
+                if (!this.sending_queue.ToArray().Any(p => (p != null)
+                                                           && ((p.ID == pack.ID)
+                                                               || (p.ModuleType == ModuleTypeEnum.AvrSensor
+                                                                   && p.ID.ModuleAddr == pack.ID.ModuleAddr))))
+                {
+                    this.sending_queue.Enqueue(pack);
+                }
+            }catch(ArgumentException)
+            {
+            }
         }
 
         private bool blockLoopStarting = false;
@@ -71,7 +89,7 @@ namespace SensorLibrary.Packet.Control
                 blockLoopStarting = true;
                 if (!IsLooping)
                 {
-                      this.IsLooping = true;
+                    this.IsLooping = true;
                     //todo : stopping
                     Observable.Defer(this.Controller.GetReadingPacket)
                         .Do(pack =>
@@ -107,9 +125,19 @@ namespace SensorLibrary.Packet.Control
                         .Repeat()
                         .Subscribe(pack => { }, (Exception ex) => Console.WriteLine(ex.ToString()));
 
+                    Observable
+                        .Defer(() => Observable
+                                        .Return(((this.sending_queue.Count > 0) ? this.sending_queue.Dequeue() : null))
+                                        .Delay(TimeSpan.FromMilliseconds(1))
+                                        .SkipWhile(d => d == null)
+                                                )
+                        .SelectMany(this.Controller.GetWritingPacket)
+                        .ObserveOn(System.Reactive.Concurrency.Scheduler.NewThread)
+                        .Repeat()
+                        .Subscribe(pack => { }, (Exception ex) => Console.WriteLine(ex.ToString()));
 
                 }
-               //     Task.Factory.StartNew(() => ListeningLoop());
+                //     Task.Factory.StartNew(() => ListeningLoop());
 
                 blockLoopStarting = false;
             }
@@ -123,12 +151,12 @@ namespace SensorLibrary.Packet.Control
         private void avr_sensor_spliter(DevicePacket packet)
         {
             //Console.WriteLine(packet.ToString());
-            for(int i=0; i<4; i++)
+            for (int i = 0; i < 4; i++)
             {
                 var data = new SensorLibrary.Packet.Data.SensorData()
                                {
-                                   VoltageOn = packet.Data[i*2],
-                                   VoltageOff = packet.Data[i*2 + 1],
+                                   VoltageOn = packet.Data[i * 2],
+                                   VoltageOff = packet.Data[i * 2 + 1],
                                };
                 var state = new SensorLibrary.Devices.TusAvrDevices.SensorState()
                                 {

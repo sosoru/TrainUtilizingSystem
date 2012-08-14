@@ -25,6 +25,16 @@ namespace SensorLibrary.Devices.TusAvrDevices
             }
         }
 
+        public float OnVoltage
+        {
+            get { return this.Data.VoltageOn / 255.0f; }
+        }
+
+        public float OffVoltage
+        {
+            get { return this.Data.VoltageOff / 255.0f; }
+        }
+
         public float Threshold
         {
             get { return (float)this.Data.Threshold / 255.0f; }
