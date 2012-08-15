@@ -55,26 +55,26 @@ namespace SensorLibrary.Devices.TusAvrDevices
         {
             get
             {
-                var pt = (PointStateEnum)this.Data.Position;
+                //var pt = (PointStateEnum)this.Data.Position;
 
-                if (pt == PointStateEnum.Curve)
-                    return PointStateEnum.Straight;
-                else if (pt == PointStateEnum.Straight)
-                    return PointStateEnum.Curve;
-                else
-                    return PointStateEnum.Any;
-
+                //if (pt == PointStateEnum.Curve)
+                //    return PointStateEnum.Straight;
+                //else if (pt == PointStateEnum.Straight)
+                //    return PointStateEnum.Curve;
+                //else
+                //    return PointStateEnum.Any;
+                return (PointStateEnum) this.Data.Position;
             }
             set
             {
-                byte pt = (byte)PointStateEnum.Any;
+                //byte pt = (byte)PointStateEnum.Any;
 
-                if (value == PointStateEnum.Straight)
-                    pt = (byte)PointStateEnum.Curve;
-                else if(value == PointStateEnum.Curve)
-                    pt = (byte) PointStateEnum.Straight;
+                //if (value == PointStateEnum.Straight)
+                //    pt = (byte)PointStateEnum.Curve;
+                //else if(value == PointStateEnum.Curve)
+                //    pt = (byte) PointStateEnum.Straight;
 
-                this.Data.Position = pt;
+                this.Data.Position = (byte)value;
             }
         }
 

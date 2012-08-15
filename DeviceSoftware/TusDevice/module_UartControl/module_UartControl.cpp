@@ -107,7 +107,7 @@ int main(void)
 	TrainSensorA::LedOff();
 	TrainSensorB::LedOff();
 	
-	src_id.ParentPart = 102;
+	src_id.ParentPart = 100;
 	src_id.ModuleAddr = 0;
 	
 	dst_id.ParentPart = 24;

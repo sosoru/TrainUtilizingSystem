@@ -146,6 +146,7 @@ namespace TestProject
                 mtrstate.FlushDataState();
 
                 return mtr_check(target, mtrpacket, mtrstate)
+                    .Delay(TimeSpan.FromSeconds(1))
                             .First();
             }).ToArray();
         }

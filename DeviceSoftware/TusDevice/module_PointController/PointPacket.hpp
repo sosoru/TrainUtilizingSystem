@@ -15,9 +15,9 @@ namespace module_PointController
 {
 	enum PositionEnum
 	{
-		StayPosition = 0,
-		PositivePosition = 1,
-		NegativePosition = 2,
+		StayPosition = 0xff,
+		PositivePosition = 0,
+		NegativePosition = 1,
 	};
 	
 	struct PointModuleState

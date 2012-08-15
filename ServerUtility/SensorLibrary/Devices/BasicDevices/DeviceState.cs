@@ -64,7 +64,8 @@ namespace SensorLibrary.Devices
             }
             set
             {
-                this._deviceStateCache = value;
+                lock(lock_Data)
+                    this._deviceStateCache = value;
             }
         }
 
