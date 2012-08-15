@@ -18,12 +18,17 @@ namespace RouteLibrary.Base
             int i;
             var dict = new Dictionary<Block, RouteSegment>();
 
+            if (list.Count < 2)
+                return dict;
+
             dict.Add(list[0], new RouteSegment(null, list[1]));
             for (i = 1; i < list.Count - 1; ++i)
             {
                 dict.Add(list[i], new RouteSegment(list[i - 1], list[i + 1]));
             }
-            dict.Add(list.Last(), new RouteSegment(list[list.Count - 2], null));
+
+            if (!dict.ContainsKey(list.Last()))
+                dict.Add(list.Last(), new RouteSegment(list[list.Count - 2], null));
 
             return dict;
         }

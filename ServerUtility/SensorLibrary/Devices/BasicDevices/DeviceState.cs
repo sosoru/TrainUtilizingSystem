@@ -64,17 +64,21 @@ namespace SensorLibrary.Devices
             }
             set
             {
-                lock(lock_Data)
+                lock (lock_Data)
                     this._deviceStateCache = value;
             }
         }
 
         public void FlushDataState()
         {
-            if (this._deviceStateCache != null)
+            lock (lock_Data)
             {
-                this._basepacket.CopyToData<T>(this._deviceStateCache);
-                this._deviceStateCache = default(T);
+                if (this._deviceStateCache != null)
+                {
+                    this._basepacket.CopyToData<T>(this._deviceStateCache);
+                    this._deviceStateCache = default(T);
+                }
+
             }
         }
 

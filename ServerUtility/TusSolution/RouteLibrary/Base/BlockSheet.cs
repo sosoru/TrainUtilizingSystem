@@ -79,6 +79,11 @@ namespace RouteLibrary.Base
 
         #endregion
 
+        public IEnumerable<IDeviceEffector> Effectors
+        {
+            get { return this.InnerBlocks.SelectMany(b => b.Effectors); }
+        }
+
         public void Effect(CommandInfo cmd)
         {
             this.Effect(new[] { cmd });
