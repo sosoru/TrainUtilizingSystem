@@ -17,7 +17,7 @@ namespace RouteLibrary.Base
     {
         public Route Route { get; set; }
         public float Speed { get; set; }
-
+        public bool AnyToDefault { get; set; }
     }
 
     public class SensorDetector
