@@ -17,6 +17,7 @@
 
 #define UARTDEV_ID_TRAINSENSOR 0x01
 
+
 #define SENDING_TYPE			UARTDEV_ID_TRAINSENSOR
 #define SENDING_PACKET_SIZE		sizeof(UsartPacket_sensor)
 #define ENTER_PARENT_TRANSFER	sbi(DDRB, 3);
@@ -24,6 +25,9 @@
 
 UsartDevicePacket_Header received_head;
 uint8_t received_data[MAX_SIZE_USARTDATA];
+uint8_t storing_results[STORINGDATA_SIZE];
+uint8_t* pstoring_current;
+uint8_t storing_results_checksum;
 
 void device_init();
 uint8_t validate_received_packet();
@@ -32,8 +36,18 @@ void send_parent_packet();
 void send_parent_error();
 void send_neighbor_packet();
 
+//its completes a/d conversion
 ISR(ADC_vect)
 {
+	if(++pstoring_current == storing_results + STORINGDATA_SIZE)
+	{
+		pstoring_current = storing_results;
+	}
+	
+	storing_results_checksum ^= *pstoring_current;
+	*pstoring_current = ADCL;
+	storing_results_checksum ^= *pstoring_current;
+	
 	sbi(TIFR0, TOV0);
 }
 
@@ -70,20 +84,27 @@ void send_parent_error()
 
 void send_parent_packet()
 {	
-	uint8_t checksum, number;
-	uint8_t adc = ADCL;	
+	uint8_t checksum;
+	uint8_t *pstoring = storing_results;	
 	
-	number = received_head.number;
-	checksum = (SENDING_TYPE ^ SENDING_PACKET_SIZE ^ number ^ adc);
+	cli(); // disable interrupts
+	
+	checksum = (SENDING_TYPE ^ SENDING_PACKET_SIZE ^ received_head.number ^ storing_results_checksum);
 	
 	ENTER_PARENT_TRANSFER	
 	xmit_parent(SENDING_TYPE);
 	xmit_parent(SENDING_PACKET_SIZE);
-	xmit_parent(number);
+	xmit_parent(received_head.number);
 	xmit_parent(checksum);
 	
-	xmit_parent(adc);
+	do
+	{
+		xmit_parent(*pstoring);
+	}while(++pstoring < storing_results + sizeof(storing_results));
+	
 	LEAVE_PANRET_TRANSFER
+	
+	sei(); // restore interrupts
 }
 
 void receive_packet()
@@ -130,10 +151,10 @@ void device_init()
 
 	// Timer 0 initializing
 	OCR0AL = 126;			// 4msec at 8MHz
-	TCCR0A |= 0b00000011;
+	TCCR0A |= 0b00000001;
 	//TIMSK0 |= 0b00000001;	// interrupts enable
-	TCCR0B |= 0b00011000;	// set to 8bit fast pwm (top=OCR0A)	
-	TCCR0B |= 0b00000100;	// set prescale to f_osc/256 and starts Timer0
+	TCCR0B |= 0b00011000;	// set to 10bit fast pwm (top=0x03FF)	
+	TCCR0B |= 0b00000011;	// set prescale to f_osc/64 and starts Timer0
 		
 	// adc initialzing
 	sbi(ADCSRA, ADIE); // ADC interrupt enable	
@@ -148,6 +169,9 @@ void device_init()
 	memset(&received_head, 0x00, sizeof(received_head));
 	memset(received_data, 0x00, sizeof(received_data));
 	received_head.checksum_all = 0xff;
+	
+	pstoring_current = storing_results;
+	memset(&storing_results, 0x00, sizeof(storing_results));
 	
 	sei();	// interrupt enable
 	

@@ -14,7 +14,8 @@ extern "C"{
 #endif
 
 #define MAX_SIZE_USARTDATA 16
-		
+#define STORINGDATA_SIZE 8
+
 typedef union tag_UsartChildPacket_Header
 {
 	struct{
@@ -28,7 +29,7 @@ typedef union tag_UsartChildPacket_Header
 
 typedef struct tag_Usart_sensor
 {
-	uint8_t result;
+	uint8_t result[STORINGDATA_SIZE];
 } UsartPacket_sensor;
 
 typedef struct tag_UsartDevicePacket
