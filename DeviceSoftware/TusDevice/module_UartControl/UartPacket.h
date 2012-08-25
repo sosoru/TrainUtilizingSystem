@@ -13,7 +13,7 @@
 extern "C"{	
 #endif
 
-#define MAX_SIZE_USARTDATA 16
+#define MAX_SIZE_USARTDATA 7
 #define STORINGDATA_SIZE 8
 
 typedef union tag_UsartChildPacket_Header

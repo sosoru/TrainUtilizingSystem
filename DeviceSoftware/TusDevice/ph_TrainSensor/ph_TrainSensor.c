@@ -38,7 +38,15 @@ void send_neighbor_packet();
 
 //its completes a/d conversion
 ISR(ADC_vect)
+{	
+	sbi(TIFR0, TOV0);
+}
+
+void store_ad_result()
 {
+	if(ADCSRA & (1<<ADIF))
+		return;
+	
 	if(++pstoring_current == storing_results + STORINGDATA_SIZE)
 	{
 		pstoring_current = storing_results;
@@ -48,7 +56,8 @@ ISR(ADC_vect)
 	*pstoring_current = ADCL;
 	storing_results_checksum ^= *pstoring_current;
 	
-	sbi(TIFR0, TOV0);
+	sbi(ADCSRA, ADIF); // *clear* completed bit
+	
 }
 
 void send_neighbor_packet()
@@ -57,7 +66,8 @@ void send_neighbor_packet()
 	
 	received_head.number++;
 	received_head.checksum_all++;
-
+	
+	cli();
 	xmit(received_head.type);
 	xmit(received_head.packet_size);
 	xmit(received_head.number);
@@ -68,10 +78,12 @@ void send_neighbor_packet()
 	{
 		xmit(*(ptr++));
 	}
+	sei();
 }
 
 void send_parent_error()
 {	
+	cli();
 	ENTER_PARENT_TRANSFER
 	
 	xmit_parent(SENDING_TYPE);
@@ -80,6 +92,7 @@ void send_parent_error()
 	xmit_parent(SENDING_TYPE ^ 0xFF);
 	
 	LEAVE_PANRET_TRANSFER
+	sei();
 }
 
 void send_parent_packet()
@@ -150,7 +163,7 @@ void device_init()
 	DDRB	= 0b11110100;
 
 	// Timer 0 initializing
-	OCR0AL = 126;			// 4msec at 8MHz
+	//OCR0AL = 126;			// 4msec at 8MHz
 	TCCR0A |= 0b00000001;
 	//TIMSK0 |= 0b00000001;	// interrupts enable
 	TCCR0B |= 0b00011000;	// set to 10bit fast pwm (top=0x03FF)	
