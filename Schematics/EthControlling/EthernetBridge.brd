@@ -2918,7 +2918,6 @@ design rules under a new name.
 <contactref element="U$6" pad="2"/>
 <contactref element="D13" pad="K"/>
 <wire x1="62.865" y1="27.94" x2="57.0484" y2="27.94" width="1.27" layer="16"/>
-<wire x1="57.0484" y1="27.94" x2="52.07" y2="27.94" width="0" layer="19" extent="1-16"/>
 <wire x1="62.865" y1="27.94" x2="62.865" y2="24.13" width="1.27" layer="16"/>
 <wire x1="79.31" y1="28.005" x2="79.31" y2="30.71" width="1.27" layer="16"/>
 <wire x1="79.375" y1="27.94" x2="79.31" y2="28.005" width="1.27" layer="16"/>

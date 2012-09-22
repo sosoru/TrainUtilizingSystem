@@ -40,7 +40,7 @@ namespace SensorLibrary.Devices.TusAvrDevices
         {
             get
             {
-                return this.CurrentState.Voltage > 0.4f;
+                return this.CurrentState.Voltage > 0.35f;
 
                 //IList<SensorState> hist;
                 //lock (hist_lock)

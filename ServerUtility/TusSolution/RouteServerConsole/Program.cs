@@ -36,7 +36,7 @@ namespace RouteServerConsole
             var serv = new PacketServer(new AvrDeviceFactoryProvider());
             var io = new SensorLibrary.Packet.IO.TusEthernetIO(ipbase, ipmask)
                          {
-                             SourceID = new DeviceID(100, 0, 0),
+                             SourceID = new DeviceID(9, 0, 0),
                              Port = 8000,
                          };
 
@@ -189,7 +189,19 @@ namespace RouteServerConsole
                                return l;
                            });
             //rs.Except(mvr).ForEach(r => EffectRouteOnce(r, 0, true));
-            mvr.ForEach(r => EffectRouteOnce(r, speed, false));
+            var ptr3 = mvr.FirstOrDefault(r => r.LockedSegments.Any(seg => seg.Key.Name == "PT3"));
+
+            if (ptr3 != null && ptr3.LockedBlocks.Any(a => a.Name == "CT2"))
+            {
+                EffectRouteOnce(ptr3, speed, false);
+
+            }
+            else
+            {
+                mvr
+                   .ForEach(r => EffectRouteOnce(r, speed, false));
+
+            }
         }
 
         static void SetToDefault(Route r)
@@ -263,17 +275,19 @@ namespace RouteServerConsole
         {
             var serv = CreateServer(new IPAddress(new byte[] { 192, 168, 2, 24 }),
                                     new IPAddress(new byte[] { 255, 255, 255, 0 }));
-            sheet = CreateSheet(@"C:\Users\Administrator\Desktop\新しいフォルダー (2)\815.yaml", serv);
+            sheet = CreateSheet(@"C:\Users\Administrator\Desktop\rail_proj\815.yaml", serv);
             var message =
                 "press 1:positioning trains, 2:following double routes, 3:following cw route, 4:following ccw route";
 
             var sc = System.Reactive.Concurrency.Scheduler.NewThread;
+            var cw = Route_cw().First();
+            var ccw = Route_cw2().First();
 
             var statuses =
                 Observable
                 .Start(() => DateTime.Now.ToString())
                 .Concat(new[] { message }.ToObservable())
-                //.Concat(Observable.Defer(() => ShowRouteState(new[] { })))
+                .Concat(Observable.Defer(() => ShowRouteState(new[] { cw, ccw })))
                 .Concat(Observable.Defer(() => ShowStatuses()))
                 .Concat(Observable.Defer(() => ShowSwitchStatuses()))
                 .Concat(Observable.Defer(() => ShowMotorStatuses()))
@@ -296,8 +310,8 @@ namespace RouteServerConsole
                 while (true)
                 {
                     new[] {
-                        new{route= Route_cw().First(), sp = 0.5f, ps = SensorLibrary.Packet.Data.PointStateEnum.Straight},
-                        new{route=Route_cw2().First(), sp = 0.3f, ps = SensorLibrary.Packet.Data.PointStateEnum.Curve},
+                        new{route= Route_cw().First(), sp = 0.4f, ps = SensorLibrary.Packet.Data.PointStateEnum.Straight},
+                        new{route=Route_cw2().First(), sp = 0.35f, ps = SensorLibrary.Packet.Data.PointStateEnum.Curve},
                         }
                         .ForEach(r =>
                                      {
@@ -312,21 +326,29 @@ namespace RouteServerConsole
                 }
 
 
-                ClearState();
-                EffectRouteOnce(Route_cw().First(), 0f, true);
-                System.Threading.Thread.Sleep(1000);
-                EffectRoute(Route_cw2().First(), 0.6f, true);
-                ClearState();
+                //ClearState();
+                //EffectRouteOnce(Route_cw().First(), 0f, true);
+                //System.Threading.Thread.Sleep(1000);
+                //EffectRoute(Route_cw2().First(), 0.6f, true);
+                //ClearState();
 
-                System.Threading.Thread.Sleep(1000);
+                //System.Threading.Thread.Sleep(1000);
 
-                //var rs = new[] { Route_cw().First(), Route_cw2().First() };
-                //rs.ForEach(r =>
-                //               {
-                //                   //r.LockNextUnit();
-                //                   EffectRoute(r, 0.5f, false);
-                //                   ClearState();
-                //               });
+                //r.LockNextUnit();\
+                //while (true)
+                //{
+                //    if (cw.IsRouteFinished)
+                //        cw = Route_cw().First();
+
+                //    if (ccw.IsRouteFinished)
+                //        ccw = Route_cw2().First();
+
+
+
+                //    EffectRoutes(new[] { cw, ccw }, 0.5f);
+
+                //}
+                //ClearState();
 
 
                 //monitoring = SelectCommand(cmd)

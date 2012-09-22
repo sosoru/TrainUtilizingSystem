@@ -91,11 +91,14 @@ namespace RouteLibrary.Base
 
         public void Effect(IEnumerable<CommandInfo> cmds)
         {
-            this.InnerBlocks.ToObservable().Do(b =>
-                                                   {
-                                                       b.Effect(cmds);
-                                                       b.Detectors.ForEach(d => d.SendCheckCommand());
-                                                   }).Subscribe();
+            Type[] order = new[] { typeof(SwitchEffector), typeof(MotorEffector), typeof(IDeviceEffector) };
+
+            this.InnerBlocks
+                .ToObservable()
+                .Do(b => b.Effect(cmds)
+                    .OrderBy(cmd => Array.IndexOf(order, cmd.GetType()))
+                    .ForEach(cmd => cmd.ExecuteCommand()))
+                .Do(b => b.Detectors.ForEach(d => d.SendCheckCommand())).Subscribe();
         }
     }
 }

@@ -85,16 +85,14 @@ namespace RouteLibrary.Base
 
         }
 
-        public void Effect(IEnumerable<CommandInfo> infos)
+        public IEnumerable<IDeviceEffector> Effect(IEnumerable<CommandInfo> infos)
         {
             var list_infos = infos.ToList();
+            var efs = this.Effectors.ToArray();
 
-            this.Effectors.ToList().ForEach(e =>
-            {
-                list_infos.ForEach(i => e.ApplyCommand(i));
-                e.ExecuteCommand();
-            });
+            infos.ForEach(info => efs.ForEach(e => e.ApplyCommand(info)));
 
+            return efs;
         }
 
 

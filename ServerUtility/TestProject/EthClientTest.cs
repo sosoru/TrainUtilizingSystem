@@ -121,7 +121,7 @@ namespace TestProject
 
             var mtrpacket = new EthPacket()
             {
-                srcId = new DeviceID(102, 0),
+                srcId = new DeviceID(100, 0),
                 destId = new DeviceID(24, 2, 4),
             };
             var mtrdata = new MotorData();
@@ -160,7 +160,7 @@ namespace TestProject
             var ptpacket = new EthPacket()
             {
                 srcId = new DeviceID(100, 0),
-                destId = new DeviceID(24, 1, 1),
+                destId = new DeviceID(24, 4, 1),
             };
             var ptdata = new SensorLibrary.Packet.Data.SwitchData();
             var ptstate = new SwitchState()
