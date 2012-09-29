@@ -22,7 +22,7 @@ namespace DengoController
                 if (ac < 0.0 || br < 0.0)
                     continue;
 
-                Console.WriteLine("accel : {0}, brake : {1}", ac, br);
+                Console.WriteLine("accel : {0}, brake : {1}", ac*6, br*14);
 
                 System.Threading.Thread.Sleep(100);
             }
