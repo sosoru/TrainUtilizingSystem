@@ -1,19 +1,4 @@
-/*********************************************
- * vim:sw=8:ts=8:si:et
- * To use the above modeline in vim you must have "set modeline" in your .vimrc
- * Author: Guido Socher
- * Copyright: GPL V2
- * See http://www.gnu.org/licenses/gpl.html
- *
- * Ethernet remote device and sensor
- * UDP and HTTP interface 
-        url looks like this http://baseurl/password/command
-        or http://baseurl/password/
- *
- * Chip type           : Atmega88 or Atmega168 or Atmega328 with ENC28J60
- * Note: there is a version number in the text. Search for tuxgraphics
- 
- *********************************************/
+
 #include "EthernetBridge.hpp"
 #include <avr/io.h>
 #include "avr_base.hpp"
@@ -78,8 +63,18 @@ void BoardInit()
 	//PORTF = 0;
 	PORTG = 0;
 	
-	EthDevice::Parameters.ipaddress = {192,168,2,24};
-	EthDevice::Parameters.macaddress = {0x54,0x55,0x58,0x10,0x00,0x24};
+	EthDevice::Parameters.ipaddress[0] = 192;
+	EthDevice::Parameters.ipaddress[1] = 168;
+	EthDevice::Parameters.ipaddress[2] = 2;
+	EthDevice::Parameters.ipaddress[3] = 24;
+	
+	EthDevice::Parameters.macaddress[0] = 0x54;
+	EthDevice::Parameters.macaddress[1] = 0x55;
+	EthDevice::Parameters.macaddress[2] = 0x58;
+	EthDevice::Parameters.macaddress[3] = 0x10;
+	EthDevice::Parameters.macaddress[4] = 0x00;
+	EthDevice::Parameters.macaddress[5] = 0x24;
+		
 	EthDevice::Parameters.port = 8000;	
 	
 	EthDevice::EthernetInit();

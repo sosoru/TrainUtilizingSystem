@@ -5,6 +5,7 @@ using System.Text;
 using System.IO;
 using System.Reactive;
 using System.Reactive.Linq;
+using System.Reactive.PlatformServices;
 using System.Threading.Tasks;
 using SensorLibrary.Packet.IO;
 using SensorLibrary.Devices;
@@ -121,10 +122,10 @@ namespace SensorLibrary.Packet.Control
                                         Console.WriteLine("pero");
                                     }
                                 })
-                        .ObserveOn(System.Reactive.Concurrency.Scheduler.NewThread)
+                        .ObserveOn(System.Reactive.Concurrency.NewThreadScheduler.Default)
                         .Repeat()
                         .Subscribe(pack => { }, (Exception ex) => Console.WriteLine(ex.ToString()));
-
+                    
                     Observable
                         .Defer(() => Observable
                                         .Return(((this.sending_queue.Count > 0) ? this.sending_queue.Dequeue() : null))

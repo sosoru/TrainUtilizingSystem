@@ -110,7 +110,7 @@ namespace TestProject
                         Assert.AreEqual(state.DeadTime, swstate.DeadTime);
                         Assert.AreEqual(state.Position, swstate.Position);
                     })
-                .Timeout(TimeSpan.FromSeconds(1));
+                .Timeout(TimeSpan.FromSeconds(3));
         }
 
         [TestMethod()]
@@ -159,8 +159,8 @@ namespace TestProject
 
             var ptpacket = new EthPacket()
             {
-                srcId = new DeviceID(100, 0),
-                destId = new DeviceID(24, 4, 1),
+                srcId = new DeviceID(102, 0),
+                destId = new DeviceID(24, 8, 1),
             };
             var ptdata = new SensorLibrary.Packet.Data.SwitchData();
             var ptstate = new SwitchState()

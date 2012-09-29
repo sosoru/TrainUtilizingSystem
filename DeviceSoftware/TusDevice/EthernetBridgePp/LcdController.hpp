@@ -9,6 +9,8 @@
 #ifndef LCDCONTROLLER_H_
 #define LCDCONTROLLER_H_
 
+#define __PROG_TYPES_COMPAT__
+
 #include "avr_base.hpp"
 #include "sc2004/sc2004.hpp"
 #include <stdlib.h>
@@ -48,7 +50,7 @@ namespace EthernetBridge
 					
 					for(copied=0; copied<base::WIDTH; ++copied)
 					{
-						fn(lcd_buf+(pos++), (prog_void*)buf+(bufpos++), sizeof(char));
+						fn(lcd_buf+(pos++), (const void*)buf+(bufpos++), sizeof(char));
 						
 						if(buf[bufpos]==0x00)
 							break;
@@ -90,9 +92,9 @@ namespace EthernetBridge
 				return writeStringInner((char*)buf, line, memcpy);
 			}
 			
-			static uint8_t WriteStringProg(const prog_char* buf, uint8_t line)
+			static uint8_t WriteStringProg(const char* buf, uint8_t line)
 			{
-				return writeStringInner((prog_char*)buf, line, memcpy_P);
+				return writeStringInner((const char*)buf, line, memcpy_P);
 			}
 		
 		};

@@ -22,8 +22,8 @@ namespace EthernetBridge { namespace UI
 	
 	namespace data_mac_addr
 	{
-		char PROGMEM *title = "<Change MAC Address>";
-		char PROGMEM *disp = "";
+		const char* PROGMEM title = "<Change MAC Address>";
+		const char* PROGMEM disp = "";
 	}
 	
 	class Ui_View_mac_addr

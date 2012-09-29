@@ -32,10 +32,10 @@ namespace EthernetBridge{
 		typedef OutputPin1<PortD> SlaveModuleB;
 		typedef OutputPin2<PortD> SlaveModuleC;
 		typedef OutputPin3<PortD> SlaveModuleD;
-		typedef OutputPin3<PortE> SlaveModuleE;
-		typedef OutputPin3<PortE> SlaveModuleF;
-		typedef OutputPin3<PortE> SlaveModuleG;
-		typedef OutputPin3<PortE> SlaveModuleH;
+		typedef OutputPin4<PortE> SlaveModuleE;
+		typedef OutputPin5<PortE> SlaveModuleF;
+		typedef OutputPin6<PortE> SlaveModuleG;
+		typedef OutputPin7<PortE> SlaveModuleH;
 
 		typedef Reset::ResetModule< OutputPin0<PortA> > ResetModuleA;
 		typedef Reset::ResetModule< OutputPin1<PortA> > ResetModuleB;
