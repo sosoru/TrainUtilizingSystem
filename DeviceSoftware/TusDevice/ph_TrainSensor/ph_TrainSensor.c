@@ -24,6 +24,7 @@
 
 UsartDevicePacket_Header received_head;
 uint8_t received_data[MAX_SIZE_USARTDATA];
+uint8_t current_adc = 0;
 
 void device_init();
 uint8_t validate_received_packet();
@@ -34,6 +35,8 @@ void send_neighbor_packet();
 
 ISR(ADC_vect)
 {
+	current_adc = current_adc / 2 + ADCL / 2;
+	
 	sbi(TIFR0, TOV0);
 }
 
@@ -71,7 +74,7 @@ void send_parent_error()
 void send_parent_packet()
 {	
 	uint8_t checksum, number;
-	uint8_t adc = ADCL;	
+	uint8_t adc = current_adc;	
 	
 	number = received_head.number;
 	checksum = (SENDING_TYPE ^ SENDING_PACKET_SIZE ^ number ^ adc);
@@ -129,7 +132,7 @@ void device_init()
 	DDRB	= 0b11110100;
 
 	// Timer 0 initializing
-	OCR0AL = 126;			// 4msec at 8MHz
+	OCR0AL = 16;			// 512usec at 8MHz
 	TCCR0A |= 0b00000011;
 	//TIMSK0 |= 0b00000001;	// interrupts enable
 	TCCR0B |= 0b00011000;	// set to 8bit fast pwm (top=OCR0A)	

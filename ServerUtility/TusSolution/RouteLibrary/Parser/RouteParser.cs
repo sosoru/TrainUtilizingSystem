@@ -12,8 +12,8 @@ namespace RouteLibrary.Parser
 
         private IEnumerable<RouteSegmentInfo> parse_route(IEnumerable<string> from, string dir, IEnumerable<string> to)
         {
-            var b_from = from.Select(s => ReferencedBlocks.First(b => b.Name == s.Trim()));
-            var b_to = to.Select(s => ReferencedBlocks.First(b => b.Name == s.Trim()));
+            var b_from = from.Select(s => ReferencedBlocks.FirstOrDefault(b => b.Name == s.Trim()));
+            var b_to = to.Select(s => ReferencedBlocks.FirstOrDefault(b => b.Name == s.Trim()));
 
             var pairs_ltor = b_from.SelectMany(f => b_to.Select(t => new RouteSegmentInfo() { From = f, To = t }));
             var pairs_rtol = b_from.SelectMany(f => b_to.Select(t => new RouteSegmentInfo() { From = t, To = f }));

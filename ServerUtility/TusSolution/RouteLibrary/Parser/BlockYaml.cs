@@ -29,7 +29,8 @@ namespace RouteLibrary.Parser
             var arr = ((IEnumerable<object>)src).Where(o => o is Dictionary<object, object>)
                                                         .Cast<Dictionary<object, object>>();
 
-            return arr.Select(obj => new BlockInfo() { Name = (string)obj["name"] } );                                                              
+            return arr.Select(obj => new BlockInfo() { Name = (string)obj["name"] } )
+                        .DefaultIfEmpty(new BlockInfo() { Name = "nothing"});                                                              
         }
 
         public MotorInfo ParseMotor(Dictionary<object,object> src)

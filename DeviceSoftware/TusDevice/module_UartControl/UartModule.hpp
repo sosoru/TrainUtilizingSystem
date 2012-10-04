@@ -115,7 +115,7 @@ namespace module_UartControl
 					sei();
 					
 					LedOn();
-					_delay_ms(20);
+					_delay_ms(5);
 	
 					for(uint8_t i=0; i<t_module_count; ++i)
 					{

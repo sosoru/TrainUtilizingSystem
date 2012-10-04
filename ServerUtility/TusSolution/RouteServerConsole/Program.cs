@@ -57,7 +57,7 @@ namespace RouteServerConsole
         static IEnumerable<Route> Route_cw()
         {
             var routes = new[]{
-                new[] {"AT1", "PT2", "BT1", "PT3", "CT1", "PT4", "DT1", "PT1", "AT1"},
+                new[] {"AT1", "PT3", "PT4", "BT1", "CT1", "DT1", "PT1", },
             };
             return routes.ToRoute(sheet)
                 .Repeat();
@@ -65,9 +65,8 @@ namespace RouteServerConsole
 
         static IEnumerable<Route> Route_cw2()
         {
-            var routes = new[]
-                             {
-                                 new[] {"AT2", "PT1", "DT1", "PT4", "CT2", "PT3", "BT1", "PT2", "AT2"},
+            var routes = new[]                             {
+                new[]{"AT2", "PT5", "PT4", "BT1", "CT1", "DT1", "PT1"}, 
                              };
             return routes.ToRoute(sheet)
                 .Repeat();
@@ -275,7 +274,7 @@ namespace RouteServerConsole
         {
             var serv = CreateServer(new IPAddress(new byte[] { 192, 168, 2, 24 }),
                                     new IPAddress(new byte[] { 255, 255, 255, 0 }));
-            sheet = CreateSheet(@"C:\Users\Administrator\Desktop\rail_proj\815.yaml", serv);
+            sheet = CreateSheet(@"C:\Users\Administrator\Desktop\rail_proj\1004.yaml", serv);
             var message =
                 "press 1:positioning trains, 2:following double routes, 3:following cw route, 4:following ccw route";
 

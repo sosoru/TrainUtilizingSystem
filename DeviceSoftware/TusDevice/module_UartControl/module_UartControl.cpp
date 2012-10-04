@@ -36,7 +36,7 @@ void SensorProcess()
 	packet->moduletype = 0x14;
 	packet->devID.raw = packet->srcId.raw;
 	
-	for(uint8_t i=0; i<4; ++i)
+	for(uint8_t i=0; i<2; ++i)
 	{		
 		packet->pdata[i*2] = t_sens::OnState[i];	
 		packet->pdata[i*2+1] = t_sens::OffState[i];
@@ -56,11 +56,11 @@ void MonitoringProcess()
 {
 	uint8_t curr = t_sens::CheckSensors() ;
 	
-	if(curr > 0 || check_buf[t_mnum]++ > 5)
-	{
+	//if(curr > 0 || check_buf[t_mnum]++ > 1)
+	//{
+		//check_buf[t_mnum] = 0;
+	//}
 		SensorProcess<t_sens, t_mnum>();
-		check_buf[t_mnum] = 0;
-	}
 }
 
 void spi_received(args_received *e)
@@ -111,16 +111,16 @@ int main(void)
 	src_id.ModuleAddr = 0;
 	
 	dst_id.ParentPart = 24;
-	dst_id.ModuleAddr = 4;
+	dst_id.ModuleAddr = 5;
 	
     while(1)
     {			
 			
 		MonitoringProcess<TrainSensorA, 1>();
 		tus_spi_process_packets();		
-		MonitoringProcess<TrainSensorB, 2>();
-		tus_spi_process_packets();
-		
+		//MonitoringProcess<TrainSensorB, 2>();
+		//tus_spi_process_packets();
+		//
 		received = 0;
     }
 }

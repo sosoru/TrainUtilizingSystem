@@ -19,6 +19,10 @@
     <avrtool />
     <AsfVersion>2.11.1</AsfVersion>
     <avrtoolinterface />
+    <KeepTimersRunning>true</KeepTimersRunning>
+    <OverrideVtor>false</OverrideVtor>
+    <OverrideVtorValue />
+    <eraseonlaunchrule>0</eraseonlaunchrule>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <OutputFileName>liblibtus</OutputFileName>
