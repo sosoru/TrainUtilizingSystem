@@ -164,6 +164,7 @@ namespace module_UartControl
 			
 				static inline int8_t Communicate(UsartPacket &pack_x)
 				{
+					_delay_ms(5);
 					SendUartPacket(pack_x);
 
 					uint8_t received;
