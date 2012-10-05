@@ -56,11 +56,11 @@ void MonitoringProcess()
 {
 	uint8_t curr = t_sens::CheckSensors() ;
 	
-	//if(curr > 0 || check_buf[t_mnum]++ > 1)
-	//{
-		//check_buf[t_mnum] = 0;
-	//}
+	if(curr > 0 || check_buf[t_mnum]++ > 3)
+	{
 		SensorProcess<t_sens, t_mnum>();
+		check_buf[t_mnum] = 0;
+	}
 }
 
 void spi_received(args_received *e)

@@ -315,12 +315,12 @@ namespace RouteServerConsole
                         .ForEach(r =>
                                      {
 
-                                         ChangeAllSwithches(r.ps);
-                                         System.Threading.Thread.Sleep(1000);
+                                         //ChangeAllSwithches(r.ps);
+                                         //System.Threading.Thread.Sleep(1000);
 
-                                         EffectRouteOnce(r.route, 0, true);
+                                         //EffectRouteOnce(r.route, 0, true);
                                          System.Threading.Thread.Sleep(1000);
-                                         EffectRoute(r.route, r.sp, true);
+                                         //EffectRoute(r.route, r.sp, true);
                                      });
                 }
 

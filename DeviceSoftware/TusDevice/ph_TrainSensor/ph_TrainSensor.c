@@ -24,7 +24,7 @@
 
 UsartDevicePacket_Header received_head;
 uint8_t received_data[MAX_SIZE_USARTDATA];
-uint8_t current_adc = 0;
+uint8_t current_adc;
 
 void device_init();
 uint8_t validate_received_packet();
@@ -151,6 +151,7 @@ void device_init()
 	memset(&received_head, 0x00, sizeof(received_head));
 	memset(received_data, 0x00, sizeof(received_data));
 	received_head.checksum_all = 0xff;
+	current_adc = 0;
 	
 	sei();	// interrupt enable
 	

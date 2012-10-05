@@ -5,15 +5,69 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Net;
+using System.
 using Tao.Platform.Windows;
 
+using SensorLibrary;
+using SensorLibrary.Packet;
+using SensorLibrary.Packet.Control;
+using SensorLibrary.Devices;
+using SensorLibrary.Devices.TusAvrDevices;
 namespace DengoController
+
 {
     class Program
     {
+        static DeviceID targetdeviceid_g;
+        static PacketServer serv_g;
+        static PacketDispatcher dispat_g;
+        static Motor mtr_g;
+
+                static void InitCommunication(IPAddress ipbase, IPAddress ipmask)
+
+        {
+            serv_g = new PacketServer(new AvrDeviceFactoryProvider());
+            dispat_g = new PacketDispatcher();
+
+            var io = new SensorLibrary.Packet.IO.TusEthernetIO(ipbase, ipmask)
+                         {
+                             SourceID = new DeviceID(9, 0, 0),
+                             Port = 8000,
+                         };
+
+            serv_g.AddAction(dispat_g);
+            serv.Controller = io;
+            serv.LoopStart();
+        }
+
+        static DeviceID InformDeviceID()
+        {
+            while(true)
+            {
+                Console.WriteLine("type device id : (%d, %d, %d)");
+                try{
+                    var readed = Console.ReadLine();
+                    var id  = new RouteLibrary.Parser.DeviceIdParser().FromString(readed);
+
+                    return id ;
+                }catch(Exception ex){
+                    Console.WriteLine(ex.Message);
+                }
+            }
+        }
+
+        static void ApplyAccel(double acc)
+        {
+            if(mtr_g == null)
+                return;
+            
+            mtr_g
+
         static void Main(string[] args)
         {
             var cnt = new DengoController();
+            InitCommunication(new IPAddress(new[] { 255,255,255,0}), new IPAddress(new[]{192,168,2,10}));
             while (true)
             {
                 var ac = cnt.AccelLevel;
