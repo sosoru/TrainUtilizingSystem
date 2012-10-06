@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Net;
-using System.
 using Tao.Platform.Windows;
 
 using SensorLibrary;
@@ -21,24 +20,21 @@ namespace DengoController
     {
         static DeviceID targetdeviceid_g;
         static PacketServer serv_g;
-        static PacketDispatcher dispat_g;
         static Motor mtr_g;
 
                 static void InitCommunication(IPAddress ipbase, IPAddress ipmask)
 
         {
             serv_g = new PacketServer(new AvrDeviceFactoryProvider());
-            dispat_g = new PacketDispatcher();
 
             var io = new SensorLibrary.Packet.IO.TusEthernetIO(ipbase, ipmask)
                          {
-                             SourceID = new DeviceID(9, 0, 0),
+                             SourceID = new DeviceID(10, 0, 0),
                              Port = 8000,
                          };
 
-            serv_g.AddAction(dispat_g);
-            serv.Controller = io;
-            serv.LoopStart();
+            serv_g.Controller = io;
+            serv_g.LoopStart();
         }
 
         static DeviceID InformDeviceID()
@@ -50,24 +46,33 @@ namespace DengoController
                     var readed = Console.ReadLine();
                     var id  = new RouteLibrary.Parser.DeviceIdParser().FromString(readed);
 
-                    return id ;
+                    return id.First() ;
                 }catch(Exception ex){
                     Console.WriteLine(ex.Message);
                 }
             }
         }
 
-        static void ApplyAccel(double acc)
+        static void AddAccel(double acc)
         {
             if(mtr_g == null)
                 return;
             
-            mtr_g
+           var state = new MotorState();
+            state.Duty = (float)acc;
+            state.Direction = MotorDirection.Positive;
+            state.ControlMode = MotorControlMode.DutySpecifiedMode;
+
+            mtr_g.SendPacket(state);
+        }
 
         static void Main(string[] args)
         {
             var cnt = new DengoController();
-            InitCommunication(new IPAddress(new[] { 255,255,255,0}), new IPAddress(new[]{192,168,2,10}));
+            InitCommunication(new IPAddress(new byte[] { 255,255,255,0}), new IPAddress(new byte[]{192,168,2,10}));
+
+            mtr_g = new Motor(serv_g) { DeviceID= InformDeviceID()};
+
             while (true)
             {
                 var ac = cnt.AccelLevel;
@@ -77,8 +82,25 @@ namespace DengoController
                     continue;
 
                 Console.WriteLine("accel : {0}, brake : {1}", ac*6, br*14);
+                
+                double infl = 0;
+                if(br > 0)
+                {
+                    infl += br * 50.0;
+                }else{
+                    infl += ac * 20.0;
+                }
+
+                if(infl < 0)
+                    infl = 0;
+                else if (infl > 200)
+                    infl = 200;
+
+                AddAccel(infl);
 
                 System.Threading.Thread.Sleep(100);
+
+                
             }
         }
     }
