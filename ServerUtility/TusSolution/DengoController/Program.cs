@@ -64,7 +64,7 @@ namespace DengoController
                 return;
 
             var state = new MotorState();
-            state.Duty = (float)acc;
+            state.Duty = (float)acc / 255.0F;
             state.Direction = MotorDirection.Positive;
             state.ControlMode = MotorControlMode.DutySpecifiedMode;
 
@@ -73,12 +73,14 @@ namespace DengoController
 
         static void Main(string[] args)
         {
-            var cnt = new DengoController();
+            IDengoController cnt = new StaticController() { AccelLevel = 0.5 };
+
             InitCommunication(new IPAddress(new byte[] { 255, 255, 255, 0 }), new IPAddress(new byte[] { 192, 168, 2, 10 }));
 
             mtr_g = new Motor(serv_g) { DeviceID = InformDeviceID() };
             mtr_g.Observe(dispat_g);
 
+            double infl = 0;
             while (true)
             {
                 var ac = cnt.AccelLevel;
@@ -87,14 +89,13 @@ namespace DengoController
                 if (ac < 0.0 || br < 0.0)
                     continue;
 
-                double infl = 0;
                 if (br > 0)
                 {
-                    infl += br * 50.0;
+                    infl += -br * 10.0;
                 }
                 else
                 {
-                    infl += ac * 20.0;
+                    infl += ac * 5.0;
                 }
 
                 if (infl < 0)
@@ -113,7 +114,7 @@ namespace DengoController
         }
     }
 
-    class DengoController
+    class DengoController : IDengoController
     {
         private int sticknumber;
 

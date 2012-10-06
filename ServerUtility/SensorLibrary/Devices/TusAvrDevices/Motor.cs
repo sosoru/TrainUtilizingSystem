@@ -16,6 +16,7 @@ namespace SensorLibrary.Devices.TusAvrDevices
         }
 
         public Motor(PacketServer server)
+            :this()
         {
             this.CurrentState.ReceivingServer = server;
         }

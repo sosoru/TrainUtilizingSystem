@@ -88,13 +88,14 @@ namespace RouteLibrary.Base
         public IEnumerable<IDeviceEffector> Effect(IEnumerable<CommandInfo> infos)
         {
             var list_infos = infos.ToList();
+                //.Select(info => { if(info.Route;
             var efs = this.Effectors.ToArray();
 
-            infos.ForEach(info => efs.ForEach(e => e.ApplyCommand(info)));
+            list_infos.ForEach(info => efs.ForEach(e => e.ApplyCommand(info)));
 
             return efs;
         }
-
+       
 
         #region implementation of IEqualable
         public static bool operator ==(Block A, Block B)

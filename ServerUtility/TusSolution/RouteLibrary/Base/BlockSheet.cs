@@ -98,7 +98,8 @@ namespace RouteLibrary.Base
                 .Do(b => b.Effect(cmds)
                     .OrderBy(cmd => Array.IndexOf(order, cmd.GetType()))
                     .ForEach(cmd => cmd.ExecuteCommand()))
-                .Do(b => b.Detectors.ForEach(d => d.SendCheckCommand())).Subscribe();
+                //.Do(b => b.Detectors.ForEach(d => d.SendCheckCommand()))
+                .Subscribe();
         }
     }
 }
