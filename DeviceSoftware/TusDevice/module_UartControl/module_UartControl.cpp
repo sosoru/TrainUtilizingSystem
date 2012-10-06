@@ -113,14 +113,17 @@ int main(void)
 	dst_id.ParentPart = 24;
 	dst_id.ModuleAddr = 5;
 	
+	check_buf[1] = 0;
+	check_buf[2] = 0;
+	
     while(1)
     {			
 			
-		MonitoringProcess<TrainSensorA, 1, 2>();
+		MonitoringProcess<TrainSensorA, 1, 4>();
 		tus_spi_process_packets();		
-		//MonitoringProcess<TrainSensorB, 2, 6>();
-		//tus_spi_process_packets();
-		//
+		MonitoringProcess<TrainSensorB, 2, 4>();
+		tus_spi_process_packets();
+		
 		received = 0;
     }
 }

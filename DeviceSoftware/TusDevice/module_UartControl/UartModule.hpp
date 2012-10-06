@@ -86,7 +86,7 @@ namespace module_UartControl
 					t_timer::ChannelAPin::InitOutput();
 					t_timer::ChannelBPin::InitOutput();
 		
-					t_timer::OutputCompareA::Set(0x10); //5msec
+					t_timer::OutputCompareA::Set(0x10); //1msec
 					t_timer::SetUp(Prescale1024B, FastPWM16BitsCount8, NormalPortOperationA, NormalPortOperationB, Off, Fall);
 				}
 				
@@ -115,7 +115,7 @@ namespace module_UartControl
 					sei();
 					
 					LedOn();
-					_delay_ms(5);
+					_delay_ms(10);
 	
 					for(uint8_t i=0; i<t_module_count; ++i)
 					{
@@ -164,7 +164,6 @@ namespace module_UartControl
 			
 				static inline int8_t Communicate(UsartPacket &pack_x)
 				{
-					_delay_ms(5);
 					SendUartPacket(pack_x);
 
 					uint8_t received;
