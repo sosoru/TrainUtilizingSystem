@@ -14,16 +14,15 @@ using SensorLibrary.Packet.Control;
 using SensorLibrary.Devices;
 using SensorLibrary.Devices.TusAvrDevices;
 namespace DengoController
-
 {
     class Program
     {
         static DeviceID targetdeviceid_g;
         static PacketServer serv_g;
+        static PacketDispatcher dispat_g;
         static Motor mtr_g;
 
-                static void InitCommunication(IPAddress ipbase, IPAddress ipmask)
-
+        static void InitCommunication(IPAddress ipbase, IPAddress ipmask)
         {
             serv_g = new PacketServer(new AvrDeviceFactoryProvider());
 
@@ -34,20 +33,26 @@ namespace DengoController
                          };
 
             serv_g.Controller = io;
+
+            dispat_g = new PacketDispatcher();
+            serv_g.AddAction(dispat_g);
             serv_g.LoopStart();
         }
 
         static DeviceID InformDeviceID()
         {
-            while(true)
+            while (true)
             {
                 Console.WriteLine("type device id : (%d, %d, %d)");
-                try{
+                try
+                {
                     var readed = Console.ReadLine();
-                    var id  = new RouteLibrary.Parser.DeviceIdParser().FromString(readed);
+                    var id = new RouteLibrary.Parser.DeviceIdParser().FromString(readed);
 
-                    return id.First() ;
-                }catch(Exception ex){
+                    return id.First();
+                }
+                catch (Exception ex)
+                {
                     Console.WriteLine(ex.Message);
                 }
             }
@@ -55,10 +60,10 @@ namespace DengoController
 
         static void AddAccel(double acc)
         {
-            if(mtr_g == null)
+            if (mtr_g == null)
                 return;
-            
-           var state = new MotorState();
+
+            var state = new MotorState();
             state.Duty = (float)acc;
             state.Direction = MotorDirection.Positive;
             state.ControlMode = MotorControlMode.DutySpecifiedMode;
@@ -69,9 +74,10 @@ namespace DengoController
         static void Main(string[] args)
         {
             var cnt = new DengoController();
-            InitCommunication(new IPAddress(new byte[] { 255,255,255,0}), new IPAddress(new byte[]{192,168,2,10}));
+            InitCommunication(new IPAddress(new byte[] { 255, 255, 255, 0 }), new IPAddress(new byte[] { 192, 168, 2, 10 }));
 
-            mtr_g = new Motor(serv_g) { DeviceID= InformDeviceID()};
+            mtr_g = new Motor(serv_g) { DeviceID = InformDeviceID() };
+            mtr_g.Observe(dispat_g);
 
             while (true)
             {
@@ -81,26 +87,28 @@ namespace DengoController
                 if (ac < 0.0 || br < 0.0)
                     continue;
 
-                Console.WriteLine("accel : {0}, brake : {1}", ac*6, br*14);
-                
                 double infl = 0;
-                if(br > 0)
+                if (br > 0)
                 {
                     infl += br * 50.0;
-                }else{
+                }
+                else
+                {
                     infl += ac * 20.0;
                 }
 
-                if(infl < 0)
+                if (infl < 0)
                     infl = 0;
                 else if (infl > 200)
                     infl = 200;
 
                 AddAccel(infl);
+                Console.WriteLine("accel : {0}, brake : {1}, duty : {2}, current : {3}",
+                            ac * 6, br * 14, infl, mtr_g.CurrentState.Current );
 
                 System.Threading.Thread.Sleep(100);
 
-                
+
             }
         }
     }
@@ -150,8 +158,8 @@ namespace DengoController
             {
                 var state = getkeystate;
                 var level = extractbit(state, 0) << 0
-                            | extractbit(state,15) << 1
-                            | extractbit(state,13) << 2;
+                            | extractbit(state, 15) << 1
+                            | extractbit(state, 13) << 2;
 
                 if (level == 0)
                     return -1.0;
