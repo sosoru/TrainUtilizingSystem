@@ -68,7 +68,7 @@ namespace module_UartControl
 					packet.header.packet_size = 0;
 				}
 
-			public :
+			public :			
 				static UsartPacket ReceivedArray[t_module_count];
 				static uint8_t OnState [t_module_count];
 				static uint8_t OffState[t_module_count];

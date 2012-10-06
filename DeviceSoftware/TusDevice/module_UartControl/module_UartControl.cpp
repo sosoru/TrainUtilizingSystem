@@ -20,7 +20,7 @@ DeviceID src_id;
 DeviceID dst_id;
 
 template
-<class t_sens, uint8_t t_mnum>
+<class t_sens, uint8_t t_mnum, uint8_t t_cnt>
 void SensorProcess()
 {
 	spi_send_object *pspi_send;
@@ -36,7 +36,7 @@ void SensorProcess()
 	packet->moduletype = 0x14;
 	packet->devID.raw = packet->srcId.raw;
 	
-	for(uint8_t i=0; i<2; ++i)
+	for(uint8_t i=0; i<t_cnt; ++i)
 	{		
 		packet->pdata[i*2] = t_sens::OnState[i];	
 		packet->pdata[i*2+1] = t_sens::OffState[i];
@@ -51,14 +51,14 @@ void SensorProcess()
 uint8_t check_buf[2];
 
 template
-<class t_sens, uint8_t t_mnum>
+<class t_sens, uint8_t t_mnum, uint8_t t_cnt>
 void MonitoringProcess()
 {
 	uint8_t curr = t_sens::CheckSensors() ;
 	
-	if(curr > 0 || check_buf[t_mnum]++ > 3)
+	if(curr > 0 || check_buf[t_mnum]++ > 5)
 	{
-		SensorProcess<t_sens, t_mnum>();
+		SensorProcess<t_sens, t_mnum, t_cnt>();
 		check_buf[t_mnum] = 0;
 	}
 }
@@ -116,11 +116,11 @@ int main(void)
     while(1)
     {			
 			
-		MonitoringProcess<TrainSensorA, 1>();
+		MonitoringProcess<TrainSensorA, 1, 4>();
 		tus_spi_process_packets();		
-		//MonitoringProcess<TrainSensorB, 2>();
-		//tus_spi_process_packets();
-		//
+		MonitoringProcess<TrainSensorB, 2, 6>();
+		tus_spi_process_packets();
+		
 		received = 0;
     }
 }

@@ -310,17 +310,17 @@ namespace RouteServerConsole
                 {
                     new[] {
                         new{route= Route_cw().First(), sp = 0.4f, ps = SensorLibrary.Packet.Data.PointStateEnum.Straight},
-                        new{route=Route_cw2().First(), sp = 0.35f, ps = SensorLibrary.Packet.Data.PointStateEnum.Curve},
+                        //new{route=Route_cw2().First(), sp = 0.35f, ps = SensorLibrary.Packet.Data.PointStateEnum.Curve},
                         }
                         .ForEach(r =>
                                      {
 
-                                         //ChangeAllSwithches(r.ps);
-                                         //System.Threading.Thread.Sleep(1000);
-
-                                         //EffectRouteOnce(r.route, 0, true);
+                                         ChangeAllSwithches(r.ps);
                                          System.Threading.Thread.Sleep(1000);
-                                         //EffectRoute(r.route, r.sp, true);
+
+                                         EffectRouteOnce(r.route, 0, true);
+                                         System.Threading.Thread.Sleep(1000);
+                                         EffectRoute(r.route, r.sp, true);
                                      });
                 }
 
