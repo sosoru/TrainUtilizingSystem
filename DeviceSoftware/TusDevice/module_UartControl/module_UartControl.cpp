@@ -48,7 +48,7 @@ void SensorProcess()
 	
 }
 
-uint8_t check_buf[2];
+uint8_t check_buf[3];
 
 template
 <class t_sens, uint8_t t_mnum, uint8_t t_cnt>
@@ -116,11 +116,11 @@ int main(void)
     while(1)
     {			
 			
-		MonitoringProcess<TrainSensorA, 1, 4>();
+		MonitoringProcess<TrainSensorA, 1, 2>();
 		tus_spi_process_packets();		
-		MonitoringProcess<TrainSensorB, 2, 6>();
-		tus_spi_process_packets();
-		
+		//MonitoringProcess<TrainSensorB, 2, 6>();
+		//tus_spi_process_packets();
+		//
 		received = 0;
     }
 }
