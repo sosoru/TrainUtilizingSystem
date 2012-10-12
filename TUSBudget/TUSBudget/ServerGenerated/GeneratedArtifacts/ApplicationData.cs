@@ -8,12 +8,13 @@
 //------------------------------------------------------------------------------
 
 using System;
+using System.ComponentModel;
+using System.Data.EntityClient;
 using System.Data.Objects;
 using System.Data.Objects.DataClasses;
-using System.Data.EntityClient;
-using System.ComponentModel;
-using System.Xml.Serialization;
+using System.Linq;
 using System.Runtime.Serialization;
+using System.Xml.Serialization;
 
 [assembly: EdmSchemaAttribute()]
 #region EDM リレーションシップのメタデータ
@@ -183,6 +184,7 @@ namespace ApplicationData.Implementation
         private ObjectSet<Table2Item> _Table2ItemSet;
 
         #endregion
+
         #region AddTo メソッド
     
         /// <summary>
@@ -242,11 +244,11 @@ namespace ApplicationData.Implementation
         }
 
         #endregion
+
     }
-    
 
     #endregion
-    
+
     #region エンティティ
     
     /// <summary>
@@ -283,6 +285,7 @@ namespace ApplicationData.Implementation
         }
 
         #endregion
+
         #region プリミティブ プロパティ
     
         /// <summary>
@@ -481,6 +484,7 @@ namespace ApplicationData.Implementation
         partial void OnStockChanged();
 
         #endregion
+
     
         #region ナビゲーション プロパティ
     
@@ -529,6 +533,7 @@ namespace ApplicationData.Implementation
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -557,6 +562,7 @@ namespace ApplicationData.Implementation
         }
 
         #endregion
+
         #region プリミティブ プロパティ
     
         /// <summary>
@@ -659,6 +665,7 @@ namespace ApplicationData.Implementation
         partial void OnNeededBoards_NeededPartsChanged();
 
         #endregion
+
     
         #region ナビゲーション プロパティ
     
@@ -701,6 +708,7 @@ namespace ApplicationData.Implementation
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -733,6 +741,7 @@ namespace ApplicationData.Implementation
         }
 
         #endregion
+
         #region プリミティブ プロパティ
     
         /// <summary>
@@ -907,6 +916,7 @@ namespace ApplicationData.Implementation
         partial void OnNeededParts_AvailablePartsChanged();
 
         #endregion
+
     
         #region ナビゲーション プロパティ
     
@@ -971,6 +981,7 @@ namespace ApplicationData.Implementation
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -1005,6 +1016,7 @@ namespace ApplicationData.Implementation
         }
 
         #endregion
+
         #region プリミティブ プロパティ
     
         /// <summary>
@@ -1155,6 +1167,7 @@ namespace ApplicationData.Implementation
         partial void OnAvailableParts_PriceInfoChanged();
 
         #endregion
+
     
         #region ナビゲーション プロパティ
     
@@ -1235,6 +1248,7 @@ namespace ApplicationData.Implementation
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -1263,6 +1277,7 @@ namespace ApplicationData.Implementation
         }
 
         #endregion
+
         #region プリミティブ プロパティ
     
         /// <summary>
@@ -1341,6 +1356,7 @@ namespace ApplicationData.Implementation
         partial void OnStoreUriChanged();
 
         #endregion
+
     
         #region ナビゲーション プロパティ
     
@@ -1367,6 +1383,7 @@ namespace ApplicationData.Implementation
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -1391,6 +1408,7 @@ namespace ApplicationData.Implementation
         }
 
         #endregion
+
         #region プリミティブ プロパティ
     
         /// <summary>
@@ -1421,6 +1439,7 @@ namespace ApplicationData.Implementation
         partial void OnIdChanged();
 
         #endregion
+
     
     }
     
@@ -1446,6 +1465,7 @@ namespace ApplicationData.Implementation
         }
 
         #endregion
+
         #region プリミティブ プロパティ
     
         /// <summary>
@@ -1476,9 +1496,11 @@ namespace ApplicationData.Implementation
         partial void OnIdChanged();
 
         #endregion
+
     
     }
 
     #endregion
+
     
 }

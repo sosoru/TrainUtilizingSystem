@@ -87,15 +87,33 @@ namespace RouteLibrary.Base
 
         public IEnumerable<IDeviceEffector> Effect(IEnumerable<CommandInfo> infos)
         {
-            var list_infos = infos.ToList();
-                //.Select(info => { if(info.Route;
+            var list_infos = infos.Select(info =>
+            {
+                var avl = info.Route.Blocks.SkipWhile(b => b == this).Where(b => b.IsHaltable);
+
+                var neighbor = avl.First();
+                if (neighbor == null && neighbor.IsBlocked)
+                {
+                    info.Speed = 0;
+                }
+                else
+                {
+                    neighbor = avl.Skip(1).First();
+                    if (neighbor == null && neighbor.IsBlocked)
+                    {
+                        info.Speed /= 2.0F;
+                    }
+                }
+
+                return info;
+            }).ToList();
+
             var efs = this.Effectors.ToArray();
 
             list_infos.ForEach(info => efs.ForEach(e => e.ApplyCommand(info)));
 
             return efs;
         }
-       
 
         #region implementation of IEqualable
         public static bool operator ==(Block A, Block B)
@@ -169,6 +187,27 @@ namespace RouteLibrary.Base
                 }
 
                 return this.Detectors.Any(s => s.IsDetected);
+            }
+        }
+
+        public bool IsHaltable
+        {
+            get
+            {
+                return this.HasMotor && this.HasSensor;
+            }
+        }
+
+        public bool IsBlocked
+        {
+            get
+            {
+                if (!this.IsHaltable)
+                {
+                    throw new InvalidOperationException("IsBlocked property requires Haltable state");
+                }
+
+                return this.Detectors.All(d => d.IsDetected);
             }
         }
     }

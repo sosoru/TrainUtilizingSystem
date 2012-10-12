@@ -58,7 +58,7 @@ namespace DengoController
             }
         }
 
-        static void AddAccel(double acc)
+        static void AddAccel(double acc, MotorDirection dir)
         {
             if (mtr_g == null)
                 return;
@@ -73,7 +73,7 @@ namespace DengoController
 
         static void Main(string[] args)
         {
-            IDengoController cnt = new StaticController() { AccelLevel = 0.5 };
+            IDengoController cnt = new DengoController(); 
 
             InitCommunication(new IPAddress(new byte[] { 255, 255, 255, 0 }), new IPAddress(new byte[] { 192, 168, 2, 10 }));
 
@@ -100,14 +100,14 @@ namespace DengoController
 
                 if (infl < 0)
                     infl = 0;
-                else if (infl > 200)
-                    infl = 200;
+                else if (infl > 250)
+                    infl = 250;
 
-                AddAccel(infl);
-                Console.WriteLine("accel : {0}, brake : {1}, duty : {2}, current : {3}",
-                            ac * 6, br * 14, infl, mtr_g.CurrentState.Current );
+                AddAccel(infl, (cnt.Position) ? MotorDirection.Positive : MotorDirection.Negative) ;
+                Console.WriteLine("accel : {0}, brake : {1}, duty : {2}, current : {3}, button : {4}",
+                            ac * 6, br * 14, infl, mtr_g.CurrentState.Current  );
 
-                System.Threading.Thread.Sleep(100);
+                System.Threading.Thread.Sleep(200);
 
 
             }
@@ -151,6 +151,16 @@ namespace DengoController
         private int extractbit(int state, int bit)
         {
             return (state & (1 << bit)) >> bit;
+        }
+
+        public bool Position
+        {
+            get
+            {
+                var state = getkeystate;
+
+                return extractbit(state, 4) > 0;
+            }
         }
 
         public double AccelLevel

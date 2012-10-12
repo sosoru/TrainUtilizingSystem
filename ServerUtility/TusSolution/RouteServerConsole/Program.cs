@@ -57,17 +57,8 @@ namespace RouteServerConsole
         static IEnumerable<Route> Route_cw()
         {
             var routes = new[]{
-                new[] {"AT1", "PT3", "PT4", "BT1", "CT1", "DT1", "PT1", },
+                new[] {"AT1",  "BT1", "CT1",  },
             };
-            return routes.ToRoute(sheet)
-                .Repeat();
-        }
-
-        static IEnumerable<Route> Route_cw2()
-        {
-            var routes = new[]                             {
-                new[]{"AT2", "PT5", "PT4", "BT1", "CT1", "DT1", "PT1"}, 
-                             };
             return routes.ToRoute(sheet)
                 .Repeat();
         }
@@ -145,7 +136,7 @@ namespace RouteServerConsole
             // positioning train to AT1(cw), AT2(ccw)
 
             var cw = Route_cw().First();
-            var ccw = Route_cw2().First();
+            //var ccw = Route_cw2().First();
 
             return new[] { cw }
                 .ToObservable()
@@ -153,8 +144,8 @@ namespace RouteServerConsole
                         {
                             ClearState();
                             EffectRoute(cw, 0.6f, true);
-                            ClearState();
-                            EffectRoute(ccw, 0.6f, true);
+                            //ClearState();
+                            //EffectRoute(ccw, 0.6f, true);
                         });
         }
 
@@ -237,7 +228,9 @@ namespace RouteServerConsole
             while (true)
             {
                 if (r.IsRouteFinished)
+                {
                     return;
+                }
 
                 EffectRouteOnce(r, speed, todefault);
             }
@@ -274,19 +267,19 @@ namespace RouteServerConsole
         {
             var serv = CreateServer(new IPAddress(new byte[] { 192, 168, 2, 24 }),
                                     new IPAddress(new byte[] { 255, 255, 255, 0 }));
-            sheet = CreateSheet(@"C:\Users\Administrator\Desktop\rail_proj\1004.yaml", serv);
+            sheet = CreateSheet(@"C:\Users\Administrator\Desktop\rail_proj\1004_2.yaml", serv);
             var message =
                 "press 1:positioning trains, 2:following double routes, 3:following cw route, 4:following ccw route";
 
             var sc = System.Reactive.Concurrency.Scheduler.NewThread;
             var cw = Route_cw().First();
-            var ccw = Route_cw2().First();
+            //var ccw = Route_cw2().First();
 
             var statuses =
                 Observable
                 .Start(() => DateTime.Now.ToString())
                 .Concat(new[] { message }.ToObservable())
-                .Concat(Observable.Defer(() => ShowRouteState(new[] { cw, ccw })))
+                .Concat(Observable.Defer(() => ShowRouteState(new[] { cw })))
                 .Concat(Observable.Defer(() => ShowStatuses()))
                 .Concat(Observable.Defer(() => ShowSwitchStatuses()))
                 .Concat(Observable.Defer(() => ShowMotorStatuses()))
@@ -309,7 +302,7 @@ namespace RouteServerConsole
                 while (true)
                 {
                     new[] {
-                        new{route= Route_cw().First(), sp = 0.4f, ps = SensorLibrary.Packet.Data.PointStateEnum.Straight},
+                        new{route= Route_cw().First(), sp = 0.6f, ps = SensorLibrary.Packet.Data.PointStateEnum.Straight},
                         //new{route=Route_cw2().First(), sp = 0.35f, ps = SensorLibrary.Packet.Data.PointStateEnum.Curve},
                         }
                         .ForEach(r =>
@@ -323,6 +316,18 @@ namespace RouteServerConsole
                                          EffectRoute(r.route, r.sp, true);
                                      });
                 }
+
+                //Route_cw().First().Blocks.SelectMany(b => b.Effectors).Where(e => e is MotorEffector)
+                //    .Cast<MotorEffector>().ForEach(e =>
+                //    {
+                //        var state = e.Device.CurrentState;
+                //        state.ReceivingServer = serv;
+                //        state.Duty = 0.8F;
+                //        state.ControlMode = MotorControlMode.DutySpecifiedMode;
+                //        state.Direction = MotorDirection.Positive;
+
+                //        e.Device.SendPacket(state);
+                //    });
 
 
                 //ClearState();
