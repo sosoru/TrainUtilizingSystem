@@ -6350,6 +6350,8 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <part name="P+2" library="supply1" deviceset="VCC" device=""/>
 <part name="R4" library="rcl" deviceset="R-EU_" device="R0603" value="33k"/>
 <part name="R8" library="rcl" deviceset="R-EU_" device="R0603" value="3.3k"/>
+<part name="P+5" library="supply1" deviceset="VCC" device=""/>
+<part name="R10" library="rcl" deviceset="R-EU_" device="R0603" value="10k"/>
 </parts>
 <sheets>
 <sheet>
@@ -6395,6 +6397,8 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <instance part="P+2" gate="VCC" x="91.44" y="68.58"/>
 <instance part="R4" gate="G$1" x="167.64" y="63.5" rot="R180"/>
 <instance part="R8" gate="G$1" x="180.34" y="0" rot="R180"/>
+<instance part="P+5" gate="VCC" x="81.28" y="116.84"/>
+<instance part="R10" gate="G$1" x="81.28" y="106.68" rot="R270"/>
 </instances>
 <busses>
 </busses>
@@ -6435,9 +6439,13 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 </net>
 <net name="CHAIN_OUT" class="0">
 <segment>
-<wire x1="60.96" y1="99.06" x2="63.5" y2="99.06" width="0.1524" layer="91"/>
-<label x="63.5" y="99.06" size="1.27" layer="95" xref="yes"/>
+<wire x1="60.96" y1="99.06" x2="81.28" y2="99.06" width="0.1524" layer="91"/>
+<label x="86.36" y="99.06" size="1.27" layer="95" xref="yes"/>
 <pinref part="SMD2" gate="G$1" pin="CHAIN"/>
+<pinref part="R10" gate="G$1" pin="2"/>
+<wire x1="81.28" y1="99.06" x2="86.36" y2="99.06" width="0.1524" layer="91"/>
+<wire x1="81.28" y1="101.6" x2="81.28" y2="99.06" width="0.1524" layer="91"/>
+<junction x="81.28" y="99.06"/>
 </segment>
 <segment>
 <wire x1="73.66" y1="30.48" x2="76.2" y2="30.48" width="0.1524" layer="91"/>
@@ -6628,6 +6636,11 @@ Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
 <segment>
 <pinref part="R3" gate="G$1" pin="1"/>
 <pinref part="P+2" gate="VCC" pin="VCC"/>
+</segment>
+<segment>
+<pinref part="P+5" gate="VCC" pin="VCC"/>
+<pinref part="R10" gate="G$1" pin="1"/>
+<wire x1="81.28" y1="114.3" x2="81.28" y2="111.76" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="VLED" class="1">
