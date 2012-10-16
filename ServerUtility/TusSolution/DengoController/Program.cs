@@ -14,8 +14,6 @@ using SensorLibrary.Packet.Control;
 using SensorLibrary.Devices;
 using SensorLibrary.Devices.TusAvrDevices;
 
-//peropero
-
 namespace DengoController
 {
     class Program
