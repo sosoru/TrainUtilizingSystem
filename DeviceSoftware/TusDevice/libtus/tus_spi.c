@@ -8,9 +8,6 @@
 
 #define BUF_COUNT 4
 
-// nSS is set to low while the hardwares are communicating.
-#define IS_SPI_COMMUNICATING !(TUS_CONTROL_PIN & (1 << TUS_CONTROL_SS))
-
 #include "tus.h"
 #include "tus_cfg.h"
 #include "packet.h"
@@ -38,13 +35,14 @@ static spi_received_handler SpiReceive = 0;
 ISR(SPI_STC_vect)
 {
 	uint8_t i;
-	uint8_t received = SPDR;
-		
+	//uint8_t spi_status = SPSR;
+	//uint8_t received = SPDR;
+			
 	sbi(TUS_CONTROL_DDR, TUS_CONTROL_MISO);
 	//receive
 	if(recv_buffer_bytepos < RECEIVE_BUFFER_BYTESIZE)
 	{
-		((uint8_t*)recv_buffer)[recv_buffer_bytepos++] = received;
+		((uint8_t*)recv_buffer)[recv_buffer_bytepos++] = SPDR;
 		
 		if(recv_buffer_bytepos >= RECEIVE_BUFFER_BYTESIZE)
 		{
@@ -53,9 +51,11 @@ ISR(SPI_STC_vect)
 	}
 	
 	//send	
+	cbi(SPSR, SPIF);
 	if(psending_obj != NULL && send_buffer_pos < sizeof(EthPacket))
 	{
-		SPDR = ((uint8_t*)&(psending_obj->packet))[send_buffer_pos++];	
+		uint8_t wdata = psending_obj->packet.raw_array[send_buffer_pos++];
+		SPDR = 	wdata;
 	}
 	else
 	{
@@ -86,6 +86,7 @@ void tus_spi_init()
 			;
 	
 	cbi(SPSR, SPIF); // clear interrupt flag
+	sbi(SPSR, SPI2X);// set double speed flag
 	
 	sei(); //enable global interruption
 }
@@ -163,7 +164,8 @@ void tus_spi_set_handler(spi_received_handler handler)
 
 uint8_t tus_spi_lock_send_buffer(spi_send_object ** ppsendobj)
 {	
-	uint8_t i, reg_cache;	
+	uint8_t i;
+	uint8_t reg_cache = SREG;	
 
 	while(IS_SPI_COMMUNICATING) { _delay_us(100);}		
 	

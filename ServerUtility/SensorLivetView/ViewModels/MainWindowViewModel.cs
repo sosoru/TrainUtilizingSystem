@@ -17,12 +17,18 @@ using Livet.Messaging;
 using Livet.Messaging.File;
 using Livet.Messaging.Window;
 
-using SensorLibrary;
 using SensorLivetView.Models;
 using SensorLivetView.Models.Devices;
 using SensorLivetView.ViewModels.Controls;
 
 using LibUsbDotNet;
+
+using SensorLibrary.Devices;
+using SensorLibrary.Devices.PicUsbDevices;
+using SensorLibrary.Packet.Control;
+using SensorLibrary.Packet.IO;
+using SensorLibrary.Packet;
+using SensorLibrary;
 
 namespace SensorLivetView.ViewModels
 {
@@ -197,7 +203,7 @@ namespace SensorLivetView.ViewModels
             var cnt = new USBDeviceController(dev);
             cnt.Open();
 
-            var serv = new PacketServer() { Controller = cnt };
+            var serv = new PacketServer(new PicDeviceFactoryProvider()) { Controller = cnt };
 
             //#if TEST
             LoggingStart(serv);
@@ -302,7 +308,7 @@ namespace SensorLivetView.ViewModels
         {
             return new DeviceViewModelDispatcher<TModel, TDevice, TState>()
             {
-                dispat = new PacketDispatcherSingle<TDevice, TState>(),
+                dispat = new PacketDispatcherSingle<TDevice, TState>(new PicDeviceFactoryProvider()),
                 projected = new ObservableWrappingCollectionOnDispat<TDevice, IDeviceViewModel<IDeviceModel<IDevice<IDeviceState<IPacketDeviceData>>>>>()
                 {
                     Dispatcher = this.AssociatedDispatcher,

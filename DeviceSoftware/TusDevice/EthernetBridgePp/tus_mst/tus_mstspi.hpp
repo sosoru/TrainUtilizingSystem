@@ -11,6 +11,7 @@
 
 #include "../EthernetBridge.hpp"
 #include "../avr_base.hpp"
+#include <avr/delay.h>
 
 namespace EthernetBridge
 {
@@ -65,7 +66,7 @@ namespace EthernetBridge
 					}
 		
 					byte_recev = TransByte(send);
-		
+				
 					received.raw_array[i] = byte_recev;
 				}
 	
@@ -104,9 +105,13 @@ namespace EthernetBridge
 				}
 		
 				data <<= 1;	
-		
+				
+				_delay_us(6);
 				SCKpin::Set();
+				_delay_us(3);
 				receive |= MISOpin::IsSet() << (7-i);
+				
+				_delay_us(3);
 				SCKpin::Clear();		
 			}
 

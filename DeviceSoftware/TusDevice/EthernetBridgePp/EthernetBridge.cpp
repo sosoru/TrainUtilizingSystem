@@ -1,19 +1,4 @@
-/*********************************************
- * vim:sw=8:ts=8:si:et
- * To use the above modeline in vim you must have "set modeline" in your .vimrc
- * Author: Guido Socher
- * Copyright: GPL V2
- * See http://www.gnu.org/licenses/gpl.html
- *
- * Ethernet remote device and sensor
- * UDP and HTTP interface 
-        url looks like this http://baseurl/password/command
-        or http://baseurl/password/
- *
- * Chip type           : Atmega88 or Atmega168 or Atmega328 with ENC28J60
- * Note: there is a version number in the text. Search for tuxgraphics
- 
- *********************************************/
+
 #include "EthernetBridge.hpp"
 #include <avr/io.h>
 #include "avr_base.hpp"
@@ -28,7 +13,9 @@
 #include "LcdCfg.hpp"
 #include "EthConfig.hpp"
 #include "UI/UIbase.hpp"
-#include "ui/setting/test_setting.hpp"
+//#include "ui/setting/test_setting.hpp"
+#include "ui/UIController.hpp"
+#include "ui/setting/mac_addr.hpp"
 
 using namespace EthernetBridge;
 using namespace EthernetBridge::Eth;
@@ -50,22 +37,6 @@ ISR(TIMER1_COMPA_vect)
 	//}
 			//
 	//sc2004_WriteData(lcd_buf[bufptr++]);
-}
-
-void refresh_lcd()
-{
-	uint8_t i;
-	
-	Lcd::Display::ClearDisplay();
-	_delay_ms(2);
-	for(i=0; i<sizeof(lcd_buf); ++i)
-	{
-		if(lcd_buf[i] == 0x00)
-			break;
-		
-		Lcd::Display::WriteData(lcd_buf[i]);
-		_delay_us(37);
-	}
 }
 
 void BoardInit()
@@ -92,8 +63,18 @@ void BoardInit()
 	//PORTF = 0;
 	PORTG = 0;
 	
-	EthDevice::Parameters.ipaddress = {192,168,2,24};
-	EthDevice::Parameters.macaddress = {0x54,0x55,0x58,0x10,0x00,0x24};
+	EthDevice::Parameters.ipaddress[0] = 192;
+	EthDevice::Parameters.ipaddress[1] = 168;
+	EthDevice::Parameters.ipaddress[2] = 2;
+	EthDevice::Parameters.ipaddress[3] = 24;
+	
+	EthDevice::Parameters.macaddress[0] = 0x54;
+	EthDevice::Parameters.macaddress[1] = 0x55;
+	EthDevice::Parameters.macaddress[2] = 0x58;
+	EthDevice::Parameters.macaddress[3] = 0x10;
+	EthDevice::Parameters.macaddress[4] = 0x00;
+	EthDevice::Parameters.macaddress[5] = 0x24;
+		
 	EthDevice::Parameters.port = 8000;	
 	
 	EthDevice::EthernetInit();
@@ -110,7 +91,7 @@ void BoardInit()
 	ModuleG::Init();	
 	ModuleH::Init();	
 		
-	Lcd::Display::LcdInit();
+	//Lcd::Display::Init();
 } 
 
 template < class t_module >
@@ -120,10 +101,9 @@ void DispatchModulePackets()
 	
 	do
 	{
-		
 		if(t_module::Transmit(received))
 		{
-
+			PORTB ^= _BV(PORTB7);
 			if(EthDevice::IsForChildren(received))
 			{
 				EthDevice::StockToChildren(&received);
@@ -131,11 +111,8 @@ void DispatchModulePackets()
 			else
 			{
 				EthDevice::SendToEthernet(&received);
-			}			
-			
-			
+			}						
 		}
-		
 	}while(t_module::IsStocked());
 	
 }
@@ -152,37 +129,39 @@ void DispatchProcess()
 	DispatchModulePackets<ModuleH>();
 }
 
-int main(void)
+extern "C"
 {
-	using namespace UI;
-	
-	uint8_t i=0,j;
-	
-	MCUCSR = 0;
-	wdt_disable();
-	
-//#ifndef DEBUG
-	DDRB = 0xff;
-	//_delay_ms(1000);
-//#endif
-	
-    BoardInit();
-	PORTB |= _BV(PORTB4);
-		
-	Lcd::Display::ReturnHome();
-	_delay_ms(3);
-	Lcd::Display::SetAddressOfDDRAM(0x40);
-	_delay_us(37);
-	
-	memset(lcd_buf, 0x20, sizeof(lcd_buf));
-	while(1)
+
+	int main(void)
 	{
-		while(EthDevice::ReceiveFromEthernet());		
-		
-		DispatchProcess();
-		
-		refresh_lcd();
-	}			
+		using namespace UI;
 	
-	return 0;
+		//Ui_View_mac_addr ui_mac;
+		//UIController uicnt(ui_mac);
+		
+		MCUCSR = 0;
+		wdt_disable();
+		//fprintf(stderr, "hoge");
+	//#ifndef DEBUG
+		DDRB = 0xff;
+		//_delay_ms(1000);
+	//#endif
+	
+		BoardInit();
+		PORTB |= _BV(PORTB4);
+	
+		while(1)
+		{
+			while(EthDevice::ReceiveFromEthernet());		
+				
+			DispatchProcess();
+		
+			//uicnt.Refresh();
+		}			
+	
+		return 0;
+	}
+
+	
+};
 }

@@ -9,6 +9,9 @@ using System.Reactive.Linq;
 using SensorLivetView.Models;
 using SensorLibrary;
 using SensorLibrary.Manipulators;
+using SensorLibrary.Devices;
+using SensorLibrary.Devices.PicUsbDevices;
+using SensorLibrary.Packet.Data;
 
 namespace TestProject
 {

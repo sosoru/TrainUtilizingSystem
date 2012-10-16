@@ -6,6 +6,11 @@ Release/
 TestResults/
 packages/
 
+/TUSBudget/TUSBudget/_Pvt_Extensions
+
+
+*.suo
+
 *.o
 *.map
 *.err

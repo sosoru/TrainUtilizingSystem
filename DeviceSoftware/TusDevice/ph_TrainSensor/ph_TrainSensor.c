@@ -6,19 +6,25 @@
  */ 
 
 #include "global.h"
+#include "string.h"
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <util/delay.h>
 #include "suart.h"
 #include "../module_UartControl/UartPacket.h"
 
+#define nop() __asm__ __volatile__ ("nop")
+
 #define UARTDEV_ID_TRAINSENSOR 0x01
 
-#define SET_PARENT_TRANSFER		sbi(DDRB, 1);
-#define LEAVE_PANRET_TRANSFER	cbi(DDRB, 1);
+#define SENDING_TYPE			UARTDEV_ID_TRAINSENSOR
+#define SENDING_PACKET_SIZE		sizeof(UsartPacket_sensor)
+#define ENTER_PARENT_TRANSFER	sbi(DDRB, 3);
+#define LEAVE_PANRET_TRANSFER	cbi(DDRB, 3);
 
-TrainSensorPacket_xmit received;
-TrainSensorPacket_rcev sending;
+UsartDevicePacket_Header received_head;
+uint8_t received_data[MAX_SIZE_USARTDATA];
+uint8_t current_adc;
 
 void device_init();
 uint8_t validate_received_packet();
@@ -29,73 +35,104 @@ void send_neighbor_packet();
 
 ISR(ADC_vect)
 {
+	current_adc = current_adc / 2 + ADCL / 2;
+	
 	sbi(TIFR0, TOV0);
 }
 
 void send_neighbor_packet()
 {
-	uint8_t next_number = received.number[0]+1;
+	uint8_t *ptr;
 	
-	xmit(next_number);
-	xmit(next_number);
-	xmit(next_number);
+	received_head.number++;
+	received_head.checksum_all++;
+
+	xmit(received_head.type);
+	xmit(received_head.packet_size);
+	xmit(received_head.number);
+	xmit(received_head.checksum_all);		
+
+	ptr = received_data;
+	while(ptr < received_data + received_head.packet_size)
+	{
+		xmit(*(ptr++));
+	}
 }
 
 void send_parent_error()
-{
-	xmit_parent(0xff);
-	xmit_parent(0xff);
-	xmit_parent(0xff);
+{	
+	ENTER_PARENT_TRANSFER
+	
+	xmit_parent(SENDING_TYPE);
+	xmit_parent(0); //packet size
+	xmit_parent(0xFF); //number
+	xmit_parent(SENDING_TYPE ^ 0xFF);
+	
+	LEAVE_PANRET_TRANSFER
 }
 
 void send_parent_packet()
-{
-	uint8_t i;
+{	
+	uint8_t checksum, number;
+	uint8_t adc = current_adc;	
 	
-	sending.checksum = 0x00;
+	number = received_head.number;
+	checksum = (SENDING_TYPE ^ SENDING_PACKET_SIZE ^ number ^ adc);
 	
-	sending.checksum ^= (sending.number = received.number[0]);
-	sending.checksum ^= (sending.result = ADCL);
+	ENTER_PARENT_TRANSFER	
+	xmit_parent(SENDING_TYPE);
+	xmit_parent(SENDING_PACKET_SIZE);
+	xmit_parent(number);
+	xmit_parent(checksum);
 	
-	SET_PARENT_TRANSFER
-	for(i=0; i<sizeof(sending); ++i)
-	{
-		xmit_parent(sending.rawdata[i]);
-	}
+	xmit_parent(adc);
 	LEAVE_PANRET_TRANSFER
 }
 
 void receive_packet()
-{
-	uint8_t i;
+{		
+	uint8_t *ptr;
 	
-	for(i=0; i<sizeof(received); ++i)
+	received_head.type = rcvr();
+	received_head.packet_size = rcvr();
+	received_head.number = rcvr();
+	received_head.checksum_all = rcvr();
+	
+	if(received_head.packet_size > MAX_SIZE_USARTDATA)
+		received_head.packet_size = MAX_SIZE_USARTDATA;
+	
+	ptr = received_data;
+	while(ptr < received_data + received_head.packet_size)
 	{
-		received.number[i] = rcvr();
+		*(ptr++) = rcvr();
 	}
 }
 
 uint8_t validate_received_packet()
 {
-	uint8_t i, checking;
+	uint8_t checking=0;
+	uint8_t *ptr;
 	
-	checking = received.rawdata[0];
-	for(i=1; i<sizeof(received); ++i)
+	checking ^= received_head.type;
+	checking ^= received_head.number;
+	checking ^= received_head.packet_size;
+	
+	ptr = received_data;
+	while(ptr < received_data + received_head.packet_size)
 	{
-		if(checking != received.rawdata[i])
-			return FALSE;
+		checking ^= *(ptr++);
 	}
 	
-	return TRUE;
+	return checking == received_head.checksum_all;
 }
 
 void device_init()
 {	
 	PUEB	= 0b00000001;
-	DDRB	= 0b11110001;
+	DDRB	= 0b11110100;
 
 	// Timer 0 initializing
-	OCR0AL = 126;			// 4msec at 8MHz
+	OCR0AL = 16;			// 512usec at 8MHz
 	TCCR0A |= 0b00000011;
 	//TIMSK0 |= 0b00000001;	// interrupts enable
 	TCCR0B |= 0b00011000;	// set to 8bit fast pwm (top=OCR0A)	
@@ -103,15 +140,41 @@ void device_init()
 		
 	// adc initialzing
 	sbi(ADCSRA, ADIE); // ADC interrupt enable	
-	ADMUX = 2;			
-	sbi(DIDR0, ADC2D); // ADC2 enable
+	ADMUX = 0;			
+	sbi(DIDR0, ADC0D); // ADC0 enable
 	ADCSRA |= 0b00000111; // CK/128
 	ADCSRB = 0b100;		// triggering source is timer0 overflowing
 	sbi(ADCSRA, ADATE); // Auto-trigger enabled
 	sbi(ADCSRA, ADEN); // A/D converter enable
 	sbi(ADCSRA, ADSC); // A/D convetsion is started
 	
+	memset(&received_head, 0x00, sizeof(received_head));
+	memset(received_data, 0x00, sizeof(received_data));
+	received_head.checksum_all = 0xff;
+	current_adc = 0;
+	
 	sei();	// interrupt enable
+	
+}
+
+void wait_collision()
+{
+	uint8_t i=200, result=1, current;
+	
+	while(i--)
+	{
+		nop();
+		nop();
+		nop();
+		nop(); // 1us at 8MHz
+		
+		current = PINB & (1 << PINB1);
+		if(result != current)
+		{
+			i=200;
+		}
+		result = current;
+	}
 	
 }
 
@@ -138,6 +201,7 @@ int main(void)
 		else
 		{
 			send_parent_error();
+			wait_collision();
 		}
 	}
 	

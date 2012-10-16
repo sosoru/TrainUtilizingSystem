@@ -3,6 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SensorLibrary;
+using SensorLibrary.Packet;
+using SensorLibrary.Packet.IO;
+using SensorLibrary.Packet.Data;
+using SensorLibrary.Devices;
+using SensorLibrary.Devices.PicUsbDevices;
+
 using System.IO;
 
 namespace SensorLivetView
@@ -39,7 +45,7 @@ namespace SensorLivetView
                 ID = id,
                 ModuleType = ModuleTypeEnum.MotherBoard,
             };
-            var state = DeviceFactory.MotherBoardFactory.DeviceStateCreate();
+            var state = PicDeviceFactoryProvider.MotherBoardFactory.DeviceStateCreate();
             state.BasePacket = packet;
             state.Data.ModuleType [0] = 0x10; //mb, sens
 
@@ -160,6 +166,18 @@ namespace SensorLivetView
         public void WritePacket(DevicePacket packet)
         {
             // do nothing
+        }
+
+
+        public IObservable<DevicePacket> GetReadingPacket()
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public IObservable<System.Reactive.Unit> GetWritingPacket(DevicePacket pack)
+        {
+            throw new NotImplementedException();
         }
     }
 

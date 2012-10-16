@@ -12,7 +12,8 @@
 #include "avr_base.hpp"
 #include "../libtus/packet.h"
 
-extern char lcd_buf[];
+//for boost including
+#define BOOST_NO_STDLIB_CONFIG
 
 
 #endif /* ETHERNETBRIDGE_H_ */

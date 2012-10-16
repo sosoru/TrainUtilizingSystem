@@ -1,4 +1,6 @@
 ﻿using SensorLibrary;
+using SensorLibrary.Packet;
+using SensorLibrary.Packet.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 

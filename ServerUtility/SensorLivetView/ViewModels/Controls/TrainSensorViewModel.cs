@@ -7,7 +7,12 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+
 using SensorLibrary;
+using SensorLibrary.Packet.Data;
+using SensorLibrary.Devices;
+using SensorLibrary.Devices.PicUsbDevices;
+
 using Livet;
 using Livet.Command;
 using System.ComponentModel;

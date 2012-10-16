@@ -10,6 +10,7 @@
 #define TUS_SPI_H_
 
 #include "packet.h"
+#include "tus_cfg.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -28,6 +29,9 @@ typedef struct tag_spi_send_object
 	uint8_t is_locked;
 	uint8_t is_sent;
 } spi_send_object;
+
+// nSS is set to low while the hardwares are communicating.
+#define IS_SPI_COMMUNICATING !(TUS_CONTROL_PIN & (1 << TUS_CONTROL_SS))
 
 typedef void (*spi_received_handler)(args_received* e) ;
 

@@ -14,6 +14,9 @@ using SensorLivetView.Models;
 using SensorLivetView.Models.Devices;
 
 using SensorLibrary;
+using SensorLibrary.Packet.Data;
+using SensorLibrary.Devices;
+using SensorLibrary.Devices.PicUsbDevices;
 
 using System.Reactive.Linq;
 using System.Reactive.Concurrency;

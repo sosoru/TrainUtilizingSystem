@@ -18,6 +18,8 @@ using SensorLivetView.ViewModels;
 using SensorLivetView.ViewModels.Controls;
 using SensorLibrary;
 using SensorLibrary.Manipulators;
+using SensorLibrary.Devices.PicUsbDevices;
+using SensorLibrary.Packet.Data;
 
 namespace SensorLivetView.Views
 {

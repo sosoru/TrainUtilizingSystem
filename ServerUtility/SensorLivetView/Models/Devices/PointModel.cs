@@ -5,6 +5,8 @@ using System.Text;
 
 using Livet;
 using SensorLibrary;
+using SensorLibrary.Devices.PicUsbDevices;
+using SensorLibrary.Packet.Data;
 using System.Collections.ObjectModel;
 
 namespace SensorLivetView.Models.Devices

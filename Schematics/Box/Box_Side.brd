@@ -74,10 +74,10 @@
 <vertex x="115" y="37"/>
 </polygon>
 <polygon width="0.4064" layer="20">
-<vertex x="134" y="20"/>
+<vertex x="134" y="25"/>
 <vertex x="134" y="10"/>
 <vertex x="174" y="10"/>
-<vertex x="174" y="20"/>
+<vertex x="174" y="25"/>
 </polygon>
 </plain>
 <libraries>

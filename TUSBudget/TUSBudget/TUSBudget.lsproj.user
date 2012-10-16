@@ -3,9 +3,16 @@
   <PropertyGroup>
     <EnableENC>False</EnableENC>
     <ProjectView>ProjectFiles</ProjectView>
-    <ServerPort>65156</ServerPort>
+    <ServerPort>63026</ServerPort>
     <SchemaManagementSchemaBuildState>0</SchemaManagementSchemaBuildState>
-    <SchemaManagementLastModelWriteTime>634711194920584941</SchemaManagementLastModelWriteTime>
-    <GrantedPermissions>Microsoft.LightSwitch.Security:SecurityAdministration</GrantedPermissions>
+    <SchemaManagementLastModelWriteTime>634855644144680899</SchemaManagementLastModelWriteTime>
+    <GrantedPermissions>
+    </GrantedPermissions>
+    <PublishUserName />
+    <EncryptedPublishConnectionString>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA7rsgah9/aEyNu9gKHUYEOQAAAAACAAAAAAAQZgAAAAEAACAAAADeprK0WdI6ddqWd2BfF1K07URrolNuRupUilTNw5SLOgAAAAAOgAAAAAIAACAAAAAD/cluMQOBpUhFWKxa5eQd2efj8M7wkR3UHHhnbtu4uCABAAB3cwQpgsDgWObMgua/Cy84cdZLo2VwUgQcZKDCaNf03mwcqGDGEKjByE1F52gtu3K/FBcPD9U/tDy5RkG/GvtwVzfSokcCvg33gGvxZfUqnS8B0QlVvWulJfXuUsJOKKYQXBUgaPSsIaQM+TmTFASrZfdhPDw+QCBdjcWkMU5/khzgDW3Nn3xZRGc/0Ye//T2Int/1Z0yPfWp8XYjdFQopweYxZi1gY5fnWD9aM1mk+wb76PCiKPSbYiFEUh/YE6YQBj9t4UrmTPo/Y67YbTi8ZRPPjADkZiz8GsRhtl0ICqaYjBOsx+KudFLR/Z5CNbIm8YG000sdPt0b8RdwNo0LyYBLYkHfkXDTKTSmHQ3Yit3CoGXBiucuAxAGsds3FtBAAAAA6Br3OKSVDvaZxjGCIFo/FwpVlQeyrWDKbd4bUfWDNVRiVAFEKJemSkNBUjD1zswV3Yzl2trvzj4v8CQJ6BRHXw==</EncryptedPublishConnectionString>
+    <EncryptedPublishSchemaConnectionString />
+    <EncryptedClientConnectionString>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA7rsgah9/aEyNu9gKHUYEOQAAAAACAAAAAAAQZgAAAAEAACAAAACwvS8VIyPt5hZw/arBhC48pAUZK7RnjA7HZ8Ng8VDhbgAAAAAOgAAAAAIAACAAAAC11wkzx5HLZIhzu1fFXLbjRc3vPo706aEPvzDkVVxUriABAACKBHxmfR8xaLIwf3iCuX/9447Q0FdwfmCR+2LvarWoYmcxBtHxuY0FLTibeClIpBucBrX787wnI4gJu0Si8SBg7HXYiJVwYYM8wQVadl8uCBfw6M8Y2RbUB0/kmQ8Vy02+m0CaWjv66Sh1VR9qVIdrX05xAJp1P4eCXwW52akLgnwf6evdLtdgO9cSttIMNBZ98/1xycy6VdiSOaTXlGci+KluXnMFWCZECeGc3RrL4PiNjBtlgOF/6BWdfKMwX9MZXoYpFfTB+baHsXb6zlBlXoCpFz1XJZ/dgVyyzDdLsDv2zaPIur6ZM6265rut8cVIUtHAEKOE8bXYo/z6cIM+6kojl+1maPpAwDLJGAIQDrUCE1CqNb2xS2iTKI8UORVAAAAAIAGcOir4wjO2f1NNMe1LMN4jhXpJZ7dYZTecjfqSzWunhNshL1Kd7/RTPqigRk/Vz+MTjuRSUBYFYFIxfg/PUA==</EncryptedClientConnectionString>
+    <EncryptedAdministratorPassword />
+    <EncryptedPublishUserPassword />
   </PropertyGroup>
 </Project>

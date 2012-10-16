@@ -11,7 +11,9 @@
 
 #include "module_PointController.hpp"
 #include "PointPacket.hpp"
+#include <avr/io.h>
 #include <avr/delay.h>
+#include <avr/interrupt.h>
 #include <string.h>
 
 namespace module_PointController
@@ -39,6 +41,7 @@ namespace module_PointController
 		public :
 		
 		static PointModuleState State;
+		static bool IsChanged;
 		
 		static inline void Stop()
 		{
@@ -53,7 +56,7 @@ namespace module_PointController
 		}
 		
 		static inline void Positive()
-		{
+		{		
 			Stop(); _delay_us(100);
 			Brake();
 			_dynamic_delay_ms<1>(State.DeadTime);
@@ -80,6 +83,9 @@ namespace module_PointController
 		
 		static inline void Change()
 		{
+			if(IsChanged)
+				return;
+				
 			switch(State.Position)
 			{
 				case PositivePosition:
@@ -92,11 +98,20 @@ namespace module_PointController
 				default:
 					break;
 			}
+			
+			IsChanged = true;
 		}
 		
 		static inline void ApplyState(const ptrPacket &packet)
 		{
-			memcpy((void*)&State, (void*)packet.get_State(module_number), sizeof(PointModuleState));	
+			PointModuleState* pstate = (PointModuleState*)packet.pdata;
+			
+			//if(pstate->Position != State.Position)
+			{
+				IsChanged = false;
+			}
+			
+			memcpy((void*)&State, (const void*)(pstate), sizeof(PointModuleState));	
 		}
 	};
 	
@@ -105,6 +120,12 @@ namespace module_PointController
 			class ControllBpin,
 			ModuleNumberEnum module_number
 	> PointModuleState PointModule<ControllApin, ControllBpin, module_number>::State;
+
+	template<
+			class ControllApin,
+			class ControllBpin,
+			ModuleNumberEnum module_number
+	> bool PointModule<ControllApin, ControllBpin, module_number>::IsChanged;
 
 }
 

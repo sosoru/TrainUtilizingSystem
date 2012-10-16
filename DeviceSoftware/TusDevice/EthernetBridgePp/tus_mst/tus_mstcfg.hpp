@@ -32,10 +32,10 @@ namespace EthernetBridge{
 		typedef OutputPin1<PortD> SlaveModuleB;
 		typedef OutputPin2<PortD> SlaveModuleC;
 		typedef OutputPin3<PortD> SlaveModuleD;
-		typedef OutputPin3<PortE> SlaveModuleE;
-		typedef OutputPin3<PortE> SlaveModuleF;
-		typedef OutputPin3<PortE> SlaveModuleG;
-		typedef OutputPin3<PortE> SlaveModuleH;
+		typedef OutputPin4<PortE> SlaveModuleE;
+		typedef OutputPin5<PortE> SlaveModuleF;
+		typedef OutputPin6<PortE> SlaveModuleG;
+		typedef OutputPin7<PortE> SlaveModuleH;
 
 		typedef Reset::ResetModule< OutputPin0<PortA> > ResetModuleA;
 		typedef Reset::ResetModule< OutputPin1<PortA> > ResetModuleB;
@@ -54,7 +54,7 @@ namespace EthernetBridge{
 		class ChildModule
 		{
 			private:
-				static const uint8_t buffer_count = 2;
+				static const uint8_t buffer_count = 8;
 				static const uint8_t message_size = 64;
 			public:
 				typedef reset_module Reset;
@@ -79,7 +79,7 @@ namespace EthernetBridge{
 				static inline bool Stock(const EthPacket* ppacket)
 				{
 					//TODO : replace subnetaddr comparison 
-					if(ppacket->destId.SubnetAddr != 24 && ppacket->destId.ModuleAddr != device_child_id)
+					if(ppacket->destId.SubnetAddr != 24 || ppacket->destId.ModuleAddr != device_child_id)
 						return false;
 											
 					EthPacket* pbuffer;
@@ -102,7 +102,7 @@ namespace EthernetBridge{
 										
 					if(Dispatcher::PopPacket(&psend))
 					{
-						 PORTB |= _BV(PORTB7);
+						PORTB ^= _BV(PORTB6);
 						SpiToModule::TransData<slave_module>(psend, received);
 					}
 					else

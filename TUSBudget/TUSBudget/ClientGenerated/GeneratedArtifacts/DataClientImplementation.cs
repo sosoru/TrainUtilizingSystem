@@ -1259,6 +1259,73 @@ namespace LightSwitchApplication.Implementation
     }
     #endregion
     
+    #region Table2Item
+    [global::System.Runtime.Serialization.DataContract(Namespace = "http://schemas.datacontract.org/2004/07/ApplicationData.Implementation")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.LightSwitch.BuildTasks.CodeGen", "10.0.0.0")]
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+    public sealed class Table2Item :
+        global::System.ServiceModel.DomainServices.Client.Entity,
+        global::LightSwitchApplication.Table2Item.DetailsClass.IImplementation
+    {
+        public override object GetIdentity()
+        {
+            if (this.__host != null && this.__host.IsNewlyAdded)
+            {
+                return null;
+            }
+    
+            return this._Id;
+        }
+        [global::System.ComponentModel.DataAnnotations.Key()]
+        [global::System.ComponentModel.DataAnnotations.Editable(false, AllowInitialValue = true)]
+        [global::System.Runtime.Serialization.DataMember()]
+        [global::System.ComponentModel.DataAnnotations.RoundtripOriginal()]
+        public int Id
+        {
+            get
+            {
+                return this._Id;
+            }
+            set
+            {
+                if (this._Id != value)
+                {
+                    this.ValidateProperty("Id", value);
+                    this._Id = value;
+                    this.RaisePropertyChanged("Id");
+                }
+            }
+        }
+        private int _Id;
+        
+        #region IEntityImplementation Members
+        private global::Microsoft.LightSwitch.Internal.IEntityImplementationHost __host;
+        
+        global::Microsoft.LightSwitch.Internal.IEntityImplementationHost global::Microsoft.LightSwitch.Internal.IEntityImplementation.Host
+        {
+            get
+            {
+                return this.__host;
+            }
+        }
+        
+        void global::Microsoft.LightSwitch.Internal.IEntityImplementation.Initialize(global::Microsoft.LightSwitch.Internal.IEntityImplementationHost host)
+        {
+            this.__host = host;
+        }
+        
+        protected override void OnPropertyChanged(global::System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            base.OnPropertyChanged(e);
+            if (this.__host != null)
+            {
+                this.__host.RaisePropertyChanged(e.PropertyName);
+            }
+        }
+        #endregion
+    }
+    #endregion
+    
     #region ApplicationData
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.LightSwitch.BuildTasks.CodeGen", "10.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1312,6 +1379,13 @@ namespace LightSwitchApplication.Implementation
                 return base.EntityContainer.GetEntitySet<global::LightSwitchApplication.Implementation.Table1Item>();
             }
         }
+        public global::System.ServiceModel.DomainServices.Client.EntitySet<global::LightSwitchApplication.Implementation.Table2Item> Table2ItemEntityList
+        {
+            get
+            {
+                return base.EntityContainer.GetEntitySet<global::LightSwitchApplication.Implementation.Table2Item>();
+            }
+        }
         protected override global::System.ServiceModel.DomainServices.Client.EntityContainer CreateEntityContainer()
         {
             return new ApplicationDataEntityContainer();
@@ -1327,6 +1401,7 @@ namespace LightSwitchApplication.Implementation
                 this.CreateEntitySet<global::LightSwitchApplication.Implementation.StoreInfo>(global::System.ServiceModel.DomainServices.Client.EntitySetOperations.All);
                 this.CreateEntitySet<global::LightSwitchApplication.Implementation.NeededBoards>(global::System.ServiceModel.DomainServices.Client.EntitySetOperations.All);
                 this.CreateEntitySet<global::LightSwitchApplication.Implementation.Table1Item>(global::System.ServiceModel.DomainServices.Client.EntitySetOperations.All);
+                this.CreateEntitySet<global::LightSwitchApplication.Implementation.Table2Item>(global::System.ServiceModel.DomainServices.Client.EntitySetOperations.All);
             }
         }
     
@@ -1449,6 +1524,24 @@ namespace LightSwitchApplication.Implementation
             global::System.IAsyncResult BeginTable1ItemSet_All(string frameworkOperators, global::System.AsyncCallback callback, global::System.Object asyncState);
             global::System.ServiceModel.DomainServices.Client.QueryResult<global::LightSwitchApplication.Implementation.Table1Item> EndTable1ItemSet_All(global::System.IAsyncResult result);
             
+            [global::System.ServiceModel.OperationContract(AsyncPattern = true, Action = "http://tempuri.org/ApplicationDataDomainService/Table2ItemSet_Single", ReplyAction = "http://tempuri.org/ApplicationDataDomainService/Table2ItemSet_SingleResponse"),
+             global::System.ServiceModel.Web.WebGet(),
+             global::System.ServiceModel.FaultContract(typeof(global::System.ServiceModel.DomainServices.Client.DomainServiceFault), Action = "http://tempuri.org/ApplicationDataDomainService/Table2ItemSet_SingleDomainServiceFault", Name = "DomainServiceFault", Namespace = "DomainServices")]
+            global::System.IAsyncResult BeginTable2ItemSet_Single(string frameworkOperators, global::System.Nullable<int> Id, global::System.AsyncCallback callback, global::System.Object asyncState);
+            global::System.ServiceModel.DomainServices.Client.QueryResult<global::LightSwitchApplication.Implementation.Table2Item> EndTable2ItemSet_Single(global::System.IAsyncResult result);
+            
+            [global::System.ServiceModel.OperationContract(AsyncPattern = true, Action = "http://tempuri.org/ApplicationDataDomainService/Table2ItemSet_SingleOrDefault", ReplyAction = "http://tempuri.org/ApplicationDataDomainService/Table2ItemSet_SingleOrDefaultResponse"),
+             global::System.ServiceModel.Web.WebGet(),
+             global::System.ServiceModel.FaultContract(typeof(global::System.ServiceModel.DomainServices.Client.DomainServiceFault), Action = "http://tempuri.org/ApplicationDataDomainService/Table2ItemSet_SingleOrDefaultDomainServiceFault", Name = "DomainServiceFault", Namespace = "DomainServices")]
+            global::System.IAsyncResult BeginTable2ItemSet_SingleOrDefault(string frameworkOperators, global::System.Nullable<int> Id, global::System.AsyncCallback callback, global::System.Object asyncState);
+            global::System.ServiceModel.DomainServices.Client.QueryResult<global::LightSwitchApplication.Implementation.Table2Item> EndTable2ItemSet_SingleOrDefault(global::System.IAsyncResult result);
+            
+            [global::System.ServiceModel.OperationContract(AsyncPattern = true, Action = "http://tempuri.org/ApplicationDataDomainService/Table2ItemSet_All", ReplyAction = "http://tempuri.org/ApplicationDataDomainService/Table2ItemSet_AllResponse"),
+             global::System.ServiceModel.Web.WebGet(),
+             global::System.ServiceModel.FaultContract(typeof(global::System.ServiceModel.DomainServices.Client.DomainServiceFault), Action = "http://tempuri.org/ApplicationDataDomainService/Table2ItemSet_AllDomainServiceFault", Name = "DomainServiceFault", Namespace = "DomainServices")]
+            global::System.IAsyncResult BeginTable2ItemSet_All(string frameworkOperators, global::System.AsyncCallback callback, global::System.Object asyncState);
+            global::System.ServiceModel.DomainServices.Client.QueryResult<global::LightSwitchApplication.Implementation.Table2Item> EndTable2ItemSet_All(global::System.IAsyncResult result);
+            
             [global::System.ServiceModel.OperationContract(AsyncPattern = true, Action = "http://tempuri.org/ApplicationDataDomainService/SubmitChanges", ReplyAction = "http://tempuri.org/ApplicationDataDomainService/SubmitChangesResponse"),
              global::System.ServiceModel.FaultContract(typeof(global::System.ServiceModel.DomainServices.Client.DomainServiceFault), Action = "http://tempuri.org/ApplicationDataDomainService/SubmitChangesDomainServiceFault", Name = "DomainServiceFault", Namespace = "DomainServices")]
             global::System.IAsyncResult BeginSubmitChanges(global::System.Collections.Generic.IEnumerable<global::System.ServiceModel.DomainServices.Client.ChangeSetEntry> changeSet, global::System.AsyncCallback callback, global::System.Object asyncState);
@@ -1495,6 +1588,10 @@ namespace LightSwitchApplication.Implementation
             if (typeof(T) == typeof(global::LightSwitchApplication.Table1Item))
             {
                 return new global::LightSwitchApplication.Implementation.Table1Item();
+            }
+            if (typeof(T) == typeof(global::LightSwitchApplication.Table2Item))
+            {
+                return new global::LightSwitchApplication.Implementation.Table2Item();
             }
             return null;
         }
@@ -1562,6 +1659,10 @@ namespace LightSwitchApplication.Implementation
             if (typeof(global::LightSwitchApplication.Table1Item) == definitionType)
             {
                 return typeof(global::LightSwitchApplication.Implementation.Table1Item);
+            }
+            if (typeof(global::LightSwitchApplication.Table2Item) == definitionType)
+            {
+                return typeof(global::LightSwitchApplication.Implementation.Table2Item);
             }
             return null;
         }

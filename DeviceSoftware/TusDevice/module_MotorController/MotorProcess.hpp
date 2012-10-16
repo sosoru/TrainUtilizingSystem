@@ -53,7 +53,7 @@ namespace MotorController
 			{
 			}
 			
-			void set_Packet(MtrControllerPacket *ppacket)
+			void set_Packet(const MtrControllerPacket *ppacket)
 			{
 				switch(ppacket->get_Direction())
 				{
@@ -80,7 +80,7 @@ namespace MotorController
 				ppacket->set_ControlMode(this->m_mode);
 				ppacket->set_Direciton(this->m_dir);
 				ppacket->set_VoltageValue(this->m_voltage);
-				ppacket->set_DutyValue(typename Pulse::GetDuty());
+				ppacket->set_DutyValue(Pulse::GetDuty());
 			}
 			
 			void Init()
@@ -97,7 +97,7 @@ namespace MotorController
 				{
 					float result;
 					
-					InputPins<PortA, AdcNum>::InitInput();
+					InputPins<PortA, AdcNum>::InitDefaultInput();
 					
 					AnalogToDigital::ControlSetUp(ADCEnable, StartLater, FreeRunStopped, InterruptDisable, Div128);
 					AnalogToDigital::SelectionSetUp(AVCC, AlignLeft, (AnalogChannel)AdcNum);		

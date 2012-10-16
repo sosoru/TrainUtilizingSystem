@@ -5,6 +5,7 @@ using System.Text;
 using System.Windows.Input;
 using System.ComponentModel;
 using SensorLibrary;
+using SensorLibrary.Devices;
 using Livet;
 using Livet.Command;
 using SensorLivetView.Models.Devices;

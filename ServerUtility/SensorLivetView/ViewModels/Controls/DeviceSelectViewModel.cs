@@ -12,6 +12,7 @@ using Livet.Messaging.Window;
 
 using SensorLivetView.Models;
 using SensorLibrary;
+using SensorLibrary.Devices;
 
 namespace SensorLivetView.ViewModels.Controls
 {

@@ -6,6 +6,8 @@ using System.Threading;
 
 using Livet;
 using SensorLibrary;
+using SensorLibrary.Devices.PicUsbDevices;
+using SensorLibrary.Packet.Data;
 
 namespace SensorLivetView.Models.Devices
 {

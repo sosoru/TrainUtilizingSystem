@@ -5,7 +5,8 @@ using System.Text;
 
 using SensorLivetView.Models;
 using SensorLivetView.Models.Devices;
-using SensorLibrary;
+using SensorLibrary.Packet.Data;
+using SensorLibrary.Devices.PicUsbDevices;
 using System.Collections.ObjectModel;
 using System.Windows.Media;
 

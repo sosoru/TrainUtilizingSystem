@@ -10,14 +10,14 @@
 #define LCDCFG_H_
 
 #include "avr_base.hpp"
-#include "sc2004/sc2004.hpp"
+#include "LcdController.hpp"
 
 namespace EthernetBridge
 {
 	namespace Lcd
 	{
 		
-		typedef Lcd_sc2004< PortC, OutputPin6<PortF>, OutputPin3<PortE>, OutputPin2<PortE> > Display;
+		typedef LcdController< PortC, OutputPin6<PortF>, OutputPin3<PortE>, OutputPin2<PortE> > Display;
 		
 	}
 }

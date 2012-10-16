@@ -8,12 +8,13 @@
 //------------------------------------------------------------------------------
 
 using System;
+using System.ComponentModel;
+using System.Data.EntityClient;
 using System.Data.Objects;
 using System.Data.Objects.DataClasses;
-using System.Data.EntityClient;
-using System.ComponentModel;
-using System.Xml.Serialization;
+using System.Linq;
 using System.Runtime.Serialization;
+using System.Xml.Serialization;
 
 [assembly: EdmSchemaAttribute()]
 #region EDM リレーションシップのメタデータ
@@ -165,8 +166,25 @@ namespace ApplicationData.Implementation
             }
         }
         private ObjectSet<Table1Item> _Table1ItemSet;
+    
+        /// <summary>
+        /// 使用できるメタデータ ドキュメントはありません。
+        /// </summary>
+        public ObjectSet<Table2Item> Table2ItemSet
+        {
+            get
+            {
+                if ((_Table2ItemSet == null))
+                {
+                    _Table2ItemSet = base.CreateObjectSet<Table2Item>("Table2ItemSet");
+                }
+                return _Table2ItemSet;
+            }
+        }
+        private ObjectSet<Table2Item> _Table2ItemSet;
 
         #endregion
+
         #region AddTo メソッド
     
         /// <summary>
@@ -216,13 +234,21 @@ namespace ApplicationData.Implementation
         {
             base.AddObject("Table1ItemSet", table1Item);
         }
+    
+        /// <summary>
+        /// Table2ItemSet EntitySet に新しいオブジェクトを追加するための非推奨のメソッドです。代わりに、関連付けられている ObjectSet&lt;T&gt; プロパティの .Add メソッドを使用してください。
+        /// </summary>
+        public void AddToTable2ItemSet(Table2Item table2Item)
+        {
+            base.AddObject("Table2ItemSet", table2Item);
+        }
 
         #endregion
+
     }
-    
 
     #endregion
-    
+
     #region エンティティ
     
     /// <summary>
@@ -259,6 +285,7 @@ namespace ApplicationData.Implementation
         }
 
         #endregion
+
         #region プリミティブ プロパティ
     
         /// <summary>
@@ -457,6 +484,7 @@ namespace ApplicationData.Implementation
         partial void OnStockChanged();
 
         #endregion
+
     
         #region ナビゲーション プロパティ
     
@@ -505,6 +533,7 @@ namespace ApplicationData.Implementation
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -533,6 +562,7 @@ namespace ApplicationData.Implementation
         }
 
         #endregion
+
         #region プリミティブ プロパティ
     
         /// <summary>
@@ -635,6 +665,7 @@ namespace ApplicationData.Implementation
         partial void OnNeededBoards_NeededPartsChanged();
 
         #endregion
+
     
         #region ナビゲーション プロパティ
     
@@ -677,6 +708,7 @@ namespace ApplicationData.Implementation
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -709,6 +741,7 @@ namespace ApplicationData.Implementation
         }
 
         #endregion
+
         #region プリミティブ プロパティ
     
         /// <summary>
@@ -883,6 +916,7 @@ namespace ApplicationData.Implementation
         partial void OnNeededParts_AvailablePartsChanged();
 
         #endregion
+
     
         #region ナビゲーション プロパティ
     
@@ -947,6 +981,7 @@ namespace ApplicationData.Implementation
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -981,6 +1016,7 @@ namespace ApplicationData.Implementation
         }
 
         #endregion
+
         #region プリミティブ プロパティ
     
         /// <summary>
@@ -1131,6 +1167,7 @@ namespace ApplicationData.Implementation
         partial void OnAvailableParts_PriceInfoChanged();
 
         #endregion
+
     
         #region ナビゲーション プロパティ
     
@@ -1211,6 +1248,7 @@ namespace ApplicationData.Implementation
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -1239,6 +1277,7 @@ namespace ApplicationData.Implementation
         }
 
         #endregion
+
         #region プリミティブ プロパティ
     
         /// <summary>
@@ -1317,6 +1356,7 @@ namespace ApplicationData.Implementation
         partial void OnStoreUriChanged();
 
         #endregion
+
     
         #region ナビゲーション プロパティ
     
@@ -1343,6 +1383,7 @@ namespace ApplicationData.Implementation
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -1367,6 +1408,7 @@ namespace ApplicationData.Implementation
         }
 
         #endregion
+
         #region プリミティブ プロパティ
     
         /// <summary>
@@ -1397,9 +1439,68 @@ namespace ApplicationData.Implementation
         partial void OnIdChanged();
 
         #endregion
+
+    
+    }
+    
+    /// <summary>
+    /// 使用できるメタデータ ドキュメントはありません。
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="ApplicationData", Name="Table2Item")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class Table2Item : EntityObject
+    {
+        #region ファクトリ メソッド
+    
+        /// <summary>
+        /// 新しい Table2Item オブジェクトを作成します。
+        /// </summary>
+        /// <param name="id">Id プロパティの初期値。</param>
+        public static Table2Item CreateTable2Item(global::System.Int32 id)
+        {
+            Table2Item table2Item = new Table2Item();
+            table2Item.Id = id;
+            return table2Item;
+        }
+
+        #endregion
+
+        #region プリミティブ プロパティ
+    
+        /// <summary>
+        /// 使用できるメタデータ ドキュメントはありません。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 Id
+        {
+            get
+            {
+                return _Id;
+            }
+            set
+            {
+                if (_Id != value)
+                {
+                    OnIdChanging(value);
+                    ReportPropertyChanging("Id");
+                    _Id = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("Id");
+                    OnIdChanged();
+                }
+            }
+        }
+        private global::System.Int32 _Id;
+        partial void OnIdChanging(global::System.Int32 value);
+        partial void OnIdChanged();
+
+        #endregion
+
     
     }
 
     #endregion
+
     
 }

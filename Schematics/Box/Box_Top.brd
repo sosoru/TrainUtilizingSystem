@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="10" unitdist="mm" unit="mm" style="lines" multiple="1" display="yes" altdistance="5" altunitdist="mm" altunit="mm"/>
+<grid distance="10" unitdist="mm" unit="mm" style="lines" multiple="1" display="yes" altdistance="1" altunitdist="mm" altunit="mm"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
 <layer number="2" name="Route2" color="1" fill="3" visible="no" active="no"/>
@@ -127,10 +127,6 @@
 <hole x="12.4488" y="165.136" drill="3.2"/>
 <hole x="5.4488" y="121.136" drill="3.2"/>
 <text x="51.636" y="165.0752" size="1.778" layer="26" rot="MR0">D48245</text>
-<hole x="250" y="55" drill="12"/>
-<hole x="235" y="40" drill="12"/>
-<hole x="250" y="25" drill="12"/>
-<hole x="265" y="40" drill="12"/>
 <hole x="30" y="40" drill="12.5"/>
 <polygon width="0.4064" layer="20">
 <vertex x="59.5" y="30"/>
@@ -139,6 +135,26 @@
 <vertex x="59.5" y="58"/>
 </polygon>
 <hole x="20" y="100" drill="7"/>
+<wire x1="240" y1="80" x2="240" y2="65" width="0.4064" layer="21"/>
+<wire x1="240" y1="65" x2="255" y2="65" width="0.4064" layer="21"/>
+<wire x1="255" y1="65" x2="255" y2="80" width="0.4064" layer="21"/>
+<wire x1="255" y1="80" x2="240" y2="80" width="0.4064" layer="21"/>
+<wire x1="240" y1="40" x2="240" y2="25" width="0.4064" layer="21"/>
+<wire x1="240" y1="25" x2="255" y2="25" width="0.4064" layer="21"/>
+<wire x1="255" y1="25" x2="255" y2="40" width="0.4064" layer="21"/>
+<wire x1="255" y1="40" x2="240" y2="40" width="0.4064" layer="21"/>
+<wire x1="220" y1="60" x2="220" y2="45" width="0.4064" layer="21"/>
+<wire x1="220" y1="45" x2="235" y2="45" width="0.4064" layer="21"/>
+<wire x1="235" y1="45" x2="235" y2="60" width="0.4064" layer="21"/>
+<wire x1="235" y1="60" x2="220" y2="60" width="0.4064" layer="21"/>
+<wire x1="260" y1="60" x2="260" y2="45" width="0.4064" layer="21"/>
+<wire x1="260" y1="45" x2="275" y2="45" width="0.4064" layer="21"/>
+<wire x1="275" y1="45" x2="275" y2="60" width="0.4064" layer="21"/>
+<wire x1="275" y1="60" x2="260" y2="60" width="0.4064" layer="21"/>
+<text x="240" y="80" size="2.54" layer="21">4隅残せ</text>
+<text x="220" y="60" size="2.54" layer="21">4隅残せ</text>
+<text x="240" y="40" size="2.54" layer="21">4隅残せ</text>
+<text x="260" y="60" size="2.54" layer="21">4隅残せ</text>
 </plain>
 <libraries>
 <library name="myparts">

@@ -7,6 +7,7 @@
     <EntitySet Name="StoreInfoSet" EntityType="ApplicationDataStore.StoreInfo" store:Type="Tables" Schema="dbo" Table="StoreInfoSet" />
     <EntitySet Name="NeededBoardsSet" EntityType="ApplicationDataStore.NeededBoards" store:Type="Tables" Schema="dbo" Table="NeededBoardsSet" />
     <EntitySet Name="Table1ItemSet" EntityType="ApplicationDataStore.Table1Item" store:Type="Tables" Schema="dbo" Table="Table1ItemSet" />
+    <EntitySet Name="Table2ItemSet" EntityType="ApplicationDataStore.Table2Item" store:Type="Tables" Schema="dbo" Table="Table2ItemSet" />
     <AssociationSet Name="PriceInfo_StoreInfo" Association="ApplicationDataStore.PriceInfo_StoreInfo">
       <End Role="StoreInfo" EntitySet="StoreInfoSet" />
       <End Role="PriceInfo" EntitySet="PriceInfoSet" />
@@ -78,6 +79,12 @@
     <Property Name="NeededBoards_NeededParts" Type="int" />
   </EntityType>
   <EntityType Name="Table1Item">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+  </EntityType>
+  <EntityType Name="Table2Item">
     <Key>
       <PropertyRef Name="Id" />
     </Key>

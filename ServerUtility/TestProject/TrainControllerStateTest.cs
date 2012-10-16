@@ -1,7 +1,8 @@
 ﻿using SensorLibrary;
+using SensorLibrary.Devices.PicUsbDevices;
+using SensorLibrary.Packet.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using SensorLibrary;
 
 namespace TestProject
 {

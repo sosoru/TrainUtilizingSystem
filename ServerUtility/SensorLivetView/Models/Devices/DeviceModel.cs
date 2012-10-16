@@ -7,6 +7,7 @@ using System.Reactive.Linq;
 
 using Livet;
 using SensorLibrary;
+using SensorLibrary.Devices;
 
 namespace SensorLivetView.Models.Devices
 {

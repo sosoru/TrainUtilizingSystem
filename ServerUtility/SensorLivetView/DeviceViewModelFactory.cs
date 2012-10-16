@@ -6,6 +6,9 @@ using System.Text;
 using Livet;
 
 using SensorLibrary;
+using SensorLibrary.Devices;
+using SensorLibrary.Devices.PicUsbDevices;
+
 using SensorLivetView.ViewModels;
 using SensorLivetView.ViewModels.Controls;
 using SensorLivetView.Models;

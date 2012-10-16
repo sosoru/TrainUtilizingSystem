@@ -36,16 +36,16 @@ namespace MotorController
 	struct MtrControllerPacket
 			 : public EthPacket
 	{
-		ControlMode get_ControlMode()			{ return (ControlMode)pdata[0]; }
+		ControlMode get_ControlMode() const		{ return (ControlMode)pdata[0]; }
 		void set_ControlMode(ControlMode val)	{ pdata[0] = (uint8_t)val; }
 			
-		Direction get_Direction()				{ return (Direction)pdata[1]; }
+		Direction get_Direction() const			{ return (Direction)pdata[1]; }
 		void set_Direciton(Direction val)		{ pdata[1] = (uint8_t)val; }
 			
-		uint8_t get_DutyValue()				{ return pdata[2]; }
+		uint8_t get_DutyValue() const			{ return pdata[2]; }
 		void set_DutyValue(uint8_t val)		{ pdata[2] = val; }	
 			
-		uint8_t get_VoltageValue()			{ return *((uint8_t*)&pdata[7]); }
+		uint8_t get_VoltageValue() const		{ return *((uint8_t*)&pdata[7]); }
 		void set_VoltageValue(uint8_t val)	{ *((uint8_t*)&pdata[7]) = val; }
 	}; 
 	
