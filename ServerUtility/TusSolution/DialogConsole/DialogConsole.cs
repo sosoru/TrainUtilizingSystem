@@ -10,16 +10,13 @@ using SensorLibrary;
 using SensorLibrary.Packet;
 using SensorLibrary.Packet.Control;
 using SensorLibrary.Devices;
-using SensorLibrary.Devices.TusAvrDevices;
-using SensorLibrary.Packet.IO;
-
 namespace DialogConsole
 {
     class DialogCnosole
     {
         static void Main(string[] args)
         {
-
+            
         }
     }
 
@@ -35,7 +32,7 @@ namespace DialogConsole
         public DeviceDiagnostics(DeviceID id, IPAddress baseip)
         {
             this.devid = new DeviceID(baseip.GetAddressBytes()[3], 0,0);
-            var io = new SensorLibrary.Packet.IO.TusEthernetIO(baseip, new IPAddress(new byte[]{255,255,255,0})
+            var io = new SensorLibrary.Packet.IO.TusEthernetIO(baseip, new IPAddress(new byte[]{255,255,255,0}))
             {
                 SourceID = devid,
                 Port = 8000,
@@ -61,9 +58,19 @@ namespace DialogConsole
                 throw new InvalidOperationException("requires writable stream");
 
             this.Reader = reader;
-            this.Writer = writer;}
+            this.Writer = writer;
 
         }
 
+        public TDev CreateDevice<TDev>(DeviceID devid)
+            where TDev : Device<IDeviceState<IPacketDeviceData>> ,new()
+        {
+            var dev = new TDev() { DeviceID = devid};
+            dev.CurrentState.ReceivingServer = this.serv;
+            dev.Observe(this.dispat);
 
+            return dev;
+        }
+        
+    }
 }

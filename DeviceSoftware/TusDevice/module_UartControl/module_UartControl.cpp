@@ -107,11 +107,11 @@ int main(void)
 	TrainSensorA::LedOff();
 	TrainSensorB::LedOff();
 	
-	src_id.ParentPart = 9;
+	src_id.ParentPart = 102;
 	src_id.ModuleAddr = 0;
 	
 	dst_id.ParentPart = 24;
-	dst_id.ModuleAddr = 5;
+	dst_id.ModuleAddr = 1;
 	
 	check_buf[1] = 0;
 	check_buf[2] = 0;
@@ -119,11 +119,11 @@ int main(void)
     while(1)
     {			
 			
-		MonitoringProcess<TrainSensorA, 1, 4>();
+		MonitoringProcess<TrainSensorA, 1, 2>();
 		tus_spi_process_packets();		
-		MonitoringProcess<TrainSensorB, 2, 4>();
-		tus_spi_process_packets();
-		
+		//MonitoringProcess<TrainSensorB, 2, 4>();
+		//tus_spi_process_packets();
+		//
 		received = 0;
     }
 }

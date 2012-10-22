@@ -121,8 +121,8 @@ namespace TestProject
 
             var mtrpacket = new EthPacket()
             {
-                srcId = new DeviceID(100, 0),
-                destId = new DeviceID(24, 2, 4),
+                srcId = new DeviceID(102, 0),
+                destId = new DeviceID(24, 1, 1),
             };
             var mtrdata = new MotorData();
             var mtrstate = new MotorState()
@@ -160,7 +160,7 @@ namespace TestProject
             var ptpacket = new EthPacket()
             {
                 srcId = new DeviceID(102, 0),
-                destId = new DeviceID(24, 8, 1),
+                destId = new DeviceID(24, 1, 1),
             };
             var ptdata = new SensorLibrary.Packet.Data.SwitchData();
             var ptstate = new SwitchState()
@@ -185,7 +185,8 @@ namespace TestProject
                     ptstate.Position = a.position;
                     ptstate.FlushDataState();
 
-                    return sw_check(target, ptpacket, ptstate).First();
+                    return sw_check(target, ptpacket, ptstate)
+                            .Delay(TimeSpan.FromSeconds(1)).First();
                 }).ToArray();
 
         }

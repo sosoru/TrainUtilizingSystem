@@ -265,7 +265,7 @@ namespace RouteServerConsole
 
         static void Main(string[] args)
         {
-            var serv = CreateServer(new IPAddress(new byte[] { 192, 168, 2, 24 }),
+            var serv = CreateServer(new IPAddress(new byte[] { 192, 168, 2, 102 }),
                                     new IPAddress(new byte[] { 255, 255, 255, 0 }));
             sheet = CreateSheet(@"C:\Users\Administrator\Desktop\rail_proj\1004_2.yaml", serv);
             var message =
