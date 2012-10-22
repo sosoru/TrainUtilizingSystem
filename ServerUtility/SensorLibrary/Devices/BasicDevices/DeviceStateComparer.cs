@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using SensorLibrary.Packet;
 
 namespace SensorLibrary.Devices
 {
@@ -17,15 +18,15 @@ namespace SensorLibrary.Devices
                 return false;
             else
             {
-                var ara = x.BasePacket.Data;
-                var arb = y.BasePacket.Data;
+                var ara = x.ToByteArray();
+                var arb = y.ToByteArray();
                 return ara.SequenceEqual(arb);                
             }
         }
 
         public int GetHashCode(IDeviceState<IPacketDeviceData> obj)
         {
-            return obj.BasePacket.Data.GetHashCode();
+            return obj.ToByteArray().GetHashCode();
         }
     }
 }

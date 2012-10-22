@@ -29,7 +29,7 @@ namespace SensorLibrary.Devices
         bool IsHold { get; set; }
 
         void Observe(IObservable<IDeviceState<IPacketDeviceData>> observable);
-        void SendPacket(IDeviceState<IPacketDeviceData> packet);
+        void SendState();
         IObservable<EventPattern<PacketReceiveEventArgs>> GetNextObservable { get; }
 
         event PacketReceivedDelegate<TState> PacketReceived;
@@ -49,7 +49,7 @@ namespace SensorLibrary.Devices
 
         public Device()
         {
-            this.StateEqualityComparer = new GenericComparer<TState>((x, y) => x.BasePacket.Data.SequenceEqual(y.BasePacket.Data));
+            //this.StateEqualityComparer = new GenericComparer<TState>((x, y) => x.Data.SequenceEqual(y.Data));
         }
 
         private object LockHold = new object();
@@ -87,23 +87,18 @@ namespace SensorLibrary.Devices
                 this.Unsubscriber = observable.Subscribe(this);
         }
 
-        public void SendPacket()
+        public virtual void SendState()
         {
-            this.SendPacket(this.CurrentState);
-        }
+            if (this.CurrentState == null || this.CurrentState.ReceivingServer == null)
+                throw new InvalidOperationException("missing Device");
 
-        public virtual void SendPacket(IDeviceState<IPacketDeviceData> state)
-        {
-            //if (state == null || state.ReceivingServer == null)
-            //    throw new InvalidOperationException("missing Device");
+            //state.BasePacket.ID = this.DeviceID;
 
-            state.BasePacket.ID = this.DeviceID;
-
-            if (!(state is TState))
-                throw new InvalidOperationException("invalid state");
+            //if (!(state is TState))
+            //    throw new InvalidOperationException("invalid state");
 
             //for (int i = 0; i < 3; i++)
-                this.CurrentState.ReceivingServer.SendPacket(state.BasePacket);
+                this.CurrentState.ReceivingServer.SendState(this);
 
         }
 
@@ -172,8 +167,8 @@ namespace SensorLibrary.Devices
 
         public void OnNext(TState value)
         {
-            if (value == null
-                || this.DeviceID != value.BasePacket.ID)
+            if (value == null)
+                //|| this.DeviceID != value.BasePacket.ID)
                 return;
 
             var casted = value;

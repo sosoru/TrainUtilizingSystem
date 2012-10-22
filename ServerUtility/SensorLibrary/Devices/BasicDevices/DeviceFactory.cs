@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using SensorLibrary.Packet.Data;
 
-using SensorLibrary.Devices.PicUsbDevices;
 using SensorLibrary.Devices.TusAvrDevices;
 
 namespace SensorLibrary.Devices
@@ -56,34 +55,6 @@ namespace SensorLibrary.Devices
 
     }
 
-    public sealed class PicDeviceFactoryProvider
-        : DeviceFactoryProvider
-    {
-        public PicDeviceFactoryProvider() { }
-
-        public static readonly IDeviceFactory<MotherBoard, MotherBoardState, MotherBoardData> MotherBoardFactory
-            = DefaultFactory<MotherBoard, MotherBoardState, MotherBoardData>(ModuleTypeEnum.MotherBoard);
-
-        public static readonly IDeviceFactory<PointModule, PointModuleState, PointModuleData> PointModuleFactory
-            = DefaultFactory<PointModule, PointModuleState, PointModuleData>(ModuleTypeEnum.PointModule);
-
-        public static readonly IDeviceFactory<TrainSensor, TrainSensorState, TrainSensorData> TrainSensorFactory
-            = DefaultFactory<TrainSensor, TrainSensorState, TrainSensorData>(ModuleTypeEnum.TrainSensor);
-
-        public static readonly IDeviceFactory<TrainController, TrainControllerState, TrainControllerData> TrainControllerFactory
-             = DefaultFactory<TrainController, TrainControllerState, TrainControllerData>(ModuleTypeEnum.TrainController);
-
-        private static readonly IEnumerable<IDeviceFactory<IDevice<IDeviceState<IPacketDeviceData>>, IDeviceState<IPacketDeviceData>, IPacketDeviceData>> _AvailableDeviceTypes
-            = new ReadOnlyCollection<IDeviceFactory<IDevice<IDeviceState<IPacketDeviceData>>, IDeviceState<IPacketDeviceData>, IPacketDeviceData>>
-            (
-                new IDeviceFactory<IDevice<IDeviceState<IPacketDeviceData>>, IDeviceState<IPacketDeviceData>, IPacketDeviceData> [] { MotherBoardFactory, PointModuleFactory, TrainSensorFactory, TrainControllerFactory }
-            );
-
-        public override IEnumerable<IDeviceFactory<IDevice<IDeviceState<IPacketDeviceData>>, IDeviceState<IPacketDeviceData>, IPacketDeviceData>> AvailableDeviceTypes
-        {
-            get { return _AvailableDeviceTypes; }
-        }
-    }
 
     public sealed class AvrDeviceFactoryProvider
         : DeviceFactoryProvider

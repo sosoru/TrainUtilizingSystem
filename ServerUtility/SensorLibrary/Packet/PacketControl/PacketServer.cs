@@ -7,8 +7,11 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.PlatformServices;
 using System.Threading.Tasks;
+
 using SensorLibrary.Packet.IO;
 using SensorLibrary.Devices;
+using SensorLibrary.Packet.Data;
+using SensorLibrary.Devices.TusAvrDevices;
 
 namespace SensorLibrary.Packet.Control
 {
@@ -59,13 +62,13 @@ namespace SensorLibrary.Packet.Control
             this.actionList.Remove(act);
         }
 
-        public void SendPacket(DevicePacket pack)
+        public void SendState(IDevice<IDeviceState<IPacketDeviceData>> dev)
         {
             //todo : thread control (reading and writing on the same thread)
             //lock (lockStream)
-
-            if (pack == null)
-                return;
+            var pack = new DevicePacket();
+            pack.CopyToData(dev.CurrentState.Data);
+            pack.ID = dev.DeviceID;
 
             try
             {
@@ -109,7 +112,7 @@ namespace SensorLibrary.Packet.Control
                                             var state = f.DeviceStateCreate();
                                             var data = f.DeviceDataCreate();
 
-                                            state.BasePacket = pack;
+                                            //state.BasePacket = pack;
                                             state.ReceivingServer = this;
 
                                             //Console.WriteLine(state.ToString());
@@ -163,10 +166,10 @@ namespace SensorLibrary.Packet.Control
                                 {
                                     Data = data,
                                 };
-                state.FlushDataState();
+                //state.FlushDataState();
 
-                state.BasePacket.ID = packet.ID;
-                state.BasePacket.ID.InternalAddr += (byte)i;
+                //state.BasePacket.ID = packet.ID;
+                //state.BasePacket.ID.InternalAddr += (byte)i;
                 state.ReceivingServer = this;
                 this.actionList.ForEach(a => a.Act(state));
             }

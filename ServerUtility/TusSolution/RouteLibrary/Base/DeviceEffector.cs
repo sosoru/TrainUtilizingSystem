@@ -36,7 +36,7 @@ namespace RouteLibrary.Base
                 DeviceID = info.Address
             };
 
-            this.Device.CurrentState.BasePacket = this.DefaultState.BasePacket;
+            //this.Device.CurrentState.BasePacket = this.DefaultState.BasePacket;
 
             this.Device.Observe(block.Sheet.Dispatcher);
         }
@@ -49,19 +49,19 @@ namespace RouteLibrary.Base
                 || !CheckAll(this.BeforeState, this.Device.CurrentState as TState)))
             {
                 this.Device.CurrentState.ReceivingServer = ParentBlock.Sheet.Server;
-                this.Device.SendPacket(this.Device.CurrentState);
+                this.Device.SendState();
                 this.before_send = DateTime.Now;
 
                 this.BeforeState = new TState()
                                        {
-                                           BasePacket = this.Device.CurrentState.BasePacket,
+                                           //BasePacket = this.Device.CurrentState.BasePacket,
                                        };
             }
         }
 
         public void ExecuteDefaultCommand()
         {
-            this.Device.CurrentState.BasePacket = this.DefaultState.BasePacket;
+            //this.Device.CurrentState.BasePacket = this.DefaultState.BasePacket;
             this.BeforeState = null;
 
             ExecuteCommand();
@@ -104,7 +104,7 @@ namespace RouteLibrary.Base
                     Duty = 0,
                     ControlMode = MotorControlMode.DutySpecifiedMode,
                 };
-                state.FlushDataState();
+                //state.FlushDataState();
                 return state;
             }
         }
@@ -120,7 +120,7 @@ namespace RouteLibrary.Base
                 if (cmd.AnyToDefault)
                 {
                     this.Device.CurrentState.Data = this.DefaultState.Data;
-                    this.Device.CurrentState.FlushDataState();
+                    //this.Device.CurrentState.FlushDataState();
 
                 }
                 return;

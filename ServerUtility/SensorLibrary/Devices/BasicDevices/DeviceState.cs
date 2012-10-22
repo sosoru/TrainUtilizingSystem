@@ -11,41 +11,41 @@ namespace SensorLibrary.Devices
 {
     public interface IDeviceState<out T>
     {
-        DevicePacket BasePacket { get; set; }
+        //DevicePacket BasePacket { get; set; }
         PacketServer ReceivingServer { get; set; }
         T Data { get; }
     }
 
     public class DeviceState<T>
         : IDeviceState<T>
-        where T : IPacketDeviceData
+        where T : IPacketDeviceData, new()
     {
         private T _deviceStateCache;
 
-        private DevicePacket _basepacket;
-        public DevicePacket BasePacket
-        {
-            get
-            {
-                this.FlushDataState();
-                return this._basepacket;
-            }
-            set
-            {
-                this._basepacket = value;
-                this._deviceStateCache = default(T);
-            }
-        }
+        //private DevicePacket _basepacket;
+        //public DevicePacket BasePacket
+        //{
+        //    get
+        //    {
+        //        this.FlushDataState();
+        //        return this._basepacket;
+        //    }
+        //    set
+        //    {
+        //        this._basepacket = value;
+        //        this._deviceStateCache = default(T);
+        //    }
+        //}
         public PacketServer ReceivingServer { get; set; }
 
         public DeviceState()
         {
         }
 
-        public override string ToString()
-        {
-            return this.BasePacket.ToString();
-        }
+        //public override string ToString()
+        //{
+        //    return this.BasePacket.ToString();
+        //}
 
         private volatile object lock_Data = new object();
         public T Data
@@ -56,7 +56,7 @@ namespace SensorLibrary.Devices
                 {
                     if (_deviceStateCache == null)
                     {
-                        var state = this._basepacket.CopyFromData<T>();
+                        var state = new T(); //this._basepacket.CopyFromData<T>();
                         this._deviceStateCache = state;
                     }
                     return this._deviceStateCache;
@@ -69,18 +69,18 @@ namespace SensorLibrary.Devices
             }
         }
 
-        public void FlushDataState()
-        {
-            lock (lock_Data)
-            {
-                if (this._deviceStateCache != null)
-                {
-                    this._basepacket.CopyToData<T>(this._deviceStateCache);
-                    this._deviceStateCache = default(T);
-                }
+        //public void FlushDataState()
+        //{
+        //    lock (lock_Data)
+        //    {
+        //        if (this._deviceStateCache != null)
+        //        {
+        //            this._basepacket.CopyToData<T>(this._deviceStateCache);
+        //            this._deviceStateCache = default(T);
+        //        }
 
-            }
-        }
+        //    }
+        //}
 
         //public static IDeviceState<IPacketDeviceData> CreateCorrectState(DevicePacket pack, PacketServer server)
         //{

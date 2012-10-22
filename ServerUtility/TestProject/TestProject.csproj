@@ -109,14 +109,12 @@
     <Compile Include="LoopingArrayTest.cs" />
     <Compile Include="LoopModelTest.cs" />
     <Compile Include="MotherBoardDataTest.cs" />
-    <Compile Include="MotherBoardStateTest.cs" />
     <Compile Include="MotherBoardViewModelTest.cs" />
     <Compile Include="MotorStateTest.cs" />
     <Compile Include="PacketDispatcherSingleTest.cs" />
     <Compile Include="PathDataViewModelTest.cs" />
     <Compile Include="PathViewModelTest.cs" />
     <Compile Include="PointModuleDataTest.cs" />
-    <Compile Include="PointModuleStateTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PysicalPathTest.cs" />
     <Compile Include="RailConnectionTest.cs" />
@@ -131,7 +129,6 @@
     <Compile Include="SensorStateTest.cs" />
     <Compile Include="SwitchStateTest.cs" />
     <Compile Include="TestPacketProvider.cs" />
-    <Compile Include="TrainControllerStateTest.cs" />
     <Compile Include="TrainSensorDataTest.cs" />
     <Compile Include="TrainSensorStateTest.cs" />
     <Compile Include="TrainSensorTest.cs" />

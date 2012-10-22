@@ -12,8 +12,6 @@ namespace SensorLibrary.Devices.TusAvrDevices
         public SensorState()
             : base()
         {
-            this.BasePacket = new DevicePacket();
-            this.BasePacket.ModuleType = ModuleTypeEnum.AvrSensor;
             this.Data = new SensorData();
         }
 

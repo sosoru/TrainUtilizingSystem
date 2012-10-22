@@ -1,6 +1,7 @@
 ﻿using SensorLibrary.Packet.IO;
 using SensorLibrary.Devices.TusAvrDevices;
 using SensorLibrary.Packet.Data;
+using SensorLibrary.Packet;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Concurrency;
@@ -97,21 +98,21 @@ namespace TestProject
                 .Timeout(TimeSpan.FromSeconds(1));
         }
 
-        private IObservable<EthPacket> sw_check(EthClient target, EthPacket swpacket, SwitchState swstate)
-        {
-            return target.AsyncSend(swpacket)
-                .SelectMany(s => target.AsyncReceive())
-                .Do(s =>
-                    {
-                        var data = s.DataPacket.CopyFromData<SwitchData>();
-                        var state = new SwitchState { Data = data };
+        //private IObservable<EthPacket> sw_check(EthClient target, EthPacket swpacket, SwitchState swstate)
+        //{
+        //    return target.AsyncSend(swpacket)
+        //        .SelectMany(s => target.AsyncReceive())
+        //        .Do(s =>
+        //            {
+        //                var data = s.DataPacket.CopyFromData<SwitchData>();
+        //                var state = new SwitchState { Data = data };
 
-                        Assert.AreEqual(state.ChangingTime, swstate.ChangingTime);
-                        Assert.AreEqual(state.DeadTime, swstate.DeadTime);
-                        Assert.AreEqual(state.Position, swstate.Position);
-                    })
-                .Timeout(TimeSpan.FromSeconds(3));
-        }
+        //                Assert.AreEqual(state.ChangingTime, swstate.ChangingTime);
+        //                Assert.AreEqual(state.DeadTime, swstate.DeadTime);
+        //                Assert.AreEqual(state.Position, swstate.Position);
+        //            })
+        //        .Timeout(TimeSpan.FromSeconds(3));
+        //}
 
         [TestMethod()]
         public void MotorControlTest()
@@ -121,18 +122,15 @@ namespace TestProject
 
             var mtrpacket = new EthPacket()
             {
-                srcId = new DeviceID(102, 0),
+                srcId = new DeviceID(111, 0),
                 destId = new DeviceID(24, 1, 1),
             };
-            var mtrdata = new MotorData();
-            var mtrstate = new MotorState()
-            {
-                BasePacket = mtrpacket.DataPacket,
-                Duty = 0.5f,
-                Direction = MotorDirection.Positive,
-                ControlMode = MotorControlMode.DutySpecifiedMode,
-            };
-            mtrstate.FlushDataState();
+            var mtr = new Motor() { DeviceID = mtrpacket.destId };
+            var mtrstate = mtr.CurrentState;
+
+            mtrstate.Duty = 0.5f;
+            mtrstate.Direction = MotorDirection.Positive;
+            mtrstate.ControlMode = MotorControlMode.DutySpecifiedMode;
 
             var param = Enumerable.Range(1, 4)
                                 .SelectMany(i =>
@@ -142,101 +140,103 @@ namespace TestProject
             var osb = param.Select(s =>
             {
                 mtrpacket.destId.InternalAddr = (byte)s.devnum;
+                mtr.DeviceID = mtrpacket.destId;
                 mtrstate.Direction = s.dir;
-                mtrstate.FlushDataState();
+
+                mtrpacket.DataPacket = mtr.ToDevicePacket();
 
                 return mtr_check(target, mtrpacket, mtrstate)
                     .Delay(TimeSpan.FromSeconds(1))
                             .First();
             }).ToArray();
         }
+        
+        //[TestMethod()]
+        //public void sw_test()
+        //{
+        //    var target = sample;
+        //    target.Connect();
 
-        [TestMethod()]
-        public void sw_test()
-        {
-            var target = sample;
-            target.Connect();
+        //    var ptpacket = new EthPacket()
+        //    {
+        //        srcId = new DeviceID(102, 0),
+        //        destId = new DeviceID(24, 1, 1),
+        //    };
+        //    var ptdata = new SensorLibrary.Packet.Data.SwitchData();
+        //    var ptstate = new SwitchState()
+        //    {
+        //        //BasePacket = ptpacket.DataPacket,
+        //        Data = ptdata,
+        //        Position = SensorLibrary.Packet.Data.PointStateEnum.Curve,
+        //        DeadTime = 150,
+        //        ChangingTime = 200,
+        //    };
+        //    ptstate.FlushDataState();
 
-            var ptpacket = new EthPacket()
-            {
-                srcId = new DeviceID(102, 0),
-                destId = new DeviceID(24, 1, 1),
-            };
-            var ptdata = new SensorLibrary.Packet.Data.SwitchData();
-            var ptstate = new SwitchState()
-            {
-                BasePacket = ptpacket.DataPacket,
-                Data = ptdata,
-                Position = SensorLibrary.Packet.Data.PointStateEnum.Curve,
-                DeadTime = 150,
-                ChangingTime = 200,
-            };
-            ptstate.FlushDataState();
+        //    var prm = Enumerable.Range(1, 8)
+        //                .SelectMany(i =>
+        //                    new[] { PointStateEnum.Straight, PointStateEnum.Curve }
+        //                        .Select(p => new { devnum = i, position = p })
+        //                        );
 
-            var prm = Enumerable.Range(1, 8)
-                        .SelectMany(i =>
-                            new[] { PointStateEnum.Straight, PointStateEnum.Curve }
-                                .Select(p => new { devnum = i, position = p })
-                                );
+        //    var ob = prm.Select(a =>
+        //        {
+        //            ptpacket.destId.InternalAddr = (byte)a.devnum;
+        //            ptstate.Position = a.position;
+        //            ptstate.FlushDataState();
 
-            var ob = prm.Select(a =>
-                {
-                    ptpacket.destId.InternalAddr = (byte)a.devnum;
-                    ptstate.Position = a.position;
-                    ptstate.FlushDataState();
+        //            return sw_check(target, ptpacket, ptstate)
+        //                    .Delay(TimeSpan.FromSeconds(1)).First();
+        //        }).ToArray();
 
-                    return sw_check(target, ptpacket, ptstate)
-                            .Delay(TimeSpan.FromSeconds(1)).First();
-                }).ToArray();
-
-        }
+        //}
 
         /// <summary>
         ///Send のテスト
         ///</summary>
-        [TestMethod()]
-        public void SendTest()
-        {
-            var target = sample;
-            EthPacket packet = new EthPacket()
-            {
-                srcId = new DeviceID(100, 0),
-                destId = new DeviceID(24, 3),
-            };
+        //[TestMethod()]
+        //public void SendTest()
+        //{
+        //    var target = sample;
+        //    EthPacket packet = new EthPacket()
+        //    {
+        //        srcId = new DeviceID(100, 0),
+        //        destId = new DeviceID(24, 3),
+        //    };
 
-            var ptpacket = new EthPacket()
-                               {
-                                   srcId = new DeviceID(100, 0),
-                                   destId = new DeviceID(24, 1)
-                               };
+        //    var ptpacket = new EthPacket()
+        //                       {
+        //                           srcId = new DeviceID(100, 0),
+        //                           destId = new DeviceID(24, 1)
+        //                       };
 
-            var ptstate = new SwitchState() { Data = ptpacket.DataPacket.CopyFromData<SwitchData>() };
+        //    var ptstate = new SwitchState() { Data = ptpacket.DataPacket.CopyFromData<SwitchData>() };
 
-            ptstate.ChangingTime = 200;
-            ptstate.DeadTime = 100;
-            ptstate.Position = PointStateEnum.Straight;
-            ptstate.FlushDataState();
+        //    ptstate.ChangingTime = 200;
+        //    ptstate.DeadTime = 100;
+        //    ptstate.Position = PointStateEnum.Straight;
+        //    ptstate.FlushDataState();
 
-            for (int i = 0; i < packet.DataPacket.Data.Length; ++i)
-                packet.DataPacket.Data[i] = 0xCC;
+        //    for (int i = 0; i < packet.DataPacket.Data.Length; ++i)
+        //        packet.DataPacket.Data[i] = 0xCC;
 
-            for (int i = 0; i < 30000; ++i)
-            {
-                //packet.Message = string.Format("pero {0} times", i);
+        //    for (int i = 0; i < 30000; ++i)
+        //    {
+        //        //packet.Message = string.Format("pero {0} times", i);
 
-                target.Send(packet);
+        //        target.Send(packet);
 
-                //ptstate.Position = (i % 2 == 0) ? PointStateEnum.Straight : PointStateEnum.Curve;
-                //ptstate.FlushDataState();
+        //        //ptstate.Position = (i % 2 == 0) ? PointStateEnum.Straight : PointStateEnum.Curve;
+        //        //ptstate.FlushDataState();
 
-                System.Threading.Thread.Sleep(100);
-                target.Send(ptpacket);
-                System.Threading.Thread.Sleep(100);
-                //target.Send(mtrpacket);
-                //System.Threading.Thread.Sleep(100);
-            }
-            Assert.Inconclusive("値を返さないメソッドは確認できません。");
-        }
+        //        System.Threading.Thread.Sleep(100);
+        //        target.Send(ptpacket);
+        //        System.Threading.Thread.Sleep(100);
+        //        //target.Send(mtrpacket);
+        //        //System.Threading.Thread.Sleep(100);
+        //    }
+        //    Assert.Inconclusive("値を返さないメソッドは確認できません。");
+        //}
 
     }
 }

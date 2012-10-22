@@ -64,12 +64,12 @@ namespace DengoController
             if (mtr_g == null)
                 return;
 
-            var state = new MotorState();
+            var state = mtr_g.CurrentState;
             state.Duty = (float)acc / 255.0F;
             state.Direction = MotorDirection.Positive;
             state.ControlMode = MotorControlMode.DutySpecifiedMode;
 
-            mtr_g.SendPacket(state);
+            mtr_g.SendState();
         }
 
         static void Main(string[] args)

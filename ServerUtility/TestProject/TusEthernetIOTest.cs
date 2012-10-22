@@ -88,7 +88,7 @@ namespace TestProject
             mtr.CurrentState.Direction = MotorDirection.Positive;
             mtr.CurrentState.Duty = 0.5f;
             mtr.CurrentState.ControlMode = MotorControlMode.DutySpecifiedMode;
-            mtr.SendPacket();
+            mtr.SendState();
 
         }
 

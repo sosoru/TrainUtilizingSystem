@@ -24,7 +24,7 @@ namespace SensorLibrary.Devices.TusAvrDevices
 
             var state = value as SensorState;
 
-            if (state == null || state.BasePacket.ID != this.DeviceID)
+            if (state == null) 
                 return;
 
             lock (hist_lock)

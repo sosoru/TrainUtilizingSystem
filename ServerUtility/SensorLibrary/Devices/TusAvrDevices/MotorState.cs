@@ -12,8 +12,6 @@ namespace SensorLibrary.Devices.TusAvrDevices
         public MotorState()
             : base()
         {
-            this.BasePacket = new DevicePacket();
-            this.BasePacket.ModuleType = ModuleTypeEnum.AvrMotor;
             this.Data = new MotorData();        
         }
 

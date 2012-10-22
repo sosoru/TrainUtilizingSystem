@@ -6,6 +6,8 @@ using System.Text.RegularExpressions;
 using System.Runtime.InteropServices;
 using System.IO;
 
+using SensorLibrary.Devices;
+
 namespace SensorLibrary.Packet
 {
     public static class ConvertExtenstions
@@ -54,6 +56,7 @@ namespace SensorLibrary.Packet
                 handle.Free();
             }
         }
+
     }
 
     public static class PacketExtension
@@ -85,6 +88,21 @@ namespace SensorLibrary.Packet
             }
 
             return ret;
+        }
+
+        public static DevicePacket ToDevicePacket(this IDevice<IDeviceState<IPacketDeviceData>> dev)
+        {
+            var data = dev.CurrentState.Data;
+
+            var packet = new DevicePacket()
+            {
+                ID = dev.DeviceID,
+            };
+
+            packet.CopyToData(data);
+            packet.ModuleType = dev.ModuleType;
+
+            return packet;
         }
 
         public static void WritePacket(this ChunckedStreamController st, DevicePacket pack)
