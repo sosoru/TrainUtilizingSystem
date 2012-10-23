@@ -22,4 +22,20 @@ namespace SensorLibrary.Devices.TusAvrDevices
             set { this.Data.Command = value; }
         }
     }
+
+    public class MemoryState
+        : KernelState
+    {
+        public MemoryState()
+            : base()
+        {
+        }
+
+        public byte CurrentMemory
+        {
+            get { return this.Data.Data[0];}
+            set { this.Data.Data[1];}
+        }
+
+        
 }
