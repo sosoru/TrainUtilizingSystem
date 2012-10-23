@@ -70,11 +70,14 @@ namespace SensorLibrary.Devices
         public static readonly IDeviceFactory<Sensor, SensorState, SensorData> SensorModuleFactory
             = DefaultFactory<Sensor, SensorState, SensorData>(ModuleTypeEnum.AvrSensor);
 
+        public static readonly IDeviceFactory<Kernel, KernelState, KernelData> KernelModuleFactory
+            = DefaultFactory<Kernel, KernelState, KernelData>(ModuleTypeEnum.AvrKernel);
+
         private static readonly IEnumerable<IDeviceFactory<IDevice<IDeviceState<IPacketDeviceData>>, IDeviceState<IPacketDeviceData>, IPacketDeviceData>> _AvailableDeviceTypes
             = new ReadOnlyCollection<IDeviceFactory<IDevice<IDeviceState<IPacketDeviceData>>, IDeviceState<IPacketDeviceData>, IPacketDeviceData>>
             (
                 new IDeviceFactory<IDevice<IDeviceState<IPacketDeviceData>>, IDeviceState<IPacketDeviceData>, IPacketDeviceData>[]
-                { MotorModuleFactory, SwitchModuleFactory, SensorModuleFactory}
+                { MotorModuleFactory, SwitchModuleFactory, SensorModuleFactory, KernelModuleFactory}
             );
 
         public override IEnumerable<IDeviceFactory<IDevice<IDeviceState<IPacketDeviceData>>,IDeviceState<IPacketDeviceData>,IPacketDeviceData>>  AvailableDeviceTypes
