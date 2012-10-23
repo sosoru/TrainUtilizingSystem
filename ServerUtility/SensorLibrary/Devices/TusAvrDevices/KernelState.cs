@@ -33,9 +33,15 @@ namespace SensorLibrary.Devices.TusAvrDevices
 
         public byte CurrentMemory
         {
-            get { return this.Data.Content[0];}
-            set { this.Data.Content[1];}
+            get { return this.Data.Content[0]; }
+            set { this.Data.Content[0] = value; }
         }
 
+        public byte MemoryLimit
+        {
+            get { return this.Data.Content[1]; }
+            set { this.Data.Content[1] = value; }
+        }
+    }
         
 }
