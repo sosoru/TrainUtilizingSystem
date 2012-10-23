@@ -55,7 +55,7 @@ namespace MotorController
 			
 			void set_Packet(const MtrControllerPacket *ppacket)
 			{
-				switch(ppacket->get_Direction())
+				switch(ppacket->DirectionValue)
 				{
 					case Positive:
 						AssociatedMotor::SetPositive();
@@ -69,18 +69,18 @@ namespace MotorController
 						break;	
 				}
 				
-				this->m_dir = ppacket->get_Direction();
-				this->m_voltage = ppacket->get_VoltageValue();
-				this->m_mode = ppacket->get_ControlMode();
-				Pulse::SetDuty(ppacket->get_DutyValue());
+				this->m_dir = ppacket->DirectionValue;
+				this->m_voltage = ppacket->VoltageValue;
+				this->m_mode = ppacket->ControlModeValue;
+				Pulse::SetDuty(ppacket->DutyValue);
 			}				
 			
 			void get_Packet(MtrControllerPacket *ppacket)
 			{
-				ppacket->set_ControlMode(this->m_mode);
-				ppacket->set_Direciton(this->m_dir);
-				ppacket->set_VoltageValue(this->m_voltage);
-				ppacket->set_DutyValue(Pulse::GetDuty());
+				ppacket->ControlModeValue = this->m_mode;
+				ppacket->DirectionValue = this->m_dir;
+				ppacket->VoltageValue = this->m_voltage;
+				ppacket->DutyValue = Pulse::GetDuty();
 			}
 			
 			void Init()

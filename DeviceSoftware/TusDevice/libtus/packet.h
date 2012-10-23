@@ -14,10 +14,11 @@
 
 #define BYTE uint8_t
 
-#define ETHCMD_REPLY 0
-#define ETHCMD_MESSAGE 1
-
+#define ETHCMD_REPLY 1
 #define ETH_DATA_LEN 26 
+
+#define MODULETYPE_KERNEL 0x11
+#define MODULETYPE_MOTOR 0x12
 
 typedef union tag_DeviceID
 {
@@ -51,5 +52,27 @@ typedef struct tag_EthPacket
 		BYTE raw_array[40];
 	};
 } EthPacket;
+
+typedef struct tag_BaseState
+{
+	struct{
+		BYTE DataLength;
+		BYTE InternalAddr;
+		BYTE ModuleType;
+	};
+} BaseState;
+
+typedef struct tag_KernelState
+{
+	union{
+		struct{
+			BaseState Base;
+			BYTE KernelCommand;
+			BYTE pdata [4];
+			};
+		};
+		
+		BYTE raw_array[8];
+} KernalState;	
 
 #endif /* PACKET_H_ */

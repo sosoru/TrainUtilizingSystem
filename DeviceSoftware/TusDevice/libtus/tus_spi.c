@@ -139,19 +139,24 @@ void tus_spi_process_packets()
 		for(i = 0; i < recv_pos_obj; ++i)
 		{
 			uint8_t bufind =0;
-			uint8_t *buf = (uint8_t*)&recv_buffer[i];
+			EthPacket* ppacket = (EthPacket*)&recv_buffer[i];
 			
+			if(ppacket->destId.ModuleAddr == 0)
+				continue;
+			
+			e.psrcId = &ppacket->srcId;
+			e.pdstId = &ppacket->destId;
 			e.pos = i;
 			e.pos_in_packet = 0;
 			
-			while(bufind <= ETH_DATA_LEN && buf[bufind] != 0x00)
+			while(bufind <= ETH_DATA_LEN && ppacket->pdata[bufind] != 0x00)
 			{
-				e.ppack =(uint8_t*)(buf + bufind);
-				e.pos_in_packet++;
+				e.ppack = (uint8_t*)(ppacket->pdata + bufind);
 				
 				SpiReceive(&e);
 				
-				bufind += buf[bufind];
+				bufind += ppacket->pdata[bufind];
+				e.pos_in_packet++;
 			}		
 
 		}		

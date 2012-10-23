@@ -10,6 +10,7 @@ using System;
 using System.Net;
 using System.Linq;
 using SensorLibrary;
+using SensorLibrary.Devices;
 
 namespace TestProject
 {
@@ -127,6 +128,7 @@ namespace TestProject
             };
             var mtr = new Motor() { DeviceID = mtrpacket.destId };
             var mtrstate = mtr.CurrentState;
+            var kernal = Kernel.InquiryState(mtrpacket.destId);
 
             mtrstate.Duty = 0.5f;
             mtrstate.Direction = MotorDirection.Positive;
@@ -144,10 +146,12 @@ namespace TestProject
                 mtrstate.Direction = s.dir;
                 mtrstate.Data.InternalAddr = (byte)s.devnum;
 
-                mtrpacket.DataPacket = DevicePacket.CreatePackedPacket(new Motor[] { mtr }, mtr.DeviceID).First();
+                mtrpacket.DataPacket
+                    = DevicePacket.CreatePackedPacket(new IDevice<IDeviceState<IPacketDeviceData>>[] { mtr, kernal }, mtr.DeviceID).First();
+
+                //System.Threading.Thread.Sleep(20);
 
                 return mtr_check(target, mtrpacket, mtrstate)
-                    .Delay(TimeSpan.FromSeconds(1))
                            .Subscribe(); 
             }).ToArray();
         }

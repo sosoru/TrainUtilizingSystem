@@ -70,6 +70,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Devices\TusAvrDevices\Kernel.cs" />
+    <Compile Include="Devices\TusAvrDevices\KernelState.cs" />
     <Compile Include="Misc\ChunckedStream.cs" />
     <Compile Include="Devices\DeviceCommands\DeviceCommand.cs" />
     <Compile Include="Devices\DeviceCommands\IDeviceCommand.cs" />

@@ -19,7 +19,10 @@ extern "C"
 
 typedef struct tag_args_received
 {
-	EthPacket *ppack;
+	DeviceID *psrcId;
+	DeviceID *pdstId;
+	
+	uint8_t *ppack;
 	uint8_t pos;
 	uint8_t pos_in_packet;
 } args_received;

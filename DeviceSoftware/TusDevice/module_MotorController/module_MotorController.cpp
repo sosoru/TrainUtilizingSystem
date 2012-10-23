@@ -22,9 +22,9 @@ void sample_process(Direction dir)
 {
 	MtrControllerPacket pack;
 	
-	pack.set_ControlMode(DutySpecifiedMode);
-	pack.set_Direciton(dir);
-	pack.set_DutyValue(250);
+	pack.ControlModeValue = (DutySpecifiedMode);
+	pack.DirectionValue = (dir);
+	pack.DutyValue = (250);
 	
 	mtrA.set_Packet(&pack);
 	mtrB.set_Packet(&pack);
@@ -48,27 +48,29 @@ void CopyFrom(uint8_t devnum, MtrControllerPacket *ppacket)
 	else if(devnum == 4) { mtrD.get_Packet(ppacket); }
 }
 
-void CreatePacket(uint8_t beginid, uint8_t endid, MtrControllerPacket* preceived)
+void CreatePacket(uint8_t beginid, uint8_t endid, DeviceID* psrcid, DeviceID* pdstid)
 {
 	uint8_t i;
 	spi_send_object *psend;
-	MtrControllerPacket *ppacket;
+	EthPacket *ppacket;
 	
 	tus_spi_lock_send_buffer(&psend);
 	
+	ppacket = (EthPacket*)&psend->packet;
+	ppacket->srcId.raw = psrcid->raw;
+	ppacket->srcId.InternalAddr = 0;
+	ppacket->destId.raw = pdstid->raw;
+	ppacket->devID.raw = psrcid->raw;
+	
 	for(i=beginid; i<=endid; ++i)
 	{		
-		ppacket = (MtrControllerPacket*)(&psend->packet + ((i - beginid) * 7));
-		ppacket->srcId.raw = preceived->destId.raw;
-		ppacket->srcId.InternalAddr = i;
-		ppacket->destId.raw = preceived->srcId.raw;
+		MtrControllerPacket *pstate = (MtrControllerPacket*)(ppacket->pdata + ((i - beginid) * 7));
 		
-		ppacket->set_ModuleType(0x12);
-		ppacket->set_DataLength(7);
-		ppacket->set_InternalAddr(i);
-		ppacket->devID.raw = ppacket->srcId.raw;
+		pstate->Base.ModuleType = MODULETYPE_MOTOR;
+		pstate->Base.DataLength = 7;
+		pstate->Base.InternalAddr = i;
 		
-		CopyFrom(i, ppacket);	
+		CopyFrom(i, pstate);	
 	}
 	
 	psend->is_locked = false;
@@ -76,22 +78,32 @@ void CreatePacket(uint8_t beginid, uint8_t endid, MtrControllerPacket* preceived
 	
 }
 
-void ReplyToSource(MtrControllerPacket *preceived)
+bool ProcessMtrPacket(MtrControllerPacket *ppacket)
 {
-	CreatePacket(1, 2, preceived);
-	CreatePacket(3, 4, preceived);
+	if(ppacket->Base.ModuleType != MODULETYPE_MOTOR)
+		return false;
+	
+	DispatchPacket(ppacket->Base.InternalAddr, ppacket);
+	
+	return true;
+}
+
+bool ProcessKernelPacket(KernalState *pstate, DeviceID* psrcid, DeviceID* pdstid)
+{
+	if(pstate->Base.ModuleType != MODULETYPE_KERNEL)
+		return false;
+		
+	CreatePacket(1, 2, pdstid, psrcid);
+	CreatePacket(3, 4, pdstid, psrcid);
+	
+	return true;
 }
 
 void spi_received(args_received *e)
-{
-	if(e->ppack->destId.ModuleAddr == 0)
-		return;
-		
-	MtrControllerPacket *ppacket = (MtrControllerPacket*)e->ppack;
+{	
+	if(ProcessMtrPacket((MtrControllerPacket*)e->ppack)){}
+	else if (ProcessKernelPacket((KernalState*)e->ppack, e->psrcId, e->pdstId)){}
 
-	DispatchPacket(ppacket->get_InternalAddr(), ppacket);
-	
-	ReplyToSource(ppacket);
 }
 
 int main(void)

@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 
 namespace SensorLibrary.Packet.Data
 {
-    [StructLayout(LayoutKind.Sequential, Pack = 1, Size= 2)]
+    [StructLayout(LayoutKind.Sequential, Pack = 1, Size= 3)]
     public class PacketDeviceHeader
         : IPacketDeviceData
     {
@@ -61,5 +61,38 @@ namespace SensorLibrary.Packet.Data
         public byte VoltageOff;
         public byte Threshold;
 
+    }
+
+    [StructLayout(LayoutKind.Sequential, Pack=1, Size = 8)]
+    public class KernelData
+        : PacketDeviceHeader
+    {
+        public KernelData()
+        {
+            DataLength = 8;
+            ModuleType = (byte)ModuleTypeEnum.AvrKernel;
+        }
+
+        public KernelCommand Command;
+
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+        private byte[] _data = new byte[4];
+        public byte[] Data
+        {
+            get
+            {
+                if (_data == null)
+                    _data = new byte[4];
+
+                return _data;
+            }
+        }
+
+    }
+
+    public enum KernelCommand
+        : byte
+    {
+        InquiryState = 0x01,
     }
 }

@@ -193,6 +193,11 @@ namespace SensorLibrary
 
         }
 
+        public static IEnumerable<DevicePacket> CreatePackedPacket(IDevice<IDeviceState<IPacketDeviceData>> dev, DeviceID id)
+        {
+            return CreatePackedPacket(new IDevice<IDeviceState<IPacketDeviceData>>[] { dev }, id);
+        }
+
         public static IEnumerable<DevicePacket> CreatePackedPacket(IEnumerable<IDevice<IDeviceState<IPacketDeviceData>>> devenumerator, DeviceID id)
         {
             if (devenumerator == null || !devenumerator.Any())
@@ -269,6 +274,7 @@ namespace SensorLibrary
         TrainController = 0x03,
         RemoteModule = 0x04,
 
+        AvrKernel = 0x11,
         AvrMotor = 0x12,
         AvrSwitch = 0x13,
         AvrSensor = 0x14,
