@@ -138,6 +138,7 @@ namespace TestProject
             var memch = Kernel.MemoryState(mtrpacket.destId);
             var memstate = (MemoryState)memch.CurrentState;
 
+            // 1: write mtrstate to memory 0, and check the remote state is changed
             mtrstate.ControlMode = MotorControlMode.DutySpecifiedMode;
             mtrstate.Direction = MotorDirection.Positive;
             mtrstate.Duty = 0.5;
@@ -148,6 +149,7 @@ namespace TestProject
 
             mtr_check(target, mtrpacket, mtrstate);
 
+            // 2: change to memory 1, and check the memory is changed
             mtrstate.Direction = MotorDirection.Negative;
             memstate.CurrentMemory = 1;
             
@@ -157,6 +159,7 @@ namespace TestProject
             
             mtr_check(target, mtrpacket, mtrstate);
 
+            // 3: change to memory 0, and check the memory is saved 
             memstate.CurrentMemory = 0;
             mtrstate.Direction = MotorDirection.Positive;
 
