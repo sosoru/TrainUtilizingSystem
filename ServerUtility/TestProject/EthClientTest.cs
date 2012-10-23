@@ -124,7 +124,7 @@ namespace TestProject
             var transfer = new Func<EthPacket, IObservable<IDeviceState<IPacketDeviceData>>>(pack =>
                 target.AsyncSend(pack)
                 .SelectMany(s => Observable.Defer(target.AsyncReceive()).Take(2))
-                .SelectMany(s => s.DataPacket.ExtractPackedPacket());
+                .SelectMany(s => s.DataPacket.ExtractPackedPacket()));
 
             var mtrpacket = new EthPacket()
             {
@@ -144,19 +144,17 @@ namespace TestProject
             mtrstate.Duty = 0.5;
 
             mtrpacket.DataPacket
-                = DevicePacket.CreatePackedPacket(
-                    new[] { mtrstate, inqiry});
+                = DevicePacket.CreatePackedPacket(mtrstate, inqiry);
 
             mtr_check(target, mtrpacket, mtrstate);
 
             // 2: change to memory 1, and check the memory is changed
             mtrstate.Direction = MotorDirection.Negative;
             memstate.CurrentMemory = 1;
-            
+
             mtrpacket.DataPacket
-                = DevicePacket.CreatePackedPacket(
-                    new [] { memch, mtrstate, inqiry } );
-            
+                = DevicePacket.CreatePackedPacket(memch, mtrstate, inqiry);
+
             mtr_check(target, mtrpacket, mtrstate);
 
             // 3: change to memory 0, and check the memory is saved 
@@ -164,8 +162,7 @@ namespace TestProject
             mtrstate.Direction = MotorDirection.Positive;
 
             mtrpacket.DataPacket
-                = DevicePacket.CreatePackedPacket(
-                    new [] { memch, inqiry});
+                = DevicePacket.CreatePackedPacket(memch, inqiry);
 
             mtr_check(target, mtrpacket, mtrstate);
 
@@ -209,9 +206,9 @@ namespace TestProject
 
                 return mtr_check(target, mtrpacket, mtrstate)
                     .Any();
-           }).ToArray();
+            }).ToArray();
         }
-        
+
         //[TestMethod()]
         //public void sw_test()
         //{
