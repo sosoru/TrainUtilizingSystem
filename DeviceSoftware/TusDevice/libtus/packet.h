@@ -15,6 +15,8 @@
 #define BYTE uint8_t
 
 #define ETHCMD_REPLY 1
+#define ETHCMD_MEMORY 2
+
 #define ETH_DATA_LEN 26 
 
 #define MODULETYPE_KERNEL 0x11
@@ -74,5 +76,13 @@ typedef struct tag_KernelState
 		
 		BYTE raw_array[8];
 } KernalState;	
+
+typedef struct tag_MemoryState
+{
+	struct{
+		BYTE CurerntMemory;
+		BYTE MemoryLimit;
+	};
+} MemoryState;
 
 #endif /* PACKET_H_ */

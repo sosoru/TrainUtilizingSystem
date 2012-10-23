@@ -18,26 +18,34 @@ MotorControllerB mtrB;
 MotorControllerC mtrC;
 MotorControllerD mtrD;
 
-void sample_process(Direction dir)
-{
-	MtrControllerPacket pack;
-	
-	pack.ControlModeValue = (DutySpecifiedMode);
-	pack.DirectionValue = (dir);
-	pack.DutyValue = (250);
-	
-	mtrA.set_Packet(&pack);
-	mtrB.set_Packet(&pack);
-	mtrC.set_Packet(&pack);
-	mtrD.set_Packet(&pack);
-}
-
+//void sample_process(Direction dir)
+//{
+	//MtrControllerPacket pack;
+	//
+	//pack.ControlModeValue = (DutySpecifiedMode);
+	//pack.DirectionValue = (dir);
+	//pack.DutyValue = (250);
+	//
+	//mtrA.set_Packet(&pack);
+	//mtrB.set_Packet(&pack);
+	//mtrC.set_Packet(&pack);
+	//mtrD.set_Packet(&pack);
+//}
+//
 void DispatchPacket(uint8_t devnum, const MtrControllerPacket *ppacket)
 {
 	if(devnum == 1) { mtrA.set_Packet(ppacket); }
 	else if (devnum == 2) { mtrB.set_Packet(ppacket); }
 	else if (devnum == 3) { mtrC.set_Packet(ppacket); }
 	else if (devnum == 4) { mtrD.set_Packet(ppacket); }
+}
+
+void ChangeMemory(uint8_t devnum, const MemoryState *pmstate)
+{
+	if(devnum == 1) { mtrA.MemoryProcess(pmstate); }
+	else if (devnum == 2) { mtrB.MemoryProcess(pmstate); }
+	else if (devnum == 3) { mtrC.MemoryProcess(pmstate); }
+	else if (devnum == 4) { mtrD.MemoryProcess(pmstate); }	
 }
 
 void CopyFrom(uint8_t devnum, MtrControllerPacket *ppacket)
@@ -90,11 +98,20 @@ bool ProcessMtrPacket(MtrControllerPacket *ppacket)
 
 bool ProcessKernelPacket(KernalState *pstate, DeviceID* psrcid, DeviceID* pdstid)
 {
-	if(pstate->Base.ModuleType != MODULETYPE_KERNEL)
+	if(pstate->Base.ModuleType != MODULETYPE_KERNEL
+		&& pstate->Base.InternalAddr > 4)
 		return false;
-		
-	CreatePacket(1, 2, pdstid, psrcid);
-	CreatePacket(3, 4, pdstid, psrcid);
+	
+	switch(pstate->KernelCommand)
+	{
+		case ETHCMD_REPLY:
+			CreatePacket(1, 2, pdstid, psrcid);
+			CreatePacket(3, 4, pdstid, psrcid);
+		break;
+		case ETHCMD_MEMORY:
+			ChangeMemory(pstate->Base.InternalAddr, (MemoryState*)pstate->pdata);
+		break;
+	}
 	
 	return true;
 }
@@ -125,5 +142,9 @@ int main(void)
 	{	
 		tus_spi_process_packets();
 
+		mtrA.Process();
+		mtrB.Process();
+		mtrC.Process();
+		mtrD.Process();
     }
 }
