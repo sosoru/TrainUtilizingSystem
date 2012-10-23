@@ -23,6 +23,16 @@ namespace SensorLibrary.Devices.TusAvrDevices
         }
     }
 
+    public class InquiryState
+        : KernelState
+    {
+        public InquiryState()
+            : base()
+        {
+            this.Command = KernelCommand.InquiryState;
+        }
+    }
+
     public class MemoryState
         : KernelState
     {
