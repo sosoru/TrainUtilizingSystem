@@ -10,14 +10,13 @@ namespace SensorLibrary.Devices.TusAvrDevices
     public class Kernel
         : Device<KernelState>
     {
-        public Kernel()
+        private Kernel()
             : base()
         {
             this.ModuleType = ModuleTypeEnum.AvrKernel;
-            this.CurrentState = new KernelState();
         }
 
-        public Kernel(PacketServer serv)
+        private Kernel(PacketServer serv)
             : this()
         {
             this.CurrentState.ReceivingServer = serv;
@@ -28,7 +27,17 @@ namespace SensorLibrary.Devices.TusAvrDevices
             var k = new Kernel();
 
             k.DeviceID = dev;
-            k.CurrentState.Command = KernelCommand.InquiryState;
+            k.CurrentState = new InquiryState();
+
+            return k;
+        }
+
+        public static Kernel MemoryState(DeviceID dev)
+        {
+            var k = new Kernel();
+
+            k.DeviceID = dev;
+            k.CurrentState = new MemoryState();
 
             return k;
         }
