@@ -41,7 +41,7 @@ namespace TestProject
             var devs = Enumerable.Range(1, 8)
                 .Select(i => new Switch() { DeviceID = new DeviceID(1, 1, (byte)i), });
 
-            var packets = DevicePacket.CreatePackedPacket(devs, new DeviceID(1, 1, 0));
+            var packets = DevicePacket.CreatePackedPacket(devs);
             var extracts = packets.SelectMany(p => p.ExtractPackedPacket())
                 .OrderBy(state => state.Data.InternalAddr);
 
