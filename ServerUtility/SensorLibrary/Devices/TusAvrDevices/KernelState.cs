@@ -29,6 +29,7 @@ namespace SensorLibrary.Devices.TusAvrDevices
         public MemoryState()
             : base()
         {
+            this.Command = KernelCommand.MemoryState;
         }
 
         public byte CurrentMemory
