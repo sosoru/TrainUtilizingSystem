@@ -94,5 +94,6 @@ namespace SensorLibrary.Packet.Data
         : byte
     {
         InquiryState = 0x01,
+        MemoryState = 0x02,
     }
 }
