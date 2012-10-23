@@ -193,18 +193,18 @@ namespace SensorLibrary
 
         }
 
-        public static IEnumerable<DevicePacket> CreatePackedPacket(IDevice<IDeviceState<IPacketDeviceData>> dev, DeviceID id)
+        public static IEnumerable<DevicePacket> CreatePackedPacket(params IDevice<IDeviceState<IPacketDeviceData>>[] devs)
         {
-            return CreatePackedPacket(new IDevice<IDeviceState<IPacketDeviceData>>[] { dev }, id);
+            return CreatePackedPacket(devs); 
         }
 
-        public static IEnumerable<DevicePacket> CreatePackedPacket(IEnumerable<IDevice<IDeviceState<IPacketDeviceData>>> devenumerator, DeviceID id)
+        public static IEnumerable<DevicePacket> CreatePackedPacket(IEnumerable<IDevice<IDeviceState<IPacketDeviceData>>> devenumerator)
         {
             if (devenumerator == null || !devenumerator.Any())
                 return new DevicePacket[] { };
 
             var devs = devenumerator.Select((a, ind) => new { ind = ind, val = a });
-            var pack = new DevicePacket() { ID = id };
+            var pack = new DevicePacket() { ID = devs.First().val.DeviceID };
 
             using (var mst = new MemoryStream(pack.Data))
             {
