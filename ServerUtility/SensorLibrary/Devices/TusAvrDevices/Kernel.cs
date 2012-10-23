@@ -10,16 +10,26 @@ namespace SensorLibrary.Devices.TusAvrDevices
     public class Kernel
         : Device<KernelState>
     {
-        private Kernel()
+        public Kernel()
             : base()
         {
             this.ModuleType = ModuleTypeEnum.AvrKernel;
         }
 
-        private Kernel(PacketServer serv)
+        public Kernel(PacketServer serv)
             : this()
         {
             this.CurrentState.ReceivingServer = serv;
+        }
+
+        public bool IsInquiryState
+        {
+            get { return this.CurrentState.Command == KernelCommand.InquiryState; }
+        }
+
+        public bool IsMemoryState
+        {
+            get { return this.CurrentState.Command == KernelCommand.MemoryState; }
         }
 
         public static Kernel InquiryState(DeviceID dev)
