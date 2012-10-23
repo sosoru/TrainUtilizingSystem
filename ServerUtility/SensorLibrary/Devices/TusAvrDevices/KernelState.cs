@@ -33,8 +33,8 @@ namespace SensorLibrary.Devices.TusAvrDevices
 
         public byte CurrentMemory
         {
-            get { return this.Data.ContentArray[0];}
-            set { this.Data.ContentArray[1];}
+            get { return this.Data.Content[0];}
+            set { this.Data.Content[1];}
         }
 
         
