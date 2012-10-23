@@ -116,6 +116,59 @@ namespace TestProject
         //}
 
         [TestMethod()]
+        public void MotorControl_MemoryTest()
+        {
+            var target = sample;
+            target.Connect();
+
+            var transfer = new Func<EthPacket, IObservable<IDeviceState<IPacketDeviceData>>>(pack =>
+                target.AsyncSend(pack)
+                .SelectMany(s => Observable.Defer(target.AsyncReceive()).Take(2))
+                .SelectMany(s => s.DataPacket.ExtractPackedPacket());
+
+            var mtrpacket = new EthPacket()
+            {
+                srcId = new DeviceID(111, 0),
+                destId = new DeviceID(24, 1, 1),
+            };
+            var mtr = new Motor() { DeviceID = mtrpacket.destId };
+            var mtrstate = mtr.CurrentState;
+            var inqiry = Kernel.InquiryState(mtrpacket.destId);
+
+            var memch = Kernel.MemoryState(mtrpacket.destId);
+            var memstate = (MemoryState)memch.CurrentState;
+
+            mtrstate.ControlMode = MotorControlMode.DutySpecifiedMode;
+            mtrstate.Direction = MotorDirection.Positive;
+            mtrstate.Duty = 0.5;
+
+            mtrpacket.DataPacket
+                = DevicePacket.CreatePackedPacket(
+                    new[] { mtrstate, inqiry});
+
+            mtr_check(target, mtrpacket, mtrstate);
+
+            mtrstate.Direction = MotorDirection.Negative;
+            memstate.CurrentMemory = 1;
+            
+            mtrpacket.DataPacket
+                = DevicePacket.CreatePackedPacket(
+                    new [] { memch, mtrstate, inqiry } );
+            
+            mtr_check(target, mtrpacket, mtrstate);
+
+            memstate.CurrentMemory = 0;
+            mtrstate.Direction = MotorDirection.Positive;
+
+            mtrpacket.DataPacket
+                = DevicePacket.CreatePackedPacket(
+                    new [] { memch, inqiry});
+
+            mtr_check(target, mtrpacket, mtrstate);
+
+        }
+
+        [TestMethod()]
         public void MotorControlTest()
         {
             var target = sample;
