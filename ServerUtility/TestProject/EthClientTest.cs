@@ -121,11 +121,6 @@ namespace TestProject
             var target = sample;
             target.Connect();
 
-            var transfer = new Func<EthPacket, IObservable<IDeviceState<IPacketDeviceData>>>(pack =>
-                target.AsyncSend(pack)
-                .SelectMany(s => Observable.Defer(target.AsyncReceive()).Take(2))
-                .SelectMany(s => s.DataPacket.ExtractPackedPacket()));
-
             var mtrpacket = new EthPacket()
             {
                 srcId = new DeviceID(111, 0),
@@ -141,10 +136,10 @@ namespace TestProject
             // 1: write mtrstate to memory 0, and check the remote state is changed
             mtrstate.ControlMode = MotorControlMode.DutySpecifiedMode;
             mtrstate.Direction = MotorDirection.Positive;
-            mtrstate.Duty = 0.5;
+            mtrstate.Duty = 0.5f;
 
             mtrpacket.DataPacket
-                = DevicePacket.CreatePackedPacket(mtrstate, inqiry);
+                = DevicePacket.CreatePackedPacket(mtr, inqiry);
 
             mtr_check(target, mtrpacket, mtrstate);
 
@@ -153,7 +148,7 @@ namespace TestProject
             memstate.CurrentMemory = 1;
 
             mtrpacket.DataPacket
-                = DevicePacket.CreatePackedPacket(memch, mtrstate, inqiry);
+                = DevicePacket.CreatePackedPacket(memch, mtr, inqiry);
 
             mtr_check(target, mtrpacket, mtrstate);
 
