@@ -48,7 +48,7 @@ namespace SensorLibrary.Packet
             var handle = GCHandle.Alloc(obj, GCHandleType.Pinned);
             try
             {
-                Marshal.Copy(array, 0, handle.AddrOfPinnedObject(), Marshal.SizeOf(obj));
+                Marshal.Copy(array, 0, handle.AddrOfPinnedObject(), array.Length);
                 return obj;
             }
             finally
@@ -83,8 +83,8 @@ namespace SensorLibrary.Packet
                 //ret.ReadMark = br.ReadByte();
                 ret.ID.ParentPart = br.ReadByte();
                 ret.ID.ModulePart = br.ReadByte();
-                ret.ModuleType = (ModuleTypeEnum)br.ReadByte();
-                br.ReadBytes(26).CopyTo(ret.Data, 0);
+                //ret.ModuleType = (ModuleTypeEnum)br.ReadByte();
+                br.ReadBytes(DevicePacket.DATA_SIZE).CopyTo(ret.Data, 0);
             }
 
             return ret;
@@ -100,26 +100,26 @@ namespace SensorLibrary.Packet
             };
 
             packet.CopyToData(data);
-            packet.ModuleType = dev.ModuleType;
+            //packet.ModuleType = dev.ModuleType;
 
             return packet;
         }
 
-        public static void WritePacket(this ChunckedStreamController st, DevicePacket pack)
-        {
-            byte[] buf = new byte [32];
-            using (var ms = new MemoryStream(buf))
-            using (var sw = new BinaryWriter(ms))
-            {
-                sw.Write((byte)0xFF); // readmark
-                sw.Write(pack.ID.ParentPart);
-                sw.Write(pack.ID.ModulePart);
-                sw.Write((byte)pack.ModuleType);
-                sw.Write(pack.Data, 0, 28);
-            }
+        //public static void WritePacket(this ChunckedStreamController st, DevicePacket pack)
+        //{
+        //    byte[] buf = new byte [32];
+        //    using (var ms = new MemoryStream(buf))
+        //    using (var sw = new BinaryWriter(ms))
+        //    {
+        //        sw.Write((byte)0xFF); // readmark
+        //        sw.Write(pack.ID.ParentPart);
+        //        sw.Write(pack.ID.ModulePart);
+        //        sw.Write((byte)pack.ModuleType);
+        //        sw.Write(pack.Data, 0, 28);
+        //    }
 
-            st.Write(buf, 0, buf.Length);
-        }
+        //    st.Write(buf, 0, buf.Length);
+        //}
     }
 
 }

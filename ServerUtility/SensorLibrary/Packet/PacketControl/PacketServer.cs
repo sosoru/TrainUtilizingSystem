@@ -72,13 +72,13 @@ namespace SensorLibrary.Packet.Control
 
             try
             {
-                if (!this.sending_queue.ToArray().Any(p => (p != null)
-                                                           && ((p.ID == pack.ID)
-                                                               || (p.ModuleType == ModuleTypeEnum.AvrSensor
-                                                                   && p.ID.ModuleAddr == pack.ID.ModuleAddr))))
-                {
+                //if (!this.sending_queue.ToArray().Any(p => (p != null)
+                //                                           && ((p.ID == pack.ID)
+                //                                               || (p.ModuleType == ModuleTypeEnum.AvrSensor
+                //                                                   && p.ID.ModuleAddr == pack.ID.ModuleAddr))))
+                //{
                     this.sending_queue.Enqueue(pack);
-                }
+                //}
             }catch(ArgumentException)
             {
             }
@@ -96,6 +96,7 @@ namespace SensorLibrary.Packet.Control
                     this.IsLooping = true;
                     //todo : stopping
                     Observable.Defer(this.Controller.GetReadingPacket)
+                        .SelectMany(packs => packs.ExtractPackedPacket())
                         .Do(pack =>
                                 {
                                     var f =
@@ -103,12 +104,12 @@ namespace SensorLibrary.Packet.Control
                                             a => a.ModuleType == pack.ModuleType);
                                     if (f != null)
                                     {
-                                        if (pack.ModuleType == ModuleTypeEnum.AvrSensor)
-                                        {
-                                            this.avr_sensor_spliter(pack);
-                                        }
-                                        else
-                                        {
+                                        //if (pack.ModuleType == ModuleTypeEnum.AvrSensor)
+                                        //{
+                                        //    this.avr_sensor_spliter(pack);
+                                        //}
+                                        //else
+                                        //{
                                             var state = f.DeviceStateCreate();
                                             var data = f.DeviceDataCreate();
 
@@ -118,7 +119,7 @@ namespace SensorLibrary.Packet.Control
                                             //Console.WriteLine(state.ToString());
 
                                             this.actionList.ForEach((item) => item.Act(state));
-                                        }
+                                        //}
                                     }
                                     else
                                     {

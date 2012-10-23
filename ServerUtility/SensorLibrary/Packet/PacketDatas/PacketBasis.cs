@@ -5,7 +5,11 @@ using System.Text;
 using System.Runtime.InteropServices;
 using System.IO;
 using System.IO.Ports;
+using System.Reactive.Linq;
+using System.Reactive;
 using SensorLibrary.Packet;
+using SensorLibrary.Packet.Data;
+using SensorLibrary.Devices;
 
 namespace SensorLibrary
 {
@@ -116,20 +120,21 @@ namespace SensorLibrary
         //[MarshalAs(UnmanagedType.U1, SizeConst = 1)]
         //public byte ReadMark = 0xFF;
 
-        [MarshalAs(UnmanagedType.Struct, SizeConst=4)]
+        [MarshalAs(UnmanagedType.Struct, SizeConst = 4)]
         public DeviceID ID;
 
-        [MarshalAs(UnmanagedType.U1, SizeConst = 1)]
-        public ModuleTypeEnum ModuleType;
+        //[MarshalAs(UnmanagedType.U1, SizeConst = 1)]
+        //public ModuleTypeEnum ModuleType;
 
+        public const int DATA_SIZE = 26;
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 26)]
-        private byte[] _data = new byte[26];
+        private byte[] _data = new byte[DATA_SIZE];
         public byte[] Data
         {
             get
             {
                 if (_data == null)
-                    _data = new byte[26];
+                    _data = new byte[DATA_SIZE];
 
                 return _data;
             }
@@ -161,8 +166,64 @@ namespace SensorLibrary
                 }
             }
 
-            return string.Format("({0},{1}, {2}){3}", ID.ParentPart, ID.ModulePart, ModuleType.ToString(), sb.ToString());
+            return string.Format("({0},{1}){2}", ID.ParentPart, ID.ModulePart, sb.ToString());
         }
+
+        public IEnumerable<IDeviceState<IPacketDeviceData>> ExtractPackedPacket()
+        {
+            var bufind = 0;
+            var factory = new SensorLibrary.Devices.AvrDeviceFactoryProvider();
+            
+            while (bufind <= DATA_SIZE && this.Data[bufind] != 0x00)
+            {
+                var len = this.Data[bufind];
+                var mtype = (ModuleTypeEnum)this.Data[bufind + 2];
+                var f = factory.AvailableDeviceTypes.First(a => a.ModuleType == mtype);
+                var state = f.DeviceStateCreate();
+                var data = state.Data;
+                var cpbuffer = new byte[len];
+
+                Array.Copy(this.Data, bufind, cpbuffer, 0, len); 
+                data.RestoreObject(cpbuffer);
+
+                yield return state;
+
+                bufind += len;
+            }
+
+        }
+
+        public static IEnumerable<DevicePacket> CreatePackedPacket(IEnumerable<IDevice<IDeviceState<IPacketDeviceData>>> devenumerator, DeviceID id)
+        {
+            if (devenumerator == null || !devenumerator.Any())
+                return new DevicePacket[] { };
+
+            var devs = devenumerator.Select((a, ind) => new { ind = ind, val = a });
+            var pack = new DevicePacket() { ID = id };
+
+            using (var mst = new MemoryStream(pack.Data))
+            {
+                foreach (var dev in devs)
+                {
+                    var data = dev.val.CurrentState.Data;
+                    data.InternalAddr = dev.val.DeviceID.InternalAddr;
+
+                    if (mst.Position + data.DataLength > pack.Data.Length)
+                    {
+                        return new[] { pack }.Concat(CreatePackedPacket(devenumerator.Skip(dev.ind), id));
+                    }
+                    else
+                    {
+                        mst.Write(data.ToByteArray(), 0, data.DataLength);
+                    }
+                }
+            }
+
+            return new[] { pack };
+        }
+
+
+
     }
 
     [StructLayout(LayoutKind.Sequential, Size = 40)]
@@ -182,7 +243,9 @@ namespace SensorLibrary
 
     public interface IPacketDeviceData
     {
-
+        byte InternalAddr { get; set; }
+        byte DataLength { get; set; }
+        byte ModuleType { get; set; }
     }
 
     public enum EthCommandEnum

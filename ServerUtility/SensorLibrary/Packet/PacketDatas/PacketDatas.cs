@@ -8,105 +8,105 @@ using System.IO.Ports;
 
 namespace SensorLibrary.Packet.Data
 {
-    [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 28)]
-    public class TrainSensorData
-         : IPacketDeviceData
-    {
-        public TrainSensorMode Mode;
-        public UInt16 Timer;
-        public UInt16 OverflowedCount;
-        public byte ReferenceVoltageMinus;
-        public byte ReferenceVoltagePlus;
-        public byte VoltageResolution;
-        public byte DeviceThresholdVoltageLower;
-        public byte DeviceThresholdVoltageHigher;
-        public ushort DeviceCurrentVoltage;
-        public byte IsDetected;
+    //[StructLayout(LayoutKind.Sequential, Pack = 1, Size = 28)]
+    //public class TrainSensorData
+    //     : IPacketDeviceData
+    //{
+    //    public TrainSensorMode Mode;
+    //    public UInt16 Timer;
+    //    public UInt16 OverflowedCount;
+    //    public byte ReferenceVoltageMinus;
+    //    public byte ReferenceVoltagePlus;
+    //    public byte VoltageResolution;
+    //    public byte DeviceThresholdVoltageLower;
+    //    public byte DeviceThresholdVoltageHigher;
+    //    public ushort DeviceCurrentVoltage;
+    //    public byte IsDetected;
 
 
-    }
+    //}
 
-    [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 28)]
-    public class MotherBoardData
-        : IPacketDeviceData
-    {
-        public byte ParentId;
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
-        private byte[] _moduleType;
-        public ushort Timer;
+    //[StructLayout(LayoutKind.Sequential, Pack = 1, Size = 28)]
+    //public class MotherBoardData
+    //    : IPacketDeviceData
+    //{
+    //    public byte ParentId;
+    //    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
+    //    private byte[] _moduleType;
+    //    public ushort Timer;
 
-        public byte [] ModuleType
-        {
-            get
-            {
-                if (_moduleType == null)
-                    _moduleType = new byte [2];
-                return _moduleType;
-            }
-        }
-    }
+    //    public byte [] ModuleType
+    //    {
+    //        get
+    //        {
+    //            if (_moduleType == null)
+    //                _moduleType = new byte [2];
+    //            return _moduleType;
+    //        }
+    //    }
+    //}
 
-    [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 28)]
-    public class PointModuleData
-        : IPacketDeviceData
-    {
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 8)]
-        private byte[] _directions;
+    //[StructLayout(LayoutKind.Sequential, Pack = 1, Size = 28)]
+    //public class PointModuleData
+    //    : IPacketDeviceData
+    //{
+    //    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 8)]
+    //    private byte[] _directions;
 
-        public byte [] Directions
-        {
-            get
-            {
-                if (this._directions == null)
-                    this._directions = new byte [8];
+    //    public byte [] Directions
+    //    {
+    //        get
+    //        {
+    //            if (this._directions == null)
+    //                this._directions = new byte [8];
 
-                return this._directions;
-            }
-        }
+    //            return this._directions;
+    //        }
+    //    }
 
-    }
+    //}
 
-    [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 28)]
-    public class TrainControllerData
-        : IPacketDeviceData
-    {
-        public ushort duty;
-        public byte dutyEnabledBits;
+    //[StructLayout(LayoutKind.Sequential, Pack = 1, Size = 28)]
+    //public class TrainControllerData
+    //    : IPacketDeviceData
+    //{
+    //    public ushort duty;
+    //    public byte dutyEnabledBits;
 
-        public byte period;
-        public TrainControllerPrescale prescale;
-        public byte frequency;
-        public TrainControllerDirection direction;
-        public TrainControllerMode mode;
-        public ushort voltage;
-        public byte voltageEnabledBits;
-        public ushort meisuredVoltage;
+    //    public byte period;
+    //    public TrainControllerPrescale prescale;
+    //    public byte frequency;
+    //    public TrainControllerDirection direction;
+    //    public TrainControllerMode mode;
+    //    public ushort voltage;
+    //    public byte voltageEnabledBits;
+    //    public ushort meisuredVoltage;
 
-        public byte paramp;
-        public byte parami;
-        public byte paramd;
+    //    public byte paramp;
+    //    public byte parami;
+    //    public byte paramd;
 
-        public ushort meisuredVoltage2;
+    //    public ushort meisuredVoltage2;
 
-        public byte lowerEnable;
-        public ushort lowerPwmFrequency;
+    //    public byte lowerEnable;
+    //    public ushort lowerPwmFrequency;
 
-        public ushort DeviceTime;
-    }
+    //    public ushort DeviceTime;
+    //}
 
-    [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 28)]
-    public class RemoteModuleData
-        : IPacketDeviceData
-    {
-        public DeviceID remoteid;
-    }
+    //[StructLayout(LayoutKind.Sequential, Pack = 1, Size = 28)]
+    //public class RemoteModuleData
+    //    : IPacketDeviceData
+    //{
+    //    public DeviceID remoteid;
+    //}
 
-    public struct PidParams
-    {
-        public float paramp;
-        public float parami;
-        public float paramd;
-    }
+    //public struct PidParams
+    //{
+    //    public float paramp;
+    //    public float parami;
+    //    public float paramd;
+    //}
 
     public enum TrainControllerMode
         : byte

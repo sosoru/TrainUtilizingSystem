@@ -108,7 +108,6 @@ namespace SensorLibrary.Devices
             var pack = new DevicePacket()
             {
                 ID = this.DeviceID,
-                ModuleType = this.ModuleType,
             };
             pack.CopyToData<T>(data);
             return pack;

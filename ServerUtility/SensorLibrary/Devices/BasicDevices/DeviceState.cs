@@ -13,6 +13,7 @@ namespace SensorLibrary.Devices
     {
         //DevicePacket BasePacket { get; set; }
         PacketServer ReceivingServer { get; set; }
+        ModuleTypeEnum ModuleType { get; set; }
         T Data { get; }
     }
 
@@ -40,6 +41,12 @@ namespace SensorLibrary.Devices
 
         public DeviceState()
         {
+        }
+
+        public ModuleTypeEnum ModuleType
+        {
+            get { return (ModuleTypeEnum)this.Data.ModuleType; }
+            set { this.Data.ModuleType = (byte)value; }
         }
 
         //public override string ToString()

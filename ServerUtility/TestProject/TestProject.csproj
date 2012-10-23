@@ -100,7 +100,6 @@
     <Compile Include="BlockTest.cs" />
     <Compile Include="BlockYamlTest.cs" />
     <Compile Include="ChunckedStreamTest.cs" />
-    <Compile Include="ConvertExtenstionsTest.cs" />
     <Compile Include="DeviceIdParserTest.cs" />
     <Compile Include="DialogController\MotorControllerTest.cs" />
     <Compile Include="DialogController\SwitchControllerTest.cs" />
@@ -108,13 +107,10 @@
     <Compile Include="GateViewModelTest.cs" />
     <Compile Include="LoopingArrayTest.cs" />
     <Compile Include="LoopModelTest.cs" />
-    <Compile Include="MotherBoardDataTest.cs" />
-    <Compile Include="MotherBoardViewModelTest.cs" />
     <Compile Include="MotorStateTest.cs" />
     <Compile Include="PacketDispatcherSingleTest.cs" />
     <Compile Include="PathDataViewModelTest.cs" />
     <Compile Include="PathViewModelTest.cs" />
-    <Compile Include="PointModuleDataTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PysicalPathTest.cs" />
     <Compile Include="RailConnectionTest.cs" />
@@ -134,6 +130,7 @@
     <Compile Include="TrainSensorTest.cs" />
     <Compile Include="EqualTest.cs" />
     <Compile Include="TusEthernetIOTest.cs" />
+    <Compile Include="PackedPacketTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\..\..\..\Program Files\LibUsbDotNet\Src\LibWinUsb\LibUsbDotNet.csproj">

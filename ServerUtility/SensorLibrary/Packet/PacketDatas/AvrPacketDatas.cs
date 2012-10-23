@@ -6,20 +6,32 @@ using System.Runtime.InteropServices;
 
 namespace SensorLibrary.Packet.Data
 {
+    [StructLayout(LayoutKind.Sequential, Pack = 1, Size= 2)]
+    public class PacketDeviceHeader
+        : IPacketDeviceData
+    {
+        public byte DataLength { get; set; }
+        public byte InternalAddr { get; set; }
+        public byte ModuleType { get; set; }
+    }
+
     // pdata:
 	//	ControlMode : 1 byte
 	//	Direction	: 1 byte
 	//	DutyValue	: 1 byte
-	//	VoltageValue: 4 byte
+	//	VoltageValue: 1 byte
 	//	
-    [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 26)]
+    [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 7)]
     public class MotorData
-        : IPacketDeviceData
+        : PacketDeviceHeader
     {
+        public MotorData() { DataLength = 7; ModuleType = (byte)ModuleTypeEnum.AvrMotor; }
+
         public byte ControlMode;
         public byte Direction;
         public byte Duty;
         public byte Current;
+
     }
 
     //struct PointModuleState
@@ -28,19 +40,23 @@ namespace SensorLibrary.Packet.Data
     //    uint8_t ChangingTime;
     //    PositionEnum Position;
     //};
-    [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 26)]
+    [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 6)]
     public class SwitchData
-        : IPacketDeviceData
+        : PacketDeviceHeader
     {
+        public SwitchData() { DataLength = 6; ModuleType = (byte)ModuleTypeEnum.AvrSwitch; }
+
         public byte DeadTime;
         public byte ChangingTime;
         public byte Position;
     }
 
-    [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 26)]
+    [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 6)]
     public class SensorData
-        : IPacketDeviceData
+        : PacketDeviceHeader 
     {
+        public SensorData() { DataLength = 6; ModuleType = (byte)ModuleTypeEnum.AvrSensor; }
+
         public byte VoltageOn;
         public byte VoltageOff;
         public byte Threshold;
