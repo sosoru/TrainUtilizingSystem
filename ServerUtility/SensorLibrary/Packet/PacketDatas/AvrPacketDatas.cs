@@ -77,7 +77,7 @@ namespace SensorLibrary.Packet.Data
 
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
         private byte[] _data = new byte[4];
-        public byte[] ContentArray
+        public byte[] Content
         {
             get
             {
