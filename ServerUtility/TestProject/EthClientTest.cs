@@ -149,7 +149,7 @@ namespace TestProject
                 mtrpacket.DataPacket
                     = DevicePacket.CreatePackedPacket(new IDevice<IDeviceState<IPacketDeviceData>>[] { mtr, kernal }, mtr.DeviceID).First();
 
-                //System.Threading.Thread.Sleep(20);
+                System.Threading.Thread.Sleep(1000);
 
                 return mtr_check(target, mtrpacket, mtrstate)
                            .Subscribe(); 
