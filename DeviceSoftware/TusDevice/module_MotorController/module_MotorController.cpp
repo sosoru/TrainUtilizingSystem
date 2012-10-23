@@ -48,24 +48,38 @@ void CopyFrom(uint8_t devnum, MtrControllerPacket *ppacket)
 	else if(devnum == 4) { mtrD.get_Packet(ppacket); }
 }
 
-void ReplyToSource(MtrControllerPacket *preceived)
+void CreatePacket(uint8_t beginid, uint8_t endid, MtrControllerPacket* preceived)
 {
+	uint8_t i;
 	spi_send_object *psend;
 	MtrControllerPacket *ppacket;
 	
 	tus_spi_lock_send_buffer(&psend);
-	ppacket = (MtrControllerPacket*)&psend->packet;	
 	
-	ppacket->srcId.raw = preceived->destId.raw;
-	ppacket->destId.raw = preceived->srcId.raw;
-	
-	ppacket->moduletype = 0x12;
-	ppacket->devID.raw = ppacket->srcId.raw;
-	
-	CopyFrom(preceived->destId.InternalAddr, ppacket);
+	for(i=beginid; i<=endid; ++i)
+	{		
+		ppacket = (MtrControllerPacket*)(&psend->packet + ((i - beginid) * 7));
+		ppacket->srcId.raw = preceived->destId.raw;
+		ppacket->srcId.InternalAddr = i;
+		ppacket->destId.raw = preceived->srcId.raw;
+		
+		ppacket->set_ModuleType(0x12);
+		ppacket->set_DataLength(7);
+		ppacket->set_InternalAddr(i);
+		ppacket->devID.raw = ppacket->srcId.raw;
+		
+		CopyFrom(i, ppacket);	
+	}
 	
 	psend->is_locked = false;
 	
+	
+}
+
+void ReplyToSource(MtrControllerPacket *preceived)
+{
+	CreatePacket(1, 2, preceived);
+	CreatePacket(3, 4, preceived);
 }
 
 void spi_received(args_received *e)
@@ -75,7 +89,7 @@ void spi_received(args_received *e)
 		
 	MtrControllerPacket *ppacket = (MtrControllerPacket*)e->ppack;
 
-	DispatchPacket(ppacket->destId.InternalAddr, ppacket);
+	DispatchPacket(ppacket->get_InternalAddr(), ppacket);
 	
 	ReplyToSource(ppacket);
 }

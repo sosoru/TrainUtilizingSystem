@@ -43,7 +43,6 @@ typedef struct tag_EthPacket
 			DeviceID destId; 
 					
 			DeviceID devID;
-			BYTE moduletype;
 	
 			BYTE pdata[ETH_DATA_LEN]; 
 		};

@@ -82,15 +82,15 @@ namespace TestProject
         //
         #endregion
 
-        private IObservable<EthPacket> mtr_check(EthClient target, EthPacket mtrpacket, MotorState mtrstate)
+        private IObservable<MotorState> mtr_check(EthClient target, EthPacket mtrpacket, MotorState mtrstate)
         {
             return target.AsyncSend(mtrpacket)
-                .SelectMany(s => target.AsyncReceive())
-                .Do(s =>
+                .SelectMany(s => Observable.Defer(() => target.AsyncReceive()).Take(2))
+                .SelectMany(s => s.DataPacket.ExtractPackedPacket())
+                .Where(state => state.Data.InternalAddr == mtrstate.Data.InternalAddr)
+                .Cast<MotorState>()
+                .Do(state =>
                             {
-                                var data = s.DataPacket.CopyFromData<MotorData>();
-                                var state = new MotorState() { Data = data };
-
                                 Assert.AreEqual(state.Duty, mtrstate.Duty);
                                 Assert.AreEqual(state.Direction, mtrstate.Direction);
                                 Assert.AreEqual(state.ControlMode, mtrstate.ControlMode);
@@ -142,12 +142,13 @@ namespace TestProject
                 mtrpacket.destId.InternalAddr = (byte)s.devnum;
                 mtr.DeviceID = mtrpacket.destId;
                 mtrstate.Direction = s.dir;
+                mtrstate.Data.InternalAddr = (byte)s.devnum;
 
-                mtrpacket.DataPacket = mtr.ToDevicePacket();
+                mtrpacket.DataPacket = DevicePacket.CreatePackedPacket(new Motor[] { mtr }, mtr.DeviceID).First();
 
                 return mtr_check(target, mtrpacket, mtrstate)
                     .Delay(TimeSpan.FromSeconds(1))
-                            .First();
+                           .Subscribe(); 
             }).ToArray();
         }
         

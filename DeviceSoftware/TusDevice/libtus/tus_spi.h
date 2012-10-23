@@ -21,6 +21,7 @@ typedef struct tag_args_received
 {
 	EthPacket *ppack;
 	uint8_t pos;
+	uint8_t pos_in_packet;
 } args_received;
 
 typedef struct tag_spi_send_object
