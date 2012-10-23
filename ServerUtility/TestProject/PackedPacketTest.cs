@@ -29,7 +29,7 @@ namespace TestProject
             devA.CurrentState.Direction = MotorDirection.Negative;
             devA.CurrentState.Current = 1.0f;
                 
-            var packets = DevicePacket.CreatePackedPacket(new IDevice<IDeviceState<IPacketDeviceData>>[] { devA, devB }, new DeviceID(1, 1, 0));
+            var packets = DevicePacket.CreatePackedPacket( devA, devB );
 
             var extracts = packets.First().ExtractPackedPacket().ToArray() ;
 
