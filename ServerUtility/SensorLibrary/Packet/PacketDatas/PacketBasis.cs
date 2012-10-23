@@ -215,7 +215,7 @@ namespace SensorLibrary
 
                     if (mst.Position + data.DataLength > pack.Data.Length)
                     {
-                        return new[] { pack }.Concat(CreatePackedPacket(devenumerator.Skip(dev.ind), id));
+                        return new[] { pack }.Concat(CreatePackedPacket(devenumerator.Skip(dev.ind)));
                     }
                     else
                     {
