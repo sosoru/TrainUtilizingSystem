@@ -195,7 +195,7 @@ namespace TestProject
                 mtrstate.Data.InternalAddr = (byte)s.devnum;
 
                 mtrpacket.DataPacket
-                    = DevicePacket.CreatePackedPacket(new IDevice<IDeviceState<IPacketDeviceData>>[] { mtr, kernal }, mtr.DeviceID).First();
+                    = DevicePacket.CreatePackedPacket(new IDevice<IDeviceState<IPacketDeviceData>>[] { mtr, kernal } ).First();
 
                 System.Threading.Thread.Sleep(1000);
 
