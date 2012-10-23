@@ -152,8 +152,8 @@ namespace TestProject
                 System.Threading.Thread.Sleep(1000);
 
                 return mtr_check(target, mtrpacket, mtrstate)
-                           .Subscribe(); 
-            }).ToArray();
+                    .First();
+           }).ToArray();
         }
         
         //[TestMethod()]
