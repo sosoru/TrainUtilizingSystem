@@ -139,7 +139,7 @@ namespace TestProject
             mtrstate.Duty = 0.5f;
 
             mtrpacket.DataPacket
-                = DevicePacket.CreatePackedPacket(mtr, inqiry);
+                = DevicePacket.CreatePackedPacket(mtr, inqiry).First();
 
             mtr_check(target, mtrpacket, mtrstate);
 
@@ -148,7 +148,7 @@ namespace TestProject
             memstate.CurrentMemory = 1;
 
             mtrpacket.DataPacket
-                = DevicePacket.CreatePackedPacket(memch, mtr, inqiry);
+                = DevicePacket.CreatePackedPacket(memch, mtr, inqiry).First();
 
             mtr_check(target, mtrpacket, mtrstate);
 
@@ -157,7 +157,7 @@ namespace TestProject
             mtrstate.Direction = MotorDirection.Positive;
 
             mtrpacket.DataPacket
-                = DevicePacket.CreatePackedPacket(memch, inqiry);
+                = DevicePacket.CreatePackedPacket(memch, inqiry).First();
 
             mtr_check(target, mtrpacket, mtrstate);
 
