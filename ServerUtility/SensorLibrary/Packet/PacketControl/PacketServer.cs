@@ -31,10 +31,15 @@ namespace SensorLibrary.Packet.Control
         private Queue<DevicePacket> sending_queue = new Queue<DevicePacket>();
 
         public PacketServer(DeviceFactoryProvider factory)
+            : this()
         {
             this.FactoryProvider = factory;
 
-            IsLooping = false;
+        }
+
+        public PacketServer()
+        {
+            this.IsLooping = false;
         }
 
         public PacketServerAction AddAction(PacketDispatcher dispatcher)
@@ -77,9 +82,10 @@ namespace SensorLibrary.Packet.Control
                 //                                               || (p.ModuleType == ModuleTypeEnum.AvrSensor
                 //                                                   && p.ID.ModuleAddr == pack.ID.ModuleAddr))))
                 //{
-                    this.sending_queue.Enqueue(pack);
+                this.sending_queue.Enqueue(pack);
                 //}
-            }catch(ArgumentException)
+            }
+            catch (ArgumentException)
             {
             }
         }
@@ -110,15 +116,15 @@ namespace SensorLibrary.Packet.Control
                                         //}
                                         //else
                                         //{
-                                            var state = f.DeviceStateCreate();
-                                            var data = f.DeviceDataCreate();
+                                        var state = f.DeviceStateCreate();
+                                        var data = f.DeviceDataCreate();
 
-                                            //state.BasePacket = pack;
-                                            state.ReceivingServer = this;
+                                        //state.BasePacket = pack;
+                                        state.ReceivingServer = this;
 
-                                            //Console.WriteLine(state.ToString());
+                                        //Console.WriteLine(state.ToString());
 
-                                            this.actionList.ForEach((item) => item.Act(state));
+                                        this.actionList.ForEach((item) => item.Act(state));
                                         //}
                                     }
                                     else
@@ -129,7 +135,7 @@ namespace SensorLibrary.Packet.Control
                         .ObserveOn(System.Reactive.Concurrency.NewThreadScheduler.Default)
                         .Repeat()
                         .Subscribe(pack => { }, (Exception ex) => Console.WriteLine(ex.ToString()));
-                    
+
                     Observable
                         .Defer(() => Observable
                                         .Return(((this.sending_queue.Count > 0) ? this.sending_queue.Dequeue() : null))
