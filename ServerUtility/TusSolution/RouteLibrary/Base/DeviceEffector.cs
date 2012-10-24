@@ -152,7 +152,7 @@ namespace RouteLibrary.Base
 
         protected override bool CheckAll(MotorState a, MotorState b)
         {
-            return a.Data.Duty == b.Data.Duty;
+            return a.Data.Direction == b.Data.Direction && a.Data.Duty == b.Data.Duty;
         }
     }
 
