@@ -11,6 +11,8 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Linq;
+using Moq
+using Moq.Linq;
 
 namespace TestProject
 {
@@ -72,6 +74,15 @@ namespace TestProject
         //}
         //
         #endregion
+
+        BlockSheet sample_loop_sheet
+        {
+            get
+            {
+                var infos - new [] { new BlockInfo { Name = "pero"}};
+
+            }
+        }
 
         BlockSheet sample_sheet
         {
