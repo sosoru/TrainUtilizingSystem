@@ -129,12 +129,16 @@ namespace TestProject
         [TestMethod()]
         public void BlockEffectTest()
         {
-           var written = new List<IDeviceState<IPacketDeviceData>>();
-           var serv = new Mock<PacketServer>();
+            var writtenmtr = new List<MotorState>();
+            var writtensens = new List<SensorState>();
+            var serv = new Mock<PacketServer>();
 
-           serv.Setup(e => e.SendState(It.IsAny<IDevice<IDeviceState<IPacketDeviceData>>>()))
-               .Callback<IDevice<IDeviceState<IPacketDeviceData>>>(dev => written.Add(dev.CurrentState));
-            
+            serv.Setup(e => e.SendState(It.IsAny<Sensor>()))
+                 .Callback<Sensor>(s => writtensens.Add(s));
+
+            serv.Setup(e => e.SendState(It.IsAny<Motor>()))
+                .Callback<Motor>(s => writtenmtr.Add(s));
+
             //1 : check reduce speed
             var sht = new BlockSheet(sample_loop_sheet, serv.Object);
             var route = new Route(sht, new[] { "AT1", "AT2", "AT3", "AT4", "AT5" });
@@ -147,7 +151,7 @@ namespace TestProject
 
             sht.Effect(cmd);
 
-            
+
         }
 
         [TestMethod()]
