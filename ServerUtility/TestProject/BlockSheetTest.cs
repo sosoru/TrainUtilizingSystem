@@ -11,7 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Linq;
-using Moq
+using Moq;
 using Moq.Linq;
 
 namespace TestProject
