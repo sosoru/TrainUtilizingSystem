@@ -134,7 +134,7 @@ namespace TestProject
             io.Setup(e => e.WritePacket(It.IsAny<DevicePacket>()))
                 .Callback((DevicePacket pack) => written.Add(pack));
 
-            var serv = new PacketServer(new AvrDeviceFactoryProvider()) { Controller = io };
+            var serv = new PacketServer(new AvrDeviceFactoryProvider()) { Controller = io.Object };
             serv.LoopStart();
 
             var sht = new BlockSheet(sample_loop_sheet, serv);
