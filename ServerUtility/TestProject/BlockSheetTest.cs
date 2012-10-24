@@ -134,12 +134,6 @@ namespace TestProject
             io.Setup(e => e.WritePacket(It.IsAny<DevicePacket>()))
                 .Callback((DevicePacket pack) => written.Add(pack));
 
-            var serv = new PacketServer(new AvrDeviceFactoryProvider()) { Controller = io.Object };
-            serv.LoopStart();
-
-            var sht = new BlockSheet(sample_loop_sheet, serv);
-            var route = new Route(sht, new[] { "AT1", "AT2", "AT3", "AT4", "AT5" });
-            
             //1 : check reduce speed
             io.Setup(e => e.GetReadingPacket())
                 .Returns(() =>
@@ -149,6 +143,13 @@ namespace TestProject
 
                         return packets.ToObservable();
                     });
+
+            var serv = new PacketServer(new AvrDeviceFactoryProvider()) { Controller = io.Object };
+            serv.LoopStart();
+
+            var sht = new BlockSheet(sample_loop_sheet, serv);
+            var route = new Route(sht, new[] { "AT1", "AT2", "AT3", "AT4", "AT5" });
+            
 
             var cmd = new CommandInfo()
             {
