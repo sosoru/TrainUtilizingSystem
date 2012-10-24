@@ -133,7 +133,7 @@ namespace TestProject
             var serv = new Mock<PacketServer>();
 
             serv.Setup(e => e.SendState(It.IsAny<Device<IDeviceState<IPacketDeviceData>>>()))
-                .Callback<Device<IDeviceState<IPacketDeviceData>>>(d => written.Add(d));
+                .Callback<Device<IDeviceState<IPacketDeviceData>>>(d => written.Add(d.CurrentState));
 
             //serv.Setup(e => e.SendState(It.IsAny<Motor>()))
             //    .Callback<Motor>(s => writtenmtr.Add(s.CurrentState));
