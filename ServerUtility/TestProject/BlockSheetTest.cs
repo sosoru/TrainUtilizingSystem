@@ -131,8 +131,8 @@ namespace TestProject
         {
             var io = new Mock<IDeviceIO>();
             var written = new List<DevicePacket>();
-            io.Setup(e => e.WritePacket(It.IsAny<DevicePacket>()))
-                .Callback((DevicePacket pack) => written.Add(pack));
+            io.Setup(e => e.GetWritingPacket(It.IsAny<DevicePacket>))
+                .Returns<DevicePacket>(pack => Observable.Start(() => written.Add(pack)));
 
             //1 : check reduce speed
             io.Setup(e => e.GetReadingPacket())
