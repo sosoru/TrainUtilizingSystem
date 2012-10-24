@@ -133,7 +133,7 @@ namespace TestProject
            var serv = new Mock<PacketServer>();
 
            serv.Setup(e => e.SendState(It.IsAny<IDevice<IDeviceState<IPacketDeviceData>>>()))
-               .Callback<IDevice<IDeviceState<IPacketDeviceData>>>(dev => written.Add(dev));
+               .Callback<IDevice<IDeviceState<IPacketDeviceData>>>(dev => written.Add(dev.CurrentState));
             
             //1 : check reduce speed
             var sht = new BlockSheet(sample_loop_sheet, serv);
