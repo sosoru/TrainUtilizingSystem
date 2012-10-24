@@ -195,10 +195,15 @@ namespace SensorLibrary
 
         public static IEnumerable<DevicePacket> CreatePackedPacket(params IDevice<IDeviceState<IPacketDeviceData>>[] devs)
         {
-            return CreatePackedPacket(devs); 
+            return CreatePackedPacketInternal(devs); 
         }
 
-        public static IEnumerable<DevicePacket> CreatePackedPacket(IEnumerable<IDevice<IDeviceState<IPacketDeviceData>>> devenumerator)
+        public static IEnumerable<DevicePacket> CreatePackedPacket(IEnumerable<IDevice<IDeviceState<IPacketDeviceData>>> devs)
+        {
+            return CreatePackedPacketInternal(devs);
+        }
+
+        private static IEnumerable<DevicePacket> CreatePackedPacketInternal(IEnumerable<IDevice<IDeviceState<IPacketDeviceData>>> devenumerator)
         {
             if (devenumerator == null || !devenumerator.Any())
                 return new DevicePacket[] { };
