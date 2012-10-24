@@ -129,27 +129,15 @@ namespace TestProject
         [TestMethod()]
         public void BlockEffectTest()
         {
-            var io = new Mock<IDeviceIO>();
-            var written = new List<DevicePacket>();
-            io.Setup(e => e.GetWritingPacket(It.IsAny<DevicePacket>()))
-                .Returns<DevicePacket>(pack => Observable.Start(() => written.Add(pack)));
+           var written = new List<IDeviceState<IPacketDeviceData>>();
+           var serv = new Mock<PacketServer>();
 
+           serv.Setup(e => e.SendState(It.IsAny<IDevice<IDeviceState<IPacketDeviceData>>>()))
+               .Callback<IDevice<IDeviceState<IPacketDeviceData>>>(dev => written.Add(dev));
+            
             //1 : check reduce speed
-            io.Setup(e => e.GetReadingPacket())
-                .Returns(() =>
-                    {
-                        var sens = new Sensor() { DeviceID = new DeviceID(1, 2, 9) };
-                        var packets = DevicePacket.CreatePackedPacket(sens);
-
-                        return packets.ToObservable();
-                    });
-
-            var serv = new PacketServer(new AvrDeviceFactoryProvider()) { Controller = io.Object };
-            serv.LoopStart();
-
             var sht = new BlockSheet(sample_loop_sheet, serv);
             var route = new Route(sht, new[] { "AT1", "AT2", "AT3", "AT4", "AT5" });
-            
 
             var cmd = new CommandInfo()
             {
@@ -159,11 +147,7 @@ namespace TestProject
 
             sht.Effect(cmd);
 
-
-            System.Threading.Thread.Sleep(1000);
-
-
-
+            
         }
 
         [TestMethod()]
