@@ -158,7 +158,11 @@ namespace TestProject
             };
 
             sht.Effect(cmd);
-            
+
+
+            System.Threading.Thread.Sleep(1000);
+
+
 
         }
 
