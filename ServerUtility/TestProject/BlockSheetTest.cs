@@ -11,8 +11,11 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Linq;
+using System.Reactive;
+using System.Reactive.Linq;
 using Moq;
 using Moq.Linq;
+using SensorLibrary;
 
 namespace TestProject
 {
@@ -120,6 +123,41 @@ namespace TestProject
         public void ReadSampleDataTest()
         {
             var blocks = sample_loop_sheet.ToArray();
+
+        }
+
+        [TestMethod()]
+        public void BlockEffectTest()
+        {
+            var io = new Mock<IDeviceIO>();
+            var written = new List<DevicePacket>();
+            io.Setup(e => e.WritePacket(It.IsAny<DevicePacket>()))
+                .Callback((DevicePacket pack) => written.Add(pack));
+
+            var serv = new PacketServer(new AvrDeviceFactoryProvider()) { Controller = io };
+            serv.LoopStart();
+
+            var sht = new BlockSheet(sample_loop_sheet, serv);
+            var route = new Route(sht, new[] { "AT1", "AT2", "AT3", "AT4", "AT5" });
+            
+            //1 : check reduce speed
+            io.Setup(e => e.GetReadingPacket())
+                .Returns(() =>
+                    {
+                        var sens = new Sensor() { DeviceID = new DeviceID(1, 2, 9) };
+                        var packets = DevicePacket.CreatePackedPacket(sens);
+
+                        return packets.ToObservable();
+                    });
+
+            var cmd = new CommandInfo()
+            {
+                Route = route,
+                Speed = 0.5f
+            };
+
+            sht.Effect(cmd);
+            
 
         }
 
