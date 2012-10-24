@@ -129,11 +129,11 @@ namespace TestProject
         [TestMethod()]
         public void BlockEffectTest()
         {
-            var writtenmtr = new List<MotorState>();
-            var writtensens = new List<SensorState>();
+            var written = new List<IDeviceState<IPacketDeviceData>>();
             var serv = new Mock<PacketServer>();
 
-            serv.Setup(e => e.SendState(It.Is<Sensor>(s => writtensens.Add(s))));
+            serv.Setup(e => e.SendState(It.IsAny<Device<IDeviceState<IPacketDeviceData>>>()))
+                .Callback<Device<IDeviceState<IPacketDeviceData>>>(d => written.Add(d));
 
             //serv.Setup(e => e.SendState(It.IsAny<Motor>()))
             //    .Callback<Motor>(s => writtenmtr.Add(s.CurrentState));
