@@ -133,11 +133,10 @@ namespace TestProject
             var writtensens = new List<SensorState>();
             var serv = new Mock<PacketServer>();
 
-            serv.Setup(e => e.SendState(It.IsAny<Sensor>()))
-                 .Callback<Sensor>(s => writtensens.Add(s.CurrentState));
+            serv.Setup(e => e.SendState(It.Is<Sensor>(s => writtensens.Add(s))));
 
-            serv.Setup(e => e.SendState(It.IsAny<Motor>()))
-                .Callback<Motor>(s => writtenmtr.Add(s.CurrentState));
+            //serv.Setup(e => e.SendState(It.IsAny<Motor>()))
+            //    .Callback<Motor>(s => writtenmtr.Add(s.CurrentState));
 
             //1 : check reduce speed
             var sht = new BlockSheet(sample_loop_sheet, serv.Object);
