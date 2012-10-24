@@ -75,12 +75,14 @@ namespace TestProject
         //
         #endregion
 
-        BlockSheet sample_loop_sheet
+        IEnumerable<BlockInfo> sample_loop_sheet
         {
             get
             {
-                var infos - new [] { new BlockInfo { Name = "pero"}};
+                var yaml = new BlockYaml();
+                var blocks = yaml.Parse("./SampleLayout/loop.yaml");
 
+                return blocks;
             }
         }
 
@@ -112,6 +114,13 @@ namespace TestProject
 
                 return serv;
             }
+        }
+
+        [TestMethod()]
+        public void ReadSampleDataTest()
+        {
+            var blocks = sample_loop_sheet.ToArray();
+
         }
 
         [TestMethod()]
