@@ -136,7 +136,7 @@ namespace TestProject
                .Callback<IDevice<IDeviceState<IPacketDeviceData>>>(dev => written.Add(dev.CurrentState));
             
             //1 : check reduce speed
-            var sht = new BlockSheet(sample_loop_sheet, serv);
+            var sht = new BlockSheet(sample_loop_sheet, serv.Object);
             var route = new Route(sht, new[] { "AT1", "AT2", "AT3", "AT4", "AT5" });
 
             var cmd = new CommandInfo()
