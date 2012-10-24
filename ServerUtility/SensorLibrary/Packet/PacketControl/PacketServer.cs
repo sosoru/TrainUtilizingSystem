@@ -62,7 +62,7 @@ namespace SensorLibrary.Packet.Control
             this.actionList.Remove(act);
         }
 
-        public void SendState(IDevice<IDeviceState<IPacketDeviceData>> dev)
+        public virtual void SendState(IDevice<IDeviceState<IPacketDeviceData>> dev)
         {
             //todo : thread control (reading and writing on the same thread)
             //lock (lockStream)
