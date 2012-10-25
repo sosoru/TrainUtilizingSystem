@@ -154,7 +154,6 @@ namespace TestProject
 
             // 3: change to memory 0, and check the memory is saved 
             memstate.CurrentMemory = 0;
-            mtrstate.Direction = MotorDirection.Positive;
 
             mtrpacket.DataPacket
                 = DevicePacket.CreatePackedPacket(memch, inqiry).First();
