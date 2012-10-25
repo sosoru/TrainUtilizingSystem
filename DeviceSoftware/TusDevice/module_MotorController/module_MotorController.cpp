@@ -90,9 +90,8 @@ bool ProcessMtrPacket(MtrControllerPacket *ppacket)
 {
 	if(ppacket->Base.ModuleType != MODULETYPE_MOTOR)
 		return false;
-	
+		
 	DispatchPacket(ppacket->Base.InternalAddr, ppacket);
-	
 	return true;
 }
 
@@ -120,7 +119,7 @@ void spi_received(args_received *e)
 {	
 	if(ProcessMtrPacket((MtrControllerPacket*)e->ppack)){}
 	else if (ProcessKernelPacket((KernalState*)e->ppack, e->psrcId, e->pdstId)){}
-
+	
 }
 
 int main(void)

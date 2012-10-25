@@ -151,7 +151,7 @@ void tus_spi_process_packets()
 			
 			while(bufind <= ETH_DATA_LEN && ppacket->pdata[bufind] != 0x00)
 			{
-				e.ppack = (uint8_t*)(ppacket->pdata + bufind);
+				e.ppack = (uint8_t*)(&ppacket->pdata[bufind]);
 				
 				SpiReceive(&e);
 				

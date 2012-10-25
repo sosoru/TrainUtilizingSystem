@@ -117,10 +117,10 @@ namespace MotorController
 			{
 				//pstate->MemoryLimit = 8;
 				
-				if(pstate->CurerntMemory <= pstate->MemoryLimit)
-				{
+				//if(pstate->CurerntMemory <= pstate->MemoryLimit)
+				//{
 					buffer_index = pstate->CurerntMemory;
-				} 
+				//} 
 			}
 			
 			void set_Packet(const MtrControllerPacket *ppacket)

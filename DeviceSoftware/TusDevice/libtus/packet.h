@@ -72,9 +72,9 @@ typedef struct tag_KernelState
 			BYTE KernelCommand;
 			BYTE pdata [4];
 			};
+		BYTE raw_array[8];
 		};
 		
-		BYTE raw_array[8];
 } KernalState;	
 
 typedef struct tag_MemoryState
