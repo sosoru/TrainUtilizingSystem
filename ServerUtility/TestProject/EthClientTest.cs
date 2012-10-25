@@ -133,6 +133,12 @@ namespace TestProject
             var memch = Kernel.MemoryState(mtrpacket.destId);
             var memstate = (MemoryState)memch.CurrentState;
 
+            memstate.CurrentMemory = 0;
+            mtrpacket.DataPacket
+                = DevicePacket.CreatePackedPacket(memch).First();
+
+            mtr_check(target, mtrpacket, mtrstate);
+
             // 1: write mtrstate to memory 0, and check the remote state is changed
             mtrstate.ControlMode = MotorControlMode.DutySpecifiedMode;
             mtrstate.Direction = MotorDirection.Positive;
