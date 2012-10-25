@@ -87,6 +87,7 @@ namespace TestProject
         {
             return target.AsyncSend(mtrpacket)
                 .SelectMany(s => Observable.Defer(() => target.AsyncReceive()).Take(2))
+                .Timeout(TimeSpan.FromSeconds(1))
                 .SelectMany(s => s.DataPacket.ExtractPackedPacket())
                 .Where(state => state.Data.InternalAddr == mtrstate.Data.InternalAddr)
                 .Cast<MotorState>()
@@ -95,8 +96,7 @@ namespace TestProject
                                 Assert.AreEqual(state.Duty, mtrstate.Duty);
                                 Assert.AreEqual(state.Direction, mtrstate.Direction);
                                 Assert.AreEqual(state.ControlMode, mtrstate.ControlMode);
-                            })
-                .Timeout(TimeSpan.FromSeconds(1));
+                            });
         }
 
         //private IObservable<EthPacket> sw_check(EthClient target, EthPacket swpacket, SwitchState swstate)
