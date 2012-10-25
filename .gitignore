@@ -10,6 +10,7 @@ packages/
 
 
 *.suo
+*.atsuo
 
 *.o
 *.map
