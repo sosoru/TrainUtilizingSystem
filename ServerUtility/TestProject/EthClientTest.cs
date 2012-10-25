@@ -169,6 +169,35 @@ namespace TestProject
         }
 
         [TestMethod()]
+        public void MotorCurrentTest()
+        {
+            var target = sample;
+            target.Connect();
+
+            var mtrpacket = new EthPacket()
+            {
+                srcId = new DeviceID(111, 0),
+                destId = new DeviceID(24, 1, 0),
+            };
+            var mtrA = new Motor() { DeviceID = new DeviceID(24, 1, 1) };
+            var mtrB = new Motor() { DeviceID = new DeviceID(24, 1, 2) };
+
+            var kernal = Kernel.InquiryState(mtrpacket.destId);
+
+            mtrA.CurrentState.Direction = MotorDirection.Positive;
+            mtrA.CurrentState.ControlMode = MotorControlMode.DutySpecifiedMode;
+            mtrA.CurrentState.Duty = 0.5f;
+
+            mtrB.CurrentState.Direction = MotorDirection.Positive;
+            mtrB.CurrentState.ControlMode = MotorControlMode.DutySpecifiedMode;
+            mtrB.CurrentState.Duty = 0;
+
+            mtrpacket.DataPacket = DevicePacket.CreatePackedPacket(mtrA, mtrB);
+
+            target.Send(mtrpacket);
+        }
+
+        [TestMethod()]
         public void MotorControlTest()
         {
             var target = sample;
@@ -200,7 +229,7 @@ namespace TestProject
                 mtrstate.Data.InternalAddr = (byte)s.devnum;
 
                 mtrpacket.DataPacket
-                    = DevicePacket.CreatePackedPacket(new IDevice<IDeviceState<IPacketDeviceData>>[] { mtr, kernal } ).First();
+                    = DevicePacket.CreatePackedPacket(new IDevice<IDeviceState<IPacketDeviceData>>[] { mtr, kernal }).First();
 
                 System.Threading.Thread.Sleep(1000);
 
