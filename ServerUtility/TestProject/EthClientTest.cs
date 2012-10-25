@@ -186,7 +186,7 @@ namespace TestProject
 
             mtrA.CurrentState.Direction = MotorDirection.Positive;
             mtrA.CurrentState.ControlMode = MotorControlMode.DutySpecifiedMode;
-            mtrA.CurrentState.Duty = 0.5f;
+            mtrA.CurrentState.Duty = 0.3f;
 
             mtrB.CurrentState.Direction = MotorDirection.Positive;
             mtrB.CurrentState.ControlMode = MotorControlMode.DutySpecifiedMode;
