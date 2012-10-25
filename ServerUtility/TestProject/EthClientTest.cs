@@ -192,7 +192,7 @@ namespace TestProject
             mtrB.CurrentState.ControlMode = MotorControlMode.DutySpecifiedMode;
             mtrB.CurrentState.Duty = 0;
 
-            mtrpacket.DataPacket = DevicePacket.CreatePackedPacket(mtrA, mtrB);
+            mtrpacket.DataPacket = DevicePacket.CreatePackedPacket(mtrA, mtrB).First();
 
             target.Send(mtrpacket);
         }
