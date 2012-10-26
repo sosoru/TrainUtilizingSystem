@@ -134,7 +134,15 @@ namespace TestProject
             ethpacket.DataPacket = DevicePacket.CreatePackedPacket(sessetting);
             target.Send(ethpacket);
 
-
+            ethpacket.DataPacket = DevicePacket.CreatePackedPacket(sens, inq);
+            target.AsyncSend(ethpacket)
+                .SelectMany(ob => target.AsyncReceive())
+                .Timeout(TimeSpan.FromSeconds(1))
+                .Do(pack =>
+                    {
+                        Assert.IsTrue(pack.srcId == ethpacket.destId);
+                    })
+                    .SubscribeOn(CurrentThreadScheduler.Instance);
 
         }
 
