@@ -15,10 +15,10 @@ namespace SensorLibrary.Devices.TusAvrDevices
             this.Data = new UsartSettingData();
         }
 
-        public byte ModuleCount
+        public int ModuleCount
         {
-            get { return this.Data.ModuleCount; }
-            set { this.Data.ModuleCount = value; }
+            get { return (int)this.Data.ModuleCount; }
+            set { this.Data.ModuleCount = (byte)value; }
         }
     }
 
