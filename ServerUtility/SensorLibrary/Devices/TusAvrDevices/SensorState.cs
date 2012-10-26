@@ -7,12 +7,12 @@ using SensorLibrary.Packet.Data;
 namespace SensorLibrary.Devices.TusAvrDevices
 {
     public class UsartSettingState
-        : DeviceState<SensorSettingData>
+        : DeviceState<UsartSettingData>
     {
         public UsartSettingState()
             : base()
         {
-            this.Data = new SensorSettingData();
+            this.Data = new UsartSettingData();
         }
 
         public byte ModuleCount
