@@ -62,5 +62,10 @@ namespace SensorLibrary.Devices.TusAvrDevices
 
             }
         }
+
+        public object CreateSettingPacket(int p)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
