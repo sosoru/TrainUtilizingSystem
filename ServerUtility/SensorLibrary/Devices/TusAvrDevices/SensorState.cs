@@ -6,10 +6,10 @@ using SensorLibrary.Packet.Data;
 
 namespace SensorLibrary.Devices.TusAvrDevices
 {
-    public class SensorSettingState
+    public class UsartSettingState
         : DeviceState<SensorSettingData>
     {
-        public SensorSettingState()
+        public UsartSettingState()
             : base()
         {
             this.Data = new SensorSettingData();
