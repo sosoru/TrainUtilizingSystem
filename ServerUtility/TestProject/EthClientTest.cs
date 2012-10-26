@@ -131,10 +131,10 @@ namespace TestProject
             var sessetting = sens.CreateSettingDevice(1);
             var inq = Kernel.InquiryState(ethpacket.destId);
 
-            ethpacket.DataPacket = DevicePacket.CreatePackedPacket(sessetting);
+            ethpacket.DataPacket = DevicePacket.CreatePackedPacket(sessetting).First();
             target.Send(ethpacket);
 
-            ethpacket.DataPacket = DevicePacket.CreatePackedPacket(sens, inq);
+            ethpacket.DataPacket = DevicePacket.CreatePackedPacket(sens, inq).First();
             target.AsyncSend(ethpacket)
                 .SelectMany(ob => target.AsyncReceive())
                 .Timeout(TimeSpan.FromSeconds(1))
