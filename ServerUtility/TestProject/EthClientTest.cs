@@ -142,8 +142,8 @@ namespace TestProject
                     {
                         Assert.IsTrue(pack.srcId == ethpacket.destId);
                     })
-                    .SubscribeOn(CurrentThreadScheduler.Instance);
-
+                    .First();
+            
         }
 
 
