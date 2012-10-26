@@ -63,6 +63,7 @@ namespace SensorLibrary.Packet.Data
 
     }
 
+    [StructLayout(LayoutKind.Sequential, Pack= 1, Size=4)]
     public class UsartSettingData
         : PacketDeviceHeader
     {
