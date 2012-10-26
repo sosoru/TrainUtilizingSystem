@@ -6,6 +6,17 @@ using SensorLibrary;
 
 namespace SensorLibrary.Devices.TusAvrDevices
 {
+    public class SensorSetting
+        : Device<SensorSettingState>
+    {
+        public SensorSetting()
+        {
+            this.ModuleType = ModuleTypeEnum.AvrSensor;
+            this.CurrentState = new SensorSettingState();
+        }
+
+    }
+
     public class Sensor
         : Device<SensorState>
     {
@@ -63,9 +74,12 @@ namespace SensorLibrary.Devices.TusAvrDevices
             }
         }
 
-        public object CreateSettingPacket(int p)
+        public SensorSetting CreateSettingDevice()
         {
-            
+            var setting = new SensorSetting() { DeviceID = this.DeviceID };
+            setting.DeviceID.InternalAddr &= 0xF0;
+
+            return setting;            
         }
     }
 }
