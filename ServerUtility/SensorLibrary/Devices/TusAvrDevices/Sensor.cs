@@ -7,12 +7,12 @@ using SensorLibrary;
 namespace SensorLibrary.Devices.TusAvrDevices
 {
     public class UsartSetting
-        : Device<SensorSettingState>
+        : Device<UsartSettingState>
     {
         public UsartSetting()
         {
             this.ModuleType = ModuleTypeEnum.AvrSensor;
-            this.CurrentState = new SensorSettingState();
+            this.CurrentState = new UsartSettingState();
         }
 
     }
