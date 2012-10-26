@@ -66,7 +66,7 @@ namespace SensorLibrary.Packet.Data
     public class UsartSettingData
         : PacketDeviceHeader
     {
-        public UsartSettingData() { DataLength = 4; ModuleType = (byte)ModuleTypeEnum.AvrSensor; }
+        public UsartSettingData() { DataLength = 4; ModuleType = (byte)ModuleTypeEnum.AvrUartSetting; }
 
         public byte ModuleCount;
     }
