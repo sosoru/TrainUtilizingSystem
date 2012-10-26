@@ -77,7 +77,7 @@ namespace SensorLibrary.Devices.TusAvrDevices
         public UsartSetting CreateSettingDevice()
         {
             var setting = new UsartSetting() { DeviceID = this.DeviceID };
-            setting.DeviceID.InternalAddr = (byte)setting.DeviceID.InternalAddr & 0xF0;
+            setting.DeviceID.InternalAddr = (byte)(setting.DeviceID.InternalAddr & 0xF0);
 
             return setting;            
         }
