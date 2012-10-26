@@ -63,6 +63,14 @@ namespace SensorLibrary.Packet.Data
 
     }
 
+    public class SensorSettingData
+        : PacketDeviceHeader
+    {
+        public SensorSettingData() { DataLength = 4; ModuleType = (byte)ModuleTypeEnum.AvrSensor; }
+
+        public byte ModuleCount;
+    }
+
     [StructLayout(LayoutKind.Sequential, Pack=1, Size = 8)]
     public class KernelData
         : PacketDeviceHeader
