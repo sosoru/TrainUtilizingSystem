@@ -124,7 +124,7 @@ namespace TestProject
             var ethpacket = new EthPacket()
             {
                 srcId = new DeviceID(111, 0),
-                destId = new DeviceID(24, 1, 1),
+                destId = new DeviceID(24, 1, 17),
             };
             var sens = new Sensor() { DeviceID = ethpacket.destId };
             var sensstate = sens.CurrentState;
@@ -132,7 +132,7 @@ namespace TestProject
             var inq = Kernel.InquiryState(ethpacket.destId);
 
             ethpacket.DataPacket = DevicePacket.CreatePackedPacket(sessetting).First();
-            target.Send(ethpacket);
+            target.AsyncSend(ethpacket).First();
 
             //ethpacket.DataPacket = DevicePacket.CreatePackedPacket(sens, inq).First();
             //target.AsyncSend(ethpacket)
