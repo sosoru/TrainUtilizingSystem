@@ -74,13 +74,15 @@ namespace SensorLibrary.Devices.TusAvrDevices
             }
         }
 
-        public UsartSetting CreateSettingDevice()
+        public UsartSetting CreateSettingDevice(int modulecount)
         {
             var setting = new UsartSetting();
             var id = this.DeviceID;
 
             id.InternalAddr &= 0xf0;
             setting.DeviceID = id;
+
+            setting.CurrentState.ModuleCount = modulecount;
 
             return setting;            
         }
