@@ -116,6 +116,30 @@ namespace TestProject
         //}
 
         [TestMethod()]
+        public void UartTrainSensorControlTest()
+        {
+            var target = sample;
+            target.Connect();
+
+            var ethpacket = new EthPacket()
+            {
+                srcId = new DeviceID(111, 0),
+                destId = new DeviceID(24, 1, 17),
+            };
+            var sens = new Sensor() { DeviceID = ethpacket.destId };
+            var sensstate = sens.CurrentState;
+            var sessetting = sens.CreateSettingPacket(1);
+            var inq = Kernel.InquiryState(ethpacket.destId);
+
+            ethpacket.DataPacket = DevicePacket.CreatePackedPacket(sessetting);
+            target.Send(ethpacket);
+
+
+
+        }
+
+
+        [TestMethod()]
         public void MotorControl_MemoryTest()
         {
             var target = sample;
