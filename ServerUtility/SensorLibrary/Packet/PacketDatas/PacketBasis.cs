@@ -283,6 +283,7 @@ namespace SensorLibrary
         AvrMotor = 0x12,
         AvrSwitch = 0x13,
         AvrSensor = 0x14,
+        AvrUartSetting = 0x15,
 
         Unknown = 0x0F,
     }
