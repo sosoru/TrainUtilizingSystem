@@ -74,7 +74,7 @@ namespace SensorLibrary.Devices.TusAvrDevices
             }
         }
 
-        public UsartSetting CreateSettingDevice(byte modulecount)
+        public UsartSetting CreateSettingDevice(int modulecount)
         {
             var setting = new UsartSetting();
             var id = this.DeviceID;
