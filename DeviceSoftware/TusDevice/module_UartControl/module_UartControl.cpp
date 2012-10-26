@@ -8,7 +8,6 @@
 #include "module_UartControl.h"
 #include "UartConfig.hpp"
 #include <util/delay.h>
-#include "../module_MotorController/mtrPacket.hpp"
 #include "tus.h"
 
 using namespace AVRCpp;
@@ -20,7 +19,7 @@ DeviceID src_id;
 DeviceID dst_id;
 
 template
-<class t_sens, uint8_t t_mnum, uint8_t t_cnt>
+<class t_sens, uint8_t t_mnum>
 void SensorProcess()
 {
 	spi_send_object *pspi_send;

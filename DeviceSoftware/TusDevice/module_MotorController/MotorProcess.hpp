@@ -10,7 +10,8 @@
 #define MOTORPROCESS_H_
 
 #include <avr/io.h>
-#include "mtrPacket.hpp"
+#include <mtr_packet.h>
+#include <PackPacket.hpp>
 #include "Pulse.hpp"
 #include "Motor.hpp"
 
@@ -19,7 +20,8 @@ namespace MotorController
 	using namespace AVRCpp;
 	using namespace AnalogToDigital;
 	
-	template	<class StandByPort,	
+	template	<	 uint8_t t_internal_id,
+					 class StandByPort,	
 					 class Out1Port,	
 					 class Out2Port,	
 					 class AlertPort,	
@@ -52,65 +54,106 @@ namespace MotorController
 				: fb_bef(0.0f), fb_bef2(0.0f), fb_cur(0.0f), internal_duty(0.0f)
 				, m_voltage(0), buffer_index(0)
 			{
-				memset(buffer_packet, 0x00, sizeof(buffer_packet));
+				MtrRunningState *pstate = (MtrRunningState*)CurrentPacket()->State;							
 				
-				buffer_packet[buffer_index].DirectionValue = Standby;
-				buffer_packet[buffer_index].ControlModeValue = DutySpecifiedMode;
-				buffer_packet[buffer_index].DutyValue = 0;
+				CurrentPacket()->Base.ModuleType = MODULETYPE_MOTOR;
+				CurrentPacket()->Base.DataLength = 7;
+				CurrentPacket()->Base.InternalAddr = t_internal_id;
+				CurrentPacket()->ControlModeValue = DutySpecifiedMode;
+				pstate->DirectionValue = Standby;
+				pstate->DutyValue = 0;
+				pstate->VoltageValue = 0;
 			}
 			
 			inline MtrControllerPacket* CurrentPacket() { return &buffer_packet[buffer_index]; }
 			
 			void ApplyPacket(const MtrControllerPacket *ppacket)
 			{				
-				
-				switch(ppacket->DirectionValue)
+				switch(ppacket->ControlModeValue)
+				{
+					case DutySpecifiedMode:
+						ApplyDutyMode((MtrRunningState*)ppacket->State);
+					break;
+					case CurrentFeedBackMode:
+						ApplyCurrentMode((MtrRunningState*) ppacket->State)	;
+					break;
+					case WaitingPulseMode:
+					break;
+				}
+			}
+			
+			void ApplyDirection(Direction dir)
+			{
+				switch(dir)
 				{
 					case Positive:
-						AssociatedMotor::SetPositive();
+					AssociatedMotor::SetPositive();
 					break;
 					case Negative:
-						AssociatedMotor::SetNegative();
+					AssociatedMotor::SetNegative();
 					break;
 					case Standby:
 					default:
-						AssociatedMotor::SetStandby();
+					AssociatedMotor::SetStandby();
 					break;
-				}		
-				
-				if(ppacket->ControlModeValue != CurrentFeedBackMode)
-				{
-					Pulse::SetDuty(ppacket->DutyValue);
-				}
-				else			
-				{
-					float result;
-					
-					InputPins<PortA, AdcNum>::InitDefaultInput();
-					
-					AnalogToDigital::ControlSetUp(ADCEnable, StartLater, FreeRunStopped, InterruptDisable, Div128);
-					AnalogToDigital::SelectionSetUp(AVCC, AlignLeft, (AnalogChannel)AdcNum);
-					AnalogToDigital::StartConversion();
-					AnalogToDigital::WaitWhileConverting();
-					
-					result = (float) ADCH;
-					
-					//fb_bef2 = fb_bef;
-					fb_bef = fb_cur;
-					fb_cur = (float)(m_voltage) - result;
-					
-					internal_duty +=  ((fb_cur - fb_bef) * 0.1f)  + (fb_cur * 0.3f);
-					
-					if(internal_duty > 150.0f)
-					internal_duty = 150.0f;
-					else if(internal_duty < -150.0f)
-					internal_duty = -150.0f;
-					
-					if(internal_duty<0.0f)
-						Pulse::SetDuty(0);
-					else
-						Pulse::SetDuty((uint16_t)internal_duty);
 				}				
+			}
+			
+			uint8_t MeisureCurrent()
+			{
+				InputPins<PortA, AdcNum>::InitDefaultInput();
+					
+				AnalogToDigital::ControlSetUp(ADCEnable, StartLater, FreeRunStopped, InterruptDisable, Div128);
+				AnalogToDigital::SelectionSetUp(AVCC, AlignLeft, (AnalogChannel)AdcNum);
+				AnalogToDigital::StartConversion();
+				AnalogToDigital::WaitWhileConverting();	
+				
+				return ADCH;
+			}
+			
+			void ApplyDutyMode(MtrRunningState *pstate)
+			{
+				ApplyDirection(pstate->DirectionValue);
+				Pulse::SetDuty(pstate->DutyValue);
+			}
+			
+			void ApplyCurrentMode(MtrRunningState* pstate)
+			{
+				ApplyDirection(pstate->DirectionValue);
+				
+				float result;
+					
+				result = (float) MeisureCurrent();
+					
+				//fb_bef2 = fb_bef;
+				fb_bef = fb_cur;
+				fb_cur = (float)(m_voltage) - result;
+					
+				internal_duty +=  ((fb_cur - fb_bef) * 0.1f)  + (fb_cur * 0.3f);
+					
+				if(internal_duty > 150.0f)
+				internal_duty = 150.0f;
+				else if(internal_duty < -150.0f)
+				internal_duty = -150.0f;
+					
+				if(internal_duty<0.0f)
+					Pulse::SetDuty(0);
+				else
+					Pulse::SetDuty((uint16_t)internal_duty);
+			}
+			
+			void ApplyWaiting(MtrWaitingState *pstate)
+			{
+				uint8_t curr;
+				
+				curr = MeisureCurrent();
+				
+				if(curr > pstate->ThresholdValue) // entered
+				{
+					MemoryState mstate;
+					mstate.CurerntMemory = pstate->MemoryWhenEntered;
+					
+				}
 			}
 			
 			void MemoryProcess(const MemoryState *pstate)
@@ -125,18 +168,24 @@ namespace MotorController
 			
 			void set_Packet(const MtrControllerPacket *ppacket)
 			{				
-				CurrentPacket()->ControlModeValue = ppacket->ControlModeValue;
-				CurrentPacket()->DirectionValue = ppacket->DirectionValue;
-				CurrentPacket()->VoltageValue = ppacket->VoltageValue;
-				CurrentPacket()->DutyValue = ppacket->DutyValue;
+				memcpy(CurrentPacket(), ppacket, sizeof(*ppacket));
+
 			}				
 						
 			void get_Packet(MtrControllerPacket *ppacket)
 			{
-				ppacket->ControlModeValue = CurrentPacket()->ControlModeValue;
-				ppacket->DirectionValue = CurrentPacket()->DirectionValue;
-				ppacket->VoltageValue = CurrentPacket()->VoltageValue;
-				ppacket->DutyValue = Pulse::GetDuty();
+				memcpy(ppacket, CurrentPacket(), sizeof(*ppacket));
+			}
+			
+			void PackPacket(Tus::PacketPacker *ppack)
+			{
+				MtrControllerPacket *ppacket = CurrentPacket();
+				
+				ppacket->Base.ModuleType = MODULETYPE_MOTOR;
+				ppacket->Base.DataLength = 7;
+				ppacket->Base.InternalAddr = t_internal_id;
+
+				ppack->Pack((uint8_t*)ppacket);
 			}
 			
 			void Init()

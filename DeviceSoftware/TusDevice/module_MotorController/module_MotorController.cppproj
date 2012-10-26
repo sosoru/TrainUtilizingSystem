@@ -33,17 +33,21 @@
       <ToolType>com.atmel.avrdbg.tool.jtagicemkii</ToolType>
       <ToolName>JTAGICE mkII</ToolName>
       <ToolNumber>00A000403708</ToolNumber>
+      <KeepTimersRunning>true</KeepTimersRunning>
+      <OverrideVtor>false</OverrideVtor>
+      <OverrideVtorValue>
+      </OverrideVtorValue>
       <Channel>
         <host>127.0.0.1</host>
-        <port>55501</port>
+        <port>55102</port>
         <ssl>False</ssl>
       </Channel>
       <ToolOptions>
         <InterfaceName>JTAG</InterfaceName>
         <InterfaceProperties>
-          <JtagDbgClock>200000</JtagDbgClock>
+          <JtagDbgClock>250000</JtagDbgClock>
           <JtagProgClock>1000000</JtagProgClock>
-          <IspClock>125000</IspClock>
+          <IspClock>150000</IspClock>
           <JtagInChain>false</JtagInChain>
           <JtagEnableExtResetOnStartSession>false</JtagEnableExtResetOnStartSession>
           <JtagDevicesBefore>0</JtagDevicesBefore>
@@ -152,9 +156,6 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="MotorProcess.hpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="mtrPacket.hpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="Pulse.hpp">

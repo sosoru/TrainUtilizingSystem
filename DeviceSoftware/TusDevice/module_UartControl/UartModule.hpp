@@ -10,8 +10,8 @@
 #define UARTMODULE_H_
 
 #include "module_UartControl.h"
-#include "UartPacket.h"
-#include "../libtus/tus.h"
+#include <uart_packet.h>
+#include <tus.h>
 #include <util/delay.h>
 #include <stdlib.h>
 

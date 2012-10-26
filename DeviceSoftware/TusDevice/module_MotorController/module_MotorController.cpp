@@ -6,11 +6,13 @@
  */ 
 
 #include "module_MotorController.hpp"
+#include <PackPacket.hpp>
 #include <util/delay.h>
 #include <stdlib.h>
 #include <avr/interrupt.h>
 #include <tus.h>
 
+using namespace Tus;
 using namespace MotorController;
 
 MotorControllerA mtrA;
@@ -18,20 +20,8 @@ MotorControllerB mtrB;
 MotorControllerC mtrC;
 MotorControllerD mtrD;
 
-//void sample_process(Direction dir)
-//{
-	//MtrControllerPacket pack;
-	//
-	//pack.ControlModeValue = (DutySpecifiedMode);
-	//pack.DirectionValue = (dir);
-	//pack.DutyValue = (250);
-	//
-	//mtrA.set_Packet(&pack);
-	//mtrB.set_Packet(&pack);
-	//mtrC.set_Packet(&pack);
-	//mtrD.set_Packet(&pack);
-//}
-//
+PacketPacker packer_g;
+
 void DispatchPacket(uint8_t devnum, const MtrControllerPacket *ppacket)
 {
 	if(devnum == 1) { mtrA.set_Packet(ppacket); }
@@ -48,42 +38,26 @@ void ChangeMemory(uint8_t devnum, const MemoryState *pmstate)
 	else if (devnum == 4) { mtrD.MemoryProcess(pmstate); }	
 }
 
-void CopyFrom(uint8_t devnum, MtrControllerPacket *ppacket)
+void CopyPacket(uint8_t devnum, PacketPacker *ppack)
 {
-	if(devnum == 1) { mtrA.get_Packet(ppacket); }
-	else if(devnum == 2) { mtrB.get_Packet(ppacket); }
-	else if(devnum == 3) { mtrC.get_Packet(ppacket); }
-	else if(devnum == 4) { mtrD.get_Packet(ppacket); }
+	if(devnum == 1) { mtrA.PackPacket(ppack); }
+	else if(devnum == 2) { mtrB.PackPacket(ppack); }
+	else if(devnum == 3) { mtrC.PackPacket(ppack); }
+	else if(devnum == 4) { mtrD.PackPacket(ppack); }
 }
 
 void CreatePacket(uint8_t beginid, uint8_t endid, DeviceID* psrcid, DeviceID* pdstid)
 {
 	uint8_t i;
-	spi_send_object *psend;
-	EthPacket *ppacket;
 	
-	tus_spi_lock_send_buffer(&psend);
-	
-	ppacket = (EthPacket*)&psend->packet;
-	ppacket->srcId.raw = psrcid->raw;
-	ppacket->srcId.InternalAddr = 0;
-	ppacket->destId.raw = pdstid->raw;
-	ppacket->devID.raw = psrcid->raw;
+	packer_g.Init();
 	
 	for(i=beginid; i<=endid; ++i)
 	{		
-		MtrControllerPacket *pstate = (MtrControllerPacket*)(ppacket->pdata + ((i - beginid) * 7));
-		
-		pstate->Base.ModuleType = MODULETYPE_MOTOR;
-		pstate->Base.DataLength = 7;
-		pstate->Base.InternalAddr = i;
-		
-		CopyFrom(i, pstate);	
+		CopyPacket(i, &packer_g);	
 	}
 	
-	psend->is_locked = false;
-	
-	
+	packer_g.Send(psrcid, pdstid);
 }
 
 bool ProcessMtrPacket(MtrControllerPacket *ppacket)
