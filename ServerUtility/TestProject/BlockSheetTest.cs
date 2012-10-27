@@ -23,7 +23,7 @@ namespace TestProject
     {
         public static TCast ExtractDevice<TCast>(this IEnumerable<IDevice<IDeviceState<IPacketDeviceData>>> list, int parent, int module , int inter)
         {
-            return (TCast)list.First(new DeviceID(parent, module, inter));
+            return (TCast)list.First(p => p.DeviceID == new DeviceID(parent, module, inter));
         }
     }
 
