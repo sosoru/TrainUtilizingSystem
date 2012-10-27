@@ -19,6 +19,14 @@ using SensorLibrary;
 
 namespace TestProject
 {
+    public static class ExtractExtension
+    {
+        public static TCast ExtractDevice<TCast>(this IEnumerable<IDevice<IDeviceState<IPacketDeviceData>>> list, int parent, int module , int inter)
+            where TDev : IDevice<IDeviceState<IPacketDeviceData>>
+        {
+            return (TCast)list.First(new DeviceID(parent, module, inter));
+        }
+    }
 
 
     /// <summary>
@@ -187,7 +195,18 @@ namespace TestProject
 
             sht.Effect(cmd);
 
-            
+            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 1).CurrentState.Direction == MotorDirection.Positive);
+            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 2).CurrentState.Direction == MotorDirection.Positive);
+            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 3).CurrentState.Direction == MotorDirection.Positive);
+            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 4).CurrentState.Direction == MotorDirection.Positive);
+            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 5).CurrentState.Direction == MotorDirection.Standby);
+
+            Assert.IsTrue(Math.Round(written.ExtractDevice<Motor>(1, 1, 1).CurrentState.Duty, 1) == 0.5f);
+            Assert.IsTrue(Math.Round(written.ExtractDevice<Motor>(1, 1, 2).CurrentState.Duty, 1) == 0.5f);
+            Assert.IsTrue(Math.Round(written.ExtractDevice<Motor>(1, 1, 3).CurrentState.Duty, 1) == 0.5f);
+            Assert.IsTrue(Math.Round(written.ExtractDevice<Motor>(1, 1, 4).CurrentState.Duty, 1) == 0.5f);
+            Assert.IsTrue(Math.Round(written.ExtractDevice<Motor>(1, 1, 5).CurrentState.Duty, 1) == 0.0f);
+
         }
 
         /// <summary>
