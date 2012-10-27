@@ -147,27 +147,8 @@ namespace TestProject
                 Speed = 0.5f
             };
 
-            var existstate = new Sensor() { DeviceID = sht.GetBlock("AT4").Detector };
-            
-
-            sht.Effect(cmd);
-
-
-        }
-
-        [TestMethod()]
-        public void MotorTestFromSheet()
-        {
-            var serv = sample_server;
-            var infos = new BlockYaml().Parse(BlockYamlTest.PathSample);
-            var sheet = new BlockSheet(infos, serv);
-
-            var r = new Route(sheet, new[] { "AT1", "PT2", "BT1", "PT3", "CT1", "PT4", "DT1", "PT1" });
-            var cmd = new CommandInfo()
-            {
-                Route = r,
-                Speed = 0.5f,
-            };
+            var existsens = sht.GetBlock("AT3").Detector.Devices.First();
+            existsens.IsDetected = true;
 
             sheet.Effect(cmd);
 
