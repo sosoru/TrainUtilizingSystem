@@ -147,7 +147,8 @@ namespace TestProject
                 Speed = 0.5f
             };
 
-            //var existstate = new Sensor() { DeviceID = new DeviceID(1,2,
+            var existstate = new Sensor() { DeviceID = sht.GetBlock("AT4").Detector };
+            
 
             sht.Effect(cmd);
 
