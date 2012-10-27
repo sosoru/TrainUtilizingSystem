@@ -86,10 +86,10 @@ namespace RouteServerConsole
                     .Select(b => string.Format("Sensor : {0} is {1} {2} {3} {4} {5}",
                                                b.Name,
                                                b.IsDetectingTrain,
-                                               b.Detectors.First().Devices.First().CurrentState.Data.VoltageOn,
-                                               b.Detectors.First().Devices.First().CurrentState.Data.VoltageOff,
-                                               b.Detectors.First().Devices.Last().CurrentState.Data.VoltageOn,
-                                               b.Detectors.First().Devices.Last().CurrentState.Data.VoltageOff
+                                               b.Detector.First().Devices.First().CurrentState.Data.VoltageOn,
+                                               b.Detector.First().Devices.First().CurrentState.Data.VoltageOff,
+                                               b.Detector.First().Devices.Last().CurrentState.Data.VoltageOn,
+                                               b.Detector.First().Devices.Last().CurrentState.Data.VoltageOff
                                      ))
                                      .ToObservable();
         }
