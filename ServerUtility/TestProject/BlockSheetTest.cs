@@ -127,18 +127,14 @@ namespace TestProject
         }
 
         [TestMethod()]
-        public void BlockEffectTest()
+        public void BlockEffect_BasicTest()
         {
-            var written = new List<IDeviceState<IPacketDeviceData>>();
+            var written = new List<IDevice<IDeviceState<IPacketDeviceData>>>();
             var serv = new Mock<PacketServer>();
       
             serv.Setup(e => e.SendState(It.IsAny<IDevice<IDeviceState<IPacketDeviceData>>>()))
-                .Callback<IDevice<IDeviceState<IPacketDeviceData>>>(d => written.Add(d.CurrentState));
+                .Callback<IDevice<IDeviceState<IPacketDeviceData>>>(d => written.Add(d));
 
-            //serv.Setup(e => e.SendState(It.IsAny<Motor>()))
-            //    .Callback<Motor>(s => writtenmtr.Add(s.CurrentState));
-
-            //1 : check reduce speed
             var sht = new BlockSheet(sample_loop_sheet, serv.Object);
             var route = new Route(sht, new[] { "AT1", "AT2", "AT3", "AT4", "AT5" });
             var cmd = new CommandInfo()
@@ -147,19 +143,27 @@ namespace TestProject
                 Speed = 0.5f
             };
 
-            var existblock = sht.GetBlock("AT2");
-            var detectormock = new Mock<SensorDetector>();
-            detectormock.Setup(d => d.IsDetected).Returns(true);
-            existblock.Detector = detectormock.Object;
- 
+            // 1: after calling Effect, AT1 is positive and others are standby
+            // then a packet sending for AT1 will be sent 
             sht.Effect(cmd);
 
-            var cmd1 = new CommandInfo()
-                          {
-                              Route = route,
-                              Speed = 0.3f,
-                          };
-            sht.Effect(cmd1);
+            Assert.IsTrue(written.Count == 1);
+            Assert.IsTrue(written.First().DeviceID == new DeviceID(1, 1, 1));
+
+
+
+            //var existblock = sht.GetBlock("AT2");
+            //var detectormock = new Mock<SensorDetector>();
+            //detectormock.Setup(d => d.IsDetected).Returns(true);
+            //existblock.Detector = detectormock.Object
+              
+            //   ;
+
+        }
+
+        [TestMethod()]
+        public void BlockEffectTest()
+        {
         }
 
         /// <summary>
