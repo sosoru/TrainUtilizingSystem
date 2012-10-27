@@ -148,7 +148,9 @@ namespace TestProject
             sht.Effect(cmd);
 
             var pack = written.First(p => p.DeviceID == new DeviceID(1, 1, 1));
-            Assert.IsTrue(pack.CurrentState == cmd.Speed);
+            var state = (MotorState)pack.CurrentState;
+
+            Assert.IsTrue(state.Duty == cmd.Speed);
 
             //var existblock = sht.GetBlock("AT2");
             //var detectormock = new Mock<SensorDetector>();
