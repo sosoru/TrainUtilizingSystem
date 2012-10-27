@@ -104,7 +104,7 @@ namespace RouteLibrary.Base
 
         public Block GetBlock(string p)
         {
-            throw new NotImplementedException();
+            return this.InnerBlocks.FirstOrDefault(b => b.Name == p);
         }
     }
 }
