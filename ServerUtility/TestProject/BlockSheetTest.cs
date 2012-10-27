@@ -22,7 +22,6 @@ namespace TestProject
     public static class ExtractExtension
     {
         public static TCast ExtractDevice<TCast>(this IEnumerable<IDevice<IDeviceState<IPacketDeviceData>>> list, int parent, int module , int inter)
-            where TDev : IDevice<IDeviceState<IPacketDeviceData>>
         {
             return (TCast)list.First(new DeviceID(parent, module, inter));
         }
