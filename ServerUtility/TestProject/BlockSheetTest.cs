@@ -142,7 +142,7 @@ namespace TestProject
                 Route = route,
                 Speed = 0.5f
             };
-
+            
             // 1: after calling Effect, AT1 is positive and others are standby
             // then check the packet sending for AT1 is included 
             sht.Effect(cmd);
@@ -152,6 +152,10 @@ namespace TestProject
 
             Assert.IsTrue(Math.Round( state.Duty,1) == cmd.Speed);
 
+            var standbys = written.Where(p => p.DeviceID != new DeviceID(1, 1, 1));
+            standbys.ToList().ForEach(s => Assert.IsTrue(((MotorState)s.CurrentState).Direction == MotorDirection.Standby));
+
+            
             //var existblock = sht.GetBlock("AT2");
             //var detectormock = new Mock<SensorDetector>();
             //detectormock.Setup(d => d.IsDetected).Returns(true);
