@@ -150,7 +150,7 @@ namespace TestProject
             var existblock = sht.GetBlock("AT3");
             var detectormock = new Mock<SensorDetector>();
             detectormock.Setup(d => d.IsDetected).Returns(true);
-            existblock.Detector = detectormock;
+            existblock.Detector = detectormock.Object;
  
             sheet.Effect(cmd);
 
