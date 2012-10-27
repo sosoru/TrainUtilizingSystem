@@ -60,8 +60,8 @@ namespace RouteLibrary.Base
         public string Name { get; private set; }
         public BlockSheet Sheet { get; private set; }
 
-        public IList<IDeviceEffector> Effectors { get; private set; }
-        public SensorDetector Detector { get; private set; }
+        public IList<IDeviceEffector> Effectors { get; set; }
+        public SensorDetector Detector { get; set; }
 
         public Block(BlockInfo info, BlockSheet sheet)
         {
