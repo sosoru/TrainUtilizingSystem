@@ -46,7 +46,7 @@ namespace RouteLibrary.Base
                                      });
         }
 
-        public bool IsDetected
+        public virtual bool IsDetected
         {
             get { return this.devices.Any(d => d.IsDetected); }
         }
