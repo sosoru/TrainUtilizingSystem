@@ -92,14 +92,14 @@ namespace RouteLibrary.Base
                 var avl = info.Route.Blocks.SkipWhile(b => b == this).Where(b => b.IsHaltable);
 
                 var neighbor = avl.First();
-                if (neighbor == null && neighbor.IsBlocked)
+                if (neighbor != null && neighbor.IsBlocked)
                 {
                     info.Speed = 0;
                 }
                 else
                 {
                     neighbor = avl.Skip(1).First();
-                    if (neighbor == null && neighbor.IsBlocked)
+                    if (neighbor != null && neighbor.IsBlocked)
                     {
                         info.Speed /= 2.0F;
                     }
