@@ -152,14 +152,14 @@ namespace TestProject
             detectormock.Setup(d => d.IsDetected).Returns(true);
             existblock.Detector = detectormock.Object;
  
-            sheet.Effect(cmd);
+            sht.Effect(cmd);
 
             var cmd1 = new CommandInfo()
                           {
-                              Route = r,
+                              Route = route,
                               Speed = 0.3f,
                           };
-            sheet.Effect(cmd1);
+            sht.Effect(cmd1);
         }
 
         /// <summary>
