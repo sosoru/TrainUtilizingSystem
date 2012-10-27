@@ -144,13 +144,10 @@ namespace TestProject
             };
 
             // 1: after calling Effect, AT1 is positive and others are standby
-            // then a packet sending for AT1 will be sent 
+            // then check the packet sending for AT1 is included 
             sht.Effect(cmd);
 
-            Assert.IsTrue(written.Count == 1);
             Assert.IsTrue(written.First().DeviceID == new DeviceID(1, 1, 1));
-
-
 
             //var existblock = sht.GetBlock("AT2");
             //var detectormock = new Mock<SensorDetector>();
