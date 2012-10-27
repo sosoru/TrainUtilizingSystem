@@ -27,6 +27,8 @@ namespace RouteLibrary.Base
         private List<Sensor> devices { get; set; }
         public ReadOnlyCollection<Sensor> Devices { get { return new ReadOnlyCollection<Sensor>(this.devices); } }
 
+        public SensorDetector() { }
+
         public SensorDetector(SensorInfo info, Block block)
         {
             this.ParentBlock = block;
