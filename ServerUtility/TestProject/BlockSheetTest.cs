@@ -150,7 +150,7 @@ namespace TestProject
             var pack = written.First(p => p.DeviceID == new DeviceID(1, 1, 1));
             var state = (MotorState)pack.CurrentState;
 
-            Assert.IsTrue(state.Duty == cmd.Speed);
+            Assert.IsTrue(Math.Round( state.Duty,1) == cmd.Speed);
 
             //var existblock = sht.GetBlock("AT2");
             //var detectormock = new Mock<SensorDetector>();
