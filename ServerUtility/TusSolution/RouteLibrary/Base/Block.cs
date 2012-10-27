@@ -61,7 +61,7 @@ namespace RouteLibrary.Base
         public BlockSheet Sheet { get; private set; }
 
         public IList<IDeviceEffector> Effectors { get; private set; }
-        public IList<SensorDetector> Detector { get; private set; }
+        public SensorDetector Detector { get; private set; }
 
         public Block(BlockInfo info, BlockSheet sheet)
         {
@@ -70,18 +70,16 @@ namespace RouteLibrary.Base
             this.Sheet = sheet;
 
             var effs = new List<IDeviceEffector>();
-            var decs = new List<SensorDetector>();
             if (info.Motor != null)
                 effs.Add(new MotorEffector(info.Motor, this));
 
             if (info.Switch != null)
                 effs.Add(new SwitchEffector(info.Switch, this));
 
-            if (info.Sensor != null)
-                decs.Add(new SensorDetector(info.Sensor, this));
-
             this.Effectors = new ReadOnlyCollection<IDeviceEffector>(effs);
-            this.Detector = new ReadOnlyCollection<SensorDetector>(decs);
+
+            if (info.Sensor != null)
+                this.Detector = new SensorDetector(info.Sensor, this);
 
         }
 
@@ -186,7 +184,7 @@ namespace RouteLibrary.Base
                     throw new InvalidOperationException("this block is not allocated a sensor module");
                 }
 
-                return this.Detector.Any(s => s.IsDetected);
+                return this.Detector.IsDetected;
             }
         }
 
@@ -207,7 +205,7 @@ namespace RouteLibrary.Base
                     throw new InvalidOperationException("IsBlocked property requires Haltable state");
                 }
 
-                return this.Detector.All(d => d.IsDetected);
+                return this.Detector.IsDetected;
             }
         }
     }
