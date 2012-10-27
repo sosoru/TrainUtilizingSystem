@@ -101,5 +101,10 @@ namespace RouteLibrary.Base
                 //.Do(b => b.Detectors.ForEach(d => d.SendCheckCommand()))
                 .Subscribe();
         }
+
+        public Block GetBlock(string p)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
