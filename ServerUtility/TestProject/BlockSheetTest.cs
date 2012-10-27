@@ -147,9 +147,11 @@ namespace TestProject
                 Speed = 0.5f
             };
 
-            var existsens = sht.GetBlock("AT3").Detector.Devices.First();
-            existsens.IsDetected = true;
-
+            var existblock = sht.GetBlock("AT3");
+            var detectormock = new Mock<SensorDetector>();
+            detectormock.Setup(d => d.IsDetected).Returns(true);
+            existblock.Detector = detectormock;
+ 
             sheet.Effect(cmd);
 
             var cmd1 = new CommandInfo()
