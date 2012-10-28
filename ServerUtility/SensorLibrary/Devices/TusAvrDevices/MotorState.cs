@@ -79,6 +79,12 @@ namespace SensorLibrary.Devices.TusAvrDevices
             this.Data = new MotorWaitingData();
         }
 
+        public int Current
+        {
+            get { return (int)this.Data.CurrentValue; }
+            set { this.Data.CurrentValue = (int)value; }
+        }
+
         public int ThresholdCurrent
         {
             get { return (int)this.Data.ThresholdValue; }
