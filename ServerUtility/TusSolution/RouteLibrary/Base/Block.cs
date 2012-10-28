@@ -24,8 +24,8 @@ namespace RouteLibrary.Base
     {
         public Block ParentBlock { get; private set; }
         public SensorInfo Info { get; private set; }
-        private List<UsartSensor> devices { get; set; }
-        public ReadOnlyCollection<UsartSensor> Devices { get { return new ReadOnlyCollection<UsartSensor>(this.devices); } }
+        private List<Sensor> devices { get; set; }
+        public ReadOnlyCollection<Sensor> Devices { get { return new ReadOnlyCollection<Sensor>(this.devices); } }
 
         public SensorDetector() { }
 
@@ -34,7 +34,7 @@ namespace RouteLibrary.Base
             this.ParentBlock = block;
             this.Info = info;
 
-            var devs = info.Addresses.Select(id => new UsartSensor() { DeviceID = id }).ToList();
+            var devs = info.Addresses.Select(id => new Sensor() { DeviceID = id }).ToList();
             devs.ForEach(d => d.Observe(block.Sheet.Dispatcher));
             this.devices = devs;
         }
