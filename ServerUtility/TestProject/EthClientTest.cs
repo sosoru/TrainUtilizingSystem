@@ -142,7 +142,8 @@ namespace TestProject
                 .Timeout(TimeSpan.FromSeconds(1))
                 .Do(pack =>
                     {
-                        Assert.IsTrue(pack.srcId == ethpacket.destId);
+                        Assert.IsTrue(pack.srcId.ModuleAddr == ethpacket.destId.ModuleAddr);
+                        Assert.IsTrue(pack.srcId.InternalAddr == ethpacket.destId.InternalAddr);
                     })
                     .First();
             
