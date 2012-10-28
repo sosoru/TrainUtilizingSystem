@@ -30,7 +30,7 @@
       </OverrideVtorValue>
       <Channel>
         <host>127.0.0.1</host>
-        <port>52928</port>
+        <port>1936</port>
         <ssl>False</ssl>
       </Channel>
     </com_atmel_avrdbg_tool_simulator>
@@ -44,7 +44,7 @@
       </OverrideVtorValue>
       <Channel>
         <host>127.0.0.1</host>
-        <port>5869</port>
+        <port>1936</port>
         <ssl>False</ssl>
       </Channel>
       <ToolOptions>
@@ -109,7 +109,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <ToolchainSettings>
-      <AvrGccCpp xmlns="">
+      <AvrGccCpp>
         <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
         <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
         <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
@@ -137,6 +137,7 @@
         <avrgcccpp.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcccpp.compiler.optimization.AllocateBytesNeededForEnum>
         <avrgcccpp.compiler.optimization.DebugLevel>Maximum (-g3)</avrgcccpp.compiler.optimization.DebugLevel>
         <avrgcccpp.compiler.warnings.AllWarnings>True</avrgcccpp.compiler.warnings.AllWarnings>
+        <avrgcccpp.linker.general.NoSharedLibraries>True</avrgcccpp.linker.general.NoSharedLibraries>
         <avrgcccpp.linker.libraries.Libraries>
           <ListValues>
             <Value>m</Value>
@@ -150,7 +151,6 @@
             <Value>../../libtus/Debug</Value>
           </ListValues>
         </avrgcccpp.linker.libraries.LibrarySearchPaths>
-        <avrgcccpp.linker.memorysettings.InitialStack>0x3FFF</avrgcccpp.linker.memorysettings.InitialStack>
         <avrgcccpp.assembler.debugging.DebugLevel>Default (-Wa,-g)</avrgcccpp.assembler.debugging.DebugLevel>
       </AvrGccCpp>
     </ToolchainSettings>

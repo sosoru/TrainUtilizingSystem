@@ -7,75 +7,99 @@
 
 #include "module_UartControl.h"
 #include "UartConfig.hpp"
+#include "PackPacket.hpp"
 #include <util/delay.h>
 #include "tus.h"
+#include "tus_spi.h"
 
 using namespace AVRCpp;
 using namespace module_UartControl;
 using namespace module_UartControl::Config;
 
-uint8_t received=0;
-DeviceID src_id;
-DeviceID dst_id;
+Tus::PacketPacker packer_g;
 
-template
-<class t_sens, uint8_t t_mnum>
-void SensorProcess()
+//template
+//<class t_sens, uint8_t t_mnum, uint8_t t_cnt>
+//void MonitoringProcess()
+//{
+	//uint8_t curr = t_sens::CheckSensors() ;
+	//
+	//if(curr > 0 || check_buf[t_mnum]++ > 5)
+	//{
+		//SensorProcess<t_sens, t_mnum, t_cnt>();
+		//check_buf[t_mnum] = 0;
+	//}
+//}
+//
+
+void SendState(DeviceID *psrc, DeviceID *pdst)
 {
-	spi_send_object *pspi_send;
-	EthPacket *packet;
-				
-	cli();
-	tus_spi_lock_send_buffer(&pspi_send);
-	packet = &pspi_send->packet;
-		
-	packet->srcId.raw = dst_id.raw;
-	packet->srcId.InternalAddr = (t_mnum << 4);	
-	packet->destId.raw = src_id.raw;
-	packet->moduletype = 0x14;
-	packet->devID.raw = packet->srcId.raw;
+	packer_g.Init();
 	
-	for(uint8_t i=0; i<t_cnt; ++i)
-	{		
-		packet->pdata[i*2] = t_sens::OnState[i];	
-		packet->pdata[i*2+1] = t_sens::OffState[i];
-	}		
+	TrainSensorA::PackSettingPacket(&packer_g, psrc, pdst);
+	TrainSensorB::PackSettingPacket(&packer_g, psrc, pdst);
+	TrainSensorC::PackSettingPacket(&packer_g, psrc, pdst);
+	TrainSensorD::PackSettingPacket(&packer_g, psrc, pdst);
 	
-	pspi_send->is_locked = FALSE;
-	sei();
-	//_delay_ms(10);
+	TrainSensorA::PackPacket(&packer_g, psrc, pdst);
+	TrainSensorB::PackPacket(&packer_g, psrc, pdst);
+	TrainSensorC::PackPacket(&packer_g, psrc, pdst);
+	TrainSensorD::PackPacket(&packer_g, psrc, pdst);
 	
+	packer_g.Send(psrc, pdst);
 }
 
-uint8_t check_buf[3];
-
-template
-<class t_sens, uint8_t t_mnum, uint8_t t_cnt>
-void MonitoringProcess()
+bool ProcessKernalPacket(args_received *preceived)
 {
-	uint8_t curr = t_sens::CheckSensors() ;
+	KernalState *pstate = (KernalState*)preceived->ppack;
 	
-	if(curr > 0 || check_buf[t_mnum]++ > 5)
+	if(pstate->Base.ModuleType != MODULETYPE_KERNEL)
+		return false;
+		
+	switch(pstate->KernelCommand)
 	{
-		SensorProcess<t_sens, t_mnum, t_cnt>();
-		check_buf[t_mnum] = 0;
+		case ETHCMD_REPLY :
+			SendState(preceived->pdstId, preceived->psrcId);
+		break;
 	}
+	
+	return true;
+}
+
+bool ProcessUartPacket(args_received *preceived)
+{
+	BaseState *pstate = (BaseState*)preceived->ppack;
+	
+	if(pstate->ModuleType != MODULETYPE_UART
+		&& pstate->ModuleType != MODULETYPE_UART_MOUDLESETTING)
+		return false;
+		
+	if((pstate->InternalAddr & 0x0F) == 0)
+	{
+		switch(pstate->InternalAddr & 0xF0)
+		{
+			case 0x10:
+				TrainSensorA::ApplyPacket(pstate);
+			break;
+			case 0x20:
+				TrainSensorB::ApplyPacket(pstate);
+			break;
+			case 0x30:
+				TrainSensorC::ApplyPacket(pstate);
+			break;
+			case 0x40:
+				TrainSensorD::ApplyPacket(pstate);
+			break;
+		}
+	}	
+
+	return true;
 }
 
 void spi_received(args_received *e)
 {
-	if(e->ppack->destId.ModuleAddr == 0)
-		return;
-	
-	if(received > 0)
-		return;
-	
-	src_id.raw = e->ppack->srcId.raw;
-	dst_id.raw = e->ppack->destId.raw;
-	
-	dst_id.InternalAddr = 0;
-		
-	received++;
+	if(ProcessKernalPacket(e)){}
+	else if (ProcessUartPacket(e)){}	
 }
 
 int main(void)
@@ -85,10 +109,7 @@ int main(void)
 	
 	MCUCR = 0b01100000; //todo: turn off bods
 	MCUSR = 0; // Do not omit to clear this resistor, otherwise suffer a terrible reseting cause.
-	
-	tus_spi_init();
-	tus_spi_set_handler(spi_received);
-	
+		
 	InputPin0<PortD>::InitDefaultInput();
 	OutputPin1<PortD>::InitOutput();
 	
@@ -105,24 +126,19 @@ int main(void)
 	
 	TrainSensorA::LedOff();
 	TrainSensorB::LedOff();
+	TrainSensorC::LedOff();
+	TrainSensorD::LedOff();
 	
-	src_id.ParentPart = 102;
-	src_id.ModuleAddr = 0;
-	
-	dst_id.ParentPart = 24;
-	dst_id.ModuleAddr = 1;
-	
-	check_buf[1] = 0;
-	check_buf[2] = 0;
-	
+	tus_spi_init();
+	tus_spi_set_handler(spi_received);
+		
     while(1)
-    {			
-			
-		MonitoringProcess<TrainSensorA, 1, 2>();
+    {						
 		tus_spi_process_packets();		
-		//MonitoringProcess<TrainSensorB, 2, 4>();
-		//tus_spi_process_packets();
-		//
-		received = 0;
+		
+		TrainSensorA::CheckSensors();
+		TrainSensorB::CheckSensors();
+		TrainSensorC::CheckSensors();
+		TrainSensorD::CheckSensors();
     }
 }

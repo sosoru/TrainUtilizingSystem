@@ -10,6 +10,7 @@
 #define UARTMODULE_H_
 
 #include "module_UartControl.h"
+#include <PackPacket.hpp>
 #include <uart_packet.h>
 #include <tus.h>
 #include <util/delay.h>
@@ -47,6 +48,7 @@ namespace module_UartControl
 		};
 		
 		template <
+				uint8_t t_internal_id,
 				class t_module_enable_pin,
 				class t_module_led_pin,
 				class t_uart,
@@ -61,17 +63,18 @@ namespace module_UartControl
 									 >
 		{
 			private:
-				static inline void CreatePacket(UsartPacket &packet)
-				{
-					packet.header.type = 0;
-					packet.header.number = 0;
-					packet.header.packet_size = 0;
-				}
+			static inline void CreateUartPacket(UsartPacket &packet)
+			{
+				packet.header.type = 0;
+				packet.header.number = 0;
+				packet.header.packet_size = 0;
+			}
 
 			public :			
 				static UsartPacket ReceivedArray[t_module_count];
-				static uint8_t OnState [t_module_count];
-				static uint8_t OffState[t_module_count];
+				
+				static UartSettingPacket setting_g;
+				static TrainSensorPacket packets_g[t_module_count];
 							
 				static void Init()
 				{
@@ -79,6 +82,8 @@ namespace module_UartControl
 					t_module_led_pin::InitOutput();
 					
 					t_module_enable_pin::Set(); // but on board rev1, change enable pin to low
+					
+					setting_g.ModuleCount = 0;
 				}
 				
 				static void TimerInit()
@@ -105,47 +110,114 @@ namespace module_UartControl
 				
 				static inline uint8_t CheckSensors()
 				{
-					UsartPacket pack;
+					UsartPacket usartpack;
+					
+					if(setting_g.ModuleCount == 0)
+						return 0;
 				
 					ModuleOn();
-					CreatePacket(pack);
+					CreateUartPacket(usartpack);
 					
-					cli();	
-					while(t_module_count-1 != Communicate(pack));
-					sei();
+					//cli();	
+					while(setting_g.ModuleCount-1 != Communicate(usartpack));
+					//sei();
 					
 					LedOn();
 					_delay_ms(10);
 	
-					for(uint8_t i=0; i<t_module_count; ++i)
+					for(uint8_t i=0; i<setting_g.ModuleCount; ++i)
 					{
-						OnState[i] = ReceivedArray[i].data[0];
+						packets_g[i].OnState = ReceivedArray[i].data[0];
 					}		
 	
-					CreatePacket(pack);
+					CreateUartPacket(usartpack);
 					
-					cli();
-					while(t_module_count-1 != Communicate(pack));
-					sei();
+					//cli();
+					while(setting_g.ModuleCount-1 != Communicate(usartpack));
+					//sei();
 					
 					LedOff();
 					ModuleOff();
 										
-					for(uint8_t i=0; i<t_module_count; ++i)
+					for(uint8_t i=0; i<setting_g.ModuleCount; ++i)
 					{
-						OffState[i] = ReceivedArray[i].data[0];
+						packets_g[i].OffState = ReceivedArray[i].data[0];
 					}		
 									
 					//check
-					for(uint8_t i=0; i<t_module_count; ++i)
+					for(uint8_t i=0; i<setting_g.ModuleCount; ++i)
 					{
-						int16_t sub = (((int16_t)OnState[i]) - ((int16_t)OffState[i]));
+						TrainSensorPacket *ppacket = &packets_g[i];
+						
+						int16_t sub = (((int16_t)ppacket->OnState) - ((int16_t)ppacket->OffState));
 
 						if(abs(sub) > 100)
 							return 1;
 					}		
 					return 0;
+				}
+				
+				static inline void ApplyPacket(BaseState *pbstate)
+				{
+					uint8_t modind = pbstate->InternalAddr & 0x0F;
 					
+					if(modind == 0)
+					{
+						UartSettingPacket *ppacket = (UartSettingPacket *)pbstate;
+						//setting
+						if(ppacket->ModuleCount <= t_module_count)
+						{
+							setting_g.ModuleCount = ppacket->ModuleCount;
+						}
+					}
+					else
+					{				
+						TrainSensorPacket *ppacket = (TrainSensorPacket *)pbstate;
+						if(modind < setting_g.ModuleCount)
+						{
+							packets_g[modind-1].Threshold = ppacket->Threshold;
+						}
+						
+					}
+				}
+				
+				static inline void PackSettingPacket(Tus::PacketPacker *ppacker, DeviceID *psrc, DeviceID *pdst)
+				{
+					setting_g.Base.DataLength = sizeof(setting_g);
+					setting_g.Base.InternalAddr = t_internal_id << 4;
+					setting_g.Base.ModuleType = MODULETYPE_UART_MOUDLESETTING;
+					
+					if(false == ppacker->Pack((uint8_t*)&setting_g))
+					{
+						ppacker->Send(psrc, pdst);
+						ppacker->Init();
+						
+						ppacker->Pack((uint8_t*)&setting_g);
+					}
+					
+				}
+				
+				static inline void PackPacket(Tus::PacketPacker *ppacker, DeviceID* psrc, DeviceID* pdst)
+				{
+					uint8_t i;
+					
+					if(setting_g.ModuleCount == 0)
+						return;
+				
+					for(i=0; i<setting_g.ModuleCount; ++i)
+					{
+						packets_g[i].Base.DataLength = sizeof(packets_g[i]);
+						packets_g[i].Base.InternalAddr = (t_internal_id << 4) + (i+1);
+						packets_g[i].Base.ModuleType = MODULETYPE_UART;
+						
+						if(false == ppacker->Pack((uint8_t*)&packets_g[i])) //if buffer is fulled
+						{
+							ppacker->Send(psrc, pdst);
+							ppacker->Init();
+							
+							ppacker->Pack((uint8_t*)&packets_g[i]);
+						}
+					}
 				}
 				
 				static inline void SendUartPacket(UsartPacket &packet)
@@ -168,7 +240,7 @@ namespace module_UartControl
 
 					uint8_t received;
 					int8_t m;
-					for(m=0; m<t_module_count; ++m)
+					for(m=0; m<setting_g.ModuleCount; ++m)
 					{
 						while(!t_uart::IsTransferCompleted());
 						
@@ -241,6 +313,7 @@ namespace module_UartControl
 		};
 		
 		template <
+				uint8_t t_internal_id,
 				class t_module_enable_pin,
 				class t_module_led_pin,
 				class t_uart,
@@ -249,45 +322,50 @@ namespace module_UartControl
 			>
 		UsartPacket
 		 TrainSensorModule<
+				t_internal_id,
 				t_module_enable_pin,
 				t_module_led_pin,
 				t_uart,
 				t_timer,
 				t_module_count>
 				::ReceivedArray[t_module_count];
+
+		template <
+				uint8_t t_internal_id,
+				class t_module_enable_pin,
+				class t_module_led_pin,
+				class t_uart,
+				class t_timer,
+				uint8_t t_module_count
+			>
+		TrainSensorPacket
+		 TrainSensorModule<
+				t_internal_id,
+				t_module_enable_pin,
+				t_module_led_pin,
+				t_uart,
+				t_timer,
+				t_module_count>
+				::packets_g[t_module_count];
 				
 		template <
-				class t_module_enable_pin,
-				class t_module_led_pin,
-				class t_uart,
-				class t_timer,
-				uint8_t t_module_count
-			>
-		uint8_t
-		 TrainSensorModule<
-				t_module_enable_pin,
-				t_module_led_pin,
-				t_uart,
-				t_timer,
-				t_module_count>
-				::OnState[t_module_count];
-
-		template <
-				class t_module_enable_pin,
-				class t_module_led_pin,
-				class t_uart,
-				class t_timer,
-				uint8_t t_module_count
-			>
-		uint8_t
-		 TrainSensorModule<
-				t_module_enable_pin,
-				t_module_led_pin,
-				t_uart,
-				t_timer,
-				t_module_count>
-				::OffState[t_module_count];
-
+				uint8_t t_internal_id,
+			class t_module_enable_pin,
+			class t_module_led_pin,
+			class t_uart,
+			class t_timer,
+			uint8_t t_module_count
+		>
+		UartSettingPacket
+		TrainSensorModule<
+				t_internal_id,
+			t_module_enable_pin,
+			t_module_led_pin,
+			t_uart,
+			t_timer,
+			t_module_count>
+		::setting_g;
+					
 	}
 }
 

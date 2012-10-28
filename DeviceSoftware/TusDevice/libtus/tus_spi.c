@@ -158,7 +158,8 @@ void tus_spi_process_packets()
 				bufind += ppacket->pdata[bufind];
 				e.pos_in_packet++;
 			}		
-
+			
+			ppacket->destId.ModuleAddr = 0; //mark processed
 		}		
 	}
 	

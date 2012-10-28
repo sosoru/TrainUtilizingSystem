@@ -39,7 +39,7 @@
       </OverrideVtorValue>
       <Channel>
         <host>127.0.0.1</host>
-        <port>55102</port>
+        <port>1936</port>
         <ssl>False</ssl>
       </Channel>
       <ToolOptions>

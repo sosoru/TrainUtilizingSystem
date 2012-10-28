@@ -21,6 +21,8 @@
 
 #define MODULETYPE_KERNEL 0x11
 #define MODULETYPE_MOTOR 0x12
+#define MODULETYPE_UART 0x14
+#define MODULETYPE_UART_MOUDLESETTING 0x15
 
 typedef union tag_DeviceID
 {
@@ -34,7 +36,7 @@ typedef union tag_DeviceID
 	{
 		uint16_t ParentPart;
 		uint16_t ModulePart;
-	};
+	};	
 	uint32_t raw;
 } DeviceID;
 
