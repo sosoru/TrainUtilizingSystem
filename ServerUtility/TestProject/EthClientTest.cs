@@ -139,13 +139,13 @@ namespace TestProject
             ethpacket.DataPacket = DevicePacket.CreatePackedPacket(sens, inq).First();
             var states = target.AsyncSend(ethpacket)
                 .SelectMany(ob => Observable.Defer(() => target.AsyncReceive().Take(2)))
-                .Timeout(TimeSpan.FromSeconds(1))
                 .Do(pack =>
                     {
                         Assert.IsTrue(pack.srcId.ModuleAddr == ethpacket.destId.ModuleAddr);
                         Assert.IsTrue(pack.srcId.ParentPart == ethpacket.destId.ParentPart);
                     })
                 .SelectMany(pack => pack.DataPacket.ExtractPackedPacket())
+                .Timeout(TimeSpan.FromSeconds(1))
                 .ToArray().First();
 
             foreach (var state in states)
