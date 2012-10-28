@@ -7,7 +7,7 @@ using SensorLibrary.Packet.Control;
 namespace SensorLibrary.Devices.TusAvrDevices
 {
     public class Motor
-        : Device<MotorState>
+        : Device<MotorState>, ISensorDevice
     {
         public Motor()
         {
@@ -21,5 +21,12 @@ namespace SensorLibrary.Devices.TusAvrDevices
             this.CurrentState.ReceivingServer = server;
         }
 
+        public bool IsDetected
+        {
+            get {
+                return this.CurrentState.CurrentValue > this.CurrentState.ThresholdValue;
+
+            }
+        }
     }
 }
