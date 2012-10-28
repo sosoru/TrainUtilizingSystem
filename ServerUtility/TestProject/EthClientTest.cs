@@ -128,7 +128,7 @@ namespace TestProject
             };
             var sens = new Sensor() { DeviceID = ethpacket.destId };
             var sensstate = sens.CurrentState;
-            var sessetting = sens.CreateSettingDevice(1);
+            var sessetting = sens.CreateSettingDevice(4);
             var inq = Kernel.InquiryState(ethpacket.destId);
 
             ethpacket.DataPacket = DevicePacket.CreatePackedPacket(sessetting).First();
