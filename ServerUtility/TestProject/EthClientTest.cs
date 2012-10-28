@@ -146,7 +146,7 @@ namespace TestProject
                         Assert.IsTrue(pack.srcId.ParentPart == ethpacket.destId.ParentPart);
                     })
                 .SelectMany(pack => pack.DataPacket.ExtractPackedPacket())
-                .ToArray().First();
+                .ToList().First();
 
             states.ForEach(state =>
                     {
