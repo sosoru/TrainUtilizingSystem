@@ -138,7 +138,7 @@ namespace TestProject
 
             ethpacket.DataPacket = DevicePacket.CreatePackedPacket(sens, inq).First();
             var states = target.AsyncSend(ethpacket)
-                .SelectMany(ob => Observable.Defer(() => target.AsyncReceive()))
+                .SelectMany(ob =>  target.AsyncReceive())
                 .Repeat(2)
                 .Do(pack =>
                     {
