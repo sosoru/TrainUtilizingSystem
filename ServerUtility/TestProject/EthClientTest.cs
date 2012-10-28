@@ -137,7 +137,7 @@ namespace TestProject
             System.Threading.Thread.Sleep(1000);
 
             ethpacket.DataPacket = DevicePacket.CreatePackedPacket(sens, inq).First();
-            target.AsyncSend(ethpacket)
+            var states = target.AsyncSend(ethpacket)
                 .SelectMany(ob => Observable.Defer(() => target.AsyncReceive().Take(2)))
                 .Timeout(TimeSpan.FromSeconds(1))
                 .Do(pack =>
@@ -146,7 +146,9 @@ namespace TestProject
                         Assert.IsTrue(pack.srcId.ParentPart == ethpacket.destId.ParentPart);
                     })
                 .SelectMany(pack => pack.DataPacket.ExtractPackedPacket())
-                .Do(state =>
+                .ToArray();
+
+            states.ForEach(state =>
                     {
                         if (state.ModuleType == ModuleTypeEnum.AvrUartSetting
                                 && state.Data.InternalAddr == 16)
