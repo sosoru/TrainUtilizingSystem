@@ -80,7 +80,7 @@ namespace SensorLibrary.Devices
             = new ReadOnlyCollection<IDeviceFactory<IDevice<IDeviceState<IPacketDeviceData>>, IDeviceState<IPacketDeviceData>, IPacketDeviceData>>
             (
                 new IDeviceFactory<IDevice<IDeviceState<IPacketDeviceData>>, IDeviceState<IPacketDeviceData>, IPacketDeviceData>[]
-                { MotorModuleFactory, SwitchModuleFactory, SensorModuleFactory, KernelModuleFactory}
+                { MotorModuleFactory, SwitchModuleFactory, SensorModuleFactory, KernelModuleFactory, UsartSettingFactory}
             );
 
         public override IEnumerable<IDeviceFactory<IDevice<IDeviceState<IPacketDeviceData>>,IDeviceState<IPacketDeviceData>,IPacketDeviceData>>  AvailableDeviceTypes
