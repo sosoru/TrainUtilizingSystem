@@ -20,5 +20,6 @@ namespace SensorLibrary.Devices.TusAvrDevices
         {
             this.CurrentState.ReceivingServer = server;
         }
+
     }
 }
