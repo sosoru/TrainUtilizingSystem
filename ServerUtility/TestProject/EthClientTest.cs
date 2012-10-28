@@ -134,7 +134,7 @@ namespace TestProject
             ethpacket.DataPacket = DevicePacket.CreatePackedPacket(sessetting).First();
             target.AsyncSend(ethpacket).First();
 
-            System.Threading.Thread.Sleep(1000)
+            System.Threading.Thread.Sleep(1000);
 
             ethpacket.DataPacket = DevicePacket.CreatePackedPacket(sens, inq).First();
             target.AsyncSend(ethpacket)
