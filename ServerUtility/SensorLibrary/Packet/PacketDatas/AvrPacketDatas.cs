@@ -34,6 +34,16 @@ namespace SensorLibrary.Packet.Data
 
     }
 
+    public class MotorWaitingData
+        : PacketDeviceHeader
+    {
+        public MotorWaitingData() { Data = 8; ModuleType = (byte)ModuleTypeEnum.AvrMotor; }
+
+        public byte ThresholdValue;
+        public DeviceID DestinationID;
+        public byte MemoryWhenEntered;
+    }
+
     //struct PointModuleState
     //{
     //    uint8_t DeadTime;
