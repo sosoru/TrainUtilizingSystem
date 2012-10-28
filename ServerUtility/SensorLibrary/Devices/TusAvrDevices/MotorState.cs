@@ -7,7 +7,7 @@ using SensorLibrary.Packet.Data;
 namespace SensorLibrary.Devices.TusAvrDevices
 {
     public class MotorState
-        : DeviceState<MotorRunningData>
+        : DeviceState<MotorData>
     {
         public MotorState()
             : base()
