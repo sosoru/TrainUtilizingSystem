@@ -7,13 +7,16 @@ using SensorLibrary;
 namespace SensorLibrary.Devices.TusAvrDevices
 {
     public class MotorWaiting
-        : Device<MotorWaitingState>
+        : Device<MotorWaitingState>, ISensorDevice
     {
         public MotorWaiting()
         {
             this.CurrentState = new MotorWaitingState();
         }
 
-
+        public bool IsDetected
+        {
+            get { throw new NotImplementedException(); }
+        }
     }
 }
