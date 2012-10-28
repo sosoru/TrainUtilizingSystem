@@ -140,7 +140,6 @@ namespace TestProject
             var states = target.AsyncSend(ethpacket)
                 .SelectMany(ob => Observable.Defer(() => target.AsyncReceive()))
                 .Take(2)
-                .SelectMany(ob => target.AsyncReceive())
                 .Do(pack =>
                     {
                         Assert.IsTrue(pack.srcId.ModuleAddr == ethpacket.destId.ModuleAddr);
