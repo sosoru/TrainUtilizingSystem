@@ -17,13 +17,13 @@ namespace SensorLibrary.Devices.TusAvrDevices
 
     }
 
-    public class UsartSensor
+    public class Sensor
         : Device<SensorState>
     {
         private volatile object hist_lock = new object();
         private LinkedList<SensorState> packet_history = new LinkedList<SensorState>();
 
-        public UsartSensor()
+        public Sensor()
         {
             this.ModuleType = ModuleTypeEnum.AvrSensor;
             this.CurrentState = new SensorState();
