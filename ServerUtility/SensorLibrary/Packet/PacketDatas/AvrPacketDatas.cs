@@ -37,7 +37,7 @@ namespace SensorLibrary.Packet.Data
     public class MotorWaitingData
         : PacketDeviceHeader
     {
-        public MotorWaitingData() { Data = 8; ModuleType = (byte)ModuleTypeEnum.AvrMotor; }
+        public MotorWaitingData() { Data = 8; ModuleType = (byte)ModuleTypeEnum.AvrMotorWaiting; }
 
         public byte ThresholdValue;
         public DeviceID DestinationID;
