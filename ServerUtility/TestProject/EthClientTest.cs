@@ -139,7 +139,7 @@ namespace TestProject
             ethpacket.DataPacket = DevicePacket.CreatePackedPacket(sens, inq).First();
             var states = target.AsyncSend(ethpacket)
                 .SelectMany(ob => Observable.Defer(() => target.AsyncReceive()))
-                .Take(2)
+                .Repeat(2)
                 .Do(pack =>
                     {
                         Assert.IsTrue(pack.srcId.ModuleAddr == ethpacket.destId.ModuleAddr);
