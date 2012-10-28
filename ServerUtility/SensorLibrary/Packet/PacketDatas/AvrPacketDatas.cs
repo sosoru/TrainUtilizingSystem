@@ -34,11 +34,14 @@ namespace SensorLibrary.Packet.Data
 
     }
 
+    [StructLayout(LayoutKind.Sequential, Pack =1, Size=9]
     public class MotorWaitingData
         : PacketDeviceHeader
     {
-        public MotorWaitingData() { Data = 8; ModuleType = (byte)ModuleTypeEnum.AvrMotorWaiting; }
+        public MotorWaitingData() { Data = 9; ModuleType = (byte)ModuleTypeEnum.AvrMotorWaiting; }
 
+        public byte ControlMode;
+        public byte CurrentValue;
         public byte ThresholdValue;
         public DeviceID DestinationID;
         public byte MemoryWhenEntered;
