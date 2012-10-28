@@ -146,18 +146,17 @@ namespace TestProject
                         Assert.IsTrue(pack.srcId.ParentPart == ethpacket.destId.ParentPart);
                     })
                 .SelectMany(pack => pack.DataPacket.ExtractPackedPacket())
-                .ToList().First();
+                .ToArray().First();
 
-            states.ForEach(state =>
-                    {
-                        if (state.ModuleType == ModuleTypeEnum.AvrUartSetting
-                                && state.Data.InternalAddr == 16)
-                        {
-                            var setting = (UsartSettingState)state;
-                            Assert.IsTrue(setting.ModuleCount == 2);
-                        }
-                    })
-                    .First();
+            foreach (var state in states)
+            {
+                if (state.ModuleType == ModuleTypeEnum.AvrUartSetting
+                        && state.Data.InternalAddr == 16)
+                {
+                    var setting = (UsartSettingState)state;
+                    Assert.IsTrue(setting.ModuleCount == 2);
+                }
+            }
 
         }
 
