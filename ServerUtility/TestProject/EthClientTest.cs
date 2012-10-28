@@ -127,7 +127,7 @@ namespace TestProject
                 srcId = new DeviceID(100, 0),
                 destId = new DeviceID(24, 1, 17)
             };
-            var sens = new UsartSensor() { DeviceID = ethpacket.destId };
+            var sens = new Sensor() { DeviceID = ethpacket.destId };
             var sensstate = sens.CurrentState;
             var sessetting = sens.CreateSettingDevice(2);
             var inq = Kernel.InquiryState(ethpacket.destId);
