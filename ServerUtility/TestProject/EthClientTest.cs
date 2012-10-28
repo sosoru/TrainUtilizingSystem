@@ -86,7 +86,8 @@ namespace TestProject
         private IObservable<MotorState> mtr_check(EthClient target, EthPacket mtrpacket, MotorState mtrstate)
         {
             return target.AsyncSend(mtrpacket)
-                .SelectMany(s => Observable.Defer(() => target.AsyncReceive()).Take(2))
+                .SelectMany(s => target.AsyncReceive())
+                    .Repeat(2)
                 .Timeout(TimeSpan.FromSeconds(1))
                 .SelectMany(s => s.DataPacket.ExtractPackedPacket())
                 .Where(state => state.Data.InternalAddr == mtrstate.Data.InternalAddr)
@@ -138,7 +139,7 @@ namespace TestProject
 
             ethpacket.DataPacket = DevicePacket.CreatePackedPacket(sens, inq).First();
             var states = target.AsyncSend(ethpacket)
-                .SelectMany(ob =>  target.AsyncReceive())
+                .SelectMany(ob => target.AsyncReceive())
                 .Repeat(2)
                 .Do(pack =>
                     {
