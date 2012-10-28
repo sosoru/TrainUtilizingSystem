@@ -25,7 +25,7 @@ namespace SensorLibrary.Devices.TusAvrDevices
         {
             get
             {
-                return this.CurrentState.CurrentValue > this.CurrentState.ThresholdValue;
+                return this.CurrentState.Current > this.CurrentState.ThresholdValue;
             }
         }
     }
