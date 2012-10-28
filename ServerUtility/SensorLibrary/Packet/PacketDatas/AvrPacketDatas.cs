@@ -21,7 +21,7 @@ namespace SensorLibrary.Packet.Data
 	//	DutyValue	: 1 byte
 	//	VoltageValue: 1 byte
 	//
-	[StructLayout(LayoutKind.Sequential, Pack=1, Size=12]
+	[StructLayout(LayoutKind.Sequential, Pack=1, Size=12)]
     public class MotorData
         : PacketDeviceHeader
     {
