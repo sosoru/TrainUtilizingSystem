@@ -152,7 +152,7 @@ namespace TestProject
                                 && state.Data.InternalAddr == 16)
                         {
                             var setting = (UsartSettingState)state;
-                            Assert.IsTrue(setting.ModuleCount == 1);
+                            Assert.IsTrue(setting.ModuleCount == 2);
                         }
                     })
                     .First();
