@@ -7,7 +7,7 @@ using SensorLibrary.Packet.Data;
 namespace SensorLibrary.Devices.TusAvrDevices
 {
     public class MotorState
-        : DeviceState<MotorData>
+        : DeviceState<MotorRunningData>
     {
         public MotorState()
             : base()
@@ -69,22 +69,6 @@ namespace SensorLibrary.Devices.TusAvrDevices
             }
         }
 
-    }
-
-    public class MotorWaitingState
-        :DeviceState<MotorWaitingData>
-    {
-        public MotorWaitingState()
-        {
-            this.Data = new MotorWaitingData();
-        }
-
-        public int Current
-        {
-            get { return (int)this.Data.CurrentValue; }
-            set { this.Data.CurrentValue = (int)value; }
-        }
-
         public int ThresholdCurrent
         {
             get { return (int)this.Data.ThresholdValue; }
@@ -102,6 +86,7 @@ namespace SensorLibrary.Devices.TusAvrDevices
             get { return (byte)this.Data.MemoryWhenEntered; }
             set { this.Data.MemoryWhenEntered = (byte)value; }
         }
+ 
     }
 
     public enum MotorControlMode
