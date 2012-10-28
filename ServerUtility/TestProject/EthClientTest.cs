@@ -145,6 +145,14 @@ namespace TestProject
                         Assert.IsTrue(pack.srcId.ModuleAddr == ethpacket.destId.ModuleAddr);
                         Assert.IsTrue(pack.srcId.ParentPart == ethpacket.destId.ParentPart);
                     })
+                .SelectMany(pack => pack.DataPacket.ExtractPackedPacket())
+                .Do(state =>
+                    {
+                        if (state.ModuleType == ModuleTypeEnum.AvrUartSetting)
+                        {
+                            
+                        }
+                    })
                     .First();
 
         }
