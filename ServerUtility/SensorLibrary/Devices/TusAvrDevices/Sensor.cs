@@ -18,7 +18,7 @@ namespace SensorLibrary.Devices.TusAvrDevices
     }
 
     public class UsartSensor
-        : Device<SensorState>
+        : Device<SensorState>, ISensorDevice
     {
         private volatile object hist_lock = new object();
         private LinkedList<SensorState> packet_history = new LinkedList<SensorState>();
