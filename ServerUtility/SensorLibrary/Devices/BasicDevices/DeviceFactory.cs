@@ -70,6 +70,9 @@ namespace SensorLibrary.Devices
         public static readonly IDeviceFactory<Sensor, SensorState, SensorData> SensorModuleFactory
             = DefaultFactory<Sensor, SensorState, SensorData>(ModuleTypeEnum.AvrSensor);
 
+        public static readonly IDeviceFactory<UsartSetting, UsartSettingState, UsartSettingData> UsartSettingFactory
+            = DefaultFactory<UsartSetting, UsartSettingState, UsartSettingData>(ModuleTypeEnum.AvrUartSetting);
+
         public static readonly IDeviceFactory<Kernel, KernelState, KernelData> KernelModuleFactory
             = DefaultFactory<Kernel, KernelState, KernelData>(ModuleTypeEnum.AvrKernel);
 
