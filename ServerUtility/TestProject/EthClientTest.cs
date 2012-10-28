@@ -143,10 +143,10 @@ namespace TestProject
                 .Do(pack =>
                     {
                         Assert.IsTrue(pack.srcId.ModuleAddr == ethpacket.destId.ModuleAddr);
-                        Assert.IsTrue(pack.srcId.InternalAddr == ethpacket.destId.InternalAddr);
+                        Assert.IsTrue(pack.srcId.ParentPart == ethpacket.destId.ParentPart);
                     })
                     .First();
-            
+
         }
 
 
