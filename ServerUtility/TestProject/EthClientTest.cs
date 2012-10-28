@@ -148,9 +148,11 @@ namespace TestProject
                 .SelectMany(pack => pack.DataPacket.ExtractPackedPacket())
                 .Do(state =>
                     {
-                        if (state.ModuleType == ModuleTypeEnum.AvrUartSetting)
+                        if (state.ModuleType == ModuleTypeEnum.AvrUartSetting
+                                && state.Data.InternalAddr == 16)
                         {
-                            
+                            var setting = (UsartSettingState)state;
+                            Assert.IsTrue(setting.ModuleCount == 1);
                         }
                     })
                     .First();
