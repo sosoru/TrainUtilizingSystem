@@ -16,16 +16,16 @@ namespace SensorLibrary.Devices.TusAvrDevices
         }
 
         public Motor(PacketServer server)
-            :this()
+            : this()
         {
             this.CurrentState.ReceivingServer = server;
         }
 
         public bool IsDetected
         {
-            get {
+            get
+            {
                 return this.CurrentState.CurrentValue > this.CurrentState.ThresholdValue;
-
             }
         }
     }
