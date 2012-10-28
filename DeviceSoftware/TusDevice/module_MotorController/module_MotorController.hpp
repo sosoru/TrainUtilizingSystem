@@ -12,6 +12,7 @@
 #include "avr_base.hpp"
 #include "MotorProcess.hpp"
 #include "Pulse.hpp"
+#include <PackPacket.hpp>
 
 #include <Timer.h>
 
@@ -28,6 +29,9 @@ namespace MotorController
 	typedef MotorProcess<2, OutputPin3<PortB>, OutputPin2<PortB>, OutputPin1<PortB>, InputPin0<PortB>, 3, PulseB> MotorControllerB;
 	typedef MotorProcess<3, OutputPin3<PortD>, OutputPin2<PortD>, OutputPin1<PortD>, InputPin0<PortD>, 1, PulseC> MotorControllerC;
 	typedef MotorProcess<4, OutputPin0<PortC>, OutputPin7<PortC>, OutputPin6<PortC>, InputPin1<PortC>, 0, PulseD> MotorControllerD;	
+	
+	extern Tus::PacketPacker g_packer;
+	extern DeviceID g_myDeviceID;
 }
 
 #endif /* MODULE_MOTORCONTROLLER_H_ */

@@ -119,7 +119,8 @@ namespace module_UartControl
 					CreateUartPacket(usartpack);
 					
 					//cli();	
-					while(setting_g.ModuleCount-1 != Communicate(usartpack));
+					//while(setting_g.ModuleCount-1 != Communicate(usartpack));
+					Communicate(usartpack);
 					//sei();
 					
 					LedOn();
@@ -133,7 +134,8 @@ namespace module_UartControl
 					CreateUartPacket(usartpack);
 					
 					//cli();
-					while(setting_g.ModuleCount-1 != Communicate(usartpack));
+					//while(setting_g.ModuleCount-1 != Communicate(usartpack));
+					Communicate(usartpack);
 					//sei();
 					
 					LedOff();
@@ -151,7 +153,7 @@ namespace module_UartControl
 						
 						int16_t sub = (((int16_t)ppacket->OnState) - ((int16_t)ppacket->OffState));
 
-						if(abs(sub) > 100)
+						if(abs(sub) > ppacket->Threshold)
 							return 1;
 					}		
 					return 0;

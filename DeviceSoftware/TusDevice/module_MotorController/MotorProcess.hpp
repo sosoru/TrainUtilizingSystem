@@ -78,6 +78,7 @@ namespace MotorController
 						ApplyCurrentMode((MtrRunningState*) ppacket->State)	;
 					break;
 					case WaitingPulseMode:
+						ApplyWaiting((MtrRunningState*)ppacket->State);
 					break;
 				}
 			}
@@ -142,17 +143,25 @@ namespace MotorController
 					Pulse::SetDuty((uint16_t)internal_duty);
 			}
 			
-			void ApplyWaiting(MtrWaitingState *pstate)
+			void ApplyWaiting(MtrRunningState *pstate)
 			{
 				uint8_t curr;
 				
 				curr = MeisureCurrent();
 				
 				if(curr > pstate->ThresholdValue) // entered
-				{
-					MemoryState mstate;
-					mstate.CurerntMemory = pstate->MemoryWhenEntered;
+				{			
+					KernalState kstate;		
+					MemoryState *pmstate = kstate.pdata;
+					pmstate->CurerntMemory = pstate->MemoryWhenEntered;
 					
+					if(!g_packer.IsInitialized())
+					{
+						g_packer.Init();
+						
+						g_packer.Pack(&kstate);
+						g_packer.Send(&g_myDeviceID, &pstate->DestinationID);
+					}						
 				}
 			}
 			

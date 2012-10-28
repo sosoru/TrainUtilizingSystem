@@ -20,7 +20,8 @@ MotorControllerB mtrB;
 MotorControllerC mtrC;
 MotorControllerD mtrD;
 
-PacketPacker packer_g;
+DeviceID g_myDeviceID;
+PacketPacker g_packer;
 
 void DispatchPacket(uint8_t devnum, const MtrControllerPacket *ppacket)
 {
@@ -91,6 +92,8 @@ bool ProcessKernelPacket(KernalState *pstate, DeviceID* psrcid, DeviceID* pdstid
 
 void spi_received(args_received *e)
 {	
+	g_myDeviceID = e->pdstId->raw;
+		
 	if(ProcessMtrPacket((MtrControllerPacket*)e->ppack)){}
 	else if (ProcessKernelPacket((KernalState*)e->ppack, e->psrcId, e->pdstId)){}
 	
