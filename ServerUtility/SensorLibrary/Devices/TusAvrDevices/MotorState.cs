@@ -94,6 +94,7 @@ namespace SensorLibrary.Devices.TusAvrDevices
     {
         DutySpecifiedMode = 0x01,
         CurrentFeedBackMode = 0x02,
+        WaitingPulseMode = 0x03,
     }
 
     public enum MotorDirection
