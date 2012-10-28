@@ -71,6 +71,33 @@ namespace SensorLibrary.Devices.TusAvrDevices
 
     }
 
+    public class MotorWaitingState
+        :DeviceState<MotorWaitingData>
+    {
+        public MotorWaitingState()
+        {
+            this.Data = new MotorWaitingData();
+        }
+
+        public int ThresholdCurrent
+        {
+            get { return (int)this.Data.ThresholdValue; }
+            set { this.Data.ThresholdValue = (byte)value; }
+        }
+
+        public DeviceID DestinationID
+        {
+            get { return this.Data.DestinationID; }
+            set { this.Data.DestinationID = value; }
+        }
+
+        public int MemoryWhenEntered
+        {
+            get { return (byte)this.Data.MemoryWhenEntered; }
+            set { this.Data.MemoryWhenEntered = (byte)value; }
+        }
+    }
+
     public enum MotorControlMode
         : byte
     {
