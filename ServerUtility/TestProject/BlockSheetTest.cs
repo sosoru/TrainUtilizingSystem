@@ -186,13 +186,10 @@ namespace TestProject
             var written = new Dictionary<DeviceID, IDevice<IDeviceState<IPacketDeviceData>>>();
             var serv = new Mock<PacketServer>();
 
-            serv.Setup(e => e.SendState(It.IsAny<IDevice<IDeviceState<IPacketDeviceData>>>()))
-                .Callback<IDevice<IDeviceState<IPacketDeviceData>>>(d =>
+            serv.Setup(e => e.SendPacket(It.IsAny<DevicePacket>>()))
+                .Callback<DevicePacket>(p =>
                 {
-                    if (written.ContainsKey(d.DeviceID))
-                        written[d.DeviceID] = d;
-                    else
-                        written.Add(d.DeviceID, d);
+                    //p.ExtractDeviceState().select
 
                 });
 
@@ -205,20 +202,20 @@ namespace TestProject
             };
 
             sht.Effect(cmd);
-            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 1).CurrentMemory == MotorMemoryStateEnum.NoEffect);
-            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 2).CurrentMemory == MotorMemoryStateEnum.Controlling);
-            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 3).CurrentMemory == MotorMemoryStateEnum.Waiting);
-            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 4).CurrentMemory == MotorMemoryStateEnum.NoEffect);
-            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 5).CurrentMemory == MotorMemoryStateEnum.NoEffect);
+            Assert.IsTrue(sht.GetBlock("AT1").MotorEffector.Device.CurrentMemory == MotorMemoryStateEnum.NoEffect);
+            Assert.IsTrue(sht.GetBlock("AT2").MotorEffector.Device.CurrentMemory == MotorMemoryStateEnum.Controlling);
+            Assert.IsTrue(sht.GetBlock("AT3").MotorEffector.Device.CurrentMemory == MotorMemoryStateEnum.Waiting);
+            Assert.IsTrue(sht.GetBlock("AT4").MotorEffector.Device.CurrentMemory == MotorMemoryStateEnum.NoEffect);
+            Assert.IsTrue(sht.GetBlock("AT5").MotorEffector.Device.CurrentMemory == MotorMemoryStateEnum.NoEffect);
 
             route.LockNextUnit();
             sht.Effect(cmd);
 
-            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 1).CurrentMemory == MotorMemoryStateEnum.NoEffect);
-            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 2).CurrentMemory == MotorMemoryStateEnum.NoEffect);
-            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 3).CurrentMemory == MotorMemoryStateEnum.Controlling);
-            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 4).CurrentMemory == MotorMemoryStateEnum.Waiting);
-            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 5).CurrentMemory == MotorMemoryStateEnum.NoEffect);
+            Assert.IsTrue(sht.GetBlock("AT1").MotorEffector.Device.CurrentMemory == MotorMemoryStateEnum.NoEffect);
+            Assert.IsTrue(sht.GetBlock("AT2").MotorEffector.Device.CurrentMemory == MotorMemoryStateEnum.NoEffect);
+            Assert.IsTrue(sht.GetBlock("AT3").MotorEffector.Device.CurrentMemory == MotorMemoryStateEnum.Controlling);
+            Assert.IsTrue(sht.GetBlock("AT4").MotorEffector.Device.CurrentMemory == MotorMemoryStateEnum.Waiting);
+            Assert.IsTrue(sht.GetBlock("AT5").MotorEffector.Device.CurrentMemory == MotorMemoryStateEnum.NoEffect);
 
             //Assert.IsTrue(Math.Round(written.ExtractDevice<Motor>(1, 1, 1).CurrentState.Duty, 1) == 0.5f);
             //Assert.IsTrue(Math.Round(written.ExtractDevice<Motor>(1, 1, 2).CurrentState.Duty, 1) == 0.5f);
