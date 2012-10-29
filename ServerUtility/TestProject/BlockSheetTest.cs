@@ -27,6 +27,12 @@ namespace TestProject
             return (TCast)list.First(p => p.DeviceID == id);
         }
 
+        public static TCast ExtractDevice<TCast(this IDictionary<DeviceID, IDevice<IDeviceState<IPacketDeviceData>>> list, ushort parent, byte module, byte inter)
+        {
+            var id = new DeviceID(parent, module, inter);
+            return (TCast) list[id];
+        }
+
     }
 
 
@@ -199,47 +205,21 @@ namespace TestProject
             };
 
             sht.Effect(cmd);
-
-            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 2).CurrentState.Direction == MotorDirection.Positive);
-            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 3).CurrentState.Direction == MotorDirection.Standby);
-            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 4).CurrentState.Direction == MotorDirection.Standby);
-            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 5).CurrentState.Direction == MotorDirection.Standby);
-
-            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 1).CurrentState.ControlMode == MotorControlMode.DutySpecifiedMode);
-            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 2).CurrentState.ControlMode == MotorControlMode.DutySpecifiedMode);
-            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 3).CurrentState.ControlMode == MotorControlMode.WaitingPulseMode);
-            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 4).CurrentState.ControlMode == MotorControlMode.WaitingPulseMode);
-            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 5).CurrentState.ControlMode == MotorControlMode.WaitingPulseMode);
+            written.Extra
+            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 1).CurrentMemory == MotorMemoryStateEnum.NoEffect);
+            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 2).CurrentMemory == MotorMemoryStateEnum.Controlling);
+            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 3).CurrentMemory == MotorMemoryStateEnum.Waiting);
+            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 4).CurrentMemory == MotorMemoryStateEnum.NoEffect);
+            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 5).CurrentMemory == MotorMemoryStateEnum.NoEffect);
 
             route.LockNextUnit();
             sht.Effect(cmd);
 
-            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 1).CurrentState.Direction == MotorDirection.StandBy);
-            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 2).CurrentState.Direction == MotorDirection.Standby);
-            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 3).CurrentState.Direction == MotorDirection.Positive);
-            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 4).CurrentState.Direction == MotorDirection.Standby);
-            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 5).CurrentState.Direction == MotorDirection.Standby);
-
-            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 1).CurrentState.ControlMode == MotorControlMode.DutySpecifiedMode);
-            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 2).CurrentState.ControlMode == MotorControlMode.DutySpecifiedMode);
-            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 3).CurrentState.ControlMode == MotorControlMode.DutySpecifiedMode);
-            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 4).CurrentState.ControlMode == MotorControlMode.WaitingPulseMode);
-            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 5).CurrentState.ControlMode == MotorControlMode.WaitingPulseMode);
-
-            route.ReleaseBeforeUnit();
-            sht.Effect(cmd);
-
-            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 1).CurrentState.Direction == MotorDirection.StandBy);
-            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 2).CurrentState.Direction == MotorDirection.Standby);
-            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 3).CurrentState.Direction == MotorDirection.Positive);
-            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 4).CurrentState.Direction == MotorDirection.Standby);
-            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 5).CurrentState.Direction == MotorDirection.Standby);
-
-            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 1).CurrentState.ControlMode == MotorControlMode.WaitingPulseMode);
-            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 2).CurrentState.ControlMode == MotorControlMode.DutySpecifiedMode);
-            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 3).CurrentState.ControlMode == MotorControlMode.DutySpecifiedMode);
-            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 4).CurrentState.ControlMode == MotorControlMode.WaitingPulseMode);
-            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 5).CurrentState.ControlMode == MotorControlMode.WaitingPulseMode);
+            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 1).CurrentMemory == MotorMemoryStateEnum.NoEffect);
+            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 2).CurrentMemory == MotorMemoryStateEnum.NoEffect);
+            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 3).CurrentMemory == MotorMemoryStateEnum.Controlling);
+            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 4).CurrentMemory == MotorMemoryStateEnum.Waiting);
+            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 5).CurrentMemory == MotorMemoryStateEnum.NoEffect);
 
             //Assert.IsTrue(Math.Round(written.ExtractDevice<Motor>(1, 1, 1).CurrentState.Duty, 1) == 0.5f);
             //Assert.IsTrue(Math.Round(written.ExtractDevice<Motor>(1, 1, 2).CurrentState.Duty, 1) == 0.5f);
