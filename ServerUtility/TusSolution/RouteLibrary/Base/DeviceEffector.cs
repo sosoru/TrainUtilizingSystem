@@ -160,11 +160,11 @@ namespace RouteLibrary.Base
 
             if (!locked.ContainsKey(this.ParentBlock))
             {
-                if (cmd.AnyToDefault)
-                {
-                    this.Device.CurrentState.Data = this.DefaultState.Data;
-                }
-                return;
+                //if (cmd.AnyToDefault)
+                //{
+                //    this.Device.CurrentState.Data = this.DefaultState.Data;
+                //}
+                return NoEffectState;
             }
 
             var seg = locked[this.ParentBlock];
