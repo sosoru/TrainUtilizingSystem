@@ -192,7 +192,7 @@ namespace TestProject
                     if (written.ContainsKey(d.DeviceID))
                         written[d.DeviceID] = d;
                     else
-                        written.Add(d);
+                        written.Add(d.DeviceID, d);
 
                 });
 
