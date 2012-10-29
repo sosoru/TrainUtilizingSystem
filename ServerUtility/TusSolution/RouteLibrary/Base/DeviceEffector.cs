@@ -263,7 +263,7 @@ namespace RouteLibrary.Base
             : base(info, block) { }
 
         private SwitchState default_state;
-        public override SwitchState DefaultState
+        public SwitchState DefaultState
         {
             get
             {
