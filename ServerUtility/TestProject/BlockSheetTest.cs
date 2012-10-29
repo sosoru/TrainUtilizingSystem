@@ -186,7 +186,7 @@ namespace TestProject
             var written = new Dictionary<DeviceID, IDevice<IDeviceState<IPacketDeviceData>>>();
             var serv = new Mock<PacketServer>();
 
-            serv.Setup(e => e.SendPacket(It.IsAny<DevicePacket>>()))
+            serv.Setup(e => e.SendPacket(It.IsAny<DevicePacket>()))
                 .Callback<DevicePacket>(p =>
                 {
                     //p.ExtractDeviceState().select
