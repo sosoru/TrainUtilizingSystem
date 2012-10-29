@@ -85,6 +85,10 @@ namespace SensorLibrary.Devices.TusAvrDevices
             if (this.CurrentMemory == MotorMemoryStateEnum.Unknown)
                 this.CurrentMemory = MotorMemoryStateEnum.NoEffect;
 
+            var app = this.CreateApplyingStates();
+            foreach (var p in app)
+                this.CurrentState.ReceivingServer.SendPacket(p);
+
             var pack = this.ChangeMemoryTo(this.CurrentMemory);
             foreach (var p in pack)
                 this.CurrentState.ReceivingServer.SendPacket(p);
