@@ -50,7 +50,7 @@ namespace SensorLibrary.Devices.TusAvrDevices
             return new[] { devp };
         }
 
-        public IEnumerable<DevicePacket> SendStates()
+        public IEnumerable<DevicePacket> CreateApplyingStates()
         {
             var statelist = new List<IDevice<IDeviceState<IPacketDeviceData>>>();
 
