@@ -206,11 +206,11 @@ namespace TestProject
             Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 4).CurrentState.Direction == MotorDirection.Standby);
             Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 5).CurrentState.Direction == MotorDirection.Standby);
 
-            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 1).CurrentState.;
-            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 2).CurrentState.Direction == MotorDirection.Positive);
-            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 3).CurrentState.Direction == MotorDirection.Standby);
-            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 4).CurrentState.Direction == MotorDirection.Standby);
-            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 5).CurrentState.Direction == MotorDirection.Standby);
+            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 1).CurrentState.ControlMode == MotorControlMode.DutySpecifiedMode);
+            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 2).CurrentState.ControlMode == MotorControlMode.DutySpecifiedMode);
+            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 3).CurrentState.ControlMode == MotorControlMode.WaitingPulseMode);
+            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 4).CurrentState.ControlMode == MotorControlMode.WaitingPulseMode);
+            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 5).CurrentState.ControlMode == MotorControlMode.WaitingPulseMode);
 
             route.LockNextUnit();
             sht.Effect(cmd);
@@ -221,6 +221,26 @@ namespace TestProject
             Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 4).CurrentState.Direction == MotorDirection.Standby);
             Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 5).CurrentState.Direction == MotorDirection.Standby);
 
+            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 1).CurrentState.ControlMode == MotorControlMode.DutySpecifiedMode);
+            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 2).CurrentState.ControlMode == MotorControlMode.DutySpecifiedMode);
+            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 3).CurrentState.ControlMode == MotorControlMode.DutySpecifiedMode);
+            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 4).CurrentState.ControlMode == MotorControlMode.WaitingPulseMode);
+            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 5).CurrentState.ControlMode == MotorControlMode.WaitingPulseMode);
+
+            route.ReleaseBeforeUnit();
+            sht.Effect(cmd);
+
+            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 1).CurrentState.Direction == MotorDirection.StandBy);
+            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 2).CurrentState.Direction == MotorDirection.Standby);
+            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 3).CurrentState.Direction == MotorDirection.Positive);
+            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 4).CurrentState.Direction == MotorDirection.Standby);
+            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 5).CurrentState.Direction == MotorDirection.Standby);
+
+            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 1).CurrentState.ControlMode == MotorControlMode.WaitingPulseMode);
+            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 2).CurrentState.ControlMode == MotorControlMode.DutySpecifiedMode);
+            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 3).CurrentState.ControlMode == MotorControlMode.DutySpecifiedMode);
+            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 4).CurrentState.ControlMode == MotorControlMode.WaitingPulseMode);
+            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 5).CurrentState.ControlMode == MotorControlMode.WaitingPulseMode);
 
             //Assert.IsTrue(Math.Round(written.ExtractDevice<Motor>(1, 1, 1).CurrentState.Duty, 1) == 0.5f);
             //Assert.IsTrue(Math.Round(written.ExtractDevice<Motor>(1, 1, 2).CurrentState.Duty, 1) == 0.5f);
