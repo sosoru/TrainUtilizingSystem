@@ -66,7 +66,7 @@ namespace RouteLibrary.Base
         //    ExecuteCommand();
         //}
 
-        public abstract bool IsNeededExecution { get; set;}
+        public abstract bool IsNeededExecution { get; set; }
 
         public abstract void ApplyCommand(CommandInfo cmd);
 
@@ -180,7 +180,7 @@ namespace RouteLibrary.Base
         public Block BeforeBlockHavingMotor(CommandInfo cmd)
         {
             var locked = cmd.Route.LockedBlocks.Where(s => s.HasMotor);
-            var before = locked.Reverse().SkipWhile(b =>  b == this.ParentBlock).FirstOrDefault();
+            var before = locked.Reverse().SkipWhile(b => b == this.ParentBlock).FirstOrDefault();
 
             return before;
         }
@@ -194,9 +194,9 @@ namespace RouteLibrary.Base
 
         public MotorMemoryStateEnum SelectCurrentMemory(CommandInfo cmd)
         {
-            var locked = cmd.Route.LockedBlocks.Where(s => s.HasMotor);
-            var last = locked.Count()-1;
-            var thispos = locked.ElementAt(this.ParentBlock);
+            var locked = cmd.Route.LockedBlocks.Where(s => s.HasMotor).ToArray();
+            var last = locked.Length - 1;
+            var thispos = Array.IndexOf(locked, this.ParentBlock);
 
             if (thispos == last)
                 return MotorMemoryStateEnum.Waiting;
@@ -229,7 +229,7 @@ namespace RouteLibrary.Base
                 default:
                     this.Device.StateWhenNoEffect = NoEffectState;
                     break;
-            }    
+            }
         }
 
         //protected override bool CheckAll(MotorState a, MotorState b)
