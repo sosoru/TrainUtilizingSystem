@@ -132,7 +132,7 @@ namespace RouteLibrary.Base
                 ControlMode = MotorControlMode.WaitingPulseMode,
                 MemoryWhenEntered = MotorMemoryStateEnum.Controlling,
                 DestinationID = beforemtr.DeviceID,
-                ThresholdCurrent = 0.05f,
+                ThresholdCurrent = 0.01f,
             };
 
             return state;
