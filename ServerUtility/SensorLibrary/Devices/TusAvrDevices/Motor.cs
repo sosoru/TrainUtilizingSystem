@@ -82,6 +82,11 @@ namespace SensorLibrary.Devices.TusAvrDevices
             this.DeviceKernel.Observe(observable);
         }
 
+        public override void SendState()
+        {
+            
+        }
+
         public MotorMemoryStateEnum CurrentMemory
         {
             get {
@@ -91,6 +96,12 @@ namespace SensorLibrary.Devices.TusAvrDevices
                 var memstate = (MemoryState)this.DeviceKernel.CurrentState;
 
                 return (MotorMemoryStateEnum)memstate.CurrentMemory;
+            }
+            set
+            {
+                var memstate = new MemoryState(value, false);
+
+                this.DeviceKernel.CurrentState = memstate;
             }
         }
 
