@@ -42,7 +42,7 @@ namespace SensorLibrary.Devices
         protected IDisposable Unsubscriber = null;
         protected IObservable<IDeviceState<IPacketDeviceData>> Observing = null;
 
-        public virtual TState CurrentState { get; protected set; }
+        public virtual TState CurrentState { get; set; }
         public DeviceID DeviceID { get; set; }
         public ModuleTypeEnum ModuleType { get; protected set; }
         public IEqualityComparer<TState> StateEqualityComparer { get; set; }
