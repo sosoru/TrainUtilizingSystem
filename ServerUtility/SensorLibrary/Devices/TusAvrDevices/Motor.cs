@@ -36,6 +36,18 @@ namespace SensorLibrary.Devices.TusAvrDevices
             }
         }
 
+        private Kernel deviceKernel_ = null;
+        public Kernel DeviceKernel
+        {
+            get
+            {
+                if (this.deviceKernel_ == null)
+                    this.deviceKernel_ = new Kernel() { DeviceID = this.DeviceID };
+
+                return this.deviceKernel_;
+            }
+        }
+
         public IEnumerable<DevicePacket> ChangeMemoryTo(MotorMemoryStateEnum mem)
         {
             var mem = new MemoryState(mem, false);
@@ -61,6 +73,13 @@ namespace SensorLibrary.Devices.TusAvrDevices
 
             return DevicePacket.CreatePackedPacket(statelist);
             
+        }
+
+        public override void Observe(IObservable<IDeviceState<IPacketDeviceData>> observable)
+        {
+            base.Observe(observable);
+
+            this.DeviceKernel.Observe(observable);
         }
 
         public MotorState StateWhenNoEffect
