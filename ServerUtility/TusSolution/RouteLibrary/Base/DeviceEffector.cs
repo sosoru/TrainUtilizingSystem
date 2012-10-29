@@ -91,23 +91,11 @@ namespace RouteLibrary.Base
         public MotorEffector(MotorInfo info, Block block)
             : base(info, block)
         {
-        }
+            this.Device.StateWhenNoEffect = NoEffectState;
+            this.Device.StateWhenControlling = NoEffectState;
+            this.Device.StateWhenWaiting = NoEffectState;
 
-        private MotorState default_state;
-        public MotorState DefaultState
-        {
-            get
-            {
-                var state = new MotorState()
-                {
-                    ReceivingServer = this.ParentBlock.Sheet.Server,
-                    Direction = MotorDirection.Standby,
-                    Duty = 0,
-                    ControlMode = MotorControlMode.DutySpecifiedMode,
-                };
-                //state.FlushDataState();
-                return state;
-            }
+            this.IsNeededExecution = true;
         }
 
         public MotorState NoEffectState
