@@ -109,12 +109,69 @@ namespace RouteLibrary.Base
             }
         }
 
+        public MotorState NoEffectState
+        {
+            get
+            {
+                var state = new MotorState()
+                {
+                    ReceivingServer = this.ParentBlock.Sheet.Server,
+                    Direction = MotorDirection.Standby,
+                    Duty = 0,
+                    ControlMode = MotorControlMode.DutySpecifiedMode,
+                };
+                return state;
+            }
+        }
+
+        public MotorState CreateWaitingState(Motor beforemtr)
+        {
+            var state = new MotorState()
+            {
+                ReceivingServer = this.ParentBlock.Sheet.Server,
+                ControlMode = MotorControlMode.WaitingPulseMode,
+                MemoryWhenEntered = MotorMemoryStateEnum.Controlling,
+                DestinationID = beforemtr.DeviceID,
+                ThresholdCurrent = 0.05,
+            };
+
+            return state;
+        }
+
+
+        public void ApplyingStateFirstly()
+        {
+            
+        }
+
         public MotorMemoryStateEnum SelectCurrentMemory(CommandInfo cmd)
         {
             var locked = cmd.Route.LockedBlocks.Where(s => s.HasMotor);
-            var next = locked.SkipWhile(thi
-            
+            var next = locked.SkipWhile(s => s == this.ParentBlock).FirstOrDefault();
 
+            if (next != null)
+            {
+                var nextmtr = next.Effectors
+                                .Where(e => e is MotorEffector)
+                                .Cast<MotorEffector>().First();
+                if (nextmtr.Device.CurrentMemory == MotorMemoryStateEnum.Waiting)
+                {
+                    return MotorMemoryStateEnum.Controlling;
+                }
+                else if (nextmtr.Device.CurrentMemory == MotorMemoryStateEnum.Controlling)
+                {
+                    return MotorMemoryStateEnum.NoEffect;
+                }
+                else
+                {
+                    return MotorMemoryStateEnum.Unknown;
+                }
+            }
+            else
+            {
+                // this block is the end of locked blocks
+                return MotorMemoryStateEnum.Waiting;
+            }
         }
 
         public override void ApplyCommand(CommandInfo cmd)
@@ -134,7 +191,6 @@ namespace RouteLibrary.Base
             }
 
             var seg = locked[this.ParentBlock];
-            var next = locked.SkipWhile(s => s == this.ParentBlock).FirstOrDefault() ;
 
             if ((seg.IsFromAny || seg.From.Name == this.Info.RoutePositive.From.Name)
                     && (seg.IsToAny || seg.To.Name == this.Info.RoutePositive.To.Name))
