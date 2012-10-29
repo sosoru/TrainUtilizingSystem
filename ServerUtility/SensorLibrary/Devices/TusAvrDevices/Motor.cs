@@ -82,6 +82,18 @@ namespace SensorLibrary.Devices.TusAvrDevices
             this.DeviceKernel.Observe(observable);
         }
 
+        public MotorMemoryStateEnum CurrentMemory
+        {
+            get {
+                if (!this.DeviceKernel.CurrentState is MemoryState)
+                    return MotorMemoryStateEnum.Unknown;
+
+                var memstate = (MemoryState)this.DeviceKernel.CurrentState;
+
+                return (MotorMemoryStateEnum)memstate.CurrentMemory;
+            }
+        }
+
         public MotorState StateWhenNoEffect
         {
             get;
@@ -108,5 +120,6 @@ namespace SensorLibrary.Devices.TusAvrDevices
         NoEffect = 0x01,
         Controlling = 0x02,
         Waiting = 0x03,
+        Unknown = 0x00,
     }
 }
