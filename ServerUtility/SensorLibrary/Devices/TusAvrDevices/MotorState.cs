@@ -90,10 +90,16 @@ namespace SensorLibrary.Devices.TusAvrDevices
             set { this.Data.DestinationID = value; }
         }
 
-        public int MemoryWhenEntered
+        public MotorMemoryStateEnum MemoryWhenEntered
         {
-            get { return (byte)this.Data.MemoryWhenEntered; }
+            get { return (MotorMemoryStateEnum)this.Data.MemoryWhenEntered; }
             set { this.Data.MemoryWhenEntered = (byte)value; }
+        }
+
+        public MotorMemoryStateEnum DestinationMemory
+        {
+            get { return (MotorMemoryStateEnum)this.Data.DestinationMemory; }
+            set { this.Data.DestinationMemory = (byte)value; }
         }
  
     }
