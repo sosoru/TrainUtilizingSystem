@@ -200,7 +200,6 @@ namespace TestProject
 
             sht.Effect(cmd);
 
-            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 1).CurrentState.Direction == MotorDirection.StandBy);
             Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 2).CurrentState.Direction == MotorDirection.Positive);
             Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 3).CurrentState.Direction == MotorDirection.Standby);
             Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 4).CurrentState.Direction == MotorDirection.Standby);
