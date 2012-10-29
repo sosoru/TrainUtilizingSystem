@@ -73,14 +73,14 @@ namespace SensorLibrary.Devices.TusAvrDevices
         {
             get
             {
-                return (float)this.Data.ThresholdCurrent / 255.0f * 5.0f;
+                return (float)this.Data.ThresholdValue / 255.0f * 5.0f;
             }
             set
             {
                 if (value < 0.0f || value > 5.0f)
                     throw new ArgumentOutOfRangeException("Current value must be in [0, 5]");
 
-                this.Data.ThresholdCurrent = (byte)Math.Round(value / 5.0f * 255.0f);
+                this.Data.ThresholdValue = (byte)Math.Round(value / 5.0f * 255.0f);
             }
         }
 
