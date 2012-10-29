@@ -93,7 +93,7 @@ namespace RouteLibrary.Base
         }
 
         private MotorState default_state;
-        public override MotorState DefaultState
+        public MotorState DefaultState
         {
             get
             {
