@@ -194,30 +194,16 @@ namespace RouteLibrary.Base
 
         public MotorMemoryStateEnum SelectCurrentMemory(CommandInfo cmd)
         {
-            var next = NextBlockHavingMotor(cmd);
+            var locked = cmd.Route.LockedBlocks.Where(s => s.HasMotor);
+            var last = locked.Count()-1;
+            var thispos = locked.ElementAt(this.ParentBlock);
 
-            if (next != null)
-            {
-                var nextmtr = next.MotorEffector;
-
-                if (nextmtr.Device.CurrentMemory == MotorMemoryStateEnum.Waiting)
-                {
-                    return MotorMemoryStateEnum.Controlling;
-                }
-                else if (nextmtr.Device.CurrentMemory == MotorMemoryStateEnum.Controlling)
-                {
-                    return MotorMemoryStateEnum.NoEffect;
-                }
-                else
-                {
-                    return MotorMemoryStateEnum.Unknown;
-                }
-            }
-            else
-            {
-                // this block is the end of locked blocks
+            if (thispos == last)
                 return MotorMemoryStateEnum.Waiting;
-            }
+            else if (thispos == last - 1)
+                return MotorMemoryStateEnum.Controlling;
+            else
+                return MotorMemoryStateEnum.NoEffect;
         }
 
         private MotorMemoryStateEnum _before_mode = MotorMemoryStateEnum.Unknown;
