@@ -50,7 +50,7 @@ namespace SensorLibrary.Devices.TusAvrDevices
 
         public IEnumerable<DevicePacket> ChangeMemoryTo(MotorMemoryStateEnum mem)
         {
-            var kernel = Kernel.MemoryState(this.DeviceID, mem);
+            var kernel = Kernel.MemoryState(this.DeviceID, new MemoryState((int)mem, false));
             var devp = DevicePacket.CreatePackedPacket(kernel);
 
             return new[] { devp };
