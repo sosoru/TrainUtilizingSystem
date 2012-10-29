@@ -248,7 +248,7 @@ namespace RouteLibrary.Base
                     this.Device.StateWhenControlling = CreateMotorState(cmd);
                     break;
                 case MotorMemoryStateEnum.Waiting:
-                    var before = BeforeBlockHavingMotor(cmd).MotorEffector;
+                    var before = BeforeBlockHavingMotor(cmd).MotorEffector.Device;
                     this.Device.StateWhenWaiting = CreateWaitingState(before);
                     break;
                 case MotorMemoryStateEnum.NoEffect:
