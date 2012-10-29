@@ -230,6 +230,8 @@ namespace RouteLibrary.Base
                     this.Device.StateWhenNoEffect = NoEffectState;
                     break;
             }
+
+            this.Device.CurrentMemory = mode;
         }
 
         //protected override bool CheckAll(MotorState a, MotorState b)
