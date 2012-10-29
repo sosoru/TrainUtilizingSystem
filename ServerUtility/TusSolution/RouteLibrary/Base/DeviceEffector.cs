@@ -69,7 +69,7 @@ namespace RouteLibrary.Base
 
         public abstract void ApplyCommand(CommandInfo cmd);
 
-        //public TState BeforeState { get; private set; }
+        public TState BeforeState { get; private set; }
         //public abstract TState DefaultState { get; }
 
         protected bool CheckBefore(Func<TState, object> f)
