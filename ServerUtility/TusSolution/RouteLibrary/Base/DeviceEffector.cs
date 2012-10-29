@@ -52,10 +52,10 @@ namespace RouteLibrary.Base
                 this.Device.SendState();
                 this.before_send = DateTime.Now;
 
-                this.BeforeState = new TState()
-                                       {
-                                           //BasePacket = this.Device.CurrentState.BasePacket,
-                                       };
+                //this.BeforeState = new TState()
+                //                       {
+                //                           //BasePacket = this.Device.CurrentState.BasePacket,
+                //                       };
             }
         }
 
