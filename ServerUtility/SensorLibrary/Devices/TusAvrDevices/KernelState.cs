@@ -53,6 +53,12 @@ namespace SensorLibrary.Devices.TusAvrDevices
             get { return this.Data.Content[1]; }
             set { this.Data.Content[1] = value; }
         }
+
+        public byte ReturnBeforeMemory
+        {
+            get { return this.Data.Content[2]; }
+            set { this.Data.Content[2] = value; }
+        }
     }
         
 }
