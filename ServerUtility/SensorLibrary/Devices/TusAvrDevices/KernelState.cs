@@ -63,9 +63,9 @@ namespace SensorLibrary.Devices.TusAvrDevices
 
         public bool ReturnBeforeMemory
         {
-            get { return (bool)this.Data.Content[2]; }
-            set { this.Data.Content[2] = (bool)value; }
+            get { return bool.Parse(this.Data.Content[2]); }
+            set { this.Data.Content[2] = byte.Parse(value); }
         }
     }
-        
+
 }
