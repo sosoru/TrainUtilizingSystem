@@ -84,7 +84,12 @@ namespace SensorLibrary.Devices.TusAvrDevices
 
         public override void SendState()
         {
-            
+            if (this.CurrentMemory == MotorMemoryStateEnum.Unknown)
+                this.CurrentMemory = MotorMemoryStateEnum.NoEffect;
+
+            var pack = this.ChangeMemoryTo(this.CurrentMemory);
+            foreach (var p in pack)
+                this.CurrentState.ReceivingServer.SendPacket(p);
         }
 
         public MotorMemoryStateEnum CurrentMemory
