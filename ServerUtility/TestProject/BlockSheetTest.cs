@@ -27,7 +27,7 @@ namespace TestProject
             return (TCast)list.First(p => p.DeviceID == id);
         }
 
-        public static TCast ExtractDevice<TCast(this IDictionary<DeviceID, IDevice<IDeviceState<IPacketDeviceData>>> list, ushort parent, byte module, byte inter)
+        public static TCast ExtractDevice<TCast>(this IDictionary<DeviceID, IDevice<IDeviceState<IPacketDeviceData>>> list, ushort parent, byte module, byte inter)
         {
             var id = new DeviceID(parent, module, inter);
             return (TCast) list[id];
