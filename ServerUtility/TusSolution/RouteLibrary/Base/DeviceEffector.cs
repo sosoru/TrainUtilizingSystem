@@ -13,7 +13,6 @@ namespace RouteLibrary.Base
     {
         void ExecuteCommand();
         void ApplyCommand(CommandInfo cmd);
-        void ExecuteDefaultCommand();
     }
 
     public abstract class DeviceEffector<TDev, TInfo, TState>
