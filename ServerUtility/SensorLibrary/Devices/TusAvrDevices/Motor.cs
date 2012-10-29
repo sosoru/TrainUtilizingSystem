@@ -67,7 +67,7 @@ namespace SensorLibrary.Devices.TusAvrDevices
             statelist.Add(new Motor(this, this.StateWhenControlling));
 
             statelist.Add(Kernel.MemoryState(this.DeviceID, new MemoryState((int)MotorMemoryStateEnum.Waiting, true)));
-            statelist.Add(new Motor(this, this.StateWhenNoEffect));
+            statelist.Add(new Motor(this, this.StateWhenWaiting));
 
             return DevicePacket.CreatePackedPacket(statelist);
             
