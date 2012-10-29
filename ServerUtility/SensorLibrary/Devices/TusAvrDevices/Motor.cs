@@ -93,7 +93,7 @@ namespace SensorLibrary.Devices.TusAvrDevices
         public MotorMemoryStateEnum CurrentMemory
         {
             get {
-                if (!this.DeviceKernel.CurrentState is MemoryState)
+                if (!(this.DeviceKernel.CurrentState is MemoryState))
                     return MotorMemoryStateEnum.Unknown;
 
                 var memstate = (MemoryState)this.DeviceKernel.CurrentState;
@@ -102,7 +102,7 @@ namespace SensorLibrary.Devices.TusAvrDevices
             }
             set
             {
-                var memstate = new MemoryState(value, false);
+                var memstate = new MemoryState((int)value, false);
 
                 this.DeviceKernel.CurrentState = memstate;
             }
