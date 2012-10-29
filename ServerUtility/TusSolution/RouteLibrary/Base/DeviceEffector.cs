@@ -259,10 +259,10 @@ namespace RouteLibrary.Base
             }    
         }
 
-        protected override bool CheckAll(MotorState a, MotorState b)
-        {
-            return false; //return a.Data.Direction == b.Data.Direction && a.Data.Duty == b.Data.Duty;
-        }
+        //protected override bool CheckAll(MotorState a, MotorState b)
+        //{
+        //    return false; //return a.Data.Direction == b.Data.Direction && a.Data.Duty == b.Data.Duty;
+        //}
     }
 
     public class SwitchEffector
@@ -327,10 +327,10 @@ namespace RouteLibrary.Base
             _before_position = this.Device.CurrentState.Position;
         }
 
-        protected override bool CheckAll(SwitchState a, SwitchState b)
-        {
-            return a.Data.Position == b.Data.Position;
-        }
+        //protected override bool CheckAll(SwitchState a, SwitchState b)
+        //{
+        //    return a.Data.Position == b.Data.Position;
+        //}
     }
 
 }
