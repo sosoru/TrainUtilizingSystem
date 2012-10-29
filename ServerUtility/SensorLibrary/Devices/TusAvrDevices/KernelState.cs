@@ -42,6 +42,13 @@ namespace SensorLibrary.Devices.TusAvrDevices
             this.Command = KernelCommand.MemoryState;
         }
 
+        public MemoryState(int mem, bool ret)
+            : this()
+        {
+            this.CurrentMemory = (byte)mem;
+            this.ReturnBeforeMemory = ret;
+        }
+
         public byte CurrentMemory
         {
             get { return this.Data.Content[0]; }
@@ -54,10 +61,10 @@ namespace SensorLibrary.Devices.TusAvrDevices
             set { this.Data.Content[1] = value; }
         }
 
-        public byte ReturnBeforeMemory
+        public bool ReturnBeforeMemory
         {
-            get { return this.Data.Content[2]; }
-            set { this.Data.Content[2] = value; }
+            get { return (bool)this.Data.Content[2]; }
+            set { this.Data.Content[2] = (bool)value; }
         }
     }
         
