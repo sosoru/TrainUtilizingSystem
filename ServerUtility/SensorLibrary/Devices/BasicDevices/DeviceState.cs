@@ -37,7 +37,7 @@ namespace SensorLibrary.Devices
         //        this._deviceStateCache = default(T);
         //    }
         //}
-        public PacketServer ReceivingServer { get; set; }
+        public virtual PacketServer ReceivingServer { get; set; }
 
         public DeviceState()
         {
