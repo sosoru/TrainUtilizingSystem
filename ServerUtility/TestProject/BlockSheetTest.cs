@@ -191,7 +191,7 @@ namespace TestProject
                 });
 
             var sht = new BlockSheet(sample_loop_sheet, serv.Object);
-            var route = new Route(sht, new[] { "AT1", "AT2", "AT3", });
+            var route = new Route(sht, new[] { "AT1", "AT2", "AT3", "AT4", "AT5" });
             var cmd = new CommandInfo()
             {
                 Route = route,
@@ -200,31 +200,41 @@ namespace TestProject
 
             sht.Effect(cmd);
 
-            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 1).CurrentState.Direction == MotorDirection.Positive);
+            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 1).CurrentState.Direction == MotorDirection.StandBy);
             Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 2).CurrentState.Direction == MotorDirection.Positive);
+            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 3).CurrentState.Direction == MotorDirection.StandBy);
+            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 4).CurrentState.Direction == MotorDirection.Standby);
+            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 5).CurrentState.Direction == MotorDirection.Standby);
+
+            route.LockNextUnit();
+            sht.Effect(cmd);
+
+            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 1).CurrentState.Direction == MotorDirection.StandBy);
+            Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 2).CurrentState.Direction == MotorDirection.Standby);
             Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 3).CurrentState.Direction == MotorDirection.Positive);
             Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 4).CurrentState.Direction == MotorDirection.Standby);
             Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 5).CurrentState.Direction == MotorDirection.Standby);
 
-            Assert.IsTrue(Math.Round(written.ExtractDevice<Motor>(1, 1, 1).CurrentState.Duty, 1) == 0.5f);
-            Assert.IsTrue(Math.Round(written.ExtractDevice<Motor>(1, 1, 2).CurrentState.Duty, 1) == 0.5f);
-            Assert.IsTrue(Math.Round(written.ExtractDevice<Motor>(1, 1, 3).CurrentState.Duty, 1) == 0.5f);
-            Assert.IsTrue(Math.Round(written.ExtractDevice<Motor>(1, 1, 4).CurrentState.Duty, 1) == 0.0f);
-            Assert.IsTrue(Math.Round(written.ExtractDevice<Motor>(1, 1, 5).CurrentState.Duty, 1) == 0.0f);
 
-            written.Clear();
-            var existblock = sht.GetBlock("AT4");
-            var detectormock = new Mock<SensorDetector>();
-            detectormock.Setup(d => d.IsDetected).Returns(true);
-            existblock.Detector = detectormock.Object;
+            //Assert.IsTrue(Math.Round(written.ExtractDevice<Motor>(1, 1, 1).CurrentState.Duty, 1) == 0.5f);
+            //Assert.IsTrue(Math.Round(written.ExtractDevice<Motor>(1, 1, 2).CurrentState.Duty, 1) == 0.5f);
+            //Assert.IsTrue(Math.Round(written.ExtractDevice<Motor>(1, 1, 3).CurrentState.Duty, 1) == 0.0f);
+            //Assert.IsTrue(Math.Round(written.ExtractDevice<Motor>(1, 1, 4).CurrentState.Duty, 1) == 0.0f);
+            //Assert.IsTrue(Math.Round(written.ExtractDevice<Motor>(1, 1, 5).CurrentState.Duty, 1) == 0.0f);
 
-            sht.Effect(cmd);
+            //written.Clear();
+            //var existblock = sht.GetBlock("AT4");
+            //var detectormock = new Mock<SensorDetector>();
+            //detectormock.Setup(d => d.IsDetected).Returns(true);
+            //existblock.Detector = detectormock.Object;
 
-            Assert.IsTrue(Math.Round(written.ExtractDevice<Motor>(1, 1, 1).CurrentState.Duty, 1) == 0.3f);
-            Assert.IsTrue(Math.Round(written.ExtractDevice<Motor>(1, 1, 2).CurrentState.Duty, 1) == 0.0f);
-            Assert.IsTrue(Math.Round(written.ExtractDevice<Motor>(1, 1, 3).CurrentState.Duty, 1) == 0.5f);
-            Assert.IsTrue(Math.Round(written.ExtractDevice<Motor>(1, 1, 4).CurrentState.Duty, 1) == 0.5f);
-            Assert.IsTrue(Math.Round(written.ExtractDevice<Motor>(1, 1, 5).CurrentState.Duty, 1) == 0.0f);
+            //sht.Effect(cmd);
+
+            //Assert.IsTrue(Math.Round(written.ExtractDevice<Motor>(1, 1, 1).CurrentState.Duty, 1) == 0.3f);
+            //Assert.IsTrue(Math.Round(written.ExtractDevice<Motor>(1, 1, 2).CurrentState.Duty, 1) == 0.0f);
+            //Assert.IsTrue(Math.Round(written.ExtractDevice<Motor>(1, 1, 3).CurrentState.Duty, 1) == 0.5f);
+            //Assert.IsTrue(Math.Round(written.ExtractDevice<Motor>(1, 1, 4).CurrentState.Duty, 1) == 0.5f);
+            //Assert.IsTrue(Math.Round(written.ExtractDevice<Motor>(1, 1, 5).CurrentState.Duty, 1) == 0.0f);
 
         }
 
