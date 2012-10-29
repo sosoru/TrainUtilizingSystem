@@ -64,7 +64,7 @@ namespace SensorLibrary.Devices.TusAvrDevices
         public bool ReturnBeforeMemory
         {
             get { return this.Data.Content[2] != 0; }
-            set { this.Data.Content[2] = byte.Parse(value.ToString()); }
+            set { this.Data.Content[2] = Convert.ToByte(value); }
         }
     }
 
