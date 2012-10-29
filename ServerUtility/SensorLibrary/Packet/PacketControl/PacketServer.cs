@@ -84,7 +84,8 @@ namespace SensorLibrary.Packet.Control
                 //                                               || (p.ModuleType == ModuleTypeEnum.AvrSensor
                 //                                                   && p.ID.ModuleAddr == pack.ID.ModuleAddr))))
                 //{
-                this.SendPacket(DevicePacket.CreatePackedPacket(dev));
+                foreach(var p in DevicePacket.CreatePackedPacket(dev))
+                    this.SendPacket(p);
                 //}
             }
             catch (ArgumentException)
