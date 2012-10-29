@@ -60,13 +60,13 @@ namespace SensorLibrary.Devices.TusAvrDevices
         {
             var statelist = new List<IDevice<IDeviceState<IPacketDeviceData>>>();
 
-            statelist.Add(Kernel.MemoryState(this.DeviceID, new MemoryState(MotorMemoryStateEnum.NoEffect, true)));
+            statelist.Add(Kernel.MemoryState(this.DeviceID, new MemoryState((int)MotorMemoryStateEnum.NoEffect, true)));
             statelist.Add(new Motor(this, this.StateWhenNoEffect));
 
-            statelist.Add(Kernel.MemoryState(this.DeviceID, new MemoryState(MotorMemoryStateEnum.Controlling, true)));
+            statelist.Add(Kernel.MemoryState(this.DeviceID, new MemoryState((int)MotorMemoryStateEnum.Controlling, true)));
             statelist.Add(new Motor(this, this.StateWhenControlling));
 
-            statelist.Add(Kernel.MemoryState(this.DeviceID, new MemoryState(MotorMemoryStateEnum.Waiting, true)));
+            statelist.Add(Kernel.MemoryState(this.DeviceID, new MemoryState((int)MotorMemoryStateEnum.Waiting, true)));
             statelist.Add(new Motor(this, this.StateWhenNoEffect));
 
             return DevicePacket.CreatePackedPacket(statelist);
