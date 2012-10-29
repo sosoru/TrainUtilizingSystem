@@ -32,7 +32,7 @@ namespace SensorLibrary.Devices.TusAvrDevices
         {
             get
             {
-                return this.CurrentState.Current > this.CurrentState.ThresholdValue;
+                return this.CurrentState.Current > this.CurrentState.ThresholdCurrent;
             }
         }
 
@@ -50,8 +50,6 @@ namespace SensorLibrary.Devices.TusAvrDevices
 
         public IEnumerable<DevicePacket> ChangeMemoryTo(MotorMemoryStateEnum mem)
         {
-            var mem = new MemoryState(mem, false);
-
             var kernel = Kernel.MemoryState(this.DeviceID, mem);
             var devp = DevicePacket.CreatePackedPacket(kernel);
 
@@ -62,7 +60,7 @@ namespace SensorLibrary.Devices.TusAvrDevices
         {
             var statelist = new List<IDevice<IDeviceState<IPacketDeviceData>>>();
 
-            statelist.Add(Kernel.MemoryState(this.DeviceID, new MemoryState(MotorMemoryStateEnum.NoEffect, true));
+            statelist.Add(Kernel.MemoryState(this.DeviceID, new MemoryState(MotorMemoryStateEnum.NoEffect, true)));
             statelist.Add(new Motor(this, this.StateWhenNoEffect));
 
             statelist.Add(Kernel.MemoryState(this.DeviceID, new MemoryState(MotorMemoryStateEnum.Controlling, true)));
