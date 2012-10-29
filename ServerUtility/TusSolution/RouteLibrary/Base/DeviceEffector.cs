@@ -44,9 +44,9 @@ namespace RouteLibrary.Base
         private DateTime before_send;
         public void ExecuteCommand()
         {
-            if ((DateTime.Now - before_send).Seconds > 5 ||
-                (this.BeforeState == null
-                || !CheckAll(this.BeforeState, this.Device.CurrentState as TState)))
+            //if ((DateTime.Now - before_send).Seconds > 5 ||
+            //    (this.BeforeState == null
+            //    || !CheckAll(this.BeforeState, this.Device.CurrentState as TState)))
             {
                 this.Device.CurrentState.ReceivingServer = ParentBlock.Sheet.Server;
                 this.Device.SendState();
@@ -67,21 +67,27 @@ namespace RouteLibrary.Base
             ExecuteCommand();
         }
 
+        public virtual bool IsNeededExecution
+        {
+            get { return true; }
+
+        }
+
         public abstract void ApplyCommand(CommandInfo cmd);
 
-        public TState BeforeState { get; private set; }
+        //public TState BeforeState { get; private set; }
         //public abstract TState DefaultState { get; }
 
-        protected bool CheckBefore(Func<TState, object> f)
-        {
-            return this.BeforeState == null
-                || f(this.BeforeState).Equals(f((TState)this.Device.CurrentState));
-        }
+        //protected bool CheckBefore(Func<TState, object> f)
+        //{
+        //    return this.BeforeState == null
+        //        || f(this.BeforeState).Equals(f((TState)this.Device.CurrentState));
+        //}
 
-        protected virtual bool CheckAll(TState a, TState b)
-        {
-            return false;
-        }
+        //protected virtual bool CheckAll(TState a, TState b)
+        //{
+        //    return false;
+        //}
     }
 
     public class MotorEffector
@@ -181,10 +187,11 @@ namespace RouteLibrary.Base
 
             return CreateMotorState(dir, duty);
         }
-        
-        public void ApplyingStateFirstly()
+
+        public override bool IsNeededExecution
         {
-            this.Device.StateWhenNoEffect = this.NoEffectState;
+            get;
+            set;
         }
 
         public Block BeforeBlockHavingMotor(CommandInfo cmd)
@@ -230,9 +237,15 @@ namespace RouteLibrary.Base
             }
         }
 
+        private MotorMemoryStateEnum _before_mode = MotorMemoryStateEnum.Unknown;
         public override void ApplyCommand(CommandInfo cmd)
         {
             var mode = SelectCurrentMemory(cmd);
+
+            if (mode != _before_mode)
+                this.IsNeededExecution = true;
+
+            _before_mode = mode;
 
             switch (mode)
             {
@@ -248,7 +261,7 @@ namespace RouteLibrary.Base
                     this.Device.StateWhenNoEffect = NoEffectState;
                     break;
             }    
-       }
+        }
 
         protected override bool CheckAll(MotorState a, MotorState b)
         {
@@ -278,6 +291,13 @@ namespace RouteLibrary.Base
             }
         }
 
+        public override bool IsNeededExecution
+        {
+            get;
+            set;
+        }
+
+        private PointStateEnum _before_position = PointStateEnum.Any;
         public override void ApplyCommand(CommandInfo cmd)
         {
             //if (this.CheckBefore(s => s.Position))
@@ -304,7 +324,13 @@ namespace RouteLibrary.Base
                 this.Device.CurrentState.Position = PointStateEnum.Any;
             }
             //}
+
+            if (_before_position != this.Device.CurrentState.Position)
+                this.IsNeededExecution = true;
+
+            _before_position = this.Device.CurrentState.Position;
         }
+
         protected override bool CheckAll(SwitchState a, SwitchState b)
         {
             return a.Data.Position == b.Data.Position;
