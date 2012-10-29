@@ -85,6 +85,16 @@ namespace RouteLibrary.Base
 
         }
 
+        public MotorEffector MotorEffector
+        {
+            get
+            {
+                return this.Effectors.Where(e => e is MotorEffector)
+                    .Cast<MotorEffector>()
+                    .First();
+            }
+        }
+
         public IEnumerable<IDeviceEffector> Effect(IEnumerable<CommandInfo> infos)
         {
             var list_infos = infos.Select(info =>
