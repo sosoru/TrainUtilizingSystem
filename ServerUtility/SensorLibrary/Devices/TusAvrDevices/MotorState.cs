@@ -69,7 +69,7 @@ namespace SensorLibrary.Devices.TusAvrDevices
             }
         }
 
-        public int ThresholdCurrent
+        public float ThresholdCurrent
         {
             get
             {
