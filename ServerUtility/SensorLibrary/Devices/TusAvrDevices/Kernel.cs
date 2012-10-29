@@ -42,12 +42,12 @@ namespace SensorLibrary.Devices.TusAvrDevices
             return k;
         }
 
-        public static Kernel MemoryState(DeviceID dev)
+        public static Kernel MemoryState(DeviceID dev, MemoryState mem)
         {
             var k = new Kernel();
 
             k.DeviceID = dev;
-            k.CurrentState = new MemoryState();
+            k.CurrentState = mem;
 
             return k;
         }
