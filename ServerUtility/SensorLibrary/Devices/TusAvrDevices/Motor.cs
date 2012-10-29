@@ -53,7 +53,7 @@ namespace SensorLibrary.Devices.TusAvrDevices
             var kernel = Kernel.MemoryState(this.DeviceID, new MemoryState((int)mem, false));
             var devp = DevicePacket.CreatePackedPacket(kernel);
 
-            return new[] { devp };
+            return devp ;
         }
 
         public IEnumerable<DevicePacket> CreateApplyingStates()
