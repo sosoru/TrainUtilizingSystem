@@ -154,8 +154,8 @@ namespace RouteLibrary.Base
 
         public MotorState CreateMotorState(CommandInfo cmd)
         {
-            MotorDirection dir;
-            float duty;
+            MotorDirection dir = MotorDirection.Standby;
+            float duty = 0f;
             var locked = cmd.Route.LockedSegments;
 
             if (!locked.ContainsKey(this.ParentBlock))
