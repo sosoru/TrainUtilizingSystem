@@ -67,13 +67,15 @@ namespace SensorLibrary.Packet.Control
             this.actionList.Remove(act);
         }
 
+        public virtual void SendPacket(DevicePacket packet)
+        {
+            this.sending_queue.Enqueue(packet);
+        }
+
         public virtual void SendState(IDevice<IDeviceState<IPacketDeviceData>> dev)
         {
             //todo : thread control (reading and writing on the same thread)
             //lock (lockStream)
-            var pack = new DevicePacket();
-            pack.CopyToData(dev.CurrentState.Data);
-            pack.ID = dev.DeviceID;
 
             try
             {
@@ -82,7 +84,7 @@ namespace SensorLibrary.Packet.Control
                 //                                               || (p.ModuleType == ModuleTypeEnum.AvrSensor
                 //                                                   && p.ID.ModuleAddr == pack.ID.ModuleAddr))))
                 //{
-                this.sending_queue.Enqueue(pack);
+                this.SendPacket(DevicePacket.CreatePackedPacket(dev));
                 //}
             }
             catch (ArgumentException)
