@@ -69,8 +69,8 @@ namespace RouteLibrary.Base
 
         public abstract void ApplyCommand(CommandInfo cmd);
 
-        public TState BeforeState { get; private set; }
-        public abstract TState DefaultState { get; }
+        //public TState BeforeState { get; private set; }
+        //public abstract TState DefaultState { get; }
 
         protected bool CheckBefore(Func<TState, object> f)
         {
@@ -109,6 +109,14 @@ namespace RouteLibrary.Base
             }
         }
 
+        public MotorMemoryStateEnum SelectCurrentMemory(CommandInfo cmd)
+        {
+            var locked = cmd.Route.LockedBlocks.Where(s => s.HasMotor);
+            var next = locked.SkipWhile(thi
+            
+
+        }
+
         public override void ApplyCommand(CommandInfo cmd)
         {
             //if (this.CheckBefore(s => s.Direction))
@@ -121,12 +129,12 @@ namespace RouteLibrary.Base
                 {
                     this.Device.CurrentState.Data = this.DefaultState.Data;
                     //this.Device.CurrentState.FlushDataState();
-
                 }
                 return;
             }
 
             var seg = locked[this.ParentBlock];
+            var next = locked.SkipWhile(s => s == this.ParentBlock).FirstOrDefault() ;
 
             if ((seg.IsFromAny || seg.From.Name == this.Info.RoutePositive.From.Name)
                     && (seg.IsToAny || seg.To.Name == this.Info.RoutePositive.To.Name))
