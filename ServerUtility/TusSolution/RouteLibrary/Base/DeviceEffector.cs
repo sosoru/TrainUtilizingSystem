@@ -138,22 +138,77 @@ namespace RouteLibrary.Base
             return state;
         }
 
+        public MotorState CreateMotorState(MotorDirection dir, float duty)
+        {
+            var state = new MotorState()
+            {
+                ReceivingServer = this.ParentBlock.Sheet.Server,
+                ControlMode = MotorControlMode.DutySpecifiedMode,
+                Duty = duty,
+                Direction = dir,
+            };
 
+            return state;
+        }
+
+        public MotorState CreateMotorState(CommandInfo info)
+        {
+            MotorDirection dir, float duty;
+            var locked = cmd.Route.LockedSegments;
+
+            if (!locked.ContainsKey(this.ParentBlock))
+            {
+                if (cmd.AnyToDefault)
+                {
+                    this.Device.CurrentState.Data = this.DefaultState.Data;
+                }
+                return;
+            }
+
+            var seg = locked[this.ParentBlock];
+            if ((seg.IsFromAny || seg.From.Name == this.Info.RoutePositive.From.Name)
+                    && (seg.IsToAny || seg.To.Name == this.Info.RoutePositive.To.Name))
+            {
+                dir = MotorDirection.Positive;
+            }
+            else if ((seg.IsFromAny || seg.From.Name == this.Info.RouteNegative.From.Name)
+                        && (seg.IsToAny || seg.To.Name == this.Info.RouteNegative.To.Name))
+            {
+                dir = MotorDirection.Negative;
+            }
+            duty = cmd.Speed;
+
+            return CreateMotorState(dir, duty);
+        }
+        
         public void ApplyingStateFirstly()
         {
-            
+            this.Device.StateWhenNoEffect = this.NoEffectState;
+        }
+
+        public Block BeforeBlockHavingMotor(CommandInfo cmd)
+        {
+            var locked = cmd.Route.LockedBlocks.Where(s => s.HasMotor);
+            var before = locked.Reverse().SkipWhile(b =>  b == this.ParentBlock).FirstOrDefault();
+
+            return before;
+        }
+
+        public Block NextBlockHavingMotor(CommandInfo cmd)
+        {
+            var locked = cmd.Route.LockedBlocks.Where(s => s.HasMotor);
+            var next = locked.SkipWhile(s => s == this.ParentBlock).FirstOrDefault();
+            return next;
         }
 
         public MotorMemoryStateEnum SelectCurrentMemory(CommandInfo cmd)
         {
-            var locked = cmd.Route.LockedBlocks.Where(s => s.HasMotor);
-            var next = locked.SkipWhile(s => s == this.ParentBlock).FirstOrDefault();
+            var next = NextBlockHavingMotor(cmd);
 
             if (next != null)
             {
-                var nextmtr = next.Effectors
-                                .Where(e => e is MotorEffector)
-                                .Cast<MotorEffector>().First();
+                var nextmtr = next.MotorEffector;
+
                 if (nextmtr.Device.CurrentMemory == MotorMemoryStateEnum.Waiting)
                 {
                     return MotorMemoryStateEnum.Controlling;
@@ -176,47 +231,27 @@ namespace RouteLibrary.Base
 
         public override void ApplyCommand(CommandInfo cmd)
         {
-            //if (this.CheckBefore(s => s.Direction))
-            //{
-            var locked = cmd.Route.LockedSegments;
+            var mode = SelectCurrentMemory(cmd);
 
-            if (!locked.ContainsKey(this.ParentBlock))
+            switch (mode)
             {
-                if (cmd.AnyToDefault)
-                {
-                    this.Device.CurrentState.Data = this.DefaultState.Data;
-                    //this.Device.CurrentState.FlushDataState();
-                }
-                return;
-            }
-
-            var seg = locked[this.ParentBlock];
-
-            if ((seg.IsFromAny || seg.From.Name == this.Info.RoutePositive.From.Name)
-                    && (seg.IsToAny || seg.To.Name == this.Info.RoutePositive.To.Name))
-            {
-                this.Device.CurrentState.Direction = MotorDirection.Positive;
-            }
-            else if ((seg.IsFromAny || seg.From.Name == this.Info.RouteNegative.From.Name)
-                        && (seg.IsToAny || seg.To.Name == this.Info.RouteNegative.To.Name))
-            {
-                this.Device.CurrentState.Direction = MotorDirection.Negative;
-            }
-            else
-            {
-                this.Device.CurrentState.Direction = MotorDirection.Standby;
-            }
-            //}
-
-            //if (this.CheckBefore(s => s.Duty))
-            //{
-            this.Device.CurrentState.Duty = cmd.Speed;
-            //}
-        }
+                case MotorMemoryStateEnum.Controlling:
+                    this.Device.StateWhenControlling = CreateMotorState(cmd);
+                    break;
+                case MotorMemoryStateEnum.Waiting:
+                    var before = BeforeBlockHavingMotor(cmd).MotorEffector;
+                    this.Device.StateWhenWaiting = CreateWaitingState(before);
+                    break;
+                case MotorMemoryStateEnum.NoEffect:
+                default:
+                    this.Device.StateWhenNoEffect = NoEffectState;
+                    break;
+            }    
+       }
 
         protected override bool CheckAll(MotorState a, MotorState b)
         {
-            return a.Data.Direction == b.Data.Direction && a.Data.Duty == b.Data.Duty;
+            return false; //return a.Data.Direction == b.Data.Direction && a.Data.Duty == b.Data.Duty;
         }
     }
 
