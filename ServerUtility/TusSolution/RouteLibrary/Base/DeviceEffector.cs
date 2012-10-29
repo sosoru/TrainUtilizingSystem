@@ -152,7 +152,7 @@ namespace RouteLibrary.Base
             return state;
         }
 
-        public MotorState CreateMotorState(CommandInfo info)
+        public MotorState CreateMotorState(CommandInfo cmd)
         {
             MotorDirection dir;
             float duty;
