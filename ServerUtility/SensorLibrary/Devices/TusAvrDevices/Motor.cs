@@ -21,6 +21,13 @@ namespace SensorLibrary.Devices.TusAvrDevices
             this.CurrentState.ReceivingServer = server;
         }
 
+        protected Motor(Motor mtr, MotorState state)
+            :this()
+        {
+            this.CurrentState = state;
+            this.DeviceID = mtr.DeviceID;
+        }
+
         public bool IsDetected
         {
             get
@@ -34,6 +41,7 @@ namespace SensorLibrary.Devices.TusAvrDevices
             var mem = new MemoryState()
             {
                 CurrentMemory = (byte)mem,
+                ReturnBeforeMemory = false,
             };
 
             var kernel = Kernel.MemoryState(this.DeviceID, mem);
@@ -42,10 +50,20 @@ namespace SensorLibrary.Devices.TusAvrDevices
             return new[] { devp };
         }
 
-        public void SendStates()
+        public IEnumerable<DevicePacket> SendStates()
         {
             var statelist = new List<IDevice<IDeviceState<IPacketDeviceData>>>();
 
+            statelist.Add(Kernel.MemoryState(this.DeviceID, new MemoryState(MotorMemoryStateEnum.NoEffect, true));
+            statelist.Add(new Motor(this, this.StateWhenNoEffect));
+
+            statelist.Add(Kernel.MemoryState(this.DeviceID, new MemoryState(MotorMemoryStateEnum.Controlling, true)));
+            statelist.Add(new Motor(this, this.StateWhenControlling));
+
+            statelist.Add(Kernel.MemoryState(this.DeviceID, new MemoryState(MotorMemoryStateEnum.Waiting, true)));
+            statelist.Add(new Motor(this, this.StateWhenNoEffect));
+
+            return DevicePacket.CreatePackedPacket(statelist);
             
         }
 
