@@ -77,7 +77,7 @@ namespace SensorLibrary.Devices
             }
         }
 
-        public void Observe(IObservable<IDeviceState<IPacketDeviceData>> observable)
+        public virtual void Observe(IObservable<IDeviceState<IPacketDeviceData>> observable)
         {
             if (this.Unsubscriber != null)
                 this.Unsubscriber.Dispose();
