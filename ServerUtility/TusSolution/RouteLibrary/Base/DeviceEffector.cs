@@ -67,11 +67,7 @@ namespace RouteLibrary.Base
             ExecuteCommand();
         }
 
-        public virtual bool IsNeededExecution
-        {
-            get { return true; }
-
-        }
+        public abstract bool IsNeededExecution { get; set;}
 
         public abstract void ApplyCommand(CommandInfo cmd);
 
