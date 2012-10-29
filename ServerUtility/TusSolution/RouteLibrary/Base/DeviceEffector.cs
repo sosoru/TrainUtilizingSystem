@@ -59,13 +59,13 @@ namespace RouteLibrary.Base
             }
         }
 
-        public void ExecuteDefaultCommand()
-        {
-            //this.Device.CurrentState.BasePacket = this.DefaultState.BasePacket;
-            this.BeforeState = null;
+        //public void ExecuteDefaultCommand()
+        //{
+        //    //this.Device.CurrentState.BasePacket = this.DefaultState.BasePacket;
+        //    this.BeforeState = null;
 
-            ExecuteCommand();
-        }
+        //    ExecuteCommand();
+        //}
 
         public abstract bool IsNeededExecution { get; set;}
 
