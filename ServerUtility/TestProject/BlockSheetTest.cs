@@ -205,7 +205,6 @@ namespace TestProject
             };
 
             sht.Effect(cmd);
-            written.Extra
             Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 1).CurrentMemory == MotorMemoryStateEnum.NoEffect);
             Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 2).CurrentMemory == MotorMemoryStateEnum.Controlling);
             Assert.IsTrue(written.ExtractDevice<Motor>(1, 1, 3).CurrentMemory == MotorMemoryStateEnum.Waiting);
