@@ -21,11 +21,11 @@ namespace SensorLibrary.Packet.Data
 	//	DutyValue	: 1 byte
 	//	VoltageValue: 1 byte
 	//
-	[StructLayout(LayoutKind.Sequential, Pack=1, Size=13)]
+	[StructLayout(LayoutKind.Sequential, Pack=1, Size=14)]
     public class MotorData
         : PacketDeviceHeader
     {
-        public MotorData() { DataLength=13;  ModuleType = (byte)ModuleTypeEnum.AvrMotor; }
+        public MotorData() { DataLength=14;  ModuleType = (byte)ModuleTypeEnum.AvrMotor; }
 
         public byte ControlMode;
         public byte Direction;
@@ -33,7 +33,7 @@ namespace SensorLibrary.Packet.Data
         public byte Current;
         public byte ThresholdValue;
         public DeviceID DestinationID;
-        public byte MemoryWhenEntered;
+        public byte MemoryAfterEntered;
         public byte DestinationMemory;
    }
 
