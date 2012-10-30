@@ -180,7 +180,7 @@ namespace RouteLibrary.Base
         {
             var locked = cmd.Route.LockedBlocks.Where(s => s.HasMotor).ToArray();
 
-            if (locked.Contains(this.ParentBlock))
+            if (!locked.Contains(this.ParentBlock))
                 return MotorMemoryStateEnum.NoEffect;
 
             var last = locked.Length - 1;
