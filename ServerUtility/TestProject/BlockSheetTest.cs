@@ -217,6 +217,16 @@ namespace TestProject
             Assert.IsTrue(sht.GetBlock("AT4").MotorEffector.Device.CurrentMemory == MotorMemoryStateEnum.NoEffect);
             Assert.IsTrue(sht.GetBlock("AT5").MotorEffector.Device.CurrentMemory == MotorMemoryStateEnum.NoEffect);
 
+            route.ReleaseBeforeUnit();
+            sht.Effect(cmd);
+
+            Assert.IsTrue(sht.GetBlock("AT1").MotorEffector.Device.CurrentMemory == MotorMemoryStateEnum.NoEffect);
+            Assert.IsTrue(sht.GetBlock("AT2").MotorEffector.Device.CurrentMemory == MotorMemoryStateEnum.Controlling);
+            Assert.IsTrue(sht.GetBlock("AT3").MotorEffector.Device.CurrentMemory == MotorMemoryStateEnum.Waiting);
+            Assert.IsTrue(sht.GetBlock("AT4").MotorEffector.Device.CurrentMemory == MotorMemoryStateEnum.NoEffect);
+            Assert.IsTrue(sht.GetBlock("AT5").MotorEffector.Device.CurrentMemory == MotorMemoryStateEnum.NoEffect);
+
+
             //Assert.IsTrue(Math.Round(written.ExtractDevice<Motor>(1, 1, 1).CurrentState.Duty, 1) == 0.5f);
             //Assert.IsTrue(Math.Round(written.ExtractDevice<Motor>(1, 1, 2).CurrentState.Duty, 1) == 0.5f);
             //Assert.IsTrue(Math.Round(written.ExtractDevice<Motor>(1, 1, 3).CurrentState.Duty, 1) == 0.0f);
