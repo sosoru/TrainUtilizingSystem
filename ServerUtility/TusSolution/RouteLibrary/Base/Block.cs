@@ -204,7 +204,7 @@ namespace RouteLibrary.Base
         {
             get
             {
-                return this.HasMotor && this.HasSensor;
+                return this.HasMotor ||  this.HasSensor;
             }
         }
 
