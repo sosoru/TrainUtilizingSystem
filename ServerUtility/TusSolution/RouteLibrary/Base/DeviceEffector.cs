@@ -179,6 +179,10 @@ namespace RouteLibrary.Base
         public MotorMemoryStateEnum SelectCurrentMemory(CommandInfo cmd)
         {
             var locked = cmd.Route.LockedBlocks.Where(s => s.HasMotor).ToArray();
+
+            if (locked.Contains(this.ParentBlock))
+                return MotorMemoryStateEnum.NoEffect;
+
             var last = locked.Length - 1;
             var thispos = Array.IndexOf(locked, this.ParentBlock);
 
