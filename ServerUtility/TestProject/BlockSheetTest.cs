@@ -211,7 +211,7 @@ namespace TestProject
             route.LockNextUnit();
             sht.Effect(cmd);
 
-            Assert.IsTrue(sht.GetBlock("AT1").MotorEffector.Device.CurrentMemory == MotorMemoryStateEnum.NoEffect);
+            Assert.IsTrue(sht.GetBlock("AT1").MotorEffector.Device.CurrentMemory == MotorMemoryStateEnum.Locked);
             Assert.IsTrue(sht.GetBlock("AT2").MotorEffector.Device.CurrentMemory == MotorMemoryStateEnum.Controlling);
             Assert.IsTrue(sht.GetBlock("AT3").MotorEffector.Device.CurrentMemory == MotorMemoryStateEnum.Waiting);
             Assert.IsTrue(sht.GetBlock("AT4").MotorEffector.Device.CurrentMemory == MotorMemoryStateEnum.NoEffect);
