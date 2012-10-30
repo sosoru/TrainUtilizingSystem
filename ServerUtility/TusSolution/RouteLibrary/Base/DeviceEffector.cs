@@ -196,7 +196,7 @@ namespace RouteLibrary.Base
             this.IsNeededExecution = true;
 
             var mode = SelectCurrentMemory(cmd);
-            var states = new Dictionary<MotorMemoryStateEnum, Motor>{
+            var states = new Dictionary<MotorMemoryStateEnum, MotorState>{
                 { MotorMemoryStateEnum.Controlling, CreateMotorState(cmd) },
                 {MotorMemoryStateEnum.Waiting , CreateWaitingState(BeforeBlockHavingMotor(cmd).MotorEffector.Device)},
                 {MotorMemoryStateEnum.NoEffect, NoEffectState},
@@ -207,8 +207,8 @@ namespace RouteLibrary.Base
             this.Device.CurrentMemory = mode;
 
             // when execution is NOT needed :
-                // NoEffect -> NoEfect
-            if(!(this._before_state == MotorMemoryStateEnum.NoEffect
+            // NoEffect -> NoEfect
+            if (!(this._before_state == MotorMemoryStateEnum.NoEffect
                  && mode == MotorMemoryStateEnum.NoEffect))
             {
                 this.IsNeededExecution = true;
