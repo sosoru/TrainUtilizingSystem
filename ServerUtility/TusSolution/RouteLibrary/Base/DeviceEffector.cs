@@ -194,6 +194,7 @@ namespace RouteLibrary.Base
                 return MotorMemoryStateEnum.Locked;
         }
 
+        private MotorMemoryStateEnum _before_state = MotorMemoryStateEnum.Unknown;
         public override void ApplyCommand(CommandInfo cmd)
         {
             this.IsNeededExecution = true;
@@ -208,6 +209,16 @@ namespace RouteLibrary.Base
 
             this.Device.States = states;
             this.Device.CurrentMemory = mode;
+
+            // when execution is NOT needed :
+                // NoEffect -> NoEfect
+            if(!(this._before_state == MotorMemoryStateEnum.NoEffect
+                 && mode == MotorMemoryStateEnum.NoEffect))
+            {
+                this.IsNeededExecution = true;
+            }
+
+            _before_state = mode;
         }
     }
 
