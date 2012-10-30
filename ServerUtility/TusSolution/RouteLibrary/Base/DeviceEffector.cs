@@ -101,6 +101,7 @@ namespace RouteLibrary.Base
                 ControlMode = MotorControlMode.WaitingPulseMode,
                 MemoryWhenEntered = MotorMemoryStateEnum.Controlling,
                 DestinationID = beforemtr.DeviceID,
+                DestinationMemory = MotorMemoryStateEnum.Locked,
                 ThresholdCurrent = 0.01f,
             };
 
@@ -174,7 +175,7 @@ namespace RouteLibrary.Base
 
         public MotorMemoryStateEnum SelectCurrentMemory(CommandInfo cmd)
         {
-            var locked = cmd.Route.LockedBlocks.Where(s => s.HasMotor).ToArray();
+            var locked = cmd.Route.LockedBlocks.Where(s => s.HasMotor && s.MotorEffector.Device.CurrentMemory == MotorMemoryStateEnum.NoEffect).ToArray();
 
             if (!locked.Contains(this.ParentBlock))
                 return MotorMemoryStateEnum.NoEffect;
@@ -208,11 +209,11 @@ namespace RouteLibrary.Base
 
             // when execution is NOT needed :
             // NoEffect -> NoEfect
-            if (!(this._before_state == MotorMemoryStateEnum.NoEffect
-                 && mode == MotorMemoryStateEnum.NoEffect))
-            {
-                this.IsNeededExecution = true;
-            }
+            //if (!(this._before_state == MotorMemoryStateEnum.NoEffect
+            //     && mode == MotorMemoryStateEnum.NoEffect))
+            //{
+            //    this.IsNeededExecution = true;
+            //}
 
             _before_state = mode;
         }
