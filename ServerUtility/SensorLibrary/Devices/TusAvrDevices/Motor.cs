@@ -57,7 +57,7 @@ namespace SensorLibrary.Devices.TusAvrDevices
 
         public IEnumerable<DevicePacket> ChangeMemoryTo(MotorMemoryStateEnum mem)
         {
-            var kernel = Kernel.MemoryState(this.DeviceID, new MemoryState((int)mem, false));
+            var kernel = Kernel.MemoryState(this.DeviceID, new MemoryState((int)mem));
             var devp = DevicePacket.CreatePackedPacket(kernel);
 
             return devp ;
@@ -69,7 +69,7 @@ namespace SensorLibrary.Devices.TusAvrDevices
 
             foreach (var state in States)
             {
-                statelist.Add(Kernel.MemoryState(this.DeviceID, new MemoryState((int)state.Key, true)));
+                statelist.Add(Kernel.MemoryState(this.DeviceID, new MemoryState((int)state.Key)));
                 statelist.Add(new Motor(this, state.Value));
             }
 
@@ -110,7 +110,7 @@ namespace SensorLibrary.Devices.TusAvrDevices
             }
             set
             {
-                var memstate = new MemoryState((int)value, false);
+                var memstate = new MemoryState((int)value);
 
                 this.DeviceKernel.CurrentState = memstate;
             }
