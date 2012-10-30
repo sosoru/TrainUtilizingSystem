@@ -46,7 +46,6 @@ namespace SensorLibrary.Devices.TusAvrDevices
             : this()
         {
             this.CurrentMemory = (byte)mem;
-            this.ReturnBeforeMemory = ret;
         }
 
         public byte CurrentMemory
@@ -60,12 +59,6 @@ namespace SensorLibrary.Devices.TusAvrDevices
             get { return this.Data.Content[1]; }
             set { this.Data.Content[1] = value; }
         }
-
-        public bool ReturnBeforeMemory
-        {
-            get { return this.Data.Content[2] != 0; }
-            set { this.Data.Content[2] = Convert.ToByte(value); }
-        }
-    }
+   }
 
 }
