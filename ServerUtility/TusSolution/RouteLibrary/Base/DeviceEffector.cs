@@ -60,10 +60,6 @@ namespace RouteLibrary.Base
         public MotorEffector(MotorInfo info, Block block)
             : base(info, block)
         {
-            this.Device.StateWhenNoEffect = NoEffectState;
-            this.Device.StateWhenControlling = NoEffectState;
-            this.Device.StateWhenWaiting = NoEffectState;
-
             this.IsNeededExecution = true;
         }
 
