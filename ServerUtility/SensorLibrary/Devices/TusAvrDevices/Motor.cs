@@ -11,6 +11,7 @@ namespace SensorLibrary.Devices.TusAvrDevices
     {
         public Motor()
         {
+            this.States = new Dictionary<MotorMemoryStateEnum, MotorState>();
             this.ModuleType = ModuleTypeEnum.AvrMotor;
             this.CurrentState = new MotorState();
         }
@@ -34,6 +35,12 @@ namespace SensorLibrary.Devices.TusAvrDevices
             {
                 return this.CurrentState.Current > this.CurrentState.ThresholdCurrent;
             }
+        }
+
+        public IDictionary<MotorMemoryStateEnum, MotorState> States
+        {
+            get;
+             set;
         }
 
         private Kernel deviceKernel_ = null;
@@ -60,14 +67,11 @@ namespace SensorLibrary.Devices.TusAvrDevices
         {
             var statelist = new List<IDevice<IDeviceState<IPacketDeviceData>>>();
 
-            statelist.Add(Kernel.MemoryState(this.DeviceID, new MemoryState((int)MotorMemoryStateEnum.NoEffect, true)));
-            statelist.Add(new Motor(this, this.StateWhenNoEffect));
-
-            statelist.Add(Kernel.MemoryState(this.DeviceID, new MemoryState((int)MotorMemoryStateEnum.Controlling, true)));
-            statelist.Add(new Motor(this, this.StateWhenControlling));
-
-            statelist.Add(Kernel.MemoryState(this.DeviceID, new MemoryState((int)MotorMemoryStateEnum.Waiting, true)));
-            statelist.Add(new Motor(this, this.StateWhenWaiting));
+            foreach (var state in States)
+            {
+                statelist.Add(Kernel.MemoryState(this.DeviceID, new MemoryState((int)state.Key, true)));
+                statelist.Add(new Motor(this, state.Value));
+            }
 
             return DevicePacket.CreatePackedPacket(statelist);
             
@@ -112,24 +116,6 @@ namespace SensorLibrary.Devices.TusAvrDevices
             }
         }
 
-        public MotorState StateWhenNoEffect
-        {
-            get;
-            set;
-        }
-
-        public MotorState StateWhenControlling
-        {
-            get;
-            set;
-        }
-
-        public MotorState StateWhenWaiting
-        {
-            get;
-            set;
-        }
-
     }
 
     public enum MotorMemoryStateEnum
@@ -138,6 +124,7 @@ namespace SensorLibrary.Devices.TusAvrDevices
         NoEffect = 0x01,
         Controlling = 0x02,
         Waiting = 0x03,
+        Locked = 0x04,
         Unknown = 0x00,
     }
 }
