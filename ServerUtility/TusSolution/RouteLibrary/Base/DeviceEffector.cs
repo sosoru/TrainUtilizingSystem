@@ -191,6 +191,20 @@ namespace RouteLibrary.Base
                 return MotorMemoryStateEnum.Locked;
         }
 
+        public void SetDetectingMode(float duty)
+        {
+            var mode = MotorMemoryStateEnum.Controlling;
+            var states = new Dictionary<MotorMemoryStateEnum, MotorState>()
+            {
+                {mode, CreateMotorState(MotorDirection.Positive, duty)}
+            };
+
+            this.Device.States = states;
+            this.Device.CurrentMemory = mode;
+
+            this.Device.SendState();
+        }
+
         private MotorMemoryStateEnum _before_state = MotorMemoryStateEnum.Unknown;
         public override void ApplyCommand(CommandInfo cmd)
         {
