@@ -104,8 +104,6 @@ namespace RouteLibrary.Base
                 .Subscribe();
         }
 
-
-
         public Block GetBlock(string p)
         {
             return this.InnerBlocks.FirstOrDefault(b => b.Name == p);
