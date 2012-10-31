@@ -22,16 +22,19 @@ namespace TestProject
         [TestMethod]
         public void PacketPackBasicTest()
         {
-            var devA = new Motor () { DeviceID = new DeviceID(1,1,1)};
-            var devB = new Switch() { DeviceID = new DeviceID(1,1,2)};
+            var devA = new Motor() { DeviceID = new DeviceID(1, 1, 1) };
+            var devB = new Switch() { DeviceID = new DeviceID(1, 1, 2) };
+            var devC = new Kernel() { DeviceID = new DeviceID(1, 1, 3) };
 
             devA.CurrentState.Duty = 0.5f;
             devA.CurrentState.Direction = MotorDirection.Negative;
             devA.CurrentState.Current = 1.0f;
-                
-            var packets = DevicePacket.CreatePackedPacket( devA, devB );
 
-            var extracts = packets.First().ExtractPackedPacket().ToArray() ;
+            devC.CurrentState.Command = KernelCommand.InquiryState;
+
+            var packets = DevicePacket.CreatePackedPacket(devA, devB, devC);
+
+            var extracts = packets.First().ExtractPackedPacket().ToArray();
 
         }
 
@@ -54,6 +57,6 @@ namespace TestProject
 
             }
         }
-        
+
     }
 }
