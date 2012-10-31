@@ -13,7 +13,6 @@ namespace SensorLibrary.Devices
     {
         //DevicePacket BasePacket { get; set; }
         DeviceID ID { get; set; }
-        PacketServer ReceivingServer { get; set; }
         ModuleTypeEnum ModuleType { get; set; }
         T Data { get; }
     }
@@ -38,7 +37,6 @@ namespace SensorLibrary.Devices
         //        this._deviceStateCache = default(T);
         //    }
         //}
-        public virtual PacketServer ReceivingServer { get; set; }
 
         public DeviceState()
         {
