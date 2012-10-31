@@ -92,8 +92,8 @@ namespace SensorLibrary.Devices.TusAvrDevices
 
         public MotorMemoryStateEnum MemoryWhenEntered
         {
-            get { return (MotorMemoryStateEnum)this.Data.MemoryAfterEntered; }
-            set { this.Data.MemoryAfterEntered = (byte)value; }
+            get { return (MotorMemoryStateEnum)this.Data.MemoryWhenEntered; }
+            set { this.Data.MemoryWhenEntered = (byte)value; }
         }
 
         public MotorMemoryStateEnum DestinationMemory
