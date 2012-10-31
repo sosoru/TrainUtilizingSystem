@@ -34,7 +34,8 @@ namespace RouteLibrary.Base
 
             this.Device = new TDev()
             {
-                DeviceID = info.Address
+                DeviceID = info.Address,
+                ReceivingServer = this.ParentBlock.Sheet.Server,
             };
 
             this.Device.Observe(block.Sheet.Dispatcher);
