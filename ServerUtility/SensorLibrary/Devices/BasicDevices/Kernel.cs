@@ -19,7 +19,7 @@ namespace SensorLibrary.Devices
         public Kernel(PacketServer serv)
             : this()
         {
-            this.CurrentState.ReceivingServer = serv;
+            this.ReceivingServer = serv;
         }
 
         public bool IsInquiryState
