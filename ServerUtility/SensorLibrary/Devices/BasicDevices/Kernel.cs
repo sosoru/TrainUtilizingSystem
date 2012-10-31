@@ -13,6 +13,7 @@ namespace SensorLibrary.Devices
         public Kernel()
             : base()
         {
+            this.CurrentState = new KernelState();
             this.ModuleType = ModuleTypeEnum.AvrKernel;
         }
 
