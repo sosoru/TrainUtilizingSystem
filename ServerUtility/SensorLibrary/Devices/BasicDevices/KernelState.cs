@@ -50,7 +50,7 @@ namespace SensorLibrary.Devices
 
         public byte CurrentMemory
         {
-            get { return this.Data.Content1}
+            get { return this.Data.Content1; }
             set { this.Data.Content1 = value; }
         }
 
