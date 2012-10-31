@@ -43,7 +43,7 @@ namespace RouteLibrary.Base
         private DateTime before_send;
         public void ExecuteCommand()
         {
-            this.Device.CurrentState.ReceivingServer = ParentBlock.Sheet.Server;
+            this.Device.ReceivingServer = ParentBlock.Sheet.Server;
             this.Device.SendState();
             this.before_send = DateTime.Now;
 
