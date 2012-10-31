@@ -276,7 +276,7 @@ namespace TestProject
 
             sht.GetBlock("AT3").Detector = train.Object;
 
-            sht.ChangeDetectingMode();
+            sht.ChangeDetectingMode(); // todo: value check
             sht.PrepareVehicles();
 
         }
