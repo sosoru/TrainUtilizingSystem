@@ -19,7 +19,7 @@ namespace SensorLibrary.Devices.TusAvrDevices
         public Motor(PacketServer server)
             : this()
         {
-            this.CurrentState.ReceivingServer = server;
+            this.ReceivingServer = server;
         }
 
         protected Motor(Motor mtr, MotorState state)
@@ -91,11 +91,11 @@ namespace SensorLibrary.Devices.TusAvrDevices
 
             var app = this.CreateApplyingStates();
             foreach (var p in app)
-                this.CurrentState.ReceivingServer.SendPacket(p);
+                this.CurrentState.SendPacket(p);
 
             var pack = this.ChangeMemoryTo(this.CurrentMemory);
             foreach (var p in pack)
-                this.CurrentState.ReceivingServer.SendPacket(p);
+                this.CurrentState.SendPacket(p);
         }
 
         public MotorMemoryStateEnum CurrentMemory
