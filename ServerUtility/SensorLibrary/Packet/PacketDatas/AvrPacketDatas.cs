@@ -87,18 +87,10 @@ namespace SensorLibrary.Packet.Data
 
         public KernelCommand Command;
 
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-        private byte[] _data = new byte[4];
-        public byte[] Content
-        {
-            get
-            {
-                if (_data == null)
-                    _data = new byte[4];
-
-                return _data;
-            }
-        }
+        public byte Content1;
+        public byte Content2;
+        public byte Content3;
+        public byte Content4;
 
     }
 
