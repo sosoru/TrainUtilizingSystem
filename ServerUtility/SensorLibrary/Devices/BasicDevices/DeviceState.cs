@@ -12,7 +12,7 @@ namespace SensorLibrary.Devices
     public interface IDeviceState<out T>
     {
         //DevicePacket BasePacket { get; set; }
-        public DeviceID ID { get; set; }
+        DeviceID ID { get; set; }
         PacketServer ReceivingServer { get; set; }
         ModuleTypeEnum ModuleType { get; set; }
         T Data { get; }
