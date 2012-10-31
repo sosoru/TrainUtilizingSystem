@@ -258,7 +258,7 @@ namespace TestProject
 
             serv.Setup(e => e.SendState(It.IsAny<IDevice<IDeviceState<IPacketDeviceData>>>()))
                 .Callback<IDevice<IDeviceState<IPacketDeviceData>>>(d => written.Add(d));
-            serv.Setup(e => e.SendPacket(It.IsAny<DevicePacket>))
+            serv.Setup(e => e.SendPacket(It.IsAny<DevicePacket>()))
                 .Callback<DevicePacket>(pack => written.AddRange(pack.ExtractPackedPacket()));
 
             var sht = new BlockSheet(sample_loop_sheet, serv.Object);
