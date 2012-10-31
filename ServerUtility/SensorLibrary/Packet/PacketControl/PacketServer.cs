@@ -27,6 +27,7 @@ namespace SensorLibrary.Packet.Control
         private volatile object lockStream = new object();
         private List<PacketServerAction> actionList = new List<PacketServerAction>();
         private bool cancellation = false;
+        private PacketDispatcher thisobsv_;
 
         private Queue<DevicePacket> sending_queue = new Queue<DevicePacket>();
 
@@ -34,7 +35,9 @@ namespace SensorLibrary.Packet.Control
             : this()
         {
             this.FactoryProvider = factory;
+            this.thisobsv_ = new PacketDispatcher();
 
+            this.AddAction(this.thisobsv_);
         }
 
         public PacketServer()
@@ -44,9 +47,7 @@ namespace SensorLibrary.Packet.Control
 
         public IObservable<IDeviceState<IPacketDeviceData>> GetDispatcher()
         {
-            var disp = new PacketDispatcher();
-            this.AddAction(disp);
-            return disp;
+            return thisobsv_;
         }
 
         public PacketServerAction AddAction(PacketDispatcher dispatcher)
