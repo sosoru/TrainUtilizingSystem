@@ -13,6 +13,7 @@ using SensorLibrary;
 using SensorLibrary.Packet;
 using SensorLibrary.Packet.Control;
 using SensorLibrary.Devices;
+using SensorLibrary.Devices.TusAvrDevices;
 
 namespace RouteLibrary.Base
 {
