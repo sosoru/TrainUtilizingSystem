@@ -93,7 +93,7 @@ namespace SensorLibrary.Devices
 
         public virtual void SendState()
         {
-            if (this.CurrentState == null || this.CurrentState.ReceivingServer == null)
+            if (this.CurrentState == null || this.ReceivingServer == null)
                 throw new InvalidOperationException("missing Device");
 
             //state.BasePacket.ID = this.DeviceID;
@@ -102,7 +102,7 @@ namespace SensorLibrary.Devices
             //    throw new InvalidOperationException("invalid state");
 
             //for (int i = 0; i < 3; i++)
-                this.CurrentState.ReceivingServer.SendState(this);
+                this.ReceivingServer.SendState(this);
 
         }
 
