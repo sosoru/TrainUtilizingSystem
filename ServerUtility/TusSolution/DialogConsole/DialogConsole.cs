@@ -66,7 +66,7 @@ namespace DialogConsole
             where TDev : Device<IDeviceState<IPacketDeviceData>> ,new()
         {
             var dev = new TDev() { DeviceID = devid};
-            dev.CurrentState.ReceivingServer = this.serv;
+            dev.ReceivingServer = this.serv;
             dev.Observe(this.dispat);
 
             return dev;
