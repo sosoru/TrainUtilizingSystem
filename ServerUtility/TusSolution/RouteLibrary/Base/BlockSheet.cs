@@ -30,8 +30,7 @@ namespace RouteLibrary.Base
         public BlockSheet(IEnumerable<BlockInfo> blockinfos, PacketServer server)
         {
             this.Server = server;
-            this.Dispatcher = new PacketDispatcher();
-            this.Server.AddAction(this.Dispatcher);
+            this.Dispatcher = (PacketDispatcher)this.Server.GetDispatcher();
 
             var blocks = blockinfos.Select(i => new Block(i, this));
 
