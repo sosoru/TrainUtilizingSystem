@@ -73,7 +73,7 @@ namespace SensorLibrary
 
         public int UniqueIdByBoard
         {
-            get { this.ParentPart.GetHashCode() ^ this.ModuleAddr.GetHashCode(); }
+            get { return this.ParentPart.GetHashCode() ^ this.ModuleAddr.GetHashCode(); }
         }
 
 
