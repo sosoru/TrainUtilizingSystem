@@ -23,6 +23,7 @@ namespace RouteLibrary.Base
         public ReadOnlyCollection<Block> InnerBlocks { get; private set; }
         public PacketServer Server { get; private set; }
         public PacketDispatcher Dispatcher { get; private set; }
+        public IEnumerable<Vehicle> Vehicles { get; private set; }
 
         public BlockSheet(IEnumerable<BlockInfo> blockinfos, PacketServer server)
         {
@@ -102,9 +103,22 @@ namespace RouteLibrary.Base
                 .Subscribe();
         }
 
+
+
         public Block GetBlock(string p)
         {
             return this.InnerBlocks.FirstOrDefault(b => b.Name == p);
+        }
+
+        public void PrepareVehicles()
+        {
+            var detectionduty = 0.05f;
+
+            this.InnerBlocks.Where(b => b.HasMotor)
+                .ToObservable()
+                .Select(b => b.MotorEffector)
+                .Do( e => {
+                    e.ApplyCommand
         }
     }
 }
