@@ -189,8 +189,7 @@ namespace SensorLibrary
                 var data = state.Data;
                 var cpbuffer = new byte[len];
 
-                state.ID = this.ID;
-                state.ID.InternalAddr = internelid;
+                state.ID = new DeviceID(state.ID.ParentPart, state.ID.ModuleAddr, internelid);
 
                 Array.Copy(this.Data, bufind, cpbuffer, 0, len); 
                 data.RestoreObject(cpbuffer);
