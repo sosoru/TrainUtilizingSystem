@@ -69,7 +69,6 @@ namespace RouteLibrary.Base
             {
                 var state = new MotorState()
                 {
-                    ReceivingServer = this.ParentBlock.Sheet.Server,
                     Direction = MotorDirection.Positive,
                     Duty = 0,
                     ControlMode = MotorControlMode.DutySpecifiedMode,
@@ -84,7 +83,6 @@ namespace RouteLibrary.Base
             {
                 var state = new MotorState()
                 {
-                    ReceivingServer = this.ParentBlock.Sheet.Server,
                     Direction = MotorDirection.Standby,
                     Duty = 0,
                     ControlMode = MotorControlMode.DutySpecifiedMode,
@@ -97,7 +95,6 @@ namespace RouteLibrary.Base
         {
             var state = new MotorState()
             {
-                ReceivingServer = this.ParentBlock.Sheet.Server,
                 ControlMode = MotorControlMode.WaitingPulseMode,
                 MemoryWhenEntered = MotorMemoryStateEnum.Controlling,
                 DestinationID = beforemtr.DeviceID,
@@ -112,7 +109,6 @@ namespace RouteLibrary.Base
         {
             var state = new MotorState()
             {
-                ReceivingServer = this.ParentBlock.Sheet.Server,
                 ControlMode = MotorControlMode.DutySpecifiedMode,
                 Duty = duty,
                 Direction = dir,
@@ -246,7 +242,6 @@ namespace RouteLibrary.Base
             {
                 var state = new SwitchState()
                     {
-                        ReceivingServer = this.ParentBlock.Sheet.Server,
                         Position = PointStateEnum.Straight,
                         DeadTime = 100,
                         ChangingTime = 250,
