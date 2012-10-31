@@ -123,15 +123,22 @@ namespace RouteLibrary.Base
                     e.SetDetectingMode(detectionduty);
                 })
                 .Delay(TimeSpan.FromSeconds(1))
-                .GroupBy(e => e.Device.DeviceID.ModuleAddr.GetHashCode() ^ e.Device.DeviceID.ParentPart.GetHashCode())
-                .Select(e =>
+                .GroupBy(e => e.Device.DeviceID.UniqueIdByBoard)
+                .Select(e => e.First().Device)
+                .Select(dev =>
                 {
-                    var pack = DevicePacket.CreatePackedPacket(Kernel.InquiryState(e.First().Device.DeviceID));
+                    var pack = DevicePacket.CreatePackedPacket(Kernel.InquiryState(dev.DeviceID));
                     this.Server.SendPacket(pack);
+                    return this.Server.GetDispatcher()
+                        .Where(state => dev.DeviceID == state.ID)
+                        .Cast<MotorState>()
+                        .Timeout(TimeSpan.FromSeconds(5));
                 })
                 .Subscribe();
 
-            
+            // detection process succeeded
+            var g = this.InnerBlocks.Where(b => b.HasMotor && b.IsDetectingTrain)
+                                    
 
             
         }
