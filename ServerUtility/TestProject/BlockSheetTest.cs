@@ -109,7 +109,7 @@ namespace TestProject
             get
             {
                 var infos = new[] { new BlockInfo { Name = "pero" }, new BlockInfo { Name = "hoge" } };
-                var sheet = new BlockSheet(infos, null);
+                var sheet = new BlockSheet(infos, new PacketServer(new AvrDeviceFactoryProvider()));
 
                 sheet.Name = "pero";
                 return sheet;
