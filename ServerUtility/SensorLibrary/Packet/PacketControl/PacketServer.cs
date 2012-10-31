@@ -118,7 +118,7 @@ namespace SensorLibrary.Packet.Control
                                         var state = f.DeviceStateCreate();
                                         var data = f.DeviceDataCreate();
 
-                                        state.ReceivingServer = this;
+                                        //state.ReceivingServer = this;
 
                                         this.actionList.ForEach((item) => item.Act(state));
                                     }
