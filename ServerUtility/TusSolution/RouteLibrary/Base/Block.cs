@@ -43,7 +43,7 @@ namespace RouteLibrary.Base
         {
             this.devices.ForEach(d =>
                                      {
-                                         d.CurrentState.ReceivingServer = this.ParentBlock.Sheet.Server;
+                                         d.ReceivingServer = this.ParentBlock.Sheet.Server;
                                          //d.SendPacket();
                                      });
         }
