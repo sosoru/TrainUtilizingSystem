@@ -131,6 +131,10 @@ namespace SensorLibrary.Devices
                 this.OnNext(state);
         }
 
+        public void CheckDevice()
+        {
+            var ker = 
+
         public IObservable<EventPattern<PacketReceiveEventArgs>> GetNextObservable
         {
             get
