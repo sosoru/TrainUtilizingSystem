@@ -34,7 +34,7 @@ namespace RouteLibrary.Base
             this.ParentBlock = block;
             this.Info = info;
 
-            var devs = info.Addresses.Select(id => new UsartSensor() { DeviceID = id }).ToList();
+            var devs = info.Addresses.Select(id => new UsartSensor() { DeviceID = id, ReceivingServer = this.ParentBlock.Sheet.Server }).ToList();
             devs.ForEach(d => d.Observe(block.Sheet.Dispatcher));
             this.devices = devs;
         }
