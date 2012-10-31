@@ -249,6 +249,33 @@ namespace TestProject
 
         }
 
+        [TestMethod()]
+        public void PrepareVehiclesTest()
+        {
+            BlockSheet target = sample_sheet;
+            var written = new List<IDevice<IDeviceState<IPacketDeviceData>>>();
+            var serv = new Mock<PacketServer>();
+
+            serv.Setup(e => e.SendState(It.IsAny<IDevice<IDeviceState<IPacketDeviceData>>>()))
+                .Callback<IDevice<IDeviceState<IPacketDeviceData>>>(d => written.Add(d));
+
+            var sht = new BlockSheet(sample_loop_sheet, serv.Object);
+            var route = new Route(sht, new[] { "AT1", "AT2", "AT3", "AT4", "AT5" });
+            var cmd = new CommandInfo()
+            {
+                Route = route,
+                Speed = 0.5f
+            };
+
+            //set dummy train
+            var train = new Mock<SensorDetector>();
+            train.Setup(e => e.IsDetected).Returns(() => true);
+
+            sht.GetBlock("AT3").Detector = train;
+            sht.PrepareVehicles();
+
+        }
+
         /// <summary>
         ///Equals のテスト
         ///</summary>
