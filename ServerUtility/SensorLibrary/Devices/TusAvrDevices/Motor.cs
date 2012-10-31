@@ -91,11 +91,11 @@ namespace SensorLibrary.Devices.TusAvrDevices
 
             var app = this.CreateApplyingStates();
             foreach (var p in app)
-                this.CurrentState.SendPacket(p);
+                this.SendPacket(p);
 
             var pack = this.ChangeMemoryTo(this.CurrentMemory);
             foreach (var p in pack)
-                this.CurrentState.SendPacket(p);
+                this.SendPacket(p);
         }
 
         public MotorMemoryStateEnum CurrentMemory
