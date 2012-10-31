@@ -128,7 +128,7 @@ namespace RouteLibrary.Base
                 .Select(dev =>
                 {
                     var pack = DevicePacket.CreatePackedPacket(Kernel.InquiryState(dev.DeviceID));
-                    this.Server.SendPacket(pack);
+                    this.Server.SendPacket(pack.First());
                     return this.Server.GetDispatcher()
                         .Where(state => dev.DeviceID == state.ID)
                         .Cast<MotorState>()
