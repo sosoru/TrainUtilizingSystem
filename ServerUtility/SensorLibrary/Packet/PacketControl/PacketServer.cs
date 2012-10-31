@@ -42,6 +42,13 @@ namespace SensorLibrary.Packet.Control
             this.IsLooping = false;
         }
 
+        public IObservable<IDeviceState<IPacketDeviceData>> GetDispatcher()
+        {
+            var disp = new PacketDispatcher();
+            this.AddAction(disp);
+            return disp;
+        }
+
         public PacketServerAction AddAction(PacketDispatcher dispatcher)
         {
             return this.AddAction((state) => dispatcher.Notify(state));
@@ -79,14 +86,8 @@ namespace SensorLibrary.Packet.Control
 
             try
             {
-                //if (!this.sending_queue.ToArray().Any(p => (p != null)
-                //                                           && ((p.ID == pack.ID)
-                //                                               || (p.ModuleType == ModuleTypeEnum.AvrSensor
-                //                                                   && p.ID.ModuleAddr == pack.ID.ModuleAddr))))
-                //{
-                foreach(var p in DevicePacket.CreatePackedPacket(dev))
+                foreach (var p in DevicePacket.CreatePackedPacket(dev))
                     this.SendPacket(p);
-                //}
             }
             catch (ArgumentException)
             {
@@ -113,22 +114,12 @@ namespace SensorLibrary.Packet.Control
                                             a => a.ModuleType == pack.ModuleType);
                                     if (f != null)
                                     {
-                                        //if (pack.ModuleType == ModuleTypeEnum.AvrSensor)
-                                        //{
-                                        //    this.avr_sensor_spliter(pack);
-                                        //}
-                                        //else
-                                        //{
                                         var state = f.DeviceStateCreate();
                                         var data = f.DeviceDataCreate();
 
-                                        //state.BasePacket = pack;
                                         state.ReceivingServer = this;
 
-                                        //Console.WriteLine(state.ToString());
-
                                         this.actionList.ForEach((item) => item.Act(state));
-                                        //}
                                     }
                                     else
                                     {
@@ -160,29 +151,6 @@ namespace SensorLibrary.Packet.Control
         public void LoopStop()
         {
             this.cancellation = true;
-        }
-
-        private void avr_sensor_spliter(DevicePacket packet)
-        {
-            //Console.WriteLine(packet.ToString());
-            for (int i = 0; i < 4; i++)
-            {
-                var data = new SensorLibrary.Packet.Data.SensorData()
-                               {
-                                   VoltageOn = packet.Data[i * 2],
-                                   VoltageOff = packet.Data[i * 2 + 1],
-                               };
-                var state = new SensorLibrary.Devices.TusAvrDevices.SensorState()
-                                {
-                                    Data = data,
-                                };
-                //state.FlushDataState();
-
-                //state.BasePacket.ID = packet.ID;
-                //state.BasePacket.ID.InternalAddr += (byte)i;
-                state.ReceivingServer = this;
-                this.actionList.ForEach(a => a.Act(state));
-            }
         }
 
         private void ListeningLoop()
