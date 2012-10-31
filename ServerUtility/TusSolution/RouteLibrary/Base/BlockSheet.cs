@@ -123,7 +123,7 @@ namespace RouteLibrary.Base
                 .Delay(TimeSpan.FromSeconds(1))
                 .GroupBy(e => e.Device.DeviceID.UniqueIdByBoard)
                 .Select(e => e.First().Device)
-                .Select(dev =>
+                .Do(dev =>
                 {
                     var pack = DevicePacket.CreatePackedPacket(Kernel.InquiryState(dev.DeviceID));
                     this.Server.SendPacket(pack.First());
