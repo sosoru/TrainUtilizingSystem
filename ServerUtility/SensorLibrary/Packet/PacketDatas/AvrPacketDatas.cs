@@ -33,7 +33,7 @@ namespace SensorLibrary.Packet.Data
         public byte Current;
         public byte ThresholdValue;
         public DeviceID DestinationID;
-        public byte MemoryAfterentered;
+        public byte MemoryWhenEntered;
         public byte DestinationMemory;
    }
 
