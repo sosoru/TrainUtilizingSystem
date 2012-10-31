@@ -166,7 +166,7 @@ namespace SensorLibrary.Devices
 
         public void OnNext(TState value)
         {
-            if (value == null || this.DeviceID != value.BasePacket.ID)
+            if (value == null || this.DeviceID != value.ID)
                 return;
 
             var casted = value;
