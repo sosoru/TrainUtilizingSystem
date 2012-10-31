@@ -117,8 +117,14 @@ namespace RouteLibrary.Base
             this.InnerBlocks.Where(b => b.HasMotor)
                 .ToObservable()
                 .Select(b => b.MotorEffector)
-                .Do( e => {
-                    e.ApplyCommand
+                .Do(e =>
+                {
+                    e.SetDetectingMode(detectionduty);
+                })
+                .Delay(TimeSpan.FromSeconds(1))
+                .SelectMany(e =>
+                    
+            
         }
     }
 }
