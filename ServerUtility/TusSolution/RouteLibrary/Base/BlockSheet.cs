@@ -138,9 +138,9 @@ namespace RouteLibrary.Base
 
             // detection process succeeded
             var g = this.InnerBlocks.Where(b => b.HasMotor && b.IsDetectingTrain)
-                                    
+                .Select(b => new Vehicle() { CurrentBlock = b });
 
-            
+            this.Vehicles = g;
         }
     }
 }
