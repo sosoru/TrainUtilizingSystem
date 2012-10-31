@@ -253,11 +253,11 @@ namespace TestProject
         public void PrepareVehiclesTest()
         {
             BlockSheet target = sample_sheet;
-            var written = new List<IDevice<IDeviceState<IPacketDeviceData>>>();
+            var written = new List<IDeviceState<IPacketDeviceData>>();
             var serv = new Mock<PacketServer>();
 
-            serv.Setup(e => e.SendState(It.IsAny<IDevice<IDeviceState<IPacketDeviceData>>>()))
-                .Callback<IDevice<IDeviceState<IPacketDeviceData>>>(d => written.Add(d));
+            serv.Setup(e => e.SendState(It.IsAny<IDeviceState<IPacketDeviceData>>()))
+                .Callback<IDeviceState<IPacketDeviceData>>(d => written.Add(d));
             serv.Setup(e => e.SendPacket(It.IsAny<DevicePacket>()))
                 .Callback<DevicePacket>(pack => written.AddRange(pack.ExtractPackedPacket()));
 
