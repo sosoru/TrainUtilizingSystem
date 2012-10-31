@@ -10,9 +10,9 @@ namespace SensorLibrary.Packet.Data
     public class PacketDeviceHeader
         : IPacketDeviceData
     {
-        public byte DataLength { get; set; }
-        public byte InternalAddr { get; set; }
-        public byte ModuleType { get; set; }
+        public byte DataLength;
+        public byte InternalAddr;
+        public byte ModuleType;
     }
 
     // pdata:
