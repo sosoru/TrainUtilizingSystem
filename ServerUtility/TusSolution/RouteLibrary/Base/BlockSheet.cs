@@ -130,7 +130,8 @@ namespace RouteLibrary.Base
                     return this.Server.GetDispatcher()
                         .Where(state => dev.DeviceID == state.ID)
                         .Cast<MotorState>()
-                        .Timeout(TimeSpan.FromSeconds(5));
+                        .Timeout(TimeSpan.FromSeconds(5))
+                        .First();
                 })
                 .Subscribe();
 
