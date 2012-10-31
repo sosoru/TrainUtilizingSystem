@@ -71,9 +71,9 @@ namespace SensorLibrary
                    && (this.InternalAddr == inter || inter < 0);
         }
 
-        public int UniqueIdByBoard
+        public int GetUniqueIdByBoard()
         {
-            get { return this.ParentPart.GetHashCode() ^ this.ModuleAddr.GetHashCode(); }
+            return this.ParentPart.GetHashCode() ^ this.ModuleAddr.GetHashCode();
         }
 
 
@@ -178,7 +178,7 @@ namespace SensorLibrary
         {
             var bufind = 0;
             var factory = new SensorLibrary.Devices.AvrDeviceFactoryProvider();
-            
+
             while (bufind <= DATA_SIZE && this.Data[bufind] != 0x00)
             {
                 var len = this.Data[bufind];
@@ -191,7 +191,7 @@ namespace SensorLibrary
 
                 state.ID = new DeviceID(state.ID.ParentPart, state.ID.ModuleAddr, internelid);
 
-                Array.Copy(this.Data, bufind, cpbuffer, 0, len); 
+                Array.Copy(this.Data, bufind, cpbuffer, 0, len);
                 data.RestoreObject(cpbuffer);
 
                 yield return state;
@@ -203,7 +203,7 @@ namespace SensorLibrary
 
         public static IEnumerable<DevicePacket> CreatePackedPacket(params IDevice<IDeviceState<IPacketDeviceData>>[] devs)
         {
-            return CreatePackedPacketInternal(devs); 
+            return CreatePackedPacketInternal(devs);
         }
 
         public static IEnumerable<DevicePacket> CreatePackedPacket(IEnumerable<IDevice<IDeviceState<IPacketDeviceData>>> devs)
