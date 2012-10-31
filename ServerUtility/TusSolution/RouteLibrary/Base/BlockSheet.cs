@@ -12,6 +12,7 @@ using System.Reactive.Linq;
 using SensorLibrary;
 using SensorLibrary.Packet;
 using SensorLibrary.Packet.Control;
+using SensorLibrary.Devices;
 
 namespace RouteLibrary.Base
 {
@@ -122,8 +123,16 @@ namespace RouteLibrary.Base
                     e.SetDetectingMode(detectionduty);
                 })
                 .Delay(TimeSpan.FromSeconds(1))
-                .SelectMany(e =>
-                    
+                .GroupBy(e => e.Device.DeviceID.ModuleAddr.GetHashCode() ^ e.Device.DeviceID.ParentPart.GetHashCode())
+                .Select(e =>
+                {
+                    var pack = DevicePacket.CreatePackedPacket(Kernel.InquiryState(e.First().Device.DeviceID));
+                    this.Server.SendPacket(pack);
+                })
+                .Subscribe();
+
+            
+
             
         }
     }
