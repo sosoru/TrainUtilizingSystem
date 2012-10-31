@@ -50,14 +50,14 @@ namespace SensorLibrary.Devices
 
         public byte CurrentMemory
         {
-            get { return this.Data.Content[0]; }
-            set { this.Data.Content[0] = value; }
+            get { return this.Data.Content1}
+            set { this.Data.Content1 = value; }
         }
 
         public byte MemoryLimit
         {
-            get { return this.Data.Content[1]; }
-            set { this.Data.Content[1] = value; }
+            get { return this.Data.Content2; }
+            set { this.Data.Content2 = value; }
         }
    }
 
