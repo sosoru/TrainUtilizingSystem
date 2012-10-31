@@ -121,7 +121,7 @@ namespace RouteLibrary.Base
                     e.SetDetectingMode(detectionduty);
                 })
                 .Delay(TimeSpan.FromSeconds(1))
-                .GroupBy(e => e.Device.DeviceID.UniqueIdByBoard)
+                .GroupBy(e => e.Device.DeviceID.GetUniqueIdByBoard())
                 .Select(e => e.First().Device)
                 .Do(dev =>
                 {
