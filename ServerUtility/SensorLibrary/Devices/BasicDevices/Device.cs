@@ -9,6 +9,8 @@ using System.ComponentModel;
 using System.Reactive.Linq;
 using System.Reactive;
 
+using SensorLibrary.Packet.Control;
+
 namespace SensorLibrary.Devices
 {
     public delegate void PacketReceivedDelegate<in TState>(IDevice<TState> sender, PacketReceiveEventArgs args);
@@ -28,6 +30,7 @@ namespace SensorLibrary.Devices
         ModuleTypeEnum ModuleType { get; }
         bool IsHold { get; set; }
 
+        PacketServer ReceivingServer { get; set; }
         void Observe(IObservable<IDeviceState<IPacketDeviceData>> observable);
         void SendState();
         IObservable<EventPattern<PacketReceiveEventArgs>> GetNextObservable { get; }
@@ -42,6 +45,7 @@ namespace SensorLibrary.Devices
         protected IDisposable Unsubscriber = null;
         protected IObservable<IDeviceState<IPacketDeviceData>> Observing = null;
 
+        public PacketServer ReceivingServer { get; set; }
         public virtual TState CurrentState { get; set; }
         public DeviceID DeviceID { get; set; }
         public ModuleTypeEnum ModuleType { get; protected set; }
