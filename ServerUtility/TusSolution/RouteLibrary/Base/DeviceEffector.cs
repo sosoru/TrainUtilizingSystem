@@ -205,6 +205,11 @@ namespace RouteLibrary.Base
             this.Device.SendState();
         }
 
+        public void CheckDevice()
+        {
+            this.Device.DeviceKernel
+        }
+
         private MotorMemoryStateEnum _before_state = MotorMemoryStateEnum.Unknown;
         public override void ApplyCommand(CommandInfo cmd)
         {
