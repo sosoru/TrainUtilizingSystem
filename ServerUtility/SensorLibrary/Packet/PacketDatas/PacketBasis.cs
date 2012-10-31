@@ -71,6 +71,11 @@ namespace SensorLibrary
                    && (this.InternalAddr == inter || inter < 0);
         }
 
+        public int UniqueIdByBoard
+        {
+            get { this.ParentPart.GetHashCode() ^ this.ModuleAddr.GetHashCode(); }
+        }
+
 
         #region implementation of IEqualable
         public static bool operator ==(DeviceID A, DeviceID B)
@@ -177,11 +182,15 @@ namespace SensorLibrary
             while (bufind <= DATA_SIZE && this.Data[bufind] != 0x00)
             {
                 var len = this.Data[bufind];
+                var internelid = this.Data[bufind + 1];
                 var mtype = (ModuleTypeEnum)this.Data[bufind + 2];
                 var f = factory.AvailableDeviceTypes.First(a => a.ModuleType == mtype);
                 var state = f.DeviceStateCreate();
                 var data = state.Data;
                 var cpbuffer = new byte[len];
+
+                state.ID = this.ID;
+                state.ID.InternalAddr = internalid;
 
                 Array.Copy(this.Data, bufind, cpbuffer, 0, len); 
                 data.RestoreObject(cpbuffer);
