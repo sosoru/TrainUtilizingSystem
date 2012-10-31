@@ -109,7 +109,7 @@ namespace RouteLibrary.Base
             return this.InnerBlocks.FirstOrDefault(b => b.Name == p);
         }
 
-        public void PrepareVehicles()
+        public void ChangeDetectingMode()
         {
             var detectionduty = 0.05f;
 
@@ -127,14 +127,13 @@ namespace RouteLibrary.Base
                 {
                     var pack = DevicePacket.CreatePackedPacket(Kernel.InquiryState(dev.DeviceID));
                     this.Server.SendPacket(pack.First());
-                    return this.Server.GetDispatcher()
-                        .Where(state => dev.DeviceID == state.ID)
-                        .Cast<MotorState>()
-                        .Timeout(TimeSpan.FromSeconds(5))
-                        .First();
                 })
                 .Subscribe();
 
+        }
+
+        public void PrepareVehicles()
+        {
             // detection process succeeded
             var g = this.InnerBlocks.Where(b => b.HasMotor && b.IsDetectingTrain)
                 .Select(b => new Vehicle() { CurrentBlock = b });
