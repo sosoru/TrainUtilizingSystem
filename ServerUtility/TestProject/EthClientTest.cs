@@ -178,7 +178,7 @@ namespace TestProject
             var mtrstate = mtr.CurrentState;
             var inqiry = Kernel.InquiryState(mtrpacket.destId);
 
-            var memch = Kernel.MemoryState(mtrpacket.destId, new MemoryState(0, false));
+            var memch = Kernel.MemoryState(mtrpacket.destId, new MemoryState(0));
             var memstate = (MemoryState)memch.CurrentState;
 
             memstate.CurrentMemory = 0;
