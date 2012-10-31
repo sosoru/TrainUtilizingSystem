@@ -271,7 +271,7 @@ namespace TestProject
             var train = new Mock<SensorDetector>();
             train.Setup(e => e.IsDetected).Returns(() => true);
 
-            sht.GetBlock("AT3").Detector = train;
+            sht.GetBlock("AT3").Detector = train.Object;
             sht.PrepareVehicles();
 
         }
