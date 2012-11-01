@@ -199,6 +199,15 @@ namespace TestProject
             target.AsyncSend(mtrpacket).Subscribe();
 
             mtrstate.ID = new DeviceID(24, 1, 1);
+            mtrstate.ControlMode = MotorControlMode.DutySpecifiedMode;
+            mtrstate.Duty = 0.5f;
+            mtrstate.Direction = MotorDirection.Positive;
+            memstate.ID = mtrstate.ID;
+            memstate.CurrentMemory = 1;
+            mtrpacket.DataPacket = DevicePacket.CreatePackedPacket(memch, mtr).First();
+            target.AsyncSend(mtrpacket).Subscribe();
+
+            mtrstate.ID = new DeviceID(24, 1, 1);
             mtrstate.ControlMode = MotorControlMode.WaitingPulseMode;
             mtrstate.MemoryWhenEntered = MotorMemoryStateEnum.NoEffect;
             mtrstate.DestinationID = new DeviceID(24, 1, 2);
