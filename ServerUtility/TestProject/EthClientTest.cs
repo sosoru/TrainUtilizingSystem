@@ -354,45 +354,45 @@ namespace TestProject
             }).ToArray();
         }
 
-        //[TestMethod()]
-        //public void sw_test()
-        //{
-        //    var target = sample;
-        //    target.Connect();
+        [TestMethod()]
+        public void sw_test()
+        {
+            var target = sample;
+            target.Connect();
 
-        //    var ptpacket = new EthPacket()
-        //    {
-        //        srcId = new DeviceID(102, 0),
-        //        destId = new DeviceID(24, 1, 1),
-        //    };
-        //    var ptdata = new SensorLibrary.Packet.Data.SwitchData();
-        //    var ptstate = new SwitchState()
-        //    {
-        //        //BasePacket = ptpacket.DataPacket,
-        //        Data = ptdata,
-        //        Position = SensorLibrary.Packet.Data.PointStateEnum.Curve,
-        //        DeadTime = 150,
-        //        ChangingTime = 200,
-        //    };
-        //    ptstate.FlushDataState();
+            var ptpacket = new EthPacket()
+            {
+                srcId = new DeviceID(100, 0),
+                destId = new DeviceID(24, 1, 1),
+            };
+            var ptdata = new SensorLibrary.Packet.Data.SwitchData();
+            var ptstate = new SwitchState()
+            {
+                //BasePacket = ptpacket.DataPacket,
+                Data = ptdata,
+                Position = SensorLibrary.Packet.Data.PointStateEnum.Curve,
+                DeadTime = 150,
+                ChangingTime = 200,
+            };
+            ptstate.FlushDataState();
 
-        //    var prm = Enumerable.Range(1, 8)
-        //                .SelectMany(i =>
-        //                    new[] { PointStateEnum.Straight, PointStateEnum.Curve }
-        //                        .Select(p => new { devnum = i, position = p })
-        //                        );
+            var prm = Enumerable.Range(1, 8)
+                        .SelectMany(i =>
+                            new[] { PointStateEnum.Straight, PointStateEnum.Curve }
+                                .Select(p => new { devnum = i, position = p })
+                                );
 
-        //    var ob = prm.Select(a =>
-        //        {
-        //            ptpacket.destId.InternalAddr = (byte)a.devnum;
-        //            ptstate.Position = a.position;
-        //            ptstate.FlushDataState();
+            var ob = prm.Select(a =>
+                {
+                    ptpacket.destId.InternalAddr = (byte)a.devnum;
+                    ptstate.Position = a.position;
+                    ptstate.FlushDataState();
 
-        //            return sw_check(target, ptpacket, ptstate)
-        //                    .Delay(TimeSpan.FromSeconds(1)).First();
-        //        }).ToArray();
+                    return sw_check(target, ptpacket, ptstate)
+                            .Delay(TimeSpan.FromSeconds(1)).First();
+                }).ToArray();
 
-        //}
+        }
 
         /// <summary>
         ///Send のテスト
