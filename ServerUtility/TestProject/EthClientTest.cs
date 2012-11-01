@@ -185,9 +185,7 @@ namespace TestProject
             mtrstate.ControlMode = MotorControlMode.DutySpecifiedMode;
             mtrstate.Duty = 0.5f;
             mtrstate.Direction = MotorDirection.Positive;
-            memch.DeviceID = memstate.ID;
-            memstate.ID = mtrstate.ID;
-            memstate.CurrentMemory = 1;
+            memch = Kernel.MemoryState(mtrstate.ID, new MemoryState(1));
             mtrpacket.DataPacket = DevicePacket.CreatePackedPacket(memch, mtr).First();
             target.AsyncSend(mtrpacket).Subscribe();
             System.Threading.Thread.Sleep(100);
@@ -197,9 +195,7 @@ namespace TestProject
             mtrstate.ControlMode = MotorControlMode.DutySpecifiedMode;
             mtrstate.Duty = 0.5f;
             mtrstate.Direction = MotorDirection.Negative;
-            memch.DeviceID = memstate.ID;
-            memstate.ID = mtrstate.ID;
-            memstate.CurrentMemory = 2;
+            memch = Kernel.MemoryState(mtrstate.ID, new MemoryState(2));
             mtrpacket.DataPacket = DevicePacket.CreatePackedPacket(memch, mtr).First();
             target.AsyncSend(mtrpacket).Subscribe();
             System.Threading.Thread.Sleep(100);
@@ -209,9 +205,7 @@ namespace TestProject
             mtrstate.ControlMode = MotorControlMode.DutySpecifiedMode;
             mtrstate.Duty = 0.5f;
             mtrstate.Direction = MotorDirection.Positive;
-            memch.DeviceID = memstate.ID;
-            memstate.ID = mtrstate.ID;
-            memstate.CurrentMemory = 1;
+            memch = Kernel.MemoryState(mtrstate.ID, new MemoryState(1));
             mtrpacket.DataPacket = DevicePacket.CreatePackedPacket(memch, mtr).First();
             target.AsyncSend(mtrpacket).Subscribe();
             System.Threading.Thread.Sleep(100);
@@ -223,9 +217,7 @@ namespace TestProject
             mtrstate.DestinationID = new DeviceID(24, 1, 2);
             mtrstate.DestinationMemory = MotorMemoryStateEnum.NoEffect;
             mtrstate.ThresholdCurrent = 0.5f;
-            memch.DeviceID = memstate.ID;
-            memstate.ID = mtrstate.ID;
-            memstate.CurrentMemory = 2;
+            memch = Kernel.MemoryState(mtrstate.ID, new MemoryState(2));
             mtrpacket.DataPacket = DevicePacket.CreatePackedPacket(memch, mtr).First();
             target.AsyncSend(mtrpacket).Subscribe();
             System.Threading.Thread.Sleep(100);
