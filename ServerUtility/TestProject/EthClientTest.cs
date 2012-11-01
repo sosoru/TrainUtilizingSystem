@@ -162,6 +162,31 @@ namespace TestProject
 
         }
 
+        [TestMethod()]
+        public void MotorControl_WaitTest()
+        {
+            var target = sample;
+            target.Connect();
+
+            var mtrpacket = new EthPacket()
+            {
+                srcId = new DeviceID(100, 0),
+                destId = new DeviceID(24, 1, 1),
+            };
+            var mtr = new Motor() { DeviceID = mtrpacket.destId };
+            var mtrstate = mtr.CurrentState;
+            var inqiry = Kernel.InquiryState(mtrpacket.destId);
+
+            var memch = Kernel.MemoryState(mtrpacket.destId, new MemoryState(0));
+            var memstate = (MemoryState)memch.CurrentState;
+
+            mtrstate.ControlMode = MotorControlMode.WaitingPulseMode;
+            mtrstate.ThresholdCurrent = 0.01f;
+
+            mtrpacket.DataPacket = DevicePacket.CreatePackedPacket(mtr);
+            target.AsyncSend(mtrpacket).Subscribe();
+
+        }
 
         [TestMethod()]
         public void MotorControl_MemoryTest()
