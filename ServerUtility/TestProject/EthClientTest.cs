@@ -171,7 +171,7 @@ namespace TestProject
             var mtrpacket = new EthPacket()
             {
                 srcId = new DeviceID(100, 0),
-                destId = new DeviceID(24, 1, 1),
+                destId = new DeviceID(24, 1, 0),
             };
             var mtr = new Motor() { DeviceID = mtrpacket.destId };
             var mtrstate = mtr.CurrentState;
@@ -197,6 +197,7 @@ namespace TestProject
             memstate.CurrentMemory = 2;
             mtrpacket.DataPacket = DevicePacket.CreatePackedPacket(memch, mtr).First();
             target.AsyncSend(mtrpacket).Subscribe();
+            System.Threading.Thread.Sleep(100);
 
             mtrstate.ID = new DeviceID(24, 1, 1);
             mtrstate.ControlMode = MotorControlMode.DutySpecifiedMode;
@@ -206,6 +207,7 @@ namespace TestProject
             memstate.CurrentMemory = 1;
             mtrpacket.DataPacket = DevicePacket.CreatePackedPacket(memch, mtr).First();
             target.AsyncSend(mtrpacket).Subscribe();
+            System.Threading.Thread.Sleep(100);
 
             mtrstate.ID = new DeviceID(24, 1, 1);
             mtrstate.ControlMode = MotorControlMode.WaitingPulseMode;
@@ -217,6 +219,7 @@ namespace TestProject
             memstate.CurrentMemory = 2;
             mtrpacket.DataPacket = DevicePacket.CreatePackedPacket(memch, mtr).First();
             target.AsyncSend(mtrpacket).Subscribe();
+            System.Threading.Thread.Sleep(100);
 
 
 
