@@ -190,6 +190,7 @@ namespace TestProject
             memstate.CurrentMemory = 1;
             mtrpacket.DataPacket = DevicePacket.CreatePackedPacket(memch, mtr).First();
             target.AsyncSend(mtrpacket).Subscribe();
+            System.Threading.Thread.Sleep(100);
 
             mtr.DeviceID = new DeviceID(24, 1, 2);
             mtrstate.ID = mtr.DeviceID;
