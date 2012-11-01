@@ -365,15 +365,11 @@ namespace TestProject
                 srcId = new DeviceID(100, 0),
                 destId = new DeviceID(24, 1, 1),
             };
-            var ptdata = new SensorLibrary.Packet.Data.SwitchData();
-            var ptstate = new SwitchState()
-            {
-                //BasePacket = ptpacket.DataPacket,
-                Data = ptdata,
-                Position = SensorLibrary.Packet.Data.PointStateEnum.Curve,
-                DeadTime = 150,
-                ChangingTime = 200,
-            };
+
+            var pt = new Switch();
+            pt.CurrentState.DeadTime = 150;
+            pt.CurrentState.ChangingTime = 200;
+
 
             var prm = Enumerable.Range(1, 8)
                         .SelectMany(i =>
@@ -383,9 +379,14 @@ namespace TestProject
 
             var ob = prm.Select(a =>
                 {
-                    ptpacket.destId.InternalAddr = (byte)a.devnum;
-                    ptstate.Position = a.position;
+                    var id  = pt.DeviceID;
+                    id.InternalAddr =(byte)a.devnum;
 
+                    pt.DeviceID = id;
+                    pt.CurrentState.ID = id;
+                    pt.CurrentState.Position = a.position;
+
+                    ptpacket.DataPacket = DevicePacket.CreatePackedPacket(pt);
 
                     System.Threading.Thread.Sleep(1000);
 
