@@ -386,7 +386,7 @@ namespace TestProject
                     pt.CurrentState.ID = id;
                     pt.CurrentState.Position = a.position;
 
-                    ptpacket.DataPacket = DevicePacket.CreatePackedPacket(pt);
+                    ptpacket.DataPacket = DevicePacket.CreatePackedPacket(pt).First();
 
                     System.Threading.Thread.Sleep(1000);
 
