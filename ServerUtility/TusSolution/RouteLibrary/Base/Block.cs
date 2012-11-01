@@ -57,7 +57,7 @@ namespace RouteLibrary.Base
     public class Block
     {
 
-        private BlockInfo info;
+        public BlockInfo info { get; private set; }
 
         public string Name { get; private set; }
         public BlockSheet Sheet { get; private set; }
