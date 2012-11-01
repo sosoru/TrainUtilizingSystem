@@ -374,7 +374,6 @@ namespace TestProject
                 DeadTime = 150,
                 ChangingTime = 200,
             };
-            ptstate.FlushDataState();
 
             var prm = Enumerable.Range(1, 8)
                         .SelectMany(i =>
