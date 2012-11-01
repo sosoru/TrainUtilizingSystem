@@ -196,6 +196,7 @@ namespace TestProject
                 = DevicePacket.CreatePackedPacket(mtr, inqiry).First();
 
             mtr_check(target, mtrpacket, mtrstate);
+            System.Threading.Thread.Sleep(1000);
 
             // 2: change to memory 1, and check the memory is changed
             mtrstate.Direction = MotorDirection.Negative;
@@ -205,6 +206,7 @@ namespace TestProject
                 = DevicePacket.CreatePackedPacket(memch, mtr, inqiry).First();
 
             mtr_check(target, mtrpacket, mtrstate);
+            System.Threading.Thread.Sleep(1000);
 
             // 3: change to memory 0, and check the memory is saved 
             memstate.CurrentMemory = 0;
@@ -213,6 +215,7 @@ namespace TestProject
                 = DevicePacket.CreatePackedPacket(memch, inqiry).First();
 
             mtr_check(target, mtrpacket, mtrstate);
+            System.Threading.Thread.Sleep(1000);
 
         }
 
