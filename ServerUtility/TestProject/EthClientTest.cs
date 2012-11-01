@@ -180,11 +180,38 @@ namespace TestProject
             var memch = Kernel.MemoryState(mtrpacket.destId, new MemoryState(0));
             var memstate = (MemoryState)memch.CurrentState;
 
-            mtrstate.ControlMode = MotorControlMode.WaitingPulseMode;
-            mtrstate.ThresholdCurrent = 0.01f;
-
-            mtrpacket.DataPacket = DevicePacket.CreatePackedPacket(mtr);
+            mtrstate.ID.InternalAddr = 2;
+            mtrstate.ControlMode = MotorControlMode.DutySpecifiedMode;
+            mtrstate.Duty = 0.5f;
+            mtrstate.Direction = MotorDirection.Positive;
+            memstate.ID.InternalAddr = mtrstate.ID.InternalAddr;
+            memstate.CurrentMemory = 1;
+            mtrpacket.DataPacket = DevicePacket.CreatePackedPacket(memch, mtr);
             target.AsyncSend(mtrpacket).Subscribe();
+
+            mtrstate.ID.InternalAddr = 2;
+            mtrstate.ControlMode = MotorControlMode.DutySpecifiedMode;
+            mtrstate.Duty = 0.5f;
+            mtrstate.Direction = MotorDirection.Negative;
+             memstate.ID.InternalAddr = mtrstate.ID.InternalAddr;
+           memstate.CurrentMemory = 2;
+            mtrpacket.DataPacket = DevicePacket.CreatePackedPacket(memch, mtr);
+            target.AsyncSend(mtrpacket).Subscribe();
+
+            mtrstate.ID.InternalAddr = 1;
+            mtrstate.ControlMode = MotorControlMode.WaitingPulseMode;
+            mtrstate.MemoryWhenEntered = MotorMemoryStateEnum.NoEffect;
+            mtrstate.DestinationID = new DeviceID(24, 1, 2);
+            mtrstate.DestinationMemory = MotorMemoryStateEnum.NoEffect;
+            mtrstate.ThresholdCurrent = 0.03f;
+            memstate.ID.InternalAddr = mtrstate.ID.InternalAddr;
+            memstate.CurrentMemory = 1;
+            mtrpacket.DataPacket = DevicePacket.CreatePackedPacket(memch, mtr);
+            target.AsyncSend(mtrpacket).Subscribe();
+
+
+
+ 
 
         }
 
