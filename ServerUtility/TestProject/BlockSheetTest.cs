@@ -16,6 +16,7 @@ using System.Reactive.Linq;
 using Moq;
 using Moq.Linq;
 using SensorLibrary;
+using System.Reactive.Subjects;
 
 namespace TestProject
 {
@@ -263,8 +264,12 @@ namespace TestProject
             //    .Callback<DevicePacket>(pack => writtenstate.AddRange(pack.ExtractPackedPacket()));
 
             var serv = sample_server;
+            var log = new List<IDeviceState<IPacketDeviceData>>();
 
-            var sht = new BlockSheet(sample_loop_sheet, serv.Object);
+            serv.GetDispatcher()
+                .Subscribe(state => log.Add(state));
+
+            var sht = new BlockSheet(sample_loop_sheet, serv);
             var route = new Route(sht, new[] { "AT1", "AT2", "AT3", "AT4", "AT5" });
             var cmd = new CommandInfo()
             {
