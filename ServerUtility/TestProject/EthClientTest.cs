@@ -205,7 +205,7 @@ namespace TestProject
             mtrstate.DestinationMemory = MotorMemoryStateEnum.NoEffect;
             mtrstate.ThresholdCurrent = 0.5f;
             memstate.ID = mtrstate.ID;
-            memstate.CurrentMemory = 1;
+            memstate.CurrentMemory = 2;
             mtrpacket.DataPacket = DevicePacket.CreatePackedPacket(memch, mtr).First();
             target.AsyncSend(mtrpacket).Subscribe();
 
