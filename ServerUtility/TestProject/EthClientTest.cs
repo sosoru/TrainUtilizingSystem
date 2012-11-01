@@ -203,7 +203,7 @@ namespace TestProject
             mtrstate.MemoryWhenEntered = MotorMemoryStateEnum.NoEffect;
             mtrstate.DestinationID = new DeviceID(24, 1, 2);
             mtrstate.DestinationMemory = MotorMemoryStateEnum.NoEffect;
-            mtrstate.ThresholdCurrent = 0.03f;
+            mtrstate.ThresholdCurrent = 0.5f;
             memstate.ID = mtrstate.ID;
             memstate.CurrentMemory = 1;
             mtrpacket.DataPacket = DevicePacket.CreatePackedPacket(memch, mtr).First();
