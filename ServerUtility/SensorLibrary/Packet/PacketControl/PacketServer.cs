@@ -115,12 +115,12 @@ namespace SensorLibrary.Packet.Control
                                             a => a.ModuleType == pack.ModuleType);
                                     if (f != null)
                                     {
-                                        var state = f.DeviceStateCreate();
-                                        var data = f.DeviceDataCreate();
+                                        //var state = f.DeviceStateCreate();
+                                        //var data = f.DeviceDataCreate();
 
                                         //state.ReceivingServer = this;
 
-                                        this.actionList.ForEach((item) => item.Act(state));
+                                        this.actionList.ForEach((item) => item.Act(pack));
                                     }
                                     else
                                     {
