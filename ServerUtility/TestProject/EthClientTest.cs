@@ -385,7 +385,6 @@ namespace TestProject
                 {
                     ptpacket.destId.InternalAddr = (byte)a.devnum;
                     ptstate.Position = a.position;
-                    ptstate.FlushDataState();
 
                     return sw_check(target, ptpacket, ptstate)
                             .Delay(TimeSpan.FromSeconds(1)).First();
