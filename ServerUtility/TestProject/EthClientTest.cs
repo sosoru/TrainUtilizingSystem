@@ -386,7 +386,7 @@ namespace TestProject
                     ptpacket.destId.InternalAddr = (byte)a.devnum;
                     ptstate.Position = a.position;
 
-                    target.AsyncSend(ptpacket)
+                    return target.AsyncSend(ptpacket)
                         .Delay(TimeSpan.FromSeconds(1))
                         .Subscribe();
 
