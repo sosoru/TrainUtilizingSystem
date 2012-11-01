@@ -253,14 +253,16 @@ namespace TestProject
         public void PrepareVehiclesTest()
         {
             BlockSheet target = sample_sheet;
-            var written = new List<IDevice<IDeviceState<IPacketDeviceData>>>();
-            var writtenstate = new List<IDeviceState<IPacketDeviceData>>();
-            var serv = new Mock<PacketServer>();
+            //var written = new List<IDevice<IDeviceState<IPacketDeviceData>>>();
+            //var writtenstate = new List<IDeviceState<IPacketDeviceData>>();
+            //var serv = new Mock<PacketServer>();
 
-            serv.Setup(e => e.SendState(It.IsAny<IDevice<IDeviceState<IPacketDeviceData>>>()))
-                .Callback<IDevice<IDeviceState<IPacketDeviceData>>>(d => written.Add(d));
-            serv.Setup(e => e.SendPacket(It.IsAny<DevicePacket>()))
-                .Callback<DevicePacket>(pack => writtenstate.AddRange(pack.ExtractPackedPacket()));
+            //serv.Setup(e => e.SendState(It.IsAny<IDevice<IDeviceState<IPacketDeviceData>>>()))
+            //    .Callback<IDevice<IDeviceState<IPacketDeviceData>>>(d => written.Add(d));
+            //serv.Setup(e => e.SendPacket(It.IsAny<DevicePacket>()))
+            //    .Callback<DevicePacket>(pack => writtenstate.AddRange(pack.ExtractPackedPacket()));
+
+            var serv = sample_server;
 
             var sht = new BlockSheet(sample_loop_sheet, serv.Object);
             var route = new Route(sht, new[] { "AT1", "AT2", "AT3", "AT4", "AT5" });
@@ -271,10 +273,10 @@ namespace TestProject
             };
 
             //set dummy train
-            var train = new Mock<SensorDetector>();
-            train.Setup(e => e.IsDetected).Returns(() => true);
+            //var train = new Mock<SensorDetector>();
+            //train.Setup(e => e.IsDetected).Returns(() => true);
 
-            sht.GetBlock("AT3").Detector = train.Object;
+            //sht.GetBlock("AT3").Detector = train.Object;
 
             sht.ChangeDetectingMode(); // todo: value check
             sht.PrepareVehicles();
