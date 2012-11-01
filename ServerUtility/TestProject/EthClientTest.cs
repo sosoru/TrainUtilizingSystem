@@ -387,6 +387,7 @@ namespace TestProject
                     ptstate.Position = a.position;
 
                     target.AsyncSend(ptpacket)
+                        .Delay(TimeSpan.FromSeconds(1))
                         .Subscribe();
 
                 }).ToArray();
