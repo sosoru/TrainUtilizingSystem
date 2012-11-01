@@ -283,6 +283,9 @@ namespace TestProject
 
             //sht.GetBlock("AT3").Detector = train.Object;
 
+            if(!serv.IsLooping)
+                serv.LoopStart();
+
             sht.ChangeDetectingMode(); // todo: value check
             sht.PrepareVehicles();
 
