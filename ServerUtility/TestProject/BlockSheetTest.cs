@@ -287,6 +287,8 @@ namespace TestProject
                 serv.LoopStart();
 
             sht.ChangeDetectingMode(); // todo: value check
+            System.Threading.Thread.Sleep(5000);
+
             sht.PrepareVehicles();
 
         }
