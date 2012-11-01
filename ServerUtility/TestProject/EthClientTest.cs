@@ -186,7 +186,7 @@ namespace TestProject
             mtrstate.Direction = MotorDirection.Positive;
             memstate.ID = mtrstate.ID;
             memstate.CurrentMemory = 1;
-            mtrpacket.DataPacket = DevicePacket.CreatePackedPacket(memch, mtr);
+            mtrpacket.DataPacket = DevicePacket.CreatePackedPacket(memch, mtr).First();
             target.AsyncSend(mtrpacket).Subscribe();
 
             mtrstate.ID = new DeviceID(24, 1, 2);
@@ -195,7 +195,7 @@ namespace TestProject
             mtrstate.Direction = MotorDirection.Negative;
             memstate.ID = mtrstate.ID;
             memstate.CurrentMemory = 2;
-            mtrpacket.DataPacket = DevicePacket.CreatePackedPacket(memch, mtr);
+            mtrpacket.DataPacket = DevicePacket.CreatePackedPacket(memch, mtr).First();
             target.AsyncSend(mtrpacket).Subscribe();
 
             mtrstate.ID = new DeviceID(24, 1, 1);
@@ -206,7 +206,7 @@ namespace TestProject
             mtrstate.ThresholdCurrent = 0.03f;
             memstate.ID = mtrstate.ID;
             memstate.CurrentMemory = 1;
-            mtrpacket.DataPacket = DevicePacket.CreatePackedPacket(memch, mtr);
+            mtrpacket.DataPacket = DevicePacket.CreatePackedPacket(memch, mtr).First();
             target.AsyncSend(mtrpacket).Subscribe();
 
 
