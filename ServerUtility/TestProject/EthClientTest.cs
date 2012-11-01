@@ -379,7 +379,7 @@ namespace TestProject
 
             var ob = prm.Select(a =>
                 {
-                    var id = ptpacket.destID;
+                    var id = ptpacket.destId;
                     id.InternalAddr =(byte)a.devnum;
 
                     pt.DeviceID = id;
