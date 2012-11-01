@@ -73,7 +73,7 @@ namespace SensorLibrary.Devices.TusAvrDevices
         {
             get
             {
-                return (float)this.Data.ThresholdValue / 255.0f * 5.0f;
+                return (float)this.Data.ThresholdValue / 255.0f * 5.0f ;
             }
             set
             {
