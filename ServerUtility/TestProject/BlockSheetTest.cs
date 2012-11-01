@@ -251,6 +251,26 @@ namespace TestProject
         }
 
         [TestMethod()]
+        public void SampleBlockTest()
+        {
+            var serv = sample_server;
+            var target = new BlockSheet(sample_loop_sheet, serv);
+            var log = new List<IDeviceState<IPacketDeviceData>>();
+
+            serv.GetDispatcher()
+                .Subscribe(state => log.Add(state));
+
+            var rt = new Route(target, new[] { "AT1", "AT2", "AT3", "AT4" });
+            var cmd = new CommandInfo()
+            {
+                Route = rt,
+                Speed = 0.5f
+            };
+            
+            
+        }
+
+        [TestMethod()]
         public void PrepareVehiclesTest()
         {
             BlockSheet target = sample_sheet;
