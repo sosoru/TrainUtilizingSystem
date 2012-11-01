@@ -180,41 +180,49 @@ namespace TestProject
             var memch = Kernel.MemoryState(mtrpacket.destId, new MemoryState(0));
             var memstate = (MemoryState)memch.CurrentState;
 
-            mtrstate.ID = new DeviceID(24, 1, 2);
+            mtr.DeviceID = new DeviceID(24, 1, 2);
+            mtrstate.ID = mtr.DeviceID;
             mtrstate.ControlMode = MotorControlMode.DutySpecifiedMode;
             mtrstate.Duty = 0.5f;
             mtrstate.Direction = MotorDirection.Positive;
+            memch.DeviceID = memstate.ID;
             memstate.ID = mtrstate.ID;
             memstate.CurrentMemory = 1;
             mtrpacket.DataPacket = DevicePacket.CreatePackedPacket(memch, mtr).First();
             target.AsyncSend(mtrpacket).Subscribe();
 
-            mtrstate.ID = new DeviceID(24, 1, 2);
+            mtr.DeviceID = new DeviceID(24, 1, 2);
+            mtrstate.ID = mtr.DeviceID;
             mtrstate.ControlMode = MotorControlMode.DutySpecifiedMode;
             mtrstate.Duty = 0.5f;
             mtrstate.Direction = MotorDirection.Negative;
+            memch.DeviceID = memstate.ID;
             memstate.ID = mtrstate.ID;
             memstate.CurrentMemory = 2;
             mtrpacket.DataPacket = DevicePacket.CreatePackedPacket(memch, mtr).First();
             target.AsyncSend(mtrpacket).Subscribe();
             System.Threading.Thread.Sleep(100);
 
-            mtrstate.ID = new DeviceID(24, 1, 1);
+            mtr.DeviceID = new DeviceID(24, 1, 1);
+            mtrstate.ID = mtr.DeviceID;
             mtrstate.ControlMode = MotorControlMode.DutySpecifiedMode;
             mtrstate.Duty = 0.5f;
             mtrstate.Direction = MotorDirection.Positive;
+            memch.DeviceID = memstate.ID;
             memstate.ID = mtrstate.ID;
             memstate.CurrentMemory = 1;
             mtrpacket.DataPacket = DevicePacket.CreatePackedPacket(memch, mtr).First();
             target.AsyncSend(mtrpacket).Subscribe();
             System.Threading.Thread.Sleep(100);
 
-            mtrstate.ID = new DeviceID(24, 1, 1);
+            mtr.DeviceID = new DeviceID(24, 1, 1);
+            mtrstate.ID = mtr.DeviceID;
             mtrstate.ControlMode = MotorControlMode.WaitingPulseMode;
             mtrstate.MemoryWhenEntered = MotorMemoryStateEnum.NoEffect;
             mtrstate.DestinationID = new DeviceID(24, 1, 2);
             mtrstate.DestinationMemory = MotorMemoryStateEnum.NoEffect;
             mtrstate.ThresholdCurrent = 0.5f;
+            memch.DeviceID = memstate.ID;
             memstate.ID = mtrstate.ID;
             memstate.CurrentMemory = 2;
             mtrpacket.DataPacket = DevicePacket.CreatePackedPacket(memch, mtr).First();
