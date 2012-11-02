@@ -364,7 +364,7 @@ namespace TestProject
 
             var log = new List<EthPacket>();
             var target = new Mock<EthClient>();
-            target.Setup(e => e.AsyncSend(It.IsAny<EthPacket>))
+            target.Setup(e => e.AsyncSend(It.IsAny<EthPacket>()))
                 .Callback<EthPacket>(e => log.AddRange(e.DataPacket.ExtractPackedPacket()));
 
             var ptpacket = new EthPacket()
