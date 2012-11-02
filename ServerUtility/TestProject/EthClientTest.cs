@@ -365,7 +365,7 @@ namespace TestProject
             var log = new List<IDeviceState<IPacketDeviceData>>();
             var target = new Mock<EthClient>();
             target.Setup(e => e.AsyncSend(It.IsAny<EthPacket>()))
-                .Returns<IObservable<Unit>>(e => Observable.Empty<Unit>())
+                .Returns(() => Observable.Empty<Unit>())
                 .Callback<EthPacket>(e => log.AddRange(e.DataPacket.ExtractPackedPacket()));
 
             var ptpacket = new EthPacket()
