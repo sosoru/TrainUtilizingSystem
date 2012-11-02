@@ -362,7 +362,7 @@ namespace TestProject
             //var target = sample;
             //target.Connect();
 
-            var log = new List<EthPacket>();
+            var log = new List<IDeviceState<IPacketDeviceData>>();
             var target = new Mock<EthClient>();
             target.Setup(e => e.AsyncSend(It.IsAny<EthPacket>()))
                 .Callback<EthPacket>(e => log.AddRange(e.DataPacket.ExtractPackedPacket()));
