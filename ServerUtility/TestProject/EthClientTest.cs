@@ -363,10 +363,15 @@ namespace TestProject
             //target.Connect();
 
             var log = new List<IDeviceState<IPacketDeviceData>>();
+            var logeth = new List<EthPacket>();
             var target = new Mock<EthClient>();
             target.Setup(e => e.AsyncSend(It.IsAny<EthPacket>()))
                 .Returns(() => Observable.Empty<Unit>())
-                .Callback<EthPacket>(e => log.AddRange(e.DataPacket.ExtractPackedPacket()));
+                .Callback<EthPacket>(e =>
+                {
+                    log.AddRange(e.DataPacket.ExtractPackedPacket());
+                    logeth.Add(e);
+                });
 
             var ptpacket = new EthPacket()
             {
@@ -388,7 +393,7 @@ namespace TestProject
             var ob = prm.Select(a =>
                 {
                     var id = ptpacket.destId;
-                    id.InternalAddr =(byte)a.devnum;
+                    id.InternalAddr = (byte)a.devnum;
 
                     pt.DeviceID = id;
                     pt.CurrentState.ID = id;
