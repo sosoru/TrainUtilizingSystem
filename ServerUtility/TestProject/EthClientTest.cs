@@ -11,6 +11,8 @@ using System.Net;
 using System.Linq;
 using SensorLibrary;
 using SensorLibrary.Devices;
+using Moq;
+using System.Collections.Generic;
 
 namespace TestProject
 {
@@ -357,8 +359,13 @@ namespace TestProject
         [TestMethod()]
         public void sw_test()
         {
-            var target = sample;
-            target.Connect();
+            //var target = sample;
+            //target.Connect();
+
+            var log = new List<IDeviceState<IPacketDeviceData>>();
+            var target = new Mock<EthPacket>();
+            target.Setup(e => e.AsyncSend(It.IsAny<EthPacket>))
+                .Callback<EthPacket>(e => log.AddRange(e.DataPacket.ExtractPackedPacket()));
 
             var ptpacket = new EthPacket()
             {
