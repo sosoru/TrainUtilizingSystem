@@ -37,7 +37,7 @@ namespace SensorLibrary.Packet.IO
                 .Select(a => a.ToObject<EthPacket>());
         }
 
-        public IObservable<Unit> AsyncSend(EthPacket packet)
+        public virtual IObservable<Unit> AsyncSend(EthPacket packet)
         {
             //return Observable
             //    .Using(
