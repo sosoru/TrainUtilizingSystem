@@ -390,7 +390,14 @@ namespace TestProject
 
                     System.Threading.Thread.Sleep(1000);
 
-                    return target.AsyncSend(ptpacket).Subscribe();
+                    return target.AsyncSend(ptpacket)
+                        //.SelectMany(a => target.AsyncReceive())
+                        //.SelectMany(a => a.DataPacket.ExtractPackedPacket())
+                        //.Where(state => state.ID == pt.DeviceID)
+                        //.Cast<SwitchState>()
+                        //.Do(state => Assert.IsTrue(state.Position == pt.CurrentState.Position))
+                        //.Timeout(TimeSpan.FromSeconds(1))
+                        .Subscribe();
 
                 }).ToArray();
 
