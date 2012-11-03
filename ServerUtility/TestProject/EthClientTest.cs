@@ -370,7 +370,6 @@ namespace TestProject
                 .Callback<EthPacket>(e =>
                 {
                     log.AddRange(e.DataPacket.ExtractPackedPacket());
-                    logeth.Add(e);
                 });
 
             var ptpacket = new EthPacket()
