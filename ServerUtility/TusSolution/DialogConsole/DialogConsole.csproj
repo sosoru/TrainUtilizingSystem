@@ -55,6 +55,10 @@
       <Project>{160a1d77-985c-4ddd-bb20-46c8ebadf62f}</Project>
       <Name>SensorLibrary</Name>
     </ProjectReference>
+    <ProjectReference Include="..\RouteLibrary\RouteLibrary.csproj">
+      <Project>{39e73a78-039d-45dd-ad32-879b81ea567e}</Project>
+      <Name>RouteLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
