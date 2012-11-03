@@ -370,6 +370,8 @@ namespace TestProject
                 .Callback<EthPacket>(e =>
                 {
                     log.AddRange(e.DataPacket.ExtractPackedPacket());
+                    logeth.ForEach(p =>
+                        Assert.IsFalse(p.DataPacket.Data.SequenceEqual(e.DataPacket.Data)));
                     logeth.Add(e);
                 });
 
