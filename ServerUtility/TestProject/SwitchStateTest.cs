@@ -4,6 +4,7 @@ using System;
 using SensorLibrary;
 using SensorLibrary.Packet;
 using SensorLibrary.Packet.Data;
+using System.Linq;
 
 namespace TestProject
 {
@@ -157,6 +158,27 @@ namespace TestProject
             target.Data.Position = (byte)PointStateEnum.Straight;
             Assert.AreEqual(target.Position, PointStateEnum.Straight);
 
+        }
+
+        [TestMethod()]
+        public void SerializeTest()
+        {
+            var targetA = sample_state;
+            var targetB = sample_state;
+
+            targetA.DeadTime = 200;
+            targetA.ChangingTime = 50;
+
+            targetB.DeadTime = targetA.DeadTime;
+            targetB.ChangingTime = targetA.ChangingTime;
+
+            targetA.ID = new DeviceID(24, 1, 1);
+            targetB.ID = new DeviceID(24, 1, 2);
+
+            targetA.Position = PointStateEnum.Straight;
+            targetB.Position = PointStateEnum.Curve;
+
+            Assert.IsFalse(targetA.ToByteArray().SequenceEqual(targetB.ToByteArray()));
         }
     }
 }
