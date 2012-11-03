@@ -20,25 +20,54 @@ namespace DialogConsole
 {
     class DialogCnosole
     {
+
         static void Main(string[] args)
         {
             var serv = CreateServer(IPAddress.Parse("192.168.2.0"), IPAddress.Parse("255.255.255.0"));
             var sht = CreateSheet("layout.yaml", serv);
 
+            var cmd = new CommandInfo();
 
+            Console.WriteLine("1 : show statuses");
+            Console.WriteLine("2 : change switches");
+            Console.WriteLine("3 : detect test");
+            
 
+        }
+
+        static void ShowStatus(BlockSheet sht)
+        {
+            var blocks = sht.InnerBlocks;
+
+            sht.InquiryAllMotors();
+            sht.InquiryDevices(sht.AllSwitches());
+
+            System.Threading.Thread.Sleep(2000);
+
+            foreach (var b in blocks)
+                Console.WriteLine(b.ToString());
         }
 
         static void ChangeSwitchAll(BlockSheet sht,  PointStateEnum pos)
         {
-            
+            var devs = sht.AllSwitches();
+
+            foreach (var sw in devs)
+            {
+                sw.CurrentState.Position = pos;
+            }
+
+            sht.InquiryDevices(devs);
         }
 
         static void Detect(BlockSheet sht)
         {
             sht.ChangeDetectingMode();
-
             System.Threading.Thread.Sleep(3000);
+
+            sht.InquiryAllMotors();
+            System.Threading.Thread.Sleep(2000);
+
             Console.WriteLine(sht.InnerBlocks
                .Where(b => b.IsDetectingTrain)
                 .Aggregate("", (ac, b) => ac += b.Name + ", "));
