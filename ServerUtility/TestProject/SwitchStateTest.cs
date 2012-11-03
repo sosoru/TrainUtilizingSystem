@@ -178,7 +178,10 @@ namespace TestProject
             targetA.Position = PointStateEnum.Straight;
             targetB.Position = PointStateEnum.Curve;
 
-            Assert.IsFalse(targetA.Data.ToByteArray().SequenceEqual(targetB.Data.ToByteArray()));
+            var packetA = DevicePacket.CreatePackedPacket(targetA);
+            var packetB = DevicePacket.CreatePackedPacket(targetB);
+
+            Assert.IsFalse(packetA.First().Data.SequenceEqual(packetB.First()));
         }
     }
 }
