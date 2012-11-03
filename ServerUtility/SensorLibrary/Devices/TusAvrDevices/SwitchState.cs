@@ -76,5 +76,10 @@ namespace SensorLibrary.Devices.TusAvrDevices
             }
         }
 
+        public override string ToString()
+        {
+            return string.Format("|sw : {0} ", Enum.GetName(this.Position));
+        }
+
     }
 }
