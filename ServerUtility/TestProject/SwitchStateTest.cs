@@ -178,6 +178,14 @@ namespace TestProject
             targetA.Position = PointStateEnum.Straight;
             targetB.Position = PointStateEnum.Curve;
 
+            var swA = new Switch();
+            var swB = new Switch();
+
+            swA.CurrentState = targetA;
+            swA.DeviceID = targetA.ID;
+            swB.CurrentState = targetB;
+            swB.DeviceID = targetB.ID;
+
             var packetA = DevicePacket.CreatePackedPacket(targetA);
             var packetB = DevicePacket.CreatePackedPacket(targetB);
 
