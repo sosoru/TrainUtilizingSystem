@@ -10,14 +10,47 @@ using SensorLibrary;
 using SensorLibrary.Packet;
 using SensorLibrary.Packet.Control;
 using SensorLibrary.Devices;
+
+using RouteLibrary;
+using RouteLibrary.Base;
+using RouteLibrary.Parser;
+
 namespace DialogConsole
 {
     class DialogCnosole
     {
         static void Main(string[] args)
         {
+            var serv = CreateServer(IPAddress.Parse("192.168.2.0"), IPAddress.Parse("255.255.255.0"));
+            var sht = CreateSheet("layout.yaml", serv);
+
             
         }
+
+        static PacketServer CreateServer(IPAddress ipbase, IPAddress ipmask)
+        {
+            var serv = new PacketServer(new AvrDeviceFactoryProvider());
+            var io = new SensorLibrary.Packet.IO.TusEthernetIO(ipbase, ipmask)
+            {
+                SourceID = new DeviceID(9, 0, 0),
+                Port = 8000,
+            };
+
+            serv.Controller = io;
+
+            serv.LoopStart();
+            return serv;
+        }
+
+        static BlockSheet CreateSheet(string path, PacketServer serv)
+        {
+            var parser = new BlockYaml();
+            var blocks = parser.Parse(path);
+
+            return new BlockSheet(blocks, serv);
+        }
+
+
     }
 
     public class DeviceDiagnostics
