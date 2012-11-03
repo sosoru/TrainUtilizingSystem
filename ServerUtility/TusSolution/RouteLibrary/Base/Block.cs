@@ -95,6 +95,16 @@ namespace RouteLibrary.Base
             }
         }
 
+        public SwitchEffector SwitchEffector
+        {
+            get
+            {
+                return this.Effectors.Where(e => e is SwitchEffector)
+                    .Cast<SwitchEffector>()
+                    .First();
+            }
+        }
+
         public IEnumerable<IDeviceEffector> Effect(IEnumerable<CommandInfo> infos)
         {
             var list_infos = infos.Select(info =>
