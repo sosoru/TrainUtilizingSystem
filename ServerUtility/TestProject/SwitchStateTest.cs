@@ -186,8 +186,8 @@ namespace TestProject
             swB.CurrentState = targetB;
             swB.DeviceID = targetB.ID;
 
-            var packetA = DevicePacket.CreatePackedPacket(targetA);
-            var packetB = DevicePacket.CreatePackedPacket(targetB);
+            var packetA = DevicePacket.CreatePackedPacket(swA);
+            var packetB = DevicePacket.CreatePackedPacket(swB);
 
             Assert.IsFalse(packetA.First().Data.SequenceEqual(packetB.First()));
         }
