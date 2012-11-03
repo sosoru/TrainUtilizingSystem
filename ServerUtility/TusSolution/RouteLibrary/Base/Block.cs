@@ -230,5 +230,16 @@ namespace RouteLibrary.Base
                 return this.Detector.IsDetected;
             }
         }
+
+        public override string ToString()
+        {
+            var str = string.Format("({0}) ", this.Name);
+
+            if (this.HasMotor)
+                str += this.MotorEffector.ToString();
+
+            if (this.HasSwitch)
+                str += this.SwitchEffector.ToString();
+        }
     }
 }
