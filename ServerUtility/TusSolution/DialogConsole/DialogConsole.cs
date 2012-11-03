@@ -55,7 +55,7 @@ namespace DialogConsole
                     case "2p" :
                         ChangeSwitchAll(sht, PointStateEnum.Straight);
                         break;
-                    case "2n':
+                    case "2n":
                         ChangeSwitchAll(sht, PointStateEnum.Curve);
                         break;
                     case "3":
@@ -81,7 +81,7 @@ namespace DialogConsole
             
         }
         
-        static InputCommand(BlockSheet sht, CommandInfo info)
+        static void InputCommand(BlockSheet sht, CommandInfo info)
         {
             info.Route = InputRoute(sht, info.Route);
             
