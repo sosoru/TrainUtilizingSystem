@@ -101,6 +101,15 @@ namespace SensorLibrary.Devices.TusAvrDevices
             get { return (MotorMemoryStateEnum)this.Data.DestinationMemory; }
             set { this.Data.DestinationMemory = (byte)value; }
         }
+
+        public override string ToString()
+        {
+            return string.Format("|mt : dir={0}, duty={1}, curr={2}, mode={3}",
+                    Enum.GetName(this.Direction),
+                    this.Duty,
+                    this.Current,
+                    Enum.GetName(this.ControlMode));
+        }
  
     }
 
