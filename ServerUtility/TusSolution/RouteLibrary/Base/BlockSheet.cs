@@ -146,20 +146,27 @@ namespace RouteLibrary.Base
             }
         }
 
-        public void InquiryAllSwitches()
+        public IEnumerable<Switch> AllSwitches()
         {
             var devs = this.InnerBlocks
                                 .Where(b => b.HasSwitch)
-                                .Select(b => b.info.Switch.Address)
-                                .GroupBy(g => g.GetUniqueIdByBoard())
-                                .Select(g => g.First());
-            foreach (var d in devs)
+                                .Select(b => b.info.Switch);
+            return devs;
+            
+        }
+
+        public void InquiryDevices(IEnumerable<IDevice<IDeviceState<IPacketDeviceData>>> devs)
+        {
+            var addrs = devs
+                .GroupBy(d => d.DeviceID.GetUniqueIdByBoard())
+                .Select(g => g.First().DeviceID);
+            foreach (var d in addrs)
             {
                 var pack = DevicePacket.CreatePackedPacket(Kernel.InquiryState(d));
                 this.Server.SendPacket(pack.First());
             }
-
         }
+
 
         public void PrepareVehicles()
         {
