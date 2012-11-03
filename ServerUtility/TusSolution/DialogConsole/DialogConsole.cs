@@ -9,6 +9,7 @@ using System.IO;
 using SensorLibrary;
 using SensorLibrary.Packet;
 using SensorLibrary.Packet.Control;
+using SensorLibrary.Packet.Data;
 using SensorLibrary.Devices;
 using SensorLibrary.Devices.TusAvrDevices;
 
@@ -26,13 +27,68 @@ namespace DialogConsole
             var serv = CreateServer(IPAddress.Parse("192.168.2.0"), IPAddress.Parse("255.255.255.0"));
             var sht = CreateSheet("layout.yaml", serv);
 
-            var cmd = new CommandInfo();
+            var cmdinfo = new CommandInfo();
 
-            Console.WriteLine("1 : show statuses");
-            Console.WriteLine("2 : change switches");
-            Console.WriteLine("3 : detect test");
+            while (1)
+            {
+                Console.WriteLine("1 : show statuses");
+                Console.WriteLine("2p : change switches pos");
+                Console.WriteLine("2n : change switches neg");
+                Console.WriteLine("3 : detect test");
+                Console.WriteLine("4 : input command");
+                Console.WriteLine("5 : apply command");
+                Console.WriteLine();
+
+                Console.WriteLine( cmdinfo.Speed);
+            Console.WriteLine(cmdinfo.Route.Blocks
+               .Where(b => b.IsDetectingTrain)
+                .Aggregate("", (ac, b) => ac += b.Name + ", "));
+
+                var cmd = Console.ReadLine();
+
+                try{
+                switch (cmd)
+                {
+                    case "1" :
+                        ShowStatus(sht);
+                        break;
+                    case "2p" :
+                        ChangeSwitchAll(sht, PointStateEnum.Straight);
+                        break;
+                    case "2n':
+                        ChangeSwitchAll(sht, PointStateEnum.Curve);
+                        break;
+                    case "3":
+                        Detect(sht);
+                        break;
+                    case "4" :
+                        InputCommand(sht, cmdinfo);
+                        break;
+                    case "5" : 
+                        sht.Effect(cmd);
+                    default:
+                        Console.WriteLine("parse error");
+                        break;
+                }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+
             
+            }
+            
+        }
+        
+        static InputCommand(BlockSheet sht, CommandInfo info)
+        {
+            info.Route = InputRoute(sht, info.Route);
+            
+            Console.WriteLine("Duty? [0-1]");
+            var duty = Console.ReadLine();
 
+            info.Speed = float.Parse(duty);
         }
 
         static void ShowStatus(BlockSheet sht)
@@ -73,10 +129,13 @@ namespace DialogConsole
                 .Aggregate("", (ac, b) => ac += b.Name + ", "));
         }
 
-        static Route InputRoute(BlockSheet sht)
+        static Route InputRoute(BlockSheet sht, Route before)
         {
             Console.WriteLine("route?");
             var content = Console.ReadLine();
+
+            if(content == "")
+                return before;
 
             try
             {
