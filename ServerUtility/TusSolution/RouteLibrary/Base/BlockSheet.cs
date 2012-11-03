@@ -150,7 +150,7 @@ namespace RouteLibrary.Base
         {
             var devs = this.InnerBlocks
                                 .Where(b => b.HasSwitch)
-                                .Select(b => b.info.Switch);
+                                .Select(b => b.SwitchEffector.Device);
             return devs;
             
         }
