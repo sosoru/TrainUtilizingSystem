@@ -189,7 +189,7 @@ namespace TestProject
             var packetA = DevicePacket.CreatePackedPacket(swA);
             var packetB = DevicePacket.CreatePackedPacket(swB);
 
-            Assert.IsFalse(packetA.First().Data.SequenceEqual(packetB.First()));
+            Assert.IsFalse(packetA.First().Data.SequenceEqual(packetB.First().Data));
         }
     }
 }
