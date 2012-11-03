@@ -31,7 +31,7 @@ namespace DialogConsole
 
         static void ChangeSwitchAll(BlockSheet sht,  PointStateEnum pos)
         {
-            sht.InquiryAllMotors
+            
         }
 
         static void Detect(BlockSheet sht)
