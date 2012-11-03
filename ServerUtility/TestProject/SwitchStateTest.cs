@@ -178,7 +178,7 @@ namespace TestProject
             targetA.Position = PointStateEnum.Straight;
             targetB.Position = PointStateEnum.Curve;
 
-            Assert.IsFalse(targetA.ToByteArray().SequenceEqual(targetB.ToByteArray()));
+            Assert.IsFalse(targetA.Data.ToByteArray().SequenceEqual(targetB.Data.ToByteArray()));
         }
     }
 }
