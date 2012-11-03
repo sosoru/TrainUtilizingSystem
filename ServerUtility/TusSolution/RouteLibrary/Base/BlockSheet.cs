@@ -146,6 +146,21 @@ namespace RouteLibrary.Base
             }
         }
 
+        public void InquiryAllSwitches()
+        {
+            var devs = this.InnerBlocks
+                                .Where(b => b.HasSwitch)
+                                .Select(b => b.info.Switch.Address)
+                                .GroupBy(g => g.GetUniqueIdByBoard())
+                                .Select(g => g.First());
+            foreach (var d in devs)
+            {
+                var pack = DevicePacket.CreatePackedPacket(Kernel.InquiryState(d));
+                this.Server.SendPacket(pack.First());
+            }
+
+        }
+
         public void PrepareVehicles()
         {
             // detection process succeeded
