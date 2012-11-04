@@ -240,6 +240,8 @@ namespace RouteLibrary.Base
 
             if (this.HasSwitch)
                 str += this.SwitchEffector.ToString();
+
+            return str;
         }
     }
 }
