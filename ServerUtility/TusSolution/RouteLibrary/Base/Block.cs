@@ -237,10 +237,10 @@ namespace RouteLibrary.Base
             var str = string.Format("({0}) ", this.Name);
 
             if (this.HasMotor)
-                str += this.MotorEffector.ToString();
+                str += this.MotorEffector.Device.ToString();
 
             if (this.HasSwitch)
-                str += this.SwitchEffector.ToString();
+                str += this.SwitchEffector.Device.ToString();
 
             return str;
         }
