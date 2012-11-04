@@ -227,7 +227,8 @@ namespace RouteLibrary.Base
                     throw new InvalidOperationException("IsBlocked property requires Haltable state");
                 }
 
-                return this.Detector.IsDetected;
+                return this.MotorEffector.Device.IsDetected;
+                //return this.Detector.IsDetected;
             }
         }
 
