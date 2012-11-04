@@ -24,7 +24,7 @@ namespace DialogConsole
 
         static void Main(string[] args)
         {
-            var serv = CreateServer(IPAddress.Parse("192.168.2.0"), IPAddress.Parse("255.255.255.0"));
+            var serv = CreateServer(IPAddress.Parse("192.168.2.25"), IPAddress.Parse("255.255.255.0"));
             var sht = CreateSheet("layout.yaml", serv);
 
             var cmdinfo = new CommandInfo() { Route = new Route(sht, new[] { "AT1" }) };
