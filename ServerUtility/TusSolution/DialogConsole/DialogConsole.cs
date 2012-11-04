@@ -66,6 +66,7 @@ namespace DialogConsole
                         break;
                     case "5" : 
                         sht.Effect(cmdinfo);
+                        break;
                     default:
                         Console.WriteLine("parse error");
                         break;
