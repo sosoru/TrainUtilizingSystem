@@ -63,10 +63,10 @@ namespace RouteServerConsole
                 .Repeat();
         }
 
-        static void ClearState()
-        {
-            sheet.Effectors.ForEach(e => e.ExecuteDefaultCommand());
-        }
+        //static void ClearState()
+        //{
+        //    sheet.Effectors.ForEach(e => e.ExecuteDefaultCommand());
+        //}
 
         static void ChangeAllSwithches(SensorLibrary.Packet.Data.PointStateEnum pt)
         {
