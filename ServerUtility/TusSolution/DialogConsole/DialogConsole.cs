@@ -41,7 +41,7 @@ namespace DialogConsole
 
                 Console.WriteLine( cmdinfo.Speed);
             Console.WriteLine(cmdinfo.Route.Blocks
-               .Where(b => b.IsDetectingTrain)
+               .Where(b => b.IsBlocked)
                 .Aggregate("", (ac, b) => ac += b.Name + ", "));
 
                 var cmd = Console.ReadLine();
