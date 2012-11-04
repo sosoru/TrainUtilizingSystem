@@ -141,7 +141,7 @@ namespace DialogConsole
             try
             {
                 var spil = content.Split(',');
-                var rt = new Route(sht, spil.Select(s => sht.GetBlock(s)));
+                var rt = new Route(sht, spil.Select(s => sht.GetBlock(s).Name));
 
                 return rt;
             }
