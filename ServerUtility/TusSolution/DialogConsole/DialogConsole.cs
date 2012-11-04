@@ -29,7 +29,7 @@ namespace DialogConsole
 
             var cmdinfo = new CommandInfo();
 
-            while (1)
+            while (true)
             {
                 Console.WriteLine("1 : show statuses");
                 Console.WriteLine("2p : change switches pos");
@@ -65,7 +65,7 @@ namespace DialogConsole
                         InputCommand(sht, cmdinfo);
                         break;
                     case "5" : 
-                        sht.Effect(cmd);
+                        sht.Effect(cmdinfo);
                     default:
                         Console.WriteLine("parse error");
                         break;
