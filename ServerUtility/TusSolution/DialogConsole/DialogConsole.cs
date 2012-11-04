@@ -126,7 +126,7 @@ namespace DialogConsole
             System.Threading.Thread.Sleep(2000);
 
             Console.WriteLine(sht.InnerBlocks
-               .Where(b => b.HasMotor && b.IsDetectingTrain)
+               .Where(b => b.HasMotor && b.IsBlocked)
                 .Aggregate("", (ac, b) => ac += b.Name + ", "));
         }
 
