@@ -55,8 +55,7 @@ namespace TestProject
             var serv = new PacketServer(new AvrDeviceFactoryProvider());
             var sht = new BlockSheet(sample_point_sheet, serv);
 
-            var route = new Route(sht);
-
+            var route = GetPositiveRoute(sht);
 
         }
     }
