@@ -69,7 +69,19 @@ namespace TestProject
             var writtenstate = new List<IDeviceState<IPacketDeviceData>>();
 
             disp.Subscribe(state => writtenstate.Add(state));
+
+            var sht = new BlockSheet(sample_point_sheet, serv);
+            var route = GetPositiveRoute(sht);
+            var cmd = new CommandInfo()
+            {
+                Route = route,
+                Speed = 0.5f
+            };
+
+            //1 : detected at AT1
+            writtenstate.Clear();
             
+
             
             
         }
