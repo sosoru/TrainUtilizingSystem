@@ -10,6 +10,7 @@ namespace RouteLibrary.Base
     {
         public Block CurrentBlock { get; set; }
         public Route Route { get; set; }
+        public CommandInfo Command { get; set;}
 
         public Vehicle() { }
 
