@@ -172,6 +172,9 @@
     <None Include="SampleLayout\loop.yaml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="SampleLayout\point_sample.yaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Signification.pfx" />
     <Shadow Include="テストの参照\RouteLibrary.accessor" />
   </ItemGroup>
