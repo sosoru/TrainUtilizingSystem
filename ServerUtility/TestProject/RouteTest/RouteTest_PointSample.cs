@@ -64,8 +64,13 @@ namespace TestProject
         [TestMethod]
         public void ApplyRouteTest_ForCurvedPath()
         {
-            var serv = new Mock<PacketServer>();
+            var serv = new PacketServer(new AvrDeviceFactoryProvider());
+            var disp = serv.GetDispatcher();
+            var writtenstate = new List<IDeviceState<IPacketDeviceData>>();
 
+            disp.Subscribe(state => writtenstate.Add(state));
+            
+            
             
         }
     }
