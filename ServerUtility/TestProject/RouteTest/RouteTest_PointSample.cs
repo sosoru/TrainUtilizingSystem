@@ -35,16 +35,29 @@ namespace TestProject
             }
         }
 
+        Route GetPositiveRoute(BlockSheet sht)
+        {
+            var route = new Route(sht, new [] { "AT1", "AT2", "BT3", "AT4", "AT5"});
+            
+            route.AddStopInfo(sht.GetBlock("BT3"));
+        }
+
         [TestMethod]
         public void ReadTestSheet()
         {
             var sht = sample_point_sheet.ToArray();
 
         }
-
+        
         [TestMethod]
-        public void TestMethod1()
+        public void CreateRouteTest()
         {
+            var serv = new PacketServer(new AvrDeviceFactoryProvider());
+            var sht = new BlockSheet(sample_point_sheet, serv);
+
+            var route = new Route(sht);
+
+
         }
     }
 }
