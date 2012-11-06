@@ -150,6 +150,8 @@ namespace RouteLibrary.Base
                 StoppingAt = bl,
             };
             this.StopList.Add(info);
+
+            return info;
         }
     }
 }
