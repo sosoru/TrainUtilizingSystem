@@ -149,7 +149,7 @@ namespace RouteLibrary.Base
             {
                 StoppingAt = bl,
             };
-            this.StopList.Add(bl);
+            this.StopList.Add(info);
         }
     }
 }
