@@ -6,11 +6,18 @@ using System.Collections.ObjectModel;
 
 namespace RouteLibrary.Base
 {
+    public struct StopInfo
+    {
+        public Block StoppingAt{ get;set;}
+
+    }
+
     public class Route
     {
         //todo: to replace all ilist<block>
         public IList<Block> Blocks { get; private set; }
         public IList<IList<Block>> LockingUnit { get; protected set; }
+        public IList<StopInfo> StopList { get; set; }
 
         private int ind_start = 0, ind_end = 0;
         private IDictionary<Block, RouteSegment> to_route_dict(IList<Block> list)
@@ -68,6 +75,7 @@ namespace RouteLibrary.Base
             //                        .Select(list => new ReadOnlyCollection<Block>(list));
 
             this.LockingUnit = new ReadOnlyCollection<IList<Block>>(locked_blocks.ToArray());
+            this.StopList = new List<StopInfo>();
         }
 
         public void LockNextUnit()
@@ -133,6 +141,15 @@ namespace RouteLibrary.Base
                 // IsSectionFinished And the locked units of this route reach the end of them
                 return this.ind_end == this.LockingUnit.Count() - 1 && this.IsSectionFinished;
             }
+        }
+
+        public StopInfo AddStopInfo(Block bl)
+        {
+            var info = new StopInfo()
+            {
+                StoppingAt = bl,
+            };
+            this.StopList.Add(bl);
         }
     }
 }
