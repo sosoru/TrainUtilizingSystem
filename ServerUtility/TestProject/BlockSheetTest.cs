@@ -274,14 +274,6 @@ namespace TestProject
         public void PrepareVehiclesTest()
         {
             BlockSheet target = sample_sheet;
-            //var written = new List<IDevice<IDeviceState<IPacketDeviceData>>>();
-            //var writtenstate = new List<IDeviceState<IPacketDeviceData>>();
-            //var serv = new Mock<PacketServer>();
-
-            //serv.Setup(e => e.SendState(It.IsAny<IDevice<IDeviceState<IPacketDeviceData>>>()))
-            //    .Callback<IDevice<IDeviceState<IPacketDeviceData>>>(d => written.Add(d));
-            //serv.Setup(e => e.SendPacket(It.IsAny<DevicePacket>()))
-            //    .Callback<DevicePacket>(pack => writtenstate.AddRange(pack.ExtractPackedPacket()));
 
             var serv = sample_server;
             var log = new List<IDeviceState<IPacketDeviceData>>();
@@ -312,6 +304,51 @@ namespace TestProject
             System.Threading.Thread.Sleep(2000);
 
             sht.PrepareVehicles();
+
+        }
+
+        [TestMethod]
+        public void VehiclesTest()
+        {
+            BlockSheet target = sample_sheet;
+
+            var serv = sample_server;
+            var log = new List<IDeviceState<IPacketDeviceData>>();
+
+            serv.GetDispatcher()
+                .Subscribe(state => log.Add(state));
+
+            var sht = new BlockSheet(sample_loop_sheet, serv);
+            var route = new Route(sht, new[] { "AT1", "AT2", "AT3", "AT4" });
+            var cmd = new CommandInfo()
+            {
+                Route = route,
+                Speed = 0.5f
+            };
+
+            IEnumerable<Vehicle> vehicles;
+            Vehicle first, second;
+
+            // 1: AT1 is detected -> one vehicles created
+            sht.GetBlock("AT1").Detector = new Mock<SensorDetector>().Setup(e => e.IsDetected).Returns(true);
+            sht.GetBlock("AT2").Detector = new Mock<SensorDetector>().Setup(e => e.IsDetected).Returns(false);
+            vehicles = sht.Vehicles;
+
+            Assert.IsTrue(vehicles.Count() == 1);
+            Assert.IsTrue(vehicles.First().CurrentBlock == sht.GetBlock("AT1"));
+            first = vehicles.First();
+
+            // 2: AT1 leaves and AT2 is detected
+            sht.GetBlock("AT1").Detector = new Mock<SensorDetector>().Setup(e => e.IsDetected).Returns(false);
+            sht.GetBlock("AT2").Detector = new Mock<SensorDetector>().Setup(e => e.IsDetected).Returns(true);
+            vehicles = sht.Vehicles;
+
+            Assert.IsTrue(vehicles.Count() == 1);
+            Assert.IsTrue(vehicles.First().CurrentBlock == sht.GetBlock("AT2"));
+            second = vehicles.First();
+
+            // these vehicle is equal to each other
+            Assert.Equals(first, second);
 
         }
 
