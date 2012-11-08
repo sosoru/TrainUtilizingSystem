@@ -8,11 +8,53 @@ namespace RouteLibrary.Base
 
     public class Vehicle
     {
+        private static int LastVehicleID;
+        public int VehicleID { get; private set; }
+
         public Block CurrentBlock { get; set; }
         public Route Route { get; set; }
         public CommandInfo Command { get; set;}
 
-        public Vehicle() { }
+        public static Vehicle()
+        {
+            LastVehicleID = 0;
+        }
+
+        public Vehicle()
+        {
+            this.VehicleID = LastVehicleID++;
+        }
+
+        // override object.Equals
+        public override bool Equals(object obj)
+        {
+            //       
+            // See the full list of guidelines at
+            //   http://go.microsoft.com/fwlink/?LinkID=85237  
+            // and also the guidance for operator== at
+            //   http://go.microsoft.com/fwlink/?LinkId=85238
+            //
+
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+
+            // TODO: write your implementation of Equals() here
+            return this.VehicleID.Equals(((Vehicle)obj).VehicleID);
+        }
+
+        public bool operator =(Vehicle A, Vehicle B)
+        {
+            return A.Equals(B);
+        }
+
+        // override object.GetHashCode
+        public override int GetHashCode()
+        {
+            // TODO: write your implementation of GetHashCode() here
+            return this.VehicleID.GetHashCode();
+        }
 
     }
 }
