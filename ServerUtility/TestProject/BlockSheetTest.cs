@@ -329,9 +329,14 @@ namespace TestProject
             IEnumerable<Vehicle> vehicles;
             Vehicle first, second;
 
+            var mocktrue = new Mock<SensorDetector>();
+            var mockfalse = new Mock<SensorDetector>();
+            mocktrue.Setup(e => e.IsDetected).Returns(true);
+            mockfalse.Setup(e => e.IsDetected).Returns(false);
+
             // 1: AT1 is detected -> one vehicles created
-            sht.GetBlock("AT1").Detector = new Mock<SensorDetector>().Setup(e => e.IsDetected).Returns(true);
-            sht.GetBlock("AT2").Detector = new Mock<SensorDetector>().Setup(e => e.IsDetected).Returns(false);
+            sht.GetBlock("AT1").Detector = mocktrue.Object;
+            sht.GetBlock("AT2").Detector = mockfalse.Object;
             vehicles = sht.Vehicles;
 
             Assert.IsTrue(vehicles.Count() == 1);
@@ -339,8 +344,8 @@ namespace TestProject
             first = vehicles.First();
 
             // 2: AT1 leaves and AT2 is detected
-            sht.GetBlock("AT1").Detector = new Mock<SensorDetector>().Setup(e => e.IsDetected).Returns(false);
-            sht.GetBlock("AT2").Detector = new Mock<SensorDetector>().Setup(e => e.IsDetected).Returns(true);
+            sht.GetBlock("AT1").Detector = mockfalse.Object;
+            sht.GetBlock("AT2").Detector = mocktrue.Object;
             vehicles = sht.Vehicles;
 
             Assert.IsTrue(vehicles.Count() == 1);
