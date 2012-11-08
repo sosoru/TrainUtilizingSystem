@@ -107,30 +107,30 @@ namespace RouteLibrary.Base
 
         public IEnumerable<IDeviceEffector> Effect(IEnumerable<CommandInfo> infos)
         {
-            var list_infos = infos.Select(info =>
-            {
-                var avl = info.Route.Blocks.SkipWhile(b => b == this).Where(b => b.IsHaltable);
+            //var list_infos = infos.Select(info =>
+            //{
+            //    var avl = info.Route.Blocks;//.SkipWhile(b => b == this).Where(b => b.IsHaltable);
 
-                var neighbor = avl.First();
-                if (neighbor != null && neighbor.IsBlocked)
-                {
-                    info.Speed = 0;
-                }
-                else
-                {
-                    neighbor = avl.Skip(1).First();
-                    if (neighbor != null && neighbor.IsBlocked)
-                    {
-                        info.Speed /= 2.0F;
-                    }
-                }
+            //    var neighbor = avl.First();
+            //    if (neighbor != null && neighbor.IsBlocked)
+            //    {
+            //        info.Speed = 0;
+            //    }
+            //    else
+            //    {
+            //        neighbor = avl.Skip(1).First();
+            //        if (neighbor != null && neighbor.IsBlocked)
+            //        {
+            //            info.Speed /= 2.0F;
+            //        }
+            //    }
 
-                return info;
-            }).ToList();
+            //    return info;
+            //}).ToList();
 
             var efs = this.Effectors.ToArray();
 
-            list_infos.ForEach(info => efs.ForEach(e => e.ApplyCommand(info)));
+            infos.ForEach(info => efs.ForEach(e => e.ApplyCommand(info)));
 
             return efs;
         }
@@ -178,6 +178,26 @@ namespace RouteLibrary.Base
 
         #endregion
 
+        private IList<Block> neighbors_;
+        public IEnumerable<Block> Neighbors
+        {
+            get
+            {
+                if (neighbors_ == null)
+                {
+                    neighbors_ = new List<Block>();
+
+                    var neighbornames = this.info.Route.SelectMany(b => new[] { b.From, b.To })
+                                                        .Select(b => b.Name)
+                                                        .Distinct();
+                    neighbornames.Select(s => this.Sheet.GetBlock(s))
+                        .ForEach(neighbors_.Add);
+
+                    this.Neighbors = neighbors_;
+                }
+                return neighbors_;
+            }
+        }
 
         public bool HasMotor
         {
@@ -214,7 +234,7 @@ namespace RouteLibrary.Base
         {
             get
             {
-                return this.HasMotor ||  this.HasSensor;
+                return this.HasMotor || this.HasSensor;
             }
         }
 
