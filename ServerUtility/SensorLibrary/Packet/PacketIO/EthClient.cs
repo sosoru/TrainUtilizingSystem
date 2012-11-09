@@ -44,7 +44,7 @@ namespace SensorLibrary.Packet.IO
             byte[] address = new byte[4];
 
             Array.Copy(this.Address.GetAddressBytes(), address, address.Length);
-            address[3] = packet.destId.ParentPart;
+            address[3] = (byte)packet.destId.ParentPart;
 
             return new IPEndPoint(new IPAddress(address), PORT);
         }
