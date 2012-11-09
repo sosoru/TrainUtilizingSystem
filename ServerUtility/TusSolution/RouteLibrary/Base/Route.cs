@@ -69,6 +69,13 @@ namespace RouteLibrary.Base
             //                        .Select(list => new ReadOnlyCollection<Block>(list));
 
             this.LockingUnit = new ReadOnlyCollection<IList<Block>>(locked_blocks.ToArray());
+            InitLockingPosition();
+        }
+
+        public void InitLockingPosition()
+        {
+            this.ind_end = -1;
+            this.ind_start = 0;
         }
 
         public void LockNextUnit()
@@ -83,7 +90,7 @@ namespace RouteLibrary.Base
         public void ReleaseBeforeUnit()
         {
             if (ind_start + 1 < this.LockingUnit.Count
-                && (ind_start + 1 <= ind_end))
+                && (ind_start <= ind_end + 1))
             {
                 ind_start++;
             }
@@ -96,7 +103,7 @@ namespace RouteLibrary.Base
                 var start = this.ind_start;
                 var end = this.ind_end;
 
-                var seq = Enumerable.Range(start, end - start)// + 1)
+                var seq = Enumerable.Range(start, end - start + 1)
                     .SelectMany(i =>
                                     {
                                         var en = this.LockingUnit[i] as IEnumerable<Block>;
