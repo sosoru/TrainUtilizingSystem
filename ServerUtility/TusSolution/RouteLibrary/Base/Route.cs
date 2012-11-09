@@ -40,16 +40,27 @@ namespace RouteLibrary.Base
             {
                 var l = new List<Block>();
 
-                l.Add(this.Blocks.First());
-                foreach (var b in Blocks.Skip(1))
+                //l.Add(this.Blocks.First());
+                //foreach (var b in Blocks.Skip(1))
+                //{
+                //    l.Add(b);
+                //    if (b.IsHaltable)
+                //    {
+                //        yield return new List<Block>(l);
+                //        l.RemoveRange(0, l.Count - 1);
+                //    }
+                //}
+
+                foreach (var b in this.Blocks)
                 {
                     l.Add(b);
                     if (b.IsHaltable)
                     {
                         yield return new List<Block>(l);
-                        l.RemoveRange(0, l.Count - 1);
+                        l.Clear();
                     }
                 }
+
                 //todo : throw exception (not terminated by a block having a sensor
             }
         }
