@@ -229,22 +229,6 @@ namespace RouteLibrary.Base
             }
         }
 
-        public bool IsHaltable
-        {
-            get
-            {
-                return this.HasMotor || this.HasSensor;
-            }
-        }
-
-        public bool IsControlable
-        {
-            get
-            {
-                return this.HasMotor;
-            }
-        }
-
         public bool IsBlocked
         {
             get
