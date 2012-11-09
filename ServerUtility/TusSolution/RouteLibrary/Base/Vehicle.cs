@@ -68,7 +68,7 @@ namespace RouteLibrary.Base
             return this.VehicleID.Equals(((Vehicle)obj).VehicleID);
         }
 
-        public bool operator=(Vehicle A, Vehicle B)
+        public static bool operator =(Vehicle A, Vehicle B)
         {
             return A.Equals(B);
         }
