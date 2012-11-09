@@ -46,9 +46,9 @@ namespace SensorLibrary.Packet.IO
             Array.Copy(this.Address.GetAddressBytes(), address, address.Length);
 
             long longaddr
-                = (address[3] << 24)
-                | (address[2] << 16)
-                | (address[1] << 8)
+                = (address[0] << 24)
+                | (address[1] << 16)
+                | (address[2] << 8)
                 | (packet.destId.InternalAddr);
 
             return new IPEndPoint(longaddr, PORT);
