@@ -323,20 +323,20 @@ namespace TestProject
 
             var mtrpacket = new EthPacket()
             {
-                srcId = new DeviceID(111, 0),
-                destId = new DeviceID(24, 1, 1),
+                srcId = new DeviceID(9, 0),
+                destId = new DeviceID(25, 2, 2),
             };
             var mtr = new Motor() { DeviceID = mtrpacket.destId };
             var mtrstate = mtr.CurrentState;
             var kernal = Kernel.InquiryState(mtrpacket.destId);
 
-            mtrstate.Duty = 0.5f;
+            mtrstate.Duty = 00f;
             mtrstate.Direction = MotorDirection.Positive;
             mtrstate.ControlMode = MotorControlMode.DutySpecifiedMode;
 
-            var param = Enumerable.Range(1, 4)
+            var param = Enumerable.Range(2, 1)
                                 .SelectMany(i =>
-                                    new[] { MotorDirection.Standby, MotorDirection.Positive, MotorDirection.Negative }
+                                    new[] { MotorDirection.Positive }
                                         .Select(p => new { devnum = i, dir = p })
                                         );
             var osb = param.Select(s =>
