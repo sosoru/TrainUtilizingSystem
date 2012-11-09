@@ -25,6 +25,7 @@ namespace RouteLibrary.Base
 
         public Block From { get; private set; }
         public Block To { get; private set; }
+
     }
 
     public class DeviceInfo
