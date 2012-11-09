@@ -20,7 +20,7 @@ namespace SensorLibrary.Packet.IO
 
         public EthClient()
         {
-           // this.client_ = new UdpClient(PORT);
+            // this.client_ = new UdpClient(PORT);
 
         }
 
@@ -37,6 +37,21 @@ namespace SensorLibrary.Packet.IO
             return Observable.FromAsyncPattern<byte[]>(client.BeginReceive,
                                                        res => client.EndReceive(res, ref ipend))()
                 .Select(a => a.ToObject<EthPacket>());
+        }
+
+        public IPEndPoint ApplyDestID(EthPacket packet)
+        {
+            byte[] address = new byte[4];
+
+            Array.Copy(this.Address.GetAddressBytes(), address, address.Length);
+
+            long longaddr
+                = (address[3] << 24)
+                | (address[2] << 16)
+                | (address[1] << 8)
+                | (packet.destId.InternalAddr);
+
+            return new IPEndPoint(address, PORT);
         }
 
         public virtual IObservable<Unit> AsyncSend(EthPacket packet)
@@ -57,12 +72,7 @@ namespace SensorLibrary.Packet.IO
                                         {
                                             var data = packet.ToByteArray();
                                             var client = new UdpClient();
-                                            byte[] address = new byte[4];
-
-                                            Array.Copy(this.Address.GetAddressBytes(), address, 4);
-                                            address[3] = packet.destId.InternalAddr;
-
-                                            client.Connect(new IPEndPoint(address, PORT));
+                                            client.Connect(new IPEndPoint(ApplyDestID(packet), PORT));
 
                                             Observable
                                                 .FromAsyncPattern<byte[], int>(client.BeginSend,
@@ -79,13 +89,7 @@ namespace SensorLibrary.Packet.IO
             try
             {
                 var data = packet.ToByteArray();
-                var client = new UdpClient();
-
-                byte[] address = new byte[4];
-                Array.Copy(this.Address.GetAddressBytes(), address, 4);
-                address[3] = packet.destId.InternalAddr;
-
-                client.Connect(address, PORT);
+                client.Connect(ApplyDestID(packet), PORT);
                 client.Send(buf, buf.Length);
             }
             finally
