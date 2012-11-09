@@ -12,7 +12,7 @@ namespace RouteLibrary.Base
         public int VehicleID { get; private set; }
 
         public Route Route { get; set; }
-        public CommandInfo Command { get; set;}
+        public CommandInfo Command { get; set; }
 
         public static Vehicle()
         {
@@ -28,13 +28,13 @@ namespace RouteLibrary.Base
         {
             bool is_refreshed = false;
 
-            if(this.Route.IsSectionFinished)
+            if (this.Route.IsSectionFinished)
             {
-                this.Route.LockNextUnit();                
+                this.Route.LockNextUnit();
                 is_refreshed = true;
             }
 
-            if(this.Route.IsLeftSectionFirst)
+            if (this.Route.IsLeftSectionFirst)
             {
                 this.Route.ReleaseBeforeUnit();
                 is_refreshed = true;
@@ -45,9 +45,11 @@ namespace RouteLibrary.Base
 
         public Block Neighbor
         {
-            get{ 
+            get
+            {
                 return this.Route.Blocks.SkipWhile(b => this.CurrentBlock).FirstOrDefault();
-            }}
+            }
+        }
 
         // override object.Equals
         public override bool Equals(object obj)
@@ -68,9 +70,9 @@ namespace RouteLibrary.Base
             return this.VehicleID.Equals(((Vehicle)obj).VehicleID);
         }
 
-        public static bool operator =(Vehicle B)
+        public static bool operator ==(Vehicle A, Vehicle B)
         {
-            return this.Equals(B);
+            return A.Equals(B);
         }
 
         // override object.GetHashCode
