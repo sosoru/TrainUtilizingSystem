@@ -237,6 +237,14 @@ namespace RouteLibrary.Base
             }
         }
 
+        public bool IsControlable
+        {
+            get
+            {
+                return this.HasMotor;
+            }
+        }
+
         public bool IsBlocked
         {
             get
