@@ -44,14 +44,9 @@ namespace SensorLibrary.Packet.IO
             byte[] address = new byte[4];
 
             Array.Copy(this.Address.GetAddressBytes(), address, address.Length);
+            address[3] = packet.destId.InternalAddr;
 
-            long longaddr
-                = (address[0] << 24)
-                | (address[1] << 16)
-                | (address[2] << 8)
-                | (packet.destId.InternalAddr);
-
-            return new IPEndPoint(longaddr, PORT);
+            return new IPEndPoint(new IPAddress(address), PORT);
         }
 
         public virtual IObservable<Unit> AsyncSend(EthPacket packet)
