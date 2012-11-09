@@ -51,7 +51,7 @@ namespace SensorLibrary.Packet.IO
                 | (address[1] << 8)
                 | (packet.destId.InternalAddr);
 
-            return new IPEndPoint(address, PORT);
+            return new IPEndPoint(longaddr, PORT);
         }
 
         public virtual IObservable<Unit> AsyncSend(EthPacket packet)
