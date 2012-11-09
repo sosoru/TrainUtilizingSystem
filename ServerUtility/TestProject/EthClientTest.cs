@@ -330,7 +330,7 @@ namespace TestProject
             var mtrstate = mtr.CurrentState;
             var kernal = Kernel.InquiryState(mtrpacket.destId);
 
-            mtrstate.Duty = 00f;
+            mtrstate.Duty = 1.0f;
             mtrstate.Direction = MotorDirection.Positive;
             mtrstate.ControlMode = MotorControlMode.DutySpecifiedMode;
 
