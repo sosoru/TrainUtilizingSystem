@@ -84,7 +84,7 @@ namespace RouteLibrary.Base
         {
             this.Blocks = new ReadOnlyCollection<Block>(segs);
 
-            this.LockingUnit = new ReadOnlyCollection<IList<Block>>(locked_blocks.ToArray());
+            this.LockingUnit = new ReadOnlyCollection<ControllingRoute> locked_blocks.ToArray());
             InitLockingPosition();
         }
 
