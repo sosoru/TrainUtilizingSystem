@@ -11,7 +11,6 @@ namespace RouteLibrary.Base
         private static int LastVehicleID;
         public int VehicleID { get; private set; }
 
-        public Block CurrentBlock { get; set; }
         public Route Route { get; set; }
         public CommandInfo Command { get; set;}
 
@@ -24,6 +23,25 @@ namespace RouteLibrary.Base
         {
             this.VehicleID = LastVehicleID++;
         }
+
+        public void Refresh()
+        {
+            if(this.Route.IsSectionFinished)
+            {
+                this.Route.LockNextUnit();                
+            }
+
+            if(this.Route.IsLeftSectionFirst)
+            {
+                this.Route.ReleaseBeforeUnit();
+            }
+        }
+
+        public Block Neighbor
+        {
+            get{ 
+                return this.Route.Blocks.SkipWhile(b => this.CurrentBlock).FirstOrDefault();
+            }}
 
         // override object.Equals
         public override bool Equals(object obj)
