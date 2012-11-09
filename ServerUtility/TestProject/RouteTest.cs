@@ -112,6 +112,7 @@ namespace TestProject
             Route target = new Route(test_blocks.ToList());
 
             target.LockNextUnit();
+            target.LockNextUnit();
             Assert.IsTrue(target.LockedBlocks.SequenceEqual(target.Blocks));
 
         }
@@ -125,9 +126,10 @@ namespace TestProject
             Route target = new Route(test_blocks.ToList());
 
             target.LockNextUnit();
+            target.LockNextUnit();
             target.ReleaseBeforeUnit();
 
-            Assert.IsTrue(target.LockedBlocks.SequenceEqual(target.LockingUnit[1]));
+            Assert.IsTrue(target.LockedBlocks.SequenceEqual(target.LockingUnit[0]));
         }
 
         [TestMethod]
