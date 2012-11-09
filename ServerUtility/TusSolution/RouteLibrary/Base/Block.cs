@@ -193,7 +193,6 @@ namespace RouteLibrary.Base
                     neighbornames.Select(s => this.Sheet.GetBlock(s))
                         .ForEach(neighbors_.Add);
 
-                    this.Neighbors = neighbors_;
                 }
                 return neighbors_;
             }
