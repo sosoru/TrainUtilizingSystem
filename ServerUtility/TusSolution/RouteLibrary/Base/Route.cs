@@ -44,7 +44,7 @@ namespace RouteLibrary.Base
                 foreach (var b in Blocks.Skip(1))
                 {
                     l.Add(b);
-                    if (b.HasSensor)
+                    if (b.IsHaltable)
                     {
                         yield return new List<Block>(l);
                         l.RemoveRange(0, l.Count - 1);
