@@ -43,14 +43,6 @@ namespace RouteLibrary.Base
             return is_refreshed;
         }
 
-        public Block Neighbor
-        {
-            get
-            {
-                return this.Route.Blocks.SkipWhile(b => b== this.CurrentBlock).FirstOrDefault();
-            }
-        }
-
         // override object.Equals
         public override bool Equals(object obj)
         {
