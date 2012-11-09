@@ -25,7 +25,8 @@ namespace RouteLibrary.Base
         public ReadOnlyCollection<Block> InnerBlocks { get; private set; }
         public PacketServer Server { get; private set; }
         public PacketDispatcher Dispatcher { get; private set; }
-        public IEnumerable<Vehicle> Vehicles { get; private set; }
+
+        public IList<Vehicle> Vehicles { get; private set; }
 
         public BlockSheet(IEnumerable<BlockInfo> blockinfos, PacketServer server)
         {
@@ -36,6 +37,8 @@ namespace RouteLibrary.Base
 
             this.Name = "";
             this.InnerBlocks = new ReadOnlyCollection<Block>(blocks.ToList());
+
+            this.Vehicles = new List<Vehicle>();
         }
 
         #region implementation of IEqualable
@@ -171,10 +174,12 @@ namespace RouteLibrary.Base
         public void PrepareVehicles()
         {
             // detection process succeeded
-            var g = this.InnerBlocks.Where(b => b.HasMotor && b.IsDetectingTrain)
-                .Select(b => new Vehicle() { CurrentBlock = b });
+            var g = this.InnerBlocks.Where(b => b.HasMotor && b.IsDetectingTrain);
 
-            this.Vehicles = g;
+
+                    
+                    
+
         }
 
         public IEnumerable<Block> GetBlocks(string p1, string p2, string p3, string p4, string p5)
