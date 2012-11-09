@@ -135,7 +135,7 @@ namespace RouteLibrary.Base
             }
         }
 
-        public void LookUpTrain
+        public void LookUpTrain()
         {
                 while (!this.IsRouteFinished)
                 {
