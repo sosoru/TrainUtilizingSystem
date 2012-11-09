@@ -123,7 +123,8 @@ namespace RouteLibrary.Base
             get
             {
                 // a sensor on end of locked section detects train
-                return this.LockedBlocks.Last().IsDetectingTrain;
+                //return this.LockedBlocks.Last().IsDetectingTrain;
+                return this.LockingUnit.Last().Last().IsDetectingTrain;
             }
         }
 
@@ -131,7 +132,8 @@ namespace RouteLibrary.Base
         {
             get
             {
-                return this.LockedBlocks.First().IsDetectingTrain;
+                //return this.LockedBlocks.First().IsDetectingTrain;
+                return this.LockingUnit.First().First().IsDetectingTrain;
             }
         }
 
