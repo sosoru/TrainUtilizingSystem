@@ -142,6 +142,23 @@ namespace RouteLibrary.Base
             }
         }
 
+        public bool LookUpTrain
+        {
+            get
+            {
+                while (!this.IsRouteFinished)
+                {
+                    if (this.IsSectionFinished)
+                        this.LockNextUnit();
+                    else
+                        break;
+                }
+
+                while (this.IsLeftSectionFirst)
+                    this.ReleaseBeforeUnit();
+            }
+        }
+
         public bool IsRouteFinished
         {
             get
