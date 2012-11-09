@@ -337,7 +337,7 @@ namespace TestProject
             // 1: AT1 is detected -> one vehicles created
             sht.GetBlock("AT1").Detector = mocktrue.Object;
             sht.GetBlock("AT2").Detector = mockfalse.Object;
-            vehicles = sht.Vehicles;
+            vehicles = sht.Vehicles.ToArray();
 
             Assert.IsTrue(vehicles.Count() == 1);
             Assert.IsTrue(vehicles.First().CurrentBlock == sht.GetBlock("AT1"));
@@ -346,7 +346,7 @@ namespace TestProject
             // 2: AT1 leaves and AT2 is detected
             sht.GetBlock("AT1").Detector = mockfalse.Object;
             sht.GetBlock("AT2").Detector = mocktrue.Object;
-            vehicles = sht.Vehicles;
+            vehicles = sht.Vehicles.ToArray();
 
             Assert.IsTrue(vehicles.Count() == 1);
             Assert.IsTrue(vehicles.First().CurrentBlock == sht.GetBlock("AT2"));
