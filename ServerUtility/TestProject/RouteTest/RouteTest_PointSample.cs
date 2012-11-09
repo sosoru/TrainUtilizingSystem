@@ -39,7 +39,7 @@ namespace TestProject
         {
             var route = new Route(sht, new [] { "AT1", "AT2", "BT3", "AT4", "AT5"});
             
-            route.AddStopInfo(sht.GetBlock("BT3"));
+            //route.AddStopInfo(sht.GetBlock("BT3"));
 
             return route;
         }
