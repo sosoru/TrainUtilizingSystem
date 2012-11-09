@@ -72,7 +72,7 @@ namespace SensorLibrary.Packet.IO
                                         {
                                             var data = packet.ToByteArray();
                                             var client = new UdpClient();
-                                            client.Connect(new IPEndPoint(ApplyDestID(packet), PORT));
+                                            client.Connect(ApplyDestID(packet));
 
                                             Observable
                                                 .FromAsyncPattern<byte[], int>(client.BeginSend,
@@ -89,7 +89,7 @@ namespace SensorLibrary.Packet.IO
             try
             {
                 var data = packet.ToByteArray();
-                client.Connect(ApplyDestID(packet), PORT);
+                client.Connect(ApplyDestID(packet));
                 client.Send(buf, buf.Length);
             }
             finally
