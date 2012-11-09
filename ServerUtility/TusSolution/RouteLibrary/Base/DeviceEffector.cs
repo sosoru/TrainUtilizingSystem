@@ -122,7 +122,7 @@ namespace RouteLibrary.Base
         {
             MotorDirection dir = MotorDirection.Standby;
             float duty = 0f;
-            var locked = cmd.Route.LockedSegments;
+            var locked = cmd.Route.LockedBlocks;
 
             if (!locked.ContainsKey(this.ParentBlock))
             {
