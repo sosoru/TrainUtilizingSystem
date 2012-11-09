@@ -122,7 +122,7 @@ namespace RouteLibrary.Base
                 var seq = Enumerable.Range(start, end - start + 1)
                     .SelectMany(i =>
                                     
-                                        this.LockingUnit[i].Blocks;
+                                        this.LockingUnit[i].Blocks
                                     );
 
                 return seq;
