@@ -122,18 +122,14 @@ namespace RouteLibrary.Base
         {
             MotorDirection dir = MotorDirection.Standby;
             float duty = 0f;
-            var locked = cmd.Route.LockedBlocks;
+            var locked = cmd.Route.GetLockingControlingRoute(this.ParentBlock);
 
-            if (!locked.Contains(this.ParentBlock))
+            if (!locked.ContainsKey(this.ParentBlock))
             {
-                //if (cmd.AnyToDefault)
-                //{
-                //    this.Device.CurrentState.Data = this.DefaultState.Data;
-                //}
                 return NoEffectState;
             }
 
-            var seg = locked[this.ParentBlock];
+            var seg = locked.;
             if ((seg.IsFromAny || seg.From.Name == this.Info.RoutePositive.From.Name)
                     && (seg.IsToAny || seg.To.Name == this.Info.RoutePositive.To.Name))
             {
