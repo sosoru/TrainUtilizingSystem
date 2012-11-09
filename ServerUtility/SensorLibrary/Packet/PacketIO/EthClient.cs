@@ -31,7 +31,7 @@ namespace SensorLibrary.Packet.IO
 
         public IObservable<EthPacket> AsyncReceive()
         {
-            IPEndPoint ipend = new IPEndPoint();
+            IPEndPoint ipend = new IPEndPoint( this.Address, PORT);
             var client = new UdpClient(PORT);
 
             return Observable.FromAsyncPattern<byte[]>(client.BeginReceive,
