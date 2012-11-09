@@ -24,17 +24,23 @@ namespace RouteLibrary.Base
             this.VehicleID = LastVehicleID++;
         }
 
-        public void Refresh()
+        public bool Refresh()
         {
+            bool is_refreshed = false;
+
             if(this.Route.IsSectionFinished)
             {
                 this.Route.LockNextUnit();                
+                is_refreshed = true;
             }
 
             if(this.Route.IsLeftSectionFirst)
             {
                 this.Route.ReleaseBeforeUnit();
+                is_refreshed = true;
             }
+
+            return is_refreshed;
         }
 
         public Block Neighbor
