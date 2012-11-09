@@ -138,7 +138,7 @@ namespace TestProject
 
             target.LookUpTrain();
 
-
+            Assert.IsTrue(target.LockedSegments.Count() == 0);
             
         }
 
