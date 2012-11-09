@@ -47,7 +47,7 @@ namespace RouteLibrary.Base
         {
             get
             {
-                return this.Route.Blocks.SkipWhile(b => this.CurrentBlock).FirstOrDefault();
+                return this.Route.Blocks.SkipWhile(b => b== this.CurrentBlock).FirstOrDefault();
             }
         }
 
