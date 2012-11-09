@@ -129,7 +129,7 @@ namespace TestProject
             target.LockNextUnit();
             target.ReleaseBeforeUnit();
 
-            Assert.IsTrue(target.LockedBlocks.SequenceEqual(target.LockingUnit[0]));
+            Assert.IsTrue(target.LockedBlocks.SequenceEqual(target.LockingUnit[1]));
         }
 
         [TestMethod]
