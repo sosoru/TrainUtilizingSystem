@@ -84,7 +84,7 @@ namespace RouteLibrary.Base
         {
             this.Blocks = new ReadOnlyCollection<Block>(segs);
 
-            this.LockingUnit = new ReadOnlyCollection<ControllingRoute>( locked_blocks.ToArray());
+            this.LockingUnit = new ReadOnlyCollection<ControllingRoute>(locked_blocks.ToArray());
             InitLockingPosition();
         }
 
@@ -121,9 +121,9 @@ namespace RouteLibrary.Base
 
                 var seq = Enumerable.Range(start, end - start + 1)
                     .SelectMany(i =>
-                                    {
+                                    
                                         this.LockingUnit[i].Blocks;
-                                    });
+                                    );
 
                 return seq;
             }
@@ -151,16 +151,16 @@ namespace RouteLibrary.Base
 
         public void LookUpTrain()
         {
-                while (!this.IsRouteFinished)
-                {
-                    if (this.IsSectionFinished)
-                        this.LockNextUnit();
-                    else
-                        break;
-                }
+            while (!this.IsRouteFinished)
+            {
+                if (this.IsSectionFinished)
+                    this.LockNextUnit();
+                else
+                    break;
+            }
 
-                while (this.IsLeftSectionFirst)
-                    this.ReleaseBeforeUnit();
+            while (this.IsLeftSectionFirst)
+                this.ReleaseBeforeUnit();
         }
 
         public bool IsRouteFinished
