@@ -7,11 +7,32 @@ using System.Collections.ObjectModel;
 namespace RouteLibrary.Base
 {
 
+    public class ControllingRoute
+    {
+        public IList<Block> Blocks { get; set; }
+
+        public IEnumerable<Block> HaltableBlocks
+        {
+            get
+            {
+                foreach (var b in this.Blocks)
+                {
+                    if (b == this.Blocks.First())
+                        yield return b; // stop at entrance of the blocks this class govern
+
+                    if (b.HasSensor)
+                        yield return b; // stop by a IR sensor
+                }
+            }
+        }
+
+    }
+
     public class Route
     {
         //todo: to replace all ilist<block>
         public IList<Block> Blocks { get; private set; }
-        public IList<IList<Block>> LockingUnit { get; protected set; }
+        public IList<ControllingRoute> LockingUnit { get; protected set; }
 
         private int ind_start = 0, ind_end = 0;
         private IDictionary<Block, RouteSegment> to_route_dict(IList<Block> list)
@@ -34,29 +55,20 @@ namespace RouteLibrary.Base
             return dict;
         }
 
-        private IEnumerable<IList<Block>> locked_blocks
+        private IEnumerable<ControllingRoute> locked_blocks
         {
             get
             {
                 var l = new List<Block>();
 
-                //l.Add(this.Blocks.First());
-                //foreach (var b in Blocks.Skip(1))
-                //{
-                //    l.Add(b);
-                //    if (b.IsHaltable)
-                //    {
-                //        yield return new List<Block>(l);
-                //        l.RemoveRange(0, l.Count - 1);
-                //    }
-                //}
-
                 foreach (var b in this.Blocks)
                 {
                     l.Add(b);
-                    if (b.IsHaltable)
+                    if (b.IsControlable)
                     {
-                        yield return new List<Block>(l);
+                        var cr = new ControllingRoute() { Blocks = new List<Block>(l) };
+
+                        yield return cr;
                         l.Clear();
                     }
                 }
@@ -71,13 +83,6 @@ namespace RouteLibrary.Base
         public Route(IList<Block> segs)
         {
             this.Blocks = new ReadOnlyCollection<Block>(segs);
-
-            int i = 0;
-            //separate by block having motor
-            //var units = this.Blocks.Zip(segs.Select(s => (s.HasSensor) ? ++i : i), (b, g) => new KeyValuePair<Block, int>(b, g))
-            //                        .GroupBy(k => k.Value)
-            //                        .Select(g => g.Select(pair => pair.Key).ToList())
-            //                        .Select(list => new ReadOnlyCollection<Block>(list));
 
             this.LockingUnit = new ReadOnlyCollection<IList<Block>>(locked_blocks.ToArray());
             InitLockingPosition();
@@ -117,24 +122,13 @@ namespace RouteLibrary.Base
                 var seq = Enumerable.Range(start, end - start + 1)
                     .SelectMany(i =>
                                     {
-                                        var en = this.LockingUnit[i] as IEnumerable<Block>;
-                                        if (i != start)
-                                            en = en.Skip(1);
-
-                                        return en;
+                                        this.LockingUnit[i].Blocks;
                                     });
 
                 return seq;
             }
         }
 
-        public IDictionary<Block, RouteSegment> LockedSegments
-        {
-            get
-            {
-                return to_route_dict(this.LockedBlocks.ToList());
-            }
-        }
 
         public bool IsSectionFinished
         {
