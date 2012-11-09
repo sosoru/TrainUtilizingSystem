@@ -130,5 +130,17 @@ namespace TestProject
             Assert.IsTrue(target.LockedBlocks.SequenceEqual(target.LockingUnit[1]));
         }
 
+        [TestMethod]
+        public void LookUpTrainTest()
+        {
+            var blocks = test_blocks.ToArray();
+            Route target = new Route(blocks);
+
+            target.LookUpTrain();
+
+
+            
+        }
+
     }
 }
