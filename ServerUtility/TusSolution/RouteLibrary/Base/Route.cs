@@ -134,6 +134,14 @@ namespace RouteLibrary.Base
             }
         }
 
+        public bool IsLeftSectionFirst
+        {
+            get
+            {
+                return this.LockedBlocks.First().IsDetectingTrain;
+            }
+        }
+
         public bool IsRouteFinished
         {
             get
