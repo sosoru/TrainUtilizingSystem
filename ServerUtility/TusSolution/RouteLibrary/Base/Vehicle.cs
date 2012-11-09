@@ -70,7 +70,7 @@ namespace RouteLibrary.Base
 
         public static bool operator =(Vehicle B)
         {
-            return A.Equals(B);
+            return this.Equals(B);
         }
 
         // override object.GetHashCode
