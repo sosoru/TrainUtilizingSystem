@@ -76,7 +76,7 @@ namespace TestProject
 
         public static string LoopSample
         {
-            get { return @"C:\Users\Administrator\Desktop\新しいフォルダー (2)\route_test.yaml"; }
+            get { return @"C:\Users\Administrator\Desktop\rail_proj\route_test.yaml"; }
         }
 
         /// <summary>
