@@ -85,6 +85,7 @@ namespace SensorLibrary.Packet.IO
         public void Send(EthPacket packet)
         {
             var buf = packet.ToByteArray();
+            var client = new UdpClient();
 
             try
             {
