@@ -96,7 +96,7 @@ namespace RouteLibrary.Base
                 var start = this.ind_start;
                 var end = this.ind_end;
 
-                var seq = Enumerable.Range(start, end - start + 1)
+                var seq = Enumerable.Range(start, end - start)// + 1)
                     .SelectMany(i =>
                                     {
                                         var en = this.LockingUnit[i] as IEnumerable<Block>;
