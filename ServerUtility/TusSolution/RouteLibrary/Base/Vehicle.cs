@@ -14,7 +14,7 @@ namespace RouteLibrary.Base
         public Route Route { get; set; }
         public CommandInfo Command { get; set; }
 
-        public static Vehicle()
+        static Vehicle()
         {
             LastVehicleID = 0;
         }
@@ -73,6 +73,11 @@ namespace RouteLibrary.Base
         public static bool operator ==(Vehicle A, Vehicle B)
         {
             return A.Equals(B);
+        }
+
+        public static bool operator !=(Vehicle A, Vehicle B)
+        {
+            return !(A.Equals(B));
         }
 
         // override object.GetHashCode
