@@ -11,6 +11,11 @@ namespace RouteLibrary.Base
     {
         public IList<Block> Blocks { get; set; }
 
+        public Block ControlBlock
+        {
+            get { return this.Blocks.First(b => b.HasMotor); }
+        }
+
         public IEnumerable<Block> HaltableBlocks
         {
             get
@@ -129,6 +134,10 @@ namespace RouteLibrary.Base
             }
         }
 
+        public ControllingRoute GetLockingControlingRoute(Block parentBlock)
+        {
+            return this.LockingUnit.FirstOrDefault(b => b.ControlBlock == parentBlock);
+        }
 
         public bool IsSectionFinished
         {
@@ -136,7 +145,7 @@ namespace RouteLibrary.Base
             {
                 // a sensor on end of locked section detects train
                 //return this.LockedBlocks.Last().IsDetectingTrain;
-                return this.LockingUnit.Last().Last().IsDetectingTrain;
+                return this.lockingunit.last().last().IsDetectingTrain;
             }
         }
 
