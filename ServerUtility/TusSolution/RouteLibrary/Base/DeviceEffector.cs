@@ -124,7 +124,7 @@ namespace RouteLibrary.Base
             float duty = 0f;
             var locked = cmd.Route.LockedBlocks;
 
-            if (!locked.ContainsKey(this.ParentBlock))
+            if (!locked.Contains(this.ParentBlock))
             {
                 //if (cmd.AnyToDefault)
                 //{
