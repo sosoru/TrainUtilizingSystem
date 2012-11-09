@@ -69,7 +69,6 @@ namespace RouteLibrary.Base
             //                        .Select(list => new ReadOnlyCollection<Block>(list));
 
             this.LockingUnit = new ReadOnlyCollection<IList<Block>>(locked_blocks.ToArray());
-            this.StopList = new List<StopInfo>();
         }
 
         public void LockNextUnit()
@@ -136,10 +135,8 @@ namespace RouteLibrary.Base
             }
         }
 
-        public bool LookUpTrain
+        public void LookUpTrain
         {
-            get
-            {
                 while (!this.IsRouteFinished)
                 {
                     if (this.IsSectionFinished)
@@ -150,7 +147,6 @@ namespace RouteLibrary.Base
 
                 while (this.IsLeftSectionFirst)
                     this.ReleaseBeforeUnit();
-            }
         }
 
         public bool IsRouteFinished
