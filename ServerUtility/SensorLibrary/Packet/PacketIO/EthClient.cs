@@ -14,26 +14,27 @@ namespace SensorLibrary.Packet.IO
     {
         public static int PORT = 8000;
 
-        private UdpClient client_;
+        // private UdpClient client_;
 
         public IPAddress Address { get; set; }
 
         public EthClient()
         {
-            this.client_ = new UdpClient(PORT);
+           // this.client_ = new UdpClient(PORT);
 
         }
 
         public void Connect()
         {
-            this.client_.Connect(new IPEndPoint(this.Address, PORT));
+            //this.client_.Connect(new IPEndPoint(this.Address, PORT));
         }
 
         public IObservable<EthPacket> AsyncReceive()
         {
-            var ipend = new IPEndPoint(0, 0);
-            return Observable.FromAsyncPattern<byte[]>(this.client_.BeginReceive,
-                                                       res => this.client_.EndReceive(res, ref ipend))()
+            var client = new UdpClient(PORT);
+
+            return Observable.FromAsyncPattern<byte[]>(client.BeginReceive,
+                                                       res => client.EndReceive(res, ref ipend))()
                 .Select(a => a.ToObject<EthPacket>());
         }
 
@@ -54,8 +55,13 @@ namespace SensorLibrary.Packet.IO
             return Observable.Start(() =>
                                         {
                                             var data = packet.ToByteArray();
-                                            var client = this.client_;
-                                            client.Connect(new IPEndPoint(this.Address, PORT));
+                                            var client = new UdpClient();
+                                            byte[] address = new byte[4];
+
+                                            Array.Copy(this.Address.GetAddressBytes(), address, 4);
+                                            address[3] = packet.destId.InternalAddr;
+
+                                            client.Connect(new IPEndPoint(address, PORT));
 
                                             Observable
                                                 .FromAsyncPattern<byte[], int>(client.BeginSend,
@@ -71,8 +77,15 @@ namespace SensorLibrary.Packet.IO
 
             try
             {
-                this.client_.Connect(this.Address, PORT);
-                this.client_.Send(buf, buf.Length);
+                var data = packet.ToByteArray();
+                var client = new UdpClient();
+
+                byte[] address = new byte[4];
+                Array.Copy(this.Address.GetAddressBytes(), address, 4);
+                address[3] = packet.destId.InternalAddr;
+
+                client.Connect(address, PORT);
+                client.Send(buf, buf.Length);
             }
             finally
             {
