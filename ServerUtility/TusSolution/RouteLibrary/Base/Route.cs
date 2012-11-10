@@ -134,6 +134,14 @@ namespace RouteLibrary.Base
             }
         }
 
+        public IEnumerable<ControllingRoute> LockedUnits
+        {
+            get
+            {
+                return Enumerable.Range(ind_start, ind_end - ind_start + 1).Select(i => this.Units[i]);
+            }
+        }
+
         public ControllingRoute GetLockingControlingRoute(Block parentBlock)
         {
             return this.Units.FirstOrDefault(b => b.ControlBlock == parentBlock);
