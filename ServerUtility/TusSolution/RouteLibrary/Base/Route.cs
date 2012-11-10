@@ -175,7 +175,7 @@ namespace RouteLibrary.Base
         {
             while (!this.IsRouteFinished)
             {
-                if (this.IsSectionFinished)
+                if (!this.IsSectionFinished)
                     this.LockNextUnit();
                 else
                     break;
