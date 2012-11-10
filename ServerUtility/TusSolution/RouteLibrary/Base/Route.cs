@@ -173,6 +173,9 @@ namespace RouteLibrary.Base
 
         public void LookUpTrain()
         {
+            if (this.ind_end - this.ind_start < 0)
+                this.LockNextUnit();
+
             while (!this.IsRouteFinished)
             {
                 if (this.IsSectionFinished)
