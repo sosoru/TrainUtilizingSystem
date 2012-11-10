@@ -100,7 +100,7 @@ namespace TestProject
         public void RouteConstructorTest()
         {
             Route target = new Route(test_blocks.ToList());
-            Assert.IsTrue(target.LockingUnit[0].SequenceEqual(target.LockedBlocks));
+            Assert.IsTrue(!target.LockingUnit.Any());
         }
 
         /// <summary>
