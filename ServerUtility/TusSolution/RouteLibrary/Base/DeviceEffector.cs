@@ -252,12 +252,12 @@ namespace RouteLibrary.Base
         {
             //if (this.CheckBefore(s => s.Position))
             //{
-            var locked = cmd.Route.LockedSegments;
+            var locked = cmd.Route.GetLockingControlingRoute(this.ParentBlock);
 
-            if (!locked.ContainsKey(this.ParentBlock))
+            if (locked == null)
                 return;
 
-            var segment = locked[this.ParentBlock];
+            var segment = cmd.Route.Segments[this.ParentBlock];
 
             if ((segment.IsFromAny || this.Info.DirStraight.Any(i => i.From.Name == segment.From.Name))
                     && (segment.IsToAny || this.Info.DirStraight.Any(i => i.To.Name == segment.To.Name)))
