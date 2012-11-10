@@ -124,12 +124,12 @@ namespace RouteLibrary.Base
             float duty = 0f;
             var locked = cmd.Route.GetLockingControlingRoute(this.ParentBlock);
 
-            if (!locked.ContainsKey(this.ParentBlock))
+            if (locked == null)
             {
                 return NoEffectState;
             }
 
-            var seg = locked.;
+            var seg = cmd.Route.Segments[this.ParentBlock];
             if ((seg.IsFromAny || seg.From.Name == this.Info.RoutePositive.From.Name)
                     && (seg.IsToAny || seg.To.Name == this.Info.RoutePositive.To.Name))
             {
