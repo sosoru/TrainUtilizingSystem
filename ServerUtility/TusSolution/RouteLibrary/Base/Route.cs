@@ -37,7 +37,7 @@ namespace RouteLibrary.Base
     {
         //todo: to replace all ilist<block>
         public IList<Block> Blocks { get; private set; }
-        public IList<ControllingRoute> LockingUnit { get; protected set; }
+        public IList<ControllingRoute> Units { get; protected set; }
 
         private int ind_start = 0, ind_end = 0;
         private IDictionary<Block, RouteSegment> to_route_dict(IList<Block> list)
@@ -89,7 +89,7 @@ namespace RouteLibrary.Base
         {
             this.Blocks = new ReadOnlyCollection<Block>(segs);
 
-            this.LockingUnit = new ReadOnlyCollection<ControllingRoute>(locked_blocks.ToArray());
+            this.Units = new ReadOnlyCollection<ControllingRoute>(locked_blocks.ToArray());
             InitLockingPosition();
         }
 
@@ -101,7 +101,7 @@ namespace RouteLibrary.Base
 
         public void LockNextUnit()
         {
-            if (ind_end + 1 < this.LockingUnit.Count
+            if (ind_end + 1 < this.Units.Count
                 && (ind_start <= ind_end + 1))
             {
                 ind_end++;
@@ -110,7 +110,7 @@ namespace RouteLibrary.Base
 
         public void ReleaseBeforeUnit()
         {
-            if (ind_start + 1 < this.LockingUnit.Count
+            if (ind_start + 1 < this.Units.Count
                 && (ind_start <= ind_end + 1))
             {
                 ind_start++;
@@ -127,7 +127,7 @@ namespace RouteLibrary.Base
                 var seq = Enumerable.Range(start, end - start + 1)
                     .SelectMany(i =>
 
-                                        this.LockingUnit[i].Blocks
+                                        this.Units[i].Blocks
                                     );
 
                 return seq;
@@ -136,7 +136,7 @@ namespace RouteLibrary.Base
 
         public ControllingRoute GetLockingControlingRoute(Block parentBlock)
         {
-            return this.LockingUnit.FirstOrDefault(b => b.ControlBlock == parentBlock);
+            return this.Units.FirstOrDefault(b => b.ControlBlock == parentBlock);
         }
 
         private IDictionary<Block, RouteSegment> segments_;
@@ -158,7 +158,7 @@ namespace RouteLibrary.Base
             {
                 // a sensor on end of locked section detects train
                 //return this.LockedBlocks.Last().IsDetectingTrain;
-                return this.LockingUnit.Last().ControlBlock.IsDetectingTrain;
+                return this.Units.Last().ControlBlock.IsDetectingTrain;
             }
         }
 
@@ -167,7 +167,7 @@ namespace RouteLibrary.Base
             get
             {
                 //return this.LockedBlocks.First().IsDetectingTrain;
-                return this.LockingUnit.First().ControlBlock.IsDetectingTrain;
+                return this.Units.First().ControlBlock.IsDetectingTrain;
             }
         }
 
@@ -190,7 +190,7 @@ namespace RouteLibrary.Base
             if (len <= 0)
                 throw new ArgumentOutOfRangeException("len must be greater than 0");
 
-            var blockunit = this.LockingUnit.Select((r, i) => new { ind = i, route = r })
+            var blockunit = this.Units.Select((r, i) => new { ind = i, route = r })
                                             .FirstOrDefault(u => u.route.Blocks.Contains(cntblock));
 
             if (blockunit == null)
@@ -208,7 +208,7 @@ namespace RouteLibrary.Base
             get
             {
                 // IsSectionFinished And the locked units of this route reach the end of them
-                return this.ind_end == this.LockingUnit.Count() - 1 && this.IsSectionFinished;
+                return this.ind_end == this.Units.Count() - 1 && this.IsSectionFinished;
             }
         }
     }
