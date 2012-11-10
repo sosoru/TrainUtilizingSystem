@@ -112,8 +112,7 @@ namespace TestProject
             Route target = new Route(test_blocks.ToList());
 
             target.LockNextUnit();
-            target.LockNextUnit();
-            Assert.IsTrue(target.LockedBlocks.SequenceEqual(target.Blocks));
+            Assert.IsTrue(target.LockingUnit[0].Blocks.SequenceEqual(target.Blocks));
 
         }
 
