@@ -126,7 +126,7 @@ namespace RouteLibrary.Base
 
                 var seq = Enumerable.Range(start, end - start + 1)
                     .SelectMany(i =>
-                                    
+
                                         this.LockingUnit[i].Blocks
                                     );
 
@@ -183,6 +183,18 @@ namespace RouteLibrary.Base
 
             while (this.IsLeftSectionFirst)
                 this.ReleaseBeforeUnit();
+        }
+
+        public void AllocateTrain(Block cntblock, int len)
+        {
+            var blockunit = this.LockingUnit.Select((r, i) => new { ind = i, route = r })
+                                            .FirstOrDefault(u => u.route.Blocks.Contains(cntblock));
+
+            if (blockunit == null)
+                throw new IndexOutOfRangeException("block not found");
+
+            this.ind_end = blockunit.ind;
+            this.ind_start = blockunit.ind - len;
         }
 
         public bool IsRouteFinished
