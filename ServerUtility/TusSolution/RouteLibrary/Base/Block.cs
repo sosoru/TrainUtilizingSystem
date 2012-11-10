@@ -220,10 +220,10 @@ namespace RouteLibrary.Base
         {
             get
             {
-                if (!this.HasSensor)
-                {
-                    throw new InvalidOperationException("this block is not allocated a sensor module");
-                }
+                //if (!this.HasSensor)
+                //{
+                //    throw new InvalidOperationException("this block is not allocated a sensor module");
+                //}
 
                 return this.Detector.IsDetected;
             }
