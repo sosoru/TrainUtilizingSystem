@@ -159,7 +159,7 @@ namespace TestProject
             Assert.IsTrue(target.LockedBlocks.Contains(allocblk));
 
             allocblk = blocks[2];
-            target.AllocateTrain(allocblk,2 );
+            target.AllocateTrain(allocblk, 2);
             Assert.IsTrue(target.LockedBlocks.Contains(allocblk));
             Assert.IsTrue(target.LockingUnit.Count == 2);
 
@@ -167,15 +167,17 @@ namespace TestProject
             target.AllocateTrain(allocblk, 2);
             Assert.IsTrue(target.LockedBlocks.Contains(allocblk));
 
-            try{
+            try
+            {
                 allocblk = new Block(new BlockInfo(), blocks.First().Sheet);
                 target.AllocateTrain(allocblk, 1);
                 Assert.Fail();
-            }catch(IndexOutOfRangeException ex){}
+            }
+            catch (IndexOutOfRangeException ex) { }
 
             allocblk = blocks.First();
             target.AllocateTrain(allocblk, 2);
 
-
+        }
     }
 }
