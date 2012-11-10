@@ -139,7 +139,7 @@ namespace RouteLibrary.Base
             return this.LockingUnit.FirstOrDefault(b => b.ControlBlock == parentBlock);
         }
 
-        private Dictionary<Block, RouteSegment> segments_;
+        private IDictionary<Block, RouteSegment> segments_;
         public IDictionary<Block, RouteSegment> Segments
         {
             get
