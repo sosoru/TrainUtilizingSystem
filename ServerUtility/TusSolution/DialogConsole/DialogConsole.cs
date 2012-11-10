@@ -39,53 +39,54 @@ namespace DialogConsole
                 Console.WriteLine("5 : apply command");
                 Console.WriteLine();
 
-                Console.WriteLine( cmdinfo.Speed);
-            Console.WriteLine(cmdinfo.Route.Blocks
-               .Where(b => b.HasMotor && b.IsBlocked)
-                .Aggregate("", (ac, b) => ac += b.Name + ", "));
+                Console.WriteLine(cmdinfo.Speed);
+                //Console.WriteLine(cmdinfo.Route.Blocks
+                //   .Where(b => b.HasMotor && b.IsBlocked)
+                //    .Aggregate("", (ac, b) => ac += b.Name + ", "));
 
                 var cmd = Console.ReadLine();
 
-                try{
-                switch (cmd)
+                try
                 {
-                    case "1" :
-                        ShowStatus(sht);
-                        break;
-                    case "2p" :
-                        ChangeSwitchAll(sht, PointStateEnum.Straight);
-                        break;
-                    case "2n":
-                        ChangeSwitchAll(sht, PointStateEnum.Curve);
-                        break;
-                    case "3":
-                        Detect(sht);
-                        break;
-                    case "4" :
-                        InputCommand(sht, cmdinfo);
-                        break;
-                    case "5" : 
-                        sht.Effect(cmdinfo);
-                        break;
-                    default:
-                        Console.WriteLine("parse error");
-                        break;
-                }
+                    switch (cmd)
+                    {
+                        case "1":
+                            ShowStatus(sht);
+                            break;
+                        case "2p":
+                            ChangeSwitchAll(sht, PointStateEnum.Straight);
+                            break;
+                        case "2n":
+                            ChangeSwitchAll(sht, PointStateEnum.Curve);
+                            break;
+                        case "3":
+                            Detect(sht);
+                            break;
+                        case "4":
+                            InputCommand(sht, cmdinfo);
+                            break;
+                        case "5":
+                            sht.Effect(cmdinfo);
+                            break;
+                        default:
+                            Console.WriteLine("parse error");
+                            break;
+                    }
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
                 }
 
-            
+
             }
-            
+
         }
-        
+
         static void InputCommand(BlockSheet sht, CommandInfo info)
         {
             info.Route = InputRoute(sht, info.Route);
-            
+
             Console.WriteLine("Duty? [0-1]");
             var duty = Console.ReadLine();
 
@@ -105,7 +106,7 @@ namespace DialogConsole
                 Console.WriteLine(b.ToString());
         }
 
-        static void ChangeSwitchAll(BlockSheet sht,  PointStateEnum pos)
+        static void ChangeSwitchAll(BlockSheet sht, PointStateEnum pos)
         {
             var devs = sht.AllSwitches();
 
@@ -135,7 +136,7 @@ namespace DialogConsole
             Console.WriteLine("route?");
             var content = Console.ReadLine();
 
-            if(content == "")
+            if (content == "")
                 return before;
 
             try
@@ -196,9 +197,9 @@ namespace DialogConsole
                 Port = 8000,
             };
             this.serv = new PacketServer(new AvrDeviceFactoryProvider())
-                {
-                    Controller = io,
-                };
+            {
+                Controller = io,
+            };
 
             this.dispat = new PacketDispatcher();
             this.serv.AddAction(this.dispat);
