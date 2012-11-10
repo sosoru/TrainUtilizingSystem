@@ -132,26 +132,50 @@ namespace TestProject
             Assert.IsTrue(target.LockedBlocks.SequenceEqual(target.LockingUnit[1].Blocks));
         }
 
+        //[TestMethod]
+        //public void LookUpTrainTest()
+        //{
+        //    target.LookUpTrain();
+        //    Assert.IsTrue(target.LockedBlocks.Count() == 0);
+
+        //    var detectedmock = new Mock<SensorDetector>();
+        //    detectedmock.Setup(e => e.IsDetected).Returns(true);
+        //    var sensoredblock = blocks[3];
+        //    sensoredblock.Detector = detectedmock.Object;
+
+        //    target = new Route(blocks);
+        //    target.LookUpTrain();
+        //    Assert.IsTrue(target.LockedBlocks.Contains(sensoredblock));
+        //}
+
         [TestMethod]
-        public void LookUpTrainTest()
+        public void AllocateBlockTest()
         {
             var blocks = test_blocks.ToArray();
             Route target = new Route(blocks);
-            target.LookUpTrain();
-            Assert.IsTrue(target.LockedBlocks.Count() == 0);
 
-            var detectedmock = new Mock<SensorDetector>();
-            detectedmock.Setup(e => e.IsDetected).Returns(true);
-            var sensoredblock = blocks[3];
-            sensoredblock.Detector = detectedmock.Object;
+            Block allocblk = blocks[3];
+            target.AllocateTrain(allocblk, 1);
+            Assert.IsTrue(target.LockedBlocks.Contains(allocblk));
 
-            target = new Route(blocks);
-            target.LookUpTrain();
-            Assert.IsTrue(target.LockedBlocks.Contains(sensoredblock));
+            allocblk = blocks[2];
+            target.AllocateTrain(allocblk,2 );
+            Assert.IsTrue(target.LockedBlocks.Contains(allocblk));
+            Assert.IsTrue(target.LockingUnit.Count == 2);
 
+            allocblk = blocks.Last();
+            target.AllocateTrain(allocblk, 2);
+            Assert.IsTrue(target.LockedBlocks.Contains(allocblk));
 
-            
-        }
+            try{
+                allocblk = new Block(new BlockInfo(), blocks.First().Sheet);
+                target.AllocateTrain(allocblk, 1);
+                Assert.Fail();
+            }catch(IndexOutOfRangeException ex){}
+
+            allocblk = blocks.First();
+            target.AllocateTrain(allocblk, 2);
+
 
     }
 }
