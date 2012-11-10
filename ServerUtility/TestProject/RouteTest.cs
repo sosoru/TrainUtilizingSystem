@@ -6,6 +6,8 @@ using RouteLibrary.Parser;
 using SensorLibrary.Packet.Control;
 using SensorLibrary.Packet.Data;
 using System.Linq;
+using Moq;
+using Moq.Linq;
 
 namespace TestProject
 {
@@ -90,7 +92,6 @@ namespace TestProject
 
                 return bstrs.Select(name => s.InnerBlocks.First(b => b.Name == name));
             }
-
         }
 
         /// <summary>
@@ -136,10 +137,19 @@ namespace TestProject
         {
             var blocks = test_blocks.ToArray();
             Route target = new Route(blocks);
-
             target.LookUpTrain();
-
             Assert.IsTrue(target.LockedBlocks.Count() == 0);
+
+            var detectedmock = new Mock<SensorDetector>();
+            detectedmock.Setup(e => e.IsDetected).Returns(true);
+            var sensoredblock = blocks[3];
+            sensoredblock.Detector = detectedmock.Object;
+
+            target = new Route(blocks);
+            target.LookUpTrain();
+            Assert.IsTrue(target.LockedBlocks.Contains(sensoredblock));
+
+
             
         }
 
