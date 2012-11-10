@@ -187,6 +187,9 @@ namespace RouteLibrary.Base
 
         public void AllocateTrain(Block cntblock, int len)
         {
+            if (len <= 0)
+                throw new ArgumentOutOfRangeException("len must be greater than 0");
+
             var blockunit = this.LockingUnit.Select((r, i) => new { ind = i, route = r })
                                             .FirstOrDefault(u => u.route.Blocks.Contains(cntblock));
 
@@ -194,7 +197,7 @@ namespace RouteLibrary.Base
                 throw new IndexOutOfRangeException("block not found");
 
             this.ind_end = blockunit.ind;
-            this.ind_start = blockunit.ind - len;
+            this.ind_start = blockunit.ind - (len-1);
 
             if (this.ind_start < 0)
                 this.ind_start = 0;
