@@ -100,7 +100,7 @@ namespace TestProject
         public void RouteConstructorTest()
         {
             Route target = new Route(test_blocks.ToList());
-            Assert.IsTrue(!target.LockingUnit.Any());
+            Assert.IsTrue(!target.LockedBlocks.Any());
         }
 
         /// <summary>
