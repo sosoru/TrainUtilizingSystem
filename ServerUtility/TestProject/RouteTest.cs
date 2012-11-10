@@ -140,7 +140,7 @@ namespace TestProject
 
             target.LookUpTrain();
 
-            Assert.IsTrue(target.LockedSegments.Count() == 0);
+            Assert.IsTrue(target.LockedBlocks.Count() == 0);
             
         }
 
