@@ -139,6 +139,19 @@ namespace RouteLibrary.Base
             return this.LockingUnit.FirstOrDefault(b => b.ControlBlock == parentBlock);
         }
 
+        private Dictionary<Block, RouteSegment> segments_;
+        public IDictionary<Block, RouteSegment> Segments
+        {
+            get
+            {
+                if (this.segments_ == null)
+                {
+                    this.segments_ = to_route_dict(this.Blocks);
+                }
+                return this.segments_;
+            }
+        }
+
         public bool IsSectionFinished
         {
             get
