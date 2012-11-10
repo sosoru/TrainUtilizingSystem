@@ -113,7 +113,7 @@ namespace TestProject
             Route target = new Route(test_blocks.ToList());
 
             target.LockNextUnit();
-            Assert.IsTrue(target.LockingUnit[0].Blocks.SequenceEqual(target.LockedBlocks));
+            Assert.IsTrue(target.Units[0].Blocks.SequenceEqual(target.LockedBlocks));
 
         }
 
@@ -129,7 +129,7 @@ namespace TestProject
             target.LockNextUnit();
             target.ReleaseBeforeUnit();
 
-            Assert.IsTrue(target.LockedBlocks.SequenceEqual(target.LockingUnit[1].Blocks));
+            Assert.IsTrue(target.LockedBlocks.SequenceEqual(target.Units[1].Blocks));
         }
 
         //[TestMethod]
@@ -161,7 +161,7 @@ namespace TestProject
             allocblk = blocks[2];
             target.AllocateTrain(allocblk, 2);
             Assert.IsTrue(target.LockedBlocks.Contains(allocblk));
-            Assert.IsTrue(target.LockingUnit.Count == 2);
+            Assert.IsTrue(target.Units.Count == 2);
 
             allocblk = blocks.Last();
             target.AllocateTrain(allocblk, 2);
