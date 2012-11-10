@@ -161,7 +161,7 @@ namespace TestProject
             allocblk = blocks[2];
             target.AllocateTrain(allocblk, 2);
             Assert.IsTrue(target.LockedBlocks.Contains(allocblk));
-            Assert.IsTrue(target.Units.Count == 2);
+            Assert.IsTrue(target.LockedUnits.Count == 2);
 
             allocblk = blocks.Last();
             target.AllocateTrain(allocblk, 2);
