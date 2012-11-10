@@ -229,19 +229,19 @@ namespace RouteLibrary.Base
             }
         }
 
-        public bool IsBlocked
-        {
-            get
-            {
-                if (!this.IsHaltable)
-                {
-                    throw new InvalidOperationException("IsBlocked property requires Haltable state");
-                }
+        //public bool IsBlocked
+        //{
+        //    get
+        //    {
+        //        if (!this.IsHaltable)
+        //        {
+        //            throw new InvalidOperationException("IsBlocked property requires Haltable state");
+        //        }
 
-                return this.MotorEffector.Device.IsDetected;
-                //return this.Detector.IsDetected;
-            }
-        }
+        //        return this.MotorEffector.Device.IsDetected;
+        //        //return this.Detector.IsDetected;
+        //    }
+        //}
 
         public override string ToString()
         {
