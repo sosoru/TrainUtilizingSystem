@@ -195,9 +195,6 @@ namespace RouteLibrary.Base
 
             this.ind_end = blockunit.ind;
             this.ind_start = blockunit.ind - len;
-
-            if (this.ind_start == 0)
-                this.ind_start = 0;
         }
 
         public bool IsRouteFinished
