@@ -272,7 +272,7 @@ namespace RouteLibrary.Base
         }
 
         private PointStateEnum _before_position = PointStateEnum.Any;
-        public override void ApplyCommand(CommandInfo cmd)
+        public override void ApplyCommand(CommandFactory factory)
         {
             //if (this.CheckBefore(s => s.Position))
             //{
