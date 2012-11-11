@@ -208,8 +208,9 @@ namespace TestProject
                 Route = route,
                 Speed = 0.5f
             };
+            var factory = new CommandFactory() { CreateCommand = b => cmd, };
 
-            sht.Effect(cmd, route.LockedBlocks);
+            sht.Effect(factory, route.LockedBlocks);
             Assert.IsTrue(sht.GetBlock("AT1").MotorEffector.Device.CurrentMemory == MotorMemoryStateEnum.Controlling);
             Assert.IsTrue(sht.GetBlock("AT2").MotorEffector.Device.CurrentMemory == MotorMemoryStateEnum.Waiting);
             Assert.IsTrue(sht.GetBlock("AT3").MotorEffector.Device.CurrentMemory == MotorMemoryStateEnum.NoEffect);
