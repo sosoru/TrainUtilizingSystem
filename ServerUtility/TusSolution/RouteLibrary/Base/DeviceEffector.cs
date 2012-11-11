@@ -235,7 +235,16 @@ namespace RouteLibrary.Base
             //};
 
             this.Device.States = states;
-            this.Device.CurrentMemory = mode;
+            if (cmd.MotorMode == MotorMemoryStateEnum.Controlling)
+            {
+                this.Device.CurrentMemory = MotorMemoryStateEnum.Controlling;
+            }
+            else if (cmd.MotorMode == MotorMemoryStateEnum.Waiting)
+            {
+                this.Device.CurrentMemory = MotorMemoryStateEnum.Waiting;
+            }
+            else
+                throw new InvalidOperationException();
 
             // when execution is NOT needed :
             // NoEffect -> NoEfect
