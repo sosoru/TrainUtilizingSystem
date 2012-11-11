@@ -18,6 +18,7 @@ using Moq.Linq;
 using SensorLibrary;
 using System.Reactive.Subjects;
 using System.Threading;
+using System.Reactive.Concurrency;
 
 namespace TestProject
 {
@@ -128,7 +129,7 @@ namespace TestProject
             var serv = new PacketServer(new AvrDeviceFactoryProvider());
             serv.Controller = mockio.Object;
             var sht = new BlockSheet(target_sheet, serv);
-            serv.LoopStart();
+            serv.LoopStart(Scheduler.NewThread);
 
             Route rt = GetRouteFirst(sht);
 
