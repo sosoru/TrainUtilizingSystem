@@ -99,9 +99,9 @@ namespace RouteLibrary.Base
 
 
                     if(block == this.Route.LockedUnits.First().ControlBlock)
-                        basecmd.MotorMode = MotorControlMode.DutySpecifiedMode;
+                        basecmd.MotorMode =  MotorMemoryStateEnum.Controlling
                     else if ( block == this.Route.LockedUnits.Last().ControlBlock)
-                        basecmd.MotorMode = MotorControlMode.WaitingPulseMode;
+                        basecmd.MotorMode = MotorMemoryStateEnum.Waiting;
 
                     return basecmd;                    
                 });
