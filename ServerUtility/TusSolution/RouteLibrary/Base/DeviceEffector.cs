@@ -14,7 +14,7 @@ namespace RouteLibrary.Base
     public interface IDeviceEffector
     {
         void ExecuteCommand();
-        void ApplyCommand(CommandInfo cmd);
+        void ApplyCommand(CommandFactory factory);
     }
 
     public abstract class DeviceEffector<TDev, TInfo, TState>
@@ -52,7 +52,7 @@ namespace RouteLibrary.Base
         }
 
         public virtual bool IsNeededExecution { get; set; }
-        public abstract void ApplyCommand(CommandInfo cmd);
+        public abstract void ApplyCommand(CommandFactory factory);
     }
 
     public class MotorEffector
@@ -118,7 +118,7 @@ namespace RouteLibrary.Base
             return state;
         }
 
-        public MotorState CreateMotorState(CommandInfo cmd)
+        public MotorState CreateMotorState(CommandFactory factory )
         {
             MotorDirection dir = MotorDirection.Standby;
             float duty = 0f;
@@ -129,6 +129,7 @@ namespace RouteLibrary.Base
                 return NoEffectState;
             }
 
+            var cmd = factory.CreateCommand();
             var seg = cmd.Route.Segments[this.ParentBlock];
             if ((seg.IsFromAny || seg.From.Name == this.Info.RoutePositive.From.Name)
                     && (seg.IsToAny || seg.To.Name == this.Info.RoutePositive.To.Name))
@@ -199,10 +200,11 @@ namespace RouteLibrary.Base
         }
 
         private MotorMemoryStateEnum _before_state = MotorMemoryStateEnum.Unknown;
-        public override void ApplyCommand(CommandInfo cmd)
+        public override void ApplyCommand(CommandFactory factory)
         {
             this.IsNeededExecution = true;
 
+            var cmd = factory.CreateCommand();
             var states = new Dictionary<MotorMemoryStateEnum, MotorState>();
             var mode = SelectCurrentMemory(cmd);
 
