@@ -214,7 +214,7 @@ namespace RouteLibrary.Base
                 case MotorMemoryStateEnum.Waiting :
                     states.Add(MotorMemoryStateEnum.Controlling, CreateMotorState(cmd));
                     var waitingstate = BeforeBlockHavingMotor(cmd);
-                    states.Add(MotorMemoryStateEnum.Waiting, waitingstate);
+                    states.Add(MotorMemoryStateEnum.Waiting,  CreateWaitingState( waitingstate));
                     break;
                 case MotorMemoryStateEnum.NoEffect : 
                     states.Add(MotorMemoryStateEnum.NoEffect, NoEffectState);
