@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SensorLibrary.Packet.Control;
+using System.Collections.ObjectModel;
 
 namespace SensorLibrary.Devices.TusAvrDevices
 {
@@ -40,7 +41,7 @@ namespace SensorLibrary.Devices.TusAvrDevices
         public IDictionary<MotorMemoryStateEnum, MotorState> States
         {
             get;
-             set;
+            private set;
         }
 
         private Kernel deviceKernel_ = null;
