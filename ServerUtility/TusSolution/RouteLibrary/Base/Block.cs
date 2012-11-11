@@ -114,7 +114,7 @@ namespace RouteLibrary.Base
             }
         }
 
-        public IEnumerable<IDeviceEffector> Effect(IEnumerable<CommandInfo> infos)
+        public IEnumerable<IDeviceEffector> Effect(IEnumerable<CommandFactory> infos)
         {
             //var list_infos = infos.Select(info =>
             //{
