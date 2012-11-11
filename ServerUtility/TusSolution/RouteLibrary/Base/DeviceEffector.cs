@@ -155,7 +155,7 @@ namespace RouteLibrary.Base
         {
             var locked = cmd.Route.LockedBlocks.Where(s => s.HasMotor);
             var before = locked.Reverse().SkipWhile(b => b == this.ParentBlock).FirstOrDefault();
-
+            
             return before;
         }
 
@@ -214,7 +214,7 @@ namespace RouteLibrary.Base
                 case MotorMemoryStateEnum.Waiting :
                     states.Add(MotorMemoryStateEnum.Controlling, CreateMotorState(cmd));
                     var waitingstate = BeforeBlockHavingMotor(cmd);
-                    states.Add(MotorMemoryStateEnum.Waiting,  CreateWaitingState( waitingstate));
+                    states.Add(MotorMemoryStateEnum.Waiting,  CreateWaitingState( waitingstate.MotorEffector.Device));
                     break;
                 case MotorMemoryStateEnum.NoEffect : 
                     states.Add(MotorMemoryStateEnum.NoEffect, NoEffectState);
