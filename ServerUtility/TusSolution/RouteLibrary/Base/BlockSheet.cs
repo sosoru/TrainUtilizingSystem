@@ -89,7 +89,7 @@ namespace RouteLibrary.Base
             get { return this.InnerBlocks.SelectMany(b => b.Effectors); }
         }
 
-        public void Effect(CommandInfo cmd, IEnumerable<Block> blocks)
+        public void Effect(CommandFactory cmd, IEnumerable<Block> blocks)
         {
             Type[] order = new[] { typeof(SwitchEffector), typeof(MotorEffector), typeof(IDeviceEffector) };
 
