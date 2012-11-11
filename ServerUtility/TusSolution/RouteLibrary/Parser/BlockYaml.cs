@@ -29,11 +29,11 @@ namespace RouteLibrary.Parser
             var arr = ((IEnumerable<object>)src).Where(o => o is Dictionary<object, object>)
                                                         .Cast<Dictionary<object, object>>();
 
-            return arr.Select(obj => new BlockInfo() { Name = (string)obj["name"] } )
-                        .DefaultIfEmpty(new BlockInfo() { Name = "nothing"});                                                              
+            return arr.Select(obj => new BlockInfo() { Name = (string)obj["name"] })
+                        .DefaultIfEmpty(new BlockInfo() { Name = "nothing" });
         }
 
-        public MotorInfo ParseMotor(Dictionary<object,object> src)
+        public MotorInfo ParseMotor(Dictionary<object, object> src)
         {
 
             var motor = new MotorInfo()
@@ -58,7 +58,7 @@ namespace RouteLibrary.Parser
             return pt;
         }
 
-        public SensorInfo ParseSensor(Dictionary<object,object> src)
+        public SensorInfo ParseSensor(Dictionary<object, object> src)
         {
             var sens = new SensorInfo()
             {
@@ -101,7 +101,7 @@ namespace RouteLibrary.Parser
                 var motor_src = (Dictionary<object, object>)extract_dict(dict, "motor");
                 var sens_src = (Dictionary<object, object>)extract_dict(dict, "sensor");
                 var ptr_src = (Dictionary<object, object>)extract_dict(dict, "point");
-                var isolate = bool.Parse((string)(extract_dict(dict, "isolate") ?? "false"));
+                var isolate = (bool)extract_dict(dict, "isolate") ?? false;
 
                 var block = ab.Find(b => b.Name == (string)dict["name"]);
 
