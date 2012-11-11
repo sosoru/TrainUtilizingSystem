@@ -94,11 +94,11 @@ namespace RouteLibrary.Base
             this.Effect(new[] { cmd });
         }
 
-        public void Effect(IEnumerable<CommandInfo> cmds)
+        public void Effect(IEnumerable<CommandInfo> cmds, IEnumerable<Block> blocks)
         {
             Type[] order = new[] { typeof(SwitchEffector), typeof(MotorEffector), typeof(IDeviceEffector) };
 
-            this.InnerBlocks
+           blocks 
                 .ToObservable()
                 .Do(b => b.Effect(cmds)
                     .OrderBy(cmd => Array.IndexOf(order, cmd.GetType()))
@@ -182,9 +182,5 @@ namespace RouteLibrary.Base
 
         }
 
-        public IEnumerable<Block> GetBlocks(string p1, string p2, string p3, string p4, string p5)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
