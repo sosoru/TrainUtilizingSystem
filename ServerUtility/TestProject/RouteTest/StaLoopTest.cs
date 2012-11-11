@@ -17,6 +17,7 @@ using Moq;
 using Moq.Linq;
 using SensorLibrary;
 using System.Reactive.Subjects;
+using System.Threading;
 
 namespace TestProject
 {
@@ -135,6 +136,8 @@ namespace TestProject
 
             // vh will allocate the first control block of the route at Constructor
             vh.Run();
+
+            Thread.Sleep(1000);
 
             Assert.IsTrue(written.Count == 3);
             Assert.IsTrue(written.ExtractDevice<SwitchState>(1, 1, 1).Position == PointStateEnum.Straight);
