@@ -59,5 +59,6 @@ namespace RouteLibrary.Base
         public MotorInfo Motor { get; set; }
         public SwitchInfo Switch { get; set; }
         public SensorInfo Sensor { get; set; }
+        public bool IsIsolated { get; set; }
     }
 }
