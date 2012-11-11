@@ -166,23 +166,23 @@ namespace RouteLibrary.Base
             return next;
         }
 
-        public MotorMemoryStateEnum SelectCurrentMemory(CommandInfo cmd)
-        {
-            var locked = cmd.Route.LockedBlocks.Where(s => s.HasMotor && s.MotorEffector.Device.CurrentMemory == MotorMemoryStateEnum.NoEffect).ToArray();
+        //public MotorMemoryStateEnum SelectCurrentMemory(CommandInfo cmd)
+        //{
+        //    var locked = cmd.Route.LockedBlocks.Where(s => s.HasMotor && s.MotorEffector.Device.CurrentMemory == MotorMemoryStateEnum.NoEffect).ToArray();
 
-            if (!locked.Contains(this.ParentBlock))
-                return MotorMemoryStateEnum.NoEffect;
+        //    if (!locked.Contains(this.ParentBlock))
+        //        return MotorMemoryStateEnum.NoEffect;
 
-            var last = locked.Length - 1;
-            var thispos = Array.IndexOf(locked, this.ParentBlock);
+        //    var last = locked.Length - 1;
+        //    var thispos = Array.IndexOf(locked, this.ParentBlock);
 
-            if (thispos == last)
-                return MotorMemoryStateEnum.Waiting;
-            else if (thispos == last - 1)
-                return MotorMemoryStateEnum.Controlling;
-            else
-                return MotorMemoryStateEnum.Locked;
-        }
+        //    if (thispos == last)
+        //        return MotorMemoryStateEnum.Waiting;
+        //    else if (thispos == last - 1)
+        //        return MotorMemoryStateEnum.Controlling;
+        //    else
+        //        return MotorMemoryStateEnum.Locked;
+        //}
 
         public void SetDetectingMode(float duty)
         {
@@ -205,9 +205,9 @@ namespace RouteLibrary.Base
 
             var cmd = factory.CreateCommand(this.ParentBlock);
             var states = new Dictionary<MotorMemoryStateEnum, MotorState>();
-            var mode = SelectCurrentMemory(cmd);
+            //var mode = SelectCurrentMemory(cmd);
 
-            switch (mode)
+            switch (cmd.MotorMode)
             {
                 case MotorMemoryStateEnum.Controlling:
                     states.Add(MotorMemoryStateEnum.Controlling, CreateMotorState(cmd));
