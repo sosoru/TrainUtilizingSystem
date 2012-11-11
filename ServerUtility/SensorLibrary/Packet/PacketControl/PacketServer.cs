@@ -7,6 +7,7 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.PlatformServices;
 using System.Threading.Tasks;
+using System.Reactive.Concurrency;
 
 using SensorLibrary.Packet.IO;
 using SensorLibrary.Devices;
@@ -23,11 +24,13 @@ namespace SensorLibrary.Packet.Control
         public bool IsLooping { get; private set; }
         public IDeviceIO Controller { get; set; }
         public DeviceFactoryProvider FactoryProvider { get; set; }
-        public TaskScheduler Scheduler { get; set; }
+
+        private IDisposable recv_disp = null;
+        private IDisposable send_disp = null;
+        public bool IsLooping { get { return recv_disp != null || send_disp != null; } }
 
         private volatile object lockStream = new object();
         private List<PacketServerAction> actionList = new List<PacketServerAction>();
-        private bool cancellation = false;
         private PacketDispatcher thisobsv_;
 
         private Queue<DevicePacket> sending_queue = new Queue<DevicePacket>();
@@ -117,8 +120,15 @@ namespace SensorLibrary.Packet.Control
 
         }
 
+        private IObservable<DevicePacket> SendState()
+        {
+            return Observable.Return(((this.sending_queue.Count > 0) ? this.sending_queue.Dequeue() : null))
+                                        .Delay(TimeSpan.FromMilliseconds(1))
+                                        .SkipWhile(d => d == null)
+        }
+
         private bool blockLoopStarting = false;
-        public void LoopStart()
+        public void LoopStart(Scheduler scheduler )
         {
 
             if (!blockLoopStarting)
@@ -126,25 +136,21 @@ namespace SensorLibrary.Packet.Control
                 blockLoopStarting = true;
                 if (!IsLooping)
                 {
-                    this.IsLooping = true;
                     //todo : stopping
-                    Observable.Defer(this.Controller.GetReadingPacket)
+                    this.recv_disp =
+                        Observable
+                        .Defer(this.Controller.GetReadingPacket)
                         .SelectMany(packs => packs.ExtractPackedPacket())
-                        .Do(pack =>
-                                {
-                                })
-                        .ObserveOn(System.Reactive.Concurrency.NewThreadScheduler.Default)
+                        .Do(DispatchState)
+                        .ObserveOn(scheduler)
                         .Repeat()
                         .Subscribe(pack => { }, (Exception ex) => Console.WriteLine(ex.ToString()));
 
-                    Observable
-                        .Defer(() => Observable
-                                        .Return(((this.sending_queue.Count > 0) ? this.sending_queue.Dequeue() : null))
-                                        .Delay(TimeSpan.FromMilliseconds(1))
-                                        .SkipWhile(d => d == null)
-                                                )
+                    this.send_disp =
+                        Observable
+                        .Defer(SendState)
                         .SelectMany(this.Controller.GetWritingPacket)
-                        .ObserveOn(System.Reactive.Concurrency.Scheduler.NewThread)
+                        .ObserveOn(scheduler)
                         .Repeat()
                         .Subscribe(pack => { }, (Exception ex) => Console.WriteLine(ex.ToString()));
 
@@ -157,44 +163,13 @@ namespace SensorLibrary.Packet.Control
 
         public void LoopStop()
         {
-            this.cancellation = true;
+            if (this.recv_disp != null)
+                this.recv_disp.Dispose();
+
+            if (this.send_disp != null)
+                this.send_disp.Dispose();
         }
 
-        private void ListeningLoop()
-        {
-            this.IsLooping = true;
-            while (!cancellation)
-            {
-                try
-                {
-
-                    DevicePacket pack = new DevicePacket();
-                    try
-                    {
-                        lock (lockStream)
-                            pack = this.Controller.ReadPacket();
-
-                        if (pack == null)
-                        {
-                            System.Threading.Thread.Sleep(1);
-                            continue;
-                        }
-
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex.ToString());
-                        if (pack != null)
-                            Console.WriteLine(pack.ToString());
-                    }
-                }
-                catch (EndOfStreamException)
-                {
-                    Console.WriteLine("stream closed");
-                }
-            }
-            this.IsLooping = false;
-        }
 
         #region Dispose-Finalize Pattern
         private bool __disposed = false;
@@ -223,6 +198,7 @@ namespace SensorLibrary.Packet.Control
             //}
 
             //base.Dispose();
+            this.LoopStop();
             __disposed = true;
         }
 
