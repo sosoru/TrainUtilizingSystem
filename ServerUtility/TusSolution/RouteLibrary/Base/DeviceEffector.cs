@@ -274,10 +274,10 @@ namespace RouteLibrary.Base
         {
             //if (this.CheckBefore(s => s.Position))
             //{
-            var locked = cmd.Route.GetLockingControlingRoute(this.ParentBlock);
+            //var locked = cmd.Route.GetLockingControlingRoute(this.ParentBlock);
 
-            if (locked == null)
-                return;
+            //if (locked == null)
+            //    return;
 
             var segment = cmd.Route.Segments[this.ParentBlock];
 
