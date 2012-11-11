@@ -12,16 +12,19 @@ namespace RouteLibrary.Base
         public int VehicleID { get; private set; }
 
         public Route Route { get; set; }
-        public CommandInfo Command { get; set; }
+        public BlockSheet Sheet { get; set; }
 
         static Vehicle()
         {
             LastVehicleID = 0;
         }
 
-        public Vehicle()
+        public Vehicle(BlockSheet sht, Route rt)
         {
             this.VehicleID = LastVehicleID++;
+
+            this.Sheet = sht;
+            this.Route = rt;
         }
 
         public bool Refresh()
@@ -79,5 +82,16 @@ namespace RouteLibrary.Base
             return this.VehicleID.GetHashCode();
         }
 
+        public void Run()
+        {
+            var cmd = new CommandInfo()
+            {
+                Route = this.Route,
+                Speed = 0.5f,
+            };
+
+            this.Sheet.Effect(new[] { cmd }, this.Route.LockedBlocks);
+
+        }
     }
 }
