@@ -83,6 +83,8 @@ namespace RouteLibrary.Base
             if (info.Sensor != null)
                 this.Detector = new SensorDetector(info.Sensor, this);
 
+            this.IsIsolated = info.IsIsolated;
+
         }
 
         public MotorEffector MotorEffector
@@ -215,6 +217,8 @@ namespace RouteLibrary.Base
         {
             get { return this.info.Switch != null; }
         }
+
+        public bool IsIsolated { get; private set; }
 
         public bool IsDetectingTrain
         {
