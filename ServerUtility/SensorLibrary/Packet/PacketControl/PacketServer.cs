@@ -126,6 +126,8 @@ namespace SensorLibrary.Packet.Control
                     o.OnNext(this.sending_queue.Dequeue());
                 else
                     o.OnCompleted();
+
+                return () => { };
             });
         }
 
