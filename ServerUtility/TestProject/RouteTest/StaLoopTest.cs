@@ -65,6 +65,7 @@ namespace TestProject
         Route GetRouteFirst(BlockSheet sht)
         {
             var route = new Route(sht, new[] { "AT2", "AT3", "AT4", "AT5", "AT6", "BAT6", "AT7", "AT8", "AT1", "BAT1" });
+            return route;
         }
 
         #region 追加のテスト属性
