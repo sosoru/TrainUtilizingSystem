@@ -111,7 +111,7 @@ namespace TestProject
         public void ParseTest()
         {
             BlockYaml target = new BlockYaml();
-            IEnumerable<object> src = target.ParseFrom(PathSample);
+            IEnumerable<object> src = target.ParseFrom(LoopSample);
             //IEnumerable<Block> expected = ; 
             IEnumerable<BlockInfo> actual;
             actual = target.Parse(src).ToList() ;
