@@ -127,7 +127,7 @@ namespace SensorLibrary.Packet.Control
         }
 
         private bool blockLoopStarting = false;
-        public void LoopStart(Scheduler scheduler )
+        public void LoopStart(IScheduler scheduler )
         {
             if (!blockLoopStarting)
             {
