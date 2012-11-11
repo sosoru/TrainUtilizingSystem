@@ -203,15 +203,37 @@ namespace RouteLibrary.Base
         {
             this.IsNeededExecution = true;
 
+            var states = new Dictionary<MotorMemoryStateEnum, MotorState>();
             var mode = SelectCurrentMemory(cmd);
-            var states = new Dictionary<MotorMemoryStateEnum, MotorState>{
-                { MotorMemoryStateEnum.Controlling, CreateMotorState(cmd) },
-                {MotorMemoryStateEnum.Waiting , CreateWaitingState(BeforeBlockHavingMotor(cmd).MotorEffector.Device)},
-                {MotorMemoryStateEnum.NoEffect, NoEffectState},
-                {MotorMemoryStateEnum.Locked, LockedState}
-            };
 
-            this.Device.States = states;
+            switch (mode)
+            {
+                case MotorMemoryStateEnum.Controlling:
+                    states.Add(MotorMemoryStateEnum.Controlling, CreateMotorState(cmd);
+                    break;
+                case MotorMemoryStateEnum.Waiting :
+                    states.Add(MotorMemoryStateEnum.Controlling, CreateMotorState(cmd);
+                    var waitingstate = BeforeBlockHavingMotor(cmd);
+                    states.Add(MotorMemoryStateEnum.Waiting, waitingstate);
+                    break;
+                case MotorMemoryStateEnum.NoEffect : 
+                    states.Add(MotorMemoryStateEnum.NoEffect, NoEffectState);
+                    break;
+                case MotorMemoryStateEnum.Locked : 
+                case MotorMemoryStateEnum.Unknown:
+                default:
+                    throw new InvalidOperationException("invalid mode applied");
+                    break;
+            }
+
+            //var states = new Dictionary<MotorMemoryStateEnum, MotorState>{
+            //    { MotorMemoryStateEnum.Controlling, CreateMotorState(cmd) },
+            //    {MotorMemoryStateEnum.Waiting , CreateWaitingState(BeforeBlockHavingMotor(cmd).MotorEffector.Device)},
+            //    {MotorMemoryStateEnum.NoEffect, NoEffectState},
+            //    {MotorMemoryStateEnum.Locked, LockedState}
+            //};
+
+            
             this.Device.CurrentMemory = mode;
 
             // when execution is NOT needed :
