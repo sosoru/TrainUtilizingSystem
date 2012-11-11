@@ -113,5 +113,33 @@ namespace TestProject
 
             
         }
+
+        public 
+
+        [TestMethod]
+        public void RouteCommandTest()
+        {
+            var mockio = new Mock<IDeviceIO>();
+            var written = new List<IDeviceState<IPacketDeviceData>>();
+            mockio.Setup(e => e.GetWritingPacket).Callback<DevicePacket>(pack =>
+                written.AddRange(pack.ExtractPackedPacket())
+                );
+            var serv = new PacketServer(new AvrDeviceFactoryProvider());
+            serv.Controller = mockio.Object;
+            var sht = new BlockSheet(target_sheet, serv);
+
+            Route rt = GetRouteFirst(sht);
+
+            var vh = new Vehicle(sht, rt);
+
+            // vh will allocate the first control block of the route at Constructor
+            vh.Run();
+
+            Assert.IsTrue(written.Count == 3);
+            Assert.IsTrue(written.ExtractDevice<SwitchState>(1, 1, 1).Position == PointStateEnum.Straight);
+            Assert.IsTrue(written.ExtractDevice<SwitchState>(1, 1, 1).Position == PointStateEnum.Curve);
+            Assert.IsTrue(written.ExtractDevice<MotorState>(1, 2, 1).Duty > 0.0f);
+
+        }
     }
 }
