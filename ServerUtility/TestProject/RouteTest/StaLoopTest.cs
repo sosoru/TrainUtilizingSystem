@@ -129,7 +129,7 @@ namespace TestProject
             var serv = new PacketServer(new AvrDeviceFactoryProvider());
             serv.Controller = mockio.Object;
             var sht = new BlockSheet(target_sheet, serv);
-            serv.LoopStart(Scheduler.NewThread);
+            serv.LoopStart(Scheduler.CurrentThread);
 
             Route rt = GetRouteFirst(sht);
 
