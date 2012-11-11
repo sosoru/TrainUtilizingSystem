@@ -140,7 +140,7 @@ namespace TestProject
 
             serv.SendingObservable.Subscribe();
 
-            Assert.IsTrue(written.Count == 3);
+            Assert.IsTrue(written.Count == 5);
             Assert.IsTrue(written.ExtractDevice<SwitchState>(1, 1, 1).Position == PointStateEnum.Straight);
             Assert.IsTrue(written.ExtractDevice<SwitchState>(1, 1, 2).Position == PointStateEnum.Straight);
             Assert.IsTrue(written.ExtractDevice<MotorState>(1, 2, 1).Duty > 0.0f);
