@@ -41,7 +41,7 @@ namespace SensorLibrary.Devices.TusAvrDevices
         public IDictionary<MotorMemoryStateEnum, MotorState> States
         {
             get;
-            private set;
+           set;
         }
 
         private Kernel deviceKernel_ = null;
