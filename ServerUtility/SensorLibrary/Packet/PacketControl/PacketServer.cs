@@ -120,9 +120,11 @@ namespace SensorLibrary.Packet.Control
 
         private IObservable<DevicePacket> SendState()
         {
-            return Observable.Return(((this.sending_queue.Count > 0) ? this.sending_queue.Dequeue() : null))
-                                        .Delay(TimeSpan.FromMilliseconds(1))
-                                        .SkipWhile(d => d == null);
+            return Observable.Create(this.sending_queue.ToArray())
+                .Where(d => d != null);
+            //return Observable.Return(((this.sending_queue.Count > 0) ? this.sending_queue.Dequeue() : null))
+            //                            .Delay(TimeSpan.FromMilliseconds(1))
+            //                            .SkipWhile(d => d == null);
         }
 
         public IObservable<IDeviceState<IPacketDeviceData>> ReceivingObservable
