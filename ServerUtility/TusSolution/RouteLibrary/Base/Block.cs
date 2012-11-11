@@ -16,7 +16,7 @@ namespace RouteLibrary.Base
     public class CommandInfo
     {
         public Route Route { get; set; }
-        public MotorControlMode MotorMode { get; set; }
+        public MotorMemoryStateEnum MotorMode { get; set; }
         public float Speed { get; set; }
         public bool AnyToDefault { get; set; }
 
