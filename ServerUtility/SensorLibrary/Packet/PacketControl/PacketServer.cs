@@ -45,7 +45,6 @@ namespace SensorLibrary.Packet.Control
 
         public PacketServer()
         {
-            this.IsLooping = false;
         }
 
         public IObservable<IDeviceState<IPacketDeviceData>> GetDispatcher()
