@@ -21,6 +21,17 @@ namespace SensorLibrary.Devices
             get { return this.Data.Command; }
             set { this.Data.Command = value; }
         }
+
+        public override string ToString()
+        {
+            return string.Format("|kl : cmd={0}, data={1} {2} {3} {4}",
+                    Enum.GetName(typeof(KernelCommand), this.Command),
+                    this.Data.Content1.ToString("X2"),
+                    this.Data.Content2.ToString("X2"),
+                    this.Data.Content3.ToString("X2"),
+                    this.Data.Content4.ToString("X2")
+                    );
+        }
     }
 
     public class InquiryState
