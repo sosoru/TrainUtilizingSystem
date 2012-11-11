@@ -122,6 +122,7 @@ namespace RouteLibrary.Base
         {
             MotorDirection dir = MotorDirection.Standby;
             float duty = 0f;
+            var cmd = factory.CreateCommand();
             var locked = cmd.Route.GetLockingControlingRoute(this.ParentBlock);
 
             if (locked == null)
@@ -129,7 +130,7 @@ namespace RouteLibrary.Base
                 return NoEffectState;
             }
 
-            var cmd = factory.CreateCommand();
+            var cmd = factory.CreateCommand(this.ParentBlock);
             var seg = cmd.Route.Segments[this.ParentBlock];
             if ((seg.IsFromAny || seg.From.Name == this.Info.RoutePositive.From.Name)
                     && (seg.IsToAny || seg.To.Name == this.Info.RoutePositive.To.Name))
@@ -204,7 +205,7 @@ namespace RouteLibrary.Base
         {
             this.IsNeededExecution = true;
 
-            var cmd = factory.CreateCommand();
+            var cmd = factory.CreateCommand(this.ParentBlock);
             var states = new Dictionary<MotorMemoryStateEnum, MotorState>();
             var mode = SelectCurrentMemory(cmd);
 
