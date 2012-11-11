@@ -135,7 +135,7 @@ namespace TestProject
                 var serv = new PacketServer(new AvrDeviceFactoryProvider()) { Controller = io };
                 var disp = new PacketDispatcher();
 
-                serv.LoopStart();
+                serv.LoopStart(System.Reactive.Concurrency.Scheduler.NewThread);
 
                 return serv;
             }
@@ -302,7 +302,7 @@ namespace TestProject
             //sht.GetBlock("AT3").Detector = train.Object;
 
             if(!serv.IsLooping)
-                serv.LoopStart();
+                serv.LoopStart(System.Reactive.Concurrency.Scheduler.NewThread);
 
             sht.ChangeDetectingMode(); // todo: value check
             System.Threading.Thread.Sleep(2000);
