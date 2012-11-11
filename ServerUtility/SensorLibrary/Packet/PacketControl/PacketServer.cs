@@ -8,6 +8,7 @@ using System.Reactive.Linq;
 using System.Reactive.PlatformServices;
 using System.Threading.Tasks;
 using System.Reactive.Concurrency;
+using System.Reactive.Subjects;
 
 using SensorLibrary.Packet.IO;
 using SensorLibrary.Devices;
@@ -120,15 +121,14 @@ namespace SensorLibrary.Packet.Control
 
         private IObservable<DevicePacket> SendState()
         {
-            return Observable.Create<DevicePacket>(o =>
+            var sub = new ReplaySubject<DevicePacket>();
+            while (this.sending_queue.Count > 0)
             {
-                if (this.sending_queue.Count > 0)
-                    o.OnNext(this.sending_queue.Dequeue());
-                else
-                    o.OnCompleted();
+                sub.OnNext(this.sending_queue.Dequeue());
+            }
+            sub.OnCompleted();
 
-                return () => { };
-            });
+            return sub;
         }
 
         public IObservable<IDeviceState<IPacketDeviceData>> ReceivingObservable
