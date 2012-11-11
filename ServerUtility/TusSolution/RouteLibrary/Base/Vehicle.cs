@@ -97,18 +97,15 @@ namespace RouteLibrary.Base
                         Speed = 0.5f,
                     };
 
-                    switch (block)
-                    {
-                        case this.Route.LockedUnits.First().ControlBlock:
-                            basecmd.MotorMode = MotorControlMode.DutySpecifiedMode;
-                            break;
-                        case this.Route.LockedUnits.Last().ControlBlock:
-                            basecmd.MotorMode = MotorControlMode.WaitingPulseMode;
-                            break;
-                    }
+
+                    if(block == this.Route.LockedUnits.First().ControlBlock)
+                        basecmd.MotorMode = MotorControlMode.DutySpecifiedMode;
+                    else if ( block == this.Route.LockedUnits.Last().ControlBlock)
+                        basecmd.MotorMode = MotorControlMode.WaitingPulseMode;
 
                     return basecmd;                    
                 });
+
             var factory = new CommandFactory()
             {
                 CreateCommand = createfunc
