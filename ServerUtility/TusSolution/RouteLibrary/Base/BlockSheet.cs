@@ -96,8 +96,8 @@ namespace RouteLibrary.Base
            blocks 
                 .ToObservable()
                 .Do(b => b.Effect(new[] {cmd})
-                    .OrderBy(cmd => Array.IndexOf(order, cmd.GetType()))
-                    .ForEach(cmd => cmd.ExecuteCommand()))
+                    .OrderBy(c => Array.IndexOf(order, c.GetType()))
+                    .ForEach(c => c.ExecuteCommand()))
                 //.Do(b => b.Detectors.ForEach(d => d.SendCheckCommand()))
                 .Subscribe();
         }
