@@ -180,7 +180,7 @@ namespace TestProject
 
             // 2nd case : the vehicle keeps specified speed, but entering the next section, reduces its speed to half
             Route otherrt = GetRouteFirst(sht);
-            rt.AllocateTrain(sht.GetBlock("AT15"));
+            rt.AllocateTrain(sht.GetBlock("AT15"), 1);
             var othervh = new Vehicle(sht, rt);
 
             othervh.Run(1.0f);
@@ -190,7 +190,7 @@ namespace TestProject
             Assert.IsTrue(Math.Round(written.ExtractDevice<MotorState>(1, 2, 3).Duty,1) == 0.5f);
           
             // 1st case : the vehicle reduces its speed to half immediately, and stops the next section
-            otherrt.AllocateTrain(sht.GetBlock("AT12"));
+            otherrt.AllocateTrain(sht.GetBlock("AT12"), 1);
             othervh.Run(1.0f);
             vh.Run(1.0f);
 
@@ -198,7 +198,7 @@ namespace TestProject
             Assert.IsTrue(written.ExtractDevice<MotorState>(1, 2, 3).Duty == 0.0f);
 
             // zero case : the vehicle stops immediately
-            otherrt.AllocateTrain(sht.GetBlock("AT9"));
+            otherrt.AllocateTrain(sht.GetBlock("AT9"), 1);
             othervh.Run(1.0f);
             vh.Run(1.0f);
 
