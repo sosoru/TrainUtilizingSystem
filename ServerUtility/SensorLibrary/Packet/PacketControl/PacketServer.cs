@@ -125,35 +125,38 @@ namespace SensorLibrary.Packet.Control
                                         .SkipWhile(d => d == null);
         }
 
+        public IObservable<IDeviceState<IPacketDeviceData>> ReceivingObservable
+        {
+            get
+            {
+                return Observable
+                           .Defer(this.Controller.GetReadingPacket)
+                           .SelectMany(packs => packs.ExtractPackedPacket())
+                           .Do(DispatchState);
+            }
+        }
+
+        public IObservable<Unit> SendingObservable
+        {
+            get
+            {
+                return Observable
+                        .Defer(SendState)
+                        .SelectMany(this.Controller.GetWritingPacket);
+            }
+        }
+
         private bool blockLoopStarting = false;
-        public void LoopStart(IScheduler scheduler )
+        public void LoopStart(IScheduler scheduler)
         {
             if (!blockLoopStarting)
             {
                 blockLoopStarting = true;
                 if (!IsLooping)
                 {
-                    //todo : stopping
-                    this.recv_disp =
-                        Observable
-                        .Defer(this.Controller.GetReadingPacket)
-                        .SelectMany(packs => packs.ExtractPackedPacket())
-                        .Do(DispatchState)
-                        .ObserveOn(scheduler)
-                        .Repeat()
-                        .Subscribe(pack => { }, (Exception ex) => Console.WriteLine(ex.ToString()));
-
-                    this.send_disp =
-                        Observable
-                        .Defer(SendState)
-                        .SelectMany(this.Controller.GetWritingPacket)
-                        .ObserveOn(scheduler)
-                        .Repeat()
-                        .Subscribe(pack => { }, (Exception ex) => Console.WriteLine(ex.ToString()));
-
+                    this.recv_disp = this.ReceivingObservable.SubscribeOn(scheduler).Subscribe();
+                    this.send_disp = this.SendingObservable.SubscribeOn(scheduler).Subscribe();
                 }
-                //     Task.Factory.StartNew(() => ListeningLoop());
-
                 blockLoopStarting = false;
             }
         }
