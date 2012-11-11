@@ -86,8 +86,8 @@ namespace RouteLibrary.Base
         public void Run()
         {
             //todo : check blocks locked
-            this.Route.LockedBlocks();
-            this.Route.LockedBlocks();
+            this.Route.LockNextUnit();
+            this.Route.LockNextUnit();
 
             var createfunc = new Func<Block, CommandInfo>((block) =>
                 {
