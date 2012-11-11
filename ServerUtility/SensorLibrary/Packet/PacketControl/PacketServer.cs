@@ -21,13 +21,12 @@ namespace SensorLibrary.Packet.Control
     {
         //protected IDisposable packetObservableDisposable { get; private set; }
 
-        public bool IsLooping { get; private set; }
+        public bool IsLooping { get { return recv_disp != null || send_disp != null; } }
         public IDeviceIO Controller { get; set; }
         public DeviceFactoryProvider FactoryProvider { get; set; }
 
         private IDisposable recv_disp = null;
         private IDisposable send_disp = null;
-        public bool IsLooping { get { return recv_disp != null || send_disp != null; } }
 
         private volatile object lockStream = new object();
         private List<PacketServerAction> actionList = new List<PacketServerAction>();
@@ -124,7 +123,7 @@ namespace SensorLibrary.Packet.Control
         {
             return Observable.Return(((this.sending_queue.Count > 0) ? this.sending_queue.Dequeue() : null))
                                         .Delay(TimeSpan.FromMilliseconds(1))
-                                        .SkipWhile(d => d == null)
+                                        .SkipWhile(d => d == null);
         }
 
         private bool blockLoopStarting = false;
