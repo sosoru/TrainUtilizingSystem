@@ -209,7 +209,7 @@ namespace RouteLibrary.Base
 
             switch (cmd.MotorMode)
             {
-                case MotorMemoryStateEnum.Controlling
+                case MotorMemoryStateEnum.Controlling:
                     states.Add(MotorMemoryStateEnum.Controlling, CreateMotorState(cmd));
                     break;
                 case MotorMemoryStateEnum.Waiting :
