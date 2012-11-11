@@ -69,7 +69,7 @@ namespace RouteLibrary.Base
                 foreach (var b in this.Blocks)
                 {
                     l.Add(b);
-                    if (b.HasMotor)
+                    if (b.IsIsolated)
                     {
                         var cr = new ControllingRoute() { Blocks = new List<Block>(l) };
 
