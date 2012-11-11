@@ -62,6 +62,11 @@ namespace TestProject
             }
         }
 
+        Route GetRouteFirst(BlockSheet sht)
+        {
+            var route = new Route(sht, new[] { "AT2", "AT3", "AT4", "AT5", "AT6", "BAT6", "AT7", "AT8", "AT1", "BAT1" });
+        }
+
         #region 追加のテスト属性
         //
         // テストを作成する際には、次の追加属性を使用できます:
@@ -90,6 +95,22 @@ namespace TestProject
             var sht = target_sheet;
 
             target_sheet.ToArray();
+        }
+
+        [TestMethod]
+        public void RouteConstructTest()
+        {
+            var serv = new PacketServer()
+            var sht = new BlockSheet(target_sheet, serv);
+
+            Route rt = GetRouteFirst(sht);
+            var lockedunits = rt.LockedUnits.ToArray();
+            Assert.IsTrue(lockedunits[0].Blocks.Select(b => b.Name)
+                            .SequenceEqual(new[] { "AT2", "AT3", "AT4", "AT5", "AT6", "BAT6"}));
+            Assert.IsTrue(lockedunits[1].Blocks.Select(b => b.Name)
+                            .SequenceEqual(new[] { "AT7", "AT8", "AT1", "BAT1" }));
+
+            
         }
     }
 }
