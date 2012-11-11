@@ -89,13 +89,13 @@ namespace RouteLibrary.Base
             get { return this.InnerBlocks.SelectMany(b => b.Effectors); }
         }
 
-        public void Effect(IEnumerable<CommandInfo> cmds, IEnumerable<Block> blocks)
+        public void Effect(CommandInfo cmd, IEnumerable<Block> blocks)
         {
             Type[] order = new[] { typeof(SwitchEffector), typeof(MotorEffector), typeof(IDeviceEffector) };
 
            blocks 
                 .ToObservable()
-                .Do(b => b.Effect(cmds)
+                .Do(b => b.Effect(new[] {cmd})
                     .OrderBy(cmd => Array.IndexOf(order, cmd.GetType()))
                     .ForEach(cmd => cmd.ExecuteCommand()))
                 //.Do(b => b.Detectors.ForEach(d => d.SendCheckCommand()))
