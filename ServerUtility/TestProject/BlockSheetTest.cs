@@ -167,7 +167,7 @@ namespace TestProject
             
             // 1: after calling Effect, AT1 is positive and others are standby
             // then check the packet sending for AT1 is included 
-            sht.Effect(cmd);
+            sht.Effect(cmd, route.LockedBlocks);
 
             var pack = written.First(p => p.DeviceID == new DeviceID(1, 1, 1));
             var state = (MotorState)pack.CurrentState;
