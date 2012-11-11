@@ -25,6 +25,8 @@ namespace RouteLibrary.Base
 
             this.Sheet = sht;
             this.Route = rt;
+
+            rt.LockNextUnit();
         }
 
         public bool Refresh()
