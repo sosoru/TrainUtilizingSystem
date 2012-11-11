@@ -109,6 +109,7 @@ namespace RouteLibrary.Parser
                 block.Motor = (motor_src != null) ? ParseMotor(motor_src) : null;
                 block.Sensor = (sens_src != null) ? ParseSensor(sens_src) : null;
                 block.Switch = (ptr_src != null) ? ParsePoint(ptr_src) : null;
+                block.IsIsolated = isolate;
 
                 yield return block;
             }
