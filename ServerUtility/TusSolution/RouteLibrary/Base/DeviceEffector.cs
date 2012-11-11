@@ -118,7 +118,7 @@ namespace RouteLibrary.Base
             return state;
         }
 
-        public MotorState CreateMotorState(CommandFactory factory )
+        public MotorState CreateMotorState(CommandInfo cmd)
         {
             MotorDirection dir = MotorDirection.Standby;
             float duty = 0f;
