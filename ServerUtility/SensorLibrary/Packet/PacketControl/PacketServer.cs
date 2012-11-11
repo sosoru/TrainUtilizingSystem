@@ -146,7 +146,7 @@ namespace SensorLibrary.Packet.Control
         {
             get
             {
-                return SendState()
+                return Observable.Defer(SendState)
                         .SelectMany(this.Controller.GetWritingPacket);
             }
         }
