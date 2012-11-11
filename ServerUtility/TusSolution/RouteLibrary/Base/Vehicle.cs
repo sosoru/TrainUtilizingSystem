@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using SensorLibrary.Devices.TusAvrDevices;
 
 namespace RouteLibrary.Base
 {
@@ -25,8 +26,6 @@ namespace RouteLibrary.Base
 
             this.Sheet = sht;
             this.Route = rt;
-
-            rt.LockNextUnit();
         }
 
         public bool Refresh()
@@ -86,10 +85,36 @@ namespace RouteLibrary.Base
 
         public void Run()
         {
+            //todo : check blocks locked
+            this.Route.LockedBlocks();
+            this.Route.LockedBlocks();
+
+            var createfunc = new Func<Block, CommandInfo>((block) =>
+                {
+                    var basecmd = new CommandInfo()
+                    {
+                        Route = this.Route,
+                        Speed = 0.5f,
+                        CreateCommand = createfunc,
+                    };
+
+                    switch (block)
+                    {
+                        case this.Route.LockedUnits.First().ControlBlock:
+                            basecmd.MotorMode = MotorControlMode.DutySpecifiedMode;
+                            break;
+                        case this.Route.LockedUnits.Last().ControlBlock:
+                            basecmd.MotorMode = MotorControlMode.WaitingPulseMode;
+                            break;
+                    }
+
+                    return basecmd;                    
+                });
             var cmd = new CommandInfo()
             {
                 Route = this.Route,
                 Speed = 0.5f,
+                CreateCommand = createfunc
             };
 
             this.Sheet.Effect( cmd , this.Route.LockedBlocks);
