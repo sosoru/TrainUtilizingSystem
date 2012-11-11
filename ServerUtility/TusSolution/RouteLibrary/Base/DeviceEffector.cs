@@ -122,7 +122,6 @@ namespace RouteLibrary.Base
         {
             MotorDirection dir = MotorDirection.Standby;
             float duty = 0f;
-            var cmd = factory.CreateCommand(this.ParentBlock);
             var locked = cmd.Route.GetLockingControlingRoute(this.ParentBlock);
 
             if (locked == null)
