@@ -101,7 +101,7 @@ namespace RouteLibrary.Parser
                 var motor_src = (Dictionary<object, object>)extract_dict(dict, "motor");
                 var sens_src = (Dictionary<object, object>)extract_dict(dict, "sensor");
                 var ptr_src = (Dictionary<object, object>)extract_dict(dict, "point");
-                var isolate = bool.Parse(extract_dict(dict, "isolate") ?? "false");
+                var isolate = bool.Parse((string)(extract_dict(dict, "isolate") ?? "false"));
 
                 var block = ab.Find(b => b.Name == (string)dict["name"]);
 
