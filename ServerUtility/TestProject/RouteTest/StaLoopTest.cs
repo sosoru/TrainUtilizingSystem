@@ -111,7 +111,13 @@ namespace TestProject
             Assert.IsTrue(units[0].Blocks.Select(b => b.Name)
                             .SequenceEqual(new[] { "AT2", "AT3", "AT4", "AT5", "AT6", "BAT6"}));
             Assert.IsTrue(units[1].Blocks.Select(b => b.Name)
-                            .SequenceEqual(new[] { "AT7", "AT8", "AT1", "BAT1" }));
+                            .SequenceEqual(new[] { "AT7", "AT8", "AT9", "BAT9" }));
+            Assert.IsTrue(units[2].Blocks.Select(b => b.Name)
+                            .SequenceEqual(new[] { "AT10", "AT11", "AT12", "BAT12" }));
+            Assert.IsTrue(units[3].Blocks.Select(b => b.Name)
+                            .SequenceEqual(new[] { "AT13", "AT14", "AT15", "BAT16" }));
+            Assert.IsTrue(units[4].Blocks.Select(b => b.Name)
+                            .SequenceEqual(new[] { "AT16", "AT1", "BAT1" }));
 
             
         }
