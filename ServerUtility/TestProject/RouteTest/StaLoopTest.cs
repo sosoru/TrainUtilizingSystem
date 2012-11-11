@@ -105,10 +105,10 @@ namespace TestProject
             var sht = new BlockSheet(target_sheet, serv);
 
             Route rt = GetRouteFirst(sht);
-            var lockedunits = rt.LockedUnits.ToArray();
-            Assert.IsTrue(lockedunits[0].Blocks.Select(b => b.Name)
+            var units = rt.Units.ToArray();
+            Assert.IsTrue(units[0].Blocks.Select(b => b.Name)
                             .SequenceEqual(new[] { "AT2", "AT3", "AT4", "AT5", "AT6", "BAT6"}));
-            Assert.IsTrue(lockedunits[1].Blocks.Select(b => b.Name)
+            Assert.IsTrue(units[1].Blocks.Select(b => b.Name)
                             .SequenceEqual(new[] { "AT7", "AT8", "AT1", "BAT1" }));
 
             
