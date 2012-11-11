@@ -93,13 +93,13 @@ namespace RouteLibrary.Base
         {
             Type[] order = new[] { typeof(SwitchEffector), typeof(MotorEffector), typeof(IDeviceEffector) };
 
-           blocks 
-                .ToObservable()
-                .Do(b => b.Effect(new[] {cmd})
-                    .OrderBy(c => Array.IndexOf(order, c.GetType()))
-                    .ForEach(c => c.ExecuteCommand()))
+            blocks
+                 .ToObservable()
+                 .Do(b => b.Effect(new[] { cmd })
+                     .OrderBy(c => Array.IndexOf(order, c.GetType()))
+                     .ForEach(c => c.ExecuteCommand()))
                 //.Do(b => b.Detectors.ForEach(d => d.SendCheckCommand()))
-                .Subscribe();
+                 .Subscribe();
         }
 
         public Block GetBlock(string p)
@@ -150,7 +150,7 @@ namespace RouteLibrary.Base
                                 .Where(b => b.HasSwitch)
                                 .Select(b => b.SwitchEffector.Device);
             return devs;
-            
+
         }
 
         public void InquiryDevices(IEnumerable<IDevice<IDeviceState<IPacketDeviceData>>> devs)
@@ -172,8 +172,8 @@ namespace RouteLibrary.Base
             var g = this.InnerBlocks.Where(b => b.HasMotor && b.IsDetectingTrain);
 
 
-                    
-                    
+
+
 
         }
 
