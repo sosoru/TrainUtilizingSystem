@@ -155,7 +155,57 @@ namespace TestProject
             Assert.IsTrue(written.ExtractDevice<SwitchState>(1, 1, 1).Position == PointStateEnum.Straight);
             Assert.IsTrue(written.ExtractDevice<SwitchState>(1, 1, 2).Position == PointStateEnum.Straight);
             Assert.IsTrue(written.ExtractDevice<MotorState>(1, 2, 2).Duty > 0.0f);
-
         }
+
+        [TestMethod]
+        public void VehicleReduceSpeedTest()
+        {
+            var mockio = new Mock<IDeviceIO>();
+            var written = new List<IDeviceState<IPacketDeviceData>>();
+            mockio.Setup(e => e.GetReadingPacket()).Returns(Observable.Empty<DevicePacket>());
+            mockio.Setup(e => e.GetWritingPacket(It.IsAny<DevicePacket>())).Callback<DevicePacket>(pack =>
+                written.AddRange(pack.ExtractPackedPacket())
+                )
+                .Returns(Observable.Empty<Unit>());
+            var serv = new PacketServer(new AvrDeviceFactoryProvider());
+            serv.Controller = mockio.Object;
+            var sht = new BlockSheet(target_sheet, serv);
+
+            Route rt = GetRouteFirst(sht);
+            var vh = new Vehicle(sht, rt);
+
+            // N-th case : the vehicle goes at specified speed
+            vh.Run(1.0f);
+            Assert.IsTrue(written.ExtractDevice<MotorState>(1, 2, 2).Duty == 1.0f);
+
+            // 2nd case : the vehicle keeps specified speed, but entering the next section, reduces its speed to half
+            Route otherrt = GetRouteFirst(sht);
+            rt.AllocateTrain(sht.GetBlock("AT15"));
+            var othervh = new Vehicle(sht, rt);
+
+            othervh.Run(1.0f);
+            vh.Run(1.0f);
+
+            Assert.IsTrue(written.ExtractDevice<MotorState>(1, 2, 2).Duty == 1.0f);
+            Assert.IsTrue(Math.Round(written.ExtractDevice<MotorState>(1, 2, 3).Duty,1) == 0.5f);
+          
+            // 1st case : the vehicle reduces its speed to half immediately, and stops the next section
+            otherrt.AllocateTrain(sht.GetBlock("AT12"));
+            othervh.Run(1.0f);
+            vh.Run(1.0f);
+
+            Assert.IsTrue(Math.Round(written.ExtractDevice<MotorState>(1, 2, 2).Duty,1) == 0.5f);
+            Assert.IsTrue(written.ExtractDevice<MotorState>(1, 2, 3).Duty == 0.0f);
+
+            // zero case : the vehicle stops immediately
+            otherrt.AllocateTrain(sht.GetBlock("AT9"));
+            othervh.Run(1.0f);
+            vh.Run(1.0f);
+
+            Assert.IsTrue(written.ExtractDevice<MotorState>(1, 2, 2).Duty == 0.0f);
+
+            
+        }
+
     }
 }
