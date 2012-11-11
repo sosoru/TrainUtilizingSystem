@@ -280,6 +280,7 @@ namespace RouteLibrary.Base
             //if (locked == null)
             //    return;
 
+            var cmd = factory.CreateCommand(this.ParentBlock);
             var segment = cmd.Route.Segments[this.ParentBlock];
 
             if ((segment.IsFromAny || this.Info.DirStraight.Any(i => i.From.Name == segment.From.Name))
