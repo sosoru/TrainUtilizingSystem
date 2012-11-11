@@ -120,7 +120,7 @@ namespace TestProject
         {
             var mockio = new Mock<IDeviceIO>();
             var written = new List<IDeviceState<IPacketDeviceData>>();
-            mockio.Setup(e => e.GetWritingPacket()).Callback<DevicePacket>(pack =>
+            mockio.Setup(e => e.GetWritingPacket(It.IsAny<DevicePacket>)).Callback<DevicePacket>(pack =>
                 written.AddRange(pack.ExtractPackedPacket())
                 );
             var serv = new PacketServer(new AvrDeviceFactoryProvider());
