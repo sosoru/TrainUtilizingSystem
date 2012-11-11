@@ -95,7 +95,6 @@ namespace RouteLibrary.Base
                     {
                         Route = this.Route,
                         Speed = 0.5f,
-                        CreateCommand = createfunc,
                     };
 
                     switch (block)
@@ -110,14 +109,12 @@ namespace RouteLibrary.Base
 
                     return basecmd;                    
                 });
-            var cmd = new CommandInfo()
+            var factory = new CommandFactory()
             {
-                Route = this.Route,
-                Speed = 0.5f,
                 CreateCommand = createfunc
             };
 
-            this.Sheet.Effect( cmd , this.Route.LockedBlocks);
+            this.Sheet.Effect( factory, this.Route.LockedBlocks);
 
         }
     }
