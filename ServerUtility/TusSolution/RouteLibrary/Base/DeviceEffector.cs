@@ -209,10 +209,10 @@ namespace RouteLibrary.Base
             switch (mode)
             {
                 case MotorMemoryStateEnum.Controlling:
-                    states.Add(MotorMemoryStateEnum.Controlling, CreateMotorState(cmd);
+                    states.Add(MotorMemoryStateEnum.Controlling, CreateMotorState(cmd));
                     break;
                 case MotorMemoryStateEnum.Waiting :
-                    states.Add(MotorMemoryStateEnum.Controlling, CreateMotorState(cmd);
+                    states.Add(MotorMemoryStateEnum.Controlling, CreateMotorState(cmd));
                     var waitingstate = BeforeBlockHavingMotor(cmd);
                     states.Add(MotorMemoryStateEnum.Waiting, waitingstate);
                     break;
@@ -233,7 +233,7 @@ namespace RouteLibrary.Base
             //    {MotorMemoryStateEnum.Locked, LockedState}
             //};
 
-            
+            this.Device.States = states;
             this.Device.CurrentMemory = mode;
 
             // when execution is NOT needed :
