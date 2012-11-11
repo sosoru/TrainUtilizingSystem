@@ -124,6 +124,7 @@
     <Compile Include="RouteParserTest.cs" />
     <Compile Include="RouteTest.cs" />
     <Compile Include="RouteTest\RouteTest_PointSample.cs" />
+    <Compile Include="RouteTest\StaLoopTest.cs" />
     <Compile Include="SensorStateTest.cs" />
     <Compile Include="SwitchStateTest.cs" />
     <Compile Include="TestPacketProvider.cs" />
@@ -175,6 +176,7 @@
     <None Include="SampleLayout\point_sample.yaml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="SampleLayout\staloop.yaml" />
     <None Include="Signification.pfx" />
     <Shadow Include="テストの参照\RouteLibrary.accessor" />
   </ItemGroup>
