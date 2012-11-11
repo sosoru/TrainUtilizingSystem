@@ -100,7 +100,7 @@ namespace TestProject
         [TestMethod]
         public void RouteConstructTest()
         {
-            var serv = new PacketServer()
+            var serv = new PacketServer();
             var sht = new BlockSheet(target_sheet, serv);
 
             Route rt = GetRouteFirst(sht);
