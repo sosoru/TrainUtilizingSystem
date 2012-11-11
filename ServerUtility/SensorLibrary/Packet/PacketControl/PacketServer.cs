@@ -23,6 +23,7 @@ namespace SensorLibrary.Packet.Control
         public bool IsLooping { get; private set; }
         public IDeviceIO Controller { get; set; }
         public DeviceFactoryProvider FactoryProvider { get; set; }
+        public TaskScheduler Scheduler { get; set; }
 
         private volatile object lockStream = new object();
         private List<PacketServerAction> actionList = new List<PacketServerAction>();
@@ -95,6 +96,27 @@ namespace SensorLibrary.Packet.Control
             }
         }
 
+        private void DispatchState(IDeviceState<IPacketDeviceData> state)
+        {
+            var f =
+                this.FactoryProvider.AvailableDeviceTypes.FirstOrDefault(
+                    a => a.ModuleType == state.ModuleType);
+            if (f != null)
+            {
+                //var state = f.DeviceStateCreate();
+                //var data = f.DeviceDataCreate();
+
+                //state.ReceivingServer = this;
+
+                this.actionList.ForEach((item) => item.Act(state));
+            }
+            else
+            {
+                Console.WriteLine("pero");
+            }
+
+        }
+
         private bool blockLoopStarting = false;
         public void LoopStart()
         {
@@ -110,22 +132,6 @@ namespace SensorLibrary.Packet.Control
                         .SelectMany(packs => packs.ExtractPackedPacket())
                         .Do(pack =>
                                 {
-                                    var f =
-                                        this.FactoryProvider.AvailableDeviceTypes.FirstOrDefault(
-                                            a => a.ModuleType == pack.ModuleType);
-                                    if (f != null)
-                                    {
-                                        //var state = f.DeviceStateCreate();
-                                        //var data = f.DeviceDataCreate();
-
-                                        //state.ReceivingServer = this;
-
-                                        this.actionList.ForEach((item) => item.Act(pack));
-                                    }
-                                    else
-                                    {
-                                        Console.WriteLine("pero");
-                                    }
                                 })
                         .ObserveOn(System.Reactive.Concurrency.NewThreadScheduler.Default)
                         .Repeat()
