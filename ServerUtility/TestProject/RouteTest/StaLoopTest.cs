@@ -18,7 +18,7 @@ using Moq.Linq;
 using SensorLibrary;
 using System.Reactive.Subjects;
 
-namespace TestProject.RouteTest
+namespace TestProject
 {
     /// <summary>
     /// StaLoopTest の概要の説明
