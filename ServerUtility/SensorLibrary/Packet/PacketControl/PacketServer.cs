@@ -142,12 +142,12 @@ namespace SensorLibrary.Packet.Control
             }
         }
 
-        public IObservable<Unit> SendingObservable
+        public IObservable<DevicePacket> SendingObservable
         {
             get
             {
-                return SendState()
-                        .SelectMany(this.Controller.GetWritingPacket);
+                return SendState();
+                        //.SelectMany(this.Controller.GetWritingPacket);
             }
         }
 
