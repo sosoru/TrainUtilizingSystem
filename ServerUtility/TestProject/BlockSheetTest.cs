@@ -164,10 +164,11 @@ namespace TestProject
                 Route = route,
                 Speed = 0.5f
             };
+            var factory = new CommandFactory() { CreateCommand = b => cmd, };
             
             // 1: after calling Effect, AT1 is positive and others are standby
             // then check the packet sending for AT1 is included 
-            sht.Effect(cmd, route.LockedBlocks);
+            sht.Effect(factory, route.LockedBlocks);
 
             var pack = written.First(p => p.DeviceID == new DeviceID(1, 1, 1));
             var state = (MotorState)pack.CurrentState;
