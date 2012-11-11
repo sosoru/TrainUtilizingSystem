@@ -138,7 +138,7 @@ namespace TestProject
             // vh will allocate the first control block of the route at Constructor
             vh.Run();
 
-            serv.SendingObservable.Repeat().Subscribe();
+            serv.SendingObservable.Subscribe();
 
             Assert.IsTrue(written.Count == 3);
             Assert.IsTrue(written.ExtractDevice<SwitchState>(1, 1, 1).Position == PointStateEnum.Straight);
