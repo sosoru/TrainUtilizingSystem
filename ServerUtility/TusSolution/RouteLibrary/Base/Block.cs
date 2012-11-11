@@ -19,6 +19,8 @@ namespace RouteLibrary.Base
         public MotorControlMode MotorMode { get; set; }
         public float Speed { get; set; }
         public bool AnyToDefault { get; set; }
+
+        public Func<CommandInfo> CreateCommand { get; set; }
     }
 
     public class SensorDetector
