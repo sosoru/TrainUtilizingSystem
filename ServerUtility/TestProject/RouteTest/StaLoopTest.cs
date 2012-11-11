@@ -143,7 +143,7 @@ namespace TestProject
             Assert.IsTrue(written.Count == 5);
             Assert.IsTrue(written.ExtractDevice<SwitchState>(1, 1, 1).Position == PointStateEnum.Straight);
             Assert.IsTrue(written.ExtractDevice<SwitchState>(1, 1, 2).Position == PointStateEnum.Straight);
-            Assert.IsTrue(written.ExtractDevice<MotorState>(1, 2, 1).Duty > 0.0f);
+            Assert.IsTrue(written.ExtractDevice<MotorState>(1, 2, 2).Duty > 0.0f);
 
         }
     }
