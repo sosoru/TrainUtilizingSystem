@@ -125,7 +125,8 @@ namespace TestProject
             mockio.Setup(e => e.GetReadingPacket()).Returns(Observable.Empty<DevicePacket>());
             mockio.Setup(e => e.GetWritingPacket(It.IsAny<DevicePacket>())).Callback<DevicePacket>(pack =>
                 written.AddRange(pack.ExtractPackedPacket())
-                );
+                )
+                .Returns(Observable.Empty<Unit>());
             var serv = new PacketServer(new AvrDeviceFactoryProvider());
             serv.Controller = mockio.Object;
             var sht = new BlockSheet(target_sheet, serv);
