@@ -123,8 +123,7 @@ namespace SensorLibrary.Packet.Control
             return Observable.Create<DevicePacket>(o =>
             {
                 if (this.sending_queue.Count > 0)
-                    o.OnNext(new DevicePacket());
-                //o.OnNext(this.sending_queue.Dequeue());
+                    o.OnNext(this.sending_queue.Dequeue());
                 else
                     o.OnCompleted();
 
