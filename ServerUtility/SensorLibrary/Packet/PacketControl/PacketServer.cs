@@ -21,12 +21,12 @@ namespace SensorLibrary.Packet.Control
     {
         //protected IDisposable packetObservableDisposable { get; private set; }
 
-        public bool IsLooping { get { return ReceivingLoop != null || SendingLoop != null; } }
+        public bool IsLooping { get { return ReceivingLoop != null || send_disp != null; } }
         public IDeviceIO Controller { get; set; }
         public DeviceFactoryProvider FactoryProvider { get; set; }
 
         private IDisposable ReceivingLoop = null;
-        private IDisposable SendingLoop = null;
+        private IDisposable send_disp = null;
 
         private volatile object lockStream = new object();
         private List<PacketServerAction> actionList = new List<PacketServerAction>();
@@ -143,7 +143,7 @@ namespace SensorLibrary.Packet.Control
                         .Repeat()
                         .Subscribe(pack => { }, (Exception ex) => Console.WriteLine(ex.ToString()));
 
-                    this.SendingLoop =
+                    this.send_disp =
                         Observable
                         .Defer(SendState)
                         .SelectMany(this.Controller.GetWritingPacket)
@@ -163,8 +163,8 @@ namespace SensorLibrary.Packet.Control
             if (this.ReceivingLoop != null)
                 this.ReceivingLoop.Dispose();
 
-            if (this.SendingLoop != null)
-                this.SendingLoop.Dispose();
+            if (this.send_disp != null)
+                this.send_disp.Dispose();
         }
 
 
