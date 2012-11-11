@@ -254,7 +254,7 @@ namespace RouteLibrary.Base
             //    this.IsNeededExecution = true;
             //}
 
-            _before_state = mode;
+            _before_state = cmd.MotorMode;
         }
     }
 
