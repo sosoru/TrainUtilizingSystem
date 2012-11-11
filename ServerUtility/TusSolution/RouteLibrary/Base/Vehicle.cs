@@ -90,7 +90,7 @@ namespace RouteLibrary.Base
                 Speed = 0.5f,
             };
 
-            this.Sheet.Effect(new[] { cmd }, this.Route.LockedBlocks);
+            this.Sheet.Effect( cmd , this.Route.LockedBlocks);
 
         }
     }
