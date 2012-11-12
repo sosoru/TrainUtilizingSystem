@@ -27,7 +27,23 @@ namespace RouteLibrary.Base
             }
 
             var other = (RouteSegmentInfo)obj;
-            return this.From.Equals(other) && this.To.Equals(other);
+            bool eqfrom = false;
+            if (this.From == null && other.From == null)
+                eqfrom = true;
+            else if (this.From == null || other.From == null)
+                eqfrom = false;
+            else
+                eqfrom = this.From.Equals(other.From);
+
+            bool eqto = false;
+            if (this.To == null && other.To == null)
+                eqto = true;
+            else if (this.To == null || other.To == null)
+                eqto = false;
+            else
+                eqto = this.To.Equals(other.To);
+
+            return eqfrom && eqto;
         }
 
         // override object.GetHashCode
