@@ -111,7 +111,7 @@ namespace TestProject
         {
             var mockio = new Mock<IDeviceIO>();
             var written = new List<IDeviceState<IPacketDeviceData>>();
-            var received = new List<IDeviceState<IPacketDeviceData>>();
+            var received = new List<IDevice<IDeviceState<IPacketDeviceData>>>();
             mockio.Setup(e => e.GetReadingPacket()).Returns(DevicePacket.CreatePackedPacket(received).ToObservable());
             mockio.Setup(e => e.GetWritingPacket(It.IsAny<DevicePacket>())).Callback<DevicePacket>(pack =>
                 written.AddRange(pack.ExtractPackedPacket())
