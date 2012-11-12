@@ -130,13 +130,11 @@ namespace RouteLibrary.Base
             }
 
             var seg = cmd.Route.Segments[this.ParentBlock];
-            if ((seg.IsFromAny || seg.From.Name == this.Info.RoutePositive.From.Name)
-                    && (seg.IsToAny || seg.To.Name == this.Info.RoutePositive.To.Name))
+            if (seg == this.Info.RoutePositive)
             {
                 dir = MotorDirection.Positive;
             }
-            else if ((seg.IsFromAny || seg.From.Name == this.Info.RouteNegative.From.Name)
-                        && (seg.IsToAny || seg.To.Name == this.Info.RouteNegative.To.Name))
+            else if (seg == this.Info.RouteNegative)
             {
                 dir = MotorDirection.Negative;
             }
