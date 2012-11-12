@@ -132,7 +132,7 @@ namespace RouteLibrary.Base
         {
             if (ind_end + 1 < this.Units.Count
                 && (ind_start <= ind_end + 1)
-                && this.Units[this.ind_end].CanBeAllocated)
+                && this.Units[this.ind_end+1].CanBeAllocated)
             {
                 ind_end++;
                 this.Units[this.ind_end].Allocate();
@@ -146,7 +146,7 @@ namespace RouteLibrary.Base
         {
             if (ind_start + 1 < this.Units.Count
                 && (ind_start <= ind_end + 1)
-                && !this.Units[this.ind_end].CanBeAllocated)
+                && !this.Units[this.ind_start-1].CanBeAllocated)
             {
                 this.Units[this.ind_start].Release();
                 ind_start++;
