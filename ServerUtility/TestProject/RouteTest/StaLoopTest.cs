@@ -175,17 +175,16 @@ namespace TestProject
             var vh = new Vehicle(sht, rt);
 
             // N-th case : the vehicle goes at specified speed
-            vh.Run(1.0f);
+            vh.Run(1.0f, sht.GetBlock("AT2"));
             serv.SendingObservable.Subscribe();
             Assert.IsTrue(written.ExtractDevice<MotorState>(1, 2, 2).Duty == 1.0f);
 
             // 2nd case : the vehicle keeps specified speed, but entering the next section, reduces its speed to half
             Route otherrt = GetRouteFirst(sht);
-            rt.AllocateTrain(sht.GetBlock("AT15"), 1);
             var othervh = new Vehicle(sht, rt);
 
             written.Clear();
-            othervh.Run(1.0f);
+            othervh.Run(1.0f, sht.GetBlock("AT15"));
             vh.Run(1.0f);
 
             serv.SendingObservable.Subscribe();
@@ -193,9 +192,8 @@ namespace TestProject
             Assert.IsTrue(Math.Round(written.ExtractDevice<MotorState>(1, 2, 3).Duty,1) == 0.5f);
           
             // 1st case : the vehicle reduces its speed to half immediately, and stops the next section
-            otherrt.AllocateTrain(sht.GetBlock("AT12"), 1);
             written.Clear();
-            othervh.Run(1.0f);
+            othervh.Run(1.0f, sht.GetBlock("AT12");
             vh.Run(1.0f);
 
             serv.SendingObservable.Subscribe();
@@ -203,9 +201,8 @@ namespace TestProject
             Assert.IsTrue(written.ExtractDevice<MotorState>(1, 2, 3).Duty == 0.0f);
 
             // zero case : the vehicle stops immediately
-            otherrt.AllocateTrain(sht.GetBlock("AT9"), 1);
             written.Clear();
-            othervh.Run(1.0f);
+            othervh.Run(1.0f, sht.GetBlock("AT9"));
             vh.Run(1.0f);
 
             serv.SendingObservable.Subscribe();
