@@ -138,22 +138,22 @@ namespace RouteLibrary.Base
 
         public CommandFactory CreateNthCommand(SpeedFactory spdfactory)
         {
-            return CreateWithWaitingCommand(spdfactory.Go, spdfactory.Go);
+            return CreateWithWaitingCommand(() => spdfactory.Go,() => spdfactory.Go);
         }
 
         public CommandFactory Create2ndCommand(SpeedFactory spdfactory)
         {
-            return CreateWithWaitingCommand(spdfactory.Go, spdfactory.Caution);
+            return CreateWithWaitingCommand(() => spdfactory.Go, () =>spdfactory.Caution);
         }
 
         public CommandFactory Create1stCommand(SpeedFactory spdfactory)
         {
-            return CreateWithWaitingCommand(spdfactory.Caution, spdfactory.Stop);
+            return CreateWithWaitingCommand(() => spdfactory.Caution, () => spdfactory.Stop);
         }
 
         public CommandFactory CreateZeroCommand(SpeedFactory spdfactory)
         {
-            return CreateControlCommand(spdfactory.Stop);
+            return CreateControlCommand(() => spdfactory.Stop);
         }
 
         public void Run(float spd)
