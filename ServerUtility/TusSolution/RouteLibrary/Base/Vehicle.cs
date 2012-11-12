@@ -158,10 +158,15 @@ namespace RouteLibrary.Base
             return CreateControlCommand(() => spdfactory.Stop);
         }
 
-        public void Run(float spd, Block blk)
+        public bool Run(float spd, Block blk)
         {
+            if (blk.IsBlocked)
+                return false;
+
             this.CurrentBlock = blk;
             this.Run(spd);
+
+            return true;
         }
 
         public void Run(float spd)
