@@ -104,7 +104,7 @@ namespace SensorLibrary.Devices.TusAvrDevices
 
         public override string ToString()
         {
-            return string.Format("|mt : dir={0}, duty={1}, curr={2}, mode={3}",
+            return base.ToString() + string.Format("|mt : dir={0}, duty={1}, curr={2}, mode={3}",
                     Enum.GetName(typeof(MotorDirection), this.Direction),
                     this.Duty,
                     this.Current,
