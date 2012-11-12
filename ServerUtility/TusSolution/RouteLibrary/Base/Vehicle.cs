@@ -161,6 +161,7 @@ namespace RouteLibrary.Base
         public void Run(float spd, Block blk)
         {
             this.CurrentBlock = blk;
+            this.Run(spd);
         }
 
         public void Run(float spd)
