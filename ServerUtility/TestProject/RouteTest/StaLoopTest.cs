@@ -185,7 +185,7 @@ namespace TestProject
 
             written.Clear();
             othervh.Run(1.0f, sht.GetBlock("AT15"));
-            vh.Run(1.0f);
+            vh.Run(1.0f, sht.GetBlock("AT2"));
 
             serv.SendingObservable.Subscribe();
             Assert.IsTrue(written.ExtractDevice<MotorState>(1, 2, 2).Duty == 1.0f);
@@ -194,7 +194,7 @@ namespace TestProject
             // 1st case : the vehicle reduces its speed to half immediately, and stops the next section
             written.Clear();
             othervh.Run(1.0f, sht.GetBlock("AT12"));
-            vh.Run(1.0f);
+            vh.Run(1.0f, sht.GetBlock("AT2"));
 
             serv.SendingObservable.Subscribe();
             Assert.IsTrue(Math.Round(written.ExtractDevice<MotorState>(1, 2, 2).Duty, 1) == 0.5f);
@@ -203,7 +203,7 @@ namespace TestProject
             // zero case : the vehicle stops immediately
             written.Clear();
             othervh.Run(1.0f, sht.GetBlock("AT9"));
-            vh.Run(1.0f);
+            vh.Run(1.0f, sht.GetBlock("AT2"));
 
             serv.SendingObservable.Subscribe();
             Assert.IsTrue(written.ExtractDevice<MotorState>(1, 2, 2).Duty == 0.0f);
