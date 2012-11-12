@@ -24,7 +24,7 @@ namespace SensorLibrary.Devices
 
         public override string ToString()
         {
-            return string.Format("|kl : cmd={0}, data={1} {2} {3} {4}",
+            return base.ToString() + string.Format("|kl : cmd={0}, data={1} {2} {3} {4}",
                     Enum.GetName(typeof(KernelCommand), this.Command),
                     this.Data.Content1.ToString("X2"),
                     this.Data.Content2.ToString("X2"),
