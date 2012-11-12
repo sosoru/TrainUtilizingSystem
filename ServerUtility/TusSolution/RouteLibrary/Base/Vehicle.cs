@@ -161,29 +161,26 @@ namespace RouteLibrary.Base
         public void Run(float spd)
         {
 
-            //todo : check blocks locked
             CommandFactory cmdfactory = null;
             var spdfactory = new SpeedFactory() { RawSpeed = spd};
 
             this.Route.AllocateTrain(this.CurrentBlock, 1);
+            
             if (!this.Route.LockNextUnit())
             {
                 cmdfactory = CreateZeroCommand(spdfactory);
             }
-            else if (!this.Route.LockNextUnit())
+            else if (!this.Route.TryLockNeighborUnit(1))
             {
                 cmdfactory = Create1stCommand(spdfactory);
             }
-            else if (!this.Route.LockNextUnit())
+            else if (!this.Route.TryLockNeighborUnit(2))
             {
                 cmdfactory = Create2ndCommand(spdfactory);
-                this.Route.ReleaseBeforeUnit();
             }
             else
             {
                 cmdfactory = CreateNthCommand(spdfactory);
-                this.Route.ReleaseBeforeUnit();
-                this.Route.ReleaseBeforeUnit();
             }
 
             this.Sheet.Effect(cmdfactory, this.Route.LockedBlocks);
