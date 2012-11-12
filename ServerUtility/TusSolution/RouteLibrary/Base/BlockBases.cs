@@ -103,5 +103,31 @@ namespace RouteLibrary.Base
         public SwitchInfo Switch { get; set; }
         public SensorInfo Sensor { get; set; }
         public bool IsIsolated { get; set; }
+
+        // override object.Equals
+        public override bool Equals(object obj)
+        {
+            //       
+            // See the full list of guidelines at
+            //   http://go.microsoft.com/fwlink/?LinkID=85237  
+            // and also the guidance for operator== at
+            //   http://go.microsoft.com/fwlink/?LinkId=85238
+            //
+
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+
+            var info = (BlockInfo)obj;
+            return this.Name.Equals(info.Name);
+        }
+
+        // override object.GetHashCode
+        public override int GetHashCode()
+        {
+            // TODO: write your implementation of GetHashCode() here
+            return this.Name.GetHashCode();
+        }
     }
 }
