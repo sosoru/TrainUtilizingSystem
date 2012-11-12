@@ -70,8 +70,8 @@ namespace RouteLibrary.Base
                 {
                     info_ = new RouteSegmentInfo()
                     {
-                        From = (this.From != null) ? this.From.Name : "",
-                        To = (this.To != null) ? this.To.Name : ""
+                        From = (this.From != null) ? this.From.info : null,
+                        To = (this.To != null) ? this.To.info : null,
                     };
                 }
                 return this.info_;
