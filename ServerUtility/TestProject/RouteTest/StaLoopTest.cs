@@ -204,7 +204,7 @@ namespace TestProject
             written.Clear();
             Assert.IsFalse( othervh.Run(1.0f, sht.GetBlock("AT9"))); // AT9 is already blocked by the other vehicle
             vh.Route.InitLockingPosition();
-            othervh.Run(1.0f, sht.GetBlock("AT9");
+            othervh.Run(1.0f, sht.GetBlock("AT9"));
             vh.Run(1.0f, sht.GetBlock("AT2"));
 
             serv.SendingObservable.Subscribe();
