@@ -40,7 +40,7 @@ namespace SensorLibrary.Devices.TusAvrDevices
 
             lock (hist_lock)
             {
-                this.CurrentState = value;
+                this.CurrentState = state;
 
                 packet_history.AddLast(state);
                 if (packet_history.Count > 2)
