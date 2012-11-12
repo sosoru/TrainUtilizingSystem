@@ -121,7 +121,7 @@ namespace TestProject
             serv.Controller = mockio.Object;
             var sht = new BlockSheet(target_sheet, serv);
 
-            Route rt = GetRouteFirst(sht);
+            Route rt = this.GetFirstRoute(sht);
 
             var vh = new Vehicle(sht, rt);
             var halt = new Halt(sht.GetBlock("CT1"));
@@ -134,8 +134,8 @@ namespace TestProject
             Assert.IsTrue(Math.Round(written.ExtractDevice<MotorState>(1, 1, 1).Duty,1) > 0.25f);
 
             var sens = new UsartSensor() { DeviceID = new DeviceID(1, 3, 3) };
-            sens.CurrentState.Threshold = 0.5f;
-            sens.CurrentState.OnVoltage = 0.9f;
+            sens.CurrentState.Data.VoltageOn = 200;
+            sens.CurrentState.Data.Threshold = 100;
             received.Add(sens);
             serv.ReceivingObservable.Subscribe();
 
