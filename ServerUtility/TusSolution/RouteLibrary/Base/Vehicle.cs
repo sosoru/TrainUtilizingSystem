@@ -158,9 +158,13 @@ namespace RouteLibrary.Base
             return CreateControlCommand(() => spdfactory.Stop);
         }
 
+        public void Run(float spd, Block blk)
+        {
+            this.CurrentBlock = blk;
+        }
+
         public void Run(float spd)
         {
-
             CommandFactory cmdfactory = null;
             var spdfactory = new SpeedFactory() { RawSpeed = spd};
 
