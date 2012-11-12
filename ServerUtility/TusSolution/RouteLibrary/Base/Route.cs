@@ -119,6 +119,8 @@ namespace RouteLibrary.Base
             this.Blocks = new ReadOnlyCollection<Block>(segs);
 
             this.Units = new ReadOnlyCollection<ControllingRoute>(locked_blocks.ToArray());
+            this.ind_end = -1;
+            this.ind_start = 0;
             InitLockingPosition();
         }
 
@@ -126,8 +128,6 @@ namespace RouteLibrary.Base
         {
             while (ReleaseBeforeUnit()) ;
 
-            this.ind_end = -1;
-            this.ind_start = 0;
         }
 
         public bool TryLockNeighborUnit(int i)
