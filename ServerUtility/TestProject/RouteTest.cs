@@ -87,7 +87,7 @@ namespace TestProject
         {
             get
             {
-                var bstrs = new string[] { "T1", "T2", "T3", "T4", "T5", "T1" };
+                var bstrs = new string[] { "T1", "B2", "T2", "T3", "T4", "B1", "T5", "T1" };
                 var s = test_sheet;
 
                 return bstrs.Select(name => s.InnerBlocks.First(b => b.Name == name));
