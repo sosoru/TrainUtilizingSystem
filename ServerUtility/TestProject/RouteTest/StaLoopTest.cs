@@ -176,6 +176,7 @@ namespace TestProject
 
             // N-th case : the vehicle goes at specified speed
             vh.Run(1.0f);
+            serv.SendingObservable.Subscribe();
             Assert.IsTrue(written.ExtractDevice<MotorState>(1, 2, 2).Duty == 1.0f);
 
             // 2nd case : the vehicle keeps specified speed, but entering the next section, reduces its speed to half
@@ -187,6 +188,7 @@ namespace TestProject
             othervh.Run(1.0f);
             vh.Run(1.0f);
 
+            serv.SendingObservable.Subscribe();
             Assert.IsTrue(written.ExtractDevice<MotorState>(1, 2, 2).Duty == 1.0f);
             Assert.IsTrue(Math.Round(written.ExtractDevice<MotorState>(1, 2, 3).Duty,1) == 0.5f);
           
@@ -196,7 +198,8 @@ namespace TestProject
             othervh.Run(1.0f);
             vh.Run(1.0f);
 
-            Assert.IsTrue(Math.Round(written.ExtractDevice<MotorState>(1, 2, 2).Duty,1) == 0.5f);
+            serv.SendingObservable.Subscribe();
+            Assert.IsTrue(Math.Round(written.ExtractDevice<MotorState>(1, 2, 2).Duty, 1) == 0.5f);
             Assert.IsTrue(written.ExtractDevice<MotorState>(1, 2, 3).Duty == 0.0f);
 
             // zero case : the vehicle stops immediately
@@ -205,6 +208,7 @@ namespace TestProject
             othervh.Run(1.0f);
             vh.Run(1.0f);
 
+            serv.SendingObservable.Subscribe();
             Assert.IsTrue(written.ExtractDevice<MotorState>(1, 2, 2).Duty == 0.0f);
 
             
