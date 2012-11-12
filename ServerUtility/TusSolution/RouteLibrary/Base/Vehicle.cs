@@ -160,7 +160,7 @@ namespace RouteLibrary.Base
         {
 
             //todo : check blocks locked
-            CommandFactory cmdfactory;
+            CommandFactory cmdfactory = null;
             var spdfactory = new SpeedFactory() { RawSpeed = spd};
 
             this.Route.AllocateTrain(this.CurrentBlock, 1);
@@ -177,7 +177,7 @@ namespace RouteLibrary.Base
                 cmdfactory = Create2ndCommand(spdfactory);
                 this.Route.ReleaseBeforeUnit();
             }
-            else if (!this.Route.LockNextUnit())
+            else
             {
                 cmdfactory = CreateNthCommand(spdfactory);
                 this.Route.ReleaseBeforeUnit();
