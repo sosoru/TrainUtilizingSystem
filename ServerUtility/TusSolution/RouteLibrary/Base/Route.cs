@@ -142,7 +142,7 @@ namespace RouteLibrary.Base
             return false;
         }
 
-        public void ReleaseBeforeUnit()
+        public bool ReleaseBeforeUnit()
         {
             if (ind_start + 1 < this.Units.Count
                 && (ind_start <= ind_end + 1)
@@ -150,7 +150,10 @@ namespace RouteLibrary.Base
             {
                 this.Units[this.ind_start].Release();
                 ind_start++;
+
+                return true;
             }
+            return false;
         }
 
         public IEnumerable<Block> LockedBlocks
@@ -240,11 +243,15 @@ namespace RouteLibrary.Base
             if (blockunit == null)
                 throw new IndexOutOfRangeException("block not found");
 
+            while (this.ReleaseBeforeUnit()) ;
+
             this.ind_end = blockunit.ind;
             this.ind_start = blockunit.ind - (len-1);
 
             if (this.ind_start < 0)
                 this.ind_start = 0;
+
+            this.LockedUnits.ForEach(u => u.Allocate());
         }
 
         public bool IsRouteFinished
