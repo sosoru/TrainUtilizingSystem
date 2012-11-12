@@ -38,12 +38,17 @@ namespace RouteLibrary.Base
 
         public static bool operator ==(RouteSegmentInfo A, RouteSegmentInfo B)
         {
-            return A.Equals(B);
+            if (A == null && B == null)
+                return true;
+            else if (A == null || B == null)
+                return false;
+            else
+                return A.Equals(B);
         }
 
         public static bool operator !=(RouteSegmentInfo A, RouteSegmentInfo B)
         {
-            return !A.Equals(B);
+            return !(A == B);
         }
     }
 
