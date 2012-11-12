@@ -114,6 +114,7 @@ namespace TestProject
 
             target.LockNextUnit();
             Assert.IsTrue(target.Units[0].Blocks.SequenceEqual(target.LockedBlocks));
+            Assert.IsFalse(target.Units[0].CanBeAllocated);
 
         }
 
@@ -130,6 +131,7 @@ namespace TestProject
             target.ReleaseBeforeUnit();
 
             Assert.IsTrue(target.LockedBlocks.SequenceEqual(target.Units[1].Blocks));
+            Assert.IsTrue(target.LockedBlocks.All(b => !b.IsBlocked));
         }
 
         //[TestMethod]
