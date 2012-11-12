@@ -98,7 +98,7 @@ namespace SensorLibrary.Packet.Control
             }
         }
 
-        private void DispatchState(IDeviceState<IPacketDeviceData> state)
+        public  void DispatchState(IDeviceState<IPacketDeviceData> state)
         {
             var f =
                 this.FactoryProvider.AvailableDeviceTypes.FirstOrDefault(
