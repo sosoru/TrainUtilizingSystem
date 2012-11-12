@@ -112,7 +112,7 @@ namespace TestProject
             var mockio = new Mock<IDeviceIO>();
             var written = new List<IDeviceState<IPacketDeviceData>>();
             var received = new List<IDeviceState<IPacketDeviceData>>();
-            mockio.Setup(e => e.GetReadingPacket()).Returns(received.ToObservable());
+            mockio.Setup(e => e.GetReadingPacket()).Returns(DevicePacket.CreatePackedPacket(received.ToObservable()));
             mockio.Setup(e => e.GetWritingPacket(It.IsAny<DevicePacket>())).Callback<DevicePacket>(pack =>
                 written.AddRange(pack.ExtractPackedPacket())
                 )
@@ -133,8 +133,9 @@ namespace TestProject
             serv.SendingObservable.Subscribe();
             Assert.IsTrue(Math.Round(written.ExtractDevice<MotorState>(1, 1, 1).Duty,1) > 0.25f);
 
-            var sens = new SensorState() { ID = new DeviceID(1, 3, 3), Threshold = 0.5f };
-            sens.OnVoltage = 0.9f;
+            var sens = new UsartSensor() { DeviceID = new DeviceID(1, 3, 3) };
+            sens.CurrentState.Threshold = 0.5f;
+            sens.CurrentState.OnVoltage = 0.9f;
             received.Add(sens);
             serv.ReceivingObservable.Subscribe();
 
