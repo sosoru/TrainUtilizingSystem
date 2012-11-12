@@ -131,7 +131,7 @@ namespace RouteLibrary.Base
         public bool LockNextUnit()
         {
             if (ind_end + 1 < this.Units.Count
-                && (ind_start <= ind_end + 1)
+                && (ind_start <= (ind_end -1) +1 )
                 && this.Units[this.ind_end+1].CanBeAllocated)
             {
                 ind_end++;
@@ -144,8 +144,8 @@ namespace RouteLibrary.Base
 
         public bool ReleaseBeforeUnit()
         {
-            if (ind_start + 1 < this.Units.Count
-                && (ind_start <= ind_end + 1)
+            if (ind_start  < this.Units.Count
+                && (ind_start + 1 <= ind_end -1)
                 && !this.Units[this.ind_start].CanBeAllocated)
             {
                 this.Units[this.ind_start].Release();
