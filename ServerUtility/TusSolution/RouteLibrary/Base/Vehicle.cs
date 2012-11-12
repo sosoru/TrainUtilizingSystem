@@ -19,9 +19,9 @@ namespace RouteLibrary.Base
         private static int LastVehicleID;
         public int VehicleID { get; private set; }
 
+        public Block CurrentBlock { get; set; }
         public Route Route { get; set; }
         public BlockSheet Sheet { get; set; }
-        public Block CurrentBlock { get; set; }
 
         static Vehicle()
         {
@@ -34,6 +34,8 @@ namespace RouteLibrary.Base
 
             this.Sheet = sht;
             this.Route = rt;
+
+            this.CurrentBlock = this.Route.Blocks.First();
         }
 
         public bool Refresh()
