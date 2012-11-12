@@ -35,21 +35,6 @@ namespace RouteLibrary.Base
         {
             return this.From.GetHashCode() ^ this.To.GetHashCode();
         }
-
-        public static bool operator ==(RouteSegmentInfo A, RouteSegmentInfo B)
-        {
-            if (A == null && B == null)
-                return true;
-            else if (A == null || B == null)
-                return false;
-            else
-                return A.Equals(B);
-        }
-
-        public static bool operator !=(RouteSegmentInfo A, RouteSegmentInfo B)
-        {
-            return !(A == B);
-        }
     }
 
     public class RouteSegment
