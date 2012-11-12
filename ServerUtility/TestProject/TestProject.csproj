@@ -123,6 +123,7 @@
     <Compile Include="RailViewModelTest.cs" />
     <Compile Include="RouteParserTest.cs" />
     <Compile Include="RouteTest.cs" />
+    <Compile Include="RouteTest\MiddleTrackTest.cs" />
     <Compile Include="RouteTest\RouteTest_PointSample.cs" />
     <Compile Include="RouteTest\StaLoopTest.cs" />
     <Compile Include="SensorStateTest.cs" />
@@ -171,6 +172,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="SampleLayout\loop.yaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="SampleLayout\middletrack.yaml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="SampleLayout\point_sample.yaml">
