@@ -138,7 +138,7 @@ namespace TestProject
             sens.CurrentState.Data.VoltageOn = 200;
             sens.CurrentState.Data.Threshold = 100;
             received.Add(sens);
-            serv.ReceivingObservable.Subscribe();
+            serv.ReceivingObservable.First();
 
             written.Clear();
             vh.Refresh();
