@@ -88,6 +88,118 @@ namespace RouteLibrary.Base
             this.Run(0.5f);
         }
 
+        public CommandFactory CreateNthCaseCommand(float speed)
+        {
+            var func = new Func<Block, CommandInfo>(blk =>
+                {
+                    var cmd = new CommandInfo()
+                    {
+                        Route = this.Route,
+                    };
+
+                    if (blk == this.Route.LockedUnits.First().ControlBlock)
+                    {
+                        cmd.MotorMode = MotorMemoryStateEnum.Controlling;
+                        cmd.Speed = speed;
+                    }
+                    else if (blk == this.Route.LockedUnits.Last().ControlBlock)
+                    {
+                        cmd.MotorMode = MotorMemoryStateEnum.Waiting;
+                        cmd.Speed = speed;
+                    }
+
+                    return new CommandFactory() { CreateCommand = func };
+                });
+        }
+        public CommandFactory Create2ndCaseCommand(float speed)
+        {
+            var func = new Func<Block, CommandInfo>(blk =>
+            {
+                var cmd = new CommandInfo()
+                {
+                    Route = this.Route,
+                };
+
+                if (blk == this.Route.LockedUnits.First().ControlBlock)
+                {
+                    cmd.MotorMode = MotorMemoryStateEnum.Controlling;
+                    cmd.Speed = speed;
+                }
+                else if (blk == this.Route.LockedUnits.Last().ControlBlock)
+                {
+                    cmd.MotorMode = MotorMemoryStateEnum.Waiting;
+                    cmd.Speed = speed / 2.0f;
+                }
+
+                return new CommandFactory() { CreateCommand = func };
+            });
+        }
+        public CommandFactory Create2ndCaseCommand(float speed)
+        {
+            var func = new Func<Block, CommandInfo>(blk =>
+            {
+                var cmd = new CommandInfo()
+                {
+                    Route = this.Route,
+                };
+
+                if (blk == this.Route.LockedUnits.First().ControlBlock)
+                {
+                    cmd.MotorMode = MotorMemoryStateEnum.Controlling;
+                    cmd.Speed = speed / 2.0f;
+                }
+                else if (blk == this.Route.LockedUnits.Last().ControlBlock)
+                {
+                    cmd.MotorMode = MotorMemoryStateEnum.Waiting;
+                    cmd.Speed = 0.0f;
+                }
+
+                return new CommandFactory() { CreateCommand = func };
+            });
+        }
+        public CommandFactory Create1stCaseCommand(float speed)
+        {
+            var func = new Func<Block, CommandInfo>(blk =>
+            {
+                var cmd = new CommandInfo()
+                {
+                    Route = this.Route,
+                };
+
+                if (blk == this.Route.LockedUnits.First().ControlBlock)
+                {
+                    cmd.MotorMode = MotorMemoryStateEnum.Controlling;
+                    cmd.Speed = speed / 2.0f;
+                }
+                else if (blk == this.Route.LockedUnits.Last().ControlBlock)
+                {
+                    cmd.MotorMode = MotorMemoryStateEnum.Waiting;
+                    cmd.Speed = 0.0f;
+                }
+
+                return new CommandFactory() { CreateCommand = func };
+            });
+        }
+        public CommandFactory CreateZeroCaseCommand(float speed)
+        {
+            var func = new Func<Block, CommandInfo>(blk =>
+            {
+                var cmd = new CommandInfo()
+                {
+                    Route = this.Route,
+                };
+
+                if (blk == this.Route.LockedUnits.First().ControlBlock)
+                {
+                    cmd.MotorMode = MotorMemoryStateEnum.Controlling;
+                    cmd.Speed = 0.0f;
+                }
+
+                return new CommandFactory() { CreateCommand = func };
+            });
+        }
+
+
         public void Run(float spd)
         {
 
@@ -109,7 +221,7 @@ namespace RouteLibrary.Base
                     else if (block == this.Route.LockedUnits.Last().ControlBlock)
                         basecmd.MotorMode = MotorMemoryStateEnum.Waiting;
 
-                    return basecmd;                    
+                    return basecmd;
                 });
 
             var factory = new CommandFactory()
@@ -117,9 +229,9 @@ namespace RouteLibrary.Base
                 CreateCommand = createfunc
             };
 
-            this.Sheet.Effect( factory, this.Route.LockedBlocks);
+            this.Sheet.Effect(factory, this.Route.LockedBlocks);
 
-            
+
         }
     }
 }
