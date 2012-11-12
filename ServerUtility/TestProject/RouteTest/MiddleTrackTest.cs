@@ -105,6 +105,47 @@ namespace TestProject
             var rfirst = GetFirstRoute(sht);
             var rsec = GetSecondRoute(sht);
         }
+
+        [TestMethod]
+        public void HaltTest()
+        {
+            var mockio = new Mock<IDeviceIO>();
+            var written = new List<IDeviceState<IPacketDeviceData>>();
+            var received = new List<IDeviceState<IPacketDeviceData>>();
+            mockio.Setup(e => e.GetReadingPacket()).Returns(received.ToObservable());
+            mockio.Setup(e => e.GetWritingPacket(It.IsAny<DevicePacket>())).Callback<DevicePacket>(pack =>
+                written.AddRange(pack.ExtractPackedPacket())
+                )
+                .Returns(Observable.Empty<Unit>());
+            var serv = new PacketServer(new AvrDeviceFactoryProvider());
+            serv.Controller = mockio.Object;
+            var sht = new BlockSheet(target_sheet, serv);
+
+            Route rt = GetRouteFirst(sht);
+
+            var vh = new Vehicle(sht, rt);
+            var halt = new Halt(sht.GetBlock("CT1"));
+            vh.Halt = halt;
+
+            written.Clear();
+            vh.CurrentBlock = sht.GetBlock("AT4");
+            vh.Refresh();
+            serv.SendingObservable.Subscribe();
+            Assert.IsTrue(Math.Round(written.ExtractDevice<MotorState>(1, 1, 1).Duty,1) > 0.25f);
+
+            var sens = new SensorState() { ID = new DeviceID(1, 3, 3), Threshold = 0.5f };
+            sens.OnVoltage = 0.9f;
+            received.Add(sens);
+            serv.ReceivingObservable.Subscribe();
+
+            written.Clear();
+            vh.Refresh();
+            serv.SendingObservable.Subscribe();
+            Assert.IsTrue(Math.Round(written.ExtractDevice<MotorState>(1, 1, 1).Duty, 1) == 0.0f);
+
+           
+
+        }
         
     }
 }
