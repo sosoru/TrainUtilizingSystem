@@ -183,6 +183,7 @@ namespace TestProject
             rt.AllocateTrain(sht.GetBlock("AT15"), 1);
             var othervh = new Vehicle(sht, rt);
 
+            written.Clear();
             othervh.Run(1.0f);
             vh.Run(1.0f);
 
@@ -191,6 +192,7 @@ namespace TestProject
           
             // 1st case : the vehicle reduces its speed to half immediately, and stops the next section
             otherrt.AllocateTrain(sht.GetBlock("AT12"), 1);
+            written.Clear();
             othervh.Run(1.0f);
             vh.Run(1.0f);
 
@@ -199,6 +201,7 @@ namespace TestProject
 
             // zero case : the vehicle stops immediately
             otherrt.AllocateTrain(sht.GetBlock("AT9"), 1);
+            written.Clear();
             othervh.Run(1.0f);
             vh.Run(1.0f);
 
