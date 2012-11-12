@@ -128,6 +128,16 @@ namespace RouteLibrary.Base
             this.ind_start = 0;
         }
 
+        public bool TryLockNeighborUnit(int i)
+        {
+            if (ind_end + i < this.Units.Count
+                && this.Units[this.ind_end + i].CanBeAllocated)
+            {
+                return true;
+            }
+            return false;
+        }
+
         public bool LockNextUnit()
         {
             if (ind_end + 1 < this.Units.Count
