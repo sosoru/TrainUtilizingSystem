@@ -156,11 +156,11 @@ namespace TestProject
             var blocks = test_blocks.ToArray();
             Route target = new Route(blocks);
 
-            Block allocblk = blocks[3];
+            Block allocblk = blocks[1];
             target.AllocateTrain(allocblk, 1);
             Assert.IsTrue(target.LockedBlocks.Contains(allocblk));
 
-            allocblk = blocks[2];
+            allocblk = blocks[4];
             target.AllocateTrain(allocblk, 2);
             Assert.IsTrue(target.LockedBlocks.Contains(allocblk));
             Assert.IsTrue(target.LockedUnits.Count() == 2);
