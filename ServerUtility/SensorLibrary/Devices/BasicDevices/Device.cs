@@ -47,9 +47,22 @@ namespace SensorLibrary.Devices
 
         public PacketServer ReceivingServer { get; set; }
         public virtual TState CurrentState { get; set; }
-        public DeviceID DeviceID { get; set; }
         public ModuleTypeEnum ModuleType { get; protected set; }
         public IEqualityComparer<TState> StateEqualityComparer { get; set; }
+
+        private DeviceID devid_;
+        public DeviceID DeviceID
+        {
+            get
+            {
+                return this.devid_;
+            }
+            set
+            {
+                this.devid_ = value;
+                this.CurrentState.ID = value;
+            }
+        }
 
         public Device()
         {
