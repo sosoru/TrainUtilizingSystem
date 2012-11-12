@@ -42,7 +42,7 @@ namespace RouteLibrary.Base
             this.CurrentBlock = this.Route.Blocks.First();
         }
 
-        public bool Refresh()
+        public void Refresh()
         {
             Run(this.Speed, this.CurrentBlock);
         }
