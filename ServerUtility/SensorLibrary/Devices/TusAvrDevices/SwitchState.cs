@@ -78,7 +78,7 @@ namespace SensorLibrary.Devices.TusAvrDevices
 
         public override string ToString()
         {
-            return string.Format("|sw : {0} ", Enum.GetName(typeof(PointStateEnum), this.Position));
+            return base.ToString() + string.Format("|sw : {0} ", Enum.GetName(typeof(PointStateEnum), this.Position));
         }
 
     }
