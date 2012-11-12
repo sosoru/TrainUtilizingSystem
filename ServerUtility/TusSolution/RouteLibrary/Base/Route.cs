@@ -124,6 +124,8 @@ namespace RouteLibrary.Base
 
         public void InitLockingPosition()
         {
+            while (ReleaseBeforeUnit()) ;
+
             this.ind_end = -1;
             this.ind_start = 0;
         }
