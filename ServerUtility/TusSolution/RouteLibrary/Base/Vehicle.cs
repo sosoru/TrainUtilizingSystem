@@ -25,6 +25,8 @@ namespace RouteLibrary.Base
 
         public Halt Halt { get; set; }
 
+        public float Speed { get; set; }
+
         static Vehicle()
         {
             LastVehicleID = 0;
@@ -42,21 +44,7 @@ namespace RouteLibrary.Base
 
         public bool Refresh()
         {
-            bool is_refreshed = false;
-
-            if (this.Route.IsSectionFinished)
-            {
-                this.Route.LockNextUnit();
-                is_refreshed = true;
-            }
-
-            if (this.Route.IsLeftSectionFirst)
-            {
-                this.Route.ReleaseBeforeUnit();
-                is_refreshed = true;
-            }
-
-            return is_refreshed;
+            Run(this.Speed, this.CurrentBlock);
         }
 
         // override object.Equals
@@ -160,6 +148,11 @@ namespace RouteLibrary.Base
             return CreateControlCommand(() => spdfactory.Stop);
         }
 
+        public CommandFactory CreateHaltCommand(SpeedFactory spdfactory)
+        {
+            return CreateControlCommand(() => spdfactory.Caution);
+        }
+
         public void Run(float spd, Block blk)
         {
             this.CurrentBlock = blk;
@@ -175,7 +168,14 @@ namespace RouteLibrary.Base
             
             if (!this.Route.LockNextUnit())
             {
-                cmdfactory = CreateZeroCommand(spdfactory);
+                if (this.Route.Blocks.Contains(this.Halt.HaltBlock))
+                {
+                    cmdfactory = CreateHaltCommand(spdfactory);
+                }
+                else
+                {
+                    cmdfactory = CreateZeroCommand(spdfactory);
+                }
             }
             else if (!this.Route.TryLockNeighborUnit(1))
             {
