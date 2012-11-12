@@ -44,6 +44,9 @@ namespace RouteLibrary.Base
 
         public void Refresh()
         {
+            if (this.Halt.HaltState)
+                this.Speed = 0.0f;
+
             Run(this.Speed, this.CurrentBlock);
         }
 
