@@ -171,7 +171,8 @@ namespace RouteLibrary.Base
             
             if (!this.Route.LockNextUnit())
             {
-                if (this.Route.Blocks.Contains(this.Halt.HaltBlock))
+                if (this.Halt != null
+                    && this.Route.Blocks.Contains(this.Halt.HaltBlock))
                 {
                     cmdfactory = CreateHaltCommand(spdfactory);
                 }
