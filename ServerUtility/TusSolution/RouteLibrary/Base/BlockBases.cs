@@ -44,7 +44,7 @@ namespace RouteLibrary.Base
         public static bool operator !=(RouteSegmentInfo A, RouteSegmentInfo B)
         {
             return !A.Equals(B);
-        };
+        }
     }
 
     public class RouteSegment
