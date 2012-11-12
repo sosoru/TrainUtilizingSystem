@@ -136,7 +136,10 @@ namespace RouteLibrary.Base
             {
                 ind_end++;
                 this.Units[this.ind_end].Allocate();
+
+                return true;
             }
+            return false;
         }
 
         public void ReleaseBeforeUnit()
