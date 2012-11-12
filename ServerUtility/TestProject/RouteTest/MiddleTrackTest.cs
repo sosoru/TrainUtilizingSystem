@@ -20,7 +20,7 @@ using System.Reactive.Subjects;
 using System.Threading;
 using System.Reactive.Concurrency;
 
-namespace TestProject.RouteTest
+namespace TestProject
 {
     /// <summary>
     /// MiddleTrackTest の概要の説明
