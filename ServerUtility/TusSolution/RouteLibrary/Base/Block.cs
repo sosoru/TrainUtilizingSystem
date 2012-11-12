@@ -266,5 +266,7 @@ namespace RouteLibrary.Base
 
             return str;
         }
+
+        public bool IsBlocked { get; set; }
     }
 }
