@@ -10,6 +10,41 @@ namespace RouteLibrary.Base
     {
         public BlockInfo From { get; set; }
         public BlockInfo To { get; set; }
+
+        // override object.Equals
+        public override bool Equals(object obj)
+        {
+            //       
+            // See the full list of guidelines at
+            //   http://go.microsoft.com/fwlink/?LinkID=85237  
+            // and also the guidance for operator== at
+            //   http://go.microsoft.com/fwlink/?LinkId=85238
+            //
+
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+
+            var other = (RouteSegmentInfo)obj;
+            return this.From.Equals(other) && this.To.Equals(other);
+        }
+
+        // override object.GetHashCode
+        public override int GetHashCode()
+        {
+            return this.From.GetHashCode() ^ this.To.GetHashCode();
+        }
+
+        public static bool operator ==(RouteSegmentInfo A, RouteSegmentInfo B)
+        {
+            return A.Equals(B);
+        }
+
+        public static bool operator !=(RouteSegmentInfo A, RouteSegmentInfo B)
+        {
+            return !A.Equals(B);
+        };
     }
 
     public class RouteSegment
@@ -25,6 +60,24 @@ namespace RouteLibrary.Base
 
         public Block From { get; private set; }
         public Block To { get; private set; }
+
+        private RouteSegmentInfo info_ = null;
+        public RouteSegmentInfo Info
+        {
+            get
+            {
+                if (this.info_ == null)
+                {
+                    info_ = new RouteSegmentInfo()
+                    {
+                        From = (this.From != null) ? this.From.Name : "",
+                        To = (this.To != null) ? this.To.Name : ""
+                    };
+                }
+                return this.info_;
+            }
+        }
+
 
     }
 
