@@ -130,6 +130,11 @@ namespace RouteLibrary.Base
 
         }
 
+        public ControllingRoute NeighborUnit(int i)
+        {
+            return this.Units[this.ind_end + i];
+        }
+
         public bool TryLockNeighborUnit(int i)
         {
             if (ind_end + i < this.Units.Count
