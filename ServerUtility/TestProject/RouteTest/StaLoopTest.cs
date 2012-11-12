@@ -193,7 +193,7 @@ namespace TestProject
           
             // 1st case : the vehicle reduces its speed to half immediately, and stops the next section
             written.Clear();
-            othervh.Run(1.0f, sht.GetBlock("AT12");
+            othervh.Run(1.0f, sht.GetBlock("AT12"));
             vh.Run(1.0f);
 
             serv.SendingObservable.Subscribe();
