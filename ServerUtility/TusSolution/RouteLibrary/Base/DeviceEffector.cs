@@ -130,11 +130,11 @@ namespace RouteLibrary.Base
             }
 
             var seg = cmd.Route.Segments[this.ParentBlock];
-            if (seg.Info == this.Info.RoutePositive)
+            if (seg.Info.Equals(this.Info.RoutePositive))
             {
                 dir = MotorDirection.Positive;
             }
-            else if (seg.Info == this.Info.RouteNegative)
+            else if (seg.Info.Equals(this.Info.RouteNegative))
             {
                 dir = MotorDirection.Negative;
             }
@@ -153,7 +153,7 @@ namespace RouteLibrary.Base
         {
             var locked = cmd.Route.LockedBlocks.Where(s => s.HasMotor);
             var before = locked.Reverse().SkipWhile(b => b == this.ParentBlock).FirstOrDefault();
-            
+
             return before;
         }
 
@@ -210,15 +210,15 @@ namespace RouteLibrary.Base
                 case MotorMemoryStateEnum.Controlling:
                     states.Add(MotorMemoryStateEnum.Controlling, CreateMotorState(cmd));
                     break;
-                case MotorMemoryStateEnum.Waiting :
+                case MotorMemoryStateEnum.Waiting:
                     states.Add(MotorMemoryStateEnum.Controlling, CreateMotorState(cmd));
                     var waitingstate = BeforeBlockHavingMotor(cmd);
-                    states.Add(MotorMemoryStateEnum.Waiting,  CreateWaitingState( waitingstate.MotorEffector.Device));
+                    states.Add(MotorMemoryStateEnum.Waiting, CreateWaitingState(waitingstate.MotorEffector.Device));
                     break;
-                case MotorMemoryStateEnum.NoEffect : 
+                case MotorMemoryStateEnum.NoEffect:
                     states.Add(MotorMemoryStateEnum.NoEffect, NoEffectState);
                     break;
-                case MotorMemoryStateEnum.Locked : 
+                case MotorMemoryStateEnum.Locked:
                 case MotorMemoryStateEnum.Unknown:
                 default:
                     throw new InvalidOperationException("invalid mode applied");
