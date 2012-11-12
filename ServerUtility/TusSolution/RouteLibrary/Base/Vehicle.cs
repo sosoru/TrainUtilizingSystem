@@ -20,8 +20,10 @@ namespace RouteLibrary.Base
         public int VehicleID { get; private set; }
 
         public Block CurrentBlock { get; set; }
-        public Route Route { get; set; }
+        public Route Route { get; private set; }
         public BlockSheet Sheet { get; set; }
+
+        public Halt Halt { get; set; }
 
         static Vehicle()
         {
