@@ -202,7 +202,9 @@ namespace TestProject
 
             // zero case : the vehicle stops immediately
             written.Clear();
-            othervh.Run(1.0f, sht.GetBlock("AT9"));
+            Assert.IsFalse( othervh.Run(1.0f, sht.GetBlock("AT9"))); // AT9 is already blocked by the other vehicle
+            vh.Route.InitLockingPosition();
+            othervh.Run(1.0f, sht.GetBlock("AT9");
             vh.Run(1.0f, sht.GetBlock("AT2"));
 
             serv.SendingObservable.Subscribe();
