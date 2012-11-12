@@ -85,6 +85,11 @@ namespace RouteLibrary.Base
 
         public void Run()
         {
+            this.Run(0.5f);
+        }
+
+        public void Run(float spd)
+        {
 
             //todo : check blocks locked
             this.Route.LockNextUnit();
@@ -95,7 +100,7 @@ namespace RouteLibrary.Base
                     var basecmd = new CommandInfo()
                     {
                         Route = this.Route,
-                        Speed = 0.5f,
+                        Speed = spd,
                     };
 
 
@@ -114,6 +119,7 @@ namespace RouteLibrary.Base
 
             this.Sheet.Effect( factory, this.Route.LockedBlocks);
 
+            
         }
     }
 }
