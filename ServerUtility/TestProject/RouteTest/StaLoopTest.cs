@@ -218,5 +218,30 @@ namespace TestProject
             
         }
 
+        [TestMethod]
+        public void HaltTest()
+        {
+            var mockio = new Mock<IDeviceIO>();
+            var written = new List<IDeviceState<IPacketDeviceData>>();
+            mockio.Setup(e => e.GetReadingPacket()).Returns(Observable.Empty<DevicePacket>());
+            mockio.Setup(e => e.GetWritingPacket(It.IsAny<DevicePacket>())).Callback<DevicePacket>(pack =>
+                written.AddRange(pack.ExtractPackedPacket())
+                )
+                .Returns(Observable.Empty<Unit>());
+            var serv = new PacketServer(new AvrDeviceFactoryProvider());
+            serv.Controller = mockio.Object;
+            var sht = new BlockSheet(target_sheet, serv);
+
+            Route rt = GetRouteFirst(sht);
+            var vh = new Vehicle(sht, rt);
+
+            vh.Halt = new Halt(sht.GetBlock("AT14"));
+
+            vh.Run(1.0f, sht.GetBlock("AT2"));
+            serv.SendingObservable.Subscribe();
+            Assert.IsTrue(written.ExtractDevice<MotorState>(1, 2, 2).Duty == 1.0f);
+            Assert.IsTrue(Math.Round(written.ExtractDevice<MotorState>(1, 2, 3).Duty, 1) == 0.5f);
+
+        }
     }
 }
