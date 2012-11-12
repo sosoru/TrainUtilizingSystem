@@ -181,7 +181,7 @@ namespace TestProject
 
             // 2nd case : the vehicle keeps specified speed, but entering the next section, reduces its speed to half
             Route otherrt = GetRouteFirst(sht);
-            var othervh = new Vehicle(sht, rt);
+            var othervh = new Vehicle(sht, otherrt);
 
             written.Clear();
             othervh.Run(1.0f, sht.GetBlock("AT15"));
