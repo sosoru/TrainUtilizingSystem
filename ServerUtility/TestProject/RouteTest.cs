@@ -131,7 +131,7 @@ namespace TestProject
             target.ReleaseBeforeUnit();
 
             Assert.IsTrue(target.LockedBlocks.SequenceEqual(target.Units[1].Blocks));
-            Assert.IsTrue(target.Units[1].Blocks.All(b => !b.IsBlocked));
+            Assert.IsTrue(target.Units[0].Blocks.All(b => !b.IsBlocked));
         }
 
         //[TestMethod]
