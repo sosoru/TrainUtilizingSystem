@@ -31,6 +31,35 @@ namespace RouteLibrary.Base
             }
         }
 
+        public bool CanBeAllocated
+        {
+            get
+            {
+                return this.Blocks.All(b => !b.IsBlocked);
+            }
+        }
+
+        public void Allocate()
+        {
+            this.Blocks.ForEach(b =>
+                {
+                    if (b.IsBlocked)
+                        throw new InvalidOperationException("Allocate() tried to allocate a blocked block");
+
+                    b.IsBlocked = true;
+                });
+        }
+
+        public void Release()
+        {
+            this.Blocks.ForEach(b =>
+                {
+                    if (!b.IsBlocked)
+                        throw new InvalidOperationException("Release() tried to relase a released block");
+
+                    b.IsBlocked = false;
+                });
+        }
     }
 
     public class Route
@@ -99,20 +128,24 @@ namespace RouteLibrary.Base
             this.ind_start = 0;
         }
 
-        public void LockNextUnit()
+        public bool LockNextUnit()
         {
             if (ind_end + 1 < this.Units.Count
-                && (ind_start <= ind_end + 1))
+                && (ind_start <= ind_end + 1)
+                && this.Units[this.ind_end].CanBeAllocated)
             {
                 ind_end++;
+                this.Units[this.ind_end].Allocate();
             }
         }
 
         public void ReleaseBeforeUnit()
         {
             if (ind_start + 1 < this.Units.Count
-                && (ind_start <= ind_end + 1))
+                && (ind_start <= ind_end + 1)
+                && !this.Units[this.ind_end].CanBeAllocated)
             {
+                this.Units[this.ind_start].Release();
                 ind_start++;
             }
         }
