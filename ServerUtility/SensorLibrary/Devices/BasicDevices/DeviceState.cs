@@ -77,6 +77,11 @@ namespace SensorLibrary.Devices
             }
         }
 
+        public override string ToString()
+        {
+            return this.ID.ToString();
+        }
+
         //public void FlushDataState()
         //{
         //    lock (lock_Data)
