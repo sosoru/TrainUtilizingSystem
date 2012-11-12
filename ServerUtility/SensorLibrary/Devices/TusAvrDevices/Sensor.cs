@@ -40,6 +40,8 @@ namespace SensorLibrary.Devices.TusAvrDevices
 
             lock (hist_lock)
             {
+                this.CurrentState = value;
+
                 packet_history.AddLast(state);
                 if (packet_history.Count > 2)
                     packet_history.RemoveFirst();
