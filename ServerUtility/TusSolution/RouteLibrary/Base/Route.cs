@@ -107,6 +107,9 @@ namespace RouteLibrary.Base
                     }
                 }
 
+                if (l.Count > 0)
+                    yield return new ControllingRoute() { Blocks = new List<Block>(l) };
+
                 //todo : throw exception (not terminated by a block having a sensor
             }
         }
@@ -148,7 +151,7 @@ namespace RouteLibrary.Base
         public bool LockNextUnit()
         {
             if (ind_end + 1 < this.Units.Count
-                && this.Units[this.ind_end+1].CanBeAllocated)
+                && this.Units[this.ind_end + 1].CanBeAllocated)
             {
                 ind_end++;
                 this.Units[this.ind_end].Allocate();
@@ -160,7 +163,7 @@ namespace RouteLibrary.Base
 
         public bool ReleaseBeforeUnit()
         {
-            if ( (ind_start <= ind_end)
+            if ((ind_start <= ind_end)
                 && !this.Units[this.ind_start].CanBeAllocated)
             {
                 this.Units[this.ind_start].Release();
@@ -261,7 +264,7 @@ namespace RouteLibrary.Base
             while (this.ReleaseBeforeUnit()) ;
 
             this.ind_end = blockunit.ind;
-            this.ind_start = blockunit.ind - (len-1);
+            this.ind_start = blockunit.ind - (len - 1);
 
             if (this.ind_start < 0)
                 this.ind_start = 0;
