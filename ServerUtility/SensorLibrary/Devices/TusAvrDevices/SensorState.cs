@@ -54,17 +54,5 @@ namespace SensorLibrary.Devices.TusAvrDevices
             get { return (float)this.Data.Threshold / 255.0f; }
             set { this.Data.Threshold = (byte)(value * 255.0f); }
         }
-
-        public DeviceID DeviceIDTriggered
-        {
-            get { return this.Data.FireFor; }
-            set { this.Data.FireFor = value; }
-        }
-
-        public MotorMemoryStateEnum MemoryWhenFired
-        {
-            get { return (MotorMemoryStateEnum)this.Data.MemoryWhenFired; }
-            set { this.Data.MemoryWhenFired = (byte)value; }
-        }
     }
 }
