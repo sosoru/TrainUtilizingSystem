@@ -106,6 +106,8 @@ namespace RouteLibrary.Base
             return state;
         }
 
+        private MotorDirection _before_dir = MotorDirection.Standby;
+        private float _before_duty = 2.0f;
         public MotorState CreateMotorState(MotorDirection dir, float duty)
         {
             var state = new MotorState()
@@ -114,6 +116,12 @@ namespace RouteLibrary.Base
                 Duty = duty,
                 Direction = dir,
             };
+
+            if (this._before_dir != dir || this._before_duty != duty)
+                this.IsNeededExecution = true;
+
+            this._before_dir = dir;
+            this._before_duty = duty;
 
             return state;
         }
@@ -199,8 +207,6 @@ namespace RouteLibrary.Base
         private MotorMemoryStateEnum _before_state = MotorMemoryStateEnum.Unknown;
         public override void ApplyCommand(CommandFactory factory)
         {
-            this.IsNeededExecution = true;
-
             var cmd = factory.CreateCommand(this.ParentBlock);
             var states = new Dictionary<MotorMemoryStateEnum, MotorState>();
             //var mode = SelectCurrentMemory(cmd);
@@ -244,15 +250,10 @@ namespace RouteLibrary.Base
             else
                 throw new InvalidOperationException();
 
-            // when execution is NOT needed :
-            // NoEffect -> NoEfect
-            //if (!(this._before_state == MotorMemoryStateEnum.NoEffect
-            //     && mode == MotorMemoryStateEnum.NoEffect))
-            //{
-            //    this.IsNeededExecution = true;
-            //}
+            if (_before_state != cmd.MotorMode)
+                this.IsNeededExecution = true;
 
-            _before_state = cmd.MotorMode;
+            this._before_state = cmd.MotorMode;
         }
     }
 
