@@ -54,16 +54,17 @@ namespace SensorLibrary.Packet.Data
         public byte Position;
     }
 
-    [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 6)]
+    [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 10)]
     public class SensorData
         : PacketDeviceHeader 
     {
-        public SensorData() { DataLength = 6; ModuleType = (byte)ModuleTypeEnum.AvrSensor; }
+        public SensorData() { DataLength = 10; ModuleType = (byte)ModuleTypeEnum.AvrSensor; }
 
         public byte VoltageOn;
         public byte VoltageOff;
         public byte Threshold;
-
+        public DeviceID FireFor;
+        public byte MemoryWhenFired;
     }
 
     [StructLayout(LayoutKind.Sequential, Pack= 1, Size=4)]
