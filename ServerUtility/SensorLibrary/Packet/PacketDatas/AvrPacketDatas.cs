@@ -63,8 +63,6 @@ namespace SensorLibrary.Packet.Data
         public byte VoltageOn;
         public byte VoltageOff;
         public byte Threshold;
-        public DeviceID FireFor;
-        public byte MemoryWhenFired;
     }
 
     [StructLayout(LayoutKind.Sequential, Pack= 1, Size=4)]
