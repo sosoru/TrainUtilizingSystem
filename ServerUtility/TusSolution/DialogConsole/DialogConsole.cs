@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net;
 using System.IO;
+using System.
 
 using SensorLibrary;
 using SensorLibrary.Packet;
@@ -153,7 +154,8 @@ namespace DialogConsole
             }
         }
 
-        static PacketServer CreateServer(IPAddress ipbase, IPAddress ipmask)
+        
+        public PacketServer CreateServer(IPAddress ipbase, IPAddress ipmask)
         {
             var serv = new PacketServer(new AvrDeviceFactoryProvider());
             var io = new SensorLibrary.Packet.IO.TusEthernetIO(ipbase, ipmask)
@@ -168,7 +170,7 @@ namespace DialogConsole
             return serv;
         }
 
-        static BlockSheet CreateSheet(string path, PacketServer serv)
+        public BlockSheet CreateSheet(string path, PacketServer serv)
         {
             var parser = new BlockYaml();
             var blocks = parser.Parse(path);
