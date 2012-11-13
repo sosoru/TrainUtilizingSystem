@@ -224,6 +224,10 @@ namespace RouteLibrary.Base
             {
                 this.Device.CurrentMemory = MotorMemoryStateEnum.Waiting;
             }
+            else if (cmd.MotorMode == MotorMemoryStateEnum.NoEffect)
+            {
+                this.Device.CurrentMemory = MotorMemoryStateEnum.NoEffect;
+            }
             else
                 throw new InvalidOperationException();
 
