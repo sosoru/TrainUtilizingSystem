@@ -105,11 +105,15 @@ namespace RouteLibrary.Base
                         cmd.MotorMode = MotorMemoryStateEnum.Controlling;
                         cmd.Speed = cntspdFactory();
                     }
-
                     else if (blk == this.Route.LockedUnits.Last().ControlBlock)
                     {
                         cmd.MotorMode = MotorMemoryStateEnum.Waiting;
                         cmd.Speed = waitspdFactory();
+                    }
+                    else
+                    {
+                        cmd.MotorMode = MotorMemoryStateEnum.NoEffect;
+                        cmd.Speed = 0.0f;
                     }
                     return cmd;
                 });
@@ -123,9 +127,18 @@ namespace RouteLibrary.Base
                     var cmd = new CommandInfo()
                     {
                         Route = this.Route,
-                        MotorMode = MotorMemoryStateEnum.Controlling,
-                        Speed = cntspdFactory(),
                     };
+
+                    if (blk == this.Route.LockedUnits.First().ControlBlock)
+                    {
+                        cmd.MotorMode = MotorMemoryStateEnum.Controlling;
+                        cmd.Speed = cntspdFactory();
+                    }
+                    else
+                    {
+                        cmd.MotorMode = MotorMemoryStateEnum.NoEffect;
+                        cmd.Speed = 0.0f;
+                    }
                     return cmd;
                 });
             return new CommandFactory() { CreateCommand = func };
