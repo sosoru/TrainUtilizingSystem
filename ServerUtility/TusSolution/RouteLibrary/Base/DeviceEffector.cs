@@ -172,24 +172,6 @@ namespace RouteLibrary.Base
             return next;
         }
 
-        //public MotorMemoryStateEnum SelectCurrentMemory(CommandInfo cmd)
-        //{
-        //    var locked = cmd.Route.LockedBlocks.Where(s => s.HasMotor && s.MotorEffector.Device.CurrentMemory == MotorMemoryStateEnum.NoEffect).ToArray();
-
-        //    if (!locked.Contains(this.ParentBlock))
-        //        return MotorMemoryStateEnum.NoEffect;
-
-        //    var last = locked.Length - 1;
-        //    var thispos = Array.IndexOf(locked, this.ParentBlock);
-
-        //    if (thispos == last)
-        //        return MotorMemoryStateEnum.Waiting;
-        //    else if (thispos == last - 1)
-        //        return MotorMemoryStateEnum.Controlling;
-        //    else
-        //        return MotorMemoryStateEnum.Locked;
-        //}
-
         public void SetDetectingMode(float duty)
         {
             var mode = MotorMemoryStateEnum.Controlling;
@@ -207,9 +189,11 @@ namespace RouteLibrary.Base
         private MotorMemoryStateEnum _before_state = MotorMemoryStateEnum.Unknown;
         public override void ApplyCommand(CommandFactory factory)
         {
+            if (this.IsNeededExecution)
+                return;
+
             var cmd = factory.CreateCommand(this.ParentBlock);
             var states = new Dictionary<MotorMemoryStateEnum, MotorState>();
-            //var mode = SelectCurrentMemory(cmd);
 
             switch (cmd.MotorMode)
             {
@@ -230,13 +214,6 @@ namespace RouteLibrary.Base
                     throw new InvalidOperationException("invalid mode applied");
                     break;
             }
-
-            //var states = new Dictionary<MotorMemoryStateEnum, MotorState>{
-            //    { MotorMemoryStateEnum.Controlling, CreateMotorState(cmd) },
-            //    {MotorMemoryStateEnum.Waiting , CreateWaitingState(BeforeBlockHavingMotor(cmd).MotorEffector.Device)},
-            //    {MotorMemoryStateEnum.NoEffect, NoEffectState},
-            //    {MotorMemoryStateEnum.Locked, LockedState}
-            //};
 
             this.Device.States = states;
             if (cmd.MotorMode == MotorMemoryStateEnum.Controlling)
@@ -281,12 +258,8 @@ namespace RouteLibrary.Base
         private PointStateEnum _before_position = PointStateEnum.Any;
         public override void ApplyCommand(CommandFactory factory)
         {
-            //if (this.CheckBefore(s => s.Position))
-            //{
-            //var locked = cmd.Route.GetLockingControlingRoute(this.ParentBlock);
-
-            //if (locked == null)
-            //    return;
+            if (this.IsNeededExecution)
+                return;
 
             var cmd = factory.CreateCommand(this.ParentBlock);
             var segment = cmd.Route.Segments[this.ParentBlock];
