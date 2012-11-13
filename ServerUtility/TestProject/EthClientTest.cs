@@ -126,7 +126,7 @@ namespace TestProject
 
             var ethpacket = new EthPacket()
             {
-                srcId = new DeviceID(100, 0),
+                srcId = new DeviceID(9, 0),
                 destId = new DeviceID(24, 5, 17)
             };
             var sens = new UsartSensor() { DeviceID = ethpacket.destId };
