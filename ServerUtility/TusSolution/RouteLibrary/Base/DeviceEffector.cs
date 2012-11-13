@@ -39,6 +39,7 @@ namespace RouteLibrary.Base
             };
 
             this.Device.Observe(block.Sheet.Dispatcher);
+            this.IsNeededExecution = false;
         }
 
         private DateTime before_send;
@@ -61,7 +62,6 @@ namespace RouteLibrary.Base
         public MotorEffector(MotorInfo info, Block block)
             : base(info, block)
         {
-            this.IsNeededExecution = true;
         }
 
         public MotorState NoEffectState
