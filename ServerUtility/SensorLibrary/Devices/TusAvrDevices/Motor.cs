@@ -68,7 +68,7 @@ namespace SensorLibrary.Devices.TusAvrDevices
         {
             var statelist = new List<IDevice<IDeviceState<IPacketDeviceData>>>();
 
-            foreach (var state in States)
+            foreach (var state in States.OrderBy(k => k.Key == CurrentMemory))
             {
                 statelist.Add(Kernel.MemoryState(this.DeviceID, new MemoryState((int)state.Key)));
                 statelist.Add(new Motor(this, state.Value));
@@ -94,9 +94,9 @@ namespace SensorLibrary.Devices.TusAvrDevices
             foreach (var p in app)
                 this.ReceivingServer.SendPacket(p);
 
-            var pack = this.ChangeMemoryTo(this.CurrentMemory);
-            foreach (var p in pack)
-                this.ReceivingServer.SendPacket(p);
+            //var pack = this.ChangeMemoryTo(this.CurrentMemory);
+            //foreach (var p in pack)
+            //    this.ReceivingServer.SendPacket(p);
         }
 
         public MotorMemoryStateEnum CurrentMemory
