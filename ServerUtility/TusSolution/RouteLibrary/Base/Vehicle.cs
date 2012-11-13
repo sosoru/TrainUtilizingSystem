@@ -133,12 +133,12 @@ namespace RouteLibrary.Base
 
         public CommandFactory CreateNthCommand(SpeedFactory spdfactory)
         {
-            return CreateWithWaitingCommand(() => spdfactory.Go,() => spdfactory.Go);
+            return CreateWithWaitingCommand(() => spdfactory.Go, () => spdfactory.Go);
         }
 
         public CommandFactory Create2ndCommand(SpeedFactory spdfactory)
         {
-            return CreateWithWaitingCommand(() => spdfactory.Go, () =>spdfactory.Caution);
+            return CreateWithWaitingCommand(() => spdfactory.Go, () => spdfactory.Caution);
         }
 
         public CommandFactory Create1stCommand(SpeedFactory spdfactory)
@@ -165,10 +165,11 @@ namespace RouteLibrary.Base
         public void Run(float spd)
         {
             CommandFactory cmdfactory = null;
-            var spdfactory = new SpeedFactory() { RawSpeed = spd};
+            var spdfactory = new SpeedFactory() { RawSpeed = spd };
 
+            var lastlockedblocks = this.Route.LockedBlocks;
             this.Route.AllocateTrain(this.CurrentBlock, 1);
-            
+
             if (!this.Route.LockNextUnit())
             {
                 if (this.Halt != null
@@ -194,7 +195,7 @@ namespace RouteLibrary.Base
                 cmdfactory = CreateNthCommand(spdfactory);
             }
 
-            this.Sheet.Effect(cmdfactory, this.Route.LockedBlocks);
+            this.Sheet.Effect(cmdfactory, this.Route.LockedBlocks.Concat(lastlockedblocks).Distinct());
         }
     }
 }
