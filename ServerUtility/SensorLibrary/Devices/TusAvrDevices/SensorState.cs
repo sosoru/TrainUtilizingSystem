@@ -60,5 +60,11 @@ namespace SensorLibrary.Devices.TusAvrDevices
             get { return this.Data.FireFor; }
             set { this.Data.FireFor = value; }
         }
+
+        public MotorMemoryStateEnum MemoryWhenFired
+        {
+            get { return (MotorMemoryStateEnum)this.Data.MemoryWhenFired; }
+            set { this.MemoryWhenFired = (byte)value; }
+        }
     }
 }
