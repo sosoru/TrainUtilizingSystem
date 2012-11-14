@@ -22,7 +22,7 @@ using RouteLibrary.Parser;
 
 namespace DialogConsole
 {
-    class Main
+    class MainClass
     {
         static void Main(string[] args)
         {
