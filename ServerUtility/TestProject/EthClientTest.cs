@@ -324,7 +324,7 @@ namespace TestProject
             var mtrpacket = new EthPacket()
             {
                 srcId = new DeviceID(9, 0),
-                destId = new DeviceID(24, 5, 6),
+                destId = new DeviceID(24, 6, 1),
             };
             var mtr = new Motor() { DeviceID = mtrpacket.destId };
             var mtrstate = mtr.CurrentState;
