@@ -97,6 +97,26 @@ namespace TestProject
         //
         #endregion
 
+        private List<IDeviceState<IPacketDeviceData>> written;
+        private PacketServer serv;
+        private BlockSheet sht;
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            var mockio = new Mock<IDeviceIO>();
+            written = new List<IDeviceState<IPacketDeviceData>>();
+            mockio.Setup(e => e.GetReadingPacket()).Returns(Observable.Empty<DevicePacket>());
+            mockio.Setup(e => e.GetWritingPacket(It.IsAny<DevicePacket>())).Callback<DevicePacket>(pack =>
+                written.AddRange(pack.ExtractPackedPacket())
+                )
+                .Returns(Observable.Empty<Unit>());
+            serv = new PacketServer(new AvrDeviceFactoryProvider());
+            serv.Controller = mockio.Object;
+            sht = new BlockSheet(target_sheet, serv);
+
+        }
+
         [TestMethod]
         public void ReadSheetTest()
         {
@@ -108,9 +128,6 @@ namespace TestProject
         [TestMethod]
         public void RouteConstructTest()
         {
-            var serv = new PacketServer();
-            var sht = new BlockSheet(target_sheet, serv);
-
             Route rt = GetRouteFirst(sht);
             var units = rt.Units.ToArray();
             Assert.IsTrue(units[0].Blocks.Select(b => b.Name)
@@ -123,25 +140,12 @@ namespace TestProject
                             .SequenceEqual(new[] { "AT13", "AT14", "AT15", "BAT16" }));
             Assert.IsTrue(units[4].Blocks.Select(b => b.Name)
                             .SequenceEqual(new[] { "AT16", "AT1", "BAT1" }));
-
-
         }
 
 
         [TestMethod]
         public void RouteCommandTest()
         {
-            var mockio = new Mock<IDeviceIO>();
-            var written = new List<IDeviceState<IPacketDeviceData>>();
-            mockio.Setup(e => e.GetReadingPacket()).Returns(Observable.Empty<DevicePacket>());
-            mockio.Setup(e => e.GetWritingPacket(It.IsAny<DevicePacket>())).Callback<DevicePacket>(pack =>
-                written.AddRange(pack.ExtractPackedPacket())
-                )
-                .Returns(Observable.Empty<Unit>());
-            var serv = new PacketServer(new AvrDeviceFactoryProvider());
-            serv.Controller = mockio.Object;
-            var sht = new BlockSheet(target_sheet, serv);
-
             Route rt = GetRouteFirst(sht);
 
             var vh = new Vehicle(sht, rt);
@@ -160,17 +164,6 @@ namespace TestProject
         [TestMethod]
         public void VehicleReduceSpeedTest()
         {
-            var mockio = new Mock<IDeviceIO>();
-            var written = new List<IDeviceState<IPacketDeviceData>>();
-            mockio.Setup(e => e.GetReadingPacket()).Returns(Observable.Empty<DevicePacket>());
-            mockio.Setup(e => e.GetWritingPacket(It.IsAny<DevicePacket>())).Callback<DevicePacket>(pack =>
-                written.AddRange(pack.ExtractPackedPacket())
-                )
-                .Returns(Observable.Empty<Unit>());
-            var serv = new PacketServer(new AvrDeviceFactoryProvider());
-            serv.Controller = mockio.Object;
-            var sht = new BlockSheet(target_sheet, serv);
-
             Route rt = GetRouteFirst(sht);
             var vh = new Vehicle(sht, rt);
 
@@ -221,17 +214,6 @@ namespace TestProject
         [TestMethod]
         public void HaltTest()
         {
-            var mockio = new Mock<IDeviceIO>();
-            var written = new List<IDeviceState<IPacketDeviceData>>();
-            mockio.Setup(e => e.GetReadingPacket()).Returns(Observable.Empty<DevicePacket>());
-            mockio.Setup(e => e.GetWritingPacket(It.IsAny<DevicePacket>())).Callback<DevicePacket>(pack =>
-                written.AddRange(pack.ExtractPackedPacket())
-                )
-                .Returns(Observable.Empty<Unit>());
-            var serv = new PacketServer(new AvrDeviceFactoryProvider());
-            serv.Controller = mockio.Object;
-            var sht = new BlockSheet(target_sheet, serv);
-
             Route rt = GetRouteFirst(sht);
             var vh = new Vehicle(sht, rt);
 
@@ -243,5 +225,6 @@ namespace TestProject
             Assert.IsTrue(Math.Round(written.ExtractDevice<MotorState>(1, 2, 3).Duty, 1) == 0.5f);
 
         }
+
     }
 }
