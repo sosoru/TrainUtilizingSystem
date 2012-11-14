@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Net;
 using System.IO;
 using System.Reactive.Linq;
+using System.Reactive.Concurrency;
 using System.Reactive.Threading;
 
 using SensorLibrary;
@@ -21,15 +22,24 @@ using RouteLibrary.Parser;
 
 namespace DialogConsole
 {
-    class DialogCnosole
+    class Main
     {
-
         static void Main(string[] args)
         {
-            var serv = CreateServer(IPAddress.Parse("192.168.2.25"), IPAddress.Parse("255.255.255.0"));
-            var sht = CreateSheet("layout.yaml", serv);
+            var dialog = new DialogCnosole();
+            dialog.Loop();
+        }
+    }
 
-            var cmdinfo = new CommandInfo() { Route = new Route(sht, new[] { "AT1" }) };
+    class DialogCnosole
+    {
+        public PacketServer Server { get; set; }
+        public BlockSheet Sheet { get; set; }
+
+        public void Loop()
+        {
+            this= CreateServer(IPAddress.Parse("192.168.2.24"), IPAddress.Parse("255.255.255.0"));
+            var sht = CreateSheet("layout.yaml", serv);
 
             while (true)
             {
@@ -95,17 +105,17 @@ namespace DialogConsole
             info.Speed = float.Parse(duty);
         }
 
-        static void ShowStatus(BlockSheet sht)
+        static string ShowStatus(BlockSheet sht)
         {
             var blocks = sht.InnerBlocks;
 
             sht.InquiryAllMotors();
             sht.InquiryDevices(sht.AllSwitches());
 
-            System.Threading.Thread.Sleep(2000);
-
             foreach (var b in blocks)
                 Console.WriteLine(b.ToString());
+            return blocks.Select(b => b.ToString() + "\n")
+                            .Aggregate("", (ag, s) => ag += s);
         }
 
         static void ChangeSwitchAll(BlockSheet sht, PointStateEnum pos)
@@ -166,8 +176,6 @@ namespace DialogConsole
             };
 
             serv.Controller = io;
-
-            serv.LoopStart();
             return serv;
         }
 
