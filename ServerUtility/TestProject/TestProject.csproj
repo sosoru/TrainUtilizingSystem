@@ -102,6 +102,7 @@
     <Compile Include="BlockYamlTest.cs" />
     <Compile Include="ChunckedStreamTest.cs" />
     <Compile Include="DeviceIdParserTest.cs" />
+    <Compile Include="DialogConsole\DialogConsoleTest.cs" />
     <Compile Include="DialogController\MotorControllerTest.cs" />
     <Compile Include="DialogController\SwitchControllerTest.cs" />
     <Compile Include="EthClientTest.cs" />
