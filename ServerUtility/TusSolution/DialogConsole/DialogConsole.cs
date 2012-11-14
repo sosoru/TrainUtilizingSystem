@@ -38,7 +38,7 @@ namespace DialogConsole
 
         public void Loop()
         {
-            this= CreateServer(IPAddress.Parse("192.168.2.24"), IPAddress.Parse("255.255.255.0"));
+            this.Server= CreateServer(IPAddress.Parse("192.168.2.24"), IPAddress.Parse("255.255.255.0"));
             var sht = CreateSheet("layout.yaml", serv);
 
             while (true)
