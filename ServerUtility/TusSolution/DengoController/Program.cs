@@ -29,7 +29,7 @@ namespace DengoController
 
             var io = new SensorLibrary.Packet.IO.TusEthernetIO(ipbase, ipmask)
                          {
-                             SourceID = new DeviceID(10, 0, 0),
+                             SourceID = new DeviceID(9, 0, 0),
                              Port = 8000,
                          };
 
@@ -76,7 +76,7 @@ namespace DengoController
         {
             IDengoController cnt = new DengoController(); 
 
-            InitCommunication(new IPAddress(new byte[] { 255, 255, 255, 0 }), new IPAddress(new byte[] { 192, 168, 2, 10 }));
+            InitCommunication(new IPAddress(new byte[] { 255, 255, 255, 0 }), new IPAddress(new byte[] { 192, 168, 2, 24 }));
 
             mtr_g = new Motor(serv_g) { DeviceID = InformDeviceID() };
             mtr_g.Observe(dispat_g);
