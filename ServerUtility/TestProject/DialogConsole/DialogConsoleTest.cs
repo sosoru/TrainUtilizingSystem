@@ -7,9 +7,5 @@ namespace TestProject.DialogConsole
     [TestClass]
     public class DialogConsoleTest
     {
-        [TestMethod]
-        public void 
-        {
-        }
     }
 }
