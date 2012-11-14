@@ -13,6 +13,7 @@ using SensorLibrary;
 using SensorLibrary.Devices;
 using Moq;
 using System.Collections.Generic;
+using Microsoft.Reactive.Testing;
 
 namespace TestProject
 {
