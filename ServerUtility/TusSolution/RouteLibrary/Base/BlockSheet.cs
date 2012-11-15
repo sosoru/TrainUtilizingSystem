@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 
 using System.Reactive;
 using System.Reactive.Linq;
+using System.Reactive.Concurrency;
 
 using SensorLibrary;
 using SensorLibrary.Packet;
@@ -89,18 +90,23 @@ namespace RouteLibrary.Base
             get { return this.InnerBlocks.SelectMany(b => b.Effectors); }
         }
 
-        public IObservable<Unit> Effect(CommandFactory cmd, IEnumerable<Block> blocks)
+        public void Effect(CommandFactory cmd, IEnumerable<Block> blocks)
         {
-            Type[] order = new[] { typeof(SwitchEffector), typeof(MotorEffector), typeof(IDeviceEffector) };
+            GetEffectObservable(cmd, blocks).Subscribe();
+        }
 
-            blocks
+        public IObservable<IGrouping<int, IDeviceEffector>> GetEffectObservable(CommandFactory cmd, IEnumerable<Block> blocks)
+        {
+            var ob= blocks
                  .ToObservable()
-                 .Do(b => b.Effect(new[] { cmd })
-                     .OrderBy(c => Array.IndexOf(order, c.GetType()))
-                     
-                     .ForEach(c => c.ExecuteCommand()))
-                //.Do(b => b.Detectors.ForEach(d => d.SendCheckCommand()))
-                 .Subscribe();
+                 .SelectMany(b => b.Effect(new[] { cmd })
+                 .Where (e => e.IsNeededExecution)
+                 .GroupBy(e => (e is SwitchEffector) ? 0 : 1)
+                 .OrderBy(g => g.Key)
+                 .ToObservable();
+
+            return ob.Throttle(TimeSpan.FromSeconds(5))
+                .Do(g =>g.ForEach( e => e.ExecuteCommand()));        
         }
 
         public Block GetBlock(string p)
@@ -171,7 +177,7 @@ namespace RouteLibrary.Base
         {
             // detection process succeeded
             var g = this.InnerBlocks.Where(b => b.HasMotor && b.IsDetectingTrain);
-            
+
 
 
 
