@@ -226,7 +226,6 @@ namespace TestProject
 
             scheduler.Start();
             serv.SendingObservable.Subscribe();
-            scheduler.Start();
             Assert.IsTrue(written.ExtractDevice<MotorState>(1, 2, 2).Duty == 0.0f);
 
 
