@@ -96,6 +96,7 @@ namespace RouteLibrary.Base
         {
             return GetEffectObservable(cmd, blocks)
                 .ObserveOn(this.AssociatedScheduler)
+                .SubscribeOn(this.AssociatedScheduler)
                 .Subscribe();
         }
 
