@@ -89,7 +89,7 @@ namespace RouteLibrary.Base
             get { return this.InnerBlocks.SelectMany(b => b.Effectors); }
         }
 
-        public void Effect(CommandFactory cmd, IEnumerable<Block> blocks)
+        public IObservable<Unit> Effect(CommandFactory cmd, IEnumerable<Block> blocks)
         {
             Type[] order = new[] { typeof(SwitchEffector), typeof(MotorEffector), typeof(IDeviceEffector) };
 
@@ -97,6 +97,7 @@ namespace RouteLibrary.Base
                  .ToObservable()
                  .Do(b => b.Effect(new[] { cmd })
                      .OrderBy(c => Array.IndexOf(order, c.GetType()))
+                     
                      .ForEach(c => c.ExecuteCommand()))
                 //.Do(b => b.Detectors.ForEach(d => d.SendCheckCommand()))
                  .Subscribe();
