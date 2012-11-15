@@ -174,11 +174,6 @@ namespace TestProject
             });
 
             scheduler.Start();
-
-            //scheduler.AdvanceTo(TimeSpan.FromSeconds(10).Ticks);
-            //scheduler.Start();
-
-            //Assert.IsTrue(written.Count == 5);
         }
 
         [TestMethod]
@@ -243,27 +238,6 @@ namespace TestProject
             serv.SendingObservable.Subscribe();
             Assert.IsTrue(written.ExtractDevice<MotorState>(1, 2, 2).Duty == 1.0f);
             Assert.IsTrue(Math.Round(written.ExtractDevice<MotorState>(1, 2, 3).Duty, 1) == 0.5f);
-
-        }
-
-        [TestMethod]
-        public void Check_Waiting_SwitchDevice_RunnningOnSendingPacket()
-        {
-            var sch = new TestScheduler();
-            sht.AssociatedScheduler = sch;
-
-            Route rt = GetRouteFirst(sht);
-            var vh = new Vehicle(sht, rt);
-
-            vh.Run(1.0f, sht.GetBlock("AT2"));
-            written.Clear();
-
-            serv.SendingObservable.Subscribe();
-            sch.AdvanceBy(TimeSpan.FromSeconds(1).Ticks);
-
-            sch.AdvanceBy(TimeSpan.FromSeconds(5).Ticks);
-            serv.SendingObservable.Subscribe();
-
 
         }
 
