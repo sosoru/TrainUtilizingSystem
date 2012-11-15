@@ -15,6 +15,7 @@ namespace RouteLibrary.Base
     {
         void ExecuteCommand();
         void ApplyCommand(CommandFactory factory);
+        bool IsNeededExecution { get; }        
     }
 
     public abstract class DeviceEffector<TDev, TInfo, TState>
