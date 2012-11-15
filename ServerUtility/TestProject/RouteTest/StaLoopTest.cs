@@ -161,7 +161,6 @@ namespace TestProject
 
             scheduler.Schedule(waitingTicks1, () =>
             {
-                scheduler.Sleep(100);
                 serv.SendingObservable.Subscribe();
             });
             scheduler.Schedule(waitingTicks1 + TimeSpan.FromSeconds(0.1), () =>
