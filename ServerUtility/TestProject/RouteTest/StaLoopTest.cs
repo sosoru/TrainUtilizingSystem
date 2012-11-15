@@ -159,7 +159,7 @@ namespace TestProject
             scheduler.Schedule(vh.Run);
 
             scheduler.Start();
-            scheduler.AdvanceBy(TimeSpan.FromSeconds(10.1).Ticks);
+            scheduler.AdvanceTo(TimeSpan.FromSeconds(10.1).Ticks);
             serv.SendingObservable.Subscribe();
 
             Assert.IsTrue(written.ExtractDevice<SwitchState>(1, 1, 1).Position == PointStateEnum.Straight);
