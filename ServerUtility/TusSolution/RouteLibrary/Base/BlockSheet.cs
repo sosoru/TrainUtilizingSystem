@@ -41,7 +41,7 @@ namespace RouteLibrary.Base
             this.InnerBlocks = new ReadOnlyCollection<Block>(blocks.ToList());
 
             this.Vehicles = new List<Vehicle>();
-            this.Scheduler = Scheduler.Immediate;
+            this.AssociatedScheduler = Scheduler.Immediate;
         }
 
         #region implementation of IEqualable
@@ -103,7 +103,7 @@ namespace RouteLibrary.Base
         {
             var ob= blocks
                  .ToObservable()
-                 .SelectMany(b => b.Effect(new[] { cmd })
+                 .SelectMany(b => b.Effect(new[] { cmd }))
                  .Where (e => e.IsNeededExecution)
                  .GroupBy(e => (e is SwitchEffector) ? 0 : 1)
                  .OrderBy(g => g.Key)
