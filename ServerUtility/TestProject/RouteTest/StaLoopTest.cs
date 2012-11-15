@@ -158,7 +158,7 @@ namespace TestProject
             vh.Run();
 
             serv.SendingObservable.Subscribe();
-            scheduler.AdvanceBy(TimeSpan.FromSeconds(10).Ticks);
+            scheduler.AdvanceTo(TimeSpan.FromSeconds(10).Ticks);
             scheduler.Start();
 
             //Assert.IsTrue(written.Count == 5);
