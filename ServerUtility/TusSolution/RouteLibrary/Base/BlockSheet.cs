@@ -98,7 +98,7 @@ namespace RouteLibrary.Base
             var arrays = GetEffectObservable(cmd, blocks);
 
             return Observable.Timer(DateTimeOffset.MinValue, TimeSpan.FromSeconds(5), this.AssociatedScheduler)
-                .Select((l, i) => new { l ,i })
+                .Select((l, i) => new { l ,i-1 })
                 .Subscribe(val => arrays[val.i].ForEach(e => e.ExecuteCommand()));
         }
 
