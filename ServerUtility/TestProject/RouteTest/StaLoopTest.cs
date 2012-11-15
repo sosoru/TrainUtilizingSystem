@@ -159,10 +159,10 @@ namespace TestProject
 
             serv.SendingObservable.Subscribe();
             scheduler.AdvanceTo(TimeSpan.FromSeconds(10).Ticks);
-            //scheduler.Start();
+            scheduler.Start();
 
-            //scheduler.AdvanceTo(TimeSpan.FromSeconds(10).Ticks);
-            //scheduler.Start();
+            scheduler.AdvanceTo(TimeSpan.FromSeconds(10).Ticks);
+            scheduler.Start();
 
             //Assert.IsTrue(written.Count == 5);
             Assert.IsTrue(written.ExtractDevice<SwitchState>(1, 1, 1).Position == PointStateEnum.Straight);
