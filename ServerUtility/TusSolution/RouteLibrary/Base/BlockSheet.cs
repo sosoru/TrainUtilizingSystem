@@ -43,7 +43,7 @@ namespace RouteLibrary.Base
             this.InnerBlocks = new ReadOnlyCollection<Block>(blocks.ToList());
 
             this.Vehicles = new List<Vehicle>();
-            this.AssociatedScheduler = Scheduler.Immediate;
+            this.AssociatedScheduler = Scheduler.CurrentThread;
             this.TimeWaitingSwitchChanged = TimeSpan.FromTicks(1);
         }
 
