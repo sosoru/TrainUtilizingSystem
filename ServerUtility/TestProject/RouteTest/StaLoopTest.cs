@@ -196,7 +196,7 @@ namespace TestProject
             written.Clear();
             othervh.Run(1.0f, sht.GetBlock("AT15"));
             vh.Run(1.0f, sht.GetBlock("AT2"));
-
+            
             scheduler.Start();
             serv.SendingObservable.Subscribe();
             Assert.IsTrue(written.ExtractDevice<MotorState>(1, 2, 2).Duty == 1.0f);
