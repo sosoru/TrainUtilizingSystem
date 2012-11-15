@@ -30,6 +30,7 @@ namespace RouteLibrary.Base
         public IScheduler AssociatedScheduler { get; set; }
 
         public IList<Vehicle> Vehicles { get; private set; }
+        public TimeSpan TimeWaitingSwitchChanged { get; set; }
 
         public BlockSheet(IEnumerable<BlockInfo> blockinfos, PacketServer server)
         {
@@ -95,7 +96,7 @@ namespace RouteLibrary.Base
 
         public IDisposable Effect(CommandFactory cmd, IEnumerable<Block> blocks)
         {
-            return Observable.Timer(DateTimeOffset.MinValue, TimeSpan.FromSeconds(5), this.AssociatedScheduler)
+            return Observable.Timer(DateTimeOffset.MinValue, this.TimeWaitingSwitchChanged, this.AssociatedScheduler)
                 .Zip(GetEffectObservable(cmd, blocks), (l, effectors) => new { l, effectors })
                 .Subscribe(val => val.effectors.ForEach(e => e.ExecuteCommand()));
         }
