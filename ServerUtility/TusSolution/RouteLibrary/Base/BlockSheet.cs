@@ -104,9 +104,11 @@ namespace RouteLibrary.Base
 
         public IEnumerable<IDeviceEffector>[] GetEffectObservable(CommandFactory cmd, IEnumerable<Block> blocks)
         {
-            var ob = blocks
+            var neededblocks = blocks
                  .SelectMany(b => b.Effect(new[] { cmd }))
-                 .Where(e => e.IsNeededExecution)
+                 .Where(e => e.IsNeededExecution);
+
+            var ob = neededblocks
                  .GroupBy(e => (e is SwitchEffector) ? 0 : 1)
                  .OrderBy(g => g.Key);
 
