@@ -99,7 +99,7 @@ namespace RouteLibrary.Base
                 .Subscribe();
         }
 
-        public IObservable<IGrouping<int, IDeviceEffector>> GetEffectObservable(CommandFactory cmd, IEnumerable<Block> blocks)
+        public IObservable<Unit> GetEffectObservable(CommandFactory cmd, IEnumerable<Block> blocks)
         {
             var ob = blocks
                  .SelectMany(b => b.Effect(new[] { cmd }))
@@ -109,9 +109,11 @@ namespace RouteLibrary.Base
                  .ToObservable();
 
             return Observable.Interval(TimeSpan.FromSeconds(5))
-                .Zip(ob, (ticks, g) => new { ticks, val=g })
-                .Do(g => g.val.ForEach(e => e.ExecuteCommand()))
-                .Select(g => g.val);
+                .Do(() => Console.WriteLine("peropero"))
+                .Select(() => Unit.Default);
+                //.Zip(ob, (ticks, g) => new { ticks, val=g })
+                //.Do(g => g.val.ForEach(e => e.ExecuteCommand()))
+                //.Select(g => g.val);
         }
 
         public Block GetBlock(string p)
