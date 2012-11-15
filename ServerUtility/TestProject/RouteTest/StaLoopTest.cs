@@ -159,7 +159,7 @@ namespace TestProject
             var disp = vh.Run();
             var waitingTicks1 = TimeSpan.FromSeconds(5);
 
-            scheduler.Schedule(TimeSpan.FromSeconds(10), () =>
+            scheduler.Schedule(TimeSpan.FromSeconds(1), () =>
             {
                 serv.SendingObservable.Subscribe();
                 Assert.IsTrue(written.ExtractDevice<SwitchState>(1, 1, 1).Position == PointStateEnum.Straight);
@@ -167,11 +167,11 @@ namespace TestProject
 
             });
 
-            //scheduler.Schedule(waitingTicks1, () =>
-            //{
-            //    serv.SendingObservable.Subscribe();
-            //    Assert.IsTrue(written.ExtractDevice<MotorState>(1, 2, 2).Duty > 0.0f);
-            //});
+            scheduler.Schedule(waitingTicks1, () =>
+            {
+                serv.SendingObservable.Subscribe();
+                Assert.IsTrue(written.ExtractDevice<MotorState>(1, 2, 2).Duty > 0.0f);
+            });
 
             scheduler.Start();
 
