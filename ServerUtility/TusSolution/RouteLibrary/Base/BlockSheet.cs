@@ -108,8 +108,9 @@ namespace RouteLibrary.Base
                  .OrderBy(g => g.Key)
                  .ToObservable();
 
-            return ob.Throttle(TimeSpan.FromSeconds(5))
-                .Do(g =>g.ForEach( e => e.ExecuteCommand()));        
+            return Observable.Interval(TimeSpan.FromSeconds(5))
+                .Zip(ob, (ticks, g) => g)
+                .Do(g => g.ForEach(e => e.ExecuteCommand()));
         }
 
         public Block GetBlock(string p)
