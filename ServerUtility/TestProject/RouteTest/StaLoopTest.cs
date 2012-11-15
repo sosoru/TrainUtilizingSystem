@@ -116,6 +116,9 @@ namespace TestProject
             serv = new PacketServer(new AvrDeviceFactoryProvider());
             serv.Controller = mockio.Object;
             sht = new BlockSheet(target_sheet, serv);
+
+            this.scheduler = new TestScheduler();
+            sht.AssociatedScheduler = scheduler;
         }
 
         [TestMethod]
@@ -147,8 +150,6 @@ namespace TestProject
         [TestMethod]
         public void RouteCommandTest()
         {
-            var scheduler = new TestScheduler();
-            sht.AssociatedScheduler = scheduler;
             sht.TimeWaitingSwitchChanged = TimeSpan.FromSeconds(5.0);
             Route rt = GetRouteFirst(sht);
 
@@ -185,6 +186,7 @@ namespace TestProject
             // N-th case : the vehicle goes at specified speed
             vh.Run(1.0f, sht.GetBlock("AT2"));
             serv.SendingObservable.Subscribe();
+            scheduler.Start();
             Assert.IsTrue(written.ExtractDevice<MotorState>(1, 2, 2).Duty == 1.0f);
 
             // 2nd case : the vehicle keeps specified speed, but entering the next section, reduces its speed to half
@@ -196,6 +198,7 @@ namespace TestProject
             vh.Run(1.0f, sht.GetBlock("AT2"));
 
             serv.SendingObservable.Subscribe();
+            scheduler.Start();
             Assert.IsTrue(written.ExtractDevice<MotorState>(1, 2, 2).Duty == 1.0f);
             Assert.IsTrue(Math.Round(written.ExtractDevice<MotorState>(1, 2, 3).Duty, 1) == 0.5f);
 
@@ -205,6 +208,7 @@ namespace TestProject
             vh.Run(1.0f, sht.GetBlock("AT2"));
 
             serv.SendingObservable.Subscribe();
+            scheduler.Start();
             Assert.IsTrue(Math.Round(written.ExtractDevice<MotorState>(1, 2, 2).Duty, 1) == 0.5f);
             Assert.IsTrue(written.ExtractDevice<MotorState>(1, 2, 3).Duty == 0.0f);
 
@@ -221,6 +225,7 @@ namespace TestProject
             vh.Run(1.0f, sht.GetBlock("AT2"));
 
             serv.SendingObservable.Subscribe();
+            scheduler.Start();
             Assert.IsTrue(written.ExtractDevice<MotorState>(1, 2, 2).Duty == 0.0f);
 
 
