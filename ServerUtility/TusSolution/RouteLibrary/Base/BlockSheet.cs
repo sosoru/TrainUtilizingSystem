@@ -109,7 +109,7 @@ namespace RouteLibrary.Base
                  .ToObservable();
 
             return Observable.Interval(TimeSpan.FromSeconds(5))
-                .Do(() => Console.WriteLine("peropero"))
+                .Do(l => Console.WriteLine("peropero"))
                 .Select(() => Unit.Default);
                 //.Zip(ob, (ticks, g) => new { ticks, val=g })
                 //.Do(g => g.val.ForEach(e => e.ExecuteCommand()))
