@@ -26,6 +26,7 @@ namespace RouteLibrary.Base
         public ReadOnlyCollection<Block> InnerBlocks { get; private set; }
         public PacketServer Server { get; private set; }
         public PacketDispatcher Dispatcher { get; private set; }
+        public IScheduler AssociatedScheduler { get; set; }
 
         public IList<Vehicle> Vehicles { get; private set; }
 
@@ -40,6 +41,7 @@ namespace RouteLibrary.Base
             this.InnerBlocks = new ReadOnlyCollection<Block>(blocks.ToList());
 
             this.Vehicles = new List<Vehicle>();
+            this.Scheduler = Scheduler.Immediate;
         }
 
         #region implementation of IEqualable
@@ -92,7 +94,9 @@ namespace RouteLibrary.Base
 
         public void Effect(CommandFactory cmd, IEnumerable<Block> blocks)
         {
-            GetEffectObservable(cmd, blocks).Subscribe();
+            GetEffectObservable(cmd, blocks)
+                .SubscribeOn(this.AssociatedScheduler)
+                .Subscribe();
         }
 
         public IObservable<IGrouping<int, IDeviceEffector>> GetEffectObservable(CommandFactory cmd, IEnumerable<Block> blocks)
