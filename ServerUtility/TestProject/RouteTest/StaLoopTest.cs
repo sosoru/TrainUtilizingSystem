@@ -19,6 +19,7 @@ using SensorLibrary;
 using System.Reactive.Subjects;
 using System.Threading;
 using System.Reactive.Concurrency;
+using Microsoft.Reactive.Testing;
 
 namespace TestProject
 {
@@ -224,6 +225,27 @@ namespace TestProject
             Assert.IsTrue(written.ExtractDevice<MotorState>(1, 2, 2).Duty == 1.0f);
             Assert.IsTrue(Math.Round(written.ExtractDevice<MotorState>(1, 2, 3).Duty, 1) == 0.5f);
 
+        }
+
+        [TestMethod]
+        public void Check_Waiting_SwitchDevice_RunnningOnSendingPacket()
+        {
+            var sch = new TestScheduler();
+            sht.AssociatedScheduler = sch;
+
+            Route rt = GetRouteFirst(sht);
+            var vh = new Vehicle(sht, rt);
+
+            vh.Run(1.0f, sht.GetBlock("AT2"));
+            written.Clear();
+
+            serv.SendingObservable.Subscribe();
+            sch.AdvanceBy(TimeSpan.FromTicks(100));
+
+            sch.AdvanceBy(TimeSpan.FromSeconds(5).Ticks);
+            serv.SendingObservable.Subscribe();
+            
+            
         }
 
     }
