@@ -157,7 +157,7 @@ namespace TestProject
             // vh will allocate the first control block of the route at Constructor
 
             var disp = vh.Run();
-            var waitingTicks1 = TimeSpan.FromSeconds(5.1).Ticks);
+            var waitingTicks1 = TimeSpan.FromSeconds(5.1).Ticks;
 
             scheduler.Schedule(0, vh.Run());
             scheduler.Schedule(waitingTicks1, () =>{
