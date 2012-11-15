@@ -116,9 +116,6 @@ namespace TestProject
             serv = new PacketServer(new AvrDeviceFactoryProvider());
             serv.Controller = mockio.Object;
             sht = new BlockSheet(target_sheet, serv);
-            scheduler = new TestScheduler();
-
-            sht.AssociatedScheduler = scheduler;
         }
 
         [TestMethod]
@@ -150,6 +147,8 @@ namespace TestProject
         [TestMethod]
         public void RouteCommandTest()
         {
+            var scheduler = new TestScheduler();
+            sht.AssociatedScheduler = scheduler;
             sht.TimeWaitingSwitchChanged = TimeSpan.FromSeconds(5.0);
             Route rt = GetRouteFirst(sht);
 
@@ -180,13 +179,11 @@ namespace TestProject
         [TestMethod]
         public void VehicleReduceSpeedTest()
         {
-            scheduler.Start();
             Route rt = GetRouteFirst(sht);
             var vh = new Vehicle(sht, rt);
 
             // N-th case : the vehicle goes at specified speed
             vh.Run(1.0f, sht.GetBlock("AT2"));
-            scheduler.Start();
             serv.SendingObservable.Subscribe();
             Assert.IsTrue(written.ExtractDevice<MotorState>(1, 2, 2).Duty == 1.0f);
 
