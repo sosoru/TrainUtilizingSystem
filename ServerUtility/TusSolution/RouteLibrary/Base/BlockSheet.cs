@@ -44,7 +44,7 @@ namespace RouteLibrary.Base
 
             this.Vehicles = new List<Vehicle>();
             this.AssociatedScheduler = Scheduler.Immediate;
-            this.TimeWaitingSwitchChanged = TimeSpan.MinValue;
+            this.TimeWaitingSwitchChanged = TimeSpan.FromTicks(1);
         }
 
         #region implementation of IEqualable
