@@ -156,10 +156,12 @@ namespace TestProject
 
             // vh will allocate the first control block of the route at Constructor
 
-            scheduler.Schedule(vh.Run);
+            vh.Run();
+            //scheduler.Schedule(vh.Run);
 
-            scheduler.Start();
-            scheduler.AdvanceBy(TimeSpan.FromSeconds(10).Ticks);
+            //scheduler.Start();
+            //scheduler.AdvanceBy(TimeSpan.FromSeconds(10).Ticks);
+            Thread.Sleep(1000);
             serv.SendingObservable.Subscribe();
 
             //scheduler.AdvanceTo(TimeSpan.FromSeconds(10).Ticks);
