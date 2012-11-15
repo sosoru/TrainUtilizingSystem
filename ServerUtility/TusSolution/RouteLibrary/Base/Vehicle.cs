@@ -172,7 +172,7 @@ namespace RouteLibrary.Base
         public IDisposable Run(float spd, Block blk)
         {
             this.CurrentBlock = blk;
-            this.Run(spd);
+            return this.Run(spd);
         }
 
         public IDisposable Run(float spd)
