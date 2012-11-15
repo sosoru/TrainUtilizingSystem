@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+
 using System.Reactive;
 using System.Reactive.Linq;
+using System.Reactive.Concurrency;
+using System.Reactive.Threading;
 
 using System.Net;
 using System.Net.Sockets;
@@ -17,11 +20,12 @@ namespace SensorLibrary.Packet.IO
         // private UdpClient client_;
 
         public IPAddress Address { get; set; }
+        public IScheduler AssociatedScheduler { get; set; }
 
         public EthClient()
         {
             // this.client_ = new UdpClient(PORT);
-
+            this.AssociatedScheduler = Scheduler.Immediate;
         }
 
         public void Connect()
@@ -31,12 +35,14 @@ namespace SensorLibrary.Packet.IO
 
         public IObservable<EthPacket> AsyncReceive()
         {
-            IPEndPoint ipend = new IPEndPoint( this.Address, PORT);
+            IPEndPoint ipend = new IPEndPoint(this.Address, PORT);
             var client = new UdpClient(PORT);
 
-            return Observable.FromAsyncPattern<byte[]>(client.BeginReceive,
-                                                       res => client.EndReceive(res, ref ipend))()
-                .Select(a => a.ToObject<EthPacket>());
+            return Observable.Start(
+                 Observable.FromAsyncPattern<byte[]>(client.BeginReceive, res => client.EndReceive(res, ref ipend)),
+                 this.AssociatedScheduler)
+                 .Select(arr => arr.ToArray().First())
+                 .Select(a => a.ToObject<EthPacket>());
         }
 
         public IPEndPoint ApplyDestID(EthPacket packet)
