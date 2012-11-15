@@ -158,7 +158,7 @@ namespace TestProject
             vh.Run();
 
             serv.SendingObservable.Subscribe();
-            scheduler.AdvanceBy(TimeSpan.FromSeconds(10));
+            scheduler.AdvanceBy(TimeSpan.FromSeconds(10).Ticks);
 
             //Assert.IsTrue(written.Count == 5);
             Assert.IsTrue(written.ExtractDevice<SwitchState>(1, 1, 1).Position == PointStateEnum.Straight);
