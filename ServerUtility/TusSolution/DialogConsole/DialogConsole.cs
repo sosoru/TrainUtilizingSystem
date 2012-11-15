@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net;
 using System.IO;
+
+using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Concurrency;
 using System.Reactive.Threading;
@@ -15,6 +17,7 @@ using SensorLibrary.Packet.Control;
 using SensorLibrary.Packet.Data;
 using SensorLibrary.Devices;
 using SensorLibrary.Devices.TusAvrDevices;
+using SensorLibrary.Packet.IO;
 
 using RouteLibrary;
 using RouteLibrary.Base;
@@ -27,25 +30,42 @@ namespace DialogConsole
         static void Main(string[] args)
         {
             var dialog = new DialogCnosole();
+            var io = new TusEthernetIO(ipbase, ipmask)
+            {
+                SourceID = new DeviceID(9, 0, 0),
+                Port = 8000,
+            };
+            dialog.InitSheet(io);
+
             dialog.Loop();
         }
     }
 
-    class DialogCnosole
+    public class DialogCnosole
     {
         public PacketServer Server { get; set; }
         public BlockSheet Sheet { get; set; }
 
+        private IScheduler SchedulerPacketProcessing;
+        private IScheduler SchedulerBlockProcessing;
+
+        private IDisposable Sending_;
+        private IDisposable Receiving_;
+
+        public void InitSheet(IDeviceIO io)
+        {
+            this.Server = CreateServer(IPAddress.Parse("192.168.2.0"), IPAddress.Parse("255.255.255.0"));
+            this.Sheet = CreateSheet("layout.yaml", this.Server);
+
+            this.Server.Controller = io;
+        }
+
         public void Loop()
         {
-            this.Server= CreateServer(IPAddress.Parse("192.168.2.24"), IPAddress.Parse("255.255.255.0"));
-            var sht = CreateSheet("layout.yaml", this.Server);
 
             while (true)
             {
                 Console.WriteLine("1 : show statuses");
-                Console.WriteLine("2p : change switches pos");
-                Console.WriteLine("2n : change switches neg");
                 Console.WriteLine("3 : detect test");
                 Console.WriteLine("4 : input command");
                 Console.WriteLine("5 : apply command");
@@ -65,12 +85,6 @@ namespace DialogConsole
                         case "1":
                             ShowStatus(sht);
                             break;
-                        case "2p":
-                            ChangeSwitchAll(sht, PointStateEnum.Straight);
-                            break;
-                        case "2n":
-                            ChangeSwitchAll(sht, PointStateEnum.Curve);
-                            break;
                         case "3":
                             Detect(sht);
                             break;
@@ -89,13 +103,11 @@ namespace DialogConsole
                 {
                     Console.WriteLine(ex.Message);
                 }
-
-
             }
 
         }
 
-        static void InputCommand(BlockSheet sht, CommandInfo info)
+        public void InputCommand(BlockSheet sht, CommandInfo info)
         {
             info.Route = InputRoute(sht, info.Route);
 
@@ -105,7 +117,7 @@ namespace DialogConsole
             info.Speed = float.Parse(duty);
         }
 
-        static string ShowStatus(BlockSheet sht)
+        public string ShowStatus(BlockSheet sht)
         {
             var blocks = sht.InnerBlocks;
 
@@ -118,19 +130,7 @@ namespace DialogConsole
                             .Aggregate("", (ag, s) => ag += s);
         }
 
-        static void ChangeSwitchAll(BlockSheet sht, PointStateEnum pos)
-        {
-            var devs = sht.AllSwitches();
-
-            foreach (var sw in devs)
-            {
-                sw.CurrentState.Position = pos;
-            }
-
-            sht.InquiryDevices(devs);
-        }
-
-        static void Detect(BlockSheet sht)
+        public void Detect(BlockSheet sht)
         {
             sht.ChangeDetectingMode();
             System.Threading.Thread.Sleep(3000);
@@ -143,7 +143,7 @@ namespace DialogConsole
                 .Aggregate("", (ac, b) => ac += b.Name + ", "));
         }
 
-        static Route InputRoute(BlockSheet sht, Route before)
+        public Route InputRoute(BlockSheet sht, Route before)
         {
             Console.WriteLine("route?");
             var content = Console.ReadLine();
@@ -165,15 +165,9 @@ namespace DialogConsole
             }
         }
 
-        
         public PacketServer CreateServer(IPAddress ipbase, IPAddress ipmask)
         {
             var serv = new PacketServer(new AvrDeviceFactoryProvider());
-            var io = new SensorLibrary.Packet.IO.TusEthernetIO(ipbase, ipmask)
-            {
-                SourceID = new DeviceID(9, 0, 0),
-                Port = 8000,
-            };
 
             serv.Controller = io;
             return serv;
@@ -206,10 +200,6 @@ namespace DialogConsole
             {
                 SourceID = devid,
                 Port = 8000,
-            };
-            this.serv = new PacketServer(new AvrDeviceFactoryProvider())
-            {
-                Controller = io,
             };
 
             this.dispat = new PacketDispatcher();
