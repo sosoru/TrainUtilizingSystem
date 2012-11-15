@@ -109,8 +109,7 @@ namespace RouteLibrary.Base
                  .ToObservable();
 
             return Observable.Interval(TimeSpan.FromSeconds(5))
-                .Zip(ob, (ticks, g) => g)
-                .Do(g => g.ForEach(e => e.ExecuteCommand()));
+                .Do(ticks => g.ForEach(e => e.ExecuteCommand()));
         }
 
         public Block GetBlock(string p)
