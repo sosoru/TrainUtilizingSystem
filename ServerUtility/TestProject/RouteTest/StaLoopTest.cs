@@ -168,7 +168,7 @@ namespace TestProject
                 Assert.IsTrue(written.ExtractDevice<SwitchState>(1, 1, 1).Position == PointStateEnum.Straight);
                 Assert.IsTrue(written.ExtractDevice<SwitchState>(1, 1, 2).Position == PointStateEnum.Straight);
             });
-            scheduler.Schedule(waitingTicks1 * 2 + TimeSpan.FromSeconds(0.1), () =>
+            scheduler.Schedule(TimeSpan.FromSeconds(10) + TimeSpan.FromSeconds(0.1), () =>
             {
                 Assert.IsTrue(written.ExtractDevice<MotorState>(1, 2, 2).Duty > 0.0f);
             });
