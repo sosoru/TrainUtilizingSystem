@@ -159,7 +159,7 @@ namespace TestProject
             var disp = vh.Run();
             var waitingTicks1 = TimeSpan.FromSeconds(10);
 
-            scheduler.Schedule(TimeSpan.FromSeconds(4), () =>
+            scheduler.Schedule(TimeSpan.FromSeconds(0.1), () =>
             {
                 serv.SendingObservable.Subscribe();
                 Assert.IsTrue(written.ExtractDevice<SwitchState>(1, 1, 1).Position == PointStateEnum.Straight);
