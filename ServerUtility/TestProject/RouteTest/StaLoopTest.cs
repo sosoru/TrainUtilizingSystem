@@ -150,7 +150,7 @@ namespace TestProject
         [TestMethod]
         public void RouteCommandTest()
         {
-            sht.TimeWaitingSwitchChanged = 5.0;
+            sht.TimeWaitingSwitchChanged = TimeSpan.FromSeconds(5.0);
             Route rt = GetRouteFirst(sht);
 
             var vh = new Vehicle(sht, rt);
@@ -158,7 +158,7 @@ namespace TestProject
             // vh will allocate the first control block of the route at Constructor
 
             var disp = vh.Run();
-            var waitingTicks1 = sht.TimeWaitingSwitchChanged +  TimeSpan.FromSeconds(0.1);
+            var waitingTicks1 = sht.TimeWaitingSwitchChanged + TimeSpan.FromSeconds(0.1);
 
             scheduler.Schedule(TimeSpan.FromSeconds(0.1), () =>
             {
@@ -188,7 +188,7 @@ namespace TestProject
             vh.Run(1.0f, sht.GetBlock("AT2"));
             serv.SendingObservable.Subscribe();
             Assert.IsTrue(written.ExtractDevice<MotorState>(1, 2, 2).Duty == 1.0f);
-            
+
             // 2nd case : the vehicle keeps specified speed, but entering the next section, reduces its speed to half
             Route otherrt = GetRouteFirst(sht);
             var othervh = new Vehicle(sht, otherrt);
