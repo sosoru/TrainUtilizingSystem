@@ -95,20 +95,14 @@ namespace RouteLibrary.Base
 
         public IDisposable Effect(CommandFactory cmd, IEnumerable<Block> blocks)
         {
-            var sub = new Subject<Unit>();
-
-            GetEffectObservable(cmd, blocks)
-                .ObserveOn(this.AssociatedScheduler)
-                .Do(effects => effects.ForEach(e => e.ExecuteCommand()))
-                .Select(e => Unit.Default)
-                .SubscribeOn(this.AssociatedScheduler)
-                .Subscribe(sub);
+            var arrays = GetEffectObservable(cmd, blocks);
 
             return Observable.Interval(TimeSpan.FromSeconds(5), this.AssociatedScheduler)
-                .Subscribe(l => sub.OnNext(Unit.Default));
+                .Select((l, i) => new { l ,i })
+                .Subscribe(val => arrays[val.i].ForEach(e => e.ExecuteCommand()));
         }
 
-        public IObservable<IEnumerable<IDeviceEffector>> GetEffectObservable(CommandFactory cmd, IEnumerable<Block> blocks)
+        public IEnumerable<IDeviceEffector>[] GetEffectObservable(CommandFactory cmd, IEnumerable<Block> blocks)
         {
             var ob = blocks
                  .SelectMany(b => b.Effect(new[] { cmd }))
@@ -116,7 +110,7 @@ namespace RouteLibrary.Base
                  .GroupBy(e => (e is SwitchEffector) ? 0 : 1)
                  .OrderBy(g => g.Key);
 
-            return ob.Select(g => (IEnumerable<IDeviceEffector>)g.ToArray()).ToObservable();
+            return ob.Select(g => (IEnumerable<IDeviceEffector>)g.ToArray()).ToArray();
         }
 
         public Block GetBlock(string p)
