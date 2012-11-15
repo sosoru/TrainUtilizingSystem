@@ -240,7 +240,7 @@ namespace TestProject
             written.Clear();
 
             serv.SendingObservable.Subscribe();
-            sch.AdvanceBy(TimeSpan.FromTicks(100).Ticks);
+            sch.AdvanceBy(TimeSpan.FromSeconds(1).Ticks);
 
             sch.AdvanceBy(TimeSpan.FromSeconds(5).Ticks);
             serv.SendingObservable.Subscribe();
