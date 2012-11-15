@@ -101,15 +101,16 @@ namespace RouteLibrary.Base
 
         public IObservable<IGrouping<int, IDeviceEffector>> GetEffectObservable(CommandFactory cmd, IEnumerable<Block> blocks)
         {
-            var ob= blocks
+            var ob = blocks
                  .SelectMany(b => b.Effect(new[] { cmd }))
-                 .Where (e => e.IsNeededExecution)
+                 .Where(e => e.IsNeededExecution)
                  .GroupBy(e => (e is SwitchEffector) ? 0 : 1)
                  .OrderBy(g => g.Key)
                  .ToObservable();
 
             return Observable.Interval(TimeSpan.FromSeconds(5))
-                .Do(ticks => g.ForEach(e => e.ExecuteCommand()));
+                .Zip(ob, (ticks, g) => g)
+                .Do(g => g.ForEach(e => e.ExecuteCommand()));
         }
 
         public Block GetBlock(string p)
