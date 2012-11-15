@@ -111,7 +111,8 @@ namespace RouteLibrary.Base
 
             return Observable.Interval(TimeSpan.FromSeconds(5))
                 .Zip(ob, (ticks, g) => new { ticks = ticks, val = g })
-                .Do(g => g.val.ForEach(e => e.ExecuteCommand()));
+                .Do(g => g.val.ForEach(e => e.ExecuteCommand()))
+                .Select(g => g.val);
         }
 
         public Block GetBlock(string p)
