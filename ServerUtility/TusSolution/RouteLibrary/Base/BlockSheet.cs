@@ -95,13 +95,6 @@ namespace RouteLibrary.Base
 
         public IDisposable Effect(CommandFactory cmd, IEnumerable<Block> blocks)
         {
-            //var arrays = GetEffectObservable(cmd, blocks);
-            //var itr = arrays.GetEnumerator();
-            
-            //return Observable.Timer(DateTimeOffset.MinValue, TimeSpan.FromSeconds(5), this.AssociatedScheduler)
-            //    .Select((l, i) => new { l ,i })
-            //    .Subscribe(val => arrays[val.i].ForEach(e => e.ExecuteCommand()));
-
             return Observable.Timer(DateTimeOffset.MinValue, TimeSpan.FromSeconds(5), this.AssociatedScheduler)
                 .Zip(GetEffectObservable(cmd, blocks), (l, effectors) => new { l, effectors })
                 .Subscribe(val => val.effectors.ForEach(e => e.ExecuteCommand()));
