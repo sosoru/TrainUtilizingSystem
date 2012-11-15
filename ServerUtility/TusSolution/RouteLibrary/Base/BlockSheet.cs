@@ -98,6 +98,7 @@ namespace RouteLibrary.Base
             var sub = new Subject<Unit>();
 
             GetEffectObservable(cmd, blocks)
+                .ObserveOn(this.AssociatedScheduler)
                 .Do(effects => effects.ForEach(e => e.ExecuteCommand()))
                 .Select(e => Unit.Default)
                 .Subscribe(sub);
