@@ -158,8 +158,8 @@ namespace TestProject
             vh.Run();
 
             serv.SendingObservable.Subscribe();
-            scheduler.AdvanceTo(TimeSpan.FromSeconds(10).Ticks);
             scheduler.Start();
+            scheduler.AdvanceBy(TimeSpan.FromSeconds(10).Ticks);
 
             //scheduler.AdvanceTo(TimeSpan.FromSeconds(10).Ticks);
             //scheduler.Start();
