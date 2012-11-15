@@ -94,7 +94,7 @@ namespace RouteLibrary.Base
 
         public IDisposable Effect(CommandFactory cmd, IEnumerable<Block> blocks)
         {
-            return Observable.Start( () => GetEffectObservable(cmd, blocks), this.AssociatedScheduler)
+            return GetEffectObservable(cmd, blocks) 
                 .SubscribeOn(this.AssociatedScheduler)
                 .Subscribe();
         }
@@ -108,7 +108,7 @@ namespace RouteLibrary.Base
                  .OrderBy(g => g.Key)
                  .ToObservable();
 
-            return Observable.Interval(TimeSpan.FromSeconds(5))
+            return Observable.Interval(TimeSpan.FromSeconds(5), this.AssociatedScheduler)
                 .Zip(ob, (ticks, g) => new { ticks, val = g })
                 .Do(g => g.val.ForEach(e => e.ExecuteCommand()))
                 .Select(g => Unit.Default);
