@@ -200,14 +200,19 @@ namespace RouteLibrary.Base
             {
                 case MotorMemoryStateEnum.Controlling:
                     states.Add(MotorMemoryStateEnum.Controlling, CreateMotorState(cmd));
+                    this.Device.CurrentMemory = MotorMemoryStateEnum.Controlling;
+                    this.IsNeededExecution = true;
                     break;
                 case MotorMemoryStateEnum.Waiting:
                     states.Add(MotorMemoryStateEnum.Controlling, CreateMotorState(cmd));
                     var waitingstate = BeforeBlockHavingMotor(cmd);
                     states.Add(MotorMemoryStateEnum.Waiting, CreateWaitingState(waitingstate.MotorEffector.Device));
+                    this.Device.CurrentMemory = MotorMemoryStateEnum.Waiting;
+                    this.IsNeededExecution = true;
                     break;
                 case MotorMemoryStateEnum.NoEffect:
                     states.Add(MotorMemoryStateEnum.NoEffect, NoEffectState);
+                    this.Device.CurrentMemory = MotorMemoryStateEnum.NoEffect;
                     break;
                 case MotorMemoryStateEnum.Locked:
                 case MotorMemoryStateEnum.Unknown:
@@ -217,20 +222,6 @@ namespace RouteLibrary.Base
             }
 
             this.Device.States = states;
-            if (cmd.MotorMode == MotorMemoryStateEnum.Controlling)
-            {
-                this.Device.CurrentMemory = MotorMemoryStateEnum.Controlling;
-            }
-            else if (cmd.MotorMode == MotorMemoryStateEnum.Waiting)
-            {
-                this.Device.CurrentMemory = MotorMemoryStateEnum.Waiting;
-            }
-            else if (cmd.MotorMode == MotorMemoryStateEnum.NoEffect)
-            {
-                this.Device.CurrentMemory = MotorMemoryStateEnum.NoEffect;
-            }
-            else
-                throw new InvalidOperationException();
 
             if (_before_state != cmd.MotorMode)
                 this.IsNeededExecution = true;
