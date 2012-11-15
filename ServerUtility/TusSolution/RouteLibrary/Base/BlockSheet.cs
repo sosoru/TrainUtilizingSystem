@@ -94,8 +94,7 @@ namespace RouteLibrary.Base
 
         public IDisposable Effect(CommandFactory cmd, IEnumerable<Block> blocks)
         {
-            return GetEffectObservable(cmd, blocks)
-                .ObserveOn(this.AssociatedScheduler)
+            return Observable.Start( () => GetEffectObservable(cmd, blocks), this.AssociatedScheduler)
                 .SubscribeOn(this.AssociatedScheduler)
                 .Subscribe();
         }
