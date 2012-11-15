@@ -92,11 +92,10 @@ namespace RouteLibrary.Base
             get { return this.InnerBlocks.SelectMany(b => b.Effectors); }
         }
 
-        public void Effect(CommandFactory cmd, IEnumerable<Block> blocks)
+        public IDisposable Effect(CommandFactory cmd, IEnumerable<Block> blocks)
         {
-            GetEffectObservable(cmd, blocks)
+            return GetEffectObservable(cmd, blocks)
                 .ObserveOn(this.AssociatedScheduler)
-                .SubscribeOn(Scheduler.CurrentThread)
                 .Subscribe();
         }
 
