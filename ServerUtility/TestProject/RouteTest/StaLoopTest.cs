@@ -147,6 +147,9 @@ namespace TestProject
         [TestMethod]
         public void RouteCommandTest()
         {
+            var scheduler = new TestScheduler();
+            sht.AssociatedScheduler = scheduler;
+
             Route rt = GetRouteFirst(sht);
 
             var vh = new Vehicle(sht, rt);
@@ -155,6 +158,7 @@ namespace TestProject
             vh.Run();
 
             serv.SendingObservable.Subscribe();
+            scheduler.AdvanceBy(TimeSpan.FromSeconds(10));
 
             //Assert.IsTrue(written.Count == 5);
             Assert.IsTrue(written.ExtractDevice<SwitchState>(1, 1, 1).Position == PointStateEnum.Straight);
