@@ -101,6 +101,7 @@ namespace TestProject
         private List<IDeviceState<IPacketDeviceData>> written;
         private PacketServer serv;
         private BlockSheet sht;
+        private TestScheduler scheduler;
 
         [TestInitialize]
         public void TestInitialize()
@@ -115,7 +116,9 @@ namespace TestProject
             serv = new PacketServer(new AvrDeviceFactoryProvider());
             serv.Controller = mockio.Object;
             sht = new BlockSheet(target_sheet, serv);
+            scheduler = new TestScheduler();
 
+            sht.AssociatedScheduler = scheduler;
         }
 
         [TestMethod]
@@ -147,9 +150,6 @@ namespace TestProject
         [TestMethod]
         public void RouteCommandTest()
         {
-            var scheduler = new TestScheduler();
-            sht.AssociatedScheduler = scheduler;
-
             Route rt = GetRouteFirst(sht);
 
             var vh = new Vehicle(sht, rt);
@@ -179,6 +179,7 @@ namespace TestProject
         [TestMethod]
         public void VehicleReduceSpeedTest()
         {
+            scheduler.Start();
             Route rt = GetRouteFirst(sht);
             var vh = new Vehicle(sht, rt);
 
