@@ -95,7 +95,7 @@ namespace RouteLibrary.Base
         public void Effect(CommandFactory cmd, IEnumerable<Block> blocks)
         {
             GetEffectObservable(cmd, blocks)
-                .SubscribeOn(this.AssociatedScheduler)
+                .ObserveOn(this.AssociatedScheduler)
                 .Subscribe();
         }
 
