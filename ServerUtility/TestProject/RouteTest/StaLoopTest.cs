@@ -167,11 +167,11 @@ namespace TestProject
 
             });
 
-            scheduler.Schedule(waitingTicks1, () =>
-            {
-                serv.SendingObservable.Subscribe();
-                Assert.IsTrue(written.ExtractDevice<MotorState>(1, 2, 2).Duty > 0.0f);
-            });
+            //scheduler.Schedule(waitingTicks1, () =>
+            //{
+            //    serv.SendingObservable.Subscribe();
+            //    Assert.IsTrue(written.ExtractDevice<MotorState>(1, 2, 2).Duty > 0.0f);
+            //});
 
             scheduler.Start();
 
