@@ -107,16 +107,15 @@ namespace RouteLibrary.Base
                 .Subscribe(l => sub.OnNext(Unit.Default));
         }
 
-        public IObservable<IObservable<IDeviceEffector>> GetEffectObservable(CommandFactory cmd, IEnumerable<Block> blocks)
+        public IObservable<IEnumerable<IDeviceEffector>> GetEffectObservable(CommandFactory cmd, IEnumerable<Block> blocks)
         {
             var ob = blocks
                  .SelectMany(b => b.Effect(new[] { cmd }))
                  .Where(e => e.IsNeededExecution)
                  .GroupBy(e => (e is SwitchEffector) ? 0 : 1)
-                 .OrderBy(g => g.Key)
-                 .ToObservable();
+                 .OrderBy(g => g.Key);
 
-            return ob.Select(g => (IObservable<IDeviceEffector>)g);
+            return ob.Select(g => (IEnumerable<IDeviceEffector>)g.ToArray()).ToObservable();
         }
 
         public Block GetBlock(string p)
