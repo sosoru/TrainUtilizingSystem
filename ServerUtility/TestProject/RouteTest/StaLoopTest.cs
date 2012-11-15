@@ -197,8 +197,8 @@ namespace TestProject
             othervh.Run(1.0f, sht.GetBlock("AT15"));
             vh.Run(1.0f, sht.GetBlock("AT2"));
 
-            serv.SendingObservable.Subscribe();
             scheduler.Start();
+            serv.SendingObservable.Subscribe();
             Assert.IsTrue(written.ExtractDevice<MotorState>(1, 2, 2).Duty == 1.0f);
             Assert.IsTrue(Math.Round(written.ExtractDevice<MotorState>(1, 2, 3).Duty, 1) == 0.5f);
 
@@ -207,8 +207,8 @@ namespace TestProject
             othervh.Run(1.0f, sht.GetBlock("AT12"));
             vh.Run(1.0f, sht.GetBlock("AT2"));
 
-            serv.SendingObservable.Subscribe();
             scheduler.Start();
+            serv.SendingObservable.Subscribe();
             Assert.IsTrue(Math.Round(written.ExtractDevice<MotorState>(1, 2, 2).Duty, 1) == 0.5f);
             Assert.IsTrue(written.ExtractDevice<MotorState>(1, 2, 3).Duty == 0.0f);
 
@@ -224,6 +224,7 @@ namespace TestProject
             othervh.Run(1.0f, sht.GetBlock("AT9"));
             vh.Run(1.0f, sht.GetBlock("AT2"));
 
+            scheduler.Start();
             serv.SendingObservable.Subscribe();
             scheduler.Start();
             Assert.IsTrue(written.ExtractDevice<MotorState>(1, 2, 2).Duty == 0.0f);
