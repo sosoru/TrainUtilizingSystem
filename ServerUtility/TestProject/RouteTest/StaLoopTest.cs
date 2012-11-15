@@ -156,14 +156,18 @@ namespace TestProject
 
             // vh will allocate the first control block of the route at Constructor
 
-            scheduler.Schedule(vh.Run);
+            //scheduler.Schedule(vh.Run);
 
+            //scheduler.Start();
+            //scheduler.AdvanceBy(TimeSpan.FromSeconds(5.1).Ticks);
+            vh.Run();
             scheduler.Start();
-            scheduler.AdvanceBy(TimeSpan.FromSeconds(5.1).Ticks);
+            Thread.Sleep(1000);
             serv.SendingObservable.Subscribe();
 
             //scheduler.AdvanceTo(TimeSpan.FromSeconds(10).Ticks);
             //scheduler.Start();
+            
 
             //Assert.IsTrue(written.Count == 5);
             Assert.IsTrue(written.ExtractDevice<SwitchState>(1, 1, 1).Position == PointStateEnum.Straight);
