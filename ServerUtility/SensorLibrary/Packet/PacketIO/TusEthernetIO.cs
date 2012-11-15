@@ -65,7 +65,6 @@ namespace SensorLibrary.Packet.IO
                 DataPacket = packet,
             };
             //this.Client.Connect(end);
-            System.Threading.Thread.Sleep(20);
             this.Client.Address = end.Address;
             this.Client.Send(eth);
             //this.Client.Close();
