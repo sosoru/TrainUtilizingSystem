@@ -159,14 +159,15 @@ namespace TestProject
             scheduler.Schedule(vh.Run);
 
             scheduler.Start();
-            scheduler.AdvanceTo(TimeSpan.FromSeconds(10.1).Ticks);
+            scheduler.AdvanceBy(TimeSpan.FromSeconds(10).Ticks);
             serv.SendingObservable.Subscribe();
 
+            //scheduler.AdvanceTo(TimeSpan.FromSeconds(10).Ticks);
+            //scheduler.Start();
+
+            //Assert.IsTrue(written.Count == 5);
             Assert.IsTrue(written.ExtractDevice<SwitchState>(1, 1, 1).Position == PointStateEnum.Straight);
             Assert.IsTrue(written.ExtractDevice<SwitchState>(1, 1, 2).Position == PointStateEnum.Straight);
-            
-            scheduler.AdvanceBy(TimeSpan.FromSeconds(5.1).Ticks);
-            serv.SendingObservable.Subscribe();
             Assert.IsTrue(written.ExtractDevice<MotorState>(1, 2, 2).Duty > 0.0f);
         }
 
