@@ -110,7 +110,7 @@ namespace RouteLibrary.Base
                  .ToObservable();
 
             return Observable.Interval(TimeSpan.FromSeconds(5))
-                .Zip(ob, (ticks, g) => new { ticks, g })
+                .Zip(ob, (ticks, g) => new { ticks, val=g })
                 .Do(g => g.val.ForEach(e => e.ExecuteCommand()))
                 .Select(g => g.val);
         }
