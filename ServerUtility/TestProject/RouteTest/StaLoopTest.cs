@@ -159,17 +159,21 @@ namespace TestProject
             var disp = vh.Run();
             var waitingTicks1 = TimeSpan.FromSeconds(10);
 
-            scheduler.Schedule(waitingTicks1, () =>{
+            scheduler.Schedule(waitingTicks1, () =>
+            {
                 serv.SendingObservable.Subscribe();
+            });
+            scheduler.Schedule(waitingTicks1 + TimeSpan.FromSeconds(0.1), () =>
+            {
                 Assert.IsTrue(written.ExtractDevice<SwitchState>(1, 1, 1).Position == PointStateEnum.Straight);
                 Assert.IsTrue(written.ExtractDevice<SwitchState>(1, 1, 2).Position == PointStateEnum.Straight);
             });
 
             scheduler.Start();
-            
+
             //scheduler.AdvanceTo(TimeSpan.FromSeconds(10).Ticks);
             //scheduler.Start();
-            
+
             //Assert.IsTrue(written.Count == 5);
             Assert.IsTrue(written.ExtractDevice<MotorState>(1, 2, 2).Duty > 0.0f);
         }
@@ -195,8 +199,8 @@ namespace TestProject
 
             serv.SendingObservable.Subscribe();
             Assert.IsTrue(written.ExtractDevice<MotorState>(1, 2, 2).Duty == 1.0f);
-            Assert.IsTrue(Math.Round(written.ExtractDevice<MotorState>(1, 2, 3).Duty,1) == 0.5f);
-          
+            Assert.IsTrue(Math.Round(written.ExtractDevice<MotorState>(1, 2, 3).Duty, 1) == 0.5f);
+
             // 1st case : the vehicle reduces its speed to half immediately, and stops the next section
             written.Clear();
             othervh.Run(1.0f, sht.GetBlock("AT12"));
@@ -221,7 +225,7 @@ namespace TestProject
             serv.SendingObservable.Subscribe();
             Assert.IsTrue(written.ExtractDevice<MotorState>(1, 2, 2).Duty == 0.0f);
 
-            
+
         }
 
         [TestMethod]
@@ -256,8 +260,8 @@ namespace TestProject
 
             sch.AdvanceBy(TimeSpan.FromSeconds(5).Ticks);
             serv.SendingObservable.Subscribe();
-            
-            
+
+
         }
 
     }
