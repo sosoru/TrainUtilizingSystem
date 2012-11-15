@@ -186,6 +186,7 @@ namespace TestProject
 
             // N-th case : the vehicle goes at specified speed
             vh.Run(1.0f, sht.GetBlock("AT2"));
+            scheduler.Start()
             serv.SendingObservable.Subscribe();
             Assert.IsTrue(written.ExtractDevice<MotorState>(1, 2, 2).Duty == 1.0f);
 
