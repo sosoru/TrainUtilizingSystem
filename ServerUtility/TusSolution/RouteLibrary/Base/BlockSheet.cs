@@ -101,6 +101,7 @@ namespace RouteLibrary.Base
                 .ObserveOn(this.AssociatedScheduler)
                 .Do(effects => effects.ForEach(e => e.ExecuteCommand()))
                 .Select(e => Unit.Default)
+                .SubscribeOn(this.AssociatedScheduler)
                 .Subscribe(sub);
 
             return Observable.Interval(TimeSpan.FromSeconds(5), this.AssociatedScheduler)
