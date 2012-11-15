@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Concurrency;
+using System.Reactive.Subjects;
 
 using SensorLibrary;
 using SensorLibrary.Packet;
@@ -94,12 +95,18 @@ namespace RouteLibrary.Base
 
         public IDisposable Effect(CommandFactory cmd, IEnumerable<Block> blocks)
         {
-            return GetEffectObservable(cmd, blocks) 
-                .SubscribeOn(this.AssociatedScheduler)
-                .Subscribe();
+            var sub = new Subject<Unit>();
+
+            GetEffectObservable(cmd, blocks)
+                .Do(effects => effects.ForEach(e => e.ExecuteCommand()))
+                .Select(e => Unit.Default)
+                .Subscribe(sub);
+
+            return Observable.Interval(TimeSpan.FromSeconds(5), this.AssociatedScheduler)
+                .Subscribe(l => sub.OnNext(Unit.Default));
         }
 
-        public IObservable<Unit> GetEffectObservable(CommandFactory cmd, IEnumerable<Block> blocks)
+        public IObservable<IObservable<IDeviceEffector>> GetEffectObservable(CommandFactory cmd, IEnumerable<Block> blocks)
         {
             var ob = blocks
                  .SelectMany(b => b.Effect(new[] { cmd }))
@@ -108,10 +115,7 @@ namespace RouteLibrary.Base
                  .OrderBy(g => g.Key)
                  .ToObservable();
 
-            return Observable.Interval(TimeSpan.FromSeconds(5), this.AssociatedScheduler)
-                .Zip(ob, (ticks, g) => new { ticks, val = g })
-                .Do(g => g.val.ForEach(e => e.ExecuteCommand()))
-                .Select(g => Unit.Default);
+            return ob.Select(g => (IObservable<IDeviceEffector>)g);
         }
 
         public Block GetBlock(string p)
