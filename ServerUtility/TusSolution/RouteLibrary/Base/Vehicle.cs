@@ -86,9 +86,9 @@ namespace RouteLibrary.Base
             return this.VehicleID.GetHashCode();
         }
 
-        public void Run()
+        public IDisposable Run()
         {
-            this.Run(0.5f);
+            return this.Run(0.5f);
         }
 
         public CommandFactory CreateWithWaitingCommand(Func<float> cntspdFactory, Func<float> waitspdFactory)
@@ -169,7 +169,7 @@ namespace RouteLibrary.Base
             return CreateControlCommand(() => spdfactory.Caution);
         }
 
-        public void Run(float spd, Block blk)
+        public IDisposable Run(float spd, Block blk)
         {
             this.CurrentBlock = blk;
             this.Run(spd);
