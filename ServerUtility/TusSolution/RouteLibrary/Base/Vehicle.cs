@@ -175,7 +175,7 @@ namespace RouteLibrary.Base
             this.Run(spd);
         }
 
-        public void Run(float spd)
+        public IDisposable Run(float spd)
         {
             CommandFactory cmdfactory = null;
             var spdfactory = new SpeedFactory() { RawSpeed = spd };
@@ -208,7 +208,7 @@ namespace RouteLibrary.Base
                 cmdfactory = CreateNthCommand(spdfactory);
             }
 
-            this.Sheet.Effect(cmdfactory, this.Route.LockedBlocks.Concat(lastlockedblocks).Distinct());
+            return this.Sheet.Effect(cmdfactory, this.Route.LockedBlocks.Concat(lastlockedblocks).Distinct());
         }
     }
 }
