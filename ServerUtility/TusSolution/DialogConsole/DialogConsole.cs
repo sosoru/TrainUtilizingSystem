@@ -59,14 +59,14 @@ namespace DialogConsole
         {
             this.Server = CreateServer();
             this.Sheet = CreateSheet("test_looping.yaml", this.Server);
-            
+
             this.Server.Controller = io;
         }
 
         public void Loop()
         {
             this.SchedulerSendingProcessing = Scheduler.NewThread;
-            this.SchedulerPacketProcessing = Scheduler.NewThread;
+            this.SchedulerPacketProcessing = Scheduler.;
 
             this.Sending_ = Observable.Timer(DateTimeOffset.MinValue,TimeSpan.FromMilliseconds(20), this.SchedulerSendingProcessing)
                 .Timestamp()
