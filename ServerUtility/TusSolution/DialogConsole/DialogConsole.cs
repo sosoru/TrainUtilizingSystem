@@ -317,7 +317,7 @@ namespace DialogConsole
                 this.http_listener = listener;
                 this.http_listener.Start();
             }
-            Observable.FromAsyncPattern<HttpListenerContext>(this.http_listener.BeginGetContext, this.http_listener.EndGetContext)()
+            return Observable.FromAsyncPattern<HttpListenerContext>(this.http_listener.BeginGetContext, this.http_listener.EndGetContext)()
                 .Do(r =>
                 {
                     var res = r.Response;
@@ -325,10 +325,11 @@ namespace DialogConsole
                     res.Headers.Add("Content-type: application/json");
                     using (var sw = new StreamWriter(res.OutputStream))
                     using (var ms = new MemoryStream())
-                    using(var sw = new StreamWriter(ms))
                     {
-                          var cnt = new DataContractJsonSerializer(typeof(Vehicle));
-                        
+                        var cnt = new DataContractJsonSerializer(typeof(Vehicle));
+                        cnt.WriteObject(ms, this.Vehicles);
+
+                        sw.WriteLine(System.Text.UnicodeEncoding.UTF8.GetString(ms.ToArray()));
                     }
                 });
         }
