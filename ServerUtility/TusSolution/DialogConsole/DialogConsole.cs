@@ -51,6 +51,8 @@ namespace DialogConsole
     {
         public PacketServer Server { get; set; }
         public BlockSheet Sheet { get; set; }
+
+        [DataMember]
         public IList<Vehicle> Vehicles { get; set; }
 
         private IScheduler SchedulerPacketProcessing;
