@@ -334,7 +334,7 @@ namespace DialogConsole
                     using (var sw = new StreamWriter(res.OutputStream))
                     using (var ms = new MemoryStream())
                     {
-                        var cnt = new DataContractJsonSerializer(typeof(Vehicle));
+                        var cnt = new DataContractJsonSerializer(typeof(VehicleInfoProxy));
                         var vehis = new VehicleInfoProxy() { Vehicles = this.Vehicles.ToList() };
 
                         cnt.WriteObject(ms, vehis);
