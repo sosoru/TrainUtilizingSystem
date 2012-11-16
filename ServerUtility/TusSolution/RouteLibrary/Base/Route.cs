@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Collections.ObjectModel;
+using System.Runtime.Serialization;
 
 namespace RouteLibrary.Base
 {
@@ -62,9 +63,9 @@ namespace RouteLibrary.Base
         }
     }
 
+    [DataContract]
     public class Route
     {
-        //todo: to replace all ilist<block>
         public IList<Block> Blocks { get; private set; }
         public IList<ControllingRoute> Units { get; protected set; }
 
@@ -185,6 +186,7 @@ namespace RouteLibrary.Base
             return false;
         }
 
+        [DataMember]
         public IEnumerable<Block> LockedBlocks
         {
             get
