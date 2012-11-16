@@ -92,8 +92,7 @@ namespace DialogConsole
 
             var timer = Observable.Interval(TimeSpan.FromMilliseconds(20), this.SchedulerSendingProcessing);
             this.Receiving_ = Observable.Defer(() => this.Server.ReceivingObservable)
-                .ObserveOn(this.SchedulerSendingProcessing)
-                .Timeout(TimeSpan.FromMilliseconds(1))
+                .ObserveOn(Scheduler.NewThread)
                 .Repeat()
                 .Zip(timer, (v, _) => v)
                 .Do(g => Console.WriteLine(string.Format("({0}.{1}) : recving {2}",
@@ -101,7 +100,6 @@ namespace DialogConsole
                                                                     DateTime.Now.Millisecond,
                                                                     g.ToString()
                                                                     )))
-                                                    .Catch((TimeoutException ex) => Observable.Empty<DevicePacket>())
                                                             .Subscribe();
                                                                     
 
