@@ -86,7 +86,7 @@ namespace DialogConsole
                 .Do(g => Console.WriteLine(string.Format("({0}.{1}) : recving {2}",
                                         DateTime.Now.ToLongTimeString(),
                                         DateTime.Now.Millisecond,
-                                        g.state.ToString()
+                                        g.ToString()
                                         )))
                                         .Repeat()
                 .SubscribeOn(Scheduler.NewThread)
