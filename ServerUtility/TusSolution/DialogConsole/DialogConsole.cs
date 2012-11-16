@@ -75,12 +75,13 @@ namespace DialogConsole
 
         public IEnumerable<string> routesnames
         {
-            get{
+            get
+            {
                 var loop = new[] { "AT1", "BAT1", "AT2", "BAT2", "AT3", "BAT3", "AT4", "BAT4" };
 
                 return Enumerable.Range(1, 1)
                     .SelectMany(i => loop);
-    }
+            }
         }
 
         public Route LoopingRoute
@@ -326,11 +327,8 @@ namespace DialogConsole
                     using (var ms = new MemoryStream())
                     using(var sw = new StreamWriter(ms))
                     {
-                        var writer = new System
-                        foreach (var v in this.Vehicles)
-                        {
-
-                        }
+                          var cnt = new DataContractJsonSerializer(typeof(Vehicle));
+                        
                     }
                 });
         }
