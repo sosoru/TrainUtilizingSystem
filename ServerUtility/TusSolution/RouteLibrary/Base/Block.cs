@@ -243,6 +243,17 @@ namespace RouteLibrary.Base
             }
         }
 
+        public bool IsMotorDetectingTrain
+        {
+            get
+            {
+                if (this.HasMotor)
+                    return this.MotorEffector.Device.IsDetected;
+                else
+                    return false;
+            }
+        }
+
         //public bool IsBlocked
         //{
         //    get
