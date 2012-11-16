@@ -203,7 +203,7 @@ namespace TestProject
             target.IsRepeatable = true;
 
             target.LockNextUnit();
-            Observable.Range(0, 100)
+            Observable.Range(0, 5)
                 .Subscribe(i =>
                 {
                     Assert.IsTrue(target.LockNextUnit());
