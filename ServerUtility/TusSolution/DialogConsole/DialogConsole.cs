@@ -122,7 +122,7 @@ namespace DialogConsole
                 //                                                    )))
                                                             .SubscribeOn(Scheduler.NewThread)
                                                             .Subscribe();
-            this.ServingInfomation_ = Observable.Defer(this.GetHttpObservable)
+            this.ServingInfomation_ = Observable.Defer(this.GetHttpObservable())
                                                 .ObserveOn(this.SchedulerPacketProcessing)
                                                 .Repeat()
                                                 .SubscribeOn(Scheduler.NewThread)
