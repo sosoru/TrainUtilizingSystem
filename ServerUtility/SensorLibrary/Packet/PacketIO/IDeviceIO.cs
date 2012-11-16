@@ -8,6 +8,6 @@ namespace SensorLibrary.Packet.IO
         DevicePacket ReadPacket();
         void WritePacket(DevicePacket packet);
         IObservable<DevicePacket> GetReadingPacket();
-        IObservable<Unit> GetWritingPacket(DevicePacket pack);
+        IObservable<DevicePacket> GetWritingPacket(DevicePacket pack);
     }
 }
