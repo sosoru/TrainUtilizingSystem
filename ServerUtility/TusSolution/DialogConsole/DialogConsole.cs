@@ -80,9 +80,9 @@ namespace DialogConsole
                 .SubscribeOn(Scheduler.NewThread)
                 .Subscribe();
 
-            var timer = Observable.Interval(TimeSpan.FromMilliseconds(100), this.SchedulerPacketProcessing);
+            var timer = Observable.Interval(TimeSpan.FromMilliseconds(100), this.SchedulerPacketProcessing).Repeat();
 
-            this.Receiving_ = this.Server.ReceivingObservable.Zip(timer, (_,v) => v)
+            this.Receiving_ = this.Server.ReceivingObservable.Zip(timer, (_, v) => v)
                 .Do(g => Console.WriteLine(string.Format("({0}.{1}) : recving {2}",
                                         DateTime.Now.ToLongTimeString(),
                                         DateTime.Now.Millisecond,
@@ -90,10 +90,10 @@ namespace DialogConsole
                                         )))
                                         .Repeat()
                 .SubscribeOn(Scheduler.Immediate)
-            .Subscribe(state => { Console.WriteLine("next"); }, 
-                    ex => Console.WriteLine(ex.Message) ,
+            .Subscribe(state => { Console.WriteLine("next"); },
+                    ex => Console.WriteLine(ex.Message),
                     () => Console.WriteLine("cmp"));
-                
+
 
             //this.Receiving_ = Observable.Interval(TimeSpan.FromMilliseconds(100), this.SchedulerPacketProcessing)
             //    .Zip(Observable.Defer(() => this.Server.ReceivingObservable).Repeat(), (l, state) => new{l, state})
