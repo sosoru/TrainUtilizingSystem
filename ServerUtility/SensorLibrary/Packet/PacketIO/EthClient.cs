@@ -37,9 +37,10 @@ namespace SensorLibrary.Packet.IO
         {
             IPEndPoint ipend = new IPEndPoint(IPAddress.Parse("192.168.2.9"), RECV_PORT);
             var client = new UdpClient(RECV_PORT);
-
+           
             return Observable.FromAsyncPattern<byte[]>(client.BeginReceive,
                                                        res => client.EndReceive(res, ref ipend))()
+                                                       .Do(data => client.Close())
                 .Select(a => a.ToObject<EthPacket>());
         }
 
