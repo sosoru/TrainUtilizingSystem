@@ -305,6 +305,13 @@ namespace DialogConsole
             }
         }
 
+        [DataContract]
+        private class VehicleInfoProxy
+        {
+            [DataMember]
+            public List<Vehicle> Vehicles { get; set; }
+        }
+
         private HttpListener http_listener = null;
         public IObservable<Unit> GetHttpObservable()
         {
@@ -328,7 +335,7 @@ namespace DialogConsole
                     using (var ms = new MemoryStream())
                     {
                         var cnt = new DataContractJsonSerializer(typeof(Vehicle));
-                        var vehis = new List<Vehicle>();
+                        var vehis = new VehicleInfoProxy() { Vehicles = this.Vehicles };
 
                         cnt.WriteObject(ms, vehis);
 
