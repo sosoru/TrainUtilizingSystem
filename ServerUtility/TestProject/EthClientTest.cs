@@ -413,7 +413,7 @@ namespace TestProject
                         .Where(state => state.ID == pt.DeviceID)
                         .Cast<SwitchState>()
                         .Do(state => Assert.IsTrue(state.Position == pt.CurrentState.Position))
-                        .Timeout(TimeSpan.FromSeconds(1))
+                        .Timeout(TimeSpan.FromSeconds(10))
                         .Subscribe();
 
                 }).ToArray();
