@@ -108,6 +108,7 @@ namespace DialogConsole
                         }
                     }
                     catch (TimeoutException ex) { }
+                    catch (System.Net.Sockets.SocketException ex) { }
                 });
 
             var timer = Observable.Interval(TimeSpan.FromMilliseconds(100), Scheduler.NewThread)
