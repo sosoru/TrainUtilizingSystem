@@ -204,7 +204,7 @@ namespace TestProject
 
             target.LockNextUnit();
             Observable.Range(0, 100)
-                .Do(i =>
+                .Subscribe(i =>
                 {
                     Assert.IsTrue(target.LockNextUnit());
                     Assert.IsTrue(target.ReleaseBeforeUnit());
