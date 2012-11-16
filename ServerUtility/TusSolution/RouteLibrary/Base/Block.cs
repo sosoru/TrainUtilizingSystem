@@ -236,7 +236,10 @@ namespace RouteLibrary.Base
                 //    throw new InvalidOperationException("this block is not allocated a sensor module");
                 //}
 
-                return this.Detector.IsDetected;
+                if (this.Detector == null)
+                    return false;
+                else
+                    return this.Detector.IsDetected;
             }
         }
 
