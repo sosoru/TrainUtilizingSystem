@@ -87,21 +87,20 @@ namespace DialogConsole
                 .SubscribeOn(Scheduler.NewThread)
                 .Subscribe();
 
-            //var timer = Observable.Interval(TimeSpan.FromMilliseconds(20), Scheduler.NewThread);
-            //this.Receiving_ = Observable.Defer(() => this.Server.ReceivingObservable)
-            //    .ObserveOn(this.SchedulerSendingProcessing)
-            //    .Repeat()
-            //    .Zip(timer, (v, _) => v)
-            //    .Do(g => Console.WriteLine(string.Format("({0}.{1}) : recving {2}",
-            //                                                        DateTime.Now.ToLongTimeString(),
-            //                                                        DateTime.Now.Millisecond,
-            //                                                        g.ToString()
-            //                                                        )))
-            //                                                .SubscribeOn(Scheduler.NewThread)
-            //                                                .Subscribe();
+            var timer = Observable.Interval(TimeSpan.FromMilliseconds(20), Scheduler.NewThread);
+            this.Receiving_ = Observable.Defer(() => this.Server.ReceivingObservable)
+                .ObserveOn(this.SchedulerSendingProcessing)
+                .Repeat()
+                .Zip(timer, (v, _) => v)
+                .Do(g => Console.WriteLine(string.Format("({0}.{1}) : recving {2}",
+                                                                    DateTime.Now.ToLongTimeString(),
+                                                                    DateTime.Now.Millisecond,
+                                                                    g.ToString()
+                                                                    )))
+                                                            .SubscribeOn(Scheduler.NewThread)
+                                                            .Subscribe();
 
 
-            var f = this.Server.ReceivingObservable.ObserveOn(this.SchedulerSendingProcessing).SubscribeOn(Scheduler.NewThread).Subscribe(a => Console.WriteLine("p"));
 
             while (true)
             {
