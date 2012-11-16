@@ -88,6 +88,7 @@ namespace DialogConsole
             this.Server.SendingObservable
                 .Delay(TimeSpan.FromMilliseconds(20))
                 .Repeat()
+                .SelectMany(g => g.ExtractPackedPacket())
                 .Do(g => Console.WriteLine(string.Format("({0}.{1}) : sending {2}",
                                     DateTime.Now.ToLongTimeString(),
                                     DateTime.Now.Millisecond,
@@ -102,6 +103,7 @@ namespace DialogConsole
                 .ObserveOn(this.SchedulerSendingProcessing)
                 .Repeat()
                 .Zip(timer, (v, _) => v)
+                .SelectMany( v => v.ExtractPackedPacket())
                 .Do(g => Console.WriteLine(string.Format("({0}.{1}) : recving {2}",
                                                                     DateTime.Now.ToLongTimeString(),
                                                                     DateTime.Now.Millisecond,
@@ -277,7 +279,6 @@ namespace DialogConsole
 
             if (movedfor.Length > 0)
                 vehicle.CurrentBlock = movedfor.First();
-
 
             foreach (var v in this.Vehicles)
             {
