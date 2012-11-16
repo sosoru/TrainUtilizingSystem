@@ -81,14 +81,14 @@ namespace DialogConsole
                 .Subscribe();
 
             this.Receiving_ = Observable.Defer(() => this.Server.ReceivingObservable)
-                .Delay(TimeSpan.FromMilliseconds(5))
+                //.Delay(TimeSpan.FromMilliseconds(5))
                 .Repeat()
                 .Do(state => Console.WriteLine(string.Format("({0}.{1}) : recving {2}",
                                         DateTime.Now.ToLongTimeString(),
                                         DateTime.Now.Millisecond,
                                         state.ToString()
                                         )))
-                .Subscribe(state => { }, () => Console.WriteLine("cmp"));
+                .Subscribe(state => { Console.WriteLine("next"); }, () => Console.WriteLine("cmp"));
 
             while (true)
             {
