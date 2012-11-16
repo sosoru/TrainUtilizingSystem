@@ -88,7 +88,6 @@ namespace DialogConsole
                                         DateTime.Now.Millisecond,
                                         state.ToString()
                                         )))
-                .SubscribeOn(Scheduler.NewThread)
                 .Subscribe();
 
             while (true)
