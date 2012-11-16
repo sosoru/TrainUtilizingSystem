@@ -135,7 +135,7 @@ namespace SensorLibrary.Packet.Control
 
         }
 
-        public IObservable<IDeviceState<IPacketDeviceData>> ReceivingObservable
+        public IObservable<DevicePacket> ReceivingObservable
         {
             get
             {
