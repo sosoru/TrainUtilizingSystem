@@ -68,6 +68,8 @@ namespace RouteLibrary.Base
         public IList<Block> Blocks { get; private set; }
         public IList<ControllingRoute> Units { get; protected set; }
 
+        public bool IsRepeatable { get; set; }
+
         private int ind_start = 0, ind_end = 0;
         private IDictionary<Block, RouteSegment> to_route_dict(IList<Block> list)
         {
