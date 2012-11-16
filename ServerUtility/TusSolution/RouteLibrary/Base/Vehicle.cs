@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
 using SensorLibrary.Devices.TusAvrDevices;
 
 namespace RouteLibrary.Base
@@ -14,17 +16,25 @@ namespace RouteLibrary.Base
         public float Stop { get { return 0.0f; } }
     }
 
+    [DataContract]
     public class Vehicle
     {
         private static int LastVehicleID;
-        public int VehicleID { get; private set; }
 
+        [DataMember]
+        public int VehicleID { get; private set; }
+        
+        [DataMember]
         public Block CurrentBlock { get; set; }
+
+        [DataMember]
         public Route Route { get; private set; }
         public BlockSheet Sheet { get; set; }
 
+        [DataMember]
         public Halt Halt { get; set; }
 
+        [DataMember]
         public float Speed { get; set; }
 
         static Vehicle()
