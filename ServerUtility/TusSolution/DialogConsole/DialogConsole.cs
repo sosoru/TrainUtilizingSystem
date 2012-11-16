@@ -88,7 +88,7 @@ namespace DialogConsole
                                         DateTime.Now.Millisecond,
                                         state.ToString()
                                         )))
-                .Subscribe();
+                .Subscribe(state => { }, () => Console.WriteLine("cmp"));
 
             while (true)
             {
