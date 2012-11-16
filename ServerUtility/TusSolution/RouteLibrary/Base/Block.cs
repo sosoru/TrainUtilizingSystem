@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Reactive;
 using System.Reactive.Linq;
+using System.Runtime.Serialization;
 
 using System.Collections.ObjectModel;
 using SensorLibrary.Devices;
@@ -61,11 +62,13 @@ namespace RouteLibrary.Base
         }
     }
 
+    [DataContract]
     public class Block
     {
 
         public BlockInfo info { get; private set; }
 
+        [DataMember]
         public string Name { get; private set; }
         public BlockSheet Sheet { get; private set; }
 
