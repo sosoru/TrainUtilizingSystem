@@ -82,6 +82,7 @@ namespace TestProject
 
             v.CurrentBlock = sht.GetBlock("AT2");
             v.Speed = 0.5f;
+            v.Run();
 
             var cnt = new DataContractJsonSerializer(typeof(Vehicle));
             
