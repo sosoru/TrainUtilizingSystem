@@ -223,7 +223,7 @@ namespace DialogConsole
             this.Vehicles.Clear();
             CreateVehicle(bk);
 
-            this.VehicleProcessing_ = Observable.Start(VehicleProcess, this.SchedulerSendingProcessing);
+            this.VehicleProcessing_ = Observable.Start(VehicleProcess, this.SchedulerSendingProcessing).Subscribe();
         }
 
         public PacketServer CreateServer()
