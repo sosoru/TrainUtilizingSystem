@@ -139,10 +139,26 @@ namespace SensorLibrary.Packet.Control
         {
             get
             {
-                return  this.Controller.GetReadingPacket()
-                           .Where(packet => packet != null)
-                           .SelectMany(packs => packs.ExtractPackedPacket())
-                           .Do(DispatchState);
+                return Observable.Defer(this.Controller.GetReadingPacket)
+                        .Do(pack =>
+                        {
+                            var f =
+                                this.FactoryProvider.AvailableDeviceTypes.FirstOrDefault(
+                                    a => a.ModuleType == pack.ModuleType);
+                            if (f != null)
+                            {
+                                //var state = f.DeviceStateCreate();
+                                //var data = f.DeviceDataCreate();
+
+                                //state.ReceivingServer = this;
+
+                                this.actionList.ForEach((item) => item.Act(pack.ExtractPackedPacket()));
+                            }
+                            else
+                            {
+                                Console.WriteLine("pero");
+                            }
+                        });
             }
         }
 
