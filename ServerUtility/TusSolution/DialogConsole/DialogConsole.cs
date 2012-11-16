@@ -75,7 +75,7 @@ namespace DialogConsole
             this.Server.SendingObservable.Delay(TimeSpan.FromMilliseconds(20))
                 .Repeat()
                 .Do(g => Console.WriteLine(string.Format("({0}.{1}) : sending {2}",
-                                    DateTime.Now.ToLocalTimeString(),
+                                    DateTime.Now.ToLongTimeString(),
                                     DateTime.Now.Millisecond,
                                     g.ToString()
                                     )))
@@ -85,7 +85,7 @@ namespace DialogConsole
             this.Receiving_ = this.Server.ReceivingObservable.ObserveOn(this.SchedulerPacketProcessing)
                 .Repeat()
                 .Do(state => Console.WriteLine(string.Format("({0}.{1}) : recving {2}",
-                                        DateTime.Now.ToLocalTimeString(),
+                                        DateTime.Now.ToLongTimeString(),
                                         DateTime.Now.Millisecond,
                                         state.ToString()
                                         )))
