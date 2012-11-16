@@ -193,7 +193,7 @@ namespace TestProject
             target.AllocateTrain(allocblk, 2);
 
         }
-        
+
         [TestMethod]
         public void RepeatableBlockTest()
         {
@@ -206,12 +206,12 @@ namespace TestProject
             Observable.Range(0, 100)
                 .Do(i =>
                 {
-                    target.LockNextUnit();
-                    target.ReleaseBeforeUnit();
+                    Assert.IsTrue(target.LockNextUnit());
+                    Assert.IsTrue(target.ReleaseBeforeUnit());
 
                 });
-            
-            
+
+
         }
     }
 }
