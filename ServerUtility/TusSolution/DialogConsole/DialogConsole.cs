@@ -83,6 +83,8 @@ namespace DialogConsole
             this.SchedulerSendingProcessing = new SynchronizationContextScheduler(this.SyncNetwork);
             this.SchedulerPacketProcessing = new SynchronizationContextScheduler(this.SyncPacketProcess);
 
+            this.Sheet.AssociatedScheduler = this.SchedulerPacketProcessing;
+
             this.Server.SendingObservable
                 .Delay(TimeSpan.FromMilliseconds(20))
                 .Repeat()
