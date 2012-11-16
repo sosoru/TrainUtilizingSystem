@@ -332,7 +332,7 @@ namespace DialogConsole
                     var host = r.Request.UserHostAddress;
 
                     res.Headers.Add("Content-type: application/json");
-                    res.Headers.Add("Access-Control-Allow-Origin: http://" + host);
+                    res.Headers.Add("Access-Control-Allow-Origin: *");
                     res.Headers.Add("Origin: *");
                     using (var sw = new StreamWriter(res.OutputStream))
                     using (var ms = new MemoryStream())
