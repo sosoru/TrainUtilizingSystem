@@ -328,7 +328,9 @@ namespace DialogConsole
                     using (var ms = new MemoryStream())
                     {
                         var cnt = new DataContractJsonSerializer(typeof(Vehicle));
-                        cnt.WriteObject(ms, Vehicles.First());
+                        var vehis = new List<Vehicle>();
+
+                        cnt.WriteObject(ms, vehis);
 
                         sw.WriteLine(System.Text.UnicodeEncoding.UTF8.GetString(ms.ToArray()));
                     }
