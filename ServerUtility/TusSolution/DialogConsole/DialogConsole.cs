@@ -225,7 +225,7 @@ namespace DialogConsole
             this.Vehicles.Clear();
             CreateVehicle(bk);
 
-            this.VehicleProcessing_ = Observable.Start(VehicleProcess, this.SchedulerSendingProcessing)
+            this.VehicleProcessing_ = Observable.Defer(Observable.Start(VehicleProcess, this.SchedulerSendingProcessing))
                 .Delay(TimeSpan.FromMilliseconds(500))
                 .Repeat()
                 .SubscribeOn(Scheduler.NewThread)
@@ -250,7 +250,7 @@ namespace DialogConsole
 
         public void CreateVehicle(Block b)
         {
-            if(this.VehicleProcessing_ !=null)
+            if (this.VehicleProcessing_ != null)
                 this.VehicleProcessing_.Dispose();
 
             foreach (var vh in this.Vehicles.ToArray())
