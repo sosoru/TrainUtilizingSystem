@@ -69,7 +69,8 @@ namespace DialogConsole
             this.SchedulerSendingProcessing = Scheduler.TaskPool;
             this.SchedulerPacketProcessing = Scheduler.TaskPool;
 
-            this.Server.SendingObservable.Delay(TimeSpan.FromMilliseconds(20))
+            this.Server.SendingObservable
+                .Delay(TimeSpan.FromMilliseconds(20))
                 .Repeat()
                 .Do(g => Console.WriteLine(string.Format("({0}.{1}) : sending {2}",
                                     DateTime.Now.ToLongTimeString(),
