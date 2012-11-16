@@ -47,14 +47,12 @@ namespace DialogConsole
         }
     }
 
-    [DataContract]
     public class DialogCnosole
     {
         public PacketServer Server { get; set; }
         public BlockSheet Sheet { get; set; }
 
-        [DataMember]
-        public List<Vehicle> Vehicles { get; set; }
+        public IList<Vehicle> Vehicles { get; set; }
 
         private IScheduler SchedulerPacketProcessing;
         private IScheduler SchedulerSendingProcessing;
@@ -330,7 +328,7 @@ namespace DialogConsole
                     using (var ms = new MemoryStream())
                     {
                         var cnt = new DataContractJsonSerializer(typeof(Vehicle));
-                        cnt.WriteObject(ms, this);
+                        cnt.WriteObject(ms, Vehicles.First());
 
                         sw.WriteLine(System.Text.UnicodeEncoding.UTF8.GetString(ms.ToArray()));
                     }
