@@ -252,6 +252,13 @@ namespace DialogConsole
 
         public void CreateVehicle(Block b)
         {
+
+            foreach (var v in this.Vehicles.ToArray())
+            {
+                v.Route.InitLockingPosition();
+            }
+            this.Vehicles.Clear();
+
             var v = new Vehicle(this.Sheet, this.LoopingRoute);
             v.CurrentBlock = b;
 
@@ -261,12 +268,6 @@ namespace DialogConsole
         public void VehicleProcess()
         {
             this.Sheet.InquiryAllMotors();
-
-            foreach (var v in this.Vehicles.ToArray())
-            {
-                v.Route.InitLockingPosition();
-            }
-            this.Vehicles.Clear();
 
             var detected = this.Sheet.InnerBlocks.Where(b => b.IsMotorDetectingTrain);
             var vehicle = this.Vehicles.First();
