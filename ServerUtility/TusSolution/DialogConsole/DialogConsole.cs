@@ -67,7 +67,7 @@ namespace DialogConsole
         public void Loop()
         {
             this.SchedulerSendingProcessing = Scheduler.TaskPool;
-            this.SchedulerPacketProcessing = Scheduler.NewThread;
+            this.SchedulerPacketProcessing = Scheduler.TaskPool;
 
             this.Server.SendingObservable
                 .Delay(TimeSpan.FromMilliseconds(20))
@@ -108,10 +108,9 @@ namespace DialogConsole
                         }
                     }
                     catch (TimeoutException ex) { }
-                    catch (System.Net.Sockets.SocketException ex) { }
                 });
 
-            var timer = Observable.Interval(TimeSpan.FromMilliseconds(100), Scheduler.NewThread)
+            var timer = Observable.Interval(TimeSpan.FromMilliseconds(100), Scheduler.TaskPool)
                 .Subscribe(l => task());
 
             //this.Receiving_ = Observable.Interval(TimeSpan.FromMilliseconds(100), this.SchedulerPacketProcessing)
