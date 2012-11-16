@@ -59,6 +59,7 @@ namespace DialogConsole
         private IDisposable VehicleProcessing_;
         private IDisposable Sending_;
         private IDisposable Receiving_;
+        private IDisposable ServingInfomation_;
 
         public void InitSheet(IDeviceIO io)
         {
@@ -121,7 +122,11 @@ namespace DialogConsole
                 //                                                    )))
                                                             .SubscribeOn(Scheduler.NewThread)
                                                             .Subscribe();
-
+            this.ServingInfomation_ = Observable.Defer(this.GetHttpObservable)
+                                                .ObserveOn(this.SchedulerPacketProcessing)
+                                                .Repeat()
+                                                .SubscribeOn(Scheduler.NewThread)
+                                                .Subscribe();
 
 
             while (true)
@@ -294,6 +299,21 @@ namespace DialogConsole
             {
                 v.Refresh();
             }
+        }
+
+        private HttpListener http_listener = null;
+        public Func<IObservable<HttpListenerContext>> GetHttpObservable()
+        {
+            if (this.http_listener == null)
+            {
+                var listener = new HttpListener();
+                var prefix = "http://+:8012/";
+
+                listener.Prefixes.Add(prefix);
+
+                this.http_listener = listener;
+            }
+            return Observable.FromAsyncPattern<HttpListenerContext>(this.http_listener.BeginGetContext, this.http_listener.EndGetContext);
         }
 
     }
