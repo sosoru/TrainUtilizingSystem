@@ -88,7 +88,9 @@ namespace DialogConsole
                                         g.state.ToString()
                                         )))
                 .SubscribeOn(Scheduler.NewThread)
-                .Subscribe(state => { Console.WriteLine("next"); }, () => Console.WriteLine("cmp"));
+                .Subscribe(state => { Console.WriteLine("next"); }, 
+                    ex => Console.WriteLine(ex.Message) ,
+                    () => Console.WriteLine("cmp"),);
             //this.Receiving_ = Observable.Defer(() => this.Server.ReceivingObservable)
             //    //.Delay(TimeSpan.FromMilliseconds(5))
             //    .Repeat()
