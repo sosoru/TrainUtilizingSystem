@@ -122,7 +122,7 @@ namespace RouteLibrary.Base
 
         public void ChangeDetectingMode()
         {
-            var detectionduty = 0.5f;
+            var detectionduty = 1.f;
 
             this.InnerBlocks.Where(b => b.HasMotor)
                 .ToObservable()
