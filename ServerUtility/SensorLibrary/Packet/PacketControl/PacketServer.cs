@@ -152,7 +152,7 @@ namespace SensorLibrary.Packet.Control
 
                                 //state.ReceivingServer = this;
 
-                                this.actionList.ForEach((item) => pack.ExtractPackedPacket().Select(s => item.Act(s)));
+                                this.actionList.ForEach((item) => pack.ExtractPackedPacket().ToList().ForEach(s => item.Act(s)));
                             //}
                             //else
                             //{
