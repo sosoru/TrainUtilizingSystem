@@ -68,10 +68,6 @@ namespace DialogConsole
             this.SchedulerSendingProcessing = Scheduler.TaskPool;
             this.SchedulerPacketProcessing = Scheduler.TaskPool;
 
-            //this.Sending_ = Observable.Timer(DateTimeOffset.MinValue, TimeSpan.FromMilliseconds(20), this.SchedulerSendingProcessing)
-            //    .Zip(this.Server.SendingObservable, (l, u) => new { l, u })
-            //    .SubscribeOn(Scheduler.NewThread)
-            //    .Subscribe();
             this.Server.SendingObservable.Delay(TimeSpan.FromMilliseconds(20))
                 .Repeat()
                 .Do(g => Console.WriteLine(string.Format("({0}.{1}) : sending {2}",
@@ -162,7 +158,7 @@ namespace DialogConsole
         public void Detect(BlockSheet sht)
         {
             sht.ChangeDetectingMode();
-            System.Threading.Thread.Sleep(3000);
+            System.Threading.Thread.Sleep(1000);
 
             sht.InquiryAllMotors();
             System.Threading.Thread.Sleep(2000);
