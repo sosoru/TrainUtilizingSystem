@@ -101,7 +101,7 @@ namespace DialogConsole
             //                                                .Subscribe();
 
 
-            var f = this.Server.ReceivingObservable.ObserveOn(this.SchedulerSendingProcessing).SubscribeOn(Scheduler.NewThread).First();
+            var f = this.Server.ReceivingObservable.ObserveOn(this.SchedulerSendingProcessing).SubscribeOn(Scheduler.NewThread).Subscribe(a => Console.WriteLine("p"));
 
             while (true)
             {
