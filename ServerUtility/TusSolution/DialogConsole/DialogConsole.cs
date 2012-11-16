@@ -262,6 +262,12 @@ namespace DialogConsole
         {
             this.Sheet.InquiryAllMotors();
 
+            foreach (var v in this.Vehicles.ToArray())
+            {
+                v.Route.InitLockingPosition();
+            }
+            this.Vehicles.Clear();
+
             var detected = this.Sheet.InnerBlocks.Where(b => b.IsMotorDetectingTrain);
             var vehicle = this.Vehicles.First();
 
