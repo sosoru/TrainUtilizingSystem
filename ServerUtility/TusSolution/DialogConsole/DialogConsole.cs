@@ -263,7 +263,7 @@ namespace DialogConsole
             var detected = this.Sheet.InnerBlocks.Where(b => b.IsMotorDetectingTrain);
             var vehicle = this.Vehicles.First();
 
-            var movedfor = detected.Except(vehicle.CurrentBlock).ToArray();
+            var movedfor = detected.Except(new[] { vehicle.CurrentBlock }).ToArray();
 
             if (movedfor.Length > 0)
                 vehicle.CurrentBlock = movedfor.First();
