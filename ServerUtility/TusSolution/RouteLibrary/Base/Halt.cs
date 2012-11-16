@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Runtime.Serialization;
 using SensorLibrary.Devices.TusAvrDevices;
 
 namespace RouteLibrary.Base
@@ -11,9 +12,12 @@ namespace RouteLibrary.Base
         IRComming,
     }
 
+    [DataContract]
     public class Halt
     {
+        [DataMember]
         public Block HaltBlock { get; set; }
+        [DataMember]
         public SensingMethod Method { get; set; }
 
         public Halt(Block blk) {
