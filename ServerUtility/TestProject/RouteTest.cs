@@ -1,13 +1,25 @@
 ﻿using RouteLibrary.Base;
+using RouteLibrary.Parser;
+using SensorLibrary.Packet;
+using SensorLibrary.Packet.Data;
+using SensorLibrary.Packet.IO;
+using SensorLibrary.Packet.Control;
+using SensorLibrary.Devices;
+using SensorLibrary.Devices.TusAvrDevices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
-using RouteLibrary.Parser;
-using SensorLibrary.Packet.Control;
-using SensorLibrary.Packet.Data;
+using System.Net;
 using System.Linq;
+using System.Reactive;
+using System.Reactive.Linq;
 using Moq;
 using Moq.Linq;
+using SensorLibrary;
+using System.Reactive.Subjects;
+using System.Threading;
+using System.Reactive.Concurrency;
+using Microsoft.Reactive.Testing;
 
 namespace TestProject
 {
@@ -180,6 +192,25 @@ namespace TestProject
             allocblk = blocks.First();
             target.AllocateTrain(allocblk, 2);
 
+        }
+        
+        [TestMethod]
+        public void RepeatableBlockTest()
+        {
+            var blocks = test_blocks.ToArray();
+
+            var target = new Route(blocks);
+            target.IsRepeatable = true;
+
+            Observable.Range(0, 100)
+                .Do(i =>
+                {
+                    target.LockNextUnit();
+                    target.ReleaseBeforeUnit();
+
+                });
+            
+            
         }
     }
 }
