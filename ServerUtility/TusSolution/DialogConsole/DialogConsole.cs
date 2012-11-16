@@ -223,7 +223,7 @@ namespace DialogConsole
             this.Vehicles.Clear();
             CreateVehicle(bk);
 
-            var timer = Observable.TimeInterval(TimeSpan.FromMilliseconds(500), Scheduler.NewThread);
+            var timer = Observable.Timer(TimeSpan.FromMilliseconds(500), Scheduler.NewThread);
 
             this.VehicleProcessing_ =
                 Observable
