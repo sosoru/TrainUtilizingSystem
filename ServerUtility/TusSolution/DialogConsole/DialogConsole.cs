@@ -253,9 +253,9 @@ namespace DialogConsole
         public void CreateVehicle(Block b)
         {
 
-            foreach (var v in this.Vehicles.ToArray())
+            foreach (var vh in this.Vehicles.ToArray())
             {
-                v.Route.InitLockingPosition();
+                vh.Route.InitLockingPosition();
             }
             this.Vehicles.Clear();
 
