@@ -87,24 +87,21 @@ namespace DialogConsole
                 .SubscribeOn(Scheduler.NewThread)
                 .Subscribe();
 
-            //var timer = Observable.Interval(TimeSpan.FromMilliseconds(100), this.SchedulerPacketProcessing).Repeat();
-            var timer = Observable.Interval(TimeSpan.FromMilliseconds(20), Scheduler.NewThread);
-            this.Receiving_ = Observable.Defer(() => this.Server.ReceivingObservable)
-                .ObserveOn(this.SchedulerSendingProcessing)
-                .Repeat()
-                .Zip(timer, (v, _) => v)
-                .Do(g => Console.WriteLine(string.Format("({0}.{1}) : recving {2}",
-                                                                    DateTime.Now.ToLongTimeString(),
-                                                                    DateTime.Now.Millisecond,
-                                                                    g.ToString()
-                                                                    )))
-                                                            .SubscribeOn(Scheduler.NewThread)
-                                                            .Subscribe();
-                                                                    
+            //var timer = Observable.Interval(TimeSpan.FromMilliseconds(20), Scheduler.NewThread);
+            //this.Receiving_ = Observable.Defer(() => this.Server.ReceivingObservable)
+            //    .ObserveOn(this.SchedulerSendingProcessing)
+            //    .Repeat()
+            //    .Zip(timer, (v, _) => v)
+            //    .Do(g => Console.WriteLine(string.Format("({0}.{1}) : recving {2}",
+            //                                                        DateTime.Now.ToLongTimeString(),
+            //                                                        DateTime.Now.Millisecond,
+            //                                                        g.ToString()
+            //                                                        )))
+            //                                                .SubscribeOn(Scheduler.NewThread)
+            //                                                .Subscribe();
 
 
-            //this.Receiving_ = Observable.Interval(TimeSpan.FromMilliseconds(100), this.SchedulerPacketProcessing)
-            //    .Zip(Observable.Defer(() => this.Server.ReceivingObservable).Repeat(), (l, state) => new{l, state})
+            var f = this.Server.ReceivingObservable.ObserveOn(this.SchedulerSendingProcessing).First();
 
             while (true)
             {
