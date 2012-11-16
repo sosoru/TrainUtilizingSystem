@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net;
 using System.IO;
+using System.Threading;
 
 using System.Reactive;
 using System.Reactive.Linq;
@@ -51,6 +52,8 @@ namespace DialogConsole
 
         private IScheduler SchedulerPacketProcessing;
         private IScheduler SchedulerSendingProcessing;
+        private SynchronizationContext SyncNetwork;
+        private SynchronizationContext SyncPacketProcess;
 
         private IDisposable Sending_;
         private IDisposable Receiving_;
@@ -66,8 +69,8 @@ namespace DialogConsole
 
         public void Loop()
         {
-            this.SchedulerSendingProcessing = Scheduler.TaskPool;
-            this.SchedulerPacketProcessing = Scheduler.TaskPool;
+            this.SchedulerSendingProcessing = new SynchronizationContextScheduler(this.SyncNetwork);
+            this.SchedulerPacketProcessing = new SynchronizationContextScheduler(this.SyncPacketProcess);
 
             this.Server.SendingObservable
                 .Delay(TimeSpan.FromMilliseconds(20))
@@ -77,18 +80,11 @@ namespace DialogConsole
                                     DateTime.Now.Millisecond,
                                     g.ToString()
                                     )))
+                .ObserveOn(this.SchedulerSendingProcessing)
                 .SubscribeOn(Scheduler.NewThread)
                 .Subscribe();
 
             //var timer = Observable.Interval(TimeSpan.FromMilliseconds(100), this.SchedulerPacketProcessing).Repeat();
-
-            //this.Receiving_ = this.Server.ReceivingObservable.Zip(timer, (_, v) => v)
-            //    .Do(g => 
-            //                            .Repeat()
-            //    .SubscribeOn(Scheduler.Immediate)
-            //.Subscribe(state => { Console.WriteLine("next"); },
-            //        ex => Console.WriteLine(ex.Message),
-            //        () => Console.WriteLine("cmp"));
 
             var task = new Action (() =>
                 {
@@ -110,7 +106,7 @@ namespace DialogConsole
                     catch (TimeoutException ex) { }
                 });
 
-            var timer = Observable.Interval(TimeSpan.FromMilliseconds(100), Scheduler.TaskPool)
+            var timer = Observable.Interval(TimeSpan.FromMilliseconds(100), this.SchedulerSendingProcessing)
                 .Subscribe(l => task());
 
             //this.Receiving_ = Observable.Interval(TimeSpan.FromMilliseconds(100), this.SchedulerPacketProcessing)
