@@ -225,8 +225,6 @@ namespace DialogConsole
             this.Vehicles.Clear();
             CreateVehicle(bk);
 
-            var timer = Observable.Timer(, TimeSpan.FromMilliseconds(500), Scheduler.NewThread);
-
             this.VehicleProcessing_ = Observable.Start(VehicleProcess, this.SchedulerSendingProcessing)
                 .Delay(TimeSpan.FromMilliseconds(500))
                 .Repeat()
