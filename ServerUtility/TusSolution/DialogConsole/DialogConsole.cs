@@ -225,14 +225,14 @@ namespace DialogConsole
             this.Vehicles.Clear();
             CreateVehicle(bk);
 
-            var timer = Observable.Timer(TimeSpan.FromMilliseconds(500), Scheduler.NewThread);
+            var timer = Observable.Timer(, TimeSpan.FromMilliseconds(500), Scheduler.NewThread);
 
-            this.VehicleProcessing_ =
-                Observable
-                .Start(VehicleProcess, this.SchedulerSendingProcessing)
-                .Zip(timer, (v, _) => v)
+            this.VehicleProcessing_ = Observable.Start(VehicleProcess, this.SchedulerSendingProcessing)
+                .Delay(TimeSpan.FromMilliseconds(500))
+                .Repeat()
                 .SubscribeOn(Scheduler.NewThread)
                 .Subscribe();
+
         }
 
         public PacketServer CreateServer()
