@@ -68,9 +68,11 @@ namespace RouteLibrary.Base
         public IList<Block> Blocks { get; private set; }
         public IList<ControllingRoute> Units { get; protected set; }
 
+        public Queue<ControllingRoute> LockedUnits { get; private set; }
+
         public bool IsRepeatable { get; set; }
 
-        private int ind_start = 0, ind_end = 0;
+        private int ind_current;
         private IDictionary<Block, RouteSegment> to_route_dict(IList<Block> list)
         {
             int i;
@@ -124,8 +126,9 @@ namespace RouteLibrary.Base
             this.Blocks = new ReadOnlyCollection<Block>(segs);
 
             this.Units = new ReadOnlyCollection<ControllingRoute>(locked_blocks.ToArray());
-            this.ind_end = -1;
-            this.ind_start = 0;
+            this.LockedUnits = new Queue<ControllingRoute>();
+            this.ind_current = -1;
+
             InitLockingPosition();
         }
 
@@ -135,15 +138,17 @@ namespace RouteLibrary.Base
 
         }
 
-        public ControllingRoute NeighborUnit(int i)
-        {
-            return this.Units[this.ind_end + i];
-        }
-
         public bool TryLockNeighborUnit(int i)
         {
-            if (ind_end + i < this.Units.Count
-                && this.Units[this.ind_end + i].CanBeAllocated)
+            int ind = ind_current + i;
+
+            if (this.IsRepeatable)
+            {
+                ind = ind % this.Units.Count;
+            }
+
+            if (ind < this.Units.Count
+                && this.Units[ind].CanBeAllocated)
             {
                 return true;
             }
@@ -152,24 +157,28 @@ namespace RouteLibrary.Base
 
         public bool LockNextUnit()
         {
-            if (ind_end + 1 < this.Units.Count
-                && this.Units[this.ind_end + 1].CanBeAllocated)
+            if (TryLockNeighborUnit(1))
             {
-                ind_end++;
-                this.Units[this.ind_end].Allocate();
+                var ind = ind_current + 1;
+                if(this.IsRepeatable)
+                      ind = ind % this.Units.Count;
+                
+                this.Units[ind].Allocate();
+                this.LockedUnits.Enqueue(this.Units[ind]);
 
+                this.ind_current = ind;
                 return true;
             }
+
             return false;
         }
 
         public bool ReleaseBeforeUnit()
         {
-            if ((ind_start <= ind_end)
-                && !this.Units[this.ind_start].CanBeAllocated)
+            if (this.LockedUnits.Count > 0)
             {
-                this.Units[this.ind_start].Release();
-                ind_start++;
+                var deleted = this.LockedUnits.Dequeue();
+                deleted.Release();
 
                 return true;
             }
@@ -180,24 +189,7 @@ namespace RouteLibrary.Base
         {
             get
             {
-                var start = this.ind_start;
-                var end = this.ind_end;
-
-                var seq = Enumerable.Range(start, end - start + 1)
-                    .SelectMany(i =>
-
-                                        this.Units[i].Blocks
-                                    );
-
-                return seq;
-            }
-        }
-
-        public IEnumerable<ControllingRoute> LockedUnits
-        {
-            get
-            {
-                return Enumerable.Range(ind_start, ind_end - ind_start + 1).Select(i => this.Units[i]);
+                return this.LockedUnits.SelectMany(u => u.Blocks);
             }
         }
 
@@ -265,13 +257,8 @@ namespace RouteLibrary.Base
 
             while (this.ReleaseBeforeUnit()) ;
 
-            this.ind_end = blockunit.ind;
-            this.ind_start = blockunit.ind - (len - 1);
-
-            if (this.ind_start < 0)
-                this.ind_start = 0;
-
-            this.LockedUnits.ForEach(u => u.Allocate());
+            this.ind_current = blockunit.ind - 1;
+            this.LockNextUnit();
         }
 
         public bool IsRouteFinished
