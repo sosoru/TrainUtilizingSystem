@@ -263,6 +263,7 @@ namespace DialogConsole
 
             var v = new Vehicle(this.Sheet, this.LoopingRoute);
             v.CurrentBlock = b;
+            v.Speed = 0.5f;
 
             this.Vehicles.Add(v);
         }
