@@ -331,7 +331,7 @@ namespace DialogConsole
                     var res = r.Response;
 
                     res.Headers.Add("Content-type: application/json");
-                    res.Headers.Add("Access-Control-Allow-Origin : null");
+                    res.Headers.Add("Access-Control-Allow-Origin: null");
                     using (var sw = new StreamWriter(res.OutputStream))
                     using (var ms = new MemoryStream())
                     {
