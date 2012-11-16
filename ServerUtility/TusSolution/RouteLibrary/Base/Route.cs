@@ -258,7 +258,7 @@ namespace RouteLibrary.Base
             while (this.ReleaseBeforeUnit()) ;
 
             this.ind_current = blockunit.ind - 1;
-            while (len--)
+            while (len-- > 0)
             {
                 this.LockNextUnit();
             }
