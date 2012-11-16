@@ -15,7 +15,7 @@ namespace SensorLibrary.Packet.IO
 {
     public class EthClient
     {
-        public static int PORT = 8000;
+        public static int SEND_PORT = 8000;
 
         // private UdpClient client_;
 
@@ -34,8 +34,8 @@ namespace SensorLibrary.Packet.IO
 
         public IObservable<EthPacket> AsyncReceive()
         {
-            IPEndPoint ipend = new IPEndPoint(IPAddress.Parse("192.168.2.9"), PORT);
-            var client = new UdpClient(PORT);
+            IPEndPoint ipend = new IPEndPoint(IPAddress.Parse("192.168.2.9"), SEND_PORT);
+            var client = new UdpClient(SEND_PORT);
 
             return Observable.FromAsyncPattern<byte[]>(client.BeginReceive,
                                                        res => client.EndReceive(res, ref ipend))()
@@ -49,7 +49,7 @@ namespace SensorLibrary.Packet.IO
             Array.Copy(this.Address.GetAddressBytes(), address, address.Length);
             address[3] = (byte)packet.destId.ParentPart;
 
-            return new IPEndPoint(new IPAddress(address), PORT);
+            return new IPEndPoint(new IPAddress(address), SEND_PORT);
         }
 
         public virtual IObservable<Unit> AsyncSend(EthPacket packet)
