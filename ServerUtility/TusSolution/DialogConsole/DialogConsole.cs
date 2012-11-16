@@ -178,7 +178,7 @@ namespace DialogConsole
             System.Threading.Thread.Sleep(2000);
 
             Console.WriteLine(sht.InnerBlocks
-               .Where(b => b.IsDetectingTrain)
+               .Where(b => b.IsDetectingTrain || b.IsMotorDetectingTrain)
                 .Aggregate("", (ac, b) => ac += b.Name + ", "));
         }
 
