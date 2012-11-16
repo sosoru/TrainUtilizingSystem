@@ -75,7 +75,7 @@ namespace DialogConsole
             get{
                 var loop = new[] { "AT1", "BAT1", "AT2", "BAT2", "AT3", "BAT3", "AT4", "BAT4" };
 
-                return Enumerable.Range(1, 5)
+                return Enumerable.Range(1, 1)
                     .SelectMany(i => loop);
     }
         }
