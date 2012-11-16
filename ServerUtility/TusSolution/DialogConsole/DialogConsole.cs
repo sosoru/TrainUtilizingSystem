@@ -89,8 +89,8 @@ namespace DialogConsole
                                         g.ToString()
                                         )))
                                         .Repeat()
-                .SubscribeOn(Scheduler.NewThread)
-                .Subscribe(state => { Console.WriteLine("next"); }, 
+                .SubscribeOn(Scheduler.Immediate)
+            .Subscribe(state => { Console.WriteLine("next"); }, 
                     ex => Console.WriteLine(ex.Message) ,
                     () => Console.WriteLine("cmp"));
                 
