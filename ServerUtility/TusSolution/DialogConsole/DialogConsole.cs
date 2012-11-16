@@ -69,7 +69,7 @@ namespace DialogConsole
             this.SchedulerPacketProcessing = Scheduler.NewThread;
 
             this.Sending_ = Observable.Timer(DateTimeOffset.MinValue,TimeSpan.FromMilliseconds(20), this.SchedulerSendingProcessing)
-                .Zip(this.Server.SendingObservable, (l, u) => new { l, u })
+                .Zip(this.Server.SendingObservable.Repeat(), (l, u) => new { l, u })
                 .Do(g => Console.WriteLine(string.Format("({0}) : sending", g.l)))
                 .SubscribeOn(Scheduler.NewThread)
                 .Subscribe();
