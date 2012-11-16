@@ -49,12 +49,14 @@ namespace DialogConsole
     {
         public PacketServer Server { get; set; }
         public BlockSheet Sheet { get; set; }
+        public IList<Vehicle> Vehicles { get; set; }
 
         private IScheduler SchedulerPacketProcessing;
         private IScheduler SchedulerSendingProcessing;
         private SynchronizationContext SyncNetwork;
         private SynchronizationContext SyncPacketProcess;
 
+        private IDisposable VehicleProcessing_;
         private IDisposable Sending_;
         private IDisposable Receiving_;
 
@@ -65,6 +67,7 @@ namespace DialogConsole
             this.Sheet.AssociatedScheduler = this.SchedulerPacketProcessing;
 
             this.Server.Controller = io;
+            this.Vehicles = new List<Vehicle>();
         }
 
         public Route LoopingRoute
@@ -112,6 +115,7 @@ namespace DialogConsole
                 Console.WriteLine("1 : show statuses");
                 Console.WriteLine("3 : detect test");
                 Console.WriteLine("4 : input command");
+                Console.WriteLine("5 : monitoring vehicles");
                 //Console.WriteLine("5 : apply command");
                 Console.WriteLine();
 
@@ -210,6 +214,18 @@ namespace DialogConsole
             }
         }
 
+        public void InputVehicleMonitoring()
+        {
+            Console.WriteLine("Which block your vehicle halt on?");
+
+            var bk = this.Sheet.GetBlock(Console.ReadLine());
+
+            this.Vehicles.Clear();
+            this.Vehicles.Add(CreateVehicle(bk));
+
+            this.VehicleProcessing_ = Observable.Start(VehicleProcess, this.SchedulerSendingProcessing);
+        }
+
         public PacketServer CreateServer()
         {
             var serv = new PacketServer(new AvrDeviceFactoryProvider());
@@ -228,7 +244,17 @@ namespace DialogConsole
         public void CreateVehicle(Block b)
         {
             var v = new Vehicle(this.Sheet, this.LoopingRoute);
+            v.CurrentBlock = b;
+        }
 
+        public void VehicleProcess()
+        {
+            this.Sheet.InquiryAllMotors();
+
+            foreach (var v in this.Vehicles)
+            {
+                v.Refresh();
+            }
         }
 
     }
