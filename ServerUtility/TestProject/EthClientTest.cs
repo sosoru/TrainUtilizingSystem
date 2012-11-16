@@ -407,8 +407,8 @@ namespace TestProject
                     System.Threading.Thread.Sleep(1000);
 
                     return target.Object.AsyncSend(ptpacket)
-                        .SelectMany(a => target.AsyncReceive())
-                        .SelectMany(a => a.DataPacket.ExtractPackedPacket())
+                        .SelectMany(recv => target.AsyncReceive())
+                        .SelectMany(pk => pk.DataPacket.ExtractPackedPacket())
                         .Where(state => state.ID == pt.DeviceID)
                         .Cast<SwitchState>()
                         .Do(state => Assert.IsTrue(state.Position == pt.CurrentState.Position))
