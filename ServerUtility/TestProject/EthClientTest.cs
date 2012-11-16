@@ -365,13 +365,14 @@ namespace TestProject
 
             var log = new List<IDeviceState<IPacketDeviceData>>();
             var logeth = new List<EthPacket>();
-            var target = new Mock<EthClient>();
-            target.Setup(e => e.AsyncSend(It.IsAny<EthPacket>()))
-                .Returns(() => Observable.Empty<Unit>())
-                .Callback<EthPacket>(e =>
-                {
-                    log.AddRange(e.DataPacket.ExtractPackedPacket());
-                });
+            //var target = new Mock<EthClient>();
+            //target.Setup(e => e.AsyncSend(It.IsAny<EthPacket>()))
+            //    .Returns(() => Observable.Empty<Unit>())
+            //    .Callback<EthPacket>(e =>
+            //    {
+            //        log.AddRange(e.DataPacket.ExtractPackedPacket());
+            //    });
+            var target = new EthClient() { Address = IPAddress.Parse("192.168.2.9") };
 
             var ptpacket = new EthPacket()
             {
