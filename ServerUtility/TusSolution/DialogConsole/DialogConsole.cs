@@ -140,7 +140,7 @@ namespace DialogConsole
                         //    InputCommand(this.Sheet, cmdinfo);
                         //    break;
                         case "5":
-                            InputVehicleMonitoring()
+                            InputVehicleMonitoring();
                             break;
                         default:
                             Console.WriteLine("parse error");
