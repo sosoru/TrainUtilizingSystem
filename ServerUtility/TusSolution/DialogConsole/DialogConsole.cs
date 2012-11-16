@@ -29,6 +29,9 @@ namespace DialogConsole
     {
         static void Main(string[] args)
         {
+            var ipbase = IPAddress.Parse("192.168.2.0");
+            var ipmask = IPAddress.Parse("255.255.255.0");
+
             var dialog = new DialogCnosole();
             var io = new TusEthernetIO(ipbase, ipmask)
             {
@@ -47,31 +50,40 @@ namespace DialogConsole
         public BlockSheet Sheet { get; set; }
 
         private IScheduler SchedulerPacketProcessing;
-        private IScheduler SchedulerBlockProcessing;
+        private IScheduler SchedulerSendingProcessing;
 
         private IDisposable Sending_;
         private IDisposable Receiving_;
 
         public void InitSheet(IDeviceIO io)
         {
-            this.Server = CreateServer(IPAddress.Parse("192.168.2.0"), IPAddress.Parse("255.255.255.0"));
-            this.Sheet = CreateSheet("layout.yaml", this.Server);
+            this.Server = CreateServer();
+            this.Sheet = CreateSheet("test_looping.yaml", this.Server);
 
             this.Server.Controller = io;
         }
 
         public void Loop()
         {
+            this.SchedulerSendingProcessing = Scheduler.NewThread;
+            this.SchedulerPacketProcessing = Scheduler.NewThread;
+
+            this.Sending_ = Observable.Timer(TimeSpan.FromMilliseconds(20), this.SchedulerSendingProcessing)
+                .Zip(this.Server.SendingObservable, (l, u) => new { l, u })
+                .Subscribe();
+            this.Receiving_ = this.Server.ReceivingObservable.ObserveOn(this.SchedulerPacketProcessing)
+                .Repeat()
+                .Subscribe();
 
             while (true)
             {
                 Console.WriteLine("1 : show statuses");
                 Console.WriteLine("3 : detect test");
                 Console.WriteLine("4 : input command");
-                Console.WriteLine("5 : apply command");
+                //Console.WriteLine("5 : apply command");
                 Console.WriteLine();
 
-                Console.WriteLine(cmdinfo.Speed);
+                //Console.WriteLine(cmdinfo.Speed);
                 //Console.WriteLine(cmdinfo.Route.Blocks
                 //   .Where(b => b.HasMotor && b.IsBlocked)
                 //    .Aggregate("", (ac, b) => ac += b.Name + ", "));
@@ -83,17 +95,17 @@ namespace DialogConsole
                     switch (cmd)
                     {
                         case "1":
-                            ShowStatus(sht);
+                            ShowStatus(this.Sheet);
                             break;
                         case "3":
-                            Detect(sht);
+                            Detect(this.Sheet);
                             break;
-                        case "4":
-                            InputCommand(sht, cmdinfo);
-                            break;
-                        case "5":
-                            sht.Effect(cmdinfo);
-                            break;
+                        //case "4":
+                        //    InputCommand(this.Sheet, cmdinfo);
+                        //    break;
+                        //case "5":
+                        //    this.Sheet.Effect(cmdinfo);
+                        //    break;
                         default:
                             Console.WriteLine("parse error");
                             break;
@@ -165,11 +177,10 @@ namespace DialogConsole
             }
         }
 
-        public PacketServer CreateServer(IPAddress ipbase, IPAddress ipmask)
+        public PacketServer CreateServer()
         {
             var serv = new PacketServer(new AvrDeviceFactoryProvider());
 
-            serv.Controller = io;
             return serv;
         }
 
@@ -184,53 +195,53 @@ namespace DialogConsole
 
     }
 
-    public class DeviceDiagnostics
-    {
-        private PacketServer serv;
-        private PacketDispatcher dispat;
-        private DeviceID devid;
+    //public class DeviceDiagnostics
+    //{
+    //    private PacketServer serv;
+    //    private PacketDispatcher dispat;
+    //    private DeviceID devid;
 
-        public Stream Writer { get; private set; }
-        public Stream Reader { get; private set; }
+    //    public Stream Writer { get; private set; }
+    //    public Stream Reader { get; private set; }
 
-        public DeviceDiagnostics(DeviceID id, IPAddress baseip)
-        {
-            this.devid = new DeviceID(baseip.GetAddressBytes()[3], 0, 0);
-            var io = new SensorLibrary.Packet.IO.TusEthernetIO(baseip, new IPAddress(new byte[] { 255, 255, 255, 0 }))
-            {
-                SourceID = devid,
-                Port = 8000,
-            };
+    //    public DeviceDiagnostics(DeviceID id, IPAddress baseip)
+    //    {
+    //        this.devid = new DeviceID(baseip.GetAddressBytes()[3], 0, 0);
+    //        var io = new SensorLibrary.Packet.IO.TusEthernetIO(baseip, new IPAddress(new byte[] { 255, 255, 255, 0 }))
+    //        {
+    //            SourceID = devid,
+    //            Port = 8000,
+    //        };
 
-            this.dispat = new PacketDispatcher();
-            this.serv.AddAction(this.dispat);
+    //        this.dispat = new PacketDispatcher();
+    //        this.serv.AddAction(this.dispat);
 
-        }
+    //    }
 
-        public void Start(Stream reader, Stream writer)
-        {
-            this.serv.LoopStart();
+    //    public void Start(Stream reader, Stream writer)
+    //    {
+    //        this.serv.LoopStart();
 
-            if (!reader.CanRead)
-                throw new InvalidOperationException("requires readable stream");
+    //        if (!reader.CanRead)
+    //            throw new InvalidOperationException("requires readable stream");
 
-            if (!writer.CanWrite)
-                throw new InvalidOperationException("requires writable stream");
+    //        if (!writer.CanWrite)
+    //            throw new InvalidOperationException("requires writable stream");
 
-            this.Reader = reader;
-            this.Writer = writer;
+    //        this.Reader = reader;
+    //        this.Writer = writer;
 
-        }
+    //    }
 
-        public TDev CreateDevice<TDev>(DeviceID devid)
-            where TDev : Device<IDeviceState<IPacketDeviceData>>, new()
-        {
-            var dev = new TDev() { DeviceID = devid };
-            dev.ReceivingServer = this.serv;
-            dev.Observe(this.dispat);
+    //    public TDev CreateDevice<TDev>(DeviceID devid)
+    //        where TDev : Device<IDeviceState<IPacketDeviceData>>, new()
+    //    {
+    //        var dev = new TDev() { DeviceID = devid };
+    //        dev.ReceivingServer = this.serv;
+    //        dev.Observe(this.dispat);
 
-            return dev;
-        }
+    //        return dev;
+    //    }
 
-    }
+    //}
 }
