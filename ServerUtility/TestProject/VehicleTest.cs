@@ -88,7 +88,7 @@ namespace TestProject
             
             using(var ms = new MemoryStream())
             {
-                cnt.WriteObject(ms, v);
+                cnt.WriteObject(ms, new[]{ v});
 
                 var str = System.Text.UnicodeEncoding.UTF8.GetString(ms.ToArray());
                 Console.WriteLine(str);
