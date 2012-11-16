@@ -72,7 +72,7 @@ namespace DialogConsole
 
         public Route LoopingRoute
         {
-            get { return new Route(sht, new[] { "AT1", "BAT1", "AT2", "BAT2", "AT3", "BAT3", "AT4", "BAT4" }); }
+            get { return new Route(this.Sheet, new[] { "AT1", "BAT1", "AT2", "BAT2", "AT3", "BAT3", "AT4", "BAT4" }); }
         }
 
         public void Loop()
@@ -221,7 +221,7 @@ namespace DialogConsole
             var bk = this.Sheet.GetBlock(Console.ReadLine());
 
             this.Vehicles.Clear();
-            this.Vehicles.Add(CreateVehicle(bk));
+            CreateVehicle(bk);
 
             this.VehicleProcessing_ = Observable.Start(VehicleProcess, this.SchedulerSendingProcessing);
         }
