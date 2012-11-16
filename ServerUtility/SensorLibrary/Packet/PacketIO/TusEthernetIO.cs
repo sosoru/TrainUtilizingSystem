@@ -79,7 +79,7 @@ namespace SensorLibrary.Packet.IO
                               destId = pack.ID,
                               DataPacket = pack,
                           };
-            return this.Client.AsyncSend(eth);
+            return this.Client.AsyncSend(eth).Select(u => pack);
         }
 
         public IObservable<DevicePacket> GetReadingPacket()
