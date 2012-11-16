@@ -78,8 +78,10 @@ namespace DialogConsole
                 .SubscribeOn(Scheduler.NewThread)
                 .Subscribe();
 
-            this.Receiving_ = this.Server.ReceivingObservable.ObserveOn(this.SchedulerPacketProcessing)
+            this.Receiving_ = this.Server.ReceivingObservable
+                .Delay(TimeSpan.FromMilliseconds(5))
                 .Repeat()
+                .ObserveOn(this.SchedulerPacketProcessing)
                 .Do(state => Console.WriteLine(string.Format("({0}.{1}) : recving {2}",
                                         DateTime.Now.ToLongTimeString(),
                                         DateTime.Now.Millisecond,
