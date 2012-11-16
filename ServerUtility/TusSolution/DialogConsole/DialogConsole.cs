@@ -69,6 +69,9 @@ namespace DialogConsole
 
         public void Loop()
         {
+            this.SyncNetwork = new SynchronizationContext();
+            this.SyncPacketProcess = new SynchronizationContext();
+
             this.SchedulerSendingProcessing = new SynchronizationContextScheduler(this.SyncNetwork);
             this.SchedulerPacketProcessing = new SynchronizationContextScheduler(this.SyncPacketProcess);
 
