@@ -72,7 +72,7 @@ namespace DialogConsole
                 .Zip(this.Server.SendingObservable.Repeat(), (l, u) => new { l, u })
                 .Do(g => Console.WriteLine(string.Format("({0}.{1}) : sending {2}",
                                     DateTime.Now.ToLongTimeString(),
-                                    DateTime.Now.Millisecond
+                                    DateTime.Now.Millisecond,
                                     g.u.ToString()
                                     )))
                 .SubscribeOn(Scheduler.NewThread)
