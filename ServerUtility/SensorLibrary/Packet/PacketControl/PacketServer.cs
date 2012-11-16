@@ -142,7 +142,7 @@ namespace SensorLibrary.Packet.Control
             }
         }
 
-        public IObservable<Unit> SendingObservable
+        public IObservable<DevicePacket> SendingObservable
         {
             get
             {
