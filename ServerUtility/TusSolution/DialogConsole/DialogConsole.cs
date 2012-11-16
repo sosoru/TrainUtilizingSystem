@@ -82,7 +82,7 @@ namespace DialogConsole
 
         public Route LoopingRoute
         {
-            get { return new Route(this.Sheet, ); }
+            get { return new Route(this.Sheet, routesnames); }
         }
 
         public void Loop()
