@@ -70,9 +70,19 @@ namespace DialogConsole
             this.Vehicles = new List<Vehicle>();
         }
 
+        public IEnumerable<string> routesnames
+        {
+            get{
+                var loop = new[] { "AT1", "BAT1", "AT2", "BAT2", "AT3", "BAT3", "AT4", "BAT4" };
+
+                return Enumerable.Range(1, 5)
+                    .SelectMany(i => loop);
+    }
+        }
+
         public Route LoopingRoute
         {
-            get { return new Route(this.Sheet, new[] { "AT1", "BAT1", "AT2", "BAT2", "AT3", "BAT3", "AT4", "BAT4" }); }
+            get { return new Route(this.Sheet, ); }
         }
 
         public void Loop()
