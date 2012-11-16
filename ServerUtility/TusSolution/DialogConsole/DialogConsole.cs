@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Net;
 using System.IO;
 using System.Threading;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
 
 using System.Reactive;
 using System.Reactive.Linq;
@@ -302,7 +304,7 @@ namespace DialogConsole
         }
 
         private HttpListener http_listener = null;
-        public Func<IObservable<HttpListenerContext>> GetHttpObservable()
+        public IObservable<Unit> GetHttpObservable()
         {
             if (this.http_listener == null)
             {
@@ -312,8 +314,25 @@ namespace DialogConsole
                 listener.Prefixes.Add(prefix);
 
                 this.http_listener = listener;
+                this.http_listener.Start();
             }
-            return Observable.FromAsyncPattern<HttpListenerContext>(this.http_listener.BeginGetContext, this.http_listener.EndGetContext);
+            Observable.FromAsyncPattern<HttpListenerContext>(this.http_listener.BeginGetContext, this.http_listener.EndGetContext)()
+                .Do(r =>
+                {
+                    var res = r.Response;
+
+                    res.Headers.Add("Content-type: application/json");
+                    using (var sw = new StreamWriter(res.OutputStream))
+                    using (var ms = new MemoryStream())
+                    using(var sw = new StreamWriter(ms))
+                    {
+                        var writer = new System
+                        foreach (var v in this.Vehicles)
+                        {
+
+                        }
+                    }
+                });
         }
 
     }
