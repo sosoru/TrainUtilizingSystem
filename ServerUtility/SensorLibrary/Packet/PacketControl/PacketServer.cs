@@ -121,14 +121,18 @@ namespace SensorLibrary.Packet.Control
 
         private IObservable<DevicePacket> SendState()
         {
-            var sub = new ReplaySubject<DevicePacket>();
-            while (this.sending_queue.Count > 0)
-            {
-                sub.OnNext(this.sending_queue.Dequeue());
-            }
-            sub.OnCompleted();
+            //var sub = new ReplaySubject<DevicePacket>();
+            //while (this.sending_queue.Count > 0)
+            //{
+            //    sub.OnNext(this.sending_queue.Dequeue());
+            //}
+            //sub.OnCompleted();
 
-            return sub;
+            if (this.sending_queue.Count > 0)
+                return new[] { this.sending_queue.Dequeue() }.ToObservable();
+            else
+                return Observable.Empty<DevicePacket>();
+
         }
 
         public IObservable<IDeviceState<IPacketDeviceData>> ReceivingObservable
