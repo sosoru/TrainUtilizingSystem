@@ -67,18 +67,18 @@ namespace DialogConsole
         public void Loop()
         {
             this.SchedulerSendingProcessing = Scheduler.TaskPool;
-            this.SchedulerPacketProcessing = Scheduler.TaskPool;
+            this.SchedulerPacketProcessing = Scheduler.NewThread;
 
-            //this.Server.SendingObservable
-            //    .Delay(TimeSpan.FromMilliseconds(20))
-            //    .Repeat()
-            //    .Do(g => Console.WriteLine(string.Format("({0}.{1}) : sending {2}",
-            //                        DateTime.Now.ToLongTimeString(),
-            //                        DateTime.Now.Millisecond,
-            //                        g.ToString()
-            //                        )))
-            //    .SubscribeOn(Scheduler.NewThread)
-            //    .Subscribe();
+            this.Server.SendingObservable
+                .Delay(TimeSpan.FromMilliseconds(20))
+                .Repeat()
+                .Do(g => Console.WriteLine(string.Format("({0}.{1}) : sending {2}",
+                                    DateTime.Now.ToLongTimeString(),
+                                    DateTime.Now.Millisecond,
+                                    g.ToString()
+                                    )))
+                .SubscribeOn(Scheduler.NewThread)
+                .Subscribe();
 
             this.Receiving_ = Observable.Interval(TimeSpan.FromMilliseconds(100), this.SchedulerPacketProcessing)
                 .Zip(this.Server.ReceivingObservable, (l, state) => new{l, state})
