@@ -139,8 +139,7 @@ namespace SensorLibrary.Packet.Control
         {
             get
             {
-                return Observable
-                           .Defer(this.Controller.GetReadingPacket)
+                return this.Controller.GetReadingPacket
                            .Where(packet => packet != null)
                            .SelectMany(packs => packs.ExtractPackedPacket())
                            .Do(DispatchState);
