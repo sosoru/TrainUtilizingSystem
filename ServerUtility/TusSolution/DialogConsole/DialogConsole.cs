@@ -91,7 +91,7 @@ namespace DialogConsole
 
 
             var timer = Observable.Interval(TimeSpan.FromMilliseconds(20), this.SchedulerSendingProcessing);
-            this.Receiving_ = Observable.Defer(this.Server.ReceivingObservable)
+            this.Receiving_ = Observable.Defer(() => this.Server.ReceivingObservable())
                 .ObserveOn(this.SchedulerSendingProcessing)
                 .Timeout(TimeSpan.FromMilliseconds(5))
                 .Zip(timer, (v, _) => v)
