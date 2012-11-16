@@ -79,13 +79,13 @@ namespace DialogConsole
                                     DateTime.Now.Millisecond,
                                     g.ToString()
                                     )))
-.SubscribeOn(Scheduler.NewThread)
+                .SubscribeOn(Scheduler.NewThread)
                 .Subscribe();
 
             this.Receiving_ = this.Server.ReceivingObservable.ObserveOn(this.SchedulerPacketProcessing)
                 .Repeat()
                 .Do(g => Console.WriteLine(string.Format("({0}.{1}) : recving {2}",
-                                        DateTime.Now.ToLocalTimeString,
+                                        DateTime.Now.ToLocalTimeString(),
                                         DateTime.Now.Millisecond,
                                         g.ToString())))
                 .SubscribeOn(Scheduler.NewThread)
