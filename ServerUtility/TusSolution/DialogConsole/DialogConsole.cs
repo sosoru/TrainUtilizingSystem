@@ -104,7 +104,7 @@ namespace DialogConsole
                     }
                 });
 
-            var timer = Observable.Interval(TimeSpan.FromMilliseconds(100), this.SchedulerPacketProcessing)
+            var timer = Observable.Interval(TimeSpan.FromMilliseconds(100), Scheduler.NewThread)
                 .Subscribe(l => task());
 
             //this.Receiving_ = Observable.Interval(TimeSpan.FromMilliseconds(100), this.SchedulerPacketProcessing)
