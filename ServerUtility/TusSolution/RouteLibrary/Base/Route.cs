@@ -258,7 +258,10 @@ namespace RouteLibrary.Base
             while (this.ReleaseBeforeUnit()) ;
 
             this.ind_current = blockunit.ind - 1;
-            this.LockNextUnit();
+            while (len--)
+            {
+                this.LockNextUnit();
+            }
         }
 
         public bool IsRouteFinished
