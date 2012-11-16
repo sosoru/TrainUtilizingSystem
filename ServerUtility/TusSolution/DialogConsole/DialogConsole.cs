@@ -331,7 +331,8 @@ namespace DialogConsole
 
                         sw.WriteLine(System.Text.UnicodeEncoding.UTF8.GetString(ms.ToArray()));
                     }
-                });
+                })
+                .Select(r => Unit.Default);
         }
 
     }
