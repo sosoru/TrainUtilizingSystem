@@ -81,7 +81,7 @@ namespace TestProject
             var v = new Vehicle(sht, rt);
             var cnt = new DataContractJsonSerializer(typeof(Vehicle));
             
-            using(var ms = new MemoryStream)
+            using(var ms = new MemoryStream())
             {
                 cnt.WriteObject(ms, v);
 
