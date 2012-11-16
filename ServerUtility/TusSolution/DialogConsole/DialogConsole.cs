@@ -252,6 +252,8 @@ namespace DialogConsole
 
         public void CreateVehicle(Block b)
         {
+            if(this.VehicleProcessing_ !=null)
+                this.VehicleProcessing_.Dispose();
 
             foreach (var vh in this.Vehicles.ToArray())
             {
