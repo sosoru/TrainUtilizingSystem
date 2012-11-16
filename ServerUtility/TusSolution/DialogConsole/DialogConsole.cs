@@ -100,7 +100,7 @@ namespace DialogConsole
                                                                     DateTime.Now.Millisecond,
                                                                     g.ToString()
                                                                     )))
-                                                    .Catch(TimeoutException ex => {})
+                                                    .Catch((TimeoutException ex) => Observable.Empty<IDeviceState<IPacketDeviceData>())
                                                             .Subscribe();
                                                                     
 
