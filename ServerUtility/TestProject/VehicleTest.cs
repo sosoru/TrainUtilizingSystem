@@ -79,6 +79,10 @@ namespace TestProject
             var rt = GetRouteFirst(sht);
 
             var v = new Vehicle(sht, rt);
+
+            v.CurrentBlock = sht.GetBlock("AT2");
+            v.Speed = 0.5f;
+
             var cnt = new DataContractJsonSerializer(typeof(Vehicle));
             
             using(var ms = new MemoryStream())
