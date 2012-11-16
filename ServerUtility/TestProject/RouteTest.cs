@@ -202,6 +202,7 @@ namespace TestProject
             var target = new Route(blocks);
             target.IsRepeatable = true;
 
+            target.LockNextUnit();
             Observable.Range(0, 100)
                 .Do(i =>
                 {
