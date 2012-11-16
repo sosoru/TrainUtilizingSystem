@@ -112,7 +112,7 @@ namespace TestProject
             mockio.Setup(e => e.GetWritingPacket(It.IsAny<DevicePacket>())).Callback<DevicePacket>(pack =>
                 written.AddRange(pack.ExtractPackedPacket())
                 )
-                .Returns(Observable.Empty<Unit>());
+                .Returns(Observable.Empty<DevicePacket>());
             serv = new PacketServer(new AvrDeviceFactoryProvider());
             serv.Controller = mockio.Object;
             sht = new BlockSheet(target_sheet, serv);
