@@ -69,7 +69,7 @@ namespace DialogConsole
             this.SchedulerPacketProcessing = Scheduler.TaskPool;
 
             this.Sending_ = Observable.Timer(DateTimeOffset.MinValue, TimeSpan.FromMilliseconds(20), this.SchedulerSendingProcessing)
-                .Zip(this.Server.SendingObservable, (l, u) => new { l, u })
+                .Zip(Observable.Defer(()=> this.Server.SendingObservable), (l, u) => new { l, u })
                 .Do(g => Console.WriteLine(string.Format("({0}.{1}) : sending {2}",
                                     DateTime.Now.ToLongTimeString(),
                                     DateTime.Now.Millisecond,
