@@ -80,7 +80,7 @@ namespace DialogConsole
                 .SubscribeOn(Scheduler.NewThread)
                 .Subscribe();
 
-            this.Receiving_ = this.Server.ReceivingObservable
+            this.Receiving_ = Observable.Defer(() => this.Server.ReceivingObservable)
                 .Delay(TimeSpan.FromMilliseconds(5))
                 .Repeat()
                 .Do(state => Console.WriteLine(string.Format("({0}.{1}) : recving {2}",
