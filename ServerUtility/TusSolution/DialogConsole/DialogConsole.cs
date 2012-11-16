@@ -66,8 +66,8 @@ namespace DialogConsole
 
         public void Loop()
         {
-            this.SchedulerSendingProcessing = Scheduler.TaskPool;
-            this.SchedulerPacketProcessing = Scheduler.TaskPool;
+            this.SchedulerSendingProcessing = Scheduler.TaskPool.Now;
+            this.SchedulerPacketProcessing = Scheduler.TaskPool.Now;
 
             this.Server.SendingObservable
                 .Delay(TimeSpan.FromMilliseconds(20))
@@ -82,10 +82,10 @@ namespace DialogConsole
 
             this.Receiving_ = Observable.Interval(TimeSpan.FromMilliseconds(100), this.SchedulerPacketProcessing)
                 .Zip(this.Server.ReceivingObservable, (l, state) => new{l, state})
-                .Do(state => Console.WriteLine(string.Format("({0}.{1}) : recving {2}",
+                .Do(g => Console.WriteLine(string.Format("({0}.{1}) : recving {2}",
                                         DateTime.Now.ToLongTimeString(),
                                         DateTime.Now.Millisecond,
-                                        state.ToString()
+                                        g.state.ToString()
                                         )))
                 .SubscribeOn(Scheduler.NewThread)
                 .Subscribe(state => { Console.WriteLine("next"); }, () => Console.WriteLine("cmp"));
