@@ -92,16 +92,22 @@ namespace DialogConsole
 
             var task = new Action (() =>
                 {
-                    var states = this.Server.ReceivingObservable.ToArray().First();
-
-                    foreach (var g in states)
+                    try
                     {
-                        Console.WriteLine(string.Format("({0}.{1}) : recving {2}",
-                                                                DateTime.Now.ToLongTimeString(),
-                                                                DateTime.Now.Millisecond,
-                                                                g.ToString()
-                                                                ));
+                        var states = this.Server.ReceivingObservable
+                                        .Timeout(TimeSpan.FromMilliseconds(10))
+                                        .ToArray().First();
+
+                        foreach (var g in states)
+                        {
+                            Console.WriteLine(string.Format("({0}.{1}) : recving {2}",
+                                                                    DateTime.Now.ToLongTimeString(),
+                                                                    DateTime.Now.Millisecond,
+                                                                    g.ToString()
+                                                                    ));
+                        }
                     }
+                    catch (TimeoutException ex) { }
                 });
 
             var timer = Observable.Interval(TimeSpan.FromMilliseconds(100), Scheduler.NewThread)
