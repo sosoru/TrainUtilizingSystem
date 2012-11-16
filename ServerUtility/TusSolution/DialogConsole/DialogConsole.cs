@@ -77,7 +77,7 @@ namespace DialogConsole
                                     DateTime.Now.Millisecond,
                                     g.ToString()
                                     )))
-                .SubscribeOn(Scheduler.NewThread)
+                .SubscribeOn(Scheduler.TaskPool)
                 .Subscribe();
 
             this.Receiving_ = Observable.Interval(TimeSpan.FromMilliseconds(100))
@@ -87,7 +87,7 @@ namespace DialogConsole
                                         DateTime.Now.Millisecond,
                                         state.ToString()
                                         )))
-                .SubscribeOn(Scheduler.NewThread)
+                .SubscribeOn(Scheduler.TaskPool)
                 .Subscribe(state => { Console.WriteLine("next"); }, () => Console.WriteLine("cmp"));
             //this.Receiving_ = Observable.Defer(() => this.Server.ReceivingObservable)
             //    //.Delay(TimeSpan.FromMilliseconds(5))
