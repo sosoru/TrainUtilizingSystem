@@ -39,7 +39,6 @@ namespace SensorLibrary.Packet.IO
 
             return Observable.FromAsyncPattern<byte[]>(client.BeginReceive,
                                                        res => client.EndReceive(res, ref ipend))()
-                .ObserveOn(Scheduler.NewThread)
                 .Select(a => a.ToObject<EthPacket>());
         }
 
