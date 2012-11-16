@@ -59,7 +59,7 @@ namespace DialogConsole
         {
             this.Server = CreateServer();
             this.Sheet = CreateSheet("test_looping.yaml", this.Server);
-
+            
             this.Server.Controller = io;
         }
 
