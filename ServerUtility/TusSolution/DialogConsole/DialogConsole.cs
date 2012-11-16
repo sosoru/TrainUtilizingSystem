@@ -75,7 +75,7 @@ namespace DialogConsole
             this.Server.SendingObservable.Delay(TimeSpan.FromMilliseconds(20))
                 .Repeat()
                 .Do(g => Console.WriteLine(string.Format("({0}.{1}) : sending {2}",
-                                    DateTime.Now.ToLongTimeString(),
+                                    DateTime.Now.ToLocalTimeString(),
                                     DateTime.Now.Millisecond,
                                     g.ToString()
                                     )))
@@ -87,7 +87,8 @@ namespace DialogConsole
                 .Do(state => Console.WriteLine(string.Format("({0}.{1}) : recving {2}",
                                         DateTime.Now.ToLocalTimeString(),
                                         DateTime.Now.Millisecond,
-                                        state.ToString())))
+                                        state.ToString()
+                                        )))
                 .SubscribeOn(Scheduler.NewThread)
                 .Subscribe();
 
