@@ -149,7 +149,7 @@ namespace SensorLibrary.Packet.IO
         }
 
 
-        public IObservable<System.Reactive.Unit> GetWritingPacket(DevicePacket pack)
+        public IObservable<DevicePacket> GetWritingPacket(DevicePacket pack)
         {
             throw new NotImplementedException();
         }
