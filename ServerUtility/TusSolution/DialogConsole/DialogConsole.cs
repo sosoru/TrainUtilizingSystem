@@ -88,6 +88,7 @@ namespace DialogConsole
                                         DateTime.Now.Millisecond,
                                         state.ToString()
                                         )))
+                .SubscribeOn(Scheduler.NewThread)
                 .Subscribe(state => { Console.WriteLine("next"); }, () => Console.WriteLine("cmp"));
 
             while (true)
