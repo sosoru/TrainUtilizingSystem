@@ -47,6 +47,7 @@ namespace DialogConsole
         }
     }
 
+    [DataContract]
     public class DialogCnosole
     {
         public PacketServer Server { get; set; }
@@ -329,7 +330,7 @@ namespace DialogConsole
                     using (var ms = new MemoryStream())
                     {
                         var cnt = new DataContractJsonSerializer(typeof(Vehicle));
-                        cnt.WriteObject(ms, this.Vehicles);
+                        cnt.WriteObject(ms, this);
 
                         sw.WriteLine(System.Text.UnicodeEncoding.UTF8.GetString(ms.ToArray()));
                     }
