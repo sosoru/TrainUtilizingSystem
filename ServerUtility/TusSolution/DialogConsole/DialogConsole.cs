@@ -331,6 +331,7 @@ namespace DialogConsole
                     var res = r.Response;
 
                     res.Headers.Add("Content-type: application/json");
+                    res.Headers.Add("Origin : http://127.0.0.1:8012/");
                     using (var sw = new StreamWriter(res.OutputStream))
                     using (var ms = new MemoryStream())
                     {
