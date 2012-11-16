@@ -87,7 +87,7 @@ namespace DialogConsole
                                         DateTime.Now.Millisecond,
                                         g.state.ToString()
                                         )))
-                .SubscribeOn(Scheduler.NewThread)
+                .SubscribeOn(Scheduler.Immediate)
                 .Subscribe(state => { Console.WriteLine("next"); }, 
                     ex => Console.WriteLine(ex.Message) ,
                     () => Console.WriteLine("cmp"));
