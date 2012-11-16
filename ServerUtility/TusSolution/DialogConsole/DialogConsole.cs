@@ -67,6 +67,11 @@ namespace DialogConsole
             this.Server.Controller = io;
         }
 
+        public Route LoopingRoute
+        {
+            get { return new Route(sht, new[] { "AT1", "BAT1", "AT2", "BAT2", "AT3", "BAT3", "AT4", "BAT4" }); }
+        }
+
         public void Loop()
         {
             this.SyncNetwork = new SynchronizationContext();
@@ -177,6 +182,7 @@ namespace DialogConsole
             sht.InquiryAllMotors();
             System.Threading.Thread.Sleep(2000);
 
+
             Console.WriteLine(sht.InnerBlocks
                .Where(b => b.IsDetectingTrain || b.IsMotorDetectingTrain)
                 .Aggregate("", (ac, b) => ac += b.Name + ", "));
@@ -219,6 +225,11 @@ namespace DialogConsole
             return new BlockSheet(blocks, serv);
         }
 
+        public void CreateVehicle(Block b)
+        {
+            var v = new Vehicle(this.Sheet, this.LoopingRoute);
+
+        }
 
     }
 
