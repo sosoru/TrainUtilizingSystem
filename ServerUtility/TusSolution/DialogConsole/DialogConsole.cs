@@ -81,7 +81,7 @@ namespace DialogConsole
                 .Subscribe();
 
             this.Receiving_ = Observable.Interval(TimeSpan.FromMilliseconds(100), this.SchedulerPacketProcessing)
-                .Zip(this.Server.ReceivingObservable.Repeat(), (l, state) => new{l, state})
+                .Zip(Observable.Defer(() => this.Server.ReceivingObservable).Repeat(), (l, state) => new{l, state})
                 .Do(g => Console.WriteLine(string.Format("({0}.{1}) : recving {2}",
                                         DateTime.Now.ToLongTimeString(),
                                         DateTime.Now.Millisecond,
