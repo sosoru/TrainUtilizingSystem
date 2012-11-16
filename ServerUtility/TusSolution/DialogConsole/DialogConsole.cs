@@ -54,7 +54,7 @@ namespace DialogConsole
         public BlockSheet Sheet { get; set; }
 
         [DataMember]
-        public IList<Vehicle> Vehicles { get; set; }
+        public List<Vehicle> Vehicles { get; set; }
 
         private IScheduler SchedulerPacketProcessing;
         private IScheduler SchedulerSendingProcessing;
