@@ -94,6 +94,7 @@ namespace DialogConsole
             this.Receiving_ = Observable.Defer(() => this.Server.ReceivingObservable)
                 .ObserveOn(this.SchedulerSendingProcessing)
                 .Timeout(TimeSpan.FromMilliseconds(5))
+                .Repeat()
                 .Zip(timer, (v, _) => v)
                 .Do(g => Console.WriteLine(string.Format("({0}.{1}) : recving {2}",
                                                                     DateTime.Now.ToLongTimeString(),
