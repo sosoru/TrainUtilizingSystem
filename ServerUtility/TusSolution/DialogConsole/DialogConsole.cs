@@ -89,28 +89,21 @@ namespace DialogConsole
 
             //var timer = Observable.Interval(TimeSpan.FromMilliseconds(100), this.SchedulerPacketProcessing).Repeat();
 
-            var task = new Action (() =>
-                {
-                    try
-                    {
-                        var states = this.Server.ReceivingObservable
-                                        .Timeout(TimeSpan.FromMilliseconds(10))
-                                        .ToArray().First();
 
-                        foreach (var g in states)
-                        {
-                            Console.WriteLine(string.Format("({0}.{1}) : recving {2}",
+            var timer = Observable.Interval(TimeSpan.FromMilliseconds(20), this.SchedulerSendingProcessing);
+            this.Receiving_ = Observable.Defer(this.Server.ReceivingObservable)
+                .ObserveOn(this.SchedulerSendingProcessing)
+                .Timeout(TimeSpan.FromMilliseconds(5))
+                .Zip(timer, (v, _) => v)
+                .Do(g => Console.WriteLine(string.Format("({0}.{1}) : recving {2}",
                                                                     DateTime.Now.ToLongTimeString(),
                                                                     DateTime.Now.Millisecond,
                                                                     g.ToString()
-                                                                    ));
-                        }
-                    }
-                    catch (TimeoutException ex) { }
-                });
+                                                                    )))
+                                                    .Catch(TimeoutException ex => {})
+                                                            .Subscribe();
+                                                                    
 
-            var timer = Observable.Interval(TimeSpan.FromMilliseconds(100), this.SchedulerSendingProcessing)
-                .Subscribe(l => task());
 
             //this.Receiving_ = Observable.Interval(TimeSpan.FromMilliseconds(100), this.SchedulerPacketProcessing)
             //    .Zip(Observable.Defer(() => this.Server.ReceivingObservable).Repeat(), (l, state) => new{l, state})
