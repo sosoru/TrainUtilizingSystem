@@ -59,6 +59,7 @@ namespace DialogConsole
         {
             this.Server = CreateServer();
             this.Sheet = CreateSheet("test_looping.yaml", this.Server);
+            this.Sheet.AssociatedScheduler = this.SchedulerPacketProcessing;
 
             this.Server.Controller = io;
         }
