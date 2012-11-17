@@ -208,11 +208,21 @@ namespace RouteLibrary.Base
                     this.IsNeededExecution = true;
                     break;
                 case MotorMemoryStateEnum.Waiting:
-                    states.Add(MotorMemoryStateEnum.Controlling, CreateMotorState(cmd));
+                    var cntstate = CreateMotorState(cmd);
+                    states.Add(MotorMemoryStateEnum.Controlling, cntstate);
                     var waitingstate = BeforeBlockHavingMotor(cmd);
                     states.Add(MotorMemoryStateEnum.Waiting, CreateWaitingState(waitingstate.MotorEffector.Device));
                     this.Device.CurrentMemory = MotorMemoryStateEnum.Waiting;
-                    this.IsNeededExecution = true;
+                    if (this.Device.States.ContainsKey(MotorMemoryStateEnum.Controlling) &&
+                        this.Device.States[MotorMemoryStateEnum.Controlling].Duty == cntstate.Duty)
+                    {
+                        this.IsNeededExecution = false;
+                    }
+                    else
+                    {
+                        this.IsNeededExecution = true;
+                    }
+
                     break;
                 case MotorMemoryStateEnum.NoEffect:
                     states.Add(MotorMemoryStateEnum.NoEffect, NoEffectState);
