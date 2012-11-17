@@ -247,7 +247,7 @@ namespace DialogConsole
             CreateVehicle(bk);
 
             this.VehicleProcessing_ = Observable.Defer(() => Observable.Start(VehicleProcess, this.SchedulerSendingProcessing))
-                .Delay(TimeSpan.FromMilliseconds(500))
+                .Delay(TimeSpan.FromMilliseconds(1000))
                 .Repeat()
                 .SubscribeOn(Scheduler.NewThread)
                 .Subscribe();
@@ -292,7 +292,7 @@ namespace DialogConsole
         public void VehicleProcess()
         {
             this.Sheet.InquiryAllMotors();
-            Thread.Sleep(500);
+            Thread.Sleep(1000);
             var detected = this.Sheet.InnerBlocks.Where(b => b.IsMotorDetectingTrain);
             var vehicle = this.Vehicles.First();
 
