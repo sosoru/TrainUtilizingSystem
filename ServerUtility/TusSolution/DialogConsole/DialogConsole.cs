@@ -247,7 +247,7 @@ namespace DialogConsole
             CreateVehicle(bk);
 
             this.VehicleProcessing_ = Observable.Defer(() => Observable.Start(VehicleProcess, this.SchedulerSendingProcessing))
-                .Delay(TimeSpan.FromMilliseconds(1000))
+                //.Delay(TimeSpan.FromMilliseconds(1000))
                 .Repeat()
                 .SubscribeOn(Scheduler.NewThread)
                 .Subscribe();
