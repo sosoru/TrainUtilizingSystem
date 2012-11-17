@@ -147,6 +147,10 @@ namespace RouteLibrary.Base
             {
                 dir = MotorDirection.Negative;
             }
+            else
+            {
+                new InvalidOperationException("direction undecidable");
+            }
             duty = cmd.Speed;
 
             return CreateMotorState(dir, duty);
