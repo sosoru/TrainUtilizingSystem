@@ -15,7 +15,7 @@ namespace RouteLibrary.Base
     {
         void ExecuteCommand();
         void ApplyCommand(CommandFactory factory);
-        bool IsNeededExecution { get; }        
+        bool IsNeededExecution { get; }
     }
 
     public abstract class DeviceEffector<TDev, TInfo, TState>
@@ -203,6 +203,7 @@ namespace RouteLibrary.Base
             switch (cmd.MotorMode)
             {
                 case MotorMemoryStateEnum.Controlling:
+                    states.Add(MotorMemoryStateEnum.Locked, LockedState);
                     states.Add(MotorMemoryStateEnum.Controlling, CreateMotorState(cmd));
                     this.Device.CurrentMemory = MotorMemoryStateEnum.Controlling;
                     this.IsNeededExecution = true;
