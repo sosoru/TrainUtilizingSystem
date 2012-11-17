@@ -37,6 +37,9 @@ namespace RouteLibrary.Base
         [DataMember]
         public float Speed { get; set; }
 
+        [DataMember]
+        public int Length { get; set; }
+
         static Vehicle()
         {
             LastVehicleID = 0;
@@ -109,13 +112,14 @@ namespace RouteLibrary.Base
                     {
                         Route = this.Route,
                     };
+                    var lockedunits = this.Route.LockedUnits.ToArray();
 
-                    if (blk == this.Route.LockedUnits.First().ControlBlock)
+                    if (blk == lockedunits[lockedunits.Length-2].ControlBlock)
                     {
                         cmd.MotorMode = MotorMemoryStateEnum.Controlling;
                         cmd.Speed = cntspdFactory();
                     }
-                    else if (blk == this.Route.LockedUnits.Last().ControlBlock)
+                    else if (blk == lockedunits.Last().ControlBlock)
                     {
                         cmd.MotorMode = MotorMemoryStateEnum.Waiting;
                         cmd.Speed = waitspdFactory();
@@ -139,7 +143,7 @@ namespace RouteLibrary.Base
                         Route = this.Route,
                     };
 
-                    if (blk == this.Route.LockedUnits.First().ControlBlock)
+                    if (blk == this.Route.LockedUnits.Last().ControlBlock)
                     {
                         cmd.MotorMode = MotorMemoryStateEnum.Controlling;
                         cmd.Speed = cntspdFactory();
@@ -191,7 +195,7 @@ namespace RouteLibrary.Base
             var spdfactory = new SpeedFactory() { RawSpeed = spd };
 
             var lastlockedblocks = this.Route.LockedBlocks;
-            this.Route.AllocateTrain(this.CurrentBlock, 1);
+            this.Route.AllocateTrain(this.CurrentBlock, this.Length);
 
             if (!this.Route.LockNextUnit())
             {
