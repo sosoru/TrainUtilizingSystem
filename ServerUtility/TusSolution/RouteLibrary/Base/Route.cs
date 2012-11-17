@@ -262,7 +262,8 @@ namespace RouteLibrary.Base
             this.ind_current = blockunit.ind - 1;
             while (len-- > 0)
             {
-                this.LockNextUnit();
+                if(!this.LockNextUnit())
+                    throw new InvalidOperationException("cannot allocate block");
             }
         }
 
