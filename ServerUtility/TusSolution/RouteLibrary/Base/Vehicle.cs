@@ -53,6 +53,7 @@ namespace RouteLibrary.Base
             this.Route = rt;
 
             this.CurrentBlock = this.Route.Blocks.First();
+            this.Length = 1;
         }
 
         public void Refresh()
