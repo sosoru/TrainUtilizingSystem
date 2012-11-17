@@ -158,9 +158,9 @@ namespace TestProject
             // vh will allocate the first control block of the route at Constructor
 
             var disp = vh.Run();
-            var waitingTicks1 = sht.TimeWaitingSwitchChanged + TimeSpan.FromSeconds(0.1);
+            var waitingTicks1 = sht.TimeWaitingSwitchChanged + TimeSpan.FromSeconds(0.5);
 
-            scheduler.Schedule(TimeSpan.FromSeconds(0.1), () =>
+            scheduler.Schedule(TimeSpan.FromSeconds(0.5), () =>
             {
                 serv.SendingObservable.Subscribe();
                 Assert.IsTrue(written.ExtractDevice<SwitchState>(1, 1, 1).Position == PointStateEnum.Straight);
