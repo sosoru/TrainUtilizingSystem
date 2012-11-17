@@ -292,14 +292,24 @@ namespace DialogConsole
         public void VehicleProcess()
         {
             this.Sheet.InquiryAllMotors();
-
             var detected = this.Sheet.InnerBlocks.Where(b => b.IsMotorDetectingTrain);
             var vehicle = this.Vehicles.First();
+
+            if (detected.Count() == 0)
+            {
+                vehicle.Length++;
+            }
 
             var movedfor = detected.Except(new[] { vehicle.CurrentBlock }).ToArray();
 
             if (movedfor.Length > 0)
+            {
                 vehicle.CurrentBlock = movedfor.First();
+                vehicle.Length--;
+
+                if (vehicle.Length == 0)
+                    vehicle.Length = 1;
+            }
 
             foreach (var v in this.Vehicles)
             {
