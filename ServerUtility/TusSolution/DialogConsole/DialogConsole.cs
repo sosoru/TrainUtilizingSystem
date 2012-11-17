@@ -301,6 +301,7 @@ namespace DialogConsole
             if (movedfor.Length > 0)
             {
                 vehicle.CurrentBlock = movedfor.First();
+                Console.WriteLine("vehicle moved : {0}", vehicle.CurrentBlock.Name);
             }
 
             foreach (var v in this.Vehicles)
