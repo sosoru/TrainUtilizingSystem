@@ -162,7 +162,7 @@ namespace TestProject
 
             scheduler.Schedule(TimeSpan.FromSeconds(0.5), () =>
             {
-                serv.SendingObservable.Subscribe();
+                serv.SendingObservable.Repeat(2).Subscribe();
                 Assert.IsTrue(written.ExtractDevice<SwitchState>(1, 1, 1).Position == PointStateEnum.Straight);
                 Assert.IsTrue(written.ExtractDevice<SwitchState>(1, 1, 2).Position == PointStateEnum.Straight);
 
