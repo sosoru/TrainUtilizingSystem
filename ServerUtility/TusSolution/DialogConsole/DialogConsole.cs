@@ -280,7 +280,9 @@ namespace DialogConsole
             }
             this.Vehicles.Clear();
 
-            var v = new Vehicle(this.Sheet, this.LoopingRoute);
+            var rt = this.LoopingRoute;
+            rt.IsRepeatable = true;
+            var v = new Vehicle(this.Sheet, rt);
             v.CurrentBlock = b;
             v.Speed = 0.5f;
 
@@ -334,7 +336,6 @@ namespace DialogConsole
                     res.Headers.Add("Content-type: application/json");
                     res.Headers.Add("Access-Control-Allow-Headers: origin, x-requested-with, accept");
                     res.Headers.Add("Access-Control-Allow-Origin: null");
-                    //res.Headers.Add("Origin: http://" + host);
                     using (var sw = new StreamWriter(res.OutputStream))
                     using (var ms = new MemoryStream())
                     {
