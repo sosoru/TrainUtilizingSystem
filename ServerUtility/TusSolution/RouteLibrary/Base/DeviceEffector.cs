@@ -138,7 +138,7 @@ namespace RouteLibrary.Base
                 return NoEffectState;
             }
 
-            var seg = cmd.Route.Segments[this.ParentBlock];
+            var seg = cmd.Route.GetSegment(this.ParentBlock);
             if (seg.Info.Equals(this.Info.RoutePositive))
             {
                 dir = MotorDirection.Positive;
@@ -262,7 +262,7 @@ namespace RouteLibrary.Base
                 return;
 
             var cmd = factory.CreateCommand(this.ParentBlock);
-            var segment = cmd.Route.Segments[this.ParentBlock];
+            var segment = cmd.Route.GetSegment(this.ParentBlock);
 
             if ((segment.IsFromAny || this.Info.DirStraight.Any(i => i.From.Name == segment.From.Name))
                     && (segment.IsToAny || this.Info.DirStraight.Any(i => i.To.Name == segment.To.Name)))
