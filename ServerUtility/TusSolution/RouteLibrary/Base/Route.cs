@@ -200,16 +200,29 @@ namespace RouteLibrary.Base
             return this.Units.FirstOrDefault(b => b.ControlBlock == parentBlock);
         }
 
-        private IDictionary<Block, RouteSegment> segments_;
-        public IDictionary<Block, RouteSegment> Segments
+        public RouteSegment GetSegment(Block blk)
         {
-            get
+            var ind = this.Blocks.IndexOf(blk);
+
+            if (ind == 0)
             {
-                if (this.segments_ == null)
-                {
-                    this.segments_ = to_route_dict(this.Blocks);
-                }
-                return this.segments_;
+                Block first = null;
+                if (this.IsRepeatable)
+                    first = this.Blocks.Last();
+
+                return new RouteSegment(first, this.Blocks[ind+1]);
+            }
+            else if (ind == this.Blocks.Count)
+            {
+                Block last = null;
+                if (this.IsRepeatable)
+                    last = this.Blocks.First();
+
+                return new RouteSegment(this.Blocks[ind - 1], last);
+            }
+            else
+            {
+                return new RouteSegment(this.Blocks[ind - 1], this.Blocks[ind + 1]);
             }
         }
 
