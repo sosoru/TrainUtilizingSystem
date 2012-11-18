@@ -141,6 +141,14 @@ namespace RouteLibrary.Base
 
         public bool TryLockNeighborUnit(int i)
         {
+            ControllingRoute nextroute;
+
+            return TryLockNeighborUnit(i, nextroute);
+        }
+
+        public bool TryLockNeighborUnit(int i, out ControllingRoute nextunit)
+        {
+            // todo: minus value support
             int ind = ind_current + i;
 
             if (this.IsRepeatable)
@@ -151,9 +159,11 @@ namespace RouteLibrary.Base
             if (ind < this.Units.Count
                 && this.Units[ind].CanBeAllocated)
             {
+                nextunit = this.Units[ind];
                 return true;
             }
             return false;
+
         }
 
         public bool LockNextUnit()
