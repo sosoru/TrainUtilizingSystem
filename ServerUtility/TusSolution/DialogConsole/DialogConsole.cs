@@ -101,7 +101,7 @@ namespace DialogConsole
             this.Sheet.AssociatedScheduler = this.SchedulerPacketProcessing;
 
             this.Server.SendingObservable
-                .Delay(TimeSpan.FromMilliseconds(20))
+                .Delay(TimeSpan.FromMilliseconds(15))
                 .Repeat()
                 //.SelectMany(g => g.ExtractPackedPacket())
                 //.Do(g => Console.WriteLine(string.Format("({0}.{1}) : sending {2}",
@@ -247,7 +247,7 @@ namespace DialogConsole
             CreateVehicle(bk);
 
             this.VehicleProcessing_ = Observable.Defer(() => Observable.Start(VehicleProcess, this.SchedulerSendingProcessing))
-                .Delay(TimeSpan.FromMilliseconds(500))
+                .Delay(TimeSpan.FromMilliseconds(1000))
                 .Repeat()
                 .SubscribeOn(Scheduler.NewThread)
                 .Subscribe();
@@ -292,17 +292,6 @@ namespace DialogConsole
         public void VehicleProcess()
         {
             this.Sheet.InquiryAllMotors();
-            Thread.Sleep(300);
-            var detected = this.Sheet.InnerBlocks.Where(b => b.IsMotorDetectingTrain);
-            var vehicle = this.Vehicles.First();
-
-            var movedfor = detected.Except(new[] { vehicle.CurrentBlock }).ToArray();
-
-            if (movedfor.Length > 0)
-            {
-                vehicle.CurrentBlock = movedfor.First();
-                Console.WriteLine("vehicle moved : {0}", vehicle.CurrentBlock.Name);
-            }
 
             foreach (var v in this.Vehicles)
             {
