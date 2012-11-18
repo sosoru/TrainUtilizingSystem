@@ -156,10 +156,10 @@ namespace RouteLibrary.Base
                 ind = ind % this.Units.Count;
             }
 
+            nextunit = this.Units[ind];
             if (ind < this.Units.Count
                 && this.Units[ind].CanBeAllocated)
             {
-                nextunit = this.Units[ind];
                 return true;
             }
             return false;
@@ -171,9 +171,9 @@ namespace RouteLibrary.Base
             if (TryLockNeighborUnit(1))
             {
                 var ind = ind_current + 1;
-                if(this.IsRepeatable)
-                      ind = ind % this.Units.Count;
-                
+                if (this.IsRepeatable)
+                    ind = ind % this.Units.Count;
+
                 this.Units[ind].Allocate();
                 this.LockedUnits.Enqueue(this.Units[ind]);
 
@@ -220,7 +220,7 @@ namespace RouteLibrary.Base
                 if (this.IsRepeatable)
                     first = this.Blocks.Last();
 
-                return new RouteSegment(first, this.Blocks[ind+1]);
+                return new RouteSegment(first, this.Blocks[ind + 1]);
             }
             else if (ind == this.Blocks.Count)
             {
@@ -285,7 +285,7 @@ namespace RouteLibrary.Base
             this.ind_current = blockunit.ind - 1;
             while (len-- > 0)
             {
-                if(!this.LockNextUnit())
+                if (!this.LockNextUnit())
                     throw new InvalidOperationException("cannot allocate block");
             }
         }
