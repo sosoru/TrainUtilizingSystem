@@ -64,10 +64,14 @@ namespace RouteLibrary.Base
             ControllingRoute rt;
             if(this.Route.TryLockNeighborUnit(1, out, rt))
             {
-                // verified i'm not halted
+                // verified i'm not halted and the next unit is not blocked by other vehicles
 
                 if(rt.ControlBlock.IsMotorDetectingTrain)
+                {
                      this.CurrentBlock = rt.ControlBlock;
+                                    Console.WriteLine("vehicle moved : {0}", vehicle.CurrentBlock.Name);
+
+                }
             }
 
             Run(this.Speed, this.CurrentBlock);
