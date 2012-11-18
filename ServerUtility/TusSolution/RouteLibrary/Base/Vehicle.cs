@@ -69,7 +69,7 @@ namespace RouteLibrary.Base
                 if(rt.ControlBlock.IsMotorDetectingTrain)
                 {
                      this.CurrentBlock = rt.ControlBlock;
-                                    Console.WriteLine("vehicle moved : {0}", vehicle.CurrentBlock.Name);
+                    Console.WriteLine("vehicle moved : {0}", vehicle.CurrentBlock.Name);
 
                 }
             }
@@ -208,7 +208,7 @@ namespace RouteLibrary.Base
             CommandFactory cmdfactory = null;
             var spdfactory = new SpeedFactory() { RawSpeed = spd };
 
-            var lastlockedblocks = this.Route.LockedBlocks;
+            var lastlockedblocks = this.Route.LockedBlocks.ToArray();
             this.Route.AllocateTrain(this.CurrentBlock, this.Length);
 
             if (!this.Route.LockNextUnit())
