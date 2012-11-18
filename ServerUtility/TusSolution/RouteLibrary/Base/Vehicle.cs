@@ -23,7 +23,7 @@ namespace RouteLibrary.Base
 
         [DataMember]
         public int VehicleID { get; private set; }
-        
+
         [DataMember]
         public Block CurrentBlock { get; set; }
 
@@ -60,6 +60,15 @@ namespace RouteLibrary.Base
         {
             if (this.Halt != null && this.Halt.HaltState)
                 this.Speed = 0.0f;
+
+            ControllingRoute rt;
+            if(this.Route.TryLockNeighborUnit(1, out, rt))
+            {
+                // verified i'm not halted
+
+                if(rt.ControlBlock.IsMotorDetectingTrain)
+                     this.CurrentBlock = rt.ControlBlock;
+            }
 
             Run(this.Speed, this.CurrentBlock);
         }
@@ -115,7 +124,7 @@ namespace RouteLibrary.Base
                     };
                     var lockedunits = this.Route.LockedUnits.ToArray();
 
-                    if (blk == lockedunits[lockedunits.Length-2].ControlBlock)
+                    if (blk == lockedunits[lockedunits.Length - 2].ControlBlock)
                     {
                         cmd.MotorMode = MotorMemoryStateEnum.Controlling;
                         cmd.Speed = cntspdFactory();
