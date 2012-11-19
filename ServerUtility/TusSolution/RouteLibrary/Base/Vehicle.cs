@@ -61,8 +61,8 @@ namespace RouteLibrary.Base
             if (this.Halt != null && this.Halt.HaltState)
                 this.Speed = 0.0f;
 
-            ControllingRoute rt;
-            if(this.Route.TryLockNeighborUnit(1))
+            ControllingRoute rt = null;
+            if(this.Route.TryLockNeighborUnit(1, out rt))
             {
                 // verified i'm not halted and the next unit is not blocked by other vehicles
 
