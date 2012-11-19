@@ -357,14 +357,13 @@ namespace DialogConsole
                         var route = vh.AvailableRoutes.First(rt => rt.Name == recvinfo.Name);
                         if (route.Blocks.Contains(vh.CurrentBlock))
                         {
-                            vh.Route = route;
-                            vh.Refresh();
+                            vh.ChangeRoute(route);
                         }
                     }
                     if (recvinfo.Halts != null)
                     {
                         var halts = recvinfo.Halts.Select(h => new Halt(vh.Sheet.GetBlock(h)));
-                        vh.Halts = halts;
+                        vh.Halt = halts;
                     }
 
 
