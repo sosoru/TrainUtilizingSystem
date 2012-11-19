@@ -364,7 +364,7 @@ namespace DialogConsole
                     {
                         var halts = recvinfo.Halts.Select(h => new Halt(vh.Sheet.GetBlock(h)));
                         vh.Halt.Clear();
-                        for(var h in halts)
+                        foreach(var h in halts)
                             vh.Halt.Add(h);
                     }
 
