@@ -300,10 +300,15 @@ namespace DialogConsole
         }
 
         [DataContract]
-        private class VehicleInfoProxy
+        private class VehicleInfoReceived
         {
             [DataMember]
-            public List<Vehicle> Vehicles { get; set; }
+            public string Name;
+
+            [DataMember(IsRequired=false)]
+            public int Speed;
+
+
         }
 
         private void FillVehicleInfoResponse(HttpListenerContext r)
@@ -318,7 +323,7 @@ namespace DialogConsole
             {
                 var cnt = new DataContractJsonSerializer(typeof(VehicleInfoProxy));
                 var vehis = new VehicleInfoProxy() { Vehicles = this.Vehicles.ToList() };
-
+                
                 cnt.WriteObject(ms, vehis);
 
                 sw.WriteLine(System.Text.UnicodeEncoding.UTF8.GetString(ms.ToArray()));
@@ -328,7 +333,15 @@ namespace DialogConsole
         private void FillConsoleInfoResponse(HttpListenerContext r)
         {
             var res = r.Response;
+            var req = r.Request;
 
+            if (req.HttpMethod == "PORT")
+            {
+
+            }
+            else if (req.HttpMethod == "GET")
+            {
+            }
 
         }
 
