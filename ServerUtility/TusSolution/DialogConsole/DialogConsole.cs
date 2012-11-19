@@ -302,12 +302,17 @@ namespace DialogConsole
         [DataContract]
         private class VehicleInfoReceived
         {
-            [DataMember]
+            [DataMember(IsRequired=true)]
             public string Name;
 
             [DataMember(IsRequired=false)]
             public int Speed;
 
+            [DataMember(IsRequired = false)]
+            public string RouteName;
+
+            [DataMember(IsRequired=false)]
+            public ICollection<string> Halts;
 
         }
 
