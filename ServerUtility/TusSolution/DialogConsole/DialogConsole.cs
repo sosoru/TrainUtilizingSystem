@@ -369,6 +369,10 @@ namespace DialogConsole
 
 
                 }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
             }
             else if (req.HttpMethod == "GET")
             {
