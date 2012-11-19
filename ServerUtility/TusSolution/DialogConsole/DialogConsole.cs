@@ -69,7 +69,7 @@ namespace DialogConsole
             this.Server = CreateServer();
             this.Sheet = CreateSheet("test_looping.yaml", this.Server);
             this.Sheet.AssociatedScheduler = this.SchedulerPacketProcessing;
-Console
+
             this.Server.Controller = io;
             this.Vehicles = new List<Vehicle>();
         }
@@ -324,6 +324,7 @@ Console
                 {
                     var res = r.Response;
                     var host = r.Request.UserHostAddress;
+                    
 
                     res.Headers.Add("Content-type: application/json");
                     res.Headers.Add("Access-Control-Allow-Headers: origin, x-requested-with, accept");
