@@ -126,7 +126,7 @@ namespace TestProject
             var vh = new Vehicle(sht, rt);
             var halt = new Halt(sht.GetBlock("CT1"));
             vh.Speed = 1.0f;
-            vh.Halt = halt;
+            vh.Halt.Add(halt);
 
             written.Clear();
             vh.CurrentBlock = sht.GetBlock("AT4");
