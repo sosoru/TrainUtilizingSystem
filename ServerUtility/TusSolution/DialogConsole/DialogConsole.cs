@@ -306,6 +306,23 @@ namespace DialogConsole
             public List<Vehicle> Vehicles { get; set; }
         }
 
+        private void FillVehicleInfoResponse(HttpListenerContext r)
+        {
+            res.Headers.Add("Content-type: application/json");
+            res.Headers.Add("Access-Control-Allow-Headers: origin, x-requested-with, accept");
+            res.Headers.Add("Access-Control-Allow-Origin: null");
+            using (var sw = new StreamWriter(res.OutputStream))
+            using (var ms = new MemoryStream())
+            {
+                var cnt = new DataContractJsonSerializer(typeof(VehicleInfoProxy));
+                var vehis = new VehicleInfoProxy() { Vehicles = this.Vehicles.ToList() };
+
+                cnt.WriteObject(ms, vehis);
+
+                sw.WriteLine(System.Text.UnicodeEncoding.UTF8.GetString(ms.ToArray()));
+            }
+        }
+
         private HttpListener http_listener = null;
         public IObservable<Unit> GetHttpObservable()
         {
@@ -324,21 +341,8 @@ namespace DialogConsole
                 {
                     var res = r.Response;
                     var host = r.Request.UserHostAddress;
+
                     
-
-                    res.Headers.Add("Content-type: application/json");
-                    res.Headers.Add("Access-Control-Allow-Headers: origin, x-requested-with, accept");
-                    res.Headers.Add("Access-Control-Allow-Origin: null");
-                    using (var sw = new StreamWriter(res.OutputStream))
-                    using (var ms = new MemoryStream())
-                    {
-                        var cnt = new DataContractJsonSerializer(typeof(VehicleInfoProxy));
-                        var vehis = new VehicleInfoProxy() { Vehicles = this.Vehicles.ToList() };
-
-                        cnt.WriteObject(ms, vehis);
-
-                        sw.WriteLine(System.Text.UnicodeEncoding.UTF8.GetString(ms.ToArray()));
-                    }
                 })
                 .Select(r => Unit.Default);
         }
