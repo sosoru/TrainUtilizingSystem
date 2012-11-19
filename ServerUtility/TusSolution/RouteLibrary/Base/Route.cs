@@ -143,7 +143,7 @@ namespace RouteLibrary.Base
         {
             ControllingRoute nextroute;
 
-            return TryLockNeighborUnit(i, nextroute);
+            return TryLockNeighborUnit(i, out nextroute);
         }
 
         public bool TryLockNeighborUnit(int i, out ControllingRoute nextunit)
