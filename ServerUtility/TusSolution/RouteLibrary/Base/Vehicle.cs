@@ -25,6 +25,12 @@ namespace RouteLibrary.Base
         public int VehicleID { get; private set; }
 
         [DataMember]
+        public string Name { get; private set; }
+
+        [DataMember]
+        public IList<Route> AvailableRoutes { get; set; }
+
+        [DataMember]
         public Block CurrentBlock { get; set; }
 
         [DataMember]
@@ -32,7 +38,7 @@ namespace RouteLibrary.Base
         public BlockSheet Sheet { get; set; }
 
         [DataMember]
-        public Halt Halt { get; set; }
+        public IList<Halt> Halt { get; privatej set; }
 
         [DataMember]
         public float Speed { get; set; }
@@ -54,12 +60,15 @@ namespace RouteLibrary.Base
 
             this.CurrentBlock = this.Route.Blocks.First();
             this.Length = 1;
+            this.Halt = new List<Halt>();
         }
 
         public void Refresh()
         {
-            if (this.Halt != null && this.Halt.HaltState)
+            if(this.Halt!= null && this.Halt.Any(bh =>this.Route.LockedBlocks.Contains(bh) && bh.HaltState))
+            {
                 this.Speed = 0.0f;
+            }
 
             ControllingRoute rt = null;
             if(this.Route.TryLockNeighborUnit(1, out rt))
