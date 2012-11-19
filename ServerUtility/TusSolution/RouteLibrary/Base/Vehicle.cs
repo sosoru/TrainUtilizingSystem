@@ -65,7 +65,7 @@ namespace RouteLibrary.Base
 
         public void Refresh()
         {
-            if(this.Halt!= null && this.Halt.Any(bh =>this.Route.LockedBlocks.Contains(bh) && bh.HaltState))
+            if(this.Halt!= null && this.Halt.Any(bh =>this.Route.LockedBlocks.Contains(bh.HaltBlock) && bh.HaltState))
             {
                 this.Speed = 0.0f;
             }
