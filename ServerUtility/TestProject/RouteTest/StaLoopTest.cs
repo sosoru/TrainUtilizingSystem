@@ -187,7 +187,8 @@ namespace TestProject
             vh.Run(1.0f, sht.GetBlock("AT2"));
             scheduler.Start();
             serv.SendingObservable.Repeat(50).Subscribe();
-            Assert.IsTrue(written.ExtractDevice<MotorState>(1, 2, 2).Duty == 1.0f);
+            Assert.IsTrue(written.ExtractDevices<MotorState>(1, 2, 2).Any(s => s.Duty == 1.0f));
+
 
             // 2nd case : the vehicle keeps specified speed, but entering the next section, reduces its speed to half
             Route otherrt = GetRouteFirst(sht);
@@ -199,8 +200,8 @@ namespace TestProject
             
             scheduler.Start();
             serv.SendingObservable.Repeat(50).Subscribe();
-            Assert.IsTrue(written.ExtractDevice<MotorState>(1, 2, 2).Duty == 1.0f);
-            Assert.IsTrue(Math.Round(written.ExtractDevice<MotorState>(1, 2, 3).Duty, 1) == 0.5f);
+            Assert.IsTrue(written.ExtractDevices<MotorState>(1, 2, 2).Any(s => s.Duty == 1.0f));
+            Assert.IsTrue(Math.Round(written.ExtractDevices<MotorState>(1, 2, 3).Any(s => s.Duty), 1) == 0.5f);
 
             // 1st case : the vehicle reduces its speed to half immediately, and stops the next section
             written.Clear();
@@ -209,8 +210,8 @@ namespace TestProject
 
             scheduler.Start();
             serv.SendingObservable.Repeat(50).Subscribe();
-            Assert.IsTrue(Math.Round(written.ExtractDevice<MotorState>(1, 2, 2).Duty, 1) == 0.5f);
-            Assert.IsTrue(written.ExtractDevice<MotorState>(1, 2, 3).Duty == 0.0f);
+            Assert.IsTrue(Math.Round(written.ExtractDevices<MotorState>(1, 2, 2).Any(s =>s.Duty), 1) == 0.5f);
+            Assert.IsTrue(written.ExtractDevices<MotorState>(1, 2, 3).Any(s => s.Duty == 0.0f));
 
             // zero case : the vehicle stops immediately
             written.Clear();
@@ -226,7 +227,7 @@ namespace TestProject
 
             scheduler.Start();
             serv.SendingObservable.Repeat(50).Subscribe();
-            Assert.IsTrue(written.ExtractDevice<MotorState>(1, 2, 2).Duty == 0.0f);
+            Assert.IsTrue(written.ExtractDevices<MotorState>(1, 2, 2).Any(s => s.Duty == 0.0f));
 
 
         }
