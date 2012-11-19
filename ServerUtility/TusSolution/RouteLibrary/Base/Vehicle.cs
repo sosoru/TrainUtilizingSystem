@@ -136,6 +136,12 @@ namespace RouteLibrary.Base
             return this.Run(0.5f);
         }
 
+        public void ChangeRoute(Route rt)
+        {
+            this.Route = rt;
+            this.Refresh();
+        }
+
         public CommandFactory CreateWithWaitingCommand(Func<float> cntspdFactory, Func<float> waitspdFactory)
         {
             var func = new Func<Block, CommandInfo>(blk =>
