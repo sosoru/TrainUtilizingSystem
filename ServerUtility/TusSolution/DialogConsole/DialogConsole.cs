@@ -308,6 +308,8 @@ namespace DialogConsole
 
         private void FillVehicleInfoResponse(HttpListenerContext r)
         {
+            var res = r.Response;
+
             res.Headers.Add("Content-type: application/json");
             res.Headers.Add("Access-Control-Allow-Headers: origin, x-requested-with, accept");
             res.Headers.Add("Access-Control-Allow-Origin: null");
