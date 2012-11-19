@@ -70,14 +70,12 @@ namespace RouteLibrary.Parser
 
         private object extract_dict(Dictionary<object, object> dict, string key)
         {
-            try
+            object value;
+            if (dict.TryGetValue(key, out value))
             {
-                return dict[key];
+                return value;
             }
-            catch (KeyNotFoundException ex)
-            {
-                return null;
-            }
+            return null;
         }
 
         public IEnumerable<BlockInfo> Parse(string path)
