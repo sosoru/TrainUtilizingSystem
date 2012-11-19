@@ -69,7 +69,7 @@ namespace RouteLibrary.Base
                 if(rt.ControlBlock.IsMotorDetectingTrain)
                 {
                      this.CurrentBlock = rt.ControlBlock;
-                    Console.WriteLine("vehicle moved : {0}", vehicle.CurrentBlock.Name);
+                    Console.WriteLine("vehicle moved : {0}", this.CurrentBlock.Name);
 
                 }
             }
