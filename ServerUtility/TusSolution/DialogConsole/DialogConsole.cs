@@ -321,8 +321,8 @@ namespace DialogConsole
             using (var sw = new StreamWriter(res.OutputStream))
             using (var ms = new MemoryStream())
             {
-                var cnt = new DataContractJsonSerializer(typeof(VehicleInfoProxy));
-                var vehis = new VehicleInfoProxy() { Vehicles = this.Vehicles.ToList() };
+                var cnt = new DataContractJsonSerializer(typeof(IEnumerable<Vehicle>));
+                var vehis = this.Vehicles.ToArray();
                 
                 cnt.WriteObject(ms, vehis);
 
@@ -366,10 +366,10 @@ namespace DialogConsole
 
                     switch (r.Request.Url.PathAndQuery)
                     {
-                        case "/vehicles"
+                        case "/vehicles":
                             FillVehicleInfoResponse(r);
                             break;
-                        case "/console"
+                        case "/console":
                             FillConsoleInfoResponse(r);
                             break;
                     }
