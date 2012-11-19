@@ -66,6 +66,8 @@ namespace RouteLibrary.Base
     [DataContract]
     public class Route
     {
+        [DataMember]
+        public string Name { get; set; }
         public IList<Block> Blocks { get; private set; }
         public IList<ControllingRoute> Units { get; protected set; }
 
