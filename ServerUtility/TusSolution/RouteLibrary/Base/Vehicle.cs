@@ -66,9 +66,9 @@ namespace RouteLibrary.Base
             {
                 // verified i'm not halted and the next unit is not blocked by other vehicles
 
-                if(rt.ControlBlock.IsMotorDetectingTrain)
+                if(this.Route.ControlBlock.IsMotorDetectingTrain)
                 {
-                     this.CurrentBlock = rt.ControlBlock;
+                     this.CurrentBlock = this.Route.ControlBlock;
                     Console.WriteLine("vehicle moved : {0}", this.CurrentBlock.Name);
 
                 }
