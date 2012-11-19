@@ -325,6 +325,13 @@ namespace DialogConsole
             }
         }
 
+        private void FillConsoleInfoResponse(HttpListenerContext r)
+        {
+            var res = r.Response;
+
+
+        }
+
         private HttpListener http_listener = null;
         public IObservable<Unit> GetHttpObservable()
         {
@@ -348,6 +355,9 @@ namespace DialogConsole
                     {
                         case "/vehicles"
                             FillVehicleInfoResponse(r);
+                            break;
+                        case "/console"
+                            FillConsoleInfoResponse(r);
                             break;
                     }
                     
