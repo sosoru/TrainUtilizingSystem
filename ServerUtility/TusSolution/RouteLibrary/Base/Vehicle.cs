@@ -63,9 +63,18 @@ namespace RouteLibrary.Base
             this.Halt = new List<Halt>();
         }
 
+        public bool ShouldHalt
+        {
+            get
+            {
+                return this.Halt != null
+                    && this.Halt.Any(bh => this.Route.LockedBlocks.Contains(bh.HaltBlock) && bh.HaltState);
+            }
+        }
+
         public void Refresh()
         {
-            if(this.Halt!= null && this.Halt.Any(bh =>this.Route.LockedBlocks.Contains(bh.HaltBlock) && bh.HaltState))
+            if(this.ShouldHalt)
             {
                 this.Speed = 0.0f;
             }
@@ -222,8 +231,7 @@ namespace RouteLibrary.Base
 
             if (!this.Route.LockNextUnit())
             {
-                if (this.Halt != null
-                    && this.Route.Blocks.Contains(this.Halt.HaltBlock))
+                if (this.ShouldHalt)
                 {
                     cmdfactory = CreateHaltCommand(spdfactory);
                 }
