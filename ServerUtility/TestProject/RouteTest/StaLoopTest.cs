@@ -237,7 +237,7 @@ namespace TestProject
             Route rt = GetRouteFirst(sht);
             var vh = new Vehicle(sht, rt);
 
-            vh.Halt = new Halt(sht.GetBlock("AT14"));
+            vh.Halt.Add(new Halt(sht.GetBlock("AT14")));
 
             vh.Run(1.0f, sht.GetBlock("AT2"));
             serv.SendingObservable.Subscribe();
