@@ -302,16 +302,16 @@ namespace DialogConsole
         [DataContract]
         private class VehicleInfoReceived
         {
-            [DataMember(IsRequired=true)]
+            [DataMember(IsRequired = true)]
             public string Name;
 
-            [DataMember(IsRequired=false)]
-            public int Speed;
+            [DataMember(IsRequired = false)]
+            public string Speed;
 
             [DataMember(IsRequired = false)]
             public string RouteName;
 
-            [DataMember(IsRequired=false)]
+            [DataMember(IsRequired = false)]
             public ICollection<string> Halts;
 
         }
@@ -328,7 +328,7 @@ namespace DialogConsole
             {
                 var cnt = new DataContractJsonSerializer(typeof(IEnumerable<Vehicle>));
                 var vehis = this.Vehicles.ToArray();
-                
+
                 cnt.WriteObject(ms, vehis);
 
                 sw.WriteLine(System.Text.UnicodeEncoding.UTF8.GetString(ms.ToArray()));
@@ -342,7 +342,33 @@ namespace DialogConsole
 
             if (req.HttpMethod == "PORT")
             {
+                try
+                {
+                    var cnt = new DataContractJsonSerializer(typeof(VehicleInfoReceived));
+                    var recvinfo = (VehicleInfoReceived)cnt.ReadObject(req.InputStream);
+                    var vh = this.Vehicles.First(v => v.Name == recvinfo.Name);
 
+                    if (recvinfo.Speed != null)
+                    {
+                        vh.Speed = float.Parse(recvinfo.Speed) / 100.0f;
+                    }
+                    if (recvinfo.RouteName != null)
+                    {
+                        var route = vh.AvailableRoutes.First(rt => rt.Name == recvinfo.Name);
+                        if (route.Blocks.Contains(vh.CurrentBlock))
+                        {
+                            vh.Route = route;
+                            vh.Refresh();
+                        }
+                    }
+                    if (recvinfo.Halts != null)
+                    {
+                        var halts = recvinfo.Halts.Select(h => new Halt(vh.Sheet.GetBlock(h)));
+                        vh.Halts = halts;
+                    }
+
+
+                }
             }
             else if (req.HttpMethod == "GET")
             {
@@ -378,7 +404,7 @@ namespace DialogConsole
                             FillConsoleInfoResponse(r);
                             break;
                     }
-                    
+
                 })
                 .Select(r => Unit.Default);
         }
