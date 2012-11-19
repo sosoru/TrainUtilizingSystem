@@ -62,7 +62,7 @@ namespace RouteLibrary.Base
                 this.Speed = 0.0f;
 
             ControllingRoute rt;
-            if(this.Route.TryLockNeighborUnit(1, out, rt))
+            if(this.Route.TryLockNeighborUnit(1))
             {
                 // verified i'm not halted and the next unit is not blocked by other vehicles
 
