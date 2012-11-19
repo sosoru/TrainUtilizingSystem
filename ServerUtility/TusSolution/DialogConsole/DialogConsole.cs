@@ -342,8 +342,14 @@ namespace DialogConsole
                 .Do(r =>
                 {
                     var res = r.Response;
-                    var host = r.Request.UserHostAddress;
+                    var req = r.Request;
 
+                    switch (r.Request.Url.PathAndQuery)
+                    {
+                        case "/vehicles"
+                            FillVehicleInfoResponse(r);
+                            break;
+                    }
                     
                 })
                 .Select(r => Unit.Default);
