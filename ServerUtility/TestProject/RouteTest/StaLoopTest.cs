@@ -171,7 +171,7 @@ namespace TestProject
             scheduler.Schedule(waitingTicks1, () =>
             {
                 serv.SendingObservable.Repeat(50).Subscribe();
-                Assert.IsTrue(written.ExtractDevice<MotorState>(1, 2, 2).Duty > 0.0f);
+                Assert.IsTrue(written.ExtractDevices<MotorState>(1, 2, 2).Any(s =>s.Duty > 0.0f));
             });
 
             scheduler.Start();
