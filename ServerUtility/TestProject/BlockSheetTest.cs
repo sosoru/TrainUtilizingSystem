@@ -36,12 +36,14 @@ namespace TestProject
 
         public static TCast ExtractDevice<TCast>(this IEnumerable<IDeviceState<IPacketDeviceData>> list, ushort parent, byte module, byte inter)
         {
-            var id = new DeviceID(parent, module, inter);
-            return (TCast)list.Where(s => s is TCast).Frist(p => p.ID == id);
+            return ExtractDevices<TCast>(list, parent, module, inter).First();
         }
 
-        public static IEnumerable<TCast> ExtractDevice<TCast>(this IEnumerable<IDeviceState<IPacketDeviceData>> list, ushort parent, byte module, byte inter)
+        public static IEnumerable<TCast> ExtractDevices<TCast>(this IEnumerable<IDeviceState<IPacketDeviceData>> list, ushort parent, byte module, byte inter)
         {
+            var id = new DeviceID(parent, module, inter);
+            return (TCast)list.Where(s => s is TCast).Where(p => p.ID == id);
+
         }
 
     }
