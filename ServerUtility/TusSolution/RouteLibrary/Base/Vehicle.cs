@@ -246,7 +246,7 @@ namespace RouteLibrary.Base
 
             if (!this.Route.LockNextUnit())
             {
-                if (this.ShouldHalt)
+                if (this.CanHalt)
                 {
                     cmdfactory = CreateHaltCommand(spdfactory);
                 }
