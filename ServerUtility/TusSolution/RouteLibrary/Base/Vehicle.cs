@@ -97,7 +97,7 @@ namespace RouteLibrary.Base
                 var waitingunit = this.Route.LockedUnits.Last();
                 if(waitingunit.ControlBlock.IsMotorDetectingTrain)
                 {
-                     this.CurrentBlock = rt.ControlBlock;
+                     this.CurrentBlock = waitingunit.ControlBlock;
                     Console.WriteLine("vehicle moved : {0}", this.CurrentBlock.Name);
 
                 }
