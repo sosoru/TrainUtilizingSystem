@@ -73,6 +73,7 @@ namespace TestProject
                 "AT10", "AT11", "AT12", "BAT12",
                 "AT13", "AT14", "AT15", "BAT16",
                 "AT16", "AT1", "BAT1" });
+            route.IsRepeatable = true;
             return route;
         }
 
