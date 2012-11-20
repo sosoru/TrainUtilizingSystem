@@ -72,6 +72,15 @@ namespace RouteLibrary.Base
             }
         }
 
+        public bool CanHalt
+        {
+            get
+            {
+                return this.Halt != null
+                    && this.Halt.Any(bh => this.Route.LockedBlocks.Contains(bh.HaltBlock));
+            }
+        }
+
         public void Refresh()
         {
             if(this.ShouldHalt)
