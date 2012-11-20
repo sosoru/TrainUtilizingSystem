@@ -89,7 +89,7 @@ namespace RouteLibrary.Base
             }
 
             ControllingRoute rt = null;
-            if(this.Route.TryLockNeighborUnit(0, out rt))
+            if(this.Route.TryLockNeighborUnit(1, out rt))
             {
                 // verified i'm not halted and the next unit is not blocked by other vehicles
 
