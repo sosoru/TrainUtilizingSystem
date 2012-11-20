@@ -276,7 +276,7 @@ namespace DialogConsole
 
             this.VehicleProcessing_ = Observable.Defer(() => Observable.Start(VehicleProcess, this.SchedulerSendingProcessing))
                 .Do(u => this.Sheet.InquiryAllMotors())
-                .Delay(TimeSpan.FromMilliseconds(1000))
+                .Delay(TimeSpan.FromMilliseconds(500))
                 .Repeat()
                 .SubscribeOn(Scheduler.NewThread)
                 .Subscribe();
