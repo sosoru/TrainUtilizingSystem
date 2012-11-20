@@ -72,6 +72,9 @@ namespace SensorLibrary.Packet.IO
 
         public IObservable<DevicePacket> GetWritingPacket(DevicePacket pack)
         {
+            if (pack == null)
+                return Observable.Empty<DevicePacket>();
+
             this.Client.Address = ToEndPoint(pack.ID).Address;
             var eth = new EthPacket()
                           {
