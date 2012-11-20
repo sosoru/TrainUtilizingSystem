@@ -64,6 +64,8 @@ namespace DialogConsole
         private IDisposable Receiving_;
         private IDisposable ServingInfomation_;
 
+        private StreamWriter LogWriter;
+
         public void InitSheet(IDeviceIO io)
         {
             this.Server = CreateServer();
@@ -72,6 +74,8 @@ namespace DialogConsole
 
             this.Server.Controller = io;
             this.Vehicles = new List<Vehicle>();
+
+            this.LogWriter = new StreamWriter("packet_log.txt");
         }
 
         public IEnumerable<string> routesnames
