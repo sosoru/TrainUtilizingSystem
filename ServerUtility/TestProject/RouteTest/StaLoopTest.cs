@@ -201,7 +201,7 @@ namespace TestProject
             scheduler.Start();
             serv.SendingObservable.Repeat(50).Subscribe();
             Assert.IsTrue(written.ExtractDevices<MotorState>(1, 2, 2).Any(s => s.Duty == 1.0f));
-            Assert.IsTrue(Math.Round(written.ExtractDevices<MotorState>(1, 2, 3).Any(s => s.Duty), 1) == 0.5f);
+            Assert.IsTrue(written.ExtractDevices<MotorState>(1, 2, 3).Any(s => Math.Round(s.Duty, 1) == 0.5f));
 
             // 1st case : the vehicle reduces its speed to half immediately, and stops the next section
             written.Clear();
@@ -210,7 +210,7 @@ namespace TestProject
 
             scheduler.Start();
             serv.SendingObservable.Repeat(50).Subscribe();
-            Assert.IsTrue(Math.Round(written.ExtractDevices<MotorState>(1, 2, 2).Any(s =>s.Duty), 1) == 0.5f);
+            Assert.IsTrue(written.ExtractDevices<MotorState>(1, 2, 2).Any(s =>Math.Round(s.Duty, 1) == 0.5f));
             Assert.IsTrue(written.ExtractDevices<MotorState>(1, 2, 3).Any(s => s.Duty == 0.0f));
 
             // zero case : the vehicle stops immediately
