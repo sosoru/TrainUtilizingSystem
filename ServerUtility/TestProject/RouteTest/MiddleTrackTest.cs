@@ -131,7 +131,7 @@ namespace TestProject
             written.Clear();
             vh.CurrentBlock = sht.GetBlock("AT4");
             vh.Refresh();
-            serv.SendingObservable.Subscribe();
+            serv.SendingObservable.Repeat(50).Subscribe();
             Assert.IsTrue(Math.Round(written.ExtractDevice<MotorState>(1, 1, 1).Duty,1) == 0.5f);
 
             var sens = new UsartSensor() { DeviceID = new DeviceID(1, 3, 3) };
