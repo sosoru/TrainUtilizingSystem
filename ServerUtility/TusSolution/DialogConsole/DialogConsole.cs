@@ -350,10 +350,13 @@ namespace DialogConsole
 
                     if (recvinfo.Speed != null)
                     {
+                        Console.WriteLine("{0} is changing speed from {1} to {2}", vh.Name, vh.Speed, recvinfo.Speed);
+
                         vh.Speed = float.Parse(recvinfo.Speed) / 100.0f;
                     }
                     if (recvinfo.RouteName != null)
                     {
+                        Console.WriteLine("{0} is changing route from {1} to {2}", vh.Name, vh.Route.Name, recvinfo.RouteName);
                         var route = vh.AvailableRoutes.First(rt => rt.Name == recvinfo.Name);
                         if (route.Blocks.Contains(vh.CurrentBlock))
                         {
@@ -362,6 +365,7 @@ namespace DialogConsole
                     }
                     if (recvinfo.Halts != null)
                     {
+                        Console.WriteLine("{0} is changing halts set to {1}", vh.Name, recvinfo.Halts.Aggregate("", (ag, s) => ag += s + ", "));
                         var halts = recvinfo.Halts.Select(h => new Halt(vh.Sheet.GetBlock(h)));
                         vh.Halt.Clear();
                         foreach(var h in halts)
