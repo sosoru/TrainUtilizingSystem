@@ -24,7 +24,7 @@ namespace SensorLibrary.Devices.TusAvrDevices
         }
 
         protected Motor(Motor mtr, MotorState state)
-            :this()
+            : this()
         {
             this.CurrentState = state;
             this.DeviceID = mtr.DeviceID;
@@ -41,7 +41,7 @@ namespace SensorLibrary.Devices.TusAvrDevices
         public IDictionary<MotorMemoryStateEnum, MotorState> States
         {
             get;
-           set;
+            set;
         }
 
         private Kernel deviceKernel_ = null;
@@ -50,7 +50,11 @@ namespace SensorLibrary.Devices.TusAvrDevices
             get
             {
                 if (this.deviceKernel_ == null)
-                    this.deviceKernel_ = new Kernel() { DeviceID = this.DeviceID };
+                    this.deviceKernel_ = new Kernel()
+                    {
+                        DeviceID = this.DeviceID,
+                        ReceivingServer = this.ReceivingServer
+                    };
 
                 return this.deviceKernel_;
             }
@@ -61,7 +65,7 @@ namespace SensorLibrary.Devices.TusAvrDevices
             var kernel = Kernel.MemoryState(this.DeviceID, new MemoryState((int)mem));
             var devp = DevicePacket.CreatePackedPacket(kernel);
 
-            return devp ;
+            return devp;
         }
 
         public IEnumerable<DevicePacket> CreateApplyingStates()
@@ -75,7 +79,7 @@ namespace SensorLibrary.Devices.TusAvrDevices
             }
 
             return DevicePacket.CreatePackedPacket(statelist);
-            
+
         }
 
         public override void Observe(IObservable<IDeviceState<IPacketDeviceData>> observable)
@@ -101,7 +105,8 @@ namespace SensorLibrary.Devices.TusAvrDevices
 
         public MotorMemoryStateEnum CurrentMemory
         {
-            get {
+            get
+            {
                 if (!(this.DeviceKernel.CurrentState is MemoryState))
                     return MotorMemoryStateEnum.Unknown;
 
