@@ -218,11 +218,23 @@ namespace TestProject
             var blocks = test_blocks.ToArray();
             var target = new Route(blocks);
             target.IsRepeatable = true;
+        }
 
+        [TestMethod]
+        public void TryLockNeighborTest()
+        {
+            var blocks = test_blocks.ToArray();
+            var target  = new Route(blocks);
+            ControllingRoute unit;
+
+            target.LockedBlocks();
+
+            var first = target.Units.First();
+            var second = target.Units.ToArray()[1];
+
+            target.TryLockNeighborUnit(1, out unit);
+            Assert.IsTrue(unit.ControlBlock.Name == second.ControlBlock.Name);
             
-
-            
-
         }
     }
 }
