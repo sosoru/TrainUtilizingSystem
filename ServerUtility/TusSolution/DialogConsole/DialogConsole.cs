@@ -240,11 +240,11 @@ namespace DialogConsole
 
         public void InputVehicleMonitoring()
         {
-            sht.Effect(new CommandFactory()
+            this.Sheet.Effect(new CommandFactory()
             {
                 CreateCommand = b => new CommandInfo() { MotorMode = MotorMemoryStateEnum.NoEffect, }
             },
-            sht.InnerBlocks);
+            this.Sheet.InnerBlocks);
             Console.WriteLine("Which block your vehicle halt on?");
 
             var bk = this.Sheet.GetBlock(Console.ReadLine());
