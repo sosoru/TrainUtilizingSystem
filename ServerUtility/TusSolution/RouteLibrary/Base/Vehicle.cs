@@ -88,13 +88,12 @@ namespace RouteLibrary.Base
                 this.Speed = 0.0f;
             }
 
-            ControllingRoute rt = null;
-            if(this.Route.LockedUnits.Count > 0
-                && this.Route.LockedUnits.Last())
+            if(this.Route.LockedUnits.Count > 0)                
             {
                 // verified i'm not halted and the next unit is not blocked by other vehicles
 
-                if(rt.ControlBlock.IsMotorDetectingTrain)
+                var waitingunit = this.Route.LockedUnits.Last();
+                if(waitingunit.ControlBlock.IsMotorDetectingTrain)
                 {
                      this.CurrentBlock = rt.ControlBlock;
                     Console.WriteLine("vehicle moved : {0}", this.CurrentBlock.Name);
