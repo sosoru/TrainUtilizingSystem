@@ -152,6 +152,7 @@ namespace RouteLibrary.Base
         {
             // todo: minus value support
             int ind = ind_current + i;
+            nextunit = null;
 
             if (this.IsRepeatable)
             {
