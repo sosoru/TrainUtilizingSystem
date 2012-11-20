@@ -195,6 +195,12 @@ namespace DialogConsole
             sht.InquiryAllMotors();
             sht.InquiryDevices(sht.AllSwitches());
 
+            sht.Effect(new CommandFactory()
+            {
+                CreateCommand = b => new CommandInfo() { MotorMode = MotorMemoryStateEnum.NoEffect,}
+            },
+            sht.InnerBlocks);
+
             foreach (var b in blocks)
                 Console.WriteLine(b.ToString());
             return blocks.Select(b => b.ToString() + "\n")
@@ -245,6 +251,8 @@ namespace DialogConsole
 
             this.Vehicles.Clear();
             CreateVehicle(bk);
+
+
 
             this.VehicleProcessing_ = Observable.Defer(() => Observable.Start(VehicleProcess, this.SchedulerSendingProcessing))
                 .Delay(TimeSpan.FromMilliseconds(1000))
