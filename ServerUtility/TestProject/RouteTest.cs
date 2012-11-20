@@ -227,7 +227,7 @@ namespace TestProject
             var target  = new Route(blocks);
             ControllingRoute unit;
 
-            target.LockedBlocks();
+            target.LockNextUnit();
 
             var first = target.Units.First();
             var second = target.Units.ToArray()[1];
