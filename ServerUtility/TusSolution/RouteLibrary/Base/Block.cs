@@ -252,6 +252,7 @@ namespace RouteLibrary.Base
             {
                 if (this.HasMotor)
                     return this.MotorEffector.Device.CurrentMemory == MotorMemoryStateEnum.Controlling ||
+                            this.MotorEffector.Device.CurrentMemory == MotorMemoryStateEnum.Locked ||
                             this.MotorEffector.Device.IsDetected;
                 else
                     return false;
