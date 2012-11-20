@@ -107,7 +107,7 @@ namespace SensorLibrary.Devices.TusAvrDevices
         {
             get
             {
-                if (!(this.DeviceKernel.CurrentState is MemoryState))
+                if (!(this.DeviceKernel.CurrentState.Command == Packet.Data.KernelCommand.MemoryState ))
                     return MotorMemoryStateEnum.Unknown;
 
                 var memstate = (MemoryState)this.DeviceKernel.CurrentState;
