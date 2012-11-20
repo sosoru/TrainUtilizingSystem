@@ -64,7 +64,25 @@ namespace DialogConsole
         private IDisposable Receiving_;
         private IDisposable ServingInfomation_;
 
-        private StreamWriter LogWriter;
+        private object lock_writer = new object();
+        private StreamWriter log_writer_;
+        private StreamWriter LogWriter
+        {
+            get
+            {
+                lock (this.lock_writer)
+                {
+                    return this.log_writer_;
+                }
+            }
+            set
+            {
+                lock (this.lock_writer)
+                {
+                    this.log_writer_ = value;
+                }
+            }
+        }
 
         public void InitSheet(IDeviceIO io)
         {
@@ -377,7 +395,7 @@ namespace DialogConsole
                         Console.WriteLine("{0} is changing halts set to {1}", vh.Name, recvinfo.Halts.Aggregate("", (ag, s) => ag += s + ", "));
                         var halts = recvinfo.Halts.Select(h => new Halt(vh.Sheet.GetBlock(h)));
                         vh.Halt.Clear();
-                        foreach(var h in halts)
+                        foreach (var h in halts)
                             vh.Halt.Add(h);
                     }
 
