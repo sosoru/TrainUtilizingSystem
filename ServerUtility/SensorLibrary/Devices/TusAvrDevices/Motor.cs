@@ -110,9 +110,7 @@ namespace SensorLibrary.Devices.TusAvrDevices
                 if (!(this.DeviceKernel.CurrentState.Command == Packet.Data.KernelCommand.MemoryState ))
                     return MotorMemoryStateEnum.Unknown;
 
-                var memstate = (MemoryState)this.DeviceKernel.CurrentState;
-
-                return (MotorMemoryStateEnum)memstate.CurrentMemory;
+                return (MotorMemoryStateEnum)this.DeviceKernel.CurrentState.Data.Content1;
             }
             set
             {
