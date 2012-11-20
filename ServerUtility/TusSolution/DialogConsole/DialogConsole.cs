@@ -253,6 +253,7 @@ namespace DialogConsole
             CreateVehicle(bk);
 
             this.VehicleProcessing_ = Observable.Defer(() => Observable.Start(VehicleProcess, this.SchedulerSendingProcessing))
+                .SelectMany(() => this.Sheet.InquiryAllMotors())
                 .Delay(TimeSpan.FromMilliseconds(500))
                 .Repeat()
                 .SubscribeOn(Scheduler.NewThread)
@@ -297,8 +298,6 @@ namespace DialogConsole
 
         public void VehicleProcess()
         {
-            this.Sheet.InquiryAllMotors();
-
             foreach (var v in this.Vehicles)
             {
                 v.Refresh();
