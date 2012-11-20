@@ -195,11 +195,6 @@ namespace DialogConsole
             sht.InquiryAllMotors();
             sht.InquiryDevices(sht.AllSwitches());
 
-            sht.Effect(new CommandFactory()
-            {
-                CreateCommand = b => new CommandInfo() { MotorMode = MotorMemoryStateEnum.NoEffect,}
-            },
-            sht.InnerBlocks);
 
             foreach (var b in blocks)
                 Console.WriteLine(b.ToString());
@@ -245,14 +240,17 @@ namespace DialogConsole
 
         public void InputVehicleMonitoring()
         {
+            sht.Effect(new CommandFactory()
+            {
+                CreateCommand = b => new CommandInfo() { MotorMode = MotorMemoryStateEnum.NoEffect, }
+            },
+            sht.InnerBlocks);
             Console.WriteLine("Which block your vehicle halt on?");
 
             var bk = this.Sheet.GetBlock(Console.ReadLine());
 
             this.Vehicles.Clear();
             CreateVehicle(bk);
-
-
 
             this.VehicleProcessing_ = Observable.Defer(() => Observable.Start(VehicleProcess, this.SchedulerSendingProcessing))
                 .Delay(TimeSpan.FromMilliseconds(1000))
