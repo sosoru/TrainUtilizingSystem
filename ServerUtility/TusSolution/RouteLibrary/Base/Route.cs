@@ -158,10 +158,10 @@ namespace RouteLibrary.Base
                 ind = ind % this.Units.Count;
             }
 
-            nextunit = this.Units[ind];
             if (ind < this.Units.Count
                 && this.Units[ind].CanBeAllocated)
             {
+                nextunit = this.Units[ind];
                 return true;
             }
             return false;
