@@ -252,12 +252,15 @@ namespace DialogConsole
                 CreateCommand = b => new CommandInfo() { MotorMode = MotorMemoryStateEnum.NoEffect, }
             },
             this.Sheet.InnerBlocks);
-            Console.WriteLine("Which block your vehicle halt on?");
 
+            Console.WriteLine("Vehicle Name ?");
+            var vhname = Console.ReadLine();
+
+            Console.WriteLine("Which block your vehicle halt on?");
             var bk = this.Sheet.GetBlock(Console.ReadLine());
 
             this.Vehicles.Clear();
-            CreateVehicle(bk);
+            CreateVehicle(vhname, bk);
 
             this.VehicleProcessing_ = Observable.Defer(() => Observable.Start(VehicleProcess, this.SchedulerSendingProcessing))
                 .Do(u => this.Sheet.InquiryAllMotors())
