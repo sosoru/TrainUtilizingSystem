@@ -69,12 +69,11 @@ namespace TestProject
             sht.ToArray();
         }
 
-        [TestMethod]
-        public void LoopATest()
+        private void LoopTest(Func<bool, bool> getloop)
         {
             var rttestfunc = new Action<bool, bool>((inv, sub) =>
             {
-                var blocks = RouteGeneratorForTwelve.GetLoopA(inv, sub).Select(s => this.sht.GetBlock(s));
+                var blocks = getloop(inv, sub).Select(s => this.sht.GetBlock(s));
                 Assert.IsFalse(blocks.Any(b => b == null));
                 var rt = new Route(blocks.ToList());
                 rt.IsRepeatable = true;
@@ -86,7 +85,12 @@ namespace TestProject
             rttestfunc(true, false);
             rttestfunc(false, true);
             rttestfunc(true, true);
+        }
 
+        [TestMethod]
+        public void LoopATest()
+        {
+            LoopTest(RouteGeneratorForTwelve.GetLoopA);
         }
     }
 }
