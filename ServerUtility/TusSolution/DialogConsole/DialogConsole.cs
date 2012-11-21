@@ -370,7 +370,7 @@ namespace DialogConsole
                     MemoryStream mst;
                     using (var sr = new StreamReader(req.InputStream))
                     {
-                        mst = new MemoryStream(sr.ReadToEnd());
+                        mst = new MemoryStream(sr.ReadToEnd(), false);
                     }
                         
                     var cnt = new DataContractJsonSerializer(typeof(VehicleInfoReceived));
