@@ -367,14 +367,14 @@ namespace DialogConsole
             {
                 try
                 {
-                    byte[] rawdata;
+                    MemoryStream mst;
                     using (var sr = new StreamReader(req.InputStream))
                     {
-                        rawdata = sr.ReadToEnd();
+                        mst = new MemoryStream(sr.ReadToEnd());
                     }
                         
                     var cnt = new DataContractJsonSerializer(typeof(VehicleInfoReceived));
-                    var recvinfo = (VehicleInfoReceived)cnt.ReadObject(rawdata);
+                    var recvinfo = (VehicleInfoReceived)cnt.ReadObject(mst);
                     var vh = this.Vehicles.First(v => v.Name == recvinfo.Name);
 
                     if (recvinfo.Speed != null)
