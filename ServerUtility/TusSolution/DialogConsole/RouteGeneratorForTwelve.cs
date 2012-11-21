@@ -20,11 +20,6 @@ namespace DialogConsole
 {
     public class RouteGeneratorForTwelve
     {
-        // A Loop
-        //
-        //(),
-        //(), 
-        //
         public IEnumerable<string> GetLoopA(bool inv, bool sub)
         {
             var list = new List<string>();
