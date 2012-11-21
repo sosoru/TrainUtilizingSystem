@@ -377,11 +377,14 @@ namespace DialogConsole
                             vh.Halt.Add(h);
                     }
 
-                    res.Close();
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
+                }
+                finally
+                {
+                    res.Close();
                 }
             }
             else
