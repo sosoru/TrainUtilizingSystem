@@ -418,6 +418,8 @@ namespace DialogConsole
                         var cnt = http_listener.GetContext();
                         ob.OnNext(cnt);
                         ob.OnCompleted();
+
+                        return () => { };
                     })
                     .ObserveOn(Scheduler.NewThread);
 
