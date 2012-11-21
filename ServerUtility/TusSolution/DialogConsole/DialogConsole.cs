@@ -367,7 +367,7 @@ namespace DialogConsole
             var res = r.Response;
             var req = r.Request;
 
-            if (req.HttpMethod == "PORT")
+            if (req.HttpMethod == "POST")
             {
                 try
                 {
