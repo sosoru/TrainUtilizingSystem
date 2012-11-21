@@ -447,6 +447,7 @@ namespace DialogConsole
                         case "/console":
                             FillConsoleInfoResponse(r);
                             break;
+                    }
                 });
 
         }
