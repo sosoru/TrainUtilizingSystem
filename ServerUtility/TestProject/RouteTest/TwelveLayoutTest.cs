@@ -72,9 +72,18 @@ namespace TestProject
         [TestMethod]
         public void LoopATest()
         {
-            var blocks = RouteGeneratorForTwelve.GetLoopA(false, false).Select(s => this.sht.GetBlock(s));
-            Assert.IsFalse(blocks.Any(b => b == null));
-            var rt = new Route(blocks.ToList());
+            var rttestfunc = new Func<bool, bool>((inv, sub) =>
+            {
+                var blocks = RouteGeneratorForTwelve.GetLoopA(inv, sub).Select(s => this.sht.GetBlock(s));
+                Assert.IsFalse(blocks.Any(b => b == null));
+                var rt = new Route(blocks.ToList());
+            });
+
+            rttestfunc(false, false);
+            rttestfunc(true, false);
+            rttestfunc(false, true);
+            rttestfunc(true, true);
+
         }
     }
 }
