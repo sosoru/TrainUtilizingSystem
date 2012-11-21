@@ -152,7 +152,7 @@ namespace DialogConsole
                                                 .ObserveOn(this.SchedulerPacketProcessing)
                                                 .Repeat()
                                                 .SubscribeOn(Scheduler.NewThread)
-                                                .Subscribe();
+                                                .Subscribe(() => { }, () => Console.WriteLine("servingcomp"));
 
 
             while (true)
