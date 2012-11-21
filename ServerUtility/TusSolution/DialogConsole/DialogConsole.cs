@@ -342,25 +342,6 @@ namespace DialogConsole
         private void FillVehicleInfoResponse(HttpListenerContext r)
         {
             var res = r.Response;
-
-            res.Headers.Add("Content-type: application/json");
-            res.Headers.Add("Access-Control-Allow-Headers: origin, x-requested-with, accept");
-            res.Headers.Add("Access-Control-Allow-Origin: null");
-            using (var sw = new StreamWriter(res.OutputStream))
-            using (var ms = new MemoryStream())
-            {
-                var cnt = new DataContractJsonSerializer(typeof(IEnumerable<Vehicle>));
-                var vehis = this.Vehicles.ToArray();
-
-                cnt.WriteObject(ms, vehis);
-
-                sw.WriteLine(System.Text.UnicodeEncoding.UTF8.GetString(ms.ToArray()));
-            }
-        }
-
-        private void FillConsoleInfoResponse(HttpListenerContext r)
-        {
-            var res = r.Response;
             var req = r.Request;
 
             try
@@ -399,6 +380,19 @@ namespace DialogConsole
                 Console.WriteLine(ex.Message);
             }
 
+            res.Headers.Add("Content-type: application/json");
+            res.Headers.Add("Access-Control-Allow-Headers: origin, x-requested-with, accept");
+            res.Headers.Add("Access-Control-Allow-Origin: null");
+            using (var sw = new StreamWriter(res.OutputStream))
+            using (var ms = new MemoryStream())
+            {
+                var cnt = new DataContractJsonSerializer(typeof(IEnumerable<Vehicle>));
+                var vehis = this.Vehicles.ToArray();
+
+                cnt.WriteObject(ms, vehis);
+
+                sw.WriteLine(System.Text.UnicodeEncoding.UTF8.GetString(ms.ToArray()));
+            }
         }
 
         private HttpListener http_listener = null;
@@ -419,7 +413,7 @@ namespace DialogConsole
             this.ServingInfomation_ = Observable.Defer(obsvfunc)
                 .Repeat()
                 .ObserveOn(this.SchedulerPacketProcessing)
-                //.SubscribeOn(Scheduler.NewThread)
+                .SubscribeOn(Scheduler.NewThread)
                 .Subscribe(r =>
                 {
                     var res = r.Response;
@@ -430,9 +424,6 @@ namespace DialogConsole
                         case "/vehicles":
                             FillVehicleInfoResponse(r);
                             break;
-                        //case "/console":
-                        //    FillConsoleInfoResponse(r);
-                        //    break;
                     }
                 });
 
