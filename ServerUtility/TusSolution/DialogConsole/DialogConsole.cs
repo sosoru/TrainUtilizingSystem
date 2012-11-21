@@ -87,29 +87,13 @@ namespace DialogConsole
         public void InitSheet(IDeviceIO io)
         {
             this.Server = CreateServer();
-            this.Sheet = CreateSheet("test_looping.yaml", this.Server);
+            this.Sheet = CreateSheet(@"C:\Users\Administrator\Desktop\12_layout.yaml", this.Server);
             this.Sheet.AssociatedScheduler = this.SchedulerPacketProcessing;
 
             this.Server.Controller = io;
             this.Vehicles = new List<Vehicle>();
 
             this.LogWriter = new StreamWriter("packet_log.txt");
-        }
-
-        public IEnumerable<string> routesnames
-        {
-            get
-            {
-                var loop = new[] { "AT1", "BAT1", "AT2", "BAT2", "AT3", "BAT3", "AT4", "BAT4" };
-
-                return Enumerable.Range(1, 1)
-                    .SelectMany(i => loop);
-            }
-        }
-
-        public Route LoopingRoute
-        {
-            get { return new Route(this.Sheet, routesnames); }
         }
 
         public void Loop()
