@@ -83,9 +83,10 @@ namespace DialogConsole
             return gen.GetLoop();
         }
 
-        public static IEnumerable<string> GetLoopC(bool inv, bool sub)
-        {
-        }
+        //public static IEnumerable<string> GetLoopC(bool inv, bool sub)
+        //{
+
+        //}
 
     }
 }
