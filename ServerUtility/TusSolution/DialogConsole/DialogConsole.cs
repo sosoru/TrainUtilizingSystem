@@ -281,7 +281,7 @@ namespace DialogConsole
             if (ans.Length < 1)
                 throw new ArgumentException("insufficient parameters");
 
-            Route rt = null;
+            IEnumerable<string> rt = null;
             var firstch = ans.First();
             switch (firstch)
             {
@@ -301,7 +301,7 @@ namespace DialogConsole
                     throw new InvalidDataException("invalid route selection");
             }
 
-            return rt;
+            return new Route(rt.Select(s => this.Sheet.GetBlock(s)).ToList());
         }
 
         public void CreateVehicle(string vhname, Block b)
