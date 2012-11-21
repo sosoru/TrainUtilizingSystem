@@ -418,17 +418,9 @@ namespace DialogConsole
                 this.http_listener = listener;
                 this.http_listener.Start();
             }
-            var obsvfunc = //Observable.FromAsyncPattern<HttpListenerContext>(this.http_listener.BeginGetContext, this.http_listener.EndGetContext);
-                Observable.Create<HttpListenerContext>(ob =>
-                    {
-                        var cnt = http_listener.GetContext();
-                        ob.OnNext(cnt);
-                        ob.OnCompleted();
+            var obsvfunc = Observable.FromAsyncPattern<HttpListenerContext>(this.http_listener.BeginGetContext, this.http_listener.EndGetContext);
 
-                        return () => { };
-                    }).ObserveOn(Scheduler.NewThread);
-
-            this.ServingInfomation_ = Observable.Defer(() => obsvfunc)
+            this.ServingInfomation_ = Observable.Defer(obsvfunc)
                 .Repeat()
                 .ObserveOn(this.SchedulerPacketProcessing)
                 .SubscribeOn(Scheduler.NewThread)
