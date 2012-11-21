@@ -346,7 +346,6 @@ namespace DialogConsole
 
             if (req.HttpMethod == "POST")
             {
-
                 try
                 {
                     var cnt = new DataContractJsonSerializer(typeof(VehicleInfoReceived));
@@ -410,11 +409,18 @@ namespace DialogConsole
                 var prefix = "http://+:8012/";
 
                 listener.Prefixes.Add(prefix);
-
+                listener.Realm
                 this.http_listener = listener;
                 this.http_listener.Start();
             }
-            var obsvfunc = Observable.FromAsyncPattern<HttpListenerContext>(this.http_listener.BeginGetContext, this.http_listener.EndGetContext);
+            var obsvfunc = //Observable.FromAsyncPattern<HttpListenerContext>(this.http_listener.BeginGetContext, this.http_listener.EndGetContext);
+                Observable.Create(ob =>
+                    {
+                        var cnt = http_listener.GetContext();
+                        ob.OnNext(cnt);
+                        ob.OnCompleted();
+                    })
+                    .ObserveOn(Scheduler.NewThread);
 
             this.ServingInfomation_ = Observable.Defer(obsvfunc)
                 .Repeat()
