@@ -195,16 +195,6 @@ namespace DialogConsole
 
         }
 
-        public void InputCommand(BlockSheet sht, CommandInfo info)
-        {
-            info.Route = InputRoute(sht, info.Route);
-
-            Console.WriteLine("Duty? [0-1]");
-            var duty = Console.ReadLine();
-
-            info.Speed = float.Parse(duty);
-        }
-
         public string ShowStatus(BlockSheet sht)
         {
             var blocks = sht.InnerBlocks;
