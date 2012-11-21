@@ -376,6 +376,8 @@ namespace DialogConsole
                         foreach (var h in halts)
                             vh.Halt.Add(h);
                     }
+
+                    res.Close();
                 }
                 catch (Exception ex)
                 {
