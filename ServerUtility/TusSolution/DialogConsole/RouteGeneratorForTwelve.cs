@@ -22,7 +22,7 @@ namespace DialogConsole
     {
         public static IEnumerable<string> GetLoopA(bool inv, bool sub)
         {
-            var list = new List<string>();
+            var list = new List<string>();
             list.AddRange(new[] { "AT1", "BAT1", });
 
             if (sub)
