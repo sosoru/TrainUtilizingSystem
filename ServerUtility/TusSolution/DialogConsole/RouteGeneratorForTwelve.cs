@@ -20,6 +20,40 @@ namespace DialogConsole
 {
     public class RouteGeneratorForTwelve
     {
+        private bool Reverse { get; set; }
+        private bool UseSubline { get; set; }
+
+        private IEnumerable<string> KwToAb { get; set; }
+        private IEnumerable<string> AbSub { get; set; }
+        private IEnumerable<string> AbMain { get; set; }
+        private IEnumerable<string> AbToKw { get; set; }
+
+        private RouteGeneratorForTwelve() { }
+
+        private IEnumerable<string> GetLoop()
+        {
+            var list = new List<string>();
+            list.AddRange(this.KwToAb);
+
+            if (this.UseSubline)
+                list.AddRange(this.AbSub);
+            else
+                list.AddRange(this.AbMain);
+
+            list.AddRange(this.AbToKw);
+
+            if (this.Reverse)
+            {
+                var lastisolate = list.Last();
+                list.RemoveAt(list.Count - 1);
+
+                list.Reverse();
+                list.Add(lastisolate);
+            }
+
+            return list;
+
+        }
         public static IEnumerable<string> GetLoopA(bool inv, bool sub)
         {
             var list = new List<string>();
@@ -66,6 +100,10 @@ namespace DialogConsole
             }
 
             return list;
+        }
+
+        public static IEnumerable<string> GetLoopC(bool inv, bool sub)
+        {
         }
 
     }
