@@ -25,7 +25,7 @@ namespace RouteLibrary.Base
         public int VehicleID { get; private set; }
 
         [DataMember]
-        public string Name { get; private set; }
+        public string Name { get; set; }
 
         [DataMember]
         public IList<Route> AvailableRoutes { get; set; }
