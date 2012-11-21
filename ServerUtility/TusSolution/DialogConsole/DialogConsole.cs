@@ -408,6 +408,7 @@ namespace DialogConsole
             {
                 var listener = new HttpListener();
                 var prefix = "http://+:8012/";
+                listener.
 
                 listener.Prefixes.Add(prefix);
 
@@ -419,7 +420,7 @@ namespace DialogConsole
             this.ServingInfomation_ = Observable.Defer(obsvfunc)
                 .Repeat()
                 .ObserveOn(this.SchedulerPacketProcessing)
-                .SubscribeOn(Scheduler.NewThread)
+                //.SubscribeOn(Scheduler.NewThread)
                 .Subscribe(r =>
                 {
                     var res = r.Response;
