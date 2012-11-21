@@ -74,7 +74,7 @@ namespace TestProject
         {
             var blocks = RouteGeneratorForTwelve.GetLoopA(false, false).Select(s => this.sht.GetBlock(s));
 
-            var rt = new Route(blocks);
+            var rt = new Route(blocks.ToList());
         }
     }
 }
