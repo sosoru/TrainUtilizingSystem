@@ -419,9 +419,8 @@ namespace DialogConsole
                         ob.OnNext(cnt);
                         ob.OnCompleted();
 
-                        return () => { };
-                    })
-                    .ObserveOn(Scheduler.NewThread);
+                        return new Action(() => { });
+                    });
 
             this.ServingInfomation_ = Observable.Defer(obsvfunc)
                 .Repeat()
