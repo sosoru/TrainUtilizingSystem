@@ -69,7 +69,7 @@ namespace TestProject
             sht.ToArray();
         }
 
-        private void LoopTest(Func<bool, bool> getloop)
+        private void LoopTest(Func<bool, bool, IEnumerable<string>> getloop)
         {
             var rttestfunc = new Action<bool, bool>((inv, sub) =>
             {
