@@ -21,7 +21,7 @@ using System.Threading;
 using System.Reactive.Concurrency;
 using Microsoft.Reactive.Testing;
 
-namespace TestProject.RouteTest
+namespace TestProject
 {
     [TestClass]
     public class TwelveLayoutTest
