@@ -38,7 +38,7 @@ namespace TestProject
             get
             {
                 var yaml = new BlockYaml();
-                var blocks = yaml.Parse("./SampleLayout/12_layout.yaml");
+                var blocks = yaml.Parse("C:\Users\Administrator\Desktop\12_layout.yaml");
 
                 return blocks;
             }
