@@ -72,12 +72,16 @@ namespace SensorLibrary.Packet.IO
                                         {
                                             var data = packet.ToByteArray();
                                             var client = new UdpClient();
-                                            client.Connect(ApplyDestID(packet));
+                                            try
+                                            {
+                                                client.Connect(ApplyDestID(packet));
 
-                                            Observable
-                                                .FromAsyncPattern<byte[], int>(client.BeginSend,
-                                                                               (res) => client.EndSend(res))(data,
-                                                                                                             data.Length);
+                                                Observable
+                                                    .FromAsyncPattern<byte[], int>(client.BeginSend,
+                                                                                   (res) => client.EndSend(res))(data,
+                                                                                                                 data.Length);
+                                            }
+                                            catch (SocketException ex) { }
 
                                         });
         }
