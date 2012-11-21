@@ -92,5 +92,11 @@ namespace TestProject
         {
             LoopTest(RouteGeneratorForTwelve.GetLoopA);
         }
+
+        [TestMethod]
+        public void LoopBTest()
+        {
+            LoopTest(RouteGeneratorForTwelve.GetLoopB);
+        }
     }
 }
