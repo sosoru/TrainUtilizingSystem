@@ -286,7 +286,7 @@ namespace DialogConsole
             return new BlockSheet(blocks, serv);
         }
 
-        public void CreateVehicle(Block b)
+        public void CreateVehicle(string vhname, Block b)
         {
             if (this.VehicleProcessing_ != null)
                 this.VehicleProcessing_.Dispose();
@@ -295,14 +295,13 @@ namespace DialogConsole
             {
                 vh.Route.InitLockingPosition();
             }
-            this.Vehicles.Clear();
 
             var rt = this.LoopingRoute;
             rt.IsRepeatable = true;
             var v = new Vehicle(this.Sheet, rt);
             v.CurrentBlock = b;
             v.Speed = 0.5f;
-            v.Name = "HOGE";
+            v.Name = vhname;
 
             this.Vehicles.Add(v);
         }
