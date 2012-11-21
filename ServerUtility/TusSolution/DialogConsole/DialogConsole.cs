@@ -363,46 +363,40 @@ namespace DialogConsole
             var res = r.Response;
             var req = r.Request;
 
-            if (req.HttpMethod == "POST")
+            try
             {
-                try
+                var cnt = new DataContractJsonSerializer(typeof(VehicleInfoReceived));
+                var recvinfo = (VehicleInfoReceived)cnt.ReadObject(req.InputStream);
+                var vh = this.Vehicles.First(v => v.Name == recvinfo.Name);
+
+                if (recvinfo.Speed != null)
                 {
-                    var cnt = new DataContractJsonSerializer(typeof(VehicleInfoReceived));
-                    var recvinfo = (VehicleInfoReceived)cnt.ReadObject(req.InputStream);
-                    var vh = this.Vehicles.First(v => v.Name == recvinfo.Name);
+                    var changeto = float.Parse(recvinfo.Speed) / 100.0f;
+                    Console.WriteLine("{0} is changing speed from {1} to {2}", vh.Name, vh.Speed, changeto);
 
-                    if (recvinfo.Speed != null)
+                    vh.Speed = changeto;
+                }
+                if (recvinfo.RouteName != null)
+                {
+                    Console.WriteLine("{0} is changing route from {1} to {2}", vh.Name, vh.Route.Name, recvinfo.RouteName);
+                    var route = vh.AvailableRoutes.First(rt => rt.Name == recvinfo.Name);
+                    if (route.Blocks.Contains(vh.CurrentBlock))
                     {
-                        var changeto = float.Parse(recvinfo.Speed) / 100.0f;
-                        Console.WriteLine("{0} is changing speed from {1} to {2}", vh.Name, vh.Speed, changeto);
-
-                        vh.Speed = changeto;
-                    }
-                    if (recvinfo.RouteName != null)
-                    {
-                        Console.WriteLine("{0} is changing route from {1} to {2}", vh.Name, vh.Route.Name, recvinfo.RouteName);
-                        var route = vh.AvailableRoutes.First(rt => rt.Name == recvinfo.Name);
-                        if (route.Blocks.Contains(vh.CurrentBlock))
-                        {
-                            vh.ChangeRoute(route);
-                        }
-                    }
-                    if (recvinfo.Halts != null)
-                    {
-                        Console.WriteLine("{0} is changing halts set to {1}", vh.Name, recvinfo.Halts.Aggregate("", (ag, s) => ag += s + ", "));
-                        var halts = recvinfo.Halts.Select(h => new Halt(vh.Sheet.GetBlock(h)));
-                        vh.Halt.Clear();
-                        foreach (var h in halts)
-                            vh.Halt.Add(h);
+                        vh.ChangeRoute(route);
                     }
                 }
-                catch (Exception ex)
+                if (recvinfo.Halts != null)
                 {
-                    Console.WriteLine(ex.Message);
+                    Console.WriteLine("{0} is changing halts set to {1}", vh.Name, recvinfo.Halts.Aggregate("", (ag, s) => ag += s + ", "));
+                    var halts = recvinfo.Halts.Select(h => new Halt(vh.Sheet.GetBlock(h)));
+                    vh.Halt.Clear();
+                    foreach (var h in halts)
+                        vh.Halt.Add(h);
                 }
             }
-            else if (req.HttpMethod == "GET")
+            catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
             }
 
         }
