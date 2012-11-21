@@ -322,9 +322,6 @@ namespace DialogConsole
             public string Speed;
 
             [DataMember(IsRequired = false)]
-            public string direction_invert;
-
-            [DataMember(IsRequired = false)]
             public string RouteName;
 
             [DataMember(IsRequired = false)]
