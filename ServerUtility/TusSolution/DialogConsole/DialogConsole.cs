@@ -381,7 +381,7 @@ namespace DialogConsole
                         var changeto = float.Parse(recvinfo.Speed) / 100.0f;
                         Console.WriteLine("{0} is changing speed from {1} to {2}", vh.Name, vh.Speed, changeto);
 
-                        vh.Speed = changeto / 100.0f;
+                        vh.Speed = changeto ;
                     }
                     if (recvinfo.RouteName != null)
                     {
