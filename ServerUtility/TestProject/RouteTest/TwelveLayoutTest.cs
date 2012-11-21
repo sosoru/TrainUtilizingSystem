@@ -74,10 +74,13 @@ namespace TestProject
         {
             var rttestfunc = new Action<bool, bool>((inv, sub) =>
             {
-                var blocks = RouteGeneratorForTwelve.GetLoopA(inv, sub).Select(s => this.sht.GetBlock(s));
+                var blocks = RouteGeneratorForTwelve.GetLoopA( sub).Select(s => this.sht.GetBlock(s));
                 Assert.IsFalse(blocks.Any(b => b == null));
                 var rt = new Route(blocks.ToList());
                 rt.IsRepeatable = true;
+
+                if (inv)
+                    rt.ReverseRoute();
 
                 Assert.IsTrue(true);
             });
