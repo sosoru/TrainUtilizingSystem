@@ -286,6 +286,40 @@ namespace DialogConsole
             return new BlockSheet(blocks, serv);
         }
 
+        public Route InputRoute()
+        {
+            Console.WriteLine("select route [A-D] [rev] [sub]");
+            var ans = Console.ReadLine().ToLower();
+
+            var rev = ans.Contains("rev");
+            var sub = ans.Contains("sub");
+
+            if (ans.Length < 1)
+                throw new ArgumentException("insufficient parameters");
+
+            Route rt = null;
+            var firstch = ans.First();
+            switch (firstch)
+            {
+                case 'a':
+                    rt = RouteGeneratorForTwelve.GetLoopA(rev, sub);
+                    break;
+                case 'b':
+                    rt = RouteGeneratorForTwelve.GetLoopB(rev, sub);
+                    break;
+                case 'c':
+                    rt = RouteGeneratorForTwelve.GetLoopC(rev, sub);
+                    break;
+                case 'd':
+                    rt = RouteGeneratorForTwelve.GetLoopD(rev, sub);
+                    break;
+                default:
+                    throw new InvalidDataException("invalid route selection");
+            }
+
+            return rt;
+        }
+
         public void CreateVehicle(string vhname, Block b)
         {
             if (this.VehicleProcessing_ != null)
@@ -296,7 +330,8 @@ namespace DialogConsole
                 vh.Route.InitLockingPosition();
             }
 
-            var rt = this.LoopingRoute;
+            Route rt = InputRoute();
+
             rt.IsRepeatable = true;
             var v = new Vehicle(this.Sheet, rt);
             v.CurrentBlock = b;
