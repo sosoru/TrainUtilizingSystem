@@ -148,12 +148,7 @@ namespace DialogConsole
                 //                                                    )))
                                                             .SubscribeOn(Scheduler.NewThread)
                                                             .Subscribe();
-            this.ServingInfomation_ = Observable.Defer(() => this.GetHttpObservable())
-                                                .ObserveOn(this.SchedulerPacketProcessing)
-                                                .Repeat()
-                                                .SubscribeOn(Scheduler.NewThread)
-                                                .Subscribe(u => { }, () => Console.WriteLine("servingcomp"));
-
+            this.StartHttpObservable();
 
             while (true)
             {
@@ -415,7 +410,7 @@ namespace DialogConsole
         }
 
         private HttpListener http_listener = null;
-        public IObservable<Unit> GetHttpObservable()
+        public void  StartHttpObservable()
         {
             if (this.http_listener == null)
             {
@@ -427,8 +422,19 @@ namespace DialogConsole
                 this.http_listener = listener;
                 this.http_listener.Start();
             }
-            return Observable.FromAsyncPattern<HttpListenerContext>(this.http_listener.BeginGetContext, this.http_listener.EndGetContext)()
-                .Do(r =>
+            this.ServingInfomation_ = Observable.Defer(() => this.GetHttpObservable())
+                                    .ObserveOn(this.SchedulerPacketProcessing)
+                                    .Repeat()
+                                    .SubscribeOn(Scheduler.NewThread)
+                                    .Subscribe();
+
+            var obsvfunc = Observable.FromAsyncPattern<HttpListenerContext>(this.http_listener.BeginGetContext, this.http_listener.EndGetContext);
+
+            this.ServingInfomation_ = Observable.Defer(obsvfunc)
+                .Repeat()
+                .ObserveOn(this.SchedulerPacketProcessing)
+                .SubscribeOn(Scheduler.NewThread)
+                .Subscribe(r =>
                 {
                     var res = r.Response;
                     var req = r.Request;
@@ -441,10 +447,8 @@ namespace DialogConsole
                         case "/console":
                             FillConsoleInfoResponse(r);
                             break;
-                    }
+                });
 
-                })
-                .Select(r => Unit.Default);
         }
 
     }
