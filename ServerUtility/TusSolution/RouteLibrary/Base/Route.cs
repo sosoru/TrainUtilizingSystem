@@ -199,6 +199,14 @@ namespace RouteLibrary.Base
             return false;
         }
 
+        public void ReverseRoute()
+        {
+            var units = this.Units
+                .Select(u => new ControllingRoute() { Blocks = u.Blocks.Reverse(), })
+                .ToList();
+            this.Units = new ReadOnlyCollection<ControllingRoute(units);
+        }
+
         [DataMember]
         public IEnumerable<Block> LockedBlocks
         {
