@@ -83,10 +83,20 @@ namespace DialogConsole
             return gen.GetLoop();
         }
 
-        //public static IEnumerable<string> GetLoopC(bool inv, bool sub)
-        //{
+        public static IEnumerable<string> GetLoopC(bool inv, bool sub)
+        {
+            var gen = new RouteGeneratorForTwelve()
+            {
+                Reverse = inv,
+                UseSubline = sub,
+                KwToAb = new[] { "CT1", "CT2-1", "CT2-2", "CT2-3" },
+                AbMain = new[] { "CT3", "CT4", "CT5", "CT6"},
+                AbSub = new[] { "CT3", "CT4S", "CT5S", "CT5-1", "CT6" },
+                AbToKw = new[] { "BCT6", "CT7", "BCT7", "CT8", "BCT8", "CT9", "BCT9", "CT10", "BCT10", "CT11", "BCT11", },
+            };
+            return gen.GetLoop();
 
-        //}
+        }
 
     }
 }
