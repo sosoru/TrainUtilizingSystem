@@ -131,6 +131,7 @@
     <Compile Include="RouteTest\MiddleTrackTest.cs" />
     <Compile Include="RouteTest\RouteTest_PointSample.cs" />
     <Compile Include="RouteTest\StaLoopTest.cs" />
+    <Compile Include="RouteTest\UnitTest1.cs" />
     <Compile Include="SensorStateTest.cs" />
     <Compile Include="SwitchStateTest.cs" />
     <Compile Include="TestPacketProvider.cs" />
@@ -176,6 +177,9 @@
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="RouteTest\OrderedTest1.orderedtest">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="SampleLayout\12_layout.yaml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="SampleLayout\loop.yaml">
