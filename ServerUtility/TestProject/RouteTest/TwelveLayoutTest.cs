@@ -77,6 +77,9 @@ namespace TestProject
                 var blocks = RouteGeneratorForTwelve.GetLoopA(inv, sub).Select(s => this.sht.GetBlock(s));
                 Assert.IsFalse(blocks.Any(b => b == null));
                 var rt = new Route(blocks.ToList());
+                rt.IsRepeatable = true;
+
+                Assert.IsTrue(true);
             });
 
             rttestfunc(false, false);
