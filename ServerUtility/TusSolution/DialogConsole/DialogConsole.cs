@@ -430,9 +430,9 @@ namespace DialogConsole
                         case "/vehicles":
                             FillVehicleInfoResponse(r);
                             break;
-                        case "/console":
-                            FillConsoleInfoResponse(r);
-                            break;
+                        //case "/console":
+                        //    FillConsoleInfoResponse(r);
+                        //    break;
                     }
                 });
 
