@@ -131,7 +131,7 @@
     <Compile Include="RouteTest\MiddleTrackTest.cs" />
     <Compile Include="RouteTest\RouteTest_PointSample.cs" />
     <Compile Include="RouteTest\StaLoopTest.cs" />
-    <Compile Include="RouteTest\UnitTest1.cs" />
+    <Compile Include="RouteTest\TwelveLayoutTest.cs" />
     <Compile Include="SensorStateTest.cs" />
     <Compile Include="SwitchStateTest.cs" />
     <Compile Include="TestPacketProvider.cs" />
