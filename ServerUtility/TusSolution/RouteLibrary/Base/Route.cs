@@ -202,7 +202,7 @@ namespace RouteLibrary.Base
         public void ReverseRoute()
         {
             var units = this.Units
-                .Select(u => new ControllingRoute() { Blocks = u.Blocks.Reverse(), })
+                .Select(u => new ControllingRoute() { Blocks = u.Blocks.Reverse().ToList(), })
                 .ToList();
             this.Units = new ReadOnlyCollection<ControllingRoute>(units);
         }
