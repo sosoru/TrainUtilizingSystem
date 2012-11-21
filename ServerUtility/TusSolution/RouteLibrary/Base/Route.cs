@@ -204,7 +204,7 @@ namespace RouteLibrary.Base
             var units = this.Units
                 .Select(u => new ControllingRoute() { Blocks = u.Blocks.Reverse(), })
                 .ToList();
-            this.Units = new ReadOnlyCollection<ControllingRoute(units);
+            this.Units = new ReadOnlyCollection<ControllingRoute>(units);
         }
 
         [DataMember]
