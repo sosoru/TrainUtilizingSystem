@@ -314,6 +314,7 @@ namespace DialogConsole
             var v = new Vehicle(this.Sheet, rt);
             v.CurrentBlock = b;
             v.Speed = 0.5f;
+            v.Name = "Hoge";
 
             this.Vehicles.Add(v);
         }
