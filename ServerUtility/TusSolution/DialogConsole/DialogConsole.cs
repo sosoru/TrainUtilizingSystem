@@ -408,7 +408,6 @@ namespace DialogConsole
             {
                 var listener = new HttpListener();
                 var prefix = "http://+:8012/";
-                listener.
 
                 listener.Prefixes.Add(prefix);
 
