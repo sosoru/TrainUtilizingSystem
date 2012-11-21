@@ -344,54 +344,60 @@ namespace DialogConsole
             var res = r.Response;
             var req = r.Request;
 
-            try
+            if (req.HttpMethod == "POST")
             {
-                var cnt = new DataContractJsonSerializer(typeof(VehicleInfoReceived));
-                var recvinfo = (VehicleInfoReceived)cnt.ReadObject(req.InputStream);
-                var vh = this.Vehicles.First(v => v.Name == recvinfo.Name);
 
-                if (recvinfo.Speed != null)
+                try
                 {
-                    var changeto = float.Parse(recvinfo.Speed) / 100.0f;
-                    Console.WriteLine("{0} is changing speed from {1} to {2}", vh.Name, vh.Speed, changeto);
+                    var cnt = new DataContractJsonSerializer(typeof(VehicleInfoReceived));
+                    var recvinfo = (VehicleInfoReceived)cnt.ReadObject(req.InputStream);
+                    var vh = this.Vehicles.First(v => v.Name == recvinfo.Name);
 
-                    vh.Speed = changeto;
-                }
-                if (recvinfo.RouteName != null)
-                {
-                    Console.WriteLine("{0} is changing route from {1} to {2}", vh.Name, vh.Route.Name, recvinfo.RouteName);
-                    var route = vh.AvailableRoutes.First(rt => rt.Name == recvinfo.Name);
-                    if (route.Blocks.Contains(vh.CurrentBlock))
+                    if (recvinfo.Speed != null)
                     {
-                        vh.ChangeRoute(route);
+                        var changeto = float.Parse(recvinfo.Speed) / 100.0f;
+                        Console.WriteLine("{0} is changing speed from {1} to {2}", vh.Name, vh.Speed, changeto);
+
+                        vh.Speed = changeto;
+                    }
+                    if (recvinfo.RouteName != null)
+                    {
+                        Console.WriteLine("{0} is changing route from {1} to {2}", vh.Name, vh.Route.Name, recvinfo.RouteName);
+                        var route = vh.AvailableRoutes.First(rt => rt.Name == recvinfo.Name);
+                        if (route.Blocks.Contains(vh.CurrentBlock))
+                        {
+                            vh.ChangeRoute(route);
+                        }
+                    }
+                    if (recvinfo.Halts != null)
+                    {
+                        Console.WriteLine("{0} is changing halts set to {1}", vh.Name, recvinfo.Halts.Aggregate("", (ag, s) => ag += s + ", "));
+                        var halts = recvinfo.Halts.Select(h => new Halt(vh.Sheet.GetBlock(h)));
+                        vh.Halt.Clear();
+                        foreach (var h in halts)
+                            vh.Halt.Add(h);
                     }
                 }
-                if (recvinfo.Halts != null)
+                catch (Exception ex)
                 {
-                    Console.WriteLine("{0} is changing halts set to {1}", vh.Name, recvinfo.Halts.Aggregate("", (ag, s) => ag += s + ", "));
-                    var halts = recvinfo.Halts.Select(h => new Halt(vh.Sheet.GetBlock(h)));
-                    vh.Halt.Clear();
-                    foreach (var h in halts)
-                        vh.Halt.Add(h);
+                    Console.WriteLine(ex.Message);
                 }
             }
-            catch (Exception ex)
+            else
             {
-                Console.WriteLine(ex.Message);
-            }
+                res.Headers.Add("Content-type: application/json");
+                res.Headers.Add("Access-Control-Allow-Headers: origin, x-requested-with, accept");
+                res.Headers.Add("Access-Control-Allow-Origin: null");
+                using (var sw = new StreamWriter(res.OutputStream))
+                using (var ms = new MemoryStream())
+                {
+                    var cnt = new DataContractJsonSerializer(typeof(IEnumerable<Vehicle>));
+                    var vehis = this.Vehicles.ToArray();
 
-            res.Headers.Add("Content-type: application/json");
-            res.Headers.Add("Access-Control-Allow-Headers: origin, x-requested-with, accept");
-            res.Headers.Add("Access-Control-Allow-Origin: null");
-            using (var sw = new StreamWriter(res.OutputStream))
-            using (var ms = new MemoryStream())
-            {
-                var cnt = new DataContractJsonSerializer(typeof(IEnumerable<Vehicle>));
-                var vehis = this.Vehicles.ToArray();
+                    cnt.WriteObject(ms, vehis);
 
-                cnt.WriteObject(ms, vehis);
-
-                sw.WriteLine(System.Text.UnicodeEncoding.UTF8.GetString(ms.ToArray()));
+                    sw.WriteLine(System.Text.UnicodeEncoding.UTF8.GetString(ms.ToArray()));
+                }
             }
         }
 
