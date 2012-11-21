@@ -20,7 +20,7 @@ namespace DialogConsole
 {
     public class RouteGeneratorForTwelve
     {
-        public static IEnumerable<string> GetLoopA( bool sub)
+        public static IEnumerable<string> GetLoopA(bool inv, bool sub)
         {
             var list = new List<string>();
             list.AddRange(new[] { "AT1", "BAT1", });
@@ -31,6 +31,15 @@ namespace DialogConsole
                 list.AddRange(new[] { "AT3", "AT4", "AT5", "AT6" });
 
             list.AddRange(new[] { "BAT6", "AT7", "BAT7", "AT8", "BAT8", "AT9", "BAT9", "AT10P", "AT10", "BAT10", "AT11", "BAT11" });
+
+            if (inv)
+            {
+                var lastisolate = list.Last();
+                list.RemoveAt(list.Count - 1);
+
+                list.Reverse();
+                list.Add(lastisolate);
+            }
 
             return list;
         }
