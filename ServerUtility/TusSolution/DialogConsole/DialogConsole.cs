@@ -422,7 +422,7 @@ namespace DialogConsole
                         return () => { };
                     }).ObserveOn(Scheduler.NewThread);
 
-            this.ServingInfomation_ = Observable.Defer(obsvfunc)
+            this.ServingInfomation_ = Observable.Defer(() => obsvfunc)
                 .Repeat()
                 .ObserveOn(this.SchedulerPacketProcessing)
                 .SubscribeOn(Scheduler.NewThread)
