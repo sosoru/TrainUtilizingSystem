@@ -409,7 +409,6 @@ namespace DialogConsole
                 var prefix = "http://+:8012/";
 
                 listener.Prefixes.Add(prefix);
-                listener.Realm
                 this.http_listener = listener;
                 this.http_listener.Start();
             }
