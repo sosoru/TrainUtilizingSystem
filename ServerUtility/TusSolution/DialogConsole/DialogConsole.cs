@@ -384,6 +384,7 @@ namespace DialogConsole
                 }
                 finally
                 {
+                    res.StatusCode = 200;
                     res.Close();
                 }
             }
