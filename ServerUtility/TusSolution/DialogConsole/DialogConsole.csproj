@@ -71,6 +71,7 @@
   <ItemGroup>
     <Compile Include="DialogConsole.cs" />
     <Compile Include="MotorController.cs" />
+    <Compile Include="RouteGeneratorForTwelve.cs" />
     <Compile Include="SwitchController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
