@@ -73,7 +73,7 @@ namespace TestProject
         public void LoopATest()
         {
             var blocks = RouteGeneratorForTwelve.GetLoopA(false, false).Select(s => this.sht.GetBlock(s));
-            Assert.IsTrue(blocks.Any(b => b == null));
+            Assert.IsFalse(blocks.Any(b => b == null));
             var rt = new Route(blocks.ToList());
         }
     }
