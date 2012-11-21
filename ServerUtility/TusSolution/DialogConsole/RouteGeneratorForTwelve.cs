@@ -95,7 +95,6 @@ namespace DialogConsole
                 AbToKw = new[] { "BCT6", "CT7", "BCT7", "CT8", "BCT8", "CT9", "BCT9", "CT10", "BCT10", "CT11", "BCT11", },
             };
             return gen.GetLoop();
-
         }
 
     }
