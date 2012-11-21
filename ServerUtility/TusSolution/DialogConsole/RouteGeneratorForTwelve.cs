@@ -37,6 +37,10 @@ namespace DialogConsole
 
             list.AddRange(new[] { "BAT6", "AT7", "BAT7", "AT8", "BAT8", "AT9", "BAT9", "AT10P", "AT10", "BAT10", "AT11", "BAT11" });
 
+            if(inv)
+                list = list.Reverse();
+
+            return list;
         }
     }
 }
