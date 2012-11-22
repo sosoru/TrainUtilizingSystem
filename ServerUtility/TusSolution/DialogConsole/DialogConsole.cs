@@ -273,13 +273,14 @@ this.Sheet.InnerBlocks);
             return new BlockSheet(blocks, serv);
         }
 
-        public Route InputRoute()
+        public Route InputRoute( out bool ignoreblockage)
         {
-            Console.WriteLine("select route [A-D] [rev] [sub]");
+            Console.WriteLine("select route [A-D] [rev] [sub] [ign]");
             var ans = Console.ReadLine().ToLower();
 
             var rev = ans.Contains("rev");
             var sub = ans.Contains("sub");
+            var ign = ans.Contains("ign");l
 
             if (ans.Length < 1)
                 throw new ArgumentException("insufficient parameters");
@@ -317,13 +318,15 @@ this.Sheet.InnerBlocks);
                 vh.Route.InitLockingPosition();
             }
 
-            Route rt = InputRoute();
+            bool ign = false; 
+            Route rt = InputRoute(out ign);
 
             rt.IsRepeatable = true;
             var v = new Vehicle(this.Sheet, rt);
             v.CurrentBlock = b;
             v.Speed = 0.5f;
             v.Name = vhname;
+            v.IgnoreBlockage = (ign);
 
             this.Vehicles.Add(v);
         }
