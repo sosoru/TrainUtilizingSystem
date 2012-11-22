@@ -401,7 +401,6 @@ this.Sheet.InnerBlocks);
                 }
                 finally
                 {
-                    res.ContentEncoding = System.Text.UnicodeEncoding.UTF8;
                     res.Close();
                 }
             }
