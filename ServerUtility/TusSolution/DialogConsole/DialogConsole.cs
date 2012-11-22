@@ -282,7 +282,6 @@ this.Sheet.InnerBlocks);
             var sub = ans.Contains("sub");
             ignoreblockage = ans.Contains("ign");
 
-
             if (ans.Length < 1)
                 throw new ArgumentException("insufficient parameters");
 
