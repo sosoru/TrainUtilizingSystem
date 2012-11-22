@@ -276,6 +276,9 @@ namespace RouteLibrary.Base
                 return;
 
             var cmd = factory.CreateCommand(this.ParentBlock);
+            if (cmd.Route == null)
+                return;
+
             var segment = cmd.Route.GetSegment(this.ParentBlock);
 
             if ((segment.IsFromAny || this.Info.DirStraight.Any(i => i.From.Name == segment.From.Name))
