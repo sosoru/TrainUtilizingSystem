@@ -46,6 +46,8 @@ namespace RouteLibrary.Base
         [DataMember]
         public int Length { get; set; }
 
+        public bool IgnoreBlockage { get; set; }
+
         static Vehicle()
         {
             LastVehicleID = 0;
@@ -208,6 +210,19 @@ namespace RouteLibrary.Base
             return new CommandFactory() { CreateCommand = func };
         }
 
+        public CommandFactory CreateBlockageIgnoreCommand(Func<float> cntspdfact)
+        {
+            var fun = new Func<Block, CommandInfo>(blk =>
+                {
+                    var cmd=  new CommandInfo() { Route = this.Route
+                    ,
+                    Speed = cntspdfact(),
+                    MotorMode = MotorMemoryStateEnum.Controlling};
+
+                    return cmd;
+                });
+            return new CommandFactory() { CreateCommand = func};
+
         public CommandFactory CreateNthCommand(SpeedFactory spdfactory)
         {
             return CreateWithWaitingCommand(() => spdfactory.Go, () => spdfactory.Go);
@@ -239,6 +254,21 @@ namespace RouteLibrary.Base
             return this.Run(spd);
         }
 
+        public IDisposable RuIfnIgnored(float spd)
+        {
+            var spd = new SpeedFactory { RawSpeed = spd };
+
+            //all alocate
+            this.Route.AllocateTrain(this.CurrentBlock, this.Route.Blocks.Count);
+
+            CommandFactory cmdfact = null;
+
+            cmdfact = CreateBlockageIgnoreCommand(() = > spd.Go);
+
+
+            return this.Sheet.Effect(cmdfact, this.Route.Blocks.ToList().Distinct());
+        } 
+
         public IDisposable Run(float spd)
         {
             CommandFactory cmdfactory = null;
@@ -248,7 +278,7 @@ namespace RouteLibrary.Base
             this.Route.AllocateTrain(this.CurrentBlock, this.Length);
 
             if (!this.Route.LockNextUnit())
-            {
+{
                 if (this.CanHalt)
                 {
                     cmdfactory = CreateHaltCommand(spdfactory);
