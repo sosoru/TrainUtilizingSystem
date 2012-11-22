@@ -90,6 +90,10 @@ namespace RouteLibrary.Base
                 this.Speed = 0.0f;
             }
 
+            if (this.IgnoreBlockage)
+            {
+                this.RunIfIgnored(this.Speed);
+            }
 
             // todo : halts support
             if (this.Route.LockedUnits.Count > 0)
@@ -257,7 +261,7 @@ namespace RouteLibrary.Base
             return this.Run(spd);
         }
 
-        public IDisposable RuIfnIgnored(float spd)
+        public IDisposable RunIfIgnored(float spd)
         {
             var spd = new SpeedFactory { RawSpeed = spd };
 
