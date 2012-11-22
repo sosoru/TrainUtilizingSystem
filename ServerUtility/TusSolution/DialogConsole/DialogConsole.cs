@@ -280,7 +280,7 @@ this.Sheet.InnerBlocks);
 
             var rev = ans.Contains("rev");
             var sub = ans.Contains("sub");
-            var ign = ans.Contains("ign");l
+            var ign = ans.Contains("ign");
 
             if (ans.Length < 1)
                 throw new ArgumentException("insufficient parameters");
