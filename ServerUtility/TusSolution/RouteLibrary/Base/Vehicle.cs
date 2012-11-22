@@ -227,7 +227,7 @@ namespace RouteLibrary.Base
 
                     return cmd;
                 });
-            return new CommandFactory() { CreateCommand = func };
+            return new CommandFactory() { CreateCommand = fun };
         }
 
         public CommandFactory CreateNthCommand(SpeedFactory spdfactory)
