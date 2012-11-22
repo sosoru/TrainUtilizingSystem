@@ -99,6 +99,7 @@ namespace RouteLibrary.Base
                 {
                      this.CurrentBlock = waitingunit.ControlBlock;
                     Console.WriteLine("vehicle moved : {0}", this.CurrentBlock.Name);
+                    Console.WriteLine(this.CurrentBlock.MotorEffector.Device.ToString());
 
                 }
             }
