@@ -282,6 +282,16 @@ this.Sheet.InnerBlocks);
             var sub = ans.Contains("sub");
             ignoreblockage = ans.Contains("ign");
 
+            if (ignoreblockage)
+            {
+                this.Sheet.Effect(new CommandFactory()
+                {
+                    CreateCommand = b => new CommandInfo() { MotorMode = MotorMemoryStateEnum.Locked, }
+                },
+this.Sheet.InnerBlocks);
+
+            }
+
             if (ans.Length < 1)
                 throw new ArgumentException("insufficient parameters");
 
