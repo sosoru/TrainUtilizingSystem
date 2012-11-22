@@ -263,14 +263,14 @@ namespace RouteLibrary.Base
 
         public IDisposable RunIfIgnored(float spd)
         {
-            var spd = new SpeedFactory { RawSpeed = spd };
+            var spdfact = new SpeedFactory { RawSpeed = spd };
 
             //all alocate
             this.Route.AllocateTrain(this.CurrentBlock, this.Route.Blocks.Count);
 
             CommandFactory cmdfact = null;
 
-            cmdfact = CreateBlockageIgnoreCommand(() => spd.Go);
+            cmdfact = CreateBlockageIgnoreCommand(() => spdfact.Go);
 
 
             return this.Sheet.Effect(cmdfact, this.Route.Blocks.ToList().Distinct());
