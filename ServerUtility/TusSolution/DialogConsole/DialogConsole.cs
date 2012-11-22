@@ -273,7 +273,7 @@ this.Sheet.InnerBlocks);
             return new BlockSheet(blocks, serv);
         }
 
-        public Route InputRoute( out bool ignoreblockage)
+        public Route InputRoute(out bool ignoreblockage)
         {
             Console.WriteLine("select route [A-D] [rev] [sub] [ign]");
             var ans = Console.ReadLine().ToLower();
@@ -318,7 +318,7 @@ this.Sheet.InnerBlocks);
                 vh.Route.InitLockingPosition();
             }
 
-            bool ign = false; 
+            bool ign = false;
             Route rt = InputRoute(out ign);
 
             rt.IsRepeatable = true;
@@ -401,6 +401,7 @@ this.Sheet.InnerBlocks);
                 }
                 finally
                 {
+                    res.ContentEncoding = System.Text.UnicodeEncoding.UTF8;
                     res.Close();
                 }
             }
