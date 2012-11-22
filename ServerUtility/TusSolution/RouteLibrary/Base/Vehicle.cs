@@ -93,6 +93,7 @@ namespace RouteLibrary.Base
             if (this.IgnoreBlockage)
             {
                 this.RunIfIgnored(this.Speed);
+                return
             }
 
             // todo : halts support
