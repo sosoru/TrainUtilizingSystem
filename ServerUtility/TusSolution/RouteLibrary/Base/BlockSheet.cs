@@ -142,11 +142,6 @@ namespace RouteLibrary.Base
                 .Subscribe();
 
         }
-
-        public void InitMotors()
-        {
-        }
-
         public void InquiryAllMotors()
         {
             var devs = this.InnerBlocks
