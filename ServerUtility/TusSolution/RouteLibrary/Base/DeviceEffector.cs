@@ -101,7 +101,7 @@ namespace RouteLibrary.Base
                 MemoryWhenEntered = MotorMemoryStateEnum.Controlling,
                 DestinationID = beforemtr.DeviceID,
                 DestinationMemory = MotorMemoryStateEnum.Locked,
-                ThresholdCurrent = 2.0f,
+                ThresholdCurrent = 1.5f,
             };
 
             return state;
