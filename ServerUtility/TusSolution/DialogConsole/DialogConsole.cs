@@ -134,6 +134,14 @@ namespace DialogConsole
                                                             .Subscribe();
             this.StartHttpObservable();
 
+            this.Sheet.Effect(new CommandFactory()
+            {
+                CreateCommand = b => new CommandInfo() { MotorMode = MotorMemoryStateEnum.NoEffect, }
+            },
+this.Sheet.InnerBlocks);
+
+            Thread.Sleep(1000);
+
             while (true)
             {
                 Console.WriteLine("1 : show statuses");
@@ -231,11 +239,6 @@ namespace DialogConsole
 
         public void InputVehicleMonitoring()
         {
-            this.Sheet.Effect(new CommandFactory()
-            {
-                CreateCommand = b => new CommandInfo() { MotorMode = MotorMemoryStateEnum.NoEffect, }
-            },
-            this.Sheet.InnerBlocks);
 
             Console.WriteLine("Vehicle Name ?");
             var vhname = Console.ReadLine();
