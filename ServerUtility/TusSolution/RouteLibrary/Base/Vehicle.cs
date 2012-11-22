@@ -266,12 +266,11 @@ namespace RouteLibrary.Base
             var spdfact = new SpeedFactory { RawSpeed = spd };
 
             //all alocate
-            this.Route.AllocateTrain(this.CurrentBlock, this.Route.Blocks.Count);
+            while (this.Route.LockNextUnit()) ;
 
             CommandFactory cmdfact = null;
 
             cmdfact = CreateBlockageIgnoreCommand(() => spdfact.Go);
-
 
             return this.Sheet.Effect(cmdfact, this.Route.Blocks.ToList().Distinct());
         }
