@@ -85,21 +85,21 @@ namespace RouteLibrary.Base
 
         public void Refresh()
         {
-            if(this.ShouldHalt)
+            if (this.ShouldHalt)
             {
                 this.Speed = 0.0f;
             }
 
 
             // todo : halts support
-            if(this.Route.LockedUnits.Count > 0)                
+            if (this.Route.LockedUnits.Count > 0)
             {
                 // verified i'm not halted and the next unit is not blocked by other vehicles
 
                 var waitingunit = this.Route.LockedUnits.Last();
-                if(waitingunit.ControlBlock.IsMotorDetectingTrain)
+                if (waitingunit.ControlBlock.IsMotorDetectingTrain)
                 {
-                     this.CurrentBlock = waitingunit.ControlBlock;
+                    this.CurrentBlock = waitingunit.ControlBlock;
                     Console.WriteLine("vehicle moved : {0}", this.CurrentBlock.Name);
                     Console.WriteLine(this.CurrentBlock.MotorEffector.Device.ToString());
 
@@ -214,14 +214,17 @@ namespace RouteLibrary.Base
         {
             var fun = new Func<Block, CommandInfo>(blk =>
                 {
-                    var cmd=  new CommandInfo() { Route = this.Route
-                    ,
-                    Speed = cntspdfact(),
-                    MotorMode = MotorMemoryStateEnum.Controlling};
+                    var cmd = new CommandInfo()
+                    {
+                        Route = this.Route,
+                        Speed = cntspdfact(),
+                        MotorMode = MotorMemoryStateEnum.Controlling
+                    };
 
                     return cmd;
                 });
-            return new CommandFactory() { CreateCommand = func};
+            return new CommandFactory() { CreateCommand = func };
+        }
 
         public CommandFactory CreateNthCommand(SpeedFactory spdfactory)
         {
@@ -263,11 +266,11 @@ namespace RouteLibrary.Base
 
             CommandFactory cmdfact = null;
 
-            cmdfact = CreateBlockageIgnoreCommand(() = > spd.Go);
+            cmdfact = CreateBlockageIgnoreCommand(() => spd.Go);
 
 
             return this.Sheet.Effect(cmdfact, this.Route.Blocks.ToList().Distinct());
-        } 
+        }
 
         public IDisposable Run(float spd)
         {
@@ -278,7 +281,7 @@ namespace RouteLibrary.Base
             this.Route.AllocateTrain(this.CurrentBlock, this.Length);
 
             if (!this.Route.LockNextUnit())
-{
+            {
                 if (this.CanHalt)
                 {
                     cmdfactory = CreateHaltCommand(spdfactory);
