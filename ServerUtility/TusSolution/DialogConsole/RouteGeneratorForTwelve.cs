@@ -61,8 +61,8 @@ namespace DialogConsole
                 Reverse = inv,
                 UseSubline = sub,
                 KwToAb = new[] { "AT1", "BAT1", },
-                AbMain = new[] { "AT3", "AT4", "AT5", "AT6" },
-                AbSub = new[] { "AT3", "AT4S", "AT5S", "AT5-1", "AT6" },
+                AbMain = new[] { "AT3", "AT4", "AT5", "AT6", "AT6-1" },
+                AbSub = new[] { "AT3", "AT4S", "AT5S", "AT5-1", "AT6", "AT6-1" },
                 AbToKw = new[] { "BAT6", "AT7", "BAT7", "AT8", "BAT8", "AT9", "BAT9", "AT10P", "AT10", "BAT10", "AT11", "BAT11" },
             };
 
@@ -76,8 +76,8 @@ namespace DialogConsole
                 Reverse = inv,
                 UseSubline = sub,
                 KwToAb = new[] { "BT1", "BBT1", },
-                AbMain = new[] { "BT3", "BT4", "BT5", "BT6" },
-                AbSub = new[] { "BT3", "BT4S", "BT5S", "BT5-1", "BT6", },
+                AbMain = new[] { "BT3", "BT4", "BT5", "BT6", "BT6-1" },
+                AbSub = new[] { "BT3", "BT4S", "BT5S", "BT5-1", "BT6", "BT6-1" },
                 AbToKw = new[] { "BBT6", "BT7", "BBT7", "BT8", "BBT8", "BT9", "BBT9", "BT10P", "BT10", "BBT10", "BT11", "BBT11", },
             };
             return gen.GetLoop();
@@ -90,8 +90,8 @@ namespace DialogConsole
                 Reverse = inv,
                 UseSubline = sub,
                 KwToAb = new[] { "CT1", "CT2-1", "CT2-2", "CT2-3" },
-                AbMain = new[] { "CT3", "CT4", "CT5", "CT6" },
-                AbSub = new[] { "CT3", "CT4S", "CT5S", "CT5-1", "CT6" },
+                AbMain = new[] { "CT3", "CT4", "CT5", "CT6", "CT6-1" },
+                AbSub = new[] { "CT3", "CT4S", "CT5S", "CT5-1", "CT6", "CT6-1" },
                 AbToKw = new[] { "BCT6", "CT7", "BCT7", "CT8", "BCT8", "CT9", "BCT9", "CT10", "BCT10", "CT11", "BCT11", },
             };
             return gen.GetLoop();
@@ -104,8 +104,8 @@ namespace DialogConsole
                 Reverse = inv,
                 UseSubline = sub,
                 KwToAb = new[] { "DT1", "DT2-1", "DT2-2", "DT2-3", "DT2-4", },
-                AbMain = new[] { "DT3", "DT4", "DT5", "DT6" },
-                AbSub = new[] { "DT3", "DT4S", "DT5S", "DT5-1", "DT6" },
+                AbMain = new[] { "DT3", "DT4", "DT5", "DT6", "DT6-1" },
+                AbSub = new[] { "DT3", "DT4S", "DT5S", "DT5-1", "DT6", "DT6-1" },
                 AbToKw = new[] { "BDT6", "DT7", "BDT7", "DT8", "BDT8", "DT9", "BDT9", "DT10", "BDT10", "DT11", "BDT11", },
             };
             return gen.GetLoop();
