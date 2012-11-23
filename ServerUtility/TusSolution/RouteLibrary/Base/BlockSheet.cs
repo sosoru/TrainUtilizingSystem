@@ -95,8 +95,9 @@ namespace RouteLibrary.Base
             get { return this.InnerBlocks.SelectMany(b => b.Effectors); }
         }
 
-        public IDisposable Effect(CommandFactory cmd, IEnumerable<Block> blocks)
+        public void Effect(CommandFactory cmd, IEnumerable<Block> blocks)
         {
+            blocks.SelectMany(b => b.Effectors).ForEach(e => e.ExecuteCommand());
             return Observable.Timer(DateTimeOffset.MinValue, this.TimeWaitingSwitchChanged, this.AssociatedScheduler)
                 .Zip(GetEffectObservable(cmd, blocks), (l, effectors) => new { l, effectors })
                 .Subscribe(val => val.effectors.ForEach(e => e.ExecuteCommand()));
@@ -104,15 +105,15 @@ namespace RouteLibrary.Base
 
         public IEnumerable<IDeviceEffector>[] GetEffectObservable(CommandFactory cmd, IEnumerable<Block> blocks)
         {
-            blocks.ForEach(b => b.Effect(new[] { cmd }));
+            //blocks.ForEach(b => b.Effect(new[] { cmd }));
 
-            var ob = blocks
-                .SelectMany(b => b.Effectors)
-                   .Where(e => e.IsNeededExecution)
-                 .GroupBy(e => (e is SwitchEffector) ? 0 : 1)
-                 .OrderBy(g => g.Key);
+            //var ob = blocks
+            //    .SelectMany(b => b.Effectors)
+            //       .Where(e => e.IsNeededExecution)
+            //     .GroupBy(e => (e is SwitchEffector) ? 0 : 1)
+            //     .OrderBy(g => g.Key);
 
-            return ob.Select(g => (IEnumerable<IDeviceEffector>)g.ToArray()).ToArray();
+            //return ob.Select(g => (IEnumerable<IDeviceEffector>)g.ToArray()).ToArray();
         }
 
         public Block GetBlock(string p)
