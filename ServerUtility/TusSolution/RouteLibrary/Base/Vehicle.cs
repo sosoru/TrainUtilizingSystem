@@ -155,7 +155,7 @@ namespace RouteLibrary.Base
 
         public void Run()
         {
-            return this.Run(0.5f);
+            this.Run(0.5f);
         }
 
         public void ChangeRoute(Route rt)
