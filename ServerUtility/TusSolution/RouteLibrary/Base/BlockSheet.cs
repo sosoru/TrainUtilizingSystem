@@ -109,8 +109,8 @@ namespace RouteLibrary.Base
             var ob = blocks
                 .SelectMany(b => b.Effectors)
                    .Where(e => e.IsNeededExecution);
-                 //.GroupBy(e => (e is SwitchEffector) ? 0 : 1)
-                 //.OrderBy(g => g.Key);
+                 .GroupBy(e => 0)//(e is SwitchEffector) ? 0 : 1)
+                 .OrderBy(g => g.Key);
 
             return ob.Select(g => (IEnumerable<IDeviceEffector>)g.ToArray()).ToArray();
         }
