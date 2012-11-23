@@ -290,10 +290,11 @@ this.Sheet.InnerBlocks);
 
             IEnumerable<string> rt = null;
             var firstch = ans.First();
+            rev = !rev;
             switch (firstch)
             {
                 case 'a':
-                    rt = RouteGeneratorForTwelve.GetLoopA(rev, sub).Reverse();
+                    rt = RouteGeneratorForTwelve.GetLoopA(rev, sub)
                     break;
                 case 'b':
                     rt = RouteGeneratorForTwelve.GetLoopB(rev, sub);
