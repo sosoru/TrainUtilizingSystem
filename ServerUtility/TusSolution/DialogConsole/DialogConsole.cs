@@ -290,7 +290,7 @@ this.Sheet.InnerBlocks);
 
             IEnumerable<string> rt = null;
             var firstch = ans.First();
-            rev = !rev;
+            //rev = !rev;
             switch (firstch)
             {
                 case 'a':
