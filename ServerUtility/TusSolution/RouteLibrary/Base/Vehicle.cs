@@ -276,10 +276,12 @@ namespace RouteLibrary.Base
 
             cmdfact = CreateBlockageIgnoreCommand(() => spdfact.Go);
 
-            return Observable.Create(ob =>
+            return Observable.Create<Unit>(ob =>
             {
                 this.Sheet.Effect(cmdfact, this.Route.Blocks.ToList().Distinct());
+                ob.OnNext(Unit.Default);
                 ob.OnCompleted();
+                return () => { };
             }).Subscribe();
         }
 
@@ -315,10 +317,12 @@ namespace RouteLibrary.Base
                 cmdfactory = CreateNthCommand(spdfactory);
             }
 
-            return Observable.Create(ob =>
+            return Observable.Create<Unit>(ob =>
             {
                 this.Sheet.Effect(cmdfactory, this.Route.LockedBlocks.Concat(lastlockedblocks).Distinct());
+                ob.OnNext(Unit.Default);
                 ob.OnCompleted();
+                return () => { };
             }).Subscribe();
         }
     }
