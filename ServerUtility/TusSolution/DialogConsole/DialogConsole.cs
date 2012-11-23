@@ -95,7 +95,7 @@ namespace DialogConsole
             this.Vehicles = new List<Vehicle>();
 
             this.LogWriterSend = new StreamWriter("packet_log.txt");
-            this.LogWriterSend
+            this.LogWriterRecv = new StreamWriter("packet_log_recv.txt");
         }
 
         public void Loop()
