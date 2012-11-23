@@ -103,18 +103,18 @@ namespace RouteLibrary.Base
             //    .Subscribe(val => val.effectors.ForEach(e => e.ExecuteCommand()));
         }
 
-        public IEnumerable<IDeviceEffector>[] GetEffectObservable(CommandFactory cmd, IEnumerable<Block> blocks)
-        {
-            //blocks.ForEach(b => b.Effect(new[] { cmd }));
+        //public IEnumerable<IDeviceEffector>[] GetEffectObservable(CommandFactory cmd, IEnumerable<Block> blocks)
+        //{
+        //    //blocks.ForEach(b => b.Effect(new[] { cmd }));
 
-            //var ob = blocks
-            //    .SelectMany(b => b.Effectors)
-            //       .Where(e => e.IsNeededExecution)
-            //     .GroupBy(e => (e is SwitchEffector) ? 0 : 1)
-            //     .OrderBy(g => g.Key);
+        //    //var ob = blocks
+        //    //    .SelectMany(b => b.Effectors)
+        //    //       .Where(e => e.IsNeededExecution)
+        //    //     .GroupBy(e => (e is SwitchEffector) ? 0 : 1)
+        //    //     .OrderBy(g => g.Key);
 
-            //return ob.Select(g => (IEnumerable<IDeviceEffector>)g.ToArray()).ToArray();
-        }
+        //    //return ob.Select(g => (IEnumerable<IDeviceEffector>)g.ToArray()).ToArray();
+        //}
 
         public Block GetBlock(string p)
         {
