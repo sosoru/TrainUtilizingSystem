@@ -110,11 +110,11 @@ namespace DialogConsole
                 .Delay(TimeSpan.FromMilliseconds(15))
                 .Repeat()
                 .SelectMany(g => g.ExtractPackedPacket())
-                //.Do(g => this.LogWriter.WriteLine(string.Format("({0}.{1}) : sending {2}",
-                //                    DateTime.Now.ToLongTimeString(),
-                //                    DateTime.Now.Millisecond,
-                //                    g.ToString()
-                //                    )))
+                .Do(g => this.LogWriter.WriteLine(string.Format("({0}.{1}) : sending {2}",
+                                    DateTime.Now.ToLongTimeString(),
+                                    DateTime.Now.Millisecond,
+                                    g.ToString()
+                                    )))
                 .ObserveOn(this.SchedulerSendingProcessing)
                 .SubscribeOn(Scheduler.NewThread)
                 .Subscribe();
@@ -125,11 +125,11 @@ namespace DialogConsole
                 .Repeat()
                 .Zip(timer, (v, _) => v)
                 .SelectMany(v => v.ExtractPackedPacket())
-                //.Do(g => this.LogWriter.WriteLine(string.Format("({0}.{1}) : recving {2}",
-                //                                                    DateTime.Now.ToLongTimeString(),
-                //                                                    DateTime.Now.Millisecond,
-                //                                                    g.ToString()
-                //                                                    )))
+                .Do(g => this.LogWriter.WriteLine(string.Format("({0}.{1}) : recving {2}",
+                                                                    DateTime.Now.ToLongTimeString(),
+                                                                    DateTime.Now.Millisecond,
+                                                                    g.ToString()
+                                                                    )))
                                                             .SubscribeOn(Scheduler.NewThread)
                                                             .Subscribe();
             this.StartHttpObservable();
