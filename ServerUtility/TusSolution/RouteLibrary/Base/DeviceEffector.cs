@@ -238,7 +238,6 @@ namespace RouteLibrary.Base
                     break;
                 case MotorMemoryStateEnum.SpecifiedDuty:
                     states.Add(MotorMemoryStateEnum.SpecifiedDuty, 
-                case MotorMemoryStateEnum.Locked:
                 case MotorMemoryStateEnum.Unknown:
                 default:
                     throw new InvalidOperationException("invalid mode applied");
