@@ -6,6 +6,9 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using SensorLibrary.Devices.TusAvrDevices;
 
+using System.Reactive;
+using System.Reactive.Linq;
+
 namespace RouteLibrary.Base
 {
     public class SpeedFactory
@@ -273,7 +276,11 @@ namespace RouteLibrary.Base
 
             cmdfact = CreateBlockageIgnoreCommand(() => spdfact.Go);
 
-            return this.Sheet.Effect(cmdfact, this.Route.Blocks.ToList().Distinct());
+            return Observable.Create(ob =>
+            {
+                this.Sheet.Effect(cmdfact, this.Route.Blocks.ToList().Distinct());
+                ob.OnCompleted();
+            }).Subscribe() ;
         }
 
         public IDisposable Run(float spd)
