@@ -328,7 +328,7 @@ this.Sheet.InnerBlocks);
             rt.IsRepeatable = true;
             var v = new Vehicle(this.Sheet, rt);
             v.CurrentBlock = b;
-            v.Speed = 0.6f;
+            v.Speed = 1.0f;
             v.Name = vhname;
             v.IgnoreBlockage = (ign);
 
