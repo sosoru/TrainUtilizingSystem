@@ -248,7 +248,7 @@ this.Sheet.InnerBlocks);
             Console.WriteLine("Which block your vehicle halt on?");
             var bk = this.Sheet.GetBlock(Console.ReadLine());
 
-            this.Vehicles.Clear();
+            //this.Vehicles.Clear();
             var v = CreateVehicle(vhname, bk);
 
             this.VehicleProcessing_ = Observable.Defer(() => Observable.Start(VehicleProcess, this.SchedulerSendingProcessing))
