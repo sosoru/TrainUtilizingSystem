@@ -98,9 +98,9 @@ namespace RouteLibrary.Base
         public void Effect(CommandFactory cmd, IEnumerable<Block> blocks)
         {
             blocks.SelectMany(b => b.Effectors).ForEach(e => e.ExecuteCommand());
-            return Observable.Timer(DateTimeOffset.MinValue, this.TimeWaitingSwitchChanged, this.AssociatedScheduler)
-                .Zip(GetEffectObservable(cmd, blocks), (l, effectors) => new { l, effectors })
-                .Subscribe(val => val.effectors.ForEach(e => e.ExecuteCommand()));
+            //return Observable.Timer(DateTimeOffset.MinValue, this.TimeWaitingSwitchChanged, this.AssociatedScheduler)
+            //    .Zip(GetEffectObservable(cmd, blocks), (l, effectors) => new { l, effectors })
+            //    .Subscribe(val => val.effectors.ForEach(e => e.ExecuteCommand()));
         }
 
         public IEnumerable<IDeviceEffector>[] GetEffectObservable(CommandFactory cmd, IEnumerable<Block> blocks)
