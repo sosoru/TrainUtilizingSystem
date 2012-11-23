@@ -247,8 +247,11 @@ this.Sheet.InnerBlocks);
             var bk = this.Sheet.GetBlock(Console.ReadLine());
 
             this.Vehicles.Clear();
-            CreateVehicle(vhname, bk);
+            var v = CreateVehicle(vhname, bk);
 
+            if (v.IgnoreBlockage)
+                return;
+            
             this.VehicleProcessing_ = Observable.Defer(() => Observable.Start(VehicleProcess, this.SchedulerSendingProcessing))
                 .Do(u => this.Sheet.InquiryAllMotors())
                 .Delay(TimeSpan.FromMilliseconds(1000))
@@ -308,7 +311,7 @@ this.Sheet.InnerBlocks);
             return new Route(rt.Select(s => this.Sheet.GetBlock(s)).ToList());
         }
 
-        public void CreateVehicle(string vhname, Block b)
+        public Vehicle CreateVehicle(string vhname, Block b)
         {
             if (this.VehicleProcessing_ != null)
                 this.VehicleProcessing_.Dispose();
@@ -329,6 +332,7 @@ this.Sheet.InnerBlocks);
             v.IgnoreBlockage = (ign);
 
             this.Vehicles.Add(v);
+            return v;
         }
 
         public void VehicleProcess()
