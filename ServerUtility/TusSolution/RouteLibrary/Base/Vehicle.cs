@@ -259,13 +259,13 @@ namespace RouteLibrary.Base
             return CreateControlCommand(() => spdfactory.Caution);
         }
 
-        public IDisposable Run(float spd, Block blk)
+        public Run(float spd, Block blk)
         {
             this.CurrentBlock = blk;
-            return this.Run(spd);
+           this.Run(spd);
         }
 
-        public IDisposable RunIfIgnored(float spd)
+        public void RunIfIgnored(float spd)
         {
             var spdfact = new SpeedFactory { RawSpeed = spd };
 
@@ -276,16 +276,10 @@ namespace RouteLibrary.Base
 
             cmdfact = CreateBlockageIgnoreCommand(() => spdfact.Go);
 
-            return Observable.Create<Unit>(ob =>
-            {
                 this.Sheet.Effect(cmdfact, this.Route.Blocks.ToList().Distinct());
-                ob.OnNext(Unit.Default);
-                ob.OnCompleted();
-                return () => { };
-            }).Subscribe();
         }
 
-        public IDisposable Run(float spd)
+        public void Run(float spd)
         {
             CommandFactory cmdfactory = null;
             var spdfactory = new SpeedFactory() { RawSpeed = spd };
@@ -317,13 +311,7 @@ namespace RouteLibrary.Base
                 cmdfactory = CreateNthCommand(spdfactory);
             }
 
-            return Observable.Create<Unit>(ob =>
-            {
                 this.Sheet.Effect(cmdfactory, this.Route.LockedBlocks.Concat(lastlockedblocks).Distinct());
-                ob.OnNext(Unit.Default);
-                ob.OnCompleted();
-                return () => { };
-            }).Subscribe();
         }
     }
 }
