@@ -158,7 +158,7 @@ namespace TestProject
 
             // vh will allocate the first control block of the route at Constructor
 
-            var disp = vh.Run();
+            vh.Run();
             var waitingTicks1 = sht.TimeWaitingSwitchChanged + TimeSpan.FromSeconds(0.5);
 
             scheduler.Schedule(TimeSpan.FromSeconds(0.5), () =>
@@ -172,7 +172,7 @@ namespace TestProject
             scheduler.Schedule(waitingTicks1, () =>
             {
                 serv.SendingObservable.Repeat(50).Subscribe();
-                Assert.IsTrue(written.ExtractDevices<MotorState>(1, 2, 2).Any(s =>s.Duty > 0.0f));
+                Assert.IsTrue(written.ExtractDevices<MotorState>(1, 2, 2).Any(s => s.Duty > 0.0f));
             });
 
             scheduler.Start();
@@ -198,7 +198,7 @@ namespace TestProject
             written.Clear();
             othervh.Run(1.0f, sht.GetBlock("AT15"));
             vh.Run(1.0f, sht.GetBlock("AT2"));
-            
+
             scheduler.Start();
             serv.SendingObservable.Repeat(50).Subscribe();
             Assert.IsTrue(written.ExtractDevices<MotorState>(1, 2, 2).Any(s => s.Duty == 1.0f));
@@ -211,7 +211,7 @@ namespace TestProject
 
             scheduler.Start();
             serv.SendingObservable.Repeat(50).Subscribe();
-            Assert.IsTrue(written.ExtractDevices<MotorState>(1, 2, 2).Any(s =>Math.Round(s.Duty, 1) == 0.5f));
+            Assert.IsTrue(written.ExtractDevices<MotorState>(1, 2, 2).Any(s => Math.Round(s.Duty, 1) == 0.5f));
             Assert.IsTrue(written.ExtractDevices<MotorState>(1, 2, 3).Any(s => s.Duty == 0.0f));
 
             // zero case : the vehicle stops immediately
