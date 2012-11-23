@@ -280,7 +280,7 @@ namespace RouteLibrary.Base
             {
                 this.Sheet.Effect(cmdfact, this.Route.Blocks.ToList().Distinct());
                 ob.OnCompleted();
-            }).Subscribe() ;
+            }).Subscribe();
         }
 
         public IDisposable Run(float spd)
@@ -315,7 +315,11 @@ namespace RouteLibrary.Base
                 cmdfactory = CreateNthCommand(spdfactory);
             }
 
-            return this.Sheet.Effect(cmdfactory, this.Route.LockedBlocks.Concat(lastlockedblocks).Distinct());
+            return Observable.Create(ob =>
+            {
+                this.Sheet.Effect(cmdfactory, this.Route.LockedBlocks.Concat(lastlockedblocks).Distinct());
+                ob.OnCompleted();
+            }).Subscribe();
         }
     }
 }
