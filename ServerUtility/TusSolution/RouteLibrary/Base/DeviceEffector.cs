@@ -236,8 +236,6 @@ namespace RouteLibrary.Base
                     states.Add(MotorMemoryStateEnum.NoEffect, NoEffectState);
                     this.Device.CurrentMemory = MotorMemoryStateEnum.NoEffect;
                     break;
-                case MotorMemoryStateEnum.SpecifiedDuty:
-                    states.Add(MotorMemoryStateEnum.SpecifiedDuty, 
                 case MotorMemoryStateEnum.Unknown:
                 default:
                     throw new InvalidOperationException("invalid mode applied");
