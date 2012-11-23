@@ -97,15 +97,9 @@ namespace RouteLibrary.Base
 
         public void Effect(CommandFactory cmd, IEnumerable<Block> blocks)
         {
-            var ob = blocks
-                .SelectMany(b => b.Effectors)
-                   .Where(e => e.IsNeededExecution)
-                 .GroupBy(e => (e is SwitchEffector) ? 0 : 1)
-                 .OrderBy(g => g.Key);
-            ob.SelectMany(g => g).ForEach(e => e.ExecuteCommand());
-            //return Observable.Timer(DateTimeOffset.MinValue, this.TimeWaitingSwitchChanged, this.AssociatedScheduler)
-            //    .Zip(GetEffectObservable(cmd, blocks), (l, effectors) => new { l, effectors })
-            //    .Subscribe(val => val.effectors.ForEach(e => e.ExecuteCommand()));
+            return Observable.Timer(DateTimeOffset.MinValue, this.TimeWaitingSwitchChanged, this.AssociatedScheduler)
+                .Zip(GetEffectObservable(cmd, blocks), (l, effectors) => new { l, effectors })
+                .Subscribe(val => val.effectors.ForEach(e => e.ExecuteCommand()));
         }
 
         public IEnumerable<IDeviceEffector>[] GetEffectObservable(CommandFactory cmd, IEnumerable<Block> blocks)
@@ -114,9 +108,9 @@ namespace RouteLibrary.Base
 
             var ob = blocks
                 .SelectMany(b => b.Effectors)
-                   .Where(e => e.IsNeededExecution)
-                 .GroupBy(e => (e is SwitchEffector) ? 0 : 1)
-                 .OrderBy(g => g.Key);
+                   .Where(e => e.IsNeededExecution);
+                 //.GroupBy(e => (e is SwitchEffector) ? 0 : 1)
+                 //.OrderBy(g => g.Key);
 
             return ob.Select(g => (IEnumerable<IDeviceEffector>)g.ToArray()).ToArray();
         }
