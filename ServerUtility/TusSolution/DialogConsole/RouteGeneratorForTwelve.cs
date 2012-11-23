@@ -78,7 +78,7 @@ namespace DialogConsole
                 KwToAb = new[] { "BT1", "BBT1", },
                 AbMain = new[] { "BT3", "BT4", "BT5", "BT6", },
                 AbSub = new[] { "BT3", "BT4S", "BT5S", "BT5-1", "BT6", },
-                AbToKw = new[] { "BBT6", "BT7", "BBT7", "BT8", "BBT8", "BT9", "BBT9", "BT10P", "BT10", "BBT10", "BT11", "BBT11", },
+                AbToKw = new[] { "BBT6", "BT7", "BBT7", "BT8", "BBT8", "BT9",  "BT10P", "BT10", "BBT10", "BT11", "BBT11", },
             };
             return gen.GetLoop();
         }
