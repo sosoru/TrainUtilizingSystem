@@ -207,10 +207,10 @@ namespace RouteLibrary.Base
             switch (cmd.MotorMode)
             {
                 case MotorMemoryStateEnum.Controlling:
-                    //if (_before_state != MotorMemoryStateEnum.Controlling)
-                    //{
-                    //    states.Add(MotorMemoryStateEnum.Locked, LockedState);
-                    //}
+                    if (_before_state != MotorMemoryStateEnum.Controlling)
+                    {
+                        states.Add(MotorMemoryStateEnum.Locked, LockedState);
+                    }
                     states.Add(MotorMemoryStateEnum.Controlling, CreateMotorState(cmd));
                     this.Device.CurrentMemory = MotorMemoryStateEnum.Controlling;
                     this.IsNeededExecution = true;
