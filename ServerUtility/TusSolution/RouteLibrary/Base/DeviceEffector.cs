@@ -191,11 +191,15 @@ namespace RouteLibrary.Base
             this.Device.SendState();
         }
 
+        private MotorState _before_mtr_state;
         private MotorMemoryStateEnum _before_state = MotorMemoryStateEnum.Unknown;
         public override void ApplyCommand(CommandFactory factory)
         {
             if (this.IsNeededExecution)
                 return;
+
+            if(_before_mtr_state == null )
+                _before_mtr_state = new MotorState();
 
             var cmd = factory.CreateCommand(this.ParentBlock);
             var states = new Dictionary<MotorMemoryStateEnum, MotorState>();
