@@ -64,9 +64,10 @@ namespace DialogConsole
         private IDisposable Receiving_;
         private IDisposable ServingInfomation_;
 
+        private StreamWriter LogWriterRecv;
         private object lock_writer = new object();
         private StreamWriter log_writer_;
-        private StreamWriter LogWriter
+        private StreamWriter LogWriterSend
         {
             get
             {
@@ -93,7 +94,8 @@ namespace DialogConsole
             this.Server.Controller = io;
             this.Vehicles = new List<Vehicle>();
 
-            this.LogWriter = new StreamWriter("packet_log.txt");
+            this.LogWriterSend = new StreamWriter("packet_log.txt");
+            this.LogWriterSend
         }
 
         public void Loop()
@@ -110,7 +112,7 @@ namespace DialogConsole
                 .Delay(TimeSpan.FromMilliseconds(15))
                 .Repeat()
                 .SelectMany(g => g.ExtractPackedPacket())
-                .Do(g => this.LogWriter.WriteLine(string.Format("({0}.{1}) : sending {2}",
+                .Do(g => this.LogWriterSend.WriteLine(string.Format("({0}.{1}) : sending {2}",
                                     DateTime.Now.ToLongTimeString(),
                                     DateTime.Now.Millisecond,
                                     g.ToString()
@@ -125,7 +127,7 @@ namespace DialogConsole
                 .Repeat()
                 .Zip(timer, (v, _) => v)
                 .SelectMany(v => v.ExtractPackedPacket())
-                .Do(g => this.LogWriter.WriteLine(string.Format("({0}.{1}) : recving {2}",
+                .Do(g => this.LogWriterSend.WriteLine(string.Format("({0}.{1}) : recving {2}",
                                                                     DateTime.Now.ToLongTimeString(),
                                                                     DateTime.Now.Millisecond,
                                                                     g.ToString()
