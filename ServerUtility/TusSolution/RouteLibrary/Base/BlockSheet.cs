@@ -108,7 +108,7 @@ namespace RouteLibrary.Base
 
             var ob = blocks
                 .SelectMany(b => b.Effectors)
-                   .Where(e => e.IsNeededExecution);
+                   .Where(e => e.IsNeededExecution)
                  .GroupBy(e => 0)//(e is SwitchEffector) ? 0 : 1)
                  .OrderBy(g => g.Key);
 
