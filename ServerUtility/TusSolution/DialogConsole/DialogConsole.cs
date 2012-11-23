@@ -293,7 +293,7 @@ this.Sheet.InnerBlocks);
             switch (firstch)
             {
                 case 'a':
-                    rt = RouteGeneratorForTwelve.GetLoopA(rev, sub);
+                    rt = RouteGeneratorForTwelve.GetLoopA(rev, sub).Reverse();
                     break;
                 case 'b':
                     rt = RouteGeneratorForTwelve.GetLoopB(rev, sub);
