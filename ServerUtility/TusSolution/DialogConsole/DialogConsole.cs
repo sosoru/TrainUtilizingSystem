@@ -127,7 +127,7 @@ namespace DialogConsole
                 .Repeat()
                 .Zip(timer, (v, _) => v)
                 .SelectMany(v => v.ExtractPackedPacket())
-                .Do(g => this.LogWriterSend.WriteLine(string.Format("({0}.{1}) : recving {2}",
+                .Do(g => this.LogWriterRecv.WriteLine(string.Format("({0}.{1}) : recving {2}",
                                                                     DateTime.Now.ToLongTimeString(),
                                                                     DateTime.Now.Millisecond,
                                                                     g.ToString()
