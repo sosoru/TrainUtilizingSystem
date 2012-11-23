@@ -259,10 +259,10 @@ namespace RouteLibrary.Base
             return CreateControlCommand(() => spdfactory.Caution);
         }
 
-        public Run(float spd, Block blk)
+        public void Run(float spd, Block blk)
         {
             this.CurrentBlock = blk;
-           this.Run(spd);
+            this.Run(spd);
         }
 
         public void RunIfIgnored(float spd)
@@ -276,7 +276,7 @@ namespace RouteLibrary.Base
 
             cmdfact = CreateBlockageIgnoreCommand(() => spdfact.Go);
 
-                this.Sheet.Effect(cmdfact, this.Route.Blocks.ToList().Distinct());
+            this.Sheet.Effect(cmdfact, this.Route.Blocks.ToList().Distinct());
         }
 
         public void Run(float spd)
@@ -311,7 +311,7 @@ namespace RouteLibrary.Base
                 cmdfactory = CreateNthCommand(spdfactory);
             }
 
-                this.Sheet.Effect(cmdfactory, this.Route.LockedBlocks.Concat(lastlockedblocks).Distinct());
+            this.Sheet.Effect(cmdfactory, this.Route.LockedBlocks.Concat(lastlockedblocks).Distinct());
         }
     }
 }
