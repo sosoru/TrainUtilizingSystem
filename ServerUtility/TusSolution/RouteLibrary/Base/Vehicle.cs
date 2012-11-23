@@ -153,7 +153,7 @@ namespace RouteLibrary.Base
             return this.VehicleID.GetHashCode();
         }
 
-        public IDisposable Run()
+        public void Run()
         {
             return this.Run(0.5f);
         }
