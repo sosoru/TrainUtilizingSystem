@@ -377,7 +377,7 @@ namespace TestProject
             var ptpacket = new EthPacket()
             {
                 srcId = new DeviceID(9, 0),
-                destId = new DeviceID(25, 1, 1),
+                destId = new DeviceID(25, 1, 9),
             };
 
             var pt = new Switch();
