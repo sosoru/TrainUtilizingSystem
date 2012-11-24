@@ -184,7 +184,7 @@ namespace SensorLibrary
                 var len = this.Data[bufind];
                 var internelid = this.Data[bufind + 1];
                 var mtype = (ModuleTypeEnum)this.Data[bufind + 2];
-                //var f = factory.AvailableDeviceTypes.First(a => a.ModuleType == mtype);
+                var f = factory.AvailableDeviceTypes.First(a => a.ModuleType == mtype);
                 var state = f.DeviceStateCreate();
                 var data = state.Data;
                 var cpbuffer = new byte[len];
