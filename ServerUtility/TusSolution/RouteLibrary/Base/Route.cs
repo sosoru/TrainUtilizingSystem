@@ -200,7 +200,7 @@ namespace RouteLibrary.Base
         }
 
         [DataMember(IsRequired= false)]
-        public IEnumerable<Block> LockedBlocks
+        public ICollection<Block> LockedBlocks
         {
             get
             {
