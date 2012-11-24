@@ -33,7 +33,7 @@ namespace SensorLibrary.Packet.Control
         private List<PacketServerAction> actionList = new List<PacketServerAction>();
         private PacketDispatcher thisobsv_;
 
-        private Queue<DevicePacket> sending_queue = new Queue<DevicePacket>();
+        private Queue<DevicePacket> sending_queue = new Queue<DevicePacket>(128);
 
         public PacketServer(DeviceFactoryProvider factory)
             : this()
