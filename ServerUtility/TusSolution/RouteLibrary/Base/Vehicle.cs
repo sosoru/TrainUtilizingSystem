@@ -15,8 +15,8 @@ namespace RouteLibrary.Base
     {
         public float RawSpeed { get; set; }
         public float Go { get { return RawSpeed; } }
-        public float Caution { get { return RawSpeed * 0.8f; } }
-        public float Stop { get { return this.RawSpeed * 0.3f; } }
+        public float Caution { get { return RawSpeed ; } }
+        public float Stop { get { return RawSpeed * 0f; } }
     }
 
     [DataContract]
