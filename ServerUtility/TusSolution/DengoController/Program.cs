@@ -63,11 +63,12 @@ namespace DengoController
 
         static bool InputVehicles()
         {
+            bool result = false;
             var vs = GetVehicles().ToArray();
 
             vs.ToObservable()
                 .Select((v, i) => string.Format("{0} : {1}", v.Name))
-                .Subscribe(Console.Writeline);
+                .Subscribe(Console.WriteLine);
 
             var strindex = Console.ReadLine();
             int index;
@@ -79,6 +80,7 @@ namespace DengoController
 
                     Console.WriteLine("catched vehicle sucessfully");
                     RouteName = v.Route;
+                    result = true;
                 }
                 else
                 {
@@ -88,9 +90,8 @@ namespace DengoController
             else
             {
                 Console.WriteLine("parse error");
-                return;
             }
-
+            return result;
             
         }
 
