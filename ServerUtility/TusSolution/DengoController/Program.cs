@@ -97,7 +97,7 @@ namespace DengoController
                 return;
 
             double infl = 0;
-            double before_infl = infl;
+            double before_infl = infl+1;
             while (true)
             {
                 var ac = cnt.AccelLevel;
