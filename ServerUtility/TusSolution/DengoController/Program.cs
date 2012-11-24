@@ -65,7 +65,6 @@ namespace DengoController
                 .Select((v, i) => string.Format("{0} : {1}", i, v.Name))
                 .Subscribe(Console.WriteLine);
 
-            var strindex = Console.ReadLine();
             int index;
             if (int.TryParse(Console.ReadLine(), out index))
             {
