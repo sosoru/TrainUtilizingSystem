@@ -199,7 +199,7 @@ namespace RouteLibrary.Base
             return false;
         }
 
-        [DataMember]
+        [DataMember(IsRequired= false)]
         public IEnumerable<Block> LockedBlocks
         {
             get
@@ -209,7 +209,6 @@ namespace RouteLibrary.Base
 
                 return this.LockedUnits.SelectMany(u => u.Blocks);
             }
-            internal set { this.LockedUnits = value; }
         }
 
         public ControllingRoute GetLockingControlingRoute(Block parentBlock)
