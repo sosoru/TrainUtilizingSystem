@@ -131,7 +131,7 @@ namespace DengoController
                 var data = new DialogCnosole.VehicleInfoReceived()
                 {
                     Name = ControlRouteName,
-                    Speed = infl / 255.0f,
+                    Speed = (infl / 255.0f).ToString(),
                 };
                 SendCommand(data);
 
