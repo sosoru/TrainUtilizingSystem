@@ -97,6 +97,7 @@ namespace DengoController
                 return;
 
             double infl = 0;
+            double before_infl = infl;
             while (true)
             {
                 var ac = cnt.AccelLevel;
@@ -120,8 +121,12 @@ namespace DengoController
                     infl = 250;
 
                 //AddAccel(infl, (cnt.Position) ? MotorDirection.Positive : MotorDirection.Negative);
-                Console.WriteLine("accel : {0}, brake : {1}, duty : {2},  ",
-                            ac * 6, br * 14, infl );
+                if (infl != before_infl)
+                {
+                    Console.WriteLine("accel : {0}, brake : {1}, duty : {2},  ",
+                                ac * 6, br * 14, infl);
+                }
+                before_infl = infl
 
                 var data = new DialogCnosole.VehicleInfoReceived()
                 {
