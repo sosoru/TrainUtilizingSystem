@@ -58,7 +58,7 @@ namespace DengoController
         {
             bool result = false;
 
-            var vs = (IEnumerable<dynamic>)DynamicJson.Parse(GetVehiclesAsString()).ToArray();
+            var vs = (dynamic[])DynamicJson.Parse(GetVehiclesAsString());
 
             vs
                 .ToObservable()
