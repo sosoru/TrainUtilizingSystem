@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,8 +12,16 @@ using Tao.Platform.Windows;
 using SensorLibrary;
 using SensorLibrary.Packet;
 using SensorLibrary.Packet.Control;
+
 using SensorLibrary.Devices;
 using SensorLibrary.Devices.TusAvrDevices;
+
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
+
+using DialogConsole;
+using RouteLibrary;
+using RouteLibrary.Base;
 
 namespace DengoController
 {
@@ -22,6 +31,7 @@ namespace DengoController
         static PacketServer serv_g;
         static PacketDispatcher dispat_g;
         static Motor mtr_g;
+        static IPAddress ipaddr;
 
         static void InitCommunication(IPAddress ipbase, IPAddress ipmask)
         {
@@ -40,25 +50,6 @@ namespace DengoController
             serv_g.LoopStart();
         }
 
-        static DeviceID InformDeviceID()
-        {
-            while (true)
-            {
-                Console.WriteLine("type device id : (%d, %d, %d)");
-                try
-                {
-                    var readed = Console.ReadLine();
-                    var id = new RouteLibrary.Parser.DeviceIdParser().FromString(readed);
-
-                    return id.First();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-            }
-        }
-
         static void AddAccel(double acc, MotorDirection dir)
         {
             if (mtr_g == null)
@@ -72,9 +63,28 @@ namespace DengoController
             mtr_g.SendState();
         }
 
+        static IEnumerable<Vehicle> GetVehicles()
+        {
+            var client = new WebClient();
+            var datas = client.DownloadData("http://192.168.2.9:8012/console.html");
+
+            var json = new DataContractJsonSerializer(typeof(IEnumerable<Vehicle>));
+            using (var ms = new MemoryStream(datas))
+            {
+                var vehicles = (IEnumerable<Vehicle>)json.ReadObject(ms);
+
+                return vehicles;
+            }
+        }
+
+        static void SendCommand()
+        {
+
+        }
+
         static void Main(string[] args)
         {
-            IDengoController cnt = new DengoController(); 
+            IDengoController cnt = new DengoController();
 
             InitCommunication(new IPAddress(new byte[] { 255, 255, 255, 0 }), new IPAddress(new byte[] { 192, 168, 2, 24 }));
 
@@ -104,9 +114,9 @@ namespace DengoController
                 else if (infl > 250)
                     infl = 250;
 
-                AddAccel(infl, (cnt.Position) ? MotorDirection.Positive : MotorDirection.Negative) ;
+                AddAccel(infl, (cnt.Position) ? MotorDirection.Positive : MotorDirection.Negative);
                 Console.WriteLine("accel : {0}, brake : {1}, duty : {2}, current : {3}, button : {4}",
-                            ac * 6, br * 14, infl, mtr_g.CurrentState.Current  );
+                            ac * 6, br * 14, infl, mtr_g.CurrentState.Current);
 
                 System.Threading.Thread.Sleep(200);
 
