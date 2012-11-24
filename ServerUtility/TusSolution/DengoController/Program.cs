@@ -68,7 +68,7 @@ namespace DengoController
             int index;
             if (int.TryParse(Console.ReadLine(), out index))
             {
-                if (index < 0 || index >= vs.Count())
+                if (index >= 0 && index < vs.Count())
                 {
                     var v = vs[index];
 
