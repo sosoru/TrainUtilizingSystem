@@ -23,6 +23,9 @@ using DialogConsole;
 using RouteLibrary;
 using RouteLibrary.Base;
 
+using System.Reactive;
+using System.Reactive.Linq;
+
 namespace DengoController
 {
     class Program
@@ -58,12 +61,37 @@ namespace DengoController
             
         }
 
-        static void InputVehicles()
+        static bool InputVehicles()
         {
             var vs = GetVehicles().ToArray();
 
-            vs.Select((v, i) => string.Format("{0} : {1}", v.Name))
-                .
+            vs.ToObservable()
+                .Select((v, i) => string.Format("{0} : {1}", v.Name))
+                .Subscribe(Console.Writeline);
+
+            var strindex = Console.ReadLine();
+            int index;
+            if (int.TryParse(Console.ReadLine(), out index))
+            {
+                if (index < 0 || index >= vs.Length)
+                {
+                    var v = vs[index];
+
+                    Console.WriteLine("catched vehicle sucessfully");
+                    RouteName = v.Route;
+                }
+                else
+                {
+                    Console.WriteLine("out of range index");
+                }
+            }
+            else
+            {
+                Console.WriteLine("parse error");
+                return;
+            }
+
+            
         }
 
         static void Main(string[] args)
