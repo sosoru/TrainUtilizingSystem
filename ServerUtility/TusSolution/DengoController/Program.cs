@@ -25,6 +25,7 @@ using RouteLibrary.Base;
 
 using System.Reactive;
 using System.Reactive.Linq;
+using Codeplex.Data;
 
 namespace DengoController
 {
@@ -35,18 +36,10 @@ namespace DengoController
         static IPAddress ipaddr;
         static string RouteName;
 
-        static IEnumerable<Vehicle> GetVehicles()
+        static string GetVehiclesAsString()
         {
             var client = new WebClient();
-            var datas = client.DownloadData(serverAddr);
-
-            var json = new DataContractJsonSerializer(typeof(IList<Vehicle>));
-            using (var ms = new MemoryStream(datas))
-            {
-                var vehicles = (IEnumerable<Vehicle>)json.ReadObject(ms);
-
-                return vehicles;
-            }
+            return client.DownloadString(serverAddr);
         }
 
         static void SendCommand(DialogCnosole.VehicleInfoReceived send)
@@ -64,7 +57,8 @@ namespace DengoController
         static bool InputVehicles()
         {
             bool result = false;
-            var vs = GetVehicles().ToArray();
+
+            var vs = DynamicJson.Parse(GetVehiclesAsString());
 
             vs.ToObservable()
                 .Select((v, i) => string.Format("{0} : {1}", v.Name))
