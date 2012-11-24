@@ -37,7 +37,7 @@ namespace RouteLibrary.Base
         public Block CurrentBlock { get; set; }
 
         [DataMember]
-        public Route Route { get; private set; }
+        public Route Route { get;  set; }
         public BlockSheet Sheet { get; set; }
 
         [DataMember]
