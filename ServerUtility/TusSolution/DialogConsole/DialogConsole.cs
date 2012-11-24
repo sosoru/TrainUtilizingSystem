@@ -412,7 +412,7 @@ this.Sheet.InnerBlocks);
             else
             {
                 res.Headers.Add("Content-type: application/json");
-                res.Headers.Add("Access-Control-Allow-Headers: origin, x-requested-with, accept");
+                res.Headers.Add("Access-Control-Allow-Headers: x-requested-with, accept");
                 //res.Headers.Add("Access-Control-Allow-Origin: http://192.168.2.9");
                 using (var sw = new StreamWriter(res.OutputStream))
                 using (var ms = new MemoryStream())
