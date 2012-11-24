@@ -285,7 +285,11 @@ namespace RouteLibrary.Base
             var spdfactory = new SpeedFactory() { RawSpeed = spd };
 
             var lastlockedblocks = this.Route.LockedBlocks.ToArray();
-            this.Route.AllocateTrain(this.CurrentBlock, this.Length);
+            try
+            {
+                this.Route.AllocateTrain(this.CurrentBlock, this.Length);
+            }
+            catch (InvalidOperationException ex) { return; }
 
             if (!this.Route.LockNextUnit())
             {
