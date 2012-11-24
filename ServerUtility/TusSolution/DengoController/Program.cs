@@ -30,7 +30,7 @@ namespace DengoController
 {
     class Program
     {
-        const string serverAddr = @"http://192.168.2.9:8012/console.html";
+        const string serverAddr = @"http://192.168.2.9:8012/vehicles";
 
         static IPAddress ipaddr;
         static string RouteName;
