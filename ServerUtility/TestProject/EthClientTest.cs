@@ -381,7 +381,7 @@ namespace TestProject
             };
 
             var pt = new Switch();
-            pt.CurrentState.DeadTime = 150;
+            pt.CurrentState.DeadTime = 250;
             pt.CurrentState.ChangingTime = 300;
 
 
