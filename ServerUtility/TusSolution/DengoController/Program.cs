@@ -79,7 +79,7 @@ namespace DengoController
                     var v = vs[index];
 
                     Console.WriteLine("catched vehicle sucessfully");
-                    RouteName = v.Route;
+                    RouteName = v.Route.Name;
                     result = true;
                 }
                 else
@@ -130,7 +130,7 @@ namespace DengoController
 
                 var data = new DialogCnosole.VehicleInfoReceived()
                 {
-                    Name = ControlRouteName,
+                    Name = RouteName,
                     Speed = (infl / 255.0f).ToString(),
                 };
                 SendCommand(data);
