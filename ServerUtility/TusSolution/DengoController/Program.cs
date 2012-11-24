@@ -62,7 +62,7 @@ namespace DengoController
 
             vs
                 .ToObservable()
-                .Select((v, i) => string.Format("{0} : {1}", v.Name))
+                .Select((v, i) => string.Format("{0} : {1}", i, v.Name))
                 .Subscribe(Console.WriteLine);
 
             var strindex = Console.ReadLine();
