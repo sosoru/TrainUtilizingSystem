@@ -105,7 +105,8 @@ namespace RouteLibrary.Base
                 // verified i'm not halted and the next unit is not blocked by other vehicles
 
                 var waitingunit = this.Route.LockedUnits.Last();
-                if (waitingunit.ControlBlock.IsMotorDetectingTrain)
+                if (waitingunit.ControlBlock.IsMotorDetectingTrain
+                        && this.CurrentBlock != waitingunit.ControlBlock)
                 {
                     this.CurrentBlock = waitingunit.ControlBlock;
                     Console.WriteLine("vehicle moved : {0}", this.CurrentBlock.Name);
