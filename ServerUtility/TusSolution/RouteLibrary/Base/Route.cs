@@ -209,7 +209,7 @@ namespace RouteLibrary.Base
 
                 return this.LockedUnits.SelectMany(u => u.Blocks);
             }
-            internal set { return this.LockedUnits = value; }
+            internal set { this.LockedUnits = value; }
         }
 
         public ControllingRoute GetLockingControlingRoute(Block parentBlock)
