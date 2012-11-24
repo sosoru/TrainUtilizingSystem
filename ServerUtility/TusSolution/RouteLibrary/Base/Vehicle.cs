@@ -100,13 +100,12 @@ namespace RouteLibrary.Base
             }
 
             // todo : halts support
-            if (this.Route.LockedUnits.Count > 0)
+            if (this.Route.LockedUnits.Count > 1)
             {
                 // verified i'm not halted and the next unit is not blocked by other vehicles
 
                 var waitingunit = this.Route.LockedUnits.Last();
-                if (waitingunit.ControlBlock.IsMotorDetectingTrain
-                        && this.CurrentBlock != waitingunit.ControlBlock)
+                if (waitingunit.ControlBlock.IsMotorDetectingTrain)
                 {
                     this.CurrentBlock = waitingunit.ControlBlock;
                     Console.WriteLine("vehicle moved : {0}", this.CurrentBlock.Name);
