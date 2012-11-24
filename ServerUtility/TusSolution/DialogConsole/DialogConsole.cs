@@ -253,7 +253,7 @@ this.Sheet.InnerBlocks);
 
             this.VehicleProcessing_ = Observable.Defer(() => Observable.Start(VehicleProcess, this.SchedulerSendingProcessing))
                 .Do(u => this.Sheet.InquiryAllMotors())
-                .Delay(TimeSpan.FromMilliseconds(1100))
+                .Delay(TimeSpan.FromMilliseconds(500))
 
                 .Repeat()
                 .SubscribeOn(Scheduler.NewThread)
@@ -328,7 +328,7 @@ this.Sheet.InnerBlocks);
             rt.IsRepeatable = true;
             var v = new Vehicle(this.Sheet, rt);
             v.CurrentBlock = b;
-            v.Speed = 0.50f;
+            v.Speed = 0.0f;
             v.Name = vhname;
             v.IgnoreBlockage = (ign);
 
