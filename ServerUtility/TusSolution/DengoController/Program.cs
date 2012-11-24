@@ -107,11 +107,11 @@ namespace DengoController
 
                 if (br > 0)
                 {
-                    infl += -br * 100.0;
+                    infl += -br * 10.0;
                 }
                 else
                 {
-                    infl += ac * 50.0;
+                    infl += ac * 5.0;
                 }
 
                 if (infl < 0)
@@ -126,7 +126,7 @@ namespace DengoController
                 var data = new DialogCnosole.VehicleInfoReceived()
                 {
                     Name = RouteName,
-                    Speed = (infl / 255.0f).ToString(),
+                    Speed = (infl / 250.0f * 100f).ToString(),
                 };
                 SendCommand(data);
 
