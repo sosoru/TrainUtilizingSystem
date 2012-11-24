@@ -27,6 +27,8 @@ namespace DengoController
 {
     class Program
     {
+        const static string serverAddr = @"http://192.168.2.9:8012/console.html";
+
         static DeviceID targetdeviceid_g;
         static PacketServer serv_g;
         static PacketDispatcher dispat_g;
@@ -66,7 +68,7 @@ namespace DengoController
         static IEnumerable<Vehicle> GetVehicles()
         {
             var client = new WebClient();
-            var datas = client.DownloadData("http://192.168.2.9:8012/console.html");
+            var datas = client.DownloadData(serverAddr);
 
             var json = new DataContractJsonSerializer(typeof(IEnumerable<Vehicle>));
             using (var ms = new MemoryStream(datas))
@@ -77,9 +79,16 @@ namespace DengoController
             }
         }
 
-        static void SendCommand()
+        static void SendCommand(DialogCnosole.VehicleInfoReceived send)
         {
+            var client = new WebClient();
+            var json = new DataContractJsonSerializer(typeof(DialogCnosole.VehicleInfoReceived));
 
+            using(var ns = client.OpenWrite(serverAddr))
+            {
+                json.WriteObject(ns, send);
+            }
+            
         }
 
         static void Main(string[] args)
@@ -114,11 +123,18 @@ namespace DengoController
                 else if (infl > 250)
                     infl = 250;
 
-                AddAccel(infl, (cnt.Position) ? MotorDirection.Positive : MotorDirection.Negative);
-                Console.WriteLine("accel : {0}, brake : {1}, duty : {2}, current : {3}, button : {4}",
-                            ac * 6, br * 14, infl, mtr_g.CurrentState.Current);
+                //AddAccel(infl, (cnt.Position) ? MotorDirection.Positive : MotorDirection.Negative);
+                Console.WriteLine("accel : {0}, brake : {1}, duty : {2}, current : {3}, ",
+                            ac * 6, br * 14, infl );
 
-                System.Threading.Thread.Sleep(200);
+                var data = new DialogCnosole.VehicleInfoReceived()
+                {
+                    Name = ControlRouteName,
+                    Speed = infl / 255.0f,
+                }
+                SendCommand(data);
+
+                System.Threading.Thread.Sleep(1000);
 
 
             }
