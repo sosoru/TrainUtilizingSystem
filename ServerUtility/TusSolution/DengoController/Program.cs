@@ -126,7 +126,7 @@ namespace DengoController
                     Console.WriteLine("accel : {0}, brake : {1}, duty : {2},  ",
                                 ac * 6, br * 14, infl);
                 }
-                before_infl = infl
+                before_infl = infl;
 
                 var data = new DialogCnosole.VehicleInfoReceived()
                 {
