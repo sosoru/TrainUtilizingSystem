@@ -99,7 +99,8 @@ namespace DengoController
         {
             IDengoController cnt = new DengoController();
 
-            
+            if (!InputVehicles())
+                return;
 
             double infl = 0;
             while (true)
