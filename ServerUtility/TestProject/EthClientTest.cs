@@ -382,7 +382,7 @@ namespace TestProject
 
             var pt = new Switch();
             pt.CurrentState.DeadTime = 150;
-            pt.CurrentState.ChangingTime = 200;
+            pt.CurrentState.ChangingTime = 300;
 
 
             var prm = Enumerable.Range(1, 8)
