@@ -112,15 +112,7 @@ namespace RouteLibrary.Base
                     Console.WriteLine(this.CurrentBlock.MotorEffector.Device.ToString());
 
                 }
-            } else ( this.Route.LockedUnits.Count == 1)
-            {
-                //im halt or over current section
-                ControllingRoute next;
-                if(this.Route.TryLockNeighborUnit(1, out next))
-                {
-
-                }
-            }
+            } 
 
             Run(this.Speed, this.CurrentBlock);
         }
