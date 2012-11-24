@@ -47,11 +47,11 @@ namespace DengoController
             var client = new WebClient();
             var json = new DataContractJsonSerializer(typeof(DialogCnosole.VehicleInfoReceived));
 
-            using(var ns = client.OpenWrite(serverAddr))
+            using (var ns = client.OpenWrite(serverAddr))
             {
                 json.WriteObject(ns, send);
             }
-            
+
         }
 
         static bool InputVehicles()
@@ -86,7 +86,7 @@ namespace DengoController
                 Console.WriteLine("parse error");
             }
             return result;
-            
+
         }
 
         static void Main(string[] args)
@@ -97,7 +97,7 @@ namespace DengoController
                 return;
 
             double infl = 0;
-            double before_infl = infl+1;
+            double before_infl = infl + 1;
             while (true)
             {
                 var ac = cnt.AccelLevel;
@@ -125,15 +125,15 @@ namespace DengoController
                 {
                     Console.WriteLine("accel : {0}, brake : {1}, duty : {2},  ",
                                 ac * 6, br * 14, infl);
+                    var data = new DialogCnosole.VehicleInfoReceived()
+                    {
+                        Name = RouteName,
+                        Speed = (infl / 250.0f * 100f).ToString(),
+                    };
+                    SendCommand(data);
                 }
                 before_infl = infl;
 
-                var data = new DialogCnosole.VehicleInfoReceived()
-                {
-                    Name = RouteName,
-                    Speed = (infl / 250.0f * 100f).ToString(),
-                };
-                SendCommand(data);
 
                 System.Threading.Thread.Sleep(500);
 
