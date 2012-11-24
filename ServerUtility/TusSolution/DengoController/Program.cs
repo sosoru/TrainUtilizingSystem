@@ -27,7 +27,7 @@ namespace DengoController
 {
     class Program
     {
-        const static string serverAddr = @"http://192.168.2.9:8012/console.html";
+        const string serverAddr = @"http://192.168.2.9:8012/console.html";
 
         static DeviceID targetdeviceid_g;
         static PacketServer serv_g;
