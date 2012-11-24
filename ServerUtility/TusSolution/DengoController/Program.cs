@@ -29,41 +29,8 @@ namespace DengoController
     {
         const string serverAddr = @"http://192.168.2.9:8012/console.html";
 
-        static DeviceID targetdeviceid_g;
-        static PacketServer serv_g;
-        static PacketDispatcher dispat_g;
-        static Motor mtr_g;
         static IPAddress ipaddr;
-
-        static void InitCommunication(IPAddress ipbase, IPAddress ipmask)
-        {
-            serv_g = new PacketServer(new AvrDeviceFactoryProvider());
-
-            var io = new SensorLibrary.Packet.IO.TusEthernetIO(ipbase, ipmask)
-                         {
-                             SourceID = new DeviceID(9, 0, 0),
-                             Port = 8000,
-                         };
-
-            serv_g.Controller = io;
-
-            dispat_g = new PacketDispatcher();
-            serv_g.AddAction(dispat_g);
-            serv_g.LoopStart();
-        }
-
-        static void AddAccel(double acc, MotorDirection dir)
-        {
-            if (mtr_g == null)
-                return;
-
-            var state = mtr_g.CurrentState;
-            state.Duty = (float)acc / 255.0F;
-            state.Direction = MotorDirection.Positive;
-            state.ControlMode = MotorControlMode.DutySpecifiedMode;
-
-            mtr_g.SendState();
-        }
+        static string RouteName;
 
         static IEnumerable<Vehicle> GetVehicles()
         {
@@ -91,14 +58,19 @@ namespace DengoController
             
         }
 
+        static void InputVehicles()
+        {
+            var vs = GetVehicles().ToArray();
+
+            vs.Select((v, i) => string.Format("{0} : {1}", v.Name))
+                .
+        }
+
         static void Main(string[] args)
         {
             IDengoController cnt = new DengoController();
 
-            InitCommunication(new IPAddress(new byte[] { 255, 255, 255, 0 }), new IPAddress(new byte[] { 192, 168, 2, 24 }));
-
-            mtr_g = new Motor(serv_g) { DeviceID = InformDeviceID() };
-            mtr_g.Observe(dispat_g);
+            
 
             double infl = 0;
             while (true)
