@@ -41,7 +41,7 @@ namespace RouteLibrary.Base
         public BlockSheet Sheet { get; set; }
 
         [DataMember]
-        public IList<Halt> Halt { get; private set; }
+        public IList<Halt> Halt { get; set; }
 
         [DataMember]
         public float Speed { get; set; }
