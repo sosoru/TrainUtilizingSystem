@@ -107,11 +107,11 @@ namespace DengoController
 
                 if (br > 0)
                 {
-                    infl += -br * 10.0;
+                    infl += -br * 100.0;
                 }
                 else
                 {
-                    infl += ac * 5.0;
+                    infl += ac * 50.0;
                 }
 
                 if (infl < 0)
