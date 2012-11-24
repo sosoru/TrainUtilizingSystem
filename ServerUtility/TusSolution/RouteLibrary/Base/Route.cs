@@ -204,6 +204,9 @@ namespace RouteLibrary.Base
         {
             get
             {
+                if (this.LockedUnits == null)
+                    return new[] { };
+
                 return this.LockedUnits.SelectMany(u => u.Blocks);
             }
         }
