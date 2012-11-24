@@ -328,7 +328,7 @@ this.Sheet.InnerBlocks);
             rt.IsRepeatable = true;
             var v = new Vehicle(this.Sheet, rt);
             v.CurrentBlock = b;
-            v.Speed = 1.0f;
+            v.Speed = 0.50f;
             v.Name = vhname;
             v.IgnoreBlockage = (ign);
 
@@ -413,7 +413,7 @@ this.Sheet.InnerBlocks);
             {
                 res.Headers.Add("Content-type: application/json");
                 res.Headers.Add("Access-Control-Allow-Headers: origin, x-requested-with, accept");
-                res.Headers.Add("Access-Control-Allow-Origin: http://192.168.2.9");
+                res.Headers.Add("Access-Control-Allow-Origin: http://192.168.2.*");
                 using (var sw = new StreamWriter(res.OutputStream))
                 using (var ms = new MemoryStream())
                 {
