@@ -345,7 +345,7 @@ this.Sheet.InnerBlocks);
         }
 
         [DataContract]
-        private class VehicleInfoReceived
+        public class VehicleInfoReceived
         {
             [DataMember(IsRequired = true)]
             public string Name;
