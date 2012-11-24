@@ -224,6 +224,9 @@ namespace DengoController
                 level ^= 15;
                 --level;
 
+                if (level == 14)
+                    return double.MaxValue;
+
                 return (double)level / 14.0;
 
             }
