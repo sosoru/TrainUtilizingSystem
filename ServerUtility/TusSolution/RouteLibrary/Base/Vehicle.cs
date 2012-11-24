@@ -16,7 +16,7 @@ namespace RouteLibrary.Base
         public float RawSpeed { get; set; }
         public float Go { get { return RawSpeed; } }
         public float Caution { get { return RawSpeed * 0.8f; } }
-        public float Stop { get { return 0.0f; } }
+        public float Stop { get { return this.RawSpeed * 0.3f; } }
     }
 
     [DataContract]
@@ -110,6 +110,14 @@ namespace RouteLibrary.Base
                     this.CurrentBlock = waitingunit.ControlBlock;
                     Console.WriteLine("vehicle moved : {0}", this.CurrentBlock.Name);
                     Console.WriteLine(this.CurrentBlock.MotorEffector.Device.ToString());
+
+                }
+            } else ( this.Route.LockedUnits.Count == 1)
+            {
+                //im halt or over current section
+                ControllingRoute next;
+                if(this.Route.TryLockNeighborUnit(1, out next))
+                {
 
                 }
             }
