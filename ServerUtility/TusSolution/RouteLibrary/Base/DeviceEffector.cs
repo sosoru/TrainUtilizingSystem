@@ -198,7 +198,7 @@ namespace RouteLibrary.Base
             if (this.IsNeededExecution)
                 return;
 
-            if(_before_mtr_state == null )
+            if (_before_mtr_state == null)
                 _before_mtr_state = new MotorState();
 
             var cmd = factory.CreateCommand(this.ParentBlock);
