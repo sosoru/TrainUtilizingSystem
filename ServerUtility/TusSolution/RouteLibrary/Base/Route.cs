@@ -205,7 +205,7 @@ namespace RouteLibrary.Base
             get
             {
                 if (this.LockedUnits == null)
-                    return new[] { };
+                    return new Block[] { };
 
                 return this.LockedUnits.SelectMany(u => u.Blocks);
             }
