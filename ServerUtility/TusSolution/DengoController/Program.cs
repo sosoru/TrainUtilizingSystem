@@ -131,7 +131,7 @@ namespace DengoController
                 {
                     Name = ControlRouteName,
                     Speed = infl / 255.0f,
-                }
+                };
                 SendCommand(data);
 
                 System.Threading.Thread.Sleep(1000);
