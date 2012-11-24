@@ -40,7 +40,7 @@ namespace DengoController
             var client = new WebClient();
             var datas = client.DownloadData(serverAddr);
 
-            var json = new DataContractJsonSerializer(typeof(IEnumerable<Vehicle>));
+            var json = new DataContractJsonSerializer(typeof(IList<Vehicle>));
             using (var ms = new MemoryStream(datas))
             {
                 var vehicles = (IEnumerable<Vehicle>)json.ReadObject(ms);
