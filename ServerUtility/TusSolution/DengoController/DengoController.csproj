@@ -41,6 +41,7 @@
     <Reference Include="System.Reactive">
       <HintPath>..\..\System.Reactive.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -65,6 +66,10 @@
     <ProjectReference Include="..\..\SensorLibrary\SensorLibrary.csproj">
       <Project>{160a1d77-985c-4ddd-bb20-46c8ebadf62f}</Project>
       <Name>SensorLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DialogConsole\DialogConsole.csproj">
+      <Project>{f2232bf9-17e6-4641-8326-d8b7bd90a1e9}</Project>
+      <Name>DialogConsole</Name>
     </ProjectReference>
     <ProjectReference Include="..\RouteLibrary\RouteLibrary.csproj">
       <Project>{39e73a78-039d-45dd-ad32-879b81ea567e}</Project>
