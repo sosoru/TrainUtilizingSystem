@@ -150,7 +150,7 @@ this.Sheet.InnerBlocks);
                 Console.WriteLine("3 : detect test");
                 Console.WriteLine("4 : input command");
                 Console.WriteLine("5 : monitoring vehicles");
-                Console.WriteLine("6 : change riyte");
+                Console.WriteLine("6 : remove vehicle");
                 Console.WriteLine();
 
                 //Console.WriteLine(cmdinfo.Speed);
@@ -175,6 +175,9 @@ this.Sheet.InnerBlocks);
                         //    break;
                         case "5":
                             InputVehicleMonitoring();
+                            break;
+                        case "6":
+                            VehicleRemove();
                             break;
 
                         default:
