@@ -279,7 +279,6 @@ namespace RouteLibrary.Base
             this.Sheet.Effect(cmdfact, this.Route.Blocks.ToList().Distinct());
         }
 
-        private bool _last_stopped = false;
         public void Run(float spd)
         {
             CommandFactory cmdfactory = null;
@@ -302,22 +301,18 @@ namespace RouteLibrary.Base
                 {
                     cmdfactory = CreateZeroCommand(spdfactory);
                 }
-                _last_stopped = true;
             }
             else if (!this.Route.TryLockNeighborUnit(1))
             {
                 cmdfactory = Create1stCommand(spdfactory);
-                _last_stopped = false;
             }
             else if (!this.Route.TryLockNeighborUnit(2))
             {
                 cmdfactory = Create2ndCommand(spdfactory);
-                _last_stopped = false;
             }
             else
             {
                 cmdfactory = CreateNthCommand(spdfactory);
-                _last_stopped = false;
             }
 
             this.Sheet.Effect(cmdfactory, this.Route.LockedBlocks.Concat(lastlockedblocks).Distinct());
