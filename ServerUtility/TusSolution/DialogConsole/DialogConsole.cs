@@ -254,7 +254,7 @@ this.Sheet.InnerBlocks);
 
             this.VehicleProcessing_ = Observable.Defer(() => Observable.Start(VehicleProcess, this.SchedulerSendingProcessing))
                 .Do(u => this.Sheet.InquiryAllMotors())
-                .Delay(TimeSpan.FromMilliseconds(500))
+                .Delay(TimeSpan.FromMilliseconds(1000))
 
                 .Repeat()
                 .SubscribeOn(Scheduler.NewThread)
