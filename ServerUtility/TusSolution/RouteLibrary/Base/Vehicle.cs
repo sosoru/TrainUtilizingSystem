@@ -107,7 +107,7 @@ namespace RouteLibrary.Base
                 if (waitingunit.ControlBlock.IsMotorDetectingTrain)
                 {
                     this.CurrentBlock = waitingunit.ControlBlock;
-                    Console.WriteLine("vehicle moved : {0}", this.CurrentBlock.Name);
+                    Console.WriteLine("vehicle {0} moved : {1}", this.Name,  this.CurrentBlock.Name);
                     Console.WriteLine(this.CurrentBlock.MotorEffector.Device.ToString());
 
                 }
