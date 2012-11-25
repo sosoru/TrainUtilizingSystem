@@ -92,7 +92,7 @@ namespace RouteLibrary.Base
             {
                 this.Speed = 0.0f;
             }
-
+            this
             if (this.IgnoreBlockage)
             {
                 this.RunIfIgnored(this.Speed);
