@@ -64,7 +64,7 @@ namespace RouteLibrary.Base
             this.Route = rt;
 
             this.CurrentBlock = this.Route.Blocks.First();
-            this.Length = 2;
+            this.Length = 1;
             this.Halt = new List<Halt>();
         }
 
