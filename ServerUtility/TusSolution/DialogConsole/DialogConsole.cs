@@ -262,6 +262,26 @@ this.Sheet.InnerBlocks);
 
         }
 
+        public void VehicleRemove()
+        {
+            Console.WriteLine("type name? ");
+            var name = Console.ReadLine();
+
+            var v = this.Vehicles.FirstOrDefault(b => b.Name == name);
+
+            if (v == null)
+            {
+                Console.WriteLine("not found");
+                return;
+            }
+
+            v.Length = 1;
+            v.Run(0);
+            v.Route.InitLockingPosition();
+
+            this.Vehicles.Remove(v);
+        }
+
         public PacketServer CreateServer()
         {
             var serv = new PacketServer(new AvrDeviceFactoryProvider());
