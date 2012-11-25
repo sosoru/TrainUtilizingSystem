@@ -108,8 +108,8 @@ namespace RouteLibrary.Base
                 {
                     this.CurrentBlock = waitingunit.ControlBlock;
                     Console.WriteLine("vehicle {0} moved : {1}", this.Name,  this.CurrentBlock.Name);
-                    this.CurrentBlock.Neighbors.ForEach(b => Console.WriteLine(b.MotorEffector.Device.ToString()));
-                    Console.WriteLine(this.CurrentBlock.MotorEffector.Device.ToString());
+                    //this.CurrentBlock.Neighbors.ForEach(b => Console.WriteLine(b.MotorEffector.Device.ToString()));
+                    //Console.WriteLine(this.CurrentBlock.MotorEffector.Device.ToString());
 
                 }
             } 
