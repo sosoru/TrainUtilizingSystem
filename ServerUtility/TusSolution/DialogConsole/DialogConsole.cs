@@ -109,7 +109,7 @@ namespace DialogConsole
             this.Sheet.AssociatedScheduler = this.SchedulerPacketProcessing;
 
             this.Server.SendingObservable
-                .Delay(TimeSpan.FromMilliseconds(10))
+                .Delay(TimeSpan.FromMilliseconds(15))
                 .Repeat()
                 .SelectMany(g => g.ExtractPackedPacket())
                 .Do(g => this.LogWriterSend.WriteLine(string.Format("({0}.{1}) : sending {2}",
