@@ -34,7 +34,7 @@ namespace DialogConsole
         {
             var ipbase = IPAddress.Parse("192.168.2.0");
             var ipmask = IPAddress.Parse("255.255.255.0");
-
+            
             var dialog = new DialogCnosole();
             var io = new TusEthernetIO(ipbase, ipmask)
             {
@@ -150,7 +150,7 @@ this.Sheet.InnerBlocks);
                 Console.WriteLine("3 : detect test");
                 Console.WriteLine("4 : input command");
                 Console.WriteLine("5 : monitoring vehicles");
-                //Console.WriteLine("5 : apply command");
+                Console.WriteLine("6 : change riyte");
                 Console.WriteLine();
 
                 //Console.WriteLine(cmdinfo.Speed);
@@ -176,6 +176,7 @@ this.Sheet.InnerBlocks);
                         case "5":
                             InputVehicleMonitoring();
                             break;
+
                         default:
                             Console.WriteLine("parse error");
                             break;
