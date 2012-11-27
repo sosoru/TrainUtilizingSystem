@@ -18,6 +18,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6D232EBE-87CD-4D4E-BFDE-FB2402676506}"
 	ProjectSection(SolutionItems) = preProject
 		TusSolution.vsmdi = TusSolution.vsmdi
+		パフォーマンス1.psess = パフォーマンス1.psess
 	EndProjectSection
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "TusServer", "TusServer\TusServer.pyproj", "{D58C2A9E-FB74-4D92-87A9-67E47AEA7007}"
