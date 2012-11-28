@@ -14,6 +14,7 @@
 #include <PackPacket.hpp>
 #include "Pulse.hpp"
 #include "Motor.hpp"
+#include "module_MotorController.h"
 
 namespace MotorController
 {
@@ -114,6 +115,8 @@ namespace MotorController
 			
 			void ApplyDutyMode(MtrRunningState *pstate)
 			{
+				pstate->VoltageValue = MeisureCurrent();
+				
 				ApplyDirection(pstate->DirectionValue);
 				Pulse::SetDuty(pstate->DutyValue);
 			}
@@ -147,21 +150,31 @@ namespace MotorController
 			{
 				uint8_t curr;
 				
+				ApplyDirection(Positive);
+				Pulse::SetDuty(0);
+				
 				curr = MeisureCurrent();
 				
 				if(curr > pstate->ThresholdValue) // entered
 				{			
 					KernalState kstate;		
-					MemoryState *pmstate = kstate.pdata;
-					pmstate->CurerntMemory = pstate->MemoryWhenEntered;
+					MemoryState *pmstate = (MemoryState*)kstate.pdata;
+					
+					kstate.Base.DataLength = 8;
+					kstate.Base.InternalAddr = pstate->DestinationID.InternalAddr;
+					kstate.Base.ModuleType = MODULETYPE_KERNEL;
+					kstate.KernelCommand = ETHCMD_MEMORY;
+					pmstate->CurerntMemory = pstate->DestinationMemory;
 					
 					if(!g_packer.IsInitialized())
 					{
 						g_packer.Init();
 						
-						g_packer.Pack(&kstate);
+						g_packer.Pack((uint8_t*)&kstate);
 						g_packer.Send(&g_myDeviceID, &pstate->DestinationID);
 					}						
+					
+					buffer_index = pstate->MemoryAfterEntered;
 				}
 			}
 			
@@ -179,6 +192,18 @@ namespace MotorController
 			{				
 				memcpy(CurrentPacket(), ppacket, sizeof(*ppacket));
 
+			}				
+			
+			void get_KernelState(KernalState *pstate)
+			{
+				pstate->Base.InternalAddr = t_internal_id;
+				pstate->Base.ModuleType = MODULETYPE_KERNEL;
+				pstate->Base.DataLength = sizeof(KernalState);
+				pstate->KernelCommand = ETHCMD_MEMORY;
+				
+				MemoryState *pmem = (MemoryState*)pstate->pdata;
+				pmem->CurerntMemory = buffer_index;
+				pmem->MemoryLimit = 8;
 			}				
 						
 			void get_Packet(MtrControllerPacket *ppacket)

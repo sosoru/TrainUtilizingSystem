@@ -78,8 +78,7 @@ namespace EthernetBridge{
 				
 				static inline bool Stock(const EthPacket* ppacket)
 				{
-					//TODO : replace subnetaddr comparison 
-					if(ppacket->destId.SubnetAddr != 24 || ppacket->destId.ModuleAddr != device_child_id)
+					if(ppacket->destId.ModuleAddr != device_child_id)
 						return false;
 											
 					EthPacket* pbuffer;
@@ -93,7 +92,7 @@ namespace EthernetBridge{
 				
 				static inline bool IsReceivedCorrectly(EthPacket& packet)
 				{
-					return packet.srcId.SubnetAddr == 24 && packet.srcId.ModuleAddr == device_child_id;
+					return packet.srcId.ModuleAddr == device_child_id;
 				}					
 								
 				static inline bool Transmit(EthPacket& received)

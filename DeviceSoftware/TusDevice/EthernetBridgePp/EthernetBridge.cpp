@@ -73,9 +73,10 @@ void BoardInit()
 	EthDevice::Parameters.macaddress[2] = 0x58;
 	EthDevice::Parameters.macaddress[3] = 0x10;
 	EthDevice::Parameters.macaddress[4] = 0x00;
-	EthDevice::Parameters.macaddress[5] = 0x24;
+	EthDevice::Parameters.macaddress[5] = EthDevice::Parameters.ipaddress[3];
 		
-	EthDevice::Parameters.port = 8000;	
+	EthDevice::Parameters.send_port = 8001;	
+	EthDevice::Parameters.recv_port = 8000;
 	
 	EthDevice::EthernetInit();
 	EthDevice::NicParameterInit();

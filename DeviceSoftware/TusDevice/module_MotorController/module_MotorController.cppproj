@@ -47,7 +47,7 @@
         <InterfaceProperties>
           <JtagDbgClock>250000</JtagDbgClock>
           <JtagProgClock>1000000</JtagProgClock>
-          <IspClock>150000</IspClock>
+          <IspClock>125000</IspClock>
           <JtagInChain>false</JtagInChain>
           <JtagEnableExtResetOnStartSession>false</JtagEnableExtResetOnStartSession>
           <JtagDevicesBefore>0</JtagDevicesBefore>
@@ -149,10 +149,13 @@
     <Compile Include="module_MotorController.cpp">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="module_MotorController.hpp">
+    <Compile Include="module_MotorController.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="Motor.hpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="MotorCfg.hpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="MotorProcess.hpp">

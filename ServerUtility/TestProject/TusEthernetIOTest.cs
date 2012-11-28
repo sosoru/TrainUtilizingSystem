@@ -82,12 +82,15 @@ namespace TestProject
 
             var mtr = new Motor(serv) { DeviceID = new DeviceID(24, 1, 1), };
             mtr.Observe(disp);
+            
+            //serv.LoopStart(System.Reactive.Concurrency.Scheduler.NewThread);
+            var state = new MotorState();
+            state.Direction = MotorDirection.Positive;
+            state.Duty = 0.5f;
+            state.ControlMode = MotorControlMode.DutySpecifiedMode;
 
-            serv.LoopStart(System.Reactive.Concurrency.Scheduler.NewThread);
-
-            mtr.CurrentState.Direction = MotorDirection.Positive;
-            mtr.CurrentState.Duty = 0.5f;
-            mtr.CurrentState.ControlMode = MotorControlMode.DutySpecifiedMode;
+            mtr.States.Add(MotorMemoryStateEnum.Controlling, state);
+            mtr.CurrentMemory = MotorMemoryStateEnum.Controlling;
             mtr.SendState();
 
         }

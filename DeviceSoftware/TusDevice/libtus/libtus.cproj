@@ -108,6 +108,9 @@
     <None Include="PackPacket.hpp">
       <SubType>compile</SubType>
     </None>
+    <None Include="ptr_packet.h">
+      <SubType>compile</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\AvrGCC.targets" />
 </Project>

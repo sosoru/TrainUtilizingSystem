@@ -10,7 +10,6 @@
 #define POINTCONFIG_H_
 
 #include "module_PointController.hpp"
-#include "PointPacket.hpp"
 #include "PointModule.hpp"
 
 namespace module_PointController

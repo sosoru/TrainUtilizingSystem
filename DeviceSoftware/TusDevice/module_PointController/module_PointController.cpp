@@ -7,21 +7,24 @@
 
 #include "module_PointController.hpp"
 #include "PointModule.hpp"
-#include "PointPacket.hpp"
 #include "PointConfig.hpp"
 #include "avrlibdefs.h"
 #include "avrlibtypes.h"
-#include "../libtus/tus_spi.h"
+#include <tus_spi.h>
+#include <ptr_packet.h>
 
 #include <Timer.h>
 #include <stdlib.h>
 #include <string.h>
 #include <avr/interrupt.h>
 #include <util/delay.h>
+#include <PackPacket.hpp>
 
 using namespace AVRCpp::Timer;
 using namespace module_PointController;
 using namespace module_PointController::Config;
+
+Tus::PacketPacker g_packer;
 
 ISR(TIMER1_COMPA_vect)
 {
@@ -38,105 +41,60 @@ void InitBoard()
 }
 
 template<class t_point>
-inline void ApplyState(const ptrPacket &packet)
-{	
-	t_point::ApplyState(packet);
+inline void ApplyState(const PointModuleState *pstate)
+{
+	t_point::ApplyState(pstate);
 }
 
 template<class t_point>
-inline void CopyState(ptrPacket &packet)
+inline void PackState(DeviceID *psrc, DeviceID *pdst)
 {
-	PointModuleState *pstate = packet.get_State();
-	
-	memcpy(pstate, &t_point::State, sizeof(PointModuleState));
+	t_point::PackState(&g_packer, psrc, pdst);
 }
 
-void CopyState(uint8_t ptnum, ptrPacket &packet)
-{
-	if(ptnum == A)		{ CopyState<PointA>(packet); }
-	else if(ptnum == B) { CopyState<PointB>(packet); }
-	else if(ptnum == C) { CopyState<PointC>(packet); }
-	else if(ptnum == D) { CopyState<PointD>(packet); }
-	else if(ptnum == E) { CopyState<PointE>(packet); }
-	else if(ptnum == F) { CopyState<PointF>(packet); }
-	else if(ptnum == G) { CopyState<PointG>(packet); }
-	else if(ptnum == H) { CopyState<PointH>(packet); }
-}
-
-void DispatchState(uint8_t ptnum, const ptrPacket &packet)
+void DispatchState(uint8_t ptnum, const PointModuleState *pstate)
 {	
-	if(ptnum == A)		 { ApplyState<PointA>(packet);}
-	else if(ptnum == B)  { ApplyState<PointB>(packet); }	
-	else if(ptnum == C)	 { ApplyState<PointC>(packet); }	
-	else if(ptnum == D)  { ApplyState<PointD>(packet); }	
-	else if(ptnum == E)  { ApplyState<PointE>(packet); }	
-	else if(ptnum == F)  { ApplyState<PointF>(packet); }	
-	else if(ptnum == G)  { ApplyState<PointG>(packet); }	
-	else if(ptnum == H)  { ApplyState<PointH>(packet); }	
+	if(ptnum == A)		 { ApplyState<PointA>(pstate);}
+	else if(ptnum == B)  { ApplyState<PointB>(pstate); }	
+	else if(ptnum == C)	 { ApplyState<PointC>(pstate); }	
+	else if(ptnum == D)  { ApplyState<PointD>(pstate); }	
+	else if(ptnum == E)  { ApplyState<PointE>(pstate); }	
+	else if(ptnum == F)  { ApplyState<PointF>(pstate); }	
+	else if(ptnum == G)  { ApplyState<PointG>(pstate); }	
+	else if(ptnum == H)  { ApplyState<PointH>(pstate); }	
 }
 
-void Execute()
+void ReplyingProcess(args_received *e)
 {
-	PointA::Change();
-	PointB::Change();
-	PointC::Change();
-	PointD::Change();
-	PointE::Change();
-	PointF::Change();
-	PointG::Change();
-	PointH::Change();
-}
-
-void ReplyStateToSource(const ptrPacket &packet)
-{
-	spi_send_object *psend;
-	ptrPacket *psendpack;
-		
-	tus_spi_lock_send_buffer(&psend);
-	psendpack = (ptrPacket*)&psend->packet;
-	psendpack->destId.raw = packet.srcId.raw; // replying
-	psendpack->srcId.raw = packet.destId.raw;
+	g_packer.Init();
 	
-	psendpack->devID.raw = psendpack->srcId.raw;
-	psendpack->moduletype = 0x14;
+	PackState<PointA>(e->pdstId, e->psrcId);
+	PackState<PointB>(e->pdstId, e->psrcId);
+	PackState<PointC>(e->pdstId, e->psrcId);
+	PackState<PointD>(e->pdstId, e->psrcId);
+	PackState<PointE>(e->pdstId, e->psrcId);
+	PackState<PointF>(e->pdstId, e->psrcId);
+	PackState<PointG>(e->pdstId, e->psrcId);
+	PackState<PointH>(e->pdstId, e->psrcId);
 	
-	CopyState(psendpack->srcId.InternalAddr, *psendpack);	
-	
-	psend->is_locked = FALSE;
-	
+	g_packer.Send(e->pdstId, e->psrcId);		
 }
 
 void spi_received(args_received *e)
-{
-	if(e->ppack->destId.ModuleAddr == 0)
-		return;
+{	
+	BaseState *pbase = (BaseState*)e->ppack;
 	
-	ptrPacket *ppacket = (ptrPacket*)e->ppack;
-	PointModuleState* pstate = (PointModuleState*)ppacket->pdata;
-	
-	DispatchState(ppacket->destId.InternalAddr, *ppacket);
-	
-	ReplyStateToSource(*ppacket);
+	switch(pbase->ModuleType)
+	{
+		case MODULETYPE_SWITCH :
+			DispatchState(pbase->InternalAddr, (PointModuleState*)pbase);
+			break;
+		case MODULETYPE_KERNEL :
+			ReplyingProcess(e);
+			break;
+	}
 }
 
-//void test_packet(ptrPacket& packet, PositionEnum pos)
-//{
-	//uint8_t i;
-	//PointModuleState *pstates;
-	//
-	//memset((void*)&packet, 0x00, sizeof(ptrPacket));
-	//packet.set_StateArrayLength(8);
-	//pstates = packet.get_StateArray();
-	//
-	//for(i=0; i<8; ++i)
-	//{
-		//pstates[i].DeadTime = 10;
-		//pstates[i].ChangingTime = 2;
-		//pstates[i].Position = pos;		
-	//}
-	//
-//}
-//
 int main(void)
 {	
 	MCUCR = 0b01100000; //todo: turn off bods
@@ -152,7 +110,13 @@ int main(void)
 	
 	while(1)
     {
-		Execute();
-	}
-	
+		PointA::Change();
+		PointB::Change();
+		PointC::Change();
+		PointD::Change();
+		PointE::Change();
+		PointF::Change();
+		PointG::Change();
+		PointH::Change();
+	}	
 }

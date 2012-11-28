@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
-# AvrStudio Solution File, Format Version 11.00
+# Atmel Studio Solution File, Format Version 11.00
 Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "EthernetBridge", "EthernetBridge\EthernetBridge.cproj", "{99B24970-9312-4EA7-A97E-CDE90D2E6281}"
 EndProject
 Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "libtus", "libtus\libtus.cproj", "{3D121C5B-155C-47B1-B93C-761A9952C20F}"
@@ -29,6 +29,9 @@ Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "EthernetBridgePp", "Etherne
 	EndProjectSection
 EndProject
 Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "module_PointController", "module_PointController\module_PointController.cppproj", "{A17B6A09-278F-4C5D-9500-B8F673401C54}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3D121C5B-155C-47B1-B93C-761A9952C20F} = {3D121C5B-155C-47B1-B93C-761A9952C20F}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

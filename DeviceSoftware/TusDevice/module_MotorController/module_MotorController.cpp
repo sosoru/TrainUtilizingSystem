@@ -5,7 +5,9 @@
  *  Author: Administrator
  */ 
 
-#include "module_MotorController.hpp"
+#include "module_MotorController.h"
+#include "MotorCfg.hpp"
+
 #include <PackPacket.hpp>
 #include <util/delay.h>
 #include <stdlib.h>
@@ -51,14 +53,36 @@ void CreatePacket(uint8_t beginid, uint8_t endid, DeviceID* psrcid, DeviceID* pd
 {
 	uint8_t i;
 	
-	packer_g.Init();
+	g_packer.Init();
 	
 	for(i=beginid; i<=endid; ++i)
 	{		
-		CopyPacket(i, &packer_g);	
+		CopyPacket(i, &g_packer);	
 	}
 	
-	packer_g.Send(psrcid, pdstid);
+	g_packer.Send(psrcid, pdstid);
+}
+
+void SendKernelPacket(DeviceID *psrcid, DeviceID *pdstid)
+{
+	KernalState state;
+	state.KernelCommand = ETHCMD_MEMORY;
+	
+	g_packer.Init();
+
+	mtrA.get_KernelState((KernalState*)&state);
+	g_packer.Pack((uint8_t*)&state);
+	mtrB.get_KernelState((KernalState*)&state);
+	g_packer.Pack((uint8_t*)&state);
+	g_packer.Send(psrcid, pdstid);
+	
+	g_packer.Init();
+	mtrC.get_KernelState((KernalState*)&state);
+	g_packer.Pack((uint8_t*)&state);
+	mtrD.get_KernelState((KernalState*)&state);
+	g_packer.Pack((uint8_t*)&state);
+	
+	g_packer.Send(psrcid, pdstid);
 }
 
 bool ProcessMtrPacket(MtrControllerPacket *ppacket)
@@ -79,6 +103,7 @@ bool ProcessKernelPacket(KernalState *pstate, DeviceID* psrcid, DeviceID* pdstid
 	switch(pstate->KernelCommand)
 	{
 		case ETHCMD_REPLY:
+			SendKernelPacket(pdstid, psrcid);	
 			CreatePacket(1, 2, pdstid, psrcid);
 			CreatePacket(3, 4, pdstid, psrcid);
 		break;
@@ -92,7 +117,7 @@ bool ProcessKernelPacket(KernalState *pstate, DeviceID* psrcid, DeviceID* pdstid
 
 void spi_received(args_received *e)
 {	
-	g_myDeviceID = e->pdstId->raw;
+	g_myDeviceID.raw = e->pdstId->raw;
 		
 	if(ProcessMtrPacket((MtrControllerPacket*)e->ppack)){}
 	else if (ProcessKernelPacket((KernalState*)e->ppack, e->psrcId, e->pdstId)){}

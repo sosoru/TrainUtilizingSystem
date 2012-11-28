@@ -32,7 +32,8 @@ namespace EthernetBridge
 		{
 			uint8_t macaddress[6];
 			uint8_t ipaddress[4];
-			uint16_t port;
+			uint16_t send_port;
+			uint16_t recv_port;
 		};
 		
 		class EthDevice
@@ -75,7 +76,7 @@ namespace EthernetBridge
 			static inline void NicParameterInit()
 			{
 				//init the ethernet/ip layer:
-				init_ip_arp_udp_tcp(Parameters.macaddress, Parameters.ipaddress, Parameters.port);
+				init_ip_arp_udp_tcp(Parameters.macaddress, Parameters.ipaddress, Parameters.recv_port);
 			}
 
 			static inline bool IsForChildren(const EthPacket &packet)
@@ -124,8 +125,8 @@ namespace EthernetBridge
 				
 				// udp start, we listen on udp port 8000=0x1F40
 				if (buf[IP_PROTO_P]==IP_PROTO_UDP_V
-					&& buf[UDP_DST_PORT_H_P]==(uint8_t)(Parameters.port>>8)
-					&& buf[UDP_DST_PORT_L_P]==(uint8_t)(Parameters.port))
+					&& buf[UDP_DST_PORT_H_P]==(uint8_t)(Parameters.recv_port>>8)
+					&& buf[UDP_DST_PORT_L_P]==(uint8_t)(Parameters.recv_port))
 				{
 					payloadlen = buf[UDP_LEN_L_P] - UDP_HEADER_LEN;
 							
@@ -156,7 +157,7 @@ namespace EthernetBridge
 			
 			static inline void SendPacket(EthPacket *ppacket, arp_record *parc)
 			{
-				make_udp_request(buf, (char*)ppacket->raw_array, (uint8_t)sizeof(EthPacket), Parameters.port, Parameters.port, (parc));
+				make_udp_request(buf, (char*)ppacket->raw_array, (uint8_t)sizeof(EthPacket), Parameters.send_port, Parameters.send_port, (parc));
 			}
 
 			static bool SendToEthernet(EthPacket *ppacket)

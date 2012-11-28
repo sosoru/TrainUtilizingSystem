@@ -10,7 +10,8 @@
 #define POINTMODULE_H_
 
 #include "module_PointController.hpp"
-#include "PointPacket.hpp"
+#include <PackPacket.hpp>
+#include <ptr_packet.h>
 #include <avr/io.h>
 #include <avr/delay.h>
 #include <avr/interrupt.h>
@@ -102,16 +103,32 @@ namespace module_PointController
 			IsChanged = true;
 		}
 		
-		static inline void ApplyState(const ptrPacket &packet)
-		{
-			PointModuleState* pstate = (PointModuleState*)packet.pdata;
-			
+		static inline void ApplyState(const PointModuleState *pstate)
+		{			
 			//if(pstate->Position != State.Position)
 			{
 				IsChanged = false;
 			}
 			
-			memcpy((void*)&State, (const void*)(pstate), sizeof(PointModuleState));	
+			//memcpy((void*)&State, (const void*)(pstate), sizeof(PointModuleState));	
+			State.ChangingTime = pstate->ChangingTime;
+			State.DeadTime = pstate->DeadTime;
+			State.Position = pstate->Position;
+		}
+		
+		static void PackState(Tus::PacketPacker *ppack, DeviceID *psrc, DeviceID *pdst)
+		{
+			State.Base.DataLength = sizeof(State);
+			State.Base.InternalAddr = module_number;
+			State.Base.ModuleType = MODULETYPE_SWITCH;
+			
+			if(false == ppack->Pack((uint8_t*)&State))
+			{
+				ppack->Send(psrc, pdst);
+				
+				ppack->Init();
+				ppack->Pack((uint8_t*)&State);
+			}
 		}
 	};
 	
