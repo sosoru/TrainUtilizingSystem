@@ -118,10 +118,10 @@ namespace DialogConsole
                                     g.ToString()
                                     )))
                 .ObserveOn(this.SchedulerSendingProcessing)
-                .SubscribeOn(Scheduler.NewThread)
+                .SubscribeOn(Scheduler.ThreadPool)
                 .Subscribe();
 
-            var timer = Observable.Interval(TimeSpan.FromMilliseconds(20), Scheduler.NewThread);
+            var timer = Observable.Interval(TimeSpan.FromMilliseconds(20), Scheduler.ThreadPool);
             this.Receiving_ = Observable.Defer(() => this.Server.ReceivingObservable)
                 .ObserveOn(this.SchedulerSendingProcessing)
                 .Repeat()
