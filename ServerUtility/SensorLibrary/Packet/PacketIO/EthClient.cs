@@ -54,20 +54,9 @@ namespace SensorLibrary.Packet.IO
             return new IPEndPoint(new IPAddress(address), SEND_PORT);
         }
 
+
         public virtual IObservable<Unit> AsyncSend(EthPacket packet)
         {
-            //return Observable
-            //    .Using(
-            //        () => new UdpClient(),
-            //        client =>
-            //            {
-            //                var data = packet.ToByteArray();
-            //                client.Connect(new IPEndPoint(this.Address, PORT));
-            //                return
-            //                    Observable
-            //                    .FromAsyncPattern<byte[], int>(client.BeginSend, (res) => client.EndSend(res))(data, data.Length);
-
-            //            });
             return Observable.Start(() =>
                                         {
                                             var data = packet.ToByteArray();
