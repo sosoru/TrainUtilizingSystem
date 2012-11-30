@@ -28,6 +28,7 @@ namespace SensorLibrary.Packet.IO
             this.IpBase = ipbase;
             this.IpMask = mask;
             this.Client = new EthClient();
+
         }
 
         private IPEndPoint ToEndPoint(DeviceID id)
