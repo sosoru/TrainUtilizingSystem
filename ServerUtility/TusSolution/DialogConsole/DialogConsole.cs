@@ -132,7 +132,7 @@ namespace DialogConsole
                                                                     DateTime.Now.Millisecond,
                                                                     g.ToString()
                                                                     )))
-                                                            .SubscribeOn(Scheduler.NewThread)
+                                                            .SubscribeOn(Scheduler.ThreadPool)
                                                             .Subscribe();
             this.StartHttpObservable();
 
