@@ -1,14 +1,19 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using DialogConsole;
+using DialogConsole.Factory;
 
 namespace TestProject.ConsoleTest
 {
     [TestClass]
-    public class UnitTest1
+    public class SheetFactoryTest 
     {
         [TestMethod]
-        public void TestMethod1()
-        {
+        public void CreateSheet()
+       {
+           var path = "dummy";
+           var f = new SheetFactory(path);
+
         }
     }
 }
