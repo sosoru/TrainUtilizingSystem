@@ -10,5 +10,8 @@ namespace DialogConsole.Factory
 {
     class SheetFactory
     {
+        public string Path { get; set; }
+        public ServerFactory ServerCreater { get; set; }
     }
+
 }
