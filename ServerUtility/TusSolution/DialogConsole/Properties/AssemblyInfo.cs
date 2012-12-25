@@ -13,7 +13,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCopyright("Copyright ©  2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("TestProject.ConsoleTest")]
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("TestProject")]
 
 
 // ComVisible を false に設定すると、その型はこのアセンブリ内で COM コンポーネントから 
