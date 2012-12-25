@@ -8,15 +8,15 @@ using DialogConsole.Factory;
 namespace TestProject.ConsoleTest.Composition
 {
     [TestClass]
-    public class SheetFactoryTest 
+    public class SheetFactoryTest
     {
         [TestMethod]
         public void CreateSheet()
-       {
-           var catalog = new AggregateCatalog();
+        {
+            var catalog = new AggregateCatalog();
             catalog.Catalogs.Add(new AssemblyCatalog(".\\DialogConsole.exe"));
-                var container = new CompositionContainer(catalog);
-            container.GetExport<DialogConsole.fa
+            var container = new CompositionContainer(catalog);
+            container.GetExport<SheetFactory>();
 
         }
     }
