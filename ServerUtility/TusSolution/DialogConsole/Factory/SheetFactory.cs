@@ -9,8 +9,6 @@ using RouteLibrary;
 using RouteLibrary.Base;
 using RouteLibrary.Parser;
 
-[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("TestProject.ConsoleTest")]
-
 namespace DialogConsole.Factory
 {
     [Export]
