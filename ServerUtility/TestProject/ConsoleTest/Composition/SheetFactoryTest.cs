@@ -18,7 +18,7 @@ namespace TestProject.ConsoleTest.Composition
             var container = new CompositionContainer(catalog);
             var result = container.GetExport<SheetFactory>();
 
-            var val = result.Value;
+            var val = result.Value.Create();
         }
     }
 }
