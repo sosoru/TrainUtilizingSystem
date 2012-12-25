@@ -20,7 +20,7 @@ namespace DialogConsole.Factory
 
         public void OnImportsSatisfied()
         {
-            this.Path = DialogCnosole.Properties.App
+            this.Path = DialogConsole.Properties.Settings.Default.SheetPath;
         }
     }
 
