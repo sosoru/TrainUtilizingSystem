@@ -14,7 +14,7 @@ namespace TestProject.ConsoleTest.Composition
         public void CreateSheet()
        {
            var catalog = new AggregateCatalog();
-            catalog.Catalogs.Add(new AssemblyCatalog(".\DialogConsole.exe"));
+            catalog.Catalogs.Add(new AssemblyCatalog(".\\DialogConsole.exe"));
                 var container = new CompositionContainer(catalog);
             container.GetExport<
 
