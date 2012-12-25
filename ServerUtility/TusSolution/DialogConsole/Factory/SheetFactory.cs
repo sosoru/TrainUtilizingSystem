@@ -11,11 +11,17 @@ namespace DialogConsole.Factory
 {
     [Export]
     class SheetFactory
+        : IPartImportsSatisfiedNotification
     {
         public string Path { get; set; }
 
         [Import]
         public ServerFactory ServerCreater { get; set; }
+
+        public void OnImportsSatisfied()
+        {
+            this.Path = DialogCnosole.Properties.App
+        }
     }
 
 }
