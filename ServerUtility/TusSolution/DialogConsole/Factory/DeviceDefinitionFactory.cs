@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel.Composition;
 
 using SensorLibrary;
 using SensorLibrary.Packet;
@@ -13,7 +14,6 @@ using SensorLibrary.Devices.TusAvrDevices;
 using SensorLibrary.Packet.IO;
 
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo("TestProject.ConsoleTest")]
-
 
 namespace DialogConsole.Factory
 {
