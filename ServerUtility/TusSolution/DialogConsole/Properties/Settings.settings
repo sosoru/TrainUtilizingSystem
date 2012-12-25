@@ -14,5 +14,8 @@
     <Setting Name="IpPort" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">8000</Value>
     </Setting>
+    <Setting Name="MyDeviceID" Type="System.String" Scope="User">
+      <Value Profile="(Default)">(9, 0, 0)</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
