@@ -73,7 +73,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DialogConsole.cs" />
-    <Compile Include="Factory\DeviceDefinitionFactory.cs" />
     <Compile Include="Factory\ServerFactory.cs" />
     <Compile Include="Factory\SheetFactory.cs" />
     <Compile Include="MotorController.cs" />
