@@ -5,6 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.Composition;
 
+using RouteLibrary;
+using RouteLibrary.Base;
+using RouteLibrary.Parser;
+
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo("TestProject.ConsoleTest")]
 
 namespace DialogConsole.Factory
@@ -21,6 +25,14 @@ namespace DialogConsole.Factory
         public void OnImportsSatisfied()
         {
             this.Path = DialogConsole.Properties.Settings.Default.SheetPath;
+        }
+
+        public BlockSheet Create()
+        {
+            var parser = new BlockYaml();
+            var blocks = parser.Parse(this.Path);
+
+            return new BlockSheet(blocks, this.ServerCreater.Create());
         }
     }
 
