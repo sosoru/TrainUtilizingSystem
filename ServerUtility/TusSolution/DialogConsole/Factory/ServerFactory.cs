@@ -37,7 +37,7 @@ namespace DialogConsole.Factory
             var dialog = new DialogCnosole();
             var io = new TusEthernetIO(ipbase, ipmask)
             {
-                SourceID = new DeviceIdParser().FromString(this.ApplicationSettings.ParentDeviceID).First();
+                SourceID = new DeviceIdParser().FromString(this.ApplicationSettings.ParentDeviceID).First(),
                 Port = this.ApplicationSettings.IpPort,
             };
 
