@@ -76,10 +76,10 @@ namespace DialogConsole.Properties {
         [global::System.Configuration.DefaultSettingValueAttribute("(9, 0, 0)")]
         public string ParentDeviceID {
             get {
-                return ((string)(this["MyDeviceID"]));
+                return ((string)(this["ParentDeviceID"]));
             }
             set {
-                this["MyDeviceID"] = value;
+                this["ParentDeviceID"] = value;
             }
         }
     }

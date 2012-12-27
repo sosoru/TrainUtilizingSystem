@@ -1,0 +1,44 @@
+-
+  name : AT1
+  route : BAT4 <> BAT1
+  motor :
+    addr : (24, 2, 1)
+    pos : BAT4 > BAT1
+    neg : BAT4 < BAT1
+-
+  name : BAT1
+  route : AT1 <> AT2
+  isolate : true
+-
+  name : AT2
+  route : BAT1 <> BAT2
+  motor :
+    addr : (24, 2, 2)
+    pos : BAT1 > BAT2
+    neg : BAT1 < BAT2
+-
+  name : BAT2
+  route : AT2 <> AT3
+  isolate : true
+-
+  name : AT3
+  route : BAT2 <> BAT3
+  motor :
+    addr : (24, 2, 3)
+    pos : BAT2 > BAT3
+    neg : BAT2 < BAT3
+-
+  name : BAT3
+  route : AT3 <> AT4
+  isolate : true
+-
+  name : AT4
+  route : BAT3 <> BAT4
+  motor : 
+    addr : (24, 2, 4)
+    pos : BAT3 > BAT4
+    neg : BAT3 < BAT4
+-
+  name : BAT4
+  route : AT4 <> AT1
+  isolate : true
