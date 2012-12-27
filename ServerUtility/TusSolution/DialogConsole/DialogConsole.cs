@@ -87,15 +87,6 @@ namespace DialogConsole
             }
         }
 
-        public void InitSheet(IDeviceIO io)
-        {
-            this.Server = CreateServer();
-            this.Sheet = CreateSheet(@"C:\Users\Administrator\Desktop\12_layout.yaml", this.Server);
-
-            this.Server.Controller = io;
-
-        }
-
         public void Loop()
         {
             this.LogWriterSend = new StreamWriter("packet_log.txt", true);
@@ -289,21 +280,6 @@ this.Sheet.InnerBlocks);
             this.Vehicles.Remove(v);
         }
 
-        public PacketServer CreateServer()
-        {
-            var serv = new PacketServer(new AvrDeviceFactoryProvider());
-
-            return serv;
-        }
-
-        public BlockSheet CreateSheet(string path, PacketServer serv)
-        {
-            var parser = new BlockYaml();
-            var blocks = parser.Parse(path);
-
-            return new BlockSheet(blocks, serv);
-        }
-
         public Route InputRoute(out bool ignoreblockage)
         {
             Console.WriteLine("select route [A-D] [rev] [sub] [ign]");
@@ -490,53 +466,4 @@ this.Sheet.InnerBlocks);
 
     }
 
-    //public class DeviceDiagnostics
-    //{
-    //    private PacketServer serv;
-    //    private PacketDispatcher dispat;
-    //    private DeviceID devid;
-
-    //    public Stream Writer { get; private set; }
-    //    public Stream Reader { get; private set; }
-
-    //    public DeviceDiagnostics(DeviceID id, IPAddress baseip)
-    //    {
-    //        this.devid = new DeviceID(baseip.GetAddressBytes()[3], 0, 0);
-    //        var io = new SensorLibrary.Packet.IO.TusEthernetIO(baseip, new IPAddress(new byte[] { 255, 255, 255, 0 }))
-    //        {
-    //            SourceID = devid,
-    //            Port = 8000,
-    //        };
-
-    //        this.dispat = new PacketDispatcher();
-    //        this.serv.AddAction(this.dispat);
-
-    //    }
-
-    //    public void Start(Stream reader, Stream writer)
-    //    {
-    //        this.serv.LoopStart();
-
-    //        if (!reader.CanRead)
-    //            throw new InvalidOperationException("requires readable stream");
-
-    //        if (!writer.CanWrite)
-    //            throw new InvalidOperationException("requires writable stream");
-
-    //        this.Reader = reader;
-    //        this.Writer = writer;
-
-    //    }
-
-    //    public TDev CreateDevice<TDev>(DeviceID devid)
-    //        where TDev : Device<IDeviceState<IPacketDeviceData>>, new()
-    //    {
-    //        var dev = new TDev() { DeviceID = devid };
-    //        dev.ReceivingServer = this.serv;
-    //        dev.Observe(this.dispat);
-
-    //        return dev;
-    //    }
-
-    //}
 }
