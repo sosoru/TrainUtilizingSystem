@@ -41,10 +41,10 @@ namespace DialogConsole
             var container = new CompositionContainer(catalog);
             var shtfactory = container.GetExport<SheetFactory>();
 
-            var dialog = new DialogConsole();
+            var dialog = new DialogConsole.DialogCnosole();
             dialog.Sheet = shtfactory.Value.Create();
 
-            dialog.loop();
+            dialog.Loop();
         }
     }
 
