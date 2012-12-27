@@ -43,6 +43,7 @@ namespace DialogConsole
 
             var dialog = new DialogConsole.DialogCnosole();
             dialog.Sheet = shtfactory.Value.Create();
+            dialog.Sheet = shtfactory.Value.ServerCreater.Create();
 
             dialog.Loop();
         }
