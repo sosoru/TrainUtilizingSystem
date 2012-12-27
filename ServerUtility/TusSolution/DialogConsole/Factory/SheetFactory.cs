@@ -13,22 +13,17 @@ namespace DialogConsole.Factory
 {
     [Export]
     class SheetFactory
-        : IPartImportsSatisfiedNotification
     {
-        public string Path { get; set; }
+        [Import]
+        public IConsoleApplicationSettings Settings { get; set; }
 
         [Import]
         public ServerFactory ServerCreater { get; set; }
 
-        public void OnImportsSatisfied()
-        {
-            this.Path = DialogConsole.Properties.Settings.Default.SheetPath;
-        }
-
         public BlockSheet Create()
         {
             var parser = new BlockYaml();
-            var blocks = parser.Parse(this.Path);
+            var blocks = parser.Parse(this.Settings.SheetPath);
 
             return new BlockSheet(blocks, this.ServerCreater.Create());
         }
