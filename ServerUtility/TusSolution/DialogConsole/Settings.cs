@@ -9,7 +9,7 @@
     //  SettingsSaving イベントは、設定値が保存される前に発生します。
     [Export(typeof(IConsoleApplicationSettings))]
     internal sealed partial class Settings
-        : DialogConsole.IConsoleApplicationSettings {
+        : IConsoleApplicationSettings {
         
         public Settings() {
             // // 設定の保存と変更のイベント ハンドラーを追加するには、以下の行のコメントを解除します:
