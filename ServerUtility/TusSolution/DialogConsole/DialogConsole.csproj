@@ -77,6 +77,7 @@
     <Compile Include="DialogConsole.cs" />
     <Compile Include="Factory\ServerFactory.cs" />
     <Compile Include="Factory\SheetFactory.cs" />
+    <Compile Include="IConsoleApplicationSettings.cs" />
     <Compile Include="MotorController.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
