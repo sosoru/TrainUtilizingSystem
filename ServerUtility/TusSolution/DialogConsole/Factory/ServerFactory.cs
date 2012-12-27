@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Net;
 
@@ -20,9 +21,23 @@ using RouteLibrary.Parser;
 
 namespace DialogConsole.Factory
 {
+    using DialogConsole.Properties;
+
     [Export]
     class ServerFactory
     {
+        [DefaultProperty(Settings.Default.IpSegment)]
+        public string IpSegment { get; set; }
+
+        [DefaultProperty(Settings.Default.IpMask)]
+        public string IpMask   { get; set;}
+
+        [DefaultProperty(Settings.Default.MyDeviceID)]
+        public string MyDeviceID { get; set; }
+
+        [DefaultProperty(Settings.Default.IpPort)]
+        public int IpPort { get; set; }
+
         public PacketServer Create()
         {
             var ipbase = IPAddress.Parse(DialogConsole.Properties.Settings.Default.IpSegment);
