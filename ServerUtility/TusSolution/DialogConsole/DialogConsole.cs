@@ -91,17 +91,19 @@ namespace DialogConsole
         {
             this.Server = CreateServer();
             this.Sheet = CreateSheet(@"C:\Users\Administrator\Desktop\12_layout.yaml", this.Server);
-            this.Sheet.AssociatedScheduler = this.SchedulerPacketProcessing;
 
             this.Server.Controller = io;
-            this.Vehicles = new List<Vehicle>();
 
-            this.LogWriterSend = new StreamWriter("packet_log.txt", true);
-            this.LogWriterRecv = new StreamWriter("packet_log_recv.txt", true);
         }
 
         public void Loop()
         {
+            this.LogWriterSend = new StreamWriter("packet_log.txt", true);
+            this.LogWriterRecv = new StreamWriter("packet_log_recv.txt", true);
+
+            this.Sheet.AssociatedScheduler = this.SchedulerPacketProcessing;
+            this.Vehicles = new List<Vehicle>();
+
             this.SyncNetwork = new SynchronizationContext();
             this.SyncPacketProcess = new SynchronizationContext();
 
