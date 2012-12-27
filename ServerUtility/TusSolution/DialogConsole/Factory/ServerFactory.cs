@@ -26,24 +26,19 @@ namespace DialogConsole.Factory
     [Export]
     class ServerFactory
     {
-        public string IpSegment { get; set; }
-
-        public string IpMask   { get; set;}
-
-        public string UsingDeviceID { get; set; }
-
-        public int IpPort { get; set; }
+        [Import]
+        public Settings ApplicationSettings;
 
         public PacketServer Create()
         {
-            var ipbase = IPAddress.Parse(DialogConsole.Properties.Settings.Default.IpSegment);
-            var ipmask = IPAddress.Parse(DialogConsole.Properties.Settings.Default.IpMask);
+            var ipbase = IPAddress.Parse(this.ApplicationSettings.IpSegment);
+            var ipmask = IPAddress.Parse(this.ApplicationSettings.IpMask);
 
             var dialog = new DialogCnosole();
             var io = new TusEthernetIO(ipbase, ipmask)
             {
-                SourceID = new DeviceIdParser().FromString(DialogConsole.Properties.Settings.Default.ParentDeviceID).First(),
-                Port = DialogConsole.Properties.Settings.Default.IpPort,
+                SourceID = new DeviceIdParser().FromString(this.ApplicationSettings.ParentDeviceID).First();
+                Port = this.ApplicationSettings.IpPort,
             };
 
            var serv = new PacketServer(new AvrDeviceFactoryProvider());
