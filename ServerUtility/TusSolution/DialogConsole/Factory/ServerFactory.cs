@@ -27,7 +27,7 @@ namespace DialogConsole.Factory
     class ServerFactory
     {
         [Import]
-        public Settings ApplicationSettings;
+        public IConsoleApplicationSettings ApplicationSettings;
 
         public PacketServer Create()
         {
