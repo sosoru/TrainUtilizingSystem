@@ -26,16 +26,16 @@ namespace DialogConsole.Factory
     [Export]
     class ServerFactory
     {
-        [DefaultProperty(Settings.Default.IpSegment)]
+        [DefaultValue(Settings.Default.IpSegment)]
         public string IpSegment { get; set; }
 
-        [DefaultProperty(Settings.Default.IpMask)]
+        [DefaultValue(Settings.Default.IpMask)]
         public string IpMask   { get; set;}
 
-        [DefaultProperty(Settings.Default.MyDeviceID)]
+        [DefaultValue(Settings.Default.MyDeviceID)]
         public string MyDeviceID { get; set; }
 
-        [DefaultProperty(Settings.Default.IpPort)]
+        [DefaultValue(Settings.Default.IpPort)]
         public int IpPort { get; set; }
 
         public PacketServer Create()
