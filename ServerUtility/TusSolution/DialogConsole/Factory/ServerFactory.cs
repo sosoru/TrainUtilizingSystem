@@ -26,16 +26,12 @@ namespace DialogConsole.Factory
     [Export]
     class ServerFactory
     {
-        [DefaultValue(Settings.Default.IpSegment)]
         public string IpSegment { get; set; }
 
-        [DefaultValue(Settings.Default.IpMask)]
         public string IpMask   { get; set;}
 
-        [DefaultValue(Settings.Default.MyDeviceID)]
-        public string MyDeviceID { get; set; }
+        public string UsingDeviceID { get; set; }
 
-        [DefaultValue(Settings.Default.IpPort)]
         public int IpPort { get; set; }
 
         public PacketServer Create()
@@ -46,7 +42,7 @@ namespace DialogConsole.Factory
             var dialog = new DialogCnosole();
             var io = new TusEthernetIO(ipbase, ipmask)
             {
-                SourceID = new DeviceIdParser().FromString(DialogConsole.Properties.Settings.Default.MyDeviceID).First(),
+                SourceID = new DeviceIdParser().FromString(DialogConsole.Properties.Settings.Default.ParentDeviceID).First(),
                 Port = DialogConsole.Properties.Settings.Default.IpPort,
             };
 
