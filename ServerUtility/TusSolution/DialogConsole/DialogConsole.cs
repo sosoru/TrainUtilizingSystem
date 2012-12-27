@@ -8,6 +8,8 @@ using System.IO;
 using System.Threading;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
+using System.ComponentModel.Composition;
+using System.ComponentModel.Composition.Hosting;
 
 using System.Reactive;
 using System.Reactive.Linq;
@@ -26,28 +28,27 @@ using RouteLibrary;
 using RouteLibrary.Base;
 using RouteLibrary.Parser;
 
+
 namespace DialogConsole
 {
+    using DialogConsole.Factory;
     class MainClass
     {
         static void Main(string[] args)
         {
-            var ipbase = IPAddress.Parse("192.168.2.0");
-            var ipmask = IPAddress.Parse("255.255.255.0");
-            
-            var dialog = new DialogCnosole();
-            var io = new TusEthernetIO(ipbase, ipmask)
-            {
-                SourceID = new DeviceID(9, 0, 0),
-                Port = 8000,
-            };
-            dialog.InitSheet(io);
+            var catalog = new AggregateCatalog();
+            catalog.Catalogs.Add(new AssemblyCatalog(System.Reflection.Assembly.GetExecutingAssembly()));
+            var container = new CompositionContainer(catalog);
+            var shtfactory = container.GetExport<SheetFactory>();
 
-            dialog.Loop();
+            var dialog = new DialogConsole();
+            dialog.Sheet = shtfactory.Value.Create();
+
+            dialog.loop();
         }
     }
 
-    public class DialogCnosole
+    class DialogCnosole
     {
         public PacketServer Server { get; set; }
         public BlockSheet Sheet { get; set; }
