@@ -1,0 +1,62 @@
+-
+  name : AT1
+  route : nil <> AT2
+-
+  name : AT2
+  route : AT3 <> AT1, CT2
+  point:
+    addr : (1, 2, 1)
+    s : AT3 <> AT1
+    c : AT3 <> CT2
+
+-
+  name : AT3
+  route : AT2 <> AT3
+  sensor :
+    addr : (1, 3, 1)
+-
+  name : AT4
+  route : AT3 <> nil
+  motor : 
+    addr : (1, 1, 1)
+    pos : AT3 > nil
+    neg : AT3 < nil
+    
+-
+  name : BT1
+  route : nil <> BT2
+-
+  name : BT2
+  route : BT3 <> BT1, CT2
+  point :
+    addr : (1, 2, 3)
+    s : BT3 <> BT1
+    c : BT3 <> CT2
+    
+-
+  name : BT3
+  route : BT2 <> BT4
+  sensor :
+    addr : (1, 3, 2)
+    
+-
+  name : BT4
+  route : BT3 <> nil
+  motor :
+    addr : (1, 1, 2)
+    pos : BT3 > nil
+    neg : BT3 < nil
+    
+-
+  name : CT1
+  route : nil <> CT2
+  sensor :
+    addr : (1, 3, 3)
+    
+-
+  name : CT2
+  route : CT1 <> AT2, BT2
+  point :
+    addr : (1, 2, 2)
+    s : CT1 <> AT2
+    c : CT1 <> BT2
