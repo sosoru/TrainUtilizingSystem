@@ -47,19 +47,14 @@
     <Reference Include="EntityFramework, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <Private>True</Private>
     </Reference>
-    <Reference Include="Livet">
-      <HintPath>..\SensorLivetView\InfrastructureAssemblies\Livet.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.Reactive.Testing, Version=2.0.20823.0, Culture=neutral, PublicKeyToken=f300afd708cefcd3, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\TusSolution\packages\Rx-Testing.2.0.21114\lib\Net45-Full\Microsoft.Reactive.Testing.dll</HintPath>
+    <Reference Include="Microsoft.Reactive.Testing">
+      <HintPath>..\packages\Rx-Testing.2.0.21114\lib\Net45-Full\Microsoft.Reactive.Testing.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="Moq, Version=4.0.10827.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\TusSolution\packages\Moq.4.0.10827\lib\NET40\Moq.dll</HintPath>
+    <Reference Include="Moq">
+      <HintPath>..\packages\Moq.4.0.10827\lib\NET40\Moq.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -73,21 +68,17 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Reactive.Core, Version=2.0.20823.0, Culture=neutral, PublicKeyToken=f300afd708cefcd3, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\TusSolution\packages\Rx-Core.2.0.21114\lib\Net45\System.Reactive.Core.dll</HintPath>
+    <Reference Include="System.Reactive.Core">
+      <HintPath>..\packages\Rx-Core.2.0.21114\lib\Net45\System.Reactive.Core.dll</HintPath>
     </Reference>
-    <Reference Include="System.Reactive.Interfaces, Version=2.0.20823.0, Culture=neutral, PublicKeyToken=f300afd708cefcd3, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\TusSolution\packages\Rx-Interfaces.2.0.21114\lib\Net45\System.Reactive.Interfaces.dll</HintPath>
+    <Reference Include="System.Reactive.Interfaces">
+      <HintPath>..\packages\Rx-Interfaces.2.0.21114\lib\Net45\System.Reactive.Interfaces.dll</HintPath>
     </Reference>
-    <Reference Include="System.Reactive.Linq, Version=2.0.20823.0, Culture=neutral, PublicKeyToken=f300afd708cefcd3, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\TusSolution\packages\Rx-Linq.2.0.21114\lib\Net45\System.Reactive.Linq.dll</HintPath>
+    <Reference Include="System.Reactive.Linq">
+      <HintPath>..\packages\Rx-Linq.2.0.21114\lib\Net45\System.Reactive.Linq.dll</HintPath>
     </Reference>
-    <Reference Include="System.Reactive.PlatformServices, Version=2.0.20823.0, Culture=neutral, PublicKeyToken=f300afd708cefcd3, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\TusSolution\packages\Rx-PlatformServices.2.0.21114\lib\Net45\System.Reactive.PlatformServices.dll</HintPath>
+    <Reference Include="System.Reactive.PlatformServices">
+      <HintPath>..\packages\Rx-PlatformServices.2.0.21114\lib\Net45\System.Reactive.PlatformServices.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows.Forms" />
@@ -116,22 +107,13 @@
     <Compile Include="DialogController\MotorControllerTest.cs" />
     <Compile Include="DialogController\SwitchControllerTest.cs" />
     <Compile Include="EthClientTest.cs" />
-    <Compile Include="GateViewModelTest.cs" />
     <Compile Include="LoopingArrayTest.cs" />
-    <Compile Include="LoopModelTest.cs" />
     <Compile Include="MotorStateTest.cs" />
     <Compile Include="PacketDispatcherSingleTest.cs" />
     <Compile Include="PathDataViewModelTest.cs" />
-    <Compile Include="PathViewModelTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PysicalPathTest.cs" />
-    <Compile Include="RailConnectionTest.cs" />
     <Compile Include="RailDataViewModelTest.cs" />
-    <Compile Include="RailEditorViewModelTest.cs" />
-    <Compile Include="RailroaderExtensionsTest.cs" />
     <Compile Include="RailroaderMapTest.cs" />
-    <Compile Include="RailTest.cs" />
-    <Compile Include="RailViewModelTest.cs" />
     <Compile Include="RouteParserTest.cs" />
     <Compile Include="RouteTest.cs" />
     <Compile Include="RouteTest\MiddleTrackTest.cs" />
@@ -151,17 +133,9 @@
     <Compile Include="VehicleTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\..\Program Files\LibUsbDotNet\Src\LibWinUsb\LibUsbDotNet.csproj">
-      <Project>{0A78F6FF-5586-4052-8104-E23FF83A7CE1}</Project>
-      <Name>LibUsbDotNet</Name>
-    </ProjectReference>
     <ProjectReference Include="..\RailroaderIO\RailroaderIO.csproj">
-      <Project>{9C902CD5-20AE-45C4-918A-863F7D6064A0}</Project>
+      <Project>{9c902cd5-20ae-45c4-918a-863f7d6064a0}</Project>
       <Name>RailroaderIO</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\RouteVisualizer\RouteVisualizer.csproj">
-      <Project>{E366CBAE-EDDF-4486-87A2-826A07E1D9CC}</Project>
-      <Name>RouteVisualizer</Name>
     </ProjectReference>
     <ProjectReference Include="..\SensorLibrary\SensorLibrary.csproj">
       <Project>{160A1D77-985C-4DDD-BB20-46C8EBADF62F}</Project>
