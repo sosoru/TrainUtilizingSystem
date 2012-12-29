@@ -126,7 +126,7 @@ namespace TestProject
             target.ChangingTime = 55;
             Assert.AreEqual(target.Data.ChangingTime, 6);
 
-            target.ChangingTime = 0;
+            target.ChangingTime = 10;
             try
             {
                 target.ChangingTime = -20;

@@ -43,7 +43,7 @@ namespace SensorLibrary.Devices.TusAvrDevices
             {
                 var raw = Math.Round(((float)value) / 10.0f);
                 if (raw <= 0 || raw > 100)
-                    throw new ArgumentOutOfRangeException("ChangingTime must be in [0, 1005]");
+                    throw new ArgumentOutOfRangeException("ChangingTime must be in [10, 1005]");
 
                 this.Data.ChangingTime = (byte)raw;
             }

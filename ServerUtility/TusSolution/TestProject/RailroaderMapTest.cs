@@ -63,7 +63,7 @@ namespace TestProject
         //
         #endregion
 
-        string path = @"C:\Users\root\Documents\TrainUtilizingSystem\ServerUtility\RouteVisualizer\TestSamples\Sample2.rrf";
+        string path = @".\SampleLayout\Sample2.rrf";
 
         /// <summary>
         ///RailroaderMap コンストラクター のテスト

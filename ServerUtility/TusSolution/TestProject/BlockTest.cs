@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
 using System.Linq;
+using SensorLibrary.Packet.Control;
 
 namespace TestProject
 {
@@ -70,7 +71,7 @@ namespace TestProject
             get
             {
                 var infos = new[] { new BlockInfo { Name = "pero" }, new BlockInfo { Name = "hoge" } };
-                var sheet = new BlockSheet(infos, null);
+                var sheet = new BlockSheet(infos, new PacketServer());
 
                 sheet.Name = "test sheet";
                 return sheet;
@@ -126,7 +127,7 @@ namespace TestProject
         {
             BlockSheet sheet = sample_sheet;
             Block target = sheet.InnerBlocks.First();
-            int expected = sheet.Name.GetHashCode() ^ sheet.Name.GetHashCode();
+            int expected = target.Name.GetHashCode() ^ sheet.Name.GetHashCode();
             int actual;
             actual = target.GetHashCode();
             Assert.AreEqual(expected, actual);

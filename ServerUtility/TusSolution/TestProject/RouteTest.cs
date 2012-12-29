@@ -167,22 +167,27 @@ namespace TestProject
         {
             var blocks = test_blocks.ToArray();
             Route target = new Route(blocks);
+            target.IsRepeatable = true;
 
+            // allocate single block
             Block allocblk = blocks[1];
             target.AllocateTrain(allocblk, 1);
             Assert.IsTrue(target.LockedBlocks.Contains(allocblk));
 
+            // allocate double block
             allocblk = blocks[4];
             target.AllocateTrain(allocblk, 2);
             Assert.IsTrue(target.LockedBlocks.Contains(allocblk));
             Assert.IsTrue(target.LockedUnits.Count() == 2);
 
+            // should repeat blocks successfully
             allocblk = blocks.Last();
             target.AllocateTrain(allocblk, 2);
             Assert.IsTrue(target.LockedBlocks.Contains(allocblk));
 
             try
             {
+                // should fail if index is over
                 allocblk = new Block(new BlockInfo(), blocks.First().Sheet);
                 target.AllocateTrain(allocblk, 1);
                 Assert.Fail();

@@ -43,7 +43,6 @@ namespace DialogConsole
 
             var dialog = new DialogConsole.DialogCnosole();
             dialog.Sheet = shtfactory.Value.Create();
-            dialog.Server = shtfactory.Value.ServerCreater.Create();
 
             dialog.Loop();
         }
@@ -51,7 +50,6 @@ namespace DialogConsole
 
     class DialogCnosole
     {
-        public PacketServer Server { get; set; }
         public BlockSheet Sheet { get; set; }
 
         public IList<Vehicle> Vehicles { get; set; }
@@ -92,7 +90,6 @@ namespace DialogConsole
             this.LogWriterSend = new StreamWriter("packet_log.txt", true);
             this.LogWriterRecv = new StreamWriter("packet_log_recv.txt", true);
 
-            this.Sheet.AssociatedScheduler = this.SchedulerPacketProcessing;
             this.Vehicles = new List<Vehicle>();
 
             this.SyncNetwork = new SynchronizationContext();
@@ -103,7 +100,7 @@ namespace DialogConsole
 
             this.Sheet.AssociatedScheduler = this.SchedulerPacketProcessing;
 
-            this.Server.SendingObservable
+            this.Sheet.Server.SendingObservable
                 .Delay(TimeSpan.FromMilliseconds(15))
                 .Repeat()
                 .SelectMany(g => g.ExtractPackedPacket())
@@ -113,11 +110,11 @@ namespace DialogConsole
                                     g.ToString()
                                     )))
                 .ObserveOn(this.SchedulerSendingProcessing)
-                .SubscribeOn(Scheduler.ThreadPool)
+                .SubscribeOn(Scheduler.Default)
                 .Subscribe();
 
-            var timer = Observable.Interval(TimeSpan.FromMilliseconds(20), Scheduler.ThreadPool);
-            this.Receiving_ = Observable.Defer(() => this.Server.ReceivingObservable)
+            var timer = Observable.Interval(TimeSpan.FromMilliseconds(20), Scheduler.Default);
+            this.Receiving_ = Observable.Defer(() => this.Sheet.Server.ReceivingObservable)
                 .ObserveOn(this.SchedulerSendingProcessing)
                 .Repeat()
                 .Zip(timer, (v, _) => v)
@@ -127,7 +124,7 @@ namespace DialogConsole
                                                                     DateTime.Now.Millisecond,
                                                                     g.ToString()
                                                                     )))
-                                                            .SubscribeOn(Scheduler.ThreadPool)
+                                                            .SubscribeOn(Scheduler.Default)
                                                             .Subscribe();
             this.StartHttpObservable();
 

@@ -70,13 +70,13 @@ namespace TestProject
         {
             get
             {
-                return @"C:\Users\Administrator\Desktop\新しいフォルダー (2)\815.yaml";
+                return @".\SampleLayout\815.yaml";
             }
         }
 
         public static string LoopSample
         {
-            get { return @"C:\Users\Administrator\Desktop\rail_proj\route_test.yaml"; }
+            get { return @".\SampleLayout\route_test.yaml"; }
         }
 
         /// <summary>
