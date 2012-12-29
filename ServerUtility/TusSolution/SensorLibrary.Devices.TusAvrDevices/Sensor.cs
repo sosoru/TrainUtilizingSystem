@@ -10,9 +10,8 @@ namespace SensorLibrary.Devices.TusAvrDevices
         : Device<UsartSettingState>
     {
         public UsartSetting()
+            : base(ModuleTypeEnum.AvrSensor, new UsartSettingState())
         {
-            this.ModuleType = ModuleTypeEnum.AvrSensor;
-            this.CurrentState = new UsartSettingState();
         }
 
     }
@@ -24,9 +23,8 @@ namespace SensorLibrary.Devices.TusAvrDevices
         private LinkedList<SensorState> packet_history = new LinkedList<SensorState>();
 
         public UsartSensor()
+            : base(ModuleTypeEnum.AvrSensor, new SensorState())
         {
-            this.ModuleType = ModuleTypeEnum.AvrSensor;
-            this.CurrentState = new SensorState();
         }
 
         public override void OnNext(IDeviceState<IPacketDeviceData> value)

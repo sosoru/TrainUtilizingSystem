@@ -137,6 +137,10 @@
       <Project>{9c902cd5-20ae-45c4-918a-863f7d6064a0}</Project>
       <Name>RailroaderIO</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SensorLibrary.Devices.TusAvrDevices\SensorLibrary.Devices.TusAvrDevices.csproj">
+      <Project>{941abaca-ccf7-436b-8d63-c3751cc1d1a9}</Project>
+      <Name>SensorLibrary.Devices.TusAvrDevices</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SensorLibrary\SensorLibrary.csproj">
       <Project>{160A1D77-985C-4DDD-BB20-46C8EBADF62F}</Project>
       <Name>SensorLibrary</Name>

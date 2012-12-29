@@ -90,6 +90,10 @@
     <Folder Include="Remote\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SensorLibrary.Devices.TusAvrDevices\SensorLibrary.Devices.TusAvrDevices.csproj">
+      <Project>{941abaca-ccf7-436b-8d63-c3751cc1d1a9}</Project>
+      <Name>SensorLibrary.Devices.TusAvrDevices</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SensorLibrary\SensorLibrary.csproj">
       <Project>{160a1d77-985c-4ddd-bb20-46c8ebadf62f}</Project>
       <Name>SensorLibrary</Name>

@@ -122,7 +122,7 @@ namespace TestProject
             get
             {
                 var infos = new[] { new BlockInfo { Name = "pero" }, new BlockInfo { Name = "hoge" } };
-                var sheet = new BlockSheet(infos, new PacketServer(new AvrDeviceFactoryProvider()));
+                var sheet = new BlockSheet(infos, new PacketServer());
 
                 sheet.Name = "pero";
                 return sheet;
@@ -138,7 +138,7 @@ namespace TestProject
                             {
                                 SourceID = new SensorLibrary.DeviceID(100, 1),
                             };
-                var serv = new PacketServer(new AvrDeviceFactoryProvider()) { Controller = io };
+                var serv = new PacketServer() { Controller = io };
                 var disp = new PacketDispatcher();
 
                 serv.LoopStart(System.Reactive.Concurrency.Scheduler.NewThread);
@@ -160,7 +160,7 @@ namespace TestProject
             var written = new List<IDevice<IDeviceState<IPacketDeviceData>>>();
             var serv = new Mock<PacketServer>();
       
-            serv.Setup(e => e.SendState(It.IsAny<IDevice<IDeviceState<IPacketDeviceData>>>()))
+            serv.Setup(e => e.EnqueueState(It.IsAny<IDevice<IDeviceState<IPacketDeviceData>>>()))
                 .Callback<IDevice<IDeviceState<IPacketDeviceData>>>(d => written.Add(d));
 
             var sht = new BlockSheet(sample_loop_sheet, serv.Object);

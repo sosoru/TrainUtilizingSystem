@@ -9,9 +9,8 @@ namespace SensorLibrary.Devices.TusAvrDevices
         :Device<SwitchState>
     {
         public Switch()
+            : base(ModuleTypeEnum.AvrSwitch, new SwitchState())
         {
-            this.ModuleType = ModuleTypeEnum.AvrSwitch;
-            this.CurrentState = new SwitchState();
         }
 
     }

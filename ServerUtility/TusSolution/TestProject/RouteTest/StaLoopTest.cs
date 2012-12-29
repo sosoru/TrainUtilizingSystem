@@ -114,7 +114,7 @@ namespace TestProject
                 written.AddRange(pack.ExtractPackedPacket())
                 )
                 .Returns(Observable.Empty<DevicePacket>());
-            serv = new PacketServer(new AvrDeviceFactoryProvider());
+            serv = new PacketServer();
             serv.Controller = mockio.Object;
             sht = new BlockSheet(target_sheet, serv);
 

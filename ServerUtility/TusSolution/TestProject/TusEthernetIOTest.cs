@@ -75,7 +75,7 @@ namespace TestProject
         {
             var io = new TusEthernetIO(new IPAddress(new byte[] { 192, 168, 2, 24 }),
                                         new IPAddress(new byte[] { 255, 255, 255, 0 }));
-            var serv = new PacketServer(new AvrDeviceFactoryProvider()) { Controller = io };
+            var serv = new PacketServer() { Controller = io };
             var disp = new PacketDispatcher();
 
             serv.AddAction(disp);

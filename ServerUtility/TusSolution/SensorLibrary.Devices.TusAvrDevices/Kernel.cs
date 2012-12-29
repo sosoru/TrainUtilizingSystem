@@ -11,10 +11,8 @@ namespace SensorLibrary.Devices
         : Device<KernelState>
     {
         public Kernel()
-            : base()
+            : base(ModuleTypeEnum.AvrKernel, new KernelState())
         {
-            this.CurrentState = new KernelState();
-            this.ModuleType = ModuleTypeEnum.AvrKernel;
         }
 
         public Kernel(PacketServer serv)

@@ -177,15 +177,14 @@ namespace SensorLibrary
         public IEnumerable<IDeviceState<IPacketDeviceData>> ExtractPackedPacket()
         {
             var bufind = 0;
-            var factory = new SensorLibrary.Devices.AvrDeviceFactoryProvider();
 
             while (bufind <= DATA_SIZE && this.Data[bufind] != 0x00)
             {
                 var len = this.Data[bufind];
                 var internelid = this.Data[bufind + 1];
                 var mtype = (ModuleTypeEnum)this.Data[bufind + 2];
-                var f = factory.AvailableDeviceTypes.First(a => a.ModuleType == mtype);
-                var state = f.DeviceStateCreate();
+                var f = AvrDeviceFactoryProvider.Factories.Value.First(p => p.Metadata.ModuleType == mtype).Value;
+                var state = f.CreateDeviceState();
                 var data = state.Data;
                 var cpbuffer = new byte[len];
 

@@ -13,7 +13,6 @@ using System;
 using System.Net;
 using System.Linq;
 using SensorLibrary;
-using SensorLibrary.Devices;
 using Moq;
 using System.Collections.Generic;
 using Microsoft.Reactive.Testing;
@@ -23,6 +22,7 @@ namespace TestProject
     [TestClass]
     public class PacketServerTest
     {
+        private IList<IDeviceState<IPacketDeviceData>> WrittenPackets { get; set; }
         private PacketServer Server { get; set; }
 
         [TestInitialize]
@@ -36,26 +36,23 @@ namespace TestProject
                 written.AddRange(pack.ExtractPackedPacket())
                 )
                 .Returns(Observable.Empty<DevicePacket>());
-            var serv = new PacketServer(new AvrDeviceFactoryProvider());
+            var serv = new PacketServer();
             serv.Controller = mockio.Object;
 
+            this.WrittenPackets = written;
             this.Server = serv;
         }
 
         [TestMethod]
         public void TestMethod1()
         {
-            var sendingsub = new Subject<DevicePacket>();
-            this.Server.SendingObservable.Subscribe(sendingsub);
-
-            var recvsub = new Subject<DevicePacket>();
-            this.Server.ReceivingObservable.Subscribe(recvsub);
-
             this.Server.LoopStart(Scheduler.Default);
 
-            var packet = new DevicePacket();
-            sendingsub.OnNext(packet);
+            var device = new Motor(this.Server);
+            device.DeviceID = new DeviceID(1, 1, 1);
+            this.Server.EnqueueState(device);
 
+            this.Server.SendingObservable.Do(p => Console.WriteLine("pero")).Repeat(10).Subscribe();
         }
     }
 }

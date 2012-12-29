@@ -89,7 +89,7 @@ namespace TestProject
                 var p = new BlockYaml();
                 var infos = p.Parse(BlockYamlTest.LoopSample);
 
-                var sheet = new BlockSheet(infos, new PacketServer(new SensorLibrary.Devices.AvrDeviceFactoryProvider()));
+                var sheet = new BlockSheet(infos, new PacketServer());
 
                 return sheet;
             }

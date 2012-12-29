@@ -137,7 +137,7 @@ namespace RouteLibrary.Base
                 .Do(dev =>
                 {
                     var pack = DevicePacket.CreatePackedPacket(Kernel.InquiryState(dev.DeviceID));
-                    this.Server.SendPacket(pack.First());
+                    this.Server.EnqueuePacket(pack.First());
                 })
                 .Subscribe();
 
@@ -152,7 +152,7 @@ namespace RouteLibrary.Base
             foreach (var d in devs)
             {
                 var pack = DevicePacket.CreatePackedPacket(Kernel.InquiryState(d));
-                this.Server.SendPacket(pack.First());
+                this.Server.EnqueuePacket(pack.First());
             }
         }
 
@@ -173,7 +173,7 @@ namespace RouteLibrary.Base
             foreach (var d in addrs)
             {
                 var pack = DevicePacket.CreatePackedPacket(Kernel.InquiryState(d));
-                this.Server.SendPacket(pack.First());
+                this.Server.EnqueuePacket(pack.First());
             }
         }
 

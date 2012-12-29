@@ -11,10 +11,9 @@ namespace SensorLibrary.Devices.TusAvrDevices
         : Device<MotorState>, ISensorDevice
     {
         public Motor()
+            : base(ModuleTypeEnum.AvrMotor, new MotorState())
         {
             this.States = new Dictionary<MotorMemoryStateEnum, MotorState>();
-            this.ModuleType = ModuleTypeEnum.AvrMotor;
-            this.CurrentState = new MotorState();
         }
 
         public Motor(PacketServer server)
@@ -96,7 +95,7 @@ namespace SensorLibrary.Devices.TusAvrDevices
 
             var app = this.CreateApplyingStates();
             foreach (var p in app)
-                this.ReceivingServer.SendPacket(p);
+                this.ReceivingServer.EnqueuePacket(p);
 
             //var pack = this.ChangeMemoryTo(this.CurrentMemory);
             //foreach (var p in pack)

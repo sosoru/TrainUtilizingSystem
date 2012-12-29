@@ -99,7 +99,7 @@ namespace TestProject
         [TestMethod]
         public void ReadSheetTest()
         {
-            var serv = new PacketServer(new AvrDeviceFactoryProvider());
+            var serv = new PacketServer();
             var sht = new BlockSheet(target_sheet, serv);
 
             var rfirst = GetFirstRoute(sht);
@@ -117,7 +117,7 @@ namespace TestProject
                 written.AddRange(pack.ExtractPackedPacket())
                 )
                 .Returns(Observable.Empty<DevicePacket>());
-            var serv = new PacketServer(new AvrDeviceFactoryProvider());
+            var serv = new PacketServer();
             serv.Controller = mockio.Object;
             var sht = new BlockSheet(target_sheet, serv);
 

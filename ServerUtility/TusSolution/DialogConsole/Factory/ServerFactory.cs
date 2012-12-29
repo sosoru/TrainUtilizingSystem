@@ -41,10 +41,10 @@ namespace DialogConsole.Factory
                 Port = this.ApplicationSettings.IpPort,
             };
 
-           var serv = new PacketServer(new AvrDeviceFactoryProvider());
-           serv.Controller = io;
+            var serv = new PacketServer();
+            serv.Controller = io;
 
-           return serv;
+            return serv;
         }
     }
 }

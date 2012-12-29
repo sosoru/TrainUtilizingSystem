@@ -58,6 +58,7 @@
     </Reference>
     <Reference Include="Microsoft.VisualStudio.DebuggerVisualizers, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Reactive.Core, Version=2.0.20823.0, Culture=neutral, PublicKeyToken=f300afd708cefcd3, processorArchitecture=MSIL">
@@ -83,24 +84,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Devices\TusAvrDevices\ISensor.cs" />
-    <Compile Include="Devices\BasicDevices\Kernel.cs" />
-    <Compile Include="Devices\BasicDevices\KernelState.cs" />
+    <Compile Include="Devices\BasicDevices\DeviceFactoryMetadataAttribute.cs" />
+    <Compile Include="Devices\BasicDevices\IDeviceFactoryMetadataAttribute.cs" />
+    <Compile Include="Devices\IDeviceFactory.cs" />
     <Compile Include="Misc\ChunckedStream.cs" />
     <Compile Include="Devices\DeviceCommands\DeviceCommand.cs" />
     <Compile Include="Devices\DeviceCommands\IDeviceCommand.cs" />
-    <Compile Include="Devices\BasicDevices\DeviceFactory.cs" />
     <Compile Include="Devices\BasicDevices\DeviceState.cs" />
     <Compile Include="Devices\BasicDevices\DeviceStateComparer.cs" />
-    <Compile Include="Devices\TusAvrDevices\Motor.cs" />
-    <Compile Include="Devices\TusAvrDevices\Sensor.cs" />
-    <Compile Include="Devices\TusAvrDevices\Switch.cs" />
+    <Compile Include="Packet\PacketDatas\AvrDeviceFactoryProvider.cs" />
     <Compile Include="Packet\PacketIO\EthClient.cs" />
     <Compile Include="Misc\GenericComparer.cs" />
     <Compile Include="Misc\GenericWeakReference.cs" />
     <Compile Include="Packet\PacketIO\IDeviceIO.cs" />
     <Compile Include="Misc\LoopingArray.cs" />
-    <Compile Include="Packet\PacketDatas\AvrPacketDatas.cs" />
     <Compile Include="Packet\PacketDatas\PacketExtensions.cs" />
     <Compile Include="Packet\PacketDatas\PacketDatas.cs" />
     <Compile Include="Packet\PacketControl\PacketDispatcher.cs" />
@@ -109,15 +106,6 @@
     <Compile Include="Packet\PacketDatas\PacketBasis.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Packet\PacketIO\TusEthernetIO.cs" />
-    <Compile Include="Devices\TusAvrDevices\MotorState.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Devices\TusAvrDevices\SensorState.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Devices\TusAvrDevices\SwitchState.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Packet\PacketIO\USBGeneric.cs" />
   </ItemGroup>
   <ItemGroup>

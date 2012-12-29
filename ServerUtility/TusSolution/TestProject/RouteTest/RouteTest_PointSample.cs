@@ -54,7 +54,7 @@ namespace TestProject
         [TestMethod]
         public void CreateRouteTest()
         {
-            var serv = new PacketServer(new AvrDeviceFactoryProvider());
+            var serv = new PacketServer();
             var sht = new BlockSheet(sample_point_sheet, serv);
 
             var route = GetPositiveRoute(sht);
@@ -64,7 +64,7 @@ namespace TestProject
         [TestMethod]
         public void ApplyRouteTest_ForCurvedPath()
         {
-            var serv = new PacketServer(new AvrDeviceFactoryProvider());
+            var serv = new PacketServer();
             var disp = serv.GetDispatcher();
             var writtenstate = new List<IDeviceState<IPacketDeviceData>>();
 

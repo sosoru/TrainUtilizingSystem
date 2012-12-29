@@ -38,6 +38,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RailroaderIO", "RailroaderI
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RouteVisualizer", "RouteVisualizer\RouteVisualizer.csproj", "{E366CBAE-EDDF-4486-87A2-826A07E1D9CC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SensorLibrary.Devices.TusAvrDevices", "SensorLibrary.Devices.TusAvrDevices\SensorLibrary.Devices.TusAvrDevices.csproj", "{941ABACA-CCF7-436B-8D63-C3751CC1D1A9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DevicePlugin", "DevicePlugin", "{46EF153C-B6DD-41C7-A904-BD5CF9051F13}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = TusSolution.vsmdi
@@ -169,8 +173,21 @@ Global
 		{E366CBAE-EDDF-4486-87A2-826A07E1D9CC}.Release|Mixed Platforms.Build.0 = Release|x86
 		{E366CBAE-EDDF-4486-87A2-826A07E1D9CC}.Release|x86.ActiveCfg = Release|x86
 		{E366CBAE-EDDF-4486-87A2-826A07E1D9CC}.Release|x86.Build.0 = Release|x86
+		{941ABACA-CCF7-436B-8D63-C3751CC1D1A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{941ABACA-CCF7-436B-8D63-C3751CC1D1A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{941ABACA-CCF7-436B-8D63-C3751CC1D1A9}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{941ABACA-CCF7-436B-8D63-C3751CC1D1A9}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{941ABACA-CCF7-436B-8D63-C3751CC1D1A9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{941ABACA-CCF7-436B-8D63-C3751CC1D1A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{941ABACA-CCF7-436B-8D63-C3751CC1D1A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{941ABACA-CCF7-436B-8D63-C3751CC1D1A9}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{941ABACA-CCF7-436B-8D63-C3751CC1D1A9}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{941ABACA-CCF7-436B-8D63-C3751CC1D1A9}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{941ABACA-CCF7-436B-8D63-C3751CC1D1A9} = {46EF153C-B6DD-41C7-A904-BD5CF9051F13}
 	EndGlobalSection
 EndGlobal

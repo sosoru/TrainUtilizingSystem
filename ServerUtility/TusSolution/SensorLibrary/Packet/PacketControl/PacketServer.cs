@@ -9,11 +9,14 @@ using System.Reactive.PlatformServices;
 using System.Threading.Tasks;
 using System.Reactive.Concurrency;
 using System.Reactive.Subjects;
+using System.ComponentModel.Composition;
 
 using SensorLibrary.Packet.IO;
 using SensorLibrary.Devices;
 using SensorLibrary.Packet.Data;
-using SensorLibrary.Devices.TusAvrDevices;
+//using SensorLibrary.Devices.TusAvrDevices;
+using SensorLibrary.Devices.Factories;
+using SensorLibrary.Devices.BasicDevices;
 
 namespace SensorLibrary.Packet.Control
 {
@@ -24,7 +27,6 @@ namespace SensorLibrary.Packet.Control
 
         public bool IsLooping { get { return recv_disp != null || send_disp != null; } }
         public IDeviceIO Controller { get; set; }
-        public DeviceFactoryProvider FactoryProvider { get; set; }
 
         private IDisposable recv_disp = null;
         private IDisposable send_disp = null;
@@ -35,17 +37,11 @@ namespace SensorLibrary.Packet.Control
 
         private Queue<DevicePacket> sending_queue = new Queue<DevicePacket>(128);
 
-        public PacketServer(DeviceFactoryProvider factory)
-            : this()
+        public PacketServer()
         {
-            this.FactoryProvider = factory;
             this.thisobsv_ = new PacketDispatcher();
 
             this.AddAction(this.thisobsv_);
-        }
-
-        public PacketServer()
-        {
         }
 
         public IObservable<IDeviceState<IPacketDeviceData>> GetDispatcher()
@@ -78,12 +74,12 @@ namespace SensorLibrary.Packet.Control
             this.actionList.Remove(act);
         }
 
-        public virtual void SendPacket(DevicePacket packet)
+        public virtual void EnqueuePacket(DevicePacket packet)
         {
             this.sending_queue.Enqueue(packet);
         }
 
-        public virtual void SendState(IDevice<IDeviceState<IPacketDeviceData>> dev)
+        public virtual void EnqueueState(IDevice<IDeviceState<IPacketDeviceData>> dev)
         {
             //todo : thread control (reading and writing on the same thread)
             //lock (lockStream)
@@ -91,7 +87,7 @@ namespace SensorLibrary.Packet.Control
             try
             {
                 foreach (var p in DevicePacket.CreatePackedPacket(dev))
-                    this.SendPacket(p);
+                    this.EnqueuePacket(p);
             }
             catch (ArgumentException)
             {
@@ -100,22 +96,23 @@ namespace SensorLibrary.Packet.Control
 
         public  void DispatchState(IDeviceState<IPacketDeviceData> state)
         {
-            var f =
-                this.FactoryProvider.AvailableDeviceTypes.FirstOrDefault(
-                    a => a.ModuleType == state.ModuleType);
-            if (f != null)
-            {
+            //var f = this.DeviceFactories
+            //    .First(m => m.Metadata.ModuleType == state.ModuleType)
+            //    .Value;
+                        
+            //if (f != null)
+            //{
                 //var state = f.DeviceStateCreate();
                 //var data = f.DeviceDataCreate();
 
                 //state.ReceivingServer = this;
-
+                
                 this.actionList.ForEach((item) => item.Act(state));
-            }
-            else
-            {
-                Console.WriteLine("pero");
-            }
+            //}
+            //else
+            //{
+            //    Console.WriteLine("pero");
+            //}
 
         }
 

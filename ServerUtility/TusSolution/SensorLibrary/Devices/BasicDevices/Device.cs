@@ -64,8 +64,10 @@ namespace SensorLibrary.Devices
             }
         }
 
-        public Device()
+        public Device(ModuleTypeEnum type, TState state)
         {
+            this.ModuleType = type;
+            this.CurrentState = state;
             //this.StateEqualityComparer = new GenericComparer<TState>((x, y) => x.Data.SequenceEqual(y.Data));
         }
 
@@ -115,7 +117,7 @@ namespace SensorLibrary.Devices
             //    throw new InvalidOperationException("invalid state");
 
             //for (int i = 0; i < 3; i++)
-                this.ReceivingServer.SendState(this);
+                this.ReceivingServer.EnqueueState(this);
 
         }
 
