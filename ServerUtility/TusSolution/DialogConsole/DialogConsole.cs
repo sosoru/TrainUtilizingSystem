@@ -20,9 +20,9 @@ using Tus.Communication;
 using Tus.Communication.Device;
 using Tus.Communication.Device.AvrComposed;
 
-using RouteLibrary;
-using RouteLibrary.Base;
-using RouteLibrary.Parser;
+using Tus;
+using Tus.Route;
+using Tus.Route.Parser;
 
 
 namespace DialogConsole

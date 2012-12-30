@@ -6,9 +6,9 @@ using System.IO;
 using System.Reflection;
 using System.Yaml;
 using System.Yaml.Serialization;
-using RouteLibrary.Base;
+using Tus.Route;
 
-namespace RouteLibrary.Parser
+namespace Tus.Route.Parser
 {
     public class BlockYaml
     {

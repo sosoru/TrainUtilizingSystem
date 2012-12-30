@@ -1,7 +1,7 @@
-﻿using RouteLibrary.Parser;
+﻿using Tus.Route.Parser;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using RouteLibrary.Base;
+using Tus.Route;
 using System.Collections.Generic;
 using System.Linq;
 

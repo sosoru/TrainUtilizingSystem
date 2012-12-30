@@ -5,7 +5,7 @@ using System.Text;
 using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
 
-namespace RouteLibrary.Base
+namespace Tus.Route
 {
 
     public class ControllingRoute

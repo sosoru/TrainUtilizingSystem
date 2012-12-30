@@ -15,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "TusServer", "TusServer\TusServer.pyproj", "{D58C2A9E-FB74-4D92-87A9-67E47AEA7007}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RouteLibrary", "RouteLibrary\RouteLibrary.csproj", "{39E73A78-039D-45DD-AD32-879B81EA567E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tus.Route", "RouteLibrary\Tus.Route.csproj", "{39E73A78-039D-45DD-AD32-879B81EA567E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RouteServerConsole", "RouteServerConsole\RouteServerConsole.csproj", "{59D80A24-B488-46D2-9A1A-514166D20AEA}"
 EndProject
@@ -45,6 +45,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Communication", "Communication", "{D48E877B-B792-4A79-8888-A3588AECDB3A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tus.Communication.Device", "Tus.Communication.Device\Tus.Communication.Device.csproj", "{BBBD4A5A-1A91-436E-88BC-8621AC261B7F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Route", "Route", "{4AED919F-FD3A-4808-ACD4-7B7166976793}"
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
@@ -205,5 +207,6 @@ Global
 		{941ABACA-CCF7-436B-8D63-C3751CC1D1A9} = {46EF153C-B6DD-41C7-A904-BD5CF9051F13}
 		{2FCBA61B-F967-442F-A3F6-3A8AA7126B17} = {D48E877B-B792-4A79-8888-A3588AECDB3A}
 		{BBBD4A5A-1A91-436E-88BC-8621AC261B7F} = {D48E877B-B792-4A79-8888-A3588AECDB3A}
+		{39E73A78-039D-45DD-AD32-879B81EA567E} = {4AED919F-FD3A-4808-ACD4-7B7166976793}
 	EndGlobalSection
 EndGlobal

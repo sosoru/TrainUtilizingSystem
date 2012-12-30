@@ -5,7 +5,7 @@ using System.Text;
 
 using Tus.Communication;
 
-namespace RouteLibrary.Parser
+namespace Tus.Route.Parser
 {
     public class DeviceIdParser
     {

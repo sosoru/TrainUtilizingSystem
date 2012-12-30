@@ -1,8 +1,8 @@
-﻿using RouteLibrary.Parser;
+﻿using Tus.Route.Parser;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
-using RouteLibrary.Base;
+using Tus.Route;
 using System.Linq;
 
 namespace TestProject

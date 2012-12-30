@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace RouteLibrary.Parser
+namespace Tus.Route.Parser
 {
     static class RegexExtention
     {

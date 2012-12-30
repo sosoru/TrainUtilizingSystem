@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using RouteLibrary.Base;
+using Tus.Route;
 using System.Text.RegularExpressions;
-namespace RouteLibrary.Parser
+namespace Tus.Route.Parser
 {
     public class RouteParser
     {

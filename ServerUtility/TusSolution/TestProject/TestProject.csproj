@@ -141,9 +141,9 @@
       <Project>{f2232bf9-17e6-4641-8326-d8b7bd90a1e9}</Project>
       <Name>DialogConsole</Name>
     </ProjectReference>
-    <ProjectReference Include="..\RouteLibrary\RouteLibrary.csproj">
+    <ProjectReference Include="..\RouteLibrary\Tus.Route.csproj">
       <Project>{39E73A78-039D-45DD-AD32-879B81EA567E}</Project>
-      <Name>RouteLibrary</Name>
+      <Name>Tus.Route</Name>
     </ProjectReference>
     <ProjectReference Include="..\Tus.Communication.Device\Tus.Communication.Device.csproj">
       <Project>{bbbd4a5a-1a91-436e-88bc-8621ac261b7f}</Project>

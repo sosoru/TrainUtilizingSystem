@@ -6,7 +6,7 @@ using System.Runtime.Serialization;
 
 using Tus.Communication.Device;
 
-namespace RouteLibrary.Base
+namespace Tus.Route
 {
     public enum SensingMethod
     {

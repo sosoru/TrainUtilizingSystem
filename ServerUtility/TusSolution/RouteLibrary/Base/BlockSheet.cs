@@ -16,7 +16,7 @@ using Tus.Communication;
 using Tus.Communication.Device;
 using Tus.Communication.Device.AvrComposed;
 
-namespace RouteLibrary.Base
+namespace Tus.Route
 {
     public class BlockSheet
         : IEquatable<BlockSheet>

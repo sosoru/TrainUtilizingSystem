@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace RouteLibrary.Base
+namespace Tus.Route
 {
     public class Layout
     {

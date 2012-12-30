@@ -5,7 +5,7 @@ using System.Text;
 
 using Tus.Communication;
 
-namespace RouteLibrary.Base
+namespace Tus.Route
 {
     public class RouteSegmentInfo
     {

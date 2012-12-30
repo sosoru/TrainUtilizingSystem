@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.Composition;
 
-using RouteLibrary;
-using RouteLibrary.Base;
-using RouteLibrary.Parser;
+using Tus;
+using Tus.Route;
+using Tus.Route.Parser;
 
 namespace DialogConsole.Factory
 {
