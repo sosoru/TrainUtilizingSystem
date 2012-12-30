@@ -15,7 +15,7 @@ namespace RouteLibrary.Base
     {
         public float RawSpeed { get; set; }
         public float Go { get { return RawSpeed; } }
-        public float Caution { get { return RawSpeed ; } }
+        public float Caution { get { return RawSpeed * 0.5f ; } }
         public float Stop { get { return RawSpeed * 0f; } }
     }
 
@@ -117,6 +117,175 @@ namespace RouteLibrary.Base
             Run(this.Speed, this.CurrentBlock);
         }
 
+        public void ChangeRoute(Route rt)
+        {
+            this.Route = rt;
+            this.Refresh();
+        }
+
+        public void RunIfIgnored(float spd)
+        {
+            var spdfact = new SpeedFactory { RawSpeed = spd };
+
+            //all alocate
+            while (this.Route.LockNextUnit()) ;
+
+            CommandFactory cmdfact = null;
+
+            cmdfact = CreateBlockageIgnoreCommand(() => spdfact.Go);
+
+            this.Sheet.Effect(cmdfact, this.Route.Blocks.ToList().Distinct());
+        }
+
+        public void Run()
+        {
+            this.Run(0.5f);
+        }
+
+        public void Run(float spd, Block blk)
+        {
+            this.CurrentBlock = blk;
+            this.Run(spd);
+        }
+
+        public void Run(float spd)
+        {
+            CommandFactory cmdfactory = null;
+            var spdfactory = new SpeedFactory() { RawSpeed = spd };
+
+            var lastlockedblocks = this.Route.LockedBlocks.ToArray();
+            try
+            {
+                this.Route.AllocateTrain(this.CurrentBlock, this.Length);
+            }
+            catch  { throw; }
+
+            if (!this.Route.LockNextUnit())
+            {
+                if (this.CanHalt)
+                {
+                    cmdfactory = CreateHaltCommand(spdfactory);
+                }
+                else
+                {
+                    cmdfactory = CreateZeroCommand(spdfactory);
+                }
+            }
+            else if (!this.Route.TryLockNeighborUnit(1))
+            {
+                cmdfactory = Create1stCommand(spdfactory);
+            }
+            else if (!this.Route.TryLockNeighborUnit(2))
+            {
+                cmdfactory = Create2ndCommand(spdfactory);
+            }
+            else
+            {
+                cmdfactory = CreateNthCommand(spdfactory);
+            }
+
+            this.Sheet.Effect(cmdfactory, this.Route.LockedBlocks.Concat(lastlockedblocks).Distinct());
+        }
+
+        #region "CreateCommandMethods"
+        private CommandFactory CreateWithWaitingCommand(Func<float> cntspdFactory, Func<float> waitspdFactory)
+        {
+            var func = new Func<Block, CommandInfo>(blk =>
+                {
+                    var cmd = new CommandInfo()
+                    {
+                        Route = this.Route,
+                    };
+                    var lockedunits = this.Route.LockedUnits.ToArray();
+
+                    if (blk == lockedunits[lockedunits.Length - 2].ControlBlock)
+                    {
+                        cmd.MotorMode = MotorMemoryStateEnum.Controlling;
+                        cmd.Speed = cntspdFactory();
+                    }
+                    else if (blk == lockedunits.Last().ControlBlock)
+                    {
+                        cmd.MotorMode = MotorMemoryStateEnum.Waiting;
+                        cmd.Speed = waitspdFactory();
+                    }
+                    else
+                    {
+                        cmd.MotorMode = MotorMemoryStateEnum.NoEffect;
+                        cmd.Speed = 0.0f;
+                    }
+                    return cmd;
+                });
+            return new CommandFactory() { CreateCommand = func };
+        }
+
+        private CommandFactory CreateControlCommand(Func<float> cntspdFactory)
+        {
+            var func = new Func<Block, CommandInfo>(blk =>
+                {
+                    var cmd = new CommandInfo()
+                    {
+                        Route = this.Route,
+                    };
+
+                    if (blk == this.Route.LockedUnits.Last().ControlBlock)
+                    {
+                        cmd.MotorMode = MotorMemoryStateEnum.Controlling;
+                        cmd.Speed = cntspdFactory();
+                    }
+                    else
+                    {
+                        cmd.MotorMode = MotorMemoryStateEnum.NoEffect;
+                        cmd.Speed = 0.0f;
+                    }
+                    return cmd;
+                });
+            return new CommandFactory() { CreateCommand = func };
+        }
+        
+        private CommandFactory CreateBlockageIgnoreCommand(Func<float> cntspdfact)
+        {
+            var fun = new Func<Block, CommandInfo>(blk =>
+                {
+                    var cmd = new CommandInfo()
+                    {
+                        Route = this.Route,
+                        Speed = cntspdfact(),
+                        MotorMode = MotorMemoryStateEnum.Controlling
+                    };
+
+                    return cmd;
+                });
+            return new CommandFactory() { CreateCommand = fun };
+        }
+
+        private CommandFactory CreateNthCommand(SpeedFactory spdfactory)
+        {
+            return CreateWithWaitingCommand(() => spdfactory.Go, () => spdfactory.Go);
+        }
+
+       private CommandFactory Create2ndCommand(SpeedFactory spdfactory)
+        {
+            return CreateWithWaitingCommand(() => spdfactory.Go, () => spdfactory.Caution);
+        }
+
+        private CommandFactory Create1stCommand(SpeedFactory spdfactory)
+        {
+            return CreateWithWaitingCommand(() => spdfactory.Caution, () => spdfactory.Stop);
+        }
+
+        private CommandFactory CreateZeroCommand(SpeedFactory spdfactory)
+        {
+            return CreateControlCommand(() => spdfactory.Stop);
+        }
+
+        private CommandFactory CreateHaltCommand(SpeedFactory spdfactory)
+        {
+            return CreateControlCommand(() => spdfactory.Caution);
+        }
+
+        #endregion
+
+        #region "Equal Methods"
         // override object.Equals
         public override bool Equals(object obj)
         {
@@ -153,169 +322,6 @@ namespace RouteLibrary.Base
             return this.VehicleID.GetHashCode();
         }
 
-        public void Run()
-        {
-            this.Run(0.5f);
-        }
-
-        public void ChangeRoute(Route rt)
-        {
-            this.Route = rt;
-            this.Refresh();
-        }
-
-        public CommandFactory CreateWithWaitingCommand(Func<float> cntspdFactory, Func<float> waitspdFactory)
-        {
-            var func = new Func<Block, CommandInfo>(blk =>
-                {
-                    var cmd = new CommandInfo()
-                    {
-                        Route = this.Route,
-                    };
-                    var lockedunits = this.Route.LockedUnits.ToArray();
-
-                    if (blk == lockedunits[lockedunits.Length - 2].ControlBlock)
-                    {
-                        cmd.MotorMode = MotorMemoryStateEnum.Controlling;
-                        cmd.Speed = cntspdFactory();
-                    }
-                    else if (blk == lockedunits.Last().ControlBlock)
-                    {
-                        cmd.MotorMode = MotorMemoryStateEnum.Waiting;
-                        cmd.Speed = waitspdFactory();
-                    }
-                    else
-                    {
-                        cmd.MotorMode = MotorMemoryStateEnum.NoEffect;
-                        cmd.Speed = 0.0f;
-                    }
-                    return cmd;
-                });
-            return new CommandFactory() { CreateCommand = func };
-        }
-
-        public CommandFactory CreateControlCommand(Func<float> cntspdFactory)
-        {
-            var func = new Func<Block, CommandInfo>(blk =>
-                {
-                    var cmd = new CommandInfo()
-                    {
-                        Route = this.Route,
-                    };
-
-                    if (blk == this.Route.LockedUnits.Last().ControlBlock)
-                    {
-                        cmd.MotorMode = MotorMemoryStateEnum.Controlling;
-                        cmd.Speed = cntspdFactory();
-                    }
-                    else
-                    {
-                        cmd.MotorMode = MotorMemoryStateEnum.NoEffect;
-                        cmd.Speed = 0.0f;
-                    }
-                    return cmd;
-                });
-            return new CommandFactory() { CreateCommand = func };
-        }
-
-        public CommandFactory CreateBlockageIgnoreCommand(Func<float> cntspdfact)
-        {
-            var fun = new Func<Block, CommandInfo>(blk =>
-                {
-                    var cmd = new CommandInfo()
-                    {
-                        Route = this.Route,
-                        Speed = cntspdfact(),
-                        MotorMode = MotorMemoryStateEnum.Controlling
-                    };
-
-                    return cmd;
-                });
-            return new CommandFactory() { CreateCommand = fun };
-        }
-
-        public CommandFactory CreateNthCommand(SpeedFactory spdfactory)
-        {
-            return CreateWithWaitingCommand(() => spdfactory.Go, () => spdfactory.Go);
-        }
-
-        public CommandFactory Create2ndCommand(SpeedFactory spdfactory)
-        {
-            return CreateWithWaitingCommand(() => spdfactory.Go, () => spdfactory.Caution);
-        }
-
-        public CommandFactory Create1stCommand(SpeedFactory spdfactory)
-        {
-            return CreateWithWaitingCommand(() => spdfactory.Caution, () => spdfactory.Stop);
-        }
-
-        public CommandFactory CreateZeroCommand(SpeedFactory spdfactory)
-        {
-            return CreateControlCommand(() => spdfactory.Stop);
-        }
-
-        public CommandFactory CreateHaltCommand(SpeedFactory spdfactory)
-        {
-            return CreateControlCommand(() => spdfactory.Caution);
-        }
-
-        public void Run(float spd, Block blk)
-        {
-            this.CurrentBlock = blk;
-            this.Run(spd);
-        }
-
-        public void RunIfIgnored(float spd)
-        {
-            var spdfact = new SpeedFactory { RawSpeed = spd };
-
-            //all alocate
-            while (this.Route.LockNextUnit()) ;
-
-            CommandFactory cmdfact = null;
-
-            cmdfact = CreateBlockageIgnoreCommand(() => spdfact.Go);
-
-            this.Sheet.Effect(cmdfact, this.Route.Blocks.ToList().Distinct());
-        }
-
-        public void Run(float spd)
-        {
-            CommandFactory cmdfactory = null;
-            var spdfactory = new SpeedFactory() { RawSpeed = spd };
-
-            var lastlockedblocks = this.Route.LockedBlocks.ToArray();
-            try
-            {
-                this.Route.AllocateTrain(this.CurrentBlock, this.Length);
-            }
-            catch (InvalidOperationException ex) { return; }
-
-            if (!this.Route.LockNextUnit())
-            {
-                if (this.CanHalt)
-                {
-                    cmdfactory = CreateHaltCommand(spdfactory);
-                }
-                else
-                {
-                    cmdfactory = CreateZeroCommand(spdfactory);
-                }
-            }
-            else if (!this.Route.TryLockNeighborUnit(1))
-            {
-                cmdfactory = Create1stCommand(spdfactory);
-            }
-            else if (!this.Route.TryLockNeighborUnit(2))
-            {
-                cmdfactory = Create2ndCommand(spdfactory);
-            }
-            else
-            {
-                cmdfactory = CreateNthCommand(spdfactory);
-            }
-
-            this.Sheet.Effect(cmdfactory, this.Route.LockedBlocks.Concat(lastlockedblocks).Distinct());
-        }
+        #endregion
     }
 }

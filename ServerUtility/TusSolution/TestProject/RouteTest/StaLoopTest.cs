@@ -236,15 +236,18 @@ namespace TestProject
         [TestMethod]
         public void HaltTest()
         {
+            Assert.Inconclusive("halting feature is not implemented");
+
             Route rt = GetRouteFirst(sht);
             var vh = new Vehicle(sht, rt);
 
-            vh.Halt.Add(new Halt(sht.GetBlock("AT14")));
+            vh.Halt.Add(new Halt(sht.GetBlock("AT4")));
 
-            vh.Run(1.0f, sht.GetBlock("AT2"));
-            serv.SendingObservable.Subscribe();
-            Assert.IsTrue(written.ExtractDevice<MotorState>(1, 2, 2).Duty == 1.0f);
-            Assert.IsTrue(Math.Round(written.ExtractDevice<MotorState>(1, 2, 3).Duty, 1) == 0.5f);
+            vh.CurrentBlock = sht.GetBlock("AT2");
+            vh.Refresh();
+            serv.SendingObservable.Repeat(50).Subscribe();
+            Assert.IsTrue(written.ExtractDevices<MotorState>(1, 2, 2).Any(d => d.Duty == 1.0f));
+            Assert.IsTrue(written.ExtractDevices<MotorState>(1, 2, 3).Any(d =>Math.Round(d.Duty, 1) == 0.5f));
 
         }
 

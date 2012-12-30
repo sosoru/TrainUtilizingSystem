@@ -119,51 +119,51 @@ namespace TestProject
         //        .Timeout(TimeSpan.FromSeconds(3));
         //}
 
-        [TestMethod()]
-        public void UartTrainSensorControlTest()
-        {
-            var target = sample;
-            target.Connect();
+        //[TestMethod()]
+        //public void UartTrainSensorControlTest()
+        //{
+        //    var target = sample;
+        //    target.Connect();
 
-            var ethpacket = new EthPacket()
-            {
-                srcId = new DeviceID(9, 0),
-                destId = new DeviceID(24, 5, 17)
-            };
-            var sens = new UsartSensor() { DeviceID = ethpacket.destId };
-            var sensstate = sens.CurrentState;
-            var sessetting = sens.CreateSettingDevice(2);
-            var inq = Kernel.InquiryState(ethpacket.destId);
+        //    var ethpacket = new EthPacket()
+        //    {
+        //        srcId = new DeviceID(9, 0),
+        //        destId = new DeviceID(24, 5, 17)
+        //    };
+        //    var sens = new UsartSensor() { DeviceID = ethpacket.destId };
+        //    var sensstate = sens.CurrentState;
+        //    var sessetting = sens.CreateSettingDevice(2);
+        //    var inq = Kernel.InquiryState(ethpacket.destId);
 
-            ethpacket.DataPacket = DevicePacket.CreatePackedPacket(sessetting).First();
-            target.AsyncSend(ethpacket).First();
+        //    ethpacket.DataPacket = DevicePacket.CreatePackedPacket(sessetting).First();
+        //    target.AsyncSend(ethpacket).First();
 
-            System.Threading.Thread.Sleep(1000);
+        //    System.Threading.Thread.Sleep(1000);
 
-            ethpacket.DataPacket = DevicePacket.CreatePackedPacket(sens, inq).First();
-            var states = target.AsyncSend(ethpacket)
-                .SelectMany(ob => target.AsyncReceive())
-                .Repeat(2)
-                .Do(pack =>
-                    {
-                        Assert.IsTrue(pack.srcId.ModuleAddr == ethpacket.destId.ModuleAddr);
-                        Assert.IsTrue(pack.srcId.ParentPart == ethpacket.destId.ParentPart);
-                    })
-                .SelectMany(pack => pack.DataPacket.ExtractPackedPacket())
-                .Timeout(TimeSpan.FromSeconds(1))
-                .ToArray().First();
+        //    ethpacket.DataPacket = DevicePacket.CreatePackedPacket(sens, inq).First();
+        //    var states = target.AsyncSend(ethpacket)
+        //        .SelectMany(ob => target.AsyncReceive())
+        //        .Repeat(2)
+        //        .Do(pack =>
+        //            {
+        //                Assert.IsTrue(pack.srcId.ModuleAddr == ethpacket.destId.ModuleAddr);
+        //                Assert.IsTrue(pack.srcId.ParentPart == ethpacket.destId.ParentPart);
+        //            })
+        //        .SelectMany(pack => pack.DataPacket.ExtractPackedPacket())
+        //        .Timeout(TimeSpan.FromSeconds(1))
+        //        .ToArray().First();
 
-            foreach (var state in states)
-            {
-                if (state.ModuleType == ModuleTypeEnum.AvrUartSetting
-                        && state.Data.InternalAddr == 16)
-                {
-                    var setting = (UsartSettingState)state;
-                    Assert.IsTrue(setting.ModuleCount == 2);
-                }
-            }
+        //    foreach (var state in states)
+        //    {
+        //        if (state.ModuleType == ModuleTypeEnum.AvrUartSetting
+        //                && state.Data.InternalAddr == 16)
+        //        {
+        //            var setting = (UsartSettingState)state;
+        //            Assert.IsTrue(setting.ModuleCount == 2);
+        //        }
+        //    }
 
-        }
+        //}
 
         [TestMethod()]
         public void MotorControl_WaitTest()
