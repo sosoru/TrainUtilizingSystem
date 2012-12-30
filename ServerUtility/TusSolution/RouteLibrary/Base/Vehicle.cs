@@ -4,10 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
-using SensorLibrary.Devices.TusAvrDevices;
 
 using System.Reactive;
 using System.Reactive.Linq;
+
+using Tus.Communication;
+using Tus.Communication.Device;
+using Tus.Communication.Device.AvrComposed;
 
 namespace RouteLibrary.Base
 {

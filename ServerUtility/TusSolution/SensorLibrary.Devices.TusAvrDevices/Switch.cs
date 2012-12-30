@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace SensorLibrary.Devices.TusAvrDevices
+namespace Tus.Communication.Device.AvrComposed
 {
     public class Switch
         :Device<SwitchState>

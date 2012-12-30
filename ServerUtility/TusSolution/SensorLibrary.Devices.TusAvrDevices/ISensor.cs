@@ -1,5 +1,5 @@
 ﻿using System;
-namespace SensorLibrary.Devices.TusAvrDevices
+namespace Tus.Communication.Device.AvrComposed
 {
     public interface ISensorDevice
     {

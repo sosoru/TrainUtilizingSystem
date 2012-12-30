@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using SensorLibrary.Packet.Data;
 
-namespace SensorLibrary.Devices.TusAvrDevices
+using Tus.Communication;
+
+namespace Tus.Communication.Device.AvrComposed
 {
     public class MotorState
         : DeviceState<MotorData>

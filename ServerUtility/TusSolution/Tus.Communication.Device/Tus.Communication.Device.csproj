@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{BBBD4A5A-1A91-436E-88BC-8621AC261B7F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Tus.Communication.Device</RootNamespace>
+    <AssemblyName>Tus.Communication.Device</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Reactive.Core">
+      <HintPath>..\packages\Rx-Core.2.0.21114\lib\Net45\System.Reactive.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Interfaces">
+      <HintPath>..\packages\Rx-Interfaces.2.0.21114\lib\Net45\System.Reactive.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Linq">
+      <HintPath>..\packages\Rx-Linq.2.0.21114\lib\Net45\System.Reactive.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.PlatformServices">
+      <HintPath>..\packages\Rx-PlatformServices.2.0.21114\lib\Net45\System.Reactive.PlatformServices.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Devices\AvrDeviceFactoryProvider.cs" />
+    <Compile Include="Devices\BasicDevices\Device.cs" />
+    <Compile Include="Devices\BasicDevices\DeviceFactoryMetadataAttribute.cs" />
+    <Compile Include="Devices\BasicDevices\DeviceState.cs" />
+    <Compile Include="Devices\BasicDevices\DeviceStateComparer.cs" />
+    <Compile Include="Devices\BasicDevices\IDeviceFactoryMetadataAttribute.cs" />
+    <Compile Include="Devices\BasicDevices\IDeviceState.cs" />
+    <Compile Include="Devices\DeviceCommands\DeviceCommand.cs" />
+    <Compile Include="Devices\DeviceCommands\IDeviceCommand.cs" />
+    <Compile Include="Devices\IDeviceFactory.cs" />
+    <Compile Include="Devices\Packet\PacketControl\PacketDispatcher.cs" />
+    <Compile Include="Devices\Packet\PacketControl\PacketServer.cs" />
+    <Compile Include="Devices\Packet\PacketDatas\PacketBasis.cs" />
+    <Compile Include="Devices\Packet\PacketDatas\PacketDatas.cs" />
+    <Compile Include="Misc\ChunckedStream.cs" />
+    <Compile Include="Misc\GenericComparer.cs" />
+    <Compile Include="Misc\GenericWeakReference.cs" />
+    <Compile Include="Misc\LoopingArray.cs" />
+    <Compile Include="PacketExtensions.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Devices\DeviceCommands\TrainSensor\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Tus.Communication\Tus.Communication.csproj">
+      <Project>{2fcba61b-f967-442f-a3f6-3a8aa7126b17}</Project>
+      <Name>Tus.Communication</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

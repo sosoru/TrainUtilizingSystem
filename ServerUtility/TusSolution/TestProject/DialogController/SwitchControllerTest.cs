@@ -1,12 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using DialogConsole;
-using SensorLibrary;
-using SensorLibrary.Packet;
-using SensorLibrary.Packet.Control;
-using SensorLibrary.Packet.Data;
-using SensorLibrary.Devices;
-using SensorLibrary.Devices.TusAvrDevices;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Linq;
@@ -15,6 +9,10 @@ using System.Collections.Generic;
 using System.Text;
 using System.Reactive.Concurrency;
 using System.Threading.Tasks;
+
+using Tus.Communication;
+using Tus.Communication.Device;
+using Tus.Communication.Device.AvrComposed;
 
 namespace TestProject.DialogController
 {

@@ -1,10 +1,10 @@
-﻿using SensorLibrary.Devices.TusAvrDevices;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using SensorLibrary;
-using SensorLibrary.Packet;
-using SensorLibrary.Packet.Data;
 using System.Linq;
+
+using Tus.Communication;
+using Tus.Communication.Device;
+using Tus.Communication.Device.AvrComposed;
 
 namespace TestProject
 {
@@ -186,8 +186,8 @@ namespace TestProject
             swB.CurrentState = targetB;
             swB.DeviceID = targetB.ID;
 
-            var packetA = DevicePacket.CreatePackedPacket(swA);
-            var packetB = DevicePacket.CreatePackedPacket(swB);
+            var packetA = PacketExtension.CreatePackedPacket(swA);
+            var packetB = PacketExtension.CreatePackedPacket(swB);
 
             Assert.IsFalse(packetA.First().Data.SequenceEqual(packetB.First().Data));
         }

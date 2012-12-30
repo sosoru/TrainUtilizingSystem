@@ -7,11 +7,11 @@ using System.Reactive.Linq;
 using System.Runtime.Serialization;
 
 using System.Collections.ObjectModel;
-using SensorLibrary.Devices;
-using SensorLibrary.Devices.TusAvrDevices;
-using SensorLibrary.Packet;
-using SensorLibrary.Packet.Data;
-using SensorLibrary;
+
+using Tus.Communication;
+using Tus.Communication.Device;
+using Tus.Communication.Device.AvrComposed;
+
 namespace RouteLibrary.Base
 {
     public class CommandInfo

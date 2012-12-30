@@ -1,11 +1,5 @@
 ﻿using RouteLibrary.Base;
 using RouteLibrary.Parser;
-using SensorLibrary.Packet;
-using SensorLibrary.Packet.Data;
-using SensorLibrary.Packet.IO;
-using SensorLibrary.Packet.Control;
-using SensorLibrary.Devices;
-using SensorLibrary.Devices.TusAvrDevices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -15,12 +9,15 @@ using System.Reactive;
 using System.Reactive.Linq;
 using Moq;
 using Moq.Linq;
-using SensorLibrary;
 using System.Reactive.Subjects;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Concurrency;
 using Microsoft.Reactive.Testing;
+
+using Tus.Communication;
+using Tus.Communication.Device;
+using Tus.Communication.Device.AvrComposed;
 
 namespace TestProject
 {
@@ -140,7 +137,7 @@ namespace TestProject
                 var io = new TusEthernetIO(new IPAddress(new byte[] { 192, 168, 2, 24 }),
                             new IPAddress(new byte[] { 255, 255, 255, 0 }))
                             {
-                                SourceID = new SensorLibrary.DeviceID(100, 1),
+                                SourceID = new DeviceID(100, 1),
                             };
                 var serv = new PacketServer() { Controller = io };
                 var disp = new PacketDispatcher();

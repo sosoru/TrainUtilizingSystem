@@ -84,36 +84,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Devices\BasicDevices\DeviceFactoryMetadataAttribute.cs" />
-    <Compile Include="Devices\BasicDevices\IDeviceFactoryMetadataAttribute.cs" />
-    <Compile Include="Devices\IDeviceFactory.cs" />
-    <Compile Include="Misc\ChunckedStream.cs" />
-    <Compile Include="Devices\DeviceCommands\DeviceCommand.cs" />
-    <Compile Include="Devices\DeviceCommands\IDeviceCommand.cs" />
-    <Compile Include="Devices\BasicDevices\DeviceState.cs" />
-    <Compile Include="Devices\BasicDevices\DeviceStateComparer.cs" />
-    <Compile Include="Packet\PacketDatas\AvrDeviceFactoryProvider.cs" />
-    <Compile Include="Packet\PacketIO\EthClient.cs" />
-    <Compile Include="Misc\GenericComparer.cs" />
-    <Compile Include="Misc\GenericWeakReference.cs" />
-    <Compile Include="Packet\PacketIO\IDeviceIO.cs" />
-    <Compile Include="Misc\LoopingArray.cs" />
-    <Compile Include="Packet\PacketDatas\PacketExtensions.cs" />
-    <Compile Include="Packet\PacketDatas\PacketDatas.cs" />
-    <Compile Include="Packet\PacketControl\PacketDispatcher.cs" />
-    <Compile Include="Devices\BasicDevices\Device.cs" />
-    <Compile Include="Packet\PacketControl\PacketServer.cs" />
-    <Compile Include="Packet\PacketDatas\PacketBasis.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Packet\PacketIO\TusEthernetIO.cs" />
-    <Compile Include="Packet\PacketIO\USBGeneric.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Devices\DeviceCommands\TrainSensor\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">
       <Visible>False</Visible>

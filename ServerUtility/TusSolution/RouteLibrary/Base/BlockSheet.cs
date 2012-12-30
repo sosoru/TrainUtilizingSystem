@@ -5,24 +5,22 @@ using System.Text;
 
 using System.Collections.Specialized;
 using System.Collections.ObjectModel;
+using System.ComponentModel.Composition;
 
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Concurrency;
 using System.Reactive.Subjects;
 
-using SensorLibrary;
-using SensorLibrary.Packet;
-using SensorLibrary.Packet.Control;
-using SensorLibrary.Devices;
-using SensorLibrary.Devices.TusAvrDevices;
+using Tus.Communication;
+using Tus.Communication.Device;
+using Tus.Communication.Device.AvrComposed;
 
 namespace RouteLibrary.Base
 {
     public class BlockSheet
         : IEquatable<BlockSheet>
     {
-
         public string Name { get; set; }
         public ReadOnlyCollection<Block> InnerBlocks { get; private set; }
         public PacketServer Server { get; private set; }
@@ -139,7 +137,7 @@ namespace RouteLibrary.Base
                 .Select(e => e.First().Device)
                 .Do(dev =>
                 {
-                    var pack = DevicePacket.CreatePackedPacket(Kernel.InquiryState(dev.DeviceID));
+                    var pack = PacketExtension.CreatePackedPacket(Kernel.InquiryState(dev.DeviceID));
                     this.Server.EnqueuePacket(pack.First());
                 })
                 .Subscribe();
@@ -154,7 +152,7 @@ namespace RouteLibrary.Base
                                 .Select(g => g.First());
             foreach (var d in devs)
             {
-                var pack = DevicePacket.CreatePackedPacket(Kernel.InquiryState(d));
+                var pack = PacketExtension.CreatePackedPacket(Kernel.InquiryState(d));
                 this.Server.EnqueuePacket(pack.First());
             }
         }
@@ -175,7 +173,7 @@ namespace RouteLibrary.Base
                 .Select(g => g.First().DeviceID);
             foreach (var d in addrs)
             {
-                var pack = DevicePacket.CreatePackedPacket(Kernel.InquiryState(d));
+                var pack = PacketExtension.CreatePackedPacket(Kernel.InquiryState(d));
                 this.Server.EnqueuePacket(pack.First());
             }
         }

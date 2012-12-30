@@ -37,6 +37,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="System.Interactive">
       <HintPath>..\packages\Ix_Experimental-Main.1.1.10823\lib\Net4\System.Interactive.dll</HintPath>
@@ -90,13 +91,17 @@
     <Folder Include="Remote\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SensorLibrary.Devices.TusAvrDevices\SensorLibrary.Devices.TusAvrDevices.csproj">
+    <ProjectReference Include="..\SensorLibrary.Devices.TusAvrDevices\Tus.Communication.Device.AvrComposed.csproj">
       <Project>{941abaca-ccf7-436b-8d63-c3751cc1d1a9}</Project>
-      <Name>SensorLibrary.Devices.TusAvrDevices</Name>
+      <Name>Tus.Communication.Device.AvrComposed</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SensorLibrary\SensorLibrary.csproj">
-      <Project>{160a1d77-985c-4ddd-bb20-46c8ebadf62f}</Project>
-      <Name>SensorLibrary</Name>
+    <ProjectReference Include="..\Tus.Communication.Device\Tus.Communication.Device.csproj">
+      <Project>{bbbd4a5a-1a91-436e-88bc-8621ac261b7f}</Project>
+      <Name>Tus.Communication.Device</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tus.Communication\Tus.Communication.csproj">
+      <Project>{2fcba61b-f967-442f-a3f6-3a8aa7126b17}</Project>
+      <Name>Tus.Communication</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

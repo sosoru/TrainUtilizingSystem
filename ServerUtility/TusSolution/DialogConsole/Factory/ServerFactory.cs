@@ -7,13 +7,9 @@ using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Net;
 
-using SensorLibrary;
-using SensorLibrary.Packet;
-using SensorLibrary.Packet.Control;
-using SensorLibrary.Packet.Data;
-using SensorLibrary.Devices;
-using SensorLibrary.Devices.TusAvrDevices;
-using SensorLibrary.Packet.IO;
+using Tus.Communication;
+using Tus.Communication.Device;
+using Tus.Communication.Device.AvrComposed;
 
 using RouteLibrary;
 using RouteLibrary.Base;

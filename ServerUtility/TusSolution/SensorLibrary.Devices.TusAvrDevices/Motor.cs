@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using SensorLibrary.Packet.Control;
 using System.Collections.ObjectModel;
 
-namespace SensorLibrary.Devices.TusAvrDevices
+using Tus.Communication;
+
+namespace Tus.Communication.Device.AvrComposed
 {
     public class Motor
         : Device<MotorState>, ISensorDevice
@@ -62,7 +63,7 @@ namespace SensorLibrary.Devices.TusAvrDevices
         public IEnumerable<DevicePacket> ChangeMemoryTo(MotorMemoryStateEnum mem)
         {
             var kernel = Kernel.MemoryState(this.DeviceID, new MemoryState((int)mem));
-            var devp = DevicePacket.CreatePackedPacket(kernel);
+            var devp = PacketExtension.CreatePackedPacket(kernel);
 
             return devp;
         }
@@ -77,7 +78,7 @@ namespace SensorLibrary.Devices.TusAvrDevices
                 statelist.Add(new Motor(this, state.Value));
             }
 
-            return DevicePacket.CreatePackedPacket(statelist);
+            return PacketExtension.CreatePackedPacket(statelist);
 
         }
 
@@ -106,7 +107,7 @@ namespace SensorLibrary.Devices.TusAvrDevices
         {
             get
             {
-                if (!(this.DeviceKernel.CurrentState.Command == Packet.Data.KernelCommand.MemoryState ))
+                if (!(this.DeviceKernel.CurrentState.Command == KernelCommand.MemoryState ))
                     return MotorMemoryStateEnum.Unknown;
 
                 return (MotorMemoryStateEnum)this.DeviceKernel.CurrentState.Data.Content1;

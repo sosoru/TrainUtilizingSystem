@@ -5,7 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.Composition;
 
-namespace SensorLibrary.Devices.Factories
+using Tus.Communication;
+
+namespace Tus.Communication.Device.Composition
 {
     [InheritedExport]
     public class DeviceFactory<TDev, TState, TData>

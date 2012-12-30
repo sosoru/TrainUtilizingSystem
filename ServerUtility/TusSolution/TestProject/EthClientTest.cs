@@ -1,19 +1,18 @@
-﻿using SensorLibrary.Packet.IO;
-using SensorLibrary.Devices.TusAvrDevices;
-using SensorLibrary.Packet.Data;
-using SensorLibrary.Packet;
-using System.Reactive;
+﻿using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Concurrency;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Net;
 using System.Linq;
-using SensorLibrary;
-using SensorLibrary.Devices;
 using Moq;
 using System.Collections.Generic;
 using Microsoft.Reactive.Testing;
+
+using Tus.Communication;
+using Tus.Communication.Device;
+using Tus.Communication.Device.AvrComposed;
+using Tus.Communication.Ethernet;
 
 namespace TestProject
 {
@@ -189,7 +188,7 @@ namespace TestProject
             mtrstate.Duty = 0.5f;
             mtrstate.Direction = MotorDirection.Positive;
             memch = Kernel.MemoryState(mtrstate.ID, new MemoryState(1));
-            mtrpacket.DataPacket = DevicePacket.CreatePackedPacket(memch, mtr).First();
+            mtrpacket.DataPacket = PacketExtension.CreatePackedPacket(memch, mtr).First();
             target.AsyncSend(mtrpacket).Subscribe();
             System.Threading.Thread.Sleep(100);
 
@@ -199,7 +198,7 @@ namespace TestProject
             mtrstate.Duty = 0.5f;
             mtrstate.Direction = MotorDirection.Negative;
             memch = Kernel.MemoryState(mtrstate.ID, new MemoryState(2));
-            mtrpacket.DataPacket = DevicePacket.CreatePackedPacket(memch, mtr).First();
+            mtrpacket.DataPacket = PacketExtension.CreatePackedPacket(memch, mtr).First();
             target.AsyncSend(mtrpacket).Subscribe();
             System.Threading.Thread.Sleep(100);
 
@@ -209,7 +208,7 @@ namespace TestProject
             mtrstate.Duty = 0.5f;
             mtrstate.Direction = MotorDirection.Positive;
             memch = Kernel.MemoryState(mtrstate.ID, new MemoryState(1));
-            mtrpacket.DataPacket = DevicePacket.CreatePackedPacket(memch, mtr).First();
+            mtrpacket.DataPacket = PacketExtension.CreatePackedPacket(memch, mtr).First();
             target.AsyncSend(mtrpacket).Subscribe();
             System.Threading.Thread.Sleep(100);
 
@@ -221,7 +220,7 @@ namespace TestProject
             mtrstate.DestinationMemory = MotorMemoryStateEnum.NoEffect;
             mtrstate.ThresholdCurrent = 0.5f;
             memch = Kernel.MemoryState(mtrstate.ID, new MemoryState(2));
-            mtrpacket.DataPacket = DevicePacket.CreatePackedPacket(memch, mtr).First();
+            mtrpacket.DataPacket = PacketExtension.CreatePackedPacket(memch, mtr).First();
             target.AsyncSend(mtrpacket).Subscribe();
             System.Threading.Thread.Sleep(100);
 
@@ -251,7 +250,7 @@ namespace TestProject
 
             memstate.CurrentMemory = 0;
             mtrpacket.DataPacket
-                = DevicePacket.CreatePackedPacket(memch).First();
+                = PacketExtension.CreatePackedPacket(memch).First();
 
             mtr_check(target, mtrpacket, mtrstate);
 
@@ -261,7 +260,7 @@ namespace TestProject
             mtrstate.Duty = 0.5f;
 
             mtrpacket.DataPacket
-                = DevicePacket.CreatePackedPacket(mtr, inqiry).First();
+                = PacketExtension.CreatePackedPacket(mtr, inqiry).First();
 
             mtr_check(target, mtrpacket, mtrstate);
             System.Threading.Thread.Sleep(1000);
@@ -271,7 +270,7 @@ namespace TestProject
             memstate.CurrentMemory = 1;
 
             mtrpacket.DataPacket
-                = DevicePacket.CreatePackedPacket(memch, mtr, inqiry).First();
+                = PacketExtension.CreatePackedPacket(memch, mtr, inqiry).First();
 
             mtr_check(target, mtrpacket, mtrstate);
             System.Threading.Thread.Sleep(1000);
@@ -280,7 +279,7 @@ namespace TestProject
             memstate.CurrentMemory = 0;
 
             mtrpacket.DataPacket
-                = DevicePacket.CreatePackedPacket(memch, inqiry).First();
+                = PacketExtension.CreatePackedPacket(memch, inqiry).First();
 
             mtr_check(target, mtrpacket, mtrstate);
             System.Threading.Thread.Sleep(1000);
@@ -311,7 +310,7 @@ namespace TestProject
             mtrB.CurrentState.ControlMode = MotorControlMode.DutySpecifiedMode;
             mtrB.CurrentState.Duty = 0;
 
-            mtrpacket.DataPacket = DevicePacket.CreatePackedPacket(mtrA, mtrB).First();
+            mtrpacket.DataPacket = PacketExtension.CreatePackedPacket(mtrA, mtrB).First();
 
             target.Send(mtrpacket);
         }
@@ -348,7 +347,7 @@ namespace TestProject
                 mtrstate.Data.InternalAddr = (byte)s.devnum;
 
                 mtrpacket.DataPacket
-                    = DevicePacket.CreatePackedPacket(new IDevice<IDeviceState<IPacketDeviceData>>[] { mtr, kernal }).First();
+                    = PacketExtension.CreatePackedPacket(new IDevice<IDeviceState<IPacketDeviceData>>[] { mtr, kernal }).First();
 
                 System.Threading.Thread.Sleep(1000);
 
@@ -400,7 +399,7 @@ namespace TestProject
                     pt.CurrentState.ID = id;
                     pt.CurrentState.Position = a.position;
 
-                    ptpacket.DataPacket = DevicePacket.CreatePackedPacket(
+                    ptpacket.DataPacket = PacketExtension.CreatePackedPacket(
                             pt,
                             Kernel.InquiryState(id)
                             ).First();

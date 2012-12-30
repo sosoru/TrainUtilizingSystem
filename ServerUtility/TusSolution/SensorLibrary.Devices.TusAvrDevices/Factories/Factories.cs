@@ -5,11 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.Composition;
 
-using SensorLibrary.Packet.Data;
-using SensorLibrary.Devices.BasicDevices;
-using SensorLibrary.Devices.TusAvrDevices;
+using Tus.Communication;
+using Tus.Communication.Device.AvrComposed;
 
-namespace SensorLibrary.Devices.Factories
+namespace Tus.Communication.Device.Composition
 {
     [Export(typeof(IDeviceFactory))]
     [DeviceFactoryMetadata(ModuleTypeEnum.AvrMotor)]

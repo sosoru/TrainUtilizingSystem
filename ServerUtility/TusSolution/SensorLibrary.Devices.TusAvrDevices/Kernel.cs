@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using SensorLibrary.Packet.Control;
-using SensorLibrary.Packet.Data;
 
-namespace SensorLibrary.Devices
+namespace Tus.Communication.Device.AvrComposed
 {
     public class Kernel
         : Device<KernelState>

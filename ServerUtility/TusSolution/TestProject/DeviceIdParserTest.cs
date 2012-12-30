@@ -1,7 +1,11 @@
 ﻿using RouteLibrary.Parser;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using SensorLibrary;
+
+using Tus.Communication;
+using Tus.Communication.Device;
+using Tus.Communication.Device.AvrComposed;
+
 using System.Collections.Generic;
 using System.Linq;
 

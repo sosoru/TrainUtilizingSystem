@@ -7,11 +7,10 @@ using System.IO;
 using System.IO.Ports;
 using System.Reactive.Linq;
 using System.Reactive;
-using SensorLibrary;
-using SensorLibrary.Packet;
-using SensorLibrary.Packet.Data;
-using SensorLibrary.Devices;
-using SensorLibrary.Devices.TusAvrDevices;
+
+using Tus.Communication;
+using Tus.Communication.Device;
+using Tus.Communication.Device.AvrComposed;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace TestProject
@@ -32,7 +31,7 @@ namespace TestProject
 
             devC.CurrentState.Command = KernelCommand.InquiryState;
 
-            var packets = DevicePacket.CreatePackedPacket(devA, devB, devC);
+            var packets = PacketExtension.CreatePackedPacket(devA, devB, devC);
 
             var extracts = packets.First().ExtractPackedPacket().ToArray();
 
@@ -44,7 +43,7 @@ namespace TestProject
             var devs = Enumerable.Range(1, 8)
                 .Select(i => new Switch() { DeviceID = new DeviceID(1, 1, (byte)i), });
 
-            var packets = DevicePacket.CreatePackedPacket(devs);
+            var packets = PacketExtension.CreatePackedPacket(devs);
             var extracts = packets.SelectMany(p => p.ExtractPackedPacket())
                 .OrderBy(state => state.Data.InternalAddr);
 

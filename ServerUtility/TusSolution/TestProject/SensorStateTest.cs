@@ -1,8 +1,9 @@
-﻿using SensorLibrary.Devices.TusAvrDevices;
-using SensorLibrary.Packet.Data;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using SensorLibrary.Packet;
+
+using Tus.Communication;
+using Tus.Communication.Device;
+using Tus.Communication.Device.AvrComposed;
 
 namespace TestProject
 {

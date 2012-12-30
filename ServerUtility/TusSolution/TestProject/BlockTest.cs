@@ -3,12 +3,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
 using System.Linq;
-using SensorLibrary.Packet.Control;
+
+using Tus.Communication;
+using Tus.Communication.Device;
+using Tus.Communication.Device.AvrComposed;
 
 namespace TestProject
 {
-
-
     /// <summary>
     ///BlockTest のテスト クラスです。すべての
     ///BlockTest 単体テストをここに含めます

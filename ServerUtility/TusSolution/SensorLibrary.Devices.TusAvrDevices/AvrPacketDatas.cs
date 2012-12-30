@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Runtime.InteropServices;
 
-namespace SensorLibrary.Packet.Data
+namespace Tus.Communication.Device.AvrComposed
 {
     [StructLayout(LayoutKind.Sequential, Pack = 1, Size= 3)]
     public class PacketDeviceHeader
@@ -16,12 +16,12 @@ namespace SensorLibrary.Packet.Data
     }
 
     // pdata:
-	//	ControlMode : 1 byte
-	//	Direction	: 1 byte
-	//	DutyValue	: 1 byte
-	//	VoltageValue: 1 byte
-	//
-	[StructLayout(LayoutKind.Sequential, Pack=1, Size=14)]
+    //	ControlMode : 1 byte
+    //	Direction	: 1 byte
+    //	DutyValue	: 1 byte
+    //	VoltageValue: 1 byte
+    //
+    [StructLayout(LayoutKind.Sequential, Pack=1, Size=14)]
     public class MotorData
         : PacketDeviceHeader
     {

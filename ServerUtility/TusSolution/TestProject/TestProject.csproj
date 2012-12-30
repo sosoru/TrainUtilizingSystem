@@ -133,13 +133,9 @@
       <Project>{9c902cd5-20ae-45c4-918a-863f7d6064a0}</Project>
       <Name>RailroaderIO</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SensorLibrary.Devices.TusAvrDevices\SensorLibrary.Devices.TusAvrDevices.csproj">
+    <ProjectReference Include="..\SensorLibrary.Devices.TusAvrDevices\Tus.Communication.Device.AvrComposed.csproj">
       <Project>{941abaca-ccf7-436b-8d63-c3751cc1d1a9}</Project>
-      <Name>SensorLibrary.Devices.TusAvrDevices</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SensorLibrary\SensorLibrary.csproj">
-      <Project>{160A1D77-985C-4DDD-BB20-46C8EBADF62F}</Project>
-      <Name>SensorLibrary</Name>
+      <Name>Tus.Communication.Device.AvrComposed</Name>
     </ProjectReference>
     <ProjectReference Include="..\DialogConsole\DialogConsole.csproj">
       <Project>{f2232bf9-17e6-4641-8326-d8b7bd90a1e9}</Project>
@@ -148,6 +144,14 @@
     <ProjectReference Include="..\RouteLibrary\RouteLibrary.csproj">
       <Project>{39E73A78-039D-45DD-AD32-879B81EA567E}</Project>
       <Name>RouteLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tus.Communication.Device\Tus.Communication.Device.csproj">
+      <Project>{bbbd4a5a-1a91-436e-88bc-8621ac261b7f}</Project>
+      <Name>Tus.Communication.Device</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tus.Communication\Tus.Communication.csproj">
+      <Project>{2fcba61b-f967-442f-a3f6-3a8aa7126b17}</Project>
+      <Name>Tus.Communication</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

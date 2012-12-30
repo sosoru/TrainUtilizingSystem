@@ -3,11 +3,9 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 
-using SensorLibrary;
-using SensorLibrary.Devices;
-using SensorLibrary.Devices.TusAvrDevices;
-using SensorLibrary.Packet;
-using SensorLibrary.Packet.Data;
+using Tus.Communication;
+using Tus.Communication.Device;
+using Tus.Communication.Device.AvrComposed;
 
 namespace RouteLibrary.Base
 {

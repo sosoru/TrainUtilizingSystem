@@ -1,4 +1,7 @@
-﻿using SensorLibrary;
+﻿
+using Tus.Communication;
+using Tus.Communication.Device;
+using Tus.Communication.Device.AvrComposed;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
