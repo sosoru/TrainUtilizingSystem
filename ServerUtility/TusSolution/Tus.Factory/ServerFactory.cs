@@ -9,18 +9,16 @@ using System.Net;
 
 using Tus.Communication;
 using Tus.Communication.Device;
-using Tus.Communication.Device.AvrComposed;
 
 using Tus;
 using Tus.Route;
 using Tus.Route.Parser;
 
-namespace DialogConsole.Factory
+namespace Tus.Factory
 {
-    using DialogConsole.Properties;
 
     [Export]
-    class ServerFactory
+    public class ServerFactory
     {
         [Import]
         public IConsoleApplicationSettings ApplicationSettings;
@@ -30,7 +28,6 @@ namespace DialogConsole.Factory
             var ipbase = IPAddress.Parse(this.ApplicationSettings.IpSegment);
             var ipmask = IPAddress.Parse(this.ApplicationSettings.IpMask);
 
-            var dialog = new DialogCnosole();
             var io = new TusEthernetIO(ipbase, ipmask)
             {
                 SourceID = new DeviceIdParser().FromString(this.ApplicationSettings.ParentDeviceID).First(),

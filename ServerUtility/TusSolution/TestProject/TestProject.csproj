@@ -153,6 +153,10 @@
       <Project>{2fcba61b-f967-442f-a3f6-3a8aa7126b17}</Project>
       <Name>Tus.Communication</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Tus.Factory\Tus.Factory.csproj">
+      <Project>{a367ed72-abd5-4cfd-a9bd-4ba911d53584}</Project>
+      <Name>Tus.Factory</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

@@ -68,7 +68,7 @@ namespace Tus.Communication.Device.AvrComposed
             return devp;
         }
 
-        public IEnumerable<DevicePacket> CreateApplyingStates()
+        private IEnumerable<DevicePacket> CreateApplyingStates()
         {
             var statelist = new List<IDevice<IDeviceState<IPacketDeviceData>>>();
 

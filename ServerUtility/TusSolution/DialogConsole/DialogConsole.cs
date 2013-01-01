@@ -27,13 +27,13 @@ using Tus.Route.Parser;
 
 namespace DialogConsole
 {
-    using DialogConsole.Factory;
+    using Tus.Factory;
     class MainClass
     {
         static void Main(string[] args)
         {
             var catalog = new AggregateCatalog();
-            catalog.Catalogs.Add(new AssemblyCatalog(System.Reflection.Assembly.GetExecutingAssembly()));
+            catalog.Catalogs.Add(new AssemblyCatalog(".\\Tus.Factory.dll"));
             var container = new CompositionContainer(catalog);
             var shtfactory = container.GetExport<SheetFactory>();
 

@@ -1,7 +1,7 @@
 ﻿using System;
-namespace DialogConsole.Factory
+namespace Tus.Factory
 {
-    interface IConsoleApplicationSettings
+    public interface IConsoleApplicationSettings
     {
         string IpMask { get; set; }
         int IpPort { get; set; }

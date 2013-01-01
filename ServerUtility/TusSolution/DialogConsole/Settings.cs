@@ -1,6 +1,6 @@
 ﻿namespace DialogConsole.Properties {
     using System.ComponentModel.Composition;
-    using DialogConsole.Factory;
+    using Tus.Factory;
 
     // このクラスでは設定クラスでの特定のイベントを処理することができます:
     //  SettingChanging イベントは、設定値が変更される前に発生します。

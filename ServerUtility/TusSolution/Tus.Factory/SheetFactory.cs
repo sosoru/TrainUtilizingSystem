@@ -9,10 +9,10 @@ using Tus;
 using Tus.Route;
 using Tus.Route.Parser;
 
-namespace DialogConsole.Factory
+namespace Tus.Factory
 {
     [Export]
-    class SheetFactory
+    public class SheetFactory
     {
         [Import]
         public IConsoleApplicationSettings Settings { get; set; }
