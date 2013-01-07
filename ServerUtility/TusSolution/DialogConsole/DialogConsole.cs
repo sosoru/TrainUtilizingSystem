@@ -39,7 +39,7 @@ namespace DialogConsole
             var container = new CompositionContainer(catalog);
             var shtfactory = container.GetExport<SheetFactory>();
 
-            var dialog = container.GetExport<DialogConsole.DialogConsole>();
+            var dialog = container.GetExport<DialogConsole.DialogConsoleClass>();
 
             dialog.Value.Loop();
         }
@@ -62,7 +62,7 @@ namespace DialogConsole
     }
 
     [Export]
-    class DialogConsole
+    class DialogConsoleClass
         : IPartImportsSatisfiedNotification
     {
         [Import]
