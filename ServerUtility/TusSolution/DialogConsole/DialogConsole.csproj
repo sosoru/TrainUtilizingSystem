@@ -65,7 +65,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DialogConsole.cs" />
-    <Compile Include="FeatureParameters.cs" />
+    <Compile Include="Features.Base\BaseFeature.cs" />
+    <Compile Include="Features.Base\IFeatureParameters.cs" />
+    <Compile Include="Features\DetectFeature.cs" />
+    <Compile Include="Features.Base\FeatureMetadata.cs" />
+    <Compile Include="Features.Base\IFeature.cs" />
+    <Compile Include="Features.Base\IFeatureMetadata.cs" />
+    <Compile Include="Features\ShowStatusFeature.cs" />
+    <Compile Include="Features.Base\Feature.cs" />
+    <Compile Include="Features\InputVehicleFeature.cs" />
+    <Compile Include="Features\RemoveVehicleFeature.cs" />
     <Compile Include="MotorController.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -110,9 +119,7 @@
       <Name>Tus.Factory</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Features\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

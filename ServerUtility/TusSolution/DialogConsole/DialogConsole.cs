@@ -28,36 +28,53 @@ using Tus.Route.Parser;
 namespace DialogConsole
 {
     using Tus.Factory;
+    using DialogConsole.Features.Base;
     class MainClass
     {
         static void Main(string[] args)
         {
             var catalog = new AggregateCatalog();
             catalog.Catalogs.Add(new AssemblyCatalog(".\\Tus.Factory.dll"));
+            catalog.Catalogs.Add((new AssemblyCatalog(System.Reflection.Assembly.GetExecutingAssembly())));
             var container = new CompositionContainer(catalog);
             var shtfactory = container.GetExport<SheetFactory>();
 
-            var dialog = new DialogConsole.DialogCnosole();
-            dialog.Param = new FeatureParameters()
-            {
-                Sheet = shtfactory.Value.Create(),
-                Vehicles = new List<Vehicle>(),
-            };
+            var dialog = container.GetExport<DialogConsole.DialogCnosole>();
 
-            dialog.Loop();
+            dialog.Value.Loop();
         }
     }
 
-    class DialogCnosole
+    [Export(typeof(IFeatureParameters))]
+    public class DialogConsoleParameters
+        : IFeatureParameters
     {
-        public FeatureParameters Param { get; set; }
+        public BlockSheet Sheet { get; set; }
+        public IList<Vehicle> Vehicles { get; set; }
+        public IScheduler SchedulerSendingProcessing { get; set; }
+
+        [ImportingConstructor]
+        public DialogConsoleParameters(SheetFactory fact)
+        {
+            this.Sheet = fact.Create();
+            this.Vehicles = new List<Vehicle>();
+        }
+    }
+
+    [Export]
+    class DialogCnosole
+        : IPartImportsSatisfiedNotification
+    {
+        [Import]
+        public IFeatureParameters Param { get; set; }
+
+        [ImportMany]
+        public IEnumerable<Lazy<IFeature, IFeatureMetadata>> Features { get; set; }
 
         private IScheduler SchedulerPacketProcessing;
-        private IScheduler SchedulerSendingProcessing;
         private SynchronizationContext SyncNetwork;
         private SynchronizationContext SyncPacketProcess;
 
-        private IDisposable VehicleProcessing_;
         private IDisposable Sending_;
         private IDisposable Receiving_;
         private IDisposable ServingInfomation_;
@@ -92,7 +109,7 @@ namespace DialogConsole
             this.SyncNetwork = new SynchronizationContext();
             this.SyncPacketProcess = new SynchronizationContext();
 
-            this.SchedulerSendingProcessing = new SynchronizationContextScheduler(this.SyncNetwork);
+            this.Param.SchedulerSendingProcessing = new SynchronizationContextScheduler(this.SyncNetwork);
             this.SchedulerPacketProcessing = new SynchronizationContextScheduler(this.SyncPacketProcess);
 
             this.Param.Sheet.AssociatedScheduler = this.SchedulerPacketProcessing;
@@ -106,13 +123,13 @@ namespace DialogConsole
                                     DateTime.Now.Millisecond,
                                     g.ToString()
                                     )))
-                .ObserveOn(this.SchedulerSendingProcessing)
+                .ObserveOn(this.Param.SchedulerSendingProcessing)
                 .SubscribeOn(Scheduler.Default)
                 .Subscribe();
 
             var timer = Observable.Interval(TimeSpan.FromMilliseconds(20), Scheduler.Default);
             this.Receiving_ = Observable.Defer(() => this.Param.Sheet.Server.ReceivingObservable)
-                .ObserveOn(this.SchedulerSendingProcessing)
+                .ObserveOn(this.Param.SchedulerSendingProcessing)
                 .Repeat()
                 .Zip(timer, (v, _) => v)
                 .SelectMany(v => v.ExtractPackedPacket())
@@ -129,49 +146,25 @@ namespace DialogConsole
             {
                 CreateCommand = b => new CommandInfo() { MotorMode = MotorMemoryStateEnum.NoEffect, }
             },
-this.Param.Sheet.InnerBlocks);
-
-            Thread.Sleep(1000);
+            this.Param.Sheet.InnerBlocks);
 
             while (true)
             {
-                Console.WriteLine("1 : show statuses");
-                Console.WriteLine("3 : detect test");
-                Console.WriteLine("4 : input command");
-                Console.WriteLine("5 : monitoring vehicles");
-                Console.WriteLine("6 : remove vehicle");
+                foreach (var f in this.Features)
+                    Console.WriteLine("{0} - {1}", f.Metadata.FeatureExpression, f.Metadata.FeatureName);
+
                 Console.WriteLine();
-
-                //Console.WriteLine(cmdinfo.Speed);
-                //Console.WriteLine(cmdinfo.Route.Blocks
-                //   .Where(b => b.HasMotor && b.IsBlocked)
-                //    .Aggregate("", (ac, b) => ac += b.Name + ", "));
-
                 var cmd = Console.ReadLine();
 
                 try
                 {
-                    switch (cmd)
-                    {
-                        case "1":
-                            ShowStatus(this.Param.Sheet);
-                            break;
-                        case "3":
-                            Detect(this.Param.Sheet);
-                            break;
-                        //case "4":
-                        //    InputCommand(this.Sheet, cmdinfo);
-                        //    break;
-                        case "5":
-                            InputVehicleMonitoring();
-                            break;
-                        case "6":
-                            VehicleRemove();
-                            break;
+                    var feature = this.Features.FirstOrDefault(f => f.Metadata.FeatureExpression == cmd);
 
-                        default:
-                            Console.WriteLine("parse error");
-                            break;
+                    if (feature == default(IFeature))
+                        Console.WriteLine("parse error");
+                    else
+                    {
+                        feature.Value.Execute();
                     }
                 }
                 catch (Exception ex)
@@ -180,34 +173,6 @@ this.Param.Sheet.InnerBlocks);
                 }
             }
 
-        }
-
-        public string ShowStatus(BlockSheet sht)
-        {
-            var blocks = sht.InnerBlocks;
-
-            sht.InquiryAllMotors();
-            sht.InquiryDevices(sht.AllSwitches());
-
-
-            foreach (var b in blocks)
-                Console.WriteLine(b.ToString());
-            return blocks.Select(b => b.ToString() + "\n")
-                            .Aggregate("", (ag, s) => ag += s);
-        }
-
-        public void Detect(BlockSheet sht)
-        {
-            sht.ChangeDetectingMode();
-            System.Threading.Thread.Sleep(1000);
-
-            sht.InquiryAllMotors();
-            System.Threading.Thread.Sleep(2000);
-
-
-            Console.WriteLine(sht.InnerBlocks
-               .Where(b => b.IsDetectingTrain || b.IsMotorDetectingTrain)
-                .Aggregate("", (ac, b) => ac += b.Name + ", "));
         }
 
         public Route InputRoute(BlockSheet sht, Route before)
@@ -229,116 +194,6 @@ this.Param.Sheet.InnerBlocks);
             {
                 Console.WriteLine(ex.Message);
                 return before;
-            }
-        }
-
-        public void InputVehicleMonitoring()
-        {
-
-            Console.WriteLine("Vehicle Name ?");
-            var vhname = Console.ReadLine();
-
-            Console.WriteLine("Which block your vehicle halt on?");
-            var bk = this.Param.Sheet.GetBlock(Console.ReadLine());
-
-            //this.Vehicles.Clear();
-            var v = CreateVehicle(vhname, bk);
-
-            this.VehicleProcessing_ = Observable.Defer(() => Observable.Start(VehicleProcess, this.SchedulerSendingProcessing))
-                .Do(u => this.Param.Sheet.InquiryAllMotors())
-                .Delay(TimeSpan.FromMilliseconds(1000))
-
-                .Repeat()
-                .SubscribeOn(Scheduler.NewThread)
-                .Subscribe();
-
-        }
-
-        public void VehicleRemove()
-        {
-            Console.WriteLine("type name? ");
-            var name = Console.ReadLine();
-
-            var v = this.Param.Vehicles.FirstOrDefault(b => b.Name == name);
-
-            if (v == null)
-            {
-                Console.WriteLine("not found");
-                return;
-            }
-
-            v.Length = 1;
-            v.Run(0);
-            v.Route.InitLockingPosition();
-
-            this.Param.Vehicles.Remove(v);
-        }
-
-        public Route InputRoute(out bool ignoreblockage)
-        {
-            Console.WriteLine("select route [A-D] [rev] [sub] [ign]");
-            var ans = Console.ReadLine().ToLower();
-
-            var rev = ans.Contains("rev");
-            var sub = ans.Contains("sub");
-            ignoreblockage = ans.Contains("ign");
-
-            if (ans.Length < 1)
-                throw new ArgumentException("insufficient parameters");
-
-            IEnumerable<string> rt = null;
-            var firstch = ans.First();
-            //rev = !rev;
-            switch (firstch)
-            {
-                case 'a':
-                    rt = RouteGeneratorForTwelve.GetLoopA(rev, sub);
-                    break;
-                case 'b':
-                    rt = RouteGeneratorForTwelve.GetLoopB(rev, sub);
-                    break;
-                case 'c':
-                    rt = RouteGeneratorForTwelve.GetLoopC(rev, sub);
-                    break;
-                case 'd':
-                    rt = RouteGeneratorForTwelve.GetLoopD(rev, sub);
-                    break;
-                default:
-                    throw new InvalidDataException("invalid route selection");
-            }
-
-            return new Route(rt.Select(s => this.Param.Sheet.GetBlock(s)).ToList());
-        }
-
-        public Vehicle CreateVehicle(string vhname, Block b)
-        {
-            if (this.VehicleProcessing_ != null)
-                this.VehicleProcessing_.Dispose();
-
-            foreach (var vh in this.Param.Vehicles.ToArray())
-            {
-                vh.Route.InitLockingPosition();
-            }
-
-            bool ign = false;
-            Route rt = InputRoute(out ign);
-
-            rt.IsRepeatable = true;
-            var v = new Vehicle(this.Param.Sheet, rt);
-            v.CurrentBlock = b;
-            v.Speed = 0.0f;
-            v.Name = vhname;
-            v.IgnoreBlockage = (ign);
-
-            this.Param.Vehicles.Add(v);
-            return v;
-        }
-
-        public void VehicleProcess()
-        {
-            foreach (var v in this.Param.Vehicles)
-            {
-                v.Refresh();
             }
         }
 
@@ -458,6 +313,10 @@ this.Param.Sheet.InnerBlocks);
 
         }
 
+        public void OnImportsSatisfied()
+        {
+            this.Features = this.Features.OrderBy(f => f.Metadata.FeatureExpression).ToList();
+        }
     }
 
 }
