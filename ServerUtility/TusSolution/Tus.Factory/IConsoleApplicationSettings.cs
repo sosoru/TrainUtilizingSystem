@@ -1,12 +1,13 @@
 ﻿using System;
+using System.ComponentModel.Composition;
 namespace Tus.Factory
 {
     public interface IConsoleApplicationSettings
     {
-        string IpMask { get; set; }
-        int IpPort { get; set; }
-        string IpSegment { get; set; }
-        string ParentDeviceID { get; set; }
-        string SheetPath { get; set; }
+        string IpMask { get; }
+        int IpPort { get; }
+        string IpSegment { get; }
+        string ParentDeviceID { get; }
+        string SheetPath { get; }
     }
 }

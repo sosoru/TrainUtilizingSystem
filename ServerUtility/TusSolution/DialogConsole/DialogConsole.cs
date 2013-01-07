@@ -38,7 +38,11 @@ namespace DialogConsole
             var shtfactory = container.GetExport<SheetFactory>();
 
             var dialog = new DialogConsole.DialogCnosole();
-            dialog.Sheet = shtfactory.Value.Create();
+            dialog.Param = new FeatureParameters()
+            {
+                Sheet = shtfactory.Value.Create(),
+                Vehicles = new List<Vehicle>(),
+            };
 
             dialog.Loop();
         }
@@ -46,9 +50,7 @@ namespace DialogConsole
 
     class DialogCnosole
     {
-        public BlockSheet Sheet { get; set; }
-
-        public IList<Vehicle> Vehicles { get; set; }
+        public FeatureParameters Param { get; set; }
 
         private IScheduler SchedulerPacketProcessing;
         private IScheduler SchedulerSendingProcessing;
@@ -86,7 +88,6 @@ namespace DialogConsole
             this.LogWriterSend = new StreamWriter("packet_log.txt", true);
             this.LogWriterRecv = new StreamWriter("packet_log_recv.txt", true);
 
-            this.Vehicles = new List<Vehicle>();
 
             this.SyncNetwork = new SynchronizationContext();
             this.SyncPacketProcess = new SynchronizationContext();
@@ -94,9 +95,9 @@ namespace DialogConsole
             this.SchedulerSendingProcessing = new SynchronizationContextScheduler(this.SyncNetwork);
             this.SchedulerPacketProcessing = new SynchronizationContextScheduler(this.SyncPacketProcess);
 
-            this.Sheet.AssociatedScheduler = this.SchedulerPacketProcessing;
+            this.Param.Sheet.AssociatedScheduler = this.SchedulerPacketProcessing;
 
-            this.Sheet.Server.SendingObservable
+            this.Param.Sheet.Server.SendingObservable
                 .Delay(TimeSpan.FromMilliseconds(15))
                 .Repeat()
                 .SelectMany(g => g.ExtractPackedPacket())
@@ -110,7 +111,7 @@ namespace DialogConsole
                 .Subscribe();
 
             var timer = Observable.Interval(TimeSpan.FromMilliseconds(20), Scheduler.Default);
-            this.Receiving_ = Observable.Defer(() => this.Sheet.Server.ReceivingObservable)
+            this.Receiving_ = Observable.Defer(() => this.Param.Sheet.Server.ReceivingObservable)
                 .ObserveOn(this.SchedulerSendingProcessing)
                 .Repeat()
                 .Zip(timer, (v, _) => v)
@@ -124,11 +125,11 @@ namespace DialogConsole
                                                             .Subscribe();
             this.StartHttpObservable();
 
-            this.Sheet.Effect(new CommandFactory()
+            this.Param.Sheet.Effect(new CommandFactory()
             {
                 CreateCommand = b => new CommandInfo() { MotorMode = MotorMemoryStateEnum.NoEffect, }
             },
-this.Sheet.InnerBlocks);
+this.Param.Sheet.InnerBlocks);
 
             Thread.Sleep(1000);
 
@@ -153,10 +154,10 @@ this.Sheet.InnerBlocks);
                     switch (cmd)
                     {
                         case "1":
-                            ShowStatus(this.Sheet);
+                            ShowStatus(this.Param.Sheet);
                             break;
                         case "3":
-                            Detect(this.Sheet);
+                            Detect(this.Param.Sheet);
                             break;
                         //case "4":
                         //    InputCommand(this.Sheet, cmdinfo);
@@ -238,13 +239,13 @@ this.Sheet.InnerBlocks);
             var vhname = Console.ReadLine();
 
             Console.WriteLine("Which block your vehicle halt on?");
-            var bk = this.Sheet.GetBlock(Console.ReadLine());
+            var bk = this.Param.Sheet.GetBlock(Console.ReadLine());
 
             //this.Vehicles.Clear();
             var v = CreateVehicle(vhname, bk);
 
             this.VehicleProcessing_ = Observable.Defer(() => Observable.Start(VehicleProcess, this.SchedulerSendingProcessing))
-                .Do(u => this.Sheet.InquiryAllMotors())
+                .Do(u => this.Param.Sheet.InquiryAllMotors())
                 .Delay(TimeSpan.FromMilliseconds(1000))
 
                 .Repeat()
@@ -258,7 +259,7 @@ this.Sheet.InnerBlocks);
             Console.WriteLine("type name? ");
             var name = Console.ReadLine();
 
-            var v = this.Vehicles.FirstOrDefault(b => b.Name == name);
+            var v = this.Param.Vehicles.FirstOrDefault(b => b.Name == name);
 
             if (v == null)
             {
@@ -270,7 +271,7 @@ this.Sheet.InnerBlocks);
             v.Run(0);
             v.Route.InitLockingPosition();
 
-            this.Vehicles.Remove(v);
+            this.Param.Vehicles.Remove(v);
         }
 
         public Route InputRoute(out bool ignoreblockage)
@@ -306,7 +307,7 @@ this.Sheet.InnerBlocks);
                     throw new InvalidDataException("invalid route selection");
             }
 
-            return new Route(rt.Select(s => this.Sheet.GetBlock(s)).ToList());
+            return new Route(rt.Select(s => this.Param.Sheet.GetBlock(s)).ToList());
         }
 
         public Vehicle CreateVehicle(string vhname, Block b)
@@ -314,7 +315,7 @@ this.Sheet.InnerBlocks);
             if (this.VehicleProcessing_ != null)
                 this.VehicleProcessing_.Dispose();
 
-            foreach (var vh in this.Vehicles.ToArray())
+            foreach (var vh in this.Param.Vehicles.ToArray())
             {
                 vh.Route.InitLockingPosition();
             }
@@ -323,19 +324,19 @@ this.Sheet.InnerBlocks);
             Route rt = InputRoute(out ign);
 
             rt.IsRepeatable = true;
-            var v = new Vehicle(this.Sheet, rt);
+            var v = new Vehicle(this.Param.Sheet, rt);
             v.CurrentBlock = b;
             v.Speed = 0.0f;
             v.Name = vhname;
             v.IgnoreBlockage = (ign);
 
-            this.Vehicles.Add(v);
+            this.Param.Vehicles.Add(v);
             return v;
         }
 
         public void VehicleProcess()
         {
-            foreach (var v in this.Vehicles)
+            foreach (var v in this.Param.Vehicles)
             {
                 v.Refresh();
             }
@@ -369,7 +370,7 @@ this.Sheet.InnerBlocks);
                 {
                     var cnt = new DataContractJsonSerializer(typeof(VehicleInfoReceived));
                     var recvinfo = (VehicleInfoReceived)cnt.ReadObject(req.InputStream);
-                    var vh = this.Vehicles.First(v => v.Name == recvinfo.Name);
+                    var vh = this.Param.Vehicles.First(v => v.Name == recvinfo.Name);
 
                     if (recvinfo.Speed != null)
                     {
@@ -415,7 +416,7 @@ this.Sheet.InnerBlocks);
                 using (var ms = new MemoryStream())
                 {
                     var cnt = new DataContractJsonSerializer(typeof(IEnumerable<Vehicle>));
-                    var vehis = this.Vehicles.ToArray();
+                    var vehis = this.Param.Vehicles.ToArray();
 
                     cnt.WriteObject(ms, vehis);
 

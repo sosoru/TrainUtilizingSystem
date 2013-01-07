@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 
 using Tus.Communication;
+using Tus.Communication.Device.AvrComposed;
 
 namespace Tus.Route
 {
@@ -98,6 +99,16 @@ namespace Tus.Route
     {
         public RouteSegmentInfo RoutePositive { get; set; }
         public RouteSegmentInfo RouteNegative { get; set; }
+
+        public MotorDirection SelectDirection(RouteSegmentInfo info)
+        {
+            if (info.Equals(this.RoutePositive))
+                return MotorDirection.Positive;
+            else if (info.Equals(this.RouteNegative))
+                return MotorDirection.Negative;
+            else
+                throw new InvalidOperationException("direction undecidable");
+        }
     }
 
     public class SwitchInfo

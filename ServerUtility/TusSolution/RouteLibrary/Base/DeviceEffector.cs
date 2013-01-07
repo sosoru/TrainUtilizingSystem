@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 
 using Tus.Communication;
 using Tus.Communication.Device;
@@ -55,6 +56,24 @@ namespace Tus.Route
         public abstract void ApplyCommand(CommandFactory factory);
     }
 
+    static class BlockExtension
+    {
+        public static Block BeforeBlockHavingMotor(this Block blk, Route route)
+        {
+            var locked = route.LockedBlocks.Where(s => s.HasMotor);
+            var before = locked.Reverse().SkipWhile(b => b == blk).FirstOrDefault();
+
+            return before;
+        }
+
+        public static Block NextBlockHavingMotor(this Block blk, Route route)
+        {
+            var locked = route.LockedBlocks.Where(s => s.HasMotor);
+            var next = locked.SkipWhile(s => s == blk).FirstOrDefault();
+            return next;
+        }
+    }
+
     public class MotorEffector
         : DeviceEffector<Motor, MotorInfo, MotorState>
     {
@@ -63,51 +82,10 @@ namespace Tus.Route
         {
         }
 
-        public MotorState NoEffectState
-        {
-            get
-            {
-                var state = new MotorState()
-                {
-                    Direction = MotorDirection.Positive,
-                    Duty = 0,
-                    ControlMode = MotorControlMode.DutySpecifiedMode,
-                };
-                return state;
-            }
-        }
-
-        public MotorState LockedState
-        {
-            get
-            {
-                var state = new MotorState()
-                {
-                    Direction = MotorDirection.Standby,
-                    Duty = 0,
-                    ControlMode = MotorControlMode.DutySpecifiedMode,
-                };
-                return state;
-            }
-        }
-
-        public MotorState CreateWaitingState(Motor beforemtr)
-        {
-            var state = new MotorState()
-            {
-                ControlMode = MotorControlMode.WaitingPulseMode,
-                MemoryWhenEntered = MotorMemoryStateEnum.Controlling,
-                DestinationID = beforemtr.DeviceID,
-                DestinationMemory = MotorMemoryStateEnum.Locked,
-                ThresholdCurrent = 0.05f,
-            };
-
-            return state;
-        }
-
+        #region "Create State Methods"
         private MotorDirection _before_dir = MotorDirection.Standby;
         private float _before_duty = 2.0f;
-        public MotorState CreateMotorState(MotorDirection dir, float duty)
+        private MotorState CreateMotorState(MotorDirection dir, float duty)
         {
             var state = new MotorState()
             {
@@ -125,7 +103,7 @@ namespace Tus.Route
             return state;
         }
 
-        public MotorState CreateMotorState(CommandInfo cmd)
+        private MotorState CreateMotorState(CommandInfo cmd)
         {
             MotorDirection dir = MotorDirection.Standby;
             float duty = 0f;
@@ -133,46 +111,58 @@ namespace Tus.Route
 
             if (locked == null)
             {
-                return NoEffectState;
+                return CreateNoEffectState();
             }
 
             var seg = cmd.Route.GetSegment(this.ParentBlock);
-            if (seg.Info.Equals(this.Info.RoutePositive))
-            {
-                dir = MotorDirection.Positive;
-            }
-            else if (seg.Info.Equals(this.Info.RouteNegative))
-            {
-                dir = MotorDirection.Negative;
-            }
-            else
-            {
-                new InvalidOperationException("direction undecidable");
-            }
+            dir = this.Info.SelectDirection(seg.Info);
             duty = cmd.Speed;
 
             return CreateMotorState(dir, duty);
         }
 
+        private MotorState CreateNoEffectState()
+        {
+            var state = new MotorState()
+            {
+                Direction = MotorDirection.Positive,
+                Duty = 0,
+                ControlMode = MotorControlMode.DutySpecifiedMode,
+            };
+            return state;
+        }
+
+        private MotorState CreateLockedState()
+        {
+            var state = new MotorState()
+            {
+                Direction = MotorDirection.Standby,
+                Duty = 0,
+                ControlMode = MotorControlMode.DutySpecifiedMode,
+            };
+            return state;
+        }
+
+        private MotorState CreateWaitingState(Motor beforemtr)
+        {
+            var state = new MotorState()
+            {
+                ControlMode = MotorControlMode.WaitingPulseMode,
+                MemoryWhenEntered = MotorMemoryStateEnum.Controlling,
+                DestinationID = beforemtr.DeviceID,
+                DestinationMemory = MotorMemoryStateEnum.Locked,
+                ThresholdCurrent = 0.05f,
+            };
+
+            return state;
+        }
+
+        #endregion
+
         public override bool IsNeededExecution
         {
             get;
             set;
-        }
-
-        public Block BeforeBlockHavingMotor(CommandInfo cmd)
-        {
-            var locked = cmd.Route.LockedBlocks.Where(s => s.HasMotor);
-            var before = locked.Reverse().SkipWhile(b => b == this.ParentBlock).FirstOrDefault();
-
-            return before;
-        }
-
-        public Block NextBlockHavingMotor(CommandInfo cmd)
-        {
-            var locked = cmd.Route.LockedBlocks.Where(s => s.HasMotor);
-            var next = locked.SkipWhile(s => s == this.ParentBlock).FirstOrDefault();
-            return next;
         }
 
         public void SetDetectingMode(float duty)
@@ -207,18 +197,17 @@ namespace Tus.Route
                 case MotorMemoryStateEnum.Controlling:
                     if (_before_state != MotorMemoryStateEnum.Controlling)
                     {
-                        states.Add(MotorMemoryStateEnum.Locked, LockedState);
+                        states.Add(MotorMemoryStateEnum.Locked, CreateLockedState());
                     }
                     states.Add(MotorMemoryStateEnum.Controlling, CreateMotorState(cmd));
-                    this.Device.CurrentMemory = MotorMemoryStateEnum.Controlling;
                     this.IsNeededExecution = true;
                     break;
                 case MotorMemoryStateEnum.Waiting:
                     var cntstate = CreateMotorState(cmd);
-                    states.Add(MotorMemoryStateEnum.Controlling, cntstate);
-                    var waitingstate = BeforeBlockHavingMotor(cmd);
-                    states.Add(MotorMemoryStateEnum.Waiting, CreateWaitingState(waitingstate.MotorEffector.Device));
-                    this.Device.CurrentMemory = MotorMemoryStateEnum.Waiting;
+                    var waitingblock = this.ParentBlock.BeforeBlockHavingMotor(cmd.Route);
+
+                    states.Add(MotorMemoryStateEnum.Controlling, CreateMotorState(cmd));
+                    states.Add(MotorMemoryStateEnum.Waiting, CreateWaitingState(waitingblock.MotorEffector.Device));
                     if (this.Device.States.ContainsKey(MotorMemoryStateEnum.Controlling) &&
                         this.Device.States[MotorMemoryStateEnum.Controlling].Duty == cntstate.Duty)
                     {
@@ -231,15 +220,14 @@ namespace Tus.Route
 
                     break;
                 case MotorMemoryStateEnum.NoEffect:
-                    states.Add(MotorMemoryStateEnum.NoEffect, NoEffectState);
-                    this.Device.CurrentMemory = MotorMemoryStateEnum.NoEffect;
+                    states.Add(MotorMemoryStateEnum.NoEffect, CreateNoEffectState());
                     break;
                 case MotorMemoryStateEnum.Unknown:
                 default:
                     throw new InvalidOperationException("invalid mode applied");
-                    break;
             }
 
+            this.Device.CurrentMemory = cmd.MotorMode;
             this.Device.States = states;
 
             if (_before_state != cmd.MotorMode)
