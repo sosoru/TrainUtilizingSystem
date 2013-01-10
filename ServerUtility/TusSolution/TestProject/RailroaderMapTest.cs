@@ -63,7 +63,7 @@ namespace TestProject
         //
         #endregion
 
-        string path = @".\SampleLayout\Sample2.rrf";
+        string path = @"Sample2.rrf";
 
         /// <summary>
         ///RailroaderMap コンストラクター のテスト

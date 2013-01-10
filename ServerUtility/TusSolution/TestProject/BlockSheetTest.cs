@@ -112,7 +112,7 @@ namespace TestProject
             get
             {
                 var yaml = new BlockYaml();
-                var blocks = yaml.Parse("./SampleLayout/loop.yaml");
+                var blocks = yaml.Parse("loop.yaml");
 
                 return blocks;
             }
@@ -223,7 +223,7 @@ namespace TestProject
             //sht.GetBlock("AT3").Detector = train.Object;
 
             if (!serv.IsLooping)
-                serv.LoopStart(System.Reactive.Concurrency.Scheduler.NewThread);
+                serv.LoopStart(new NewThreadScheduler());
 
             sht.ChangeDetectingMode(); // todo: value check
             System.Threading.Thread.Sleep(2000);

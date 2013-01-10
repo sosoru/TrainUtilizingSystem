@@ -31,7 +31,7 @@ namespace TestProject
             get
             {
                 var yaml = new BlockYaml();
-                var blocks = yaml.Parse("./SampleLayout/staloop.yaml");
+                var blocks = yaml.Parse("staloop.yaml");
 
                 return blocks;
             }

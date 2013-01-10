@@ -26,7 +26,7 @@ namespace TestProject
             get
             {
                 var yaml = new BlockYaml();
-                var blocks = yaml.Parse("./SampleLayout/point_sample.yaml");
+                var blocks = yaml.Parse("point_sample.yaml");
 
                 return blocks;
             }

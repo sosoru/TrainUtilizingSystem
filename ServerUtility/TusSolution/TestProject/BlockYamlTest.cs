@@ -7,8 +7,8 @@ using System.Linq;
 
 namespace TestProject
 {
-    
-    
+
+
     /// <summary>
     ///BlockYamlTest のテスト クラスです。すべての
     ///BlockYamlTest 単体テストをここに含めます
@@ -70,13 +70,13 @@ namespace TestProject
         {
             get
             {
-                return @".\SampleLayout\815.yaml";
+                return @"815.yaml";
             }
         }
 
         public static string LoopSample
         {
-            get { return @".\SampleLayout\route_test.yaml"; }
+            get { return @"route_test.yaml"; }
         }
 
         /// <summary>
@@ -114,7 +114,7 @@ namespace TestProject
             IEnumerable<object> src = target.ParseFrom(LoopSample);
             //IEnumerable<Block> expected = ; 
             IEnumerable<BlockInfo> actual;
-            actual = target.Parse(src).ToList() ;
+            actual = target.Parse(src).ToList();
 
             actual = actual;
             //Assert.AreEqual(expected, actual);

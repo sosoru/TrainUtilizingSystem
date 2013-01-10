@@ -35,7 +35,7 @@ namespace TestProject.ConsoleTest.Composition
 
             public string SheetPath
             {
-                get { return @"./SampleLayout/815.yaml"; }
+                get { return @"815.yaml"; }
             }
         }
 

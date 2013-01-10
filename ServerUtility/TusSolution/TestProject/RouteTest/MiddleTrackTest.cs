@@ -77,7 +77,7 @@ namespace TestProject
             get
             {
                 var yaml = new BlockYaml();
-                var blocks = yaml.Parse("./SampleLayout/middletrack.yaml");
+                var blocks = yaml.Parse("middletrack.yaml");
 
                 return blocks;
             }
