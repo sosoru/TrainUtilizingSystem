@@ -20,8 +20,10 @@ namespace DialogConsole.Features
     [Export(typeof(IFeature))]
     class InputVehicleFeature
         : BaseFeature, IFeature
-    {        private IDisposable VehicleProcessing_;
-        private Route InputRoute(out bool ignoreblockage)
+    {
+        private IDisposable VehicleProcessing_;
+
+        private Route InputRoute(out bool ignoreblockage)
         {
             Console.WriteLine("select route [A-D] [rev] [sub] [ign]");
             var ans = Console.ReadLine().ToLower();
@@ -100,7 +102,7 @@ namespace DialogConsole.Features
             //this.Vehicles.Clear();
             var v = CreateVehicle(vhname, bk);
 
-            this.VehicleProcessing_ = Observable.Defer(() => Observable.Start(VehicleProcess, this.Param.SchedulerSendingProcessing))
+            this.VehicleProcessing_ = Observable.Defer(() => Observable.Start(VehicleProcess, this.Param.SchedulerPacketProcessing))
                 .Do(u => this.Param.Sheet.InquiryAllMotors())
                 .Delay(TimeSpan.FromMilliseconds(1000))
 
@@ -108,6 +110,10 @@ namespace DialogConsole.Features
                 .SubscribeOn(Scheduler.NewThread)
                 .Subscribe();
 
+        }
+
+        public void Init()
+        {
         }
     }
 }

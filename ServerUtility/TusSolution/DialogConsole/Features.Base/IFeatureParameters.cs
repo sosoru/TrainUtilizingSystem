@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Reactive.Concurrency;
+
 namespace DialogConsole.Features.Base
 {
     public interface IFeatureParameters
     {
-        System.Reactive.Concurrency.IScheduler SchedulerSendingProcessing { get; set; }
-        Tus.Route.BlockSheet Sheet { get;  }
-        System.Collections.Generic.IList<Tus.Route.Vehicle> Vehicles { get; }
+        Tus.Route.BlockSheet Sheet { get; set; }
+        System.Collections.Generic.IList<Tus.Route.Vehicle> Vehicles { get; set; }
+        IDisposable ServingInfomation { get; set; }
+        IScheduler SchedulerPacketProcessing{  get; set;} 
+
     }
 }

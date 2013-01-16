@@ -8,6 +8,7 @@ namespace DialogConsole.Features.Base
 {
     public interface IFeature
     {
+        void Init();
         void Execute();
     }
 }

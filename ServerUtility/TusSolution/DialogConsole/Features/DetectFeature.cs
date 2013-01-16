@@ -25,5 +25,9 @@ namespace DialogConsole.Features
                .Where(b => b.IsDetectingTrain || b.IsMotorDetectingTrain)
                 .Aggregate("", (ac, b) => ac += b.Name + ", "));
         }
+
+        public void Init()
+        {
+        }
     }
 }

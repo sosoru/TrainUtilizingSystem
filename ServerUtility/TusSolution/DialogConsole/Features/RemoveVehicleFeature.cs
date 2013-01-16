@@ -32,5 +32,9 @@ namespace DialogConsole.Features
 
             this.Param.Vehicles.Remove(v);
         }
+
+        public void Init()
+        {
+        }
     }
 }

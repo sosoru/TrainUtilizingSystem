@@ -27,5 +27,8 @@ namespace DialogConsole.Features
             //                            .Aggregate("", (ag, s) => ag += s);
         }
 
+        public void Init()
+        {
+        }
     }
 }

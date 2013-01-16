@@ -5,5 +5,7 @@ namespace DialogConsole.Features.Base
     {
         string FeatureExpression { get; }
         string FeatureName { get; }
+        bool IsShown { get; }   
+
     }
 }

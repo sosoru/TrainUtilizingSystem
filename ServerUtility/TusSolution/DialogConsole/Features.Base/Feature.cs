@@ -14,5 +14,9 @@ namespace DialogConsole.Features.Base
         public void Execute()
         {
         }
+
+        public void Init()
+        {
+        }
     }
 }

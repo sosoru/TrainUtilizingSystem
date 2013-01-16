@@ -14,11 +14,13 @@ namespace DialogConsole.Features.Base
     {
         public string FeatureExpression { get; set; }
         public string FeatureName { get; set; }
+        public bool IsShown { get; set; }
         
-        public FeatureMetadata(string expr, string name)
+        public FeatureMetadata(string expr, string name, bool isShown = true)
         {
             this.FeatureExpression = expr;
             this.FeatureName = name;
+            this.IsShown = isShown;
         }
     }
 }
