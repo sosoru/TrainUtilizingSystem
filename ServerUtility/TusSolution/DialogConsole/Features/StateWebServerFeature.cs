@@ -17,7 +17,7 @@ namespace DialogConsole.Features
 {
     [Export(typeof (IFeature))]
     [FeatureMetadata("w", "web server", IsShown = false)]
-    internal class Feature
+    internal class StateWebServerFeature 
         : BaseFeature, IFeature
     {
         public void Execute()

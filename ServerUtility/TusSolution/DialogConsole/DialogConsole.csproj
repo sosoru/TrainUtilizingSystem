@@ -75,7 +75,7 @@
     <Compile Include="Features.Base\Feature.cs" />
     <Compile Include="Features\InputVehicleFeature.cs" />
     <Compile Include="Features\RemoveVehicleFeature.cs" />
-    <Compile Include="Features\StateWebServer.cs" />
+    <Compile Include="Features\StateWebServerFeature.cs" />
     <Compile Include="MotorController.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
