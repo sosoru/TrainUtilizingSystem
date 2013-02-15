@@ -15,9 +15,9 @@ using Tus.Route;
 
 namespace DialogConsole.Features
 {
-    [Export(typeof (IFeature))]
+    [Export(typeof(IFeature))]
     [FeatureMetadata("w", "web server", IsShown = false)]
-    internal class StateWebServerFeature 
+    internal class StateWebServerFeature
         : BaseFeature, IFeature
     {
         public void Execute()
@@ -38,13 +38,13 @@ namespace DialogConsole.Features
             {
                 try
                 {
-                    var cnt = new DataContractJsonSerializer(typeof (VehicleInfoReceived));
-                    var recvinfo = (VehicleInfoReceived) cnt.ReadObject(req.InputStream);
+                    var cnt = new DataContractJsonSerializer(typeof(VehicleInfoReceived));
+                    var recvinfo = (VehicleInfoReceived)cnt.ReadObject(req.InputStream);
                     var vh = this.Param.Vehicles.First(v => v.Name == recvinfo.Name);
 
                     if (recvinfo.Speed != null)
                     {
-                        var changeto = float.Parse(recvinfo.Speed)/100.0f;
+                        var changeto = float.Parse(recvinfo.Speed) / 100.0f;
                         Console.WriteLine("{0} is changing speed from {1} to {2}", vh.Name, vh.Speed, changeto);
 
                         vh.Speed = changeto;
@@ -68,6 +68,8 @@ namespace DialogConsole.Features
                         foreach (var h in halts)
                             vh.Halt.Add(h);
                     }
+
+                    this.Param.VehiclePipeline.Subscribe();
                 }
                 catch (Exception ex)
                 {
@@ -86,7 +88,7 @@ namespace DialogConsole.Features
                 using (var sw = new StreamWriter(res.OutputStream))
                 using (var ms = new MemoryStream())
                 {
-                    var cnt = new DataContractJsonSerializer(typeof (IEnumerable<Vehicle>));
+                    var cnt = new DataContractJsonSerializer(typeof(IEnumerable<Vehicle>));
                     var vehis = this.Param.Vehicles.ToArray();
 
                     cnt.WriteObject(ms, vehis);
@@ -134,12 +136,16 @@ namespace DialogConsole.Features
     [DataContract]
     public class VehicleInfoReceived
     {
-        [DataMember(IsRequired = true)] public string Name;
+        [DataMember(IsRequired = true)]
+        public string Name;
 
-        [DataMember(IsRequired = false)] public string Speed;
+        [DataMember(IsRequired = false)]
+        public string Speed;
 
-        [DataMember(IsRequired = false)] public string RouteName;
+        [DataMember(IsRequired = false)]
+        public string RouteName;
 
-        [DataMember(IsRequired = false)] public ICollection<string> Halts;
+        [DataMember(IsRequired = false)]
+        public ICollection<string> Halts;
     }
 }

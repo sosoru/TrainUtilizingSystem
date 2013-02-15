@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="SheetPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">C:\Users\Administrator\Desktop\12_layout.yaml</Value>
+      <Value Profile="(Default)">C:\Users\Administrator\Desktop\test_course.yaml</Value>
     </Setting>
     <Setting Name="IpSegment" Type="System.String" Scope="User">
       <Value Profile="(Default)">192.168.2.0</Value>
@@ -15,7 +15,7 @@
       <Value Profile="(Default)">8000</Value>
     </Setting>
     <Setting Name="ParentDeviceID" Type="System.String" Scope="User">
-      <Value Profile="(Default)">(9, 0, 0)</Value>
+      <Value Profile="(Default)">(108, 0, 0)</Value>
     </Setting>
   </Settings>
 </SettingsFile>

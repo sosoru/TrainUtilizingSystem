@@ -52,6 +52,8 @@ namespace DialogConsole
         public BlockSheet Sheet { get; set; }
         public IList<Vehicle> Vehicles { get; set; }
         public IDisposable ServingInfomation { get; set; }
+        public IObservable<Unit> VehiclePipeline { get; set; }
+        public IDisposable VehicleProcessing { get; set; }
 
         [ImportingConstructor]
         public DialogConsoleParameters(SheetFactory fact)
@@ -65,6 +67,8 @@ namespace DialogConsole
             get;
             set;
         }
+
+
     }
 
     [Export]

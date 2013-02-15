@@ -1,42 +1,58 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.IO;
-using System.Reactive;
-using System.Reactive.Linq;
-using System.Reactive.PlatformServices;
-using System.Threading.Tasks;
 using System.Reactive.Concurrency;
-using System.Reactive.Subjects;
-using System.ComponentModel.Composition;
-
-using Tus.Communication.Device.Composition;
+using System.Reactive.Linq;
 
 namespace Tus.Communication
 {
     public class PacketServer
-         : IDisposable
+        : IDisposable
     {
-        //protected IDisposable packetObservableDisposable { get; private set; }
+        private readonly List<PacketServerAction> actionList = new List<PacketServerAction>();
 
-        public bool IsLooping { get { return recv_disp != null || send_disp != null; } }
-        public IDeviceIO Controller { get; set; }
-
-        private IDisposable recv_disp = null;
-        private IDisposable send_disp = null;
-
+        private readonly Queue<DevicePacket> sending_queue = new Queue<DevicePacket>(128);
+        private readonly PacketDispatcher thisobsv_;
+        private bool blockLoopStarting;
         private volatile object lockStream = new object();
-        private List<PacketServerAction> actionList = new List<PacketServerAction>();
-        private PacketDispatcher thisobsv_;
-
-        private Queue<DevicePacket> sending_queue = new Queue<DevicePacket>(128);
+        private IDisposable recv_disp;
+        private IDisposable send_disp;
 
         public PacketServer()
         {
-            this.thisobsv_ = new PacketDispatcher();
+            thisobsv_ = new PacketDispatcher();
 
-            this.AddAction(this.thisobsv_);
+            AddAction(thisobsv_);
+        }
+
+        public bool IsLooping
+        {
+            get { return recv_disp != null || send_disp != null; }
+        }
+
+        public IDeviceIO Controller { get; set; }
+
+        public IObservable<DevicePacket> ReceivingObservable
+        {
+            get
+            {
+                return Observable.Defer(Controller.GetReadingPacket)
+                                 .Do(
+                                     pack =>
+                                         {
+                                             actionList.ForEach(
+                                                 (item) => pack.ExtractPackedPacket().ToList().ForEach(s => item.Act(s)));
+                                         });
+            }
+        }
+
+        public IObservable<DevicePacket> SendingObservable
+        {
+            get
+            {
+                return Observable.Defer(SendState)
+                                 .SelectMany(Controller.GetWritingPacket);
+            }
         }
 
         public IObservable<IDeviceState<IPacketDeviceData>> GetDispatcher()
@@ -46,32 +62,32 @@ namespace Tus.Communication
 
         public PacketServerAction AddAction(PacketDispatcher dispatcher)
         {
-            return this.AddAction((state) => dispatcher.Notify(state));
+            return AddAction((state) => dispatcher.Notify(state));
         }
 
         public PacketServerAction AddAction(Action<IDeviceState<IPacketDeviceData>> act)
         {
             var inst = new PacketServerAction(act);
-            this.AddAction(inst);
+            AddAction(inst);
             return inst;
         }
 
         public PacketServerAction AddAction(PacketServerAction act)
         {
             if (!actionList.Contains(act) && act != null)
-                this.actionList.Add(act);
+                actionList.Add(act);
 
             return act;
         }
 
         public void RemoveAction(PacketServerAction act)
         {
-            this.actionList.Remove(act);
+            actionList.Remove(act);
         }
 
         public virtual void EnqueuePacket(DevicePacket packet)
         {
-            this.sending_queue.Enqueue(packet);
+            sending_queue.Enqueue(packet);
         }
 
         public virtual void EnqueueState(IDevice<IDeviceState<IPacketDeviceData>> dev)
@@ -81,89 +97,27 @@ namespace Tus.Communication
 
             try
             {
-                foreach (var p in PacketExtension.CreatePackedPacket(dev))
-                    this.EnqueuePacket(p);
+                foreach (DevicePacket p in PacketExtension.CreatePackedPacket(dev))
+                    EnqueuePacket(p);
             }
             catch (ArgumentException)
             {
             }
         }
 
-        public  void DispatchState(IDeviceState<IPacketDeviceData> state)
+        public void DispatchState(IDeviceState<IPacketDeviceData> state)
         {
-            //var f = this.DeviceFactories
-            //    .First(m => m.Metadata.ModuleType == state.ModuleType)
-            //    .Value;
-                        
-            //if (f != null)
-            //{
-                //var state = f.DeviceStateCreate();
-                //var data = f.DeviceDataCreate();
-
-                //state.ReceivingServer = this;
-                
-                this.actionList.ForEach((item) => item.Act(state));
-            //}
-            //else
-            //{
-            //    Console.WriteLine("pero");
-            //}
-
+            actionList.ForEach((item) => item.Act(state));
         }
 
         private IObservable<DevicePacket> SendState()
         {
-            //var sub = new ReplaySubject<DevicePacket>();
-            //while (this.sending_queue.Count > 0)
-            //{
-            //    sub.OnNext(this.sending_queue.Dequeue());
-            //}
-            //sub.OnCompleted();
-
-            if (this.sending_queue.Count > 0)
-                return new[] { this.sending_queue.Dequeue() }.ToObservable();
+            if (sending_queue.Count > 0)
+                return new[] {sending_queue.Dequeue()}.ToObservable();
             else
                 return Observable.Empty<DevicePacket>();
-
         }
 
-        public IObservable<DevicePacket> ReceivingObservable
-        {
-            get
-            {
-                return Observable.Defer(this.Controller.GetReadingPacket)
-                        .Do(pack =>
-                        {
-                            //var f =
-                            //    this.FactoryProvider.AvailableDeviceTypes.FirstOrDefault(
-                            //        a => a.ModuleType == pack.ModuleType);
-                            //if (f != null)
-                            //{
-                                //var state = f.DeviceStateCreate();
-                                //var data = f.DeviceDataCreate();
-
-                                //state.ReceivingServer = this;
-
-                                this.actionList.ForEach((item) => pack.ExtractPackedPacket().ToList().ForEach(s => item.Act(s)));
-                            //}
-                            //else
-                            //{
-                            //    Console.WriteLine("pero");
-                            //}
-                        });
-            }
-        }
-
-        public IObservable<DevicePacket> SendingObservable
-        {
-            get
-            {
-                return Observable.Defer(SendState)
-                        .SelectMany(this.Controller.GetWritingPacket);
-            }
-        }
-
-        private bool blockLoopStarting = false;
         public void LoopStart(IScheduler scheduler)
         {
             if (!blockLoopStarting)
@@ -171,8 +125,8 @@ namespace Tus.Communication
                 blockLoopStarting = true;
                 if (!IsLooping)
                 {
-                    this.recv_disp = this.ReceivingObservable.SubscribeOn(scheduler).Subscribe();
-                    this.send_disp = this.SendingObservable.SubscribeOn(scheduler).Subscribe();
+                    recv_disp = ReceivingObservable.SubscribeOn(scheduler).Subscribe();
+                    send_disp = SendingObservable.SubscribeOn(scheduler).Subscribe();
                 }
                 blockLoopStarting = false;
             }
@@ -180,20 +134,21 @@ namespace Tus.Communication
 
         public void LoopStop()
         {
-            if (this.recv_disp != null)
-                this.recv_disp.Dispose();
+            if (recv_disp != null)
+                recv_disp.Dispose();
 
-            if (this.send_disp != null)
-                this.send_disp.Dispose();
+            if (send_disp != null)
+                send_disp.Dispose();
         }
 
-
         #region Dispose-Finalize Pattern
-        private bool __disposed = false;
+
+        private bool __disposed;
+
         public void Dispose()
         {
             GC.SuppressFinalize(this);
-            this.Dispose(true);
+            Dispose(true);
         }
 
         protected void Dispose(bool disposing)
@@ -201,42 +156,32 @@ namespace Tus.Communication
             if (__disposed) return;
             if (disposing)
             {
-
             }
 
-            //if (this.Controller != null)
-            //{
-            //    try
-            //    {
-            //        this.Controller
-            //    }
-            //    catch (IOException)
-            //    { }
-            //}
-
-            //base.Dispose();
-            this.LoopStop();
+            LoopStop();
             __disposed = true;
         }
 
         ~PacketServer()
         {
-            this.Dispose(false);
+            Dispose(false);
         }
-        #endregion
 
+        #endregion
     }
 
     public class PacketServerAction
     {
-        private Action<IDeviceState<IPacketDeviceData>> act;
+        private readonly Action<IDeviceState<IPacketDeviceData>> act;
+
         public PacketServerAction(Action<IDeviceState<IPacketDeviceData>> act)
         {
             this.act = act;
         }
+
         public void Act(IDeviceState<IPacketDeviceData> state)
         {
-            this.act(state);
+            act(state);
         }
     }
 }
