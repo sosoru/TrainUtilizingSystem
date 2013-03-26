@@ -359,8 +359,8 @@ namespace TestProject
         [TestMethod()]
         public void sw_test()
         {
-            //var target = sample;
-            //target.Connect();
+            var target = sample;
+            target.Connect();
 
             var log = new List<IDeviceState<IPacketDeviceData>>();
             var logeth = new List<EthPacket>();
@@ -371,18 +371,17 @@ namespace TestProject
             //    {
             //        log.AddRange(e.DataPacket.ExtractPackedPacket());
             //    });
-            var target = new EthClient() { Address = IPAddress.Parse("192.168.2.9") };
+            //var target = new EthClient() { Address = IPAddress.Parse("192.168.2.102") };
 
             var ptpacket = new EthPacket()
             {
-                srcId = new DeviceID(9, 0),
-                destId = new DeviceID(25, 1, 1),
+                srcId = new DeviceID(102, 0),
+                destId = new DeviceID(24, 1, 1),
             };
 
             var pt = new Switch();
-            pt.CurrentState.DeadTime = 250;
-            pt.CurrentState.ChangingTime = 300;
-
+            pt.CurrentState.DeadTime = 150;
+            pt.CurrentState.ChangingTime = 200;
 
             var prm = Enumerable.Range(1, 8)
                         .SelectMany(i =>

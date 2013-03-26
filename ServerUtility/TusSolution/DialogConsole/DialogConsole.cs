@@ -10,16 +10,13 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
-
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Concurrency;
 using System.Reactive.Threading;
-
 using Tus.Communication;
 using Tus.Communication.Device;
 using Tus.Communication.Device.AvrComposed;
-
 using Tus;
 using Tus.Route;
 using Tus.Route.Parser;
@@ -29,9 +26,10 @@ namespace DialogConsole
 {
     using Tus.Factory;
     using DialogConsole.Features.Base;
-    class MainClass
+
+    internal class MainClass
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             var catalog = new AggregateCatalog();
             catalog.Catalogs.Add(new AssemblyCatalog(".\\Tus.Factory.dll"));
@@ -45,7 +43,7 @@ namespace DialogConsole
         }
     }
 
-    [Export(typeof(IFeatureParameters))]
+    [Export(typeof (IFeatureParameters))]
     public class DialogConsoleParameters
         : IFeatureParameters
     {
@@ -62,17 +60,11 @@ namespace DialogConsole
             this.Vehicles = new List<Vehicle>();
         }
 
-        public IScheduler SchedulerPacketProcessing
-        {
-            get;
-            set;
-        }
-
-
+        public IScheduler SchedulerPacketProcessing { get; set; }
     }
 
     [Export]
-    class DialogConsoleClass
+    internal class DialogConsoleClass
         : IPartImportsSatisfiedNotification
     {
         [Import]
@@ -88,6 +80,7 @@ namespace DialogConsole
         private StreamWriter _logWriterRecv;
         private object lock_writer = new object();
         private StreamWriter _logWriter;
+
         private StreamWriter LogWriterSend
         {
             get
@@ -120,33 +113,38 @@ namespace DialogConsole
                 .Repeat()
                 .SelectMany(g => g.ExtractPackedPacket())
                 .Do(g => this.LogWriterSend.WriteLine(string.Format("({0}.{1}) : sending {2}",
-                                    DateTime.Now.ToLongTimeString(),
-                                    DateTime.Now.Millisecond,
-                                    g.ToString()
-                                    )))
+                                                                    DateTime.Now.ToLongDateString() +
+                                                                    DateTime.Now.ToLongTimeString(),
+                                                                    DateTime.Now.Millisecond,
+                                                                    g.ToString()
+                                                          )))
                 .ObserveOn(this.Param.SchedulerPacketProcessing)
                 .SubscribeOn(Scheduler.Default)
                 .Subscribe();
 
             var timer = Observable.Interval(TimeSpan.FromMilliseconds(20), Scheduler.Default);
             this._receiving = Observable.Defer(() => this.Param.Sheet.Server.ReceivingObservable)
-                .ObserveOn(this.Param.SchedulerPacketProcessing)
-                .Repeat()
-                .Zip(timer, (v, _) => v)
-                .SelectMany(v => v.ExtractPackedPacket())
-                .Do(g => this._logWriterRecv.WriteLine(string.Format("({0}.{1}) : recving {2}",
-                                                                    DateTime.Now.ToLongTimeString(),
-                                                                    DateTime.Now.Millisecond,
-                                                                    g.ToString()
-                                                                    )))
-                                                            .SubscribeOn(Scheduler.Default)
-                                                            .Subscribe();
+                                        .ObserveOn(this.Param.SchedulerPacketProcessing)
+                                        .Repeat()
+                                        .Zip(timer, (v, _) => v)
+                                        .SelectMany(v => v.ExtractPackedPacket())
+                                        .Do(g => this._logWriterRecv.WriteLine(string.Format("({0}.{1}) : recving {2}",
+                                                                                             DateTime.Now
+                                                                                                     .ToLongDateString() +
+                                                                                             DateTime.Now
+                                                                                                     .ToLongTimeString(),
+                                                                                             DateTime.Now.Millisecond,
+                                                                                             g.ToString()
+                                                                                   )))
+                                        .SubscribeOn(Scheduler.Default)
+                                        .Subscribe();
 
             this.Param.Sheet.Effect(new CommandFactory()
-            {
-                CreateCommand = b => new CommandInfo() { MotorMode = MotorMemoryStateEnum.NoEffect, }
-            },
-            this.Param.Sheet.InnerBlocks);
+                                        {
+                                            CreateCommand =
+                                                b => new CommandInfo() {MotorMode = MotorMemoryStateEnum.NoEffect,}
+                                        },
+                                    this.Param.Sheet.InnerBlocks);
 
             foreach (var f in this.Features)
                 f.Value.Init();
@@ -175,7 +173,6 @@ namespace DialogConsole
                     Console.WriteLine(ex.Message);
                 }
             }
-
         }
 
         public Route InputRoute(BlockSheet sht, Route before)
@@ -205,5 +202,4 @@ namespace DialogConsole
             this.Features = this.Features.OrderBy(f => f.Metadata.FeatureExpression).ToList();
         }
     }
-
 }

@@ -68,7 +68,7 @@ namespace DialogConsole.Features
                         foreach (var h in halts)
                             vh.Halt.Add(h);
                     }
-
+                    
                     this.Param.VehiclePipeline.Subscribe();
                 }
                 catch (Exception ex)

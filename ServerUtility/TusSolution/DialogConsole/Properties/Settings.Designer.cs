@@ -25,7 +25,7 @@ namespace DialogConsole.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\Administrator\\Desktop\\test_course.yaml")]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\Administrator\\Desktop\\rail\\032713_layout.yaml")]
         public string SheetPath {
             get {
                 return ((string)(this["SheetPath"]));
@@ -73,7 +73,7 @@ namespace DialogConsole.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("(108, 0, 0)")]
+        [global::System.Configuration.DefaultSettingValueAttribute("(9, 0, 0)")]
         public string ParentDeviceID {
             get {
                 return ((string)(this["ParentDeviceID"]));

@@ -23,7 +23,7 @@ namespace Tus.Communication.Ethernet
         // private UdpClient client_;
 
         public IPAddress Address { get; set; }
-        
+
         public EthClient()
         {
             // this.client_ = new UdpClient(PORT);
@@ -37,9 +37,9 @@ namespace Tus.Communication.Ethernet
 
         public IObservable<EthPacket> AsyncReceive()
         {
-            IPEndPoint ipend = new IPEndPoint(IPAddress.Parse("192.168.2.9"), RECV_PORT);
+            IPEndPoint ipend = new IPEndPoint(IPAddress.Any, RECV_PORT);
             var client = new UdpClient(RECV_PORT);
-           
+
             return Observable.FromAsyncPattern<byte[]>(client.BeginReceive,
                                                        res => client.EndReceive(res, ref ipend))()
                                                        .Do(data => client.Close())
