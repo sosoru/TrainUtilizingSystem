@@ -59,7 +59,7 @@ namespace DialogConsole
                 KwToAb = new[] { "AT1", "BAT1", },
                 AbMain = new[] { "AT3", "AT4", "AT5", "AT6",  },
                 AbSub = new[] { "AT3", "AT4S", "AT5S", "AT5-1", "AT6",  },
-                AbToKw = new[] { "BAT6", "AT7", "BAT7", "AT8", "BAT8", "AT9", "BAT9", "AT10P", "AT10", "BAT10", "AT11", "BAT11" },
+                AbToKw = new[] { "AT6m", "BAT6", "AT7", "BAT7", "AT8", "BAT8", "AT9", "BAT9", "AT10P", "AT10", "BAT10", "AT11", "BAT11" },
             };
 
             return gen.GetLoop();
@@ -74,7 +74,7 @@ namespace DialogConsole
                 KwToAb = new[] { "BT1", "BBT1", },
                 AbMain = new[] { "BT3", "BT4", "BT5", "BT6", },
                 AbSub = new[] { "BT3", "BT4S", "BT5S", "BT5-1", "BT6", },
-                AbToKw = new[] { "BBT6", "BT7", "BBT7", "BT8", "BBT8", "BT9", "BBT9",  "BT10P", "BT10", "BBT10", "BT11", "BBT11", },
+                AbToKw = new[] { "BT6m","BBT6", "BT7", "BBT7", "BT8", "BBT8", "BT9", "BBT9",  "BT10P", "BT10", "BBT10", "BT11", "BBT11", },
             };
             return gen.GetLoop();
         }
@@ -100,7 +100,7 @@ namespace DialogConsole
                 Reverse = inv,
                 UseSubline = sub,
                 KwToAb = new[] { "DT1", "BDT1", "DT2-1", "DT2-2", "DT2-3", "DT2-4", },
-                AbMain = new[] { "DT3", "DT4", "DT5", "DT6",  },
+                AbMain = new[] { "DT3", "DT4", "DT5", "DT6", "DT6-1" },
                 AbSub = new[] { "DT3", "DT4S", "DT5S", "DT5-1", "DT6",  },
                 AbToKw = new[] { "BDT6", "DT7", "BDT7", "DT8", "BDT8", "DT9", "BDT9", "DT10", "BDT10", "DT11", "BDT11", },
             };

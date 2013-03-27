@@ -16,16 +16,25 @@ namespace DialogConsole.Features
         : BaseFeature, IFeature
     {
         public void Execute()
+        
         {
-            Console.WriteLine("Vehicle Name ?");
-            string vhname = Console.ReadLine();
+            try
+            {
+                Console.WriteLine("Vehicle Name ?");
+                string vhname = Console.ReadLine();
 
-            Console.WriteLine("Which block your vehicle halt on?");
-            Block bk = Param.Sheet.GetBlock(Console.ReadLine());
+                Console.WriteLine("Which block your vehicle halt on?");
+                Block bk = Param.Sheet.GetBlock(Console.ReadLine());
 
-            //this.Vehicles.Clear();
-            Vehicle v = CreateVehicle(vhname, bk);
+                //this.Vehicles.Clear();
+                Vehicle v = CreateVehicle(vhname, bk);
 
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return;
+            }
 
             Param.VehiclePipeline = Observable.Defer(
                 () => Observable.Start(VehicleProcess, Param.SchedulerPacketProcessing))
@@ -96,7 +105,7 @@ namespace DialogConsole.Features
             }
 
             bool ign = false;
-            Route rt = InputRouteManually(out ign);
+            Route rt = InputRoute(out ign);
 
             rt.IsRepeatable = true;
             var v = new Vehicle(Param.Sheet, rt);
