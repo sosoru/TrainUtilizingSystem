@@ -100,7 +100,7 @@ namespace TestProject
         [TestMethod()]
         public void FromStringTest1()
         {
-            RouteParser target = new RouteParser() { ReferencedBlocks = blocks };
+            RouteLiteralParser target = new RouteLiteralParser() { ReferencedBlocks = blocks };
             string context = sample_context;
 
             IEnumerable<RouteSegmentInfo> expected =

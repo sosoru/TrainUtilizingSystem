@@ -6,7 +6,7 @@ using Tus.Route;
 using System.Text.RegularExpressions;
 namespace Tus.Route.Parser
 {
-    public class RouteParser
+    public class RouteLiteralParser
     {
         public IList<BlockInfo> ReferencedBlocks { get; set; }
 

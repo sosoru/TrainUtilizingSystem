@@ -13,7 +13,7 @@ namespace Tus.Route.Parser
     public class BlockYaml
     {
         private DeviceIdParser pr_addr;
-        private RouteParser pr_route;
+        private RouteLiteralParser _prRouteLiteral;
 
         public IEnumerable<object> ParseFrom(string path)
         {
@@ -39,8 +39,8 @@ namespace Tus.Route.Parser
             var motor = new MotorInfo()
             {
                 Address = pr_addr.FromString((string)src["addr"]).First(),
-                RoutePositive = pr_route.FromString((string)src["pos"]).First(),
-                RouteNegative = pr_route.FromString((string)src["neg"]).First(),
+                RoutePositive = _prRouteLiteral.FromString((string)src["pos"]).First(),
+                RouteNegative = _prRouteLiteral.FromString((string)src["neg"]).First(),
             };
 
             return motor;
@@ -51,8 +51,8 @@ namespace Tus.Route.Parser
             var pt = new SwitchInfo()
             {
                 Address = pr_addr.FromString((string)src["addr"]).First(),
-                DirStraight = pr_route.FromString((string)src["s"]),
-                DirCurved = pr_route.FromString((string)src["c"]),
+                DirStraight = _prRouteLiteral.FromString((string)src["s"]),
+                DirCurved = _prRouteLiteral.FromString((string)src["c"]),
             };
 
             return pt;
@@ -89,12 +89,12 @@ namespace Tus.Route.Parser
             var ab = ParseAbstract(src).ToList();
 
             this.pr_addr = new DeviceIdParser();
-            this.pr_route = new RouteParser() { ReferencedBlocks = ab };
+            this._prRouteLiteral = new RouteLiteralParser() { ReferencedBlocks = ab };
 
             foreach (var r in src)
             {
                 var dict = (Dictionary<object, object>)r;
-                var route = pr_route.FromString((string)dict["route"]);
+                var route = _prRouteLiteral.FromString((string)dict["route"]);
 
                 var motor_src = (Dictionary<object, object>)extract_dict(dict, "motor");
                 var sens_src = (Dictionary<object, object>)extract_dict(dict, "sensor");
