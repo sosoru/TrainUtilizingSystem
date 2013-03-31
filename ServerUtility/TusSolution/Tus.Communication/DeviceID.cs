@@ -70,7 +70,7 @@ namespace Tus.Communication
 
         public int GetUniqueIdByBoard()
         {
-            return this.ParentPart.GetHashCode() ^ this.ModuleAddr.GetHashCode();
+            return this.ParentPart << 8 | this.ModuleAddr;
         }
 
 

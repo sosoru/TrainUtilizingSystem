@@ -122,6 +122,7 @@ namespace Tus.Route
 
         public void ChangeRoute(Route rt)
         {
+            //todo : check the routes can be changed
             this.Route = rt;
             this.Refresh();
         }

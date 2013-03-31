@@ -81,6 +81,7 @@
     <Compile Include="Parser\DeviceIdParser.cs" />
     <Compile Include="Parser\RegexExtention.cs" />
     <Compile Include="Parser\RouteParser.cs" />
+    <Compile Include="Parser\RouteYaml.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -103,6 +103,7 @@
     <Compile Include="DialogController\MotorControllerTest.cs" />
     <Compile Include="DialogController\SwitchControllerTest.cs" />
     <Compile Include="EthClientTest.cs" />
+    <Compile Include="FileParseTest\RouteYamlTest.cs" />
     <Compile Include="LoopingArrayTest.cs" />
     <Compile Include="MotorStateTest.cs" />
     <Compile Include="PacketDispatcherSingleTest.cs" />

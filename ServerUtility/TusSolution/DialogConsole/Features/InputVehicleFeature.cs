@@ -16,7 +16,6 @@ namespace DialogConsole.Features
         : BaseFeature, IFeature
     {
         public void Execute()
-        
         {
             try
             {
@@ -25,6 +24,13 @@ namespace DialogConsole.Features
 
                 Console.WriteLine("Which block your vehicle halt on?");
                 Block bk = Param.Sheet.GetBlock(Console.ReadLine());
+
+                //if block is not found
+                if (bk == null)
+                {
+                    Console.WriteLine("Block is not found");
+                    return;
+                }
 
                 //this.Vehicles.Clear();
                 Vehicle v = CreateVehicle(vhname, bk);

@@ -18,11 +18,10 @@ namespace Tus.Communication
             //while (st.ReadByte() != 0xFF) ;
             st.ReadByte();
 
-            byte[] buf = new byte [31];
+            byte[] buf = new byte[31];
             st.Read(buf, 0, buf.Length);
 
             return buf.ToDevicePacket();
-
         }
 
         public static DevicePacket ToDevicePacket(this IDevice<IDeviceState<IPacketDeviceData>> dev)
@@ -30,9 +29,9 @@ namespace Tus.Communication
             var data = dev.CurrentState.Data;
 
             var packet = new DevicePacket()
-            {
-                ID = dev.DeviceID,
-            };
+                             {
+                                 ID = dev.DeviceID,
+                             };
 
             packet.CopyToData(data);
             //packet.ModuleType = dev.ModuleType;
@@ -48,41 +47,47 @@ namespace Tus.Communication
             {
                 var len = packet.Data[bufind];
                 var internelid = packet.Data[bufind + 1];
-                var mtype = (ModuleTypeEnum)packet.Data[bufind + 2];
-                var f = AvrDeviceFactoryProvider.Factories.Value.First(p => p.Metadata.ModuleType == mtype).Value;
-                var state = f.CreateDeviceState();
-                var data = state.Data;
-                var cpbuffer = new byte[len];
+                var mtype = (ModuleTypeEnum) packet.Data[bufind + 2];
 
-                state.ID = new DeviceID(packet.ID.ParentPart, packet.ID.ModuleAddr, internelid);
+                if (AvrDeviceFactoryProvider.Factories.Value.Any(p => p.Metadata.ModuleType == mtype))
+                {
+                    var f = AvrDeviceFactoryProvider.Factories.Value.First(p => p.Metadata.ModuleType == mtype).Value;
+                    var state = f.CreateDeviceState();
+                    var data = state.Data;
+                    var cpbuffer = new byte[len];
 
-                Array.Copy(packet.Data, bufind, cpbuffer, 0, len);
-                data.RestoreObject(cpbuffer);
+                    state.ID = new DeviceID(packet.ID.ParentPart, packet.ID.ModuleAddr, internelid);
 
-                yield return state;
+                    Array.Copy(packet.Data, bufind, cpbuffer, 0, len);
+                    data.RestoreObject(cpbuffer);
+
+                    yield return state;
+                }
 
                 bufind += len;
             }
-
         }
 
-        public static IEnumerable<DevicePacket> CreatePackedPacket(params IDevice<IDeviceState<IPacketDeviceData>>[] devs)
+        public static IEnumerable<DevicePacket> CreatePackedPacket(
+            params IDevice<IDeviceState<IPacketDeviceData>>[] devs)
         {
             return CreatePackedPacketInternal(devs);
         }
 
-        public static IEnumerable<DevicePacket> CreatePackedPacket(IEnumerable<IDevice<IDeviceState<IPacketDeviceData>>> devs)
+        public static IEnumerable<DevicePacket> CreatePackedPacket(
+            IEnumerable<IDevice<IDeviceState<IPacketDeviceData>>> devs)
         {
             return CreatePackedPacketInternal(devs);
         }
 
-        private static IEnumerable<DevicePacket> CreatePackedPacketInternal(IEnumerable<IDevice<IDeviceState<IPacketDeviceData>>> devenumerator)
+        private static IEnumerable<DevicePacket> CreatePackedPacketInternal(
+            IEnumerable<IDevice<IDeviceState<IPacketDeviceData>>> devenumerator)
         {
             if (devenumerator == null || !devenumerator.Any())
-                return new DevicePacket[] { };
+                return new DevicePacket[] {};
 
-            var devs = devenumerator.Select((a, ind) => new { ind = ind, val = a });
-            var pack = new DevicePacket() { ID = devs.First().val.DeviceID };
+            var devs = devenumerator.Select((a, ind) => new {ind = ind, val = a});
+            var pack = new DevicePacket() {ID = devs.First().val.DeviceID};
 
             using (var mst = new MemoryStream(pack.Data))
             {
@@ -93,7 +98,7 @@ namespace Tus.Communication
 
                     if (mst.Position + data.DataLength > pack.Data.Length)
                     {
-                        return new[] { pack }.Concat(CreatePackedPacket(devenumerator.Skip(dev.ind)));
+                        return new[] {pack}.Concat(CreatePackedPacket(devenumerator.Skip(dev.ind)));
                     }
                     else
                     {
@@ -102,7 +107,7 @@ namespace Tus.Communication
                 }
             }
 
-            return new[] { pack };
+            return new[] {pack};
         }
 
         //public static void WritePacket(this ChunckedStreamController st, DevicePacket pack)
@@ -121,5 +126,4 @@ namespace Tus.Communication
         //    st.Write(buf, 0, buf.Length);
         //}
     }
-
 }
