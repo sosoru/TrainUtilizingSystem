@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-
 using Tus.Communication;
 
-namespace Tus.Route.Parser
+namespace Tus.TransControl.Parser
 {
     public class DeviceIdParser
     {

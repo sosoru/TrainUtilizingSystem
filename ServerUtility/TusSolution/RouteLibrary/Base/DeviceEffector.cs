@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Linq;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
-
 using Tus.Communication;
-using Tus.Communication.Device;
 using Tus.Communication.Device.AvrComposed;
 
-namespace Tus.Route
+namespace Tus.TransControl.Base
 {
     public interface IDeviceEffector
     {

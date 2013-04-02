@@ -99,9 +99,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RouteLibrary\Tus.Route.csproj">
+    <ProjectReference Include="..\RouteLibrary\Tus.TransControl.csproj">
       <Project>{39e73a78-039d-45dd-ad32-879b81ea567e}</Project>
-      <Name>Tus.Route</Name>
+      <Name>Tus.TransControl</Name>
     </ProjectReference>
     <ProjectReference Include="..\SensorLibrary.Devices.TusAvrDevices\Tus.Communication.Device.AvrComposed.csproj">
       <Project>{941abaca-ccf7-436b-8d63-c3751cc1d1a9}</Project>

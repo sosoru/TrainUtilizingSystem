@@ -9,5 +9,6 @@ namespace Tus.Factory
         string IpSegment { get; }
         string ParentDeviceID { get; }
         string SheetPath { get; }
+        string RoutePath { get; }
     }
 }

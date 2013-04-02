@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.Composition;
 using DialogConsole.Features.Base;
-using Tus.Route;
+using Tus.TransControl.Base;
 
 namespace DialogConsole.Features
 {

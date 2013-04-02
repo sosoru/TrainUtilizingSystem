@@ -1,22 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-
-using System.Collections.Specialized;
 using System.Collections.ObjectModel;
-using System.ComponentModel.Composition;
-
-using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Concurrency;
-using System.Reactive.Subjects;
-
 using Tus.Communication;
-using Tus.Communication.Device;
 using Tus.Communication.Device.AvrComposed;
 
-namespace Tus.Route
+namespace Tus.TransControl.Base
 {
     public class BlockSheet
         : IEquatable<BlockSheet>

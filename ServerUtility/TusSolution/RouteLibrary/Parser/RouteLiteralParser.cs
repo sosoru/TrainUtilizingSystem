@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Tus.Route;
 using System.Text.RegularExpressions;
-namespace Tus.Route.Parser
+using Tus.TransControl.Base;
+
+namespace Tus.TransControl.Parser
 {
     public class RouteLiteralParser
     {

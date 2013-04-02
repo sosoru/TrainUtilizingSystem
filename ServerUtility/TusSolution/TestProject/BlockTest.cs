@@ -7,6 +7,7 @@ using System.Linq;
 using Tus.Communication;
 using Tus.Communication.Device;
 using Tus.Communication.Device.AvrComposed;
+using Tus.TransControl.Base;
 
 namespace TestProject
 {

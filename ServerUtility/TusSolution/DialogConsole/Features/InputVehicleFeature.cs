@@ -6,7 +6,7 @@ using System.Linq;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using DialogConsole.Features.Base;
-using Tus.Route;
+using Tus.TransControl.Base;
 
 namespace DialogConsole.Features
 {
@@ -66,8 +66,8 @@ namespace DialogConsole.Features
 
         private Route InputRoute(out bool ignoreblockage)
         {
-            Console.WriteLine("select route [A-D] [rev] [sub] [ign]");
-            string ans = Console.ReadLine().ToLower();
+            Console.WriteLine("select route [name] [rev] [sub] [ign]");
+            string ans = Console.ReadLine().ToLower().Trim();
 
             bool rev = ans.Contains("rev");
             bool sub = ans.Contains("sub");
@@ -76,28 +76,12 @@ namespace DialogConsole.Features
             if (ans.Length < 1)
                 throw new ArgumentException("insufficient parameters");
 
-            IEnumerable<string> rt = null;
-            char firstch = ans.First();
-            //rev = !rev;
-            switch (firstch)
-            {
-                case 'a':
-                    rt = RouteGeneratorForTwelve.GetLoopA(rev, sub);
-                    break;
-                case 'b':
-                    rt = RouteGeneratorForTwelve.GetLoopB(rev, sub);
-                    break;
-                case 'c':
-                    rt = RouteGeneratorForTwelve.GetLoopC(rev, sub);
-                    break;
-                case 'd':
-                    rt = RouteGeneratorForTwelve.GetLoopD(rev, sub);
-                    break;
-                default:
-                    throw new InvalidDataException("invalid route selection");
-            }
-
-            return new Route(rt.Select(s => Param.Sheet.GetBlock(s)).ToList());
+            var routename = ans.Split(' ')[0];
+            var rt = this.Param.Routes.FirstOrDefault(r => r.Name == routename);
+            if (null == rt)
+                throw new KeyNotFoundException("no route whose name is equal to the specified name is found");
+            else
+                return rt;
         }
 
         private Vehicle CreateVehicle(string vhname, Block b)

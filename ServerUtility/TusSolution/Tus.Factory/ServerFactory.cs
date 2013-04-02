@@ -11,19 +11,15 @@ using Tus.Communication;
 using Tus.Communication.Device;
 
 using Tus;
-using Tus.Route;
-using Tus.Route.Parser;
+using Tus.TransControl.Parser;
 
 namespace Tus.Factory
 {
 
     [Export]
-    public class ServerFactory
+    public class ServerFactory : FactoryBase<PacketServer>
     {
-        [Import]
-        public IConsoleApplicationSettings ApplicationSettings;
-
-        public PacketServer Create()
+        public override PacketServer Create()
         {
             var ipbase = IPAddress.Parse(this.ApplicationSettings.IpSegment);
             var ipmask = IPAddress.Parse(this.ApplicationSettings.IpMask);

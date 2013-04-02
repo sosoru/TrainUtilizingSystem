@@ -1,9 +1,12 @@
-﻿using Tus.Route.Parser;
+﻿using Tus.Parser;
+using Tus.Route.Parser;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using Tus.Route;
 using System.Linq;
+using Tus.TransControl.Base;
+using Tus.TransControl.Parser;
 
 namespace TestProject
 {

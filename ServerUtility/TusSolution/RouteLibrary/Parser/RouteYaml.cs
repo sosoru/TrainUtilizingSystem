@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Yaml.Serialization;
 
-namespace Tus.Parser
+namespace Tus.TransControl.Parser
 {
     public struct RouteSegmentOnYaml
     {

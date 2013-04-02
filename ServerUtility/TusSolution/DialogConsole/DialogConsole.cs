@@ -18,8 +18,7 @@ using Tus.Communication;
 using Tus.Communication.Device;
 using Tus.Communication.Device.AvrComposed;
 using Tus;
-using Tus.Route;
-using Tus.Route.Parser;
+using Tus.TransControl.Base;
 
 
 namespace DialogConsole
@@ -49,6 +48,7 @@ namespace DialogConsole
     {
         public BlockSheet Sheet { get; set; }
         public IList<Vehicle> Vehicles { get; set; }
+        public IList<Route> Routes { get; set; }
         public IDisposable ServingInfomation { get; set; }
         public IObservable<Unit> VehiclePipeline { get; set; }
         public IDisposable VehicleProcessing { get; set; }

@@ -16,7 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "TusServer", "TusServer\TusServer.pyproj", "{D58C2A9E-FB74-4D92-87A9-67E47AEA7007}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tus.Route", "RouteLibrary\Tus.Route.csproj", "{39E73A78-039D-45DD-AD32-879B81EA567E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tus.TransControl", "RouteLibrary\Tus.TransControl.csproj", "{39E73A78-039D-45DD-AD32-879B81EA567E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RouteServerConsole", "RouteServerConsole\RouteServerConsole.csproj", "{59D80A24-B488-46D2-9A1A-514166D20AEA}"
 EndProject

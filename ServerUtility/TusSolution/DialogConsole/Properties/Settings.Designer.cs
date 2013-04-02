@@ -82,5 +82,17 @@ namespace DialogConsole.Properties {
                 this["ParentDeviceID"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\Administrator\\Desktop\\test_layout.yaml")]
+        public string RoutePath {
+            get {
+                return ((string)(this["RoutePath"]));
+            }
+            set {
+                this["RoutePath"] = value;
+            }
+        }
     }
 }

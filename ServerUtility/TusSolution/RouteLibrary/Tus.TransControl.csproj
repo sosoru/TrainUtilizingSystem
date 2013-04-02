@@ -8,7 +8,7 @@
     <ProjectGuid>{39E73A78-039D-45DD-AD32-879B81EA567E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Tus</RootNamespace>
+    <RootNamespace>Tus.TransControl</RootNamespace>
     <AssemblyName>RouteLibrary</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

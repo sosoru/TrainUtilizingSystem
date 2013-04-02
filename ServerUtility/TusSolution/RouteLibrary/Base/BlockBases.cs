@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Tus.Communication;
 using Tus.Communication.Device.AvrComposed;
 
-namespace Tus.Route
+namespace Tus.TransControl.Base
 {
     public class RouteSegmentInfo
     {

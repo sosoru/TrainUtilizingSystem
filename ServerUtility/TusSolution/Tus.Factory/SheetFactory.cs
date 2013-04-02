@@ -6,24 +6,21 @@ using System.Threading.Tasks;
 using System.ComponentModel.Composition;
 
 using Tus;
-using Tus.Route;
-using Tus.Route.Parser;
+using Tus.TransControl.Base;
+using Tus.TransControl.Parser;
 
 namespace Tus.Factory
 {
     [Export]
-    public class SheetFactory
+    public class SheetFactory : FactoryBase<BlockSheet>
     {
-        [Import]
-        public IConsoleApplicationSettings Settings { get; set; }
-
         [Import]
         public ServerFactory ServerCreater { get; set; }
 
-        public BlockSheet Create()
+        public override BlockSheet Create()
         {
             var parser = new BlockYaml();
-            var blocks = parser.Parse(this.Settings.SheetPath);
+            var blocks = parser.Parse(this.ApplicationSettings.SheetPath);
 
             return new BlockSheet(blocks, this.ServerCreater.Create());
         }

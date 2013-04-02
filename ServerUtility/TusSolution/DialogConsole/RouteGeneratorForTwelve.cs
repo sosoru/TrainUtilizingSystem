@@ -8,8 +8,6 @@ using Tus.Communication.Device;
 using Tus.Communication.Device.AvrComposed;
 
 using Tus;
-using Tus.Route;
-using Tus.Route.Parser;
 
 
 namespace DialogConsole

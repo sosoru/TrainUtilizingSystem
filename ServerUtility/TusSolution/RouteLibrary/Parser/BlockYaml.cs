@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.IO;
-using System.Reflection;
-using System.Yaml;
 using System.Yaml.Serialization;
-using Tus.Route;
+using Tus.TransControl.Base;
 
-namespace Tus.Route.Parser
+namespace Tus.TransControl.Parser
 {
     public class BlockYaml
     {

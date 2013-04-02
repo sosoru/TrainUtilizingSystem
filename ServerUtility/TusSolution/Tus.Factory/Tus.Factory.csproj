@@ -54,8 +54,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FactoryBase.cs" />
     <Compile Include="IConsoleApplicationSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RouteFactory.cs" />
     <Compile Include="ServerFactory.cs" />
     <Compile Include="SheetFactory.cs" />
   </ItemGroup>
@@ -63,9 +65,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RouteLibrary\Tus.Route.csproj">
+    <ProjectReference Include="..\RouteLibrary\Tus.TransControl.csproj">
       <Project>{39e73a78-039d-45dd-ad32-879b81ea567e}</Project>
-      <Name>Tus.Route</Name>
+      <Name>Tus.TransControl</Name>
     </ProjectReference>
     <ProjectReference Include="..\Tus.Communication.Device\Tus.Communication.Device.csproj">
       <Project>{bbbd4a5a-1a91-436e-88bc-8621ac261b7f}</Project>

@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Reactive;
 using System.Reactive.Concurrency;
+using Tus.TransControl.Base;
 
 namespace DialogConsole.Features.Base
 {
     public interface IFeatureParameters
     {
-        Tus.Route.BlockSheet Sheet { get; set; }
-        System.Collections.Generic.IList<Tus.Route.Vehicle> Vehicles { get; set; }
+        BlockSheet Sheet { get; set; }
+        System.Collections.Generic.IList<Vehicle> Vehicles { get; set; }
+        System.Collections.Generic.IList<Route> Routes  { get; set; }
         IDisposable ServingInfomation { get; set; }
         IScheduler SchedulerPacketProcessing { get; set; }
 

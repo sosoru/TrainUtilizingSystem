@@ -1,4 +1,5 @@
-﻿using Tus.Route.Parser;
+﻿using Tus.Parser;
+using Tus.Route.Parser;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
@@ -8,6 +9,7 @@ using Tus.Communication.Device.AvrComposed;
 
 using System.Collections.Generic;
 using System.Linq;
+using Tus.TransControl.Parser;
 
 namespace TestProject
 {
