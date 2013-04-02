@@ -89,7 +89,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Remote\" />
+    <Folder Include="Parser\Remote\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SensorLibrary.Devices.TusAvrDevices\Tus.Communication.Device.AvrComposed.csproj">

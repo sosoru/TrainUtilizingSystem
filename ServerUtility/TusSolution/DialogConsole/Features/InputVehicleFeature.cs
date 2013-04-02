@@ -77,7 +77,7 @@ namespace DialogConsole.Features
                 throw new ArgumentException("insufficient parameters");
 
             var routename = ans.Split(' ')[0];
-            var rt = this.Param.Routes.FirstOrDefault(r => r.Name == routename);
+            var rt = this.Param.Routes.FirstOrDefault(r => r.Name.ToLower() == routename);
             if (null == rt)
                 throw new KeyNotFoundException("no route whose name is equal to the specified name is found");
             else

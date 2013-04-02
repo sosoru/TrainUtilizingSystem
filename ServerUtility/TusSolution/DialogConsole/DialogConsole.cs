@@ -34,7 +34,6 @@ namespace DialogConsole
             catalog.Catalogs.Add(new AssemblyCatalog(".\\Tus.Factory.dll"));
             catalog.Catalogs.Add((new AssemblyCatalog(System.Reflection.Assembly.GetExecutingAssembly())));
             var container = new CompositionContainer(catalog);
-            var shtfactory = container.GetExport<SheetFactory>();
 
             var dialog = container.GetExport<DialogConsole.DialogConsoleClass>();
 
@@ -54,9 +53,12 @@ namespace DialogConsole
         public IDisposable VehicleProcessing { get; set; }
 
         [ImportingConstructor]
-        public DialogConsoleParameters(SheetFactory fact)
+        public DialogConsoleParameters(SheetFactory fact, RouteListFactory rtfact)
         {
             this.Sheet = fact.Create();
+            rtfact.Sheet = this.Sheet;
+
+            this.Routes = rtfact.Create();
             this.Vehicles = new List<Vehicle>();
         }
 
@@ -64,7 +66,7 @@ namespace DialogConsole
     }
 
     [Export]
-    internal class DialogConsoleClass
+    public class DialogConsoleClass
         : IPartImportsSatisfiedNotification
     {
         [Import]

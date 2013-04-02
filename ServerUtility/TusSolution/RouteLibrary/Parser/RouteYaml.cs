@@ -17,7 +17,7 @@ namespace Tus.TransControl.Parser
             var ser = new YamlSerializer();
             object[] objs = ser.DeserializeFromFile(path);
 
-            return (IEnumerable<object>) objs[0];
+            return (IEnumerable<object>)objs[0];
         }
 
         public IEnumerable<object> ParseFromContent(string content)
@@ -25,7 +25,7 @@ namespace Tus.TransControl.Parser
             var ser = new YamlSerializer();
             object[] objs = ser.Deserialize(content);
 
-            return (IEnumerable<object>) objs[0];
+            return (IEnumerable<object>)objs[0];
         }
 
         public IEnumerable<RouteSegmentOnYaml> ParseYamlContent(IEnumerable<object> src)
@@ -34,7 +34,7 @@ namespace Tus.TransControl.Parser
                                                               .Cast<Dictionary<object, object>>();
             return objs.Select(pair => new RouteSegmentOnYaml
                                            {
-                                               Name = (string) pair["name"],
+                                               Name = (string)pair["name"],
                                                Routes = extractYamlRoute(pair["route"]),
                                            });
         }
@@ -42,11 +42,11 @@ namespace Tus.TransControl.Parser
         private IEnumerable<string> extractYamlRoute(object route)
         {
             if (route is string)
-                route = new[] {route};
+                route = new[] { route };
 
             return
-                ((object[]) route).Cast<string>()
-                                  .SelectMany(s => s.Split(',').Select(seg => seg.Trim()).Where(seg => seg.Length > 0));
+                ((object[])route).Cast<string>()
+                                  .SelectMany(s => s.Split(',')).Select(s => s.Trim()).Where(seg => seg.Length > 0);
         }
     }
 }

@@ -95,9 +95,9 @@
   <ItemGroup>
     <Compile Include="BlockSheetTest.cs" />
     <Compile Include="BlockTest.cs" />
-    <Compile Include="BlockYamlTest.cs" />
+    <Compile Include="FileParseTest\BlockYamlTest.cs" />
     <Compile Include="ChunckedStreamTest.cs" />
-    <Compile Include="ConsoleTest\Composition\SheetFactoryTest.cs" />
+    <Compile Include="ConsoleTest\Composition\FactoryTest.cs" />
     <Compile Include="DeviceIdParserTest.cs" />
     <Compile Include="DialogConsole\DialogConsoleTest.cs" />
     <Compile Include="DialogController\MotorControllerTest.cs" />

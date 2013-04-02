@@ -25,7 +25,7 @@ namespace DialogConsole.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\Administrator\\Desktop\\rail\\032713_layout.yaml")]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\Administrator\\Desktop\\test_looping.yaml")]
         public string SheetPath {
             get {
                 return ((string)(this["SheetPath"]));
@@ -85,7 +85,7 @@ namespace DialogConsole.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\Administrator\\Desktop\\test_layout.yaml")]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\Administrator\\Desktop\\test_layout_route.yaml")]
         public string RoutePath {
             get {
                 return ((string)(this["RoutePath"]));

@@ -9,6 +9,7 @@ namespace Tus.TransControl.Parser
     {
         public IList<BlockInfo> ReferencedBlocks { get; set; }
 
+        //戻り値の並びを保証せよ : A>B, A<B
         private IEnumerable<RouteSegmentInfo> parse_route(IEnumerable<string> from, string dir, IEnumerable<string> to)
         {
             var b_from = from.Select(s => ReferencedBlocks.FirstOrDefault(b => b.Name == s.Trim()));

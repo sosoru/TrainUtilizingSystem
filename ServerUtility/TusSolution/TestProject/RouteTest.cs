@@ -1,6 +1,6 @@
-﻿using Tus.Parser;
-using Tus.Route;
-using Tus.Route.Parser;
+﻿using Tus.TransControl.Parser;
+using Tus.TransControl;
+using Tus.TransControl.Parser;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;

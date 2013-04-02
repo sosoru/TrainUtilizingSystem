@@ -3,7 +3,7 @@ using Tus.Communication;
 
 namespace Tus.Factory
 {
-    [Export]
+    [InheritedExport]
     public abstract class FactoryBase <T>
     {
         [Import]

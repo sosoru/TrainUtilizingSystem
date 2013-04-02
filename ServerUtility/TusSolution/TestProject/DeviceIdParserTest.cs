@@ -1,5 +1,5 @@
-﻿using Tus.Parser;
-using Tus.Route.Parser;
+﻿using Tus.TransControl.Parser;
+using Tus.TransControl.Parser;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 

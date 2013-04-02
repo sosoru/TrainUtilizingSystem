@@ -28,20 +28,24 @@ namespace Tus.TransControl.Parser
                         .DefaultIfEmpty(new BlockInfo() { Name = "nothing" });
         }
 
-        public MotorInfo ParseMotor(Dictionary<object, object> src)
+        public MotorInfo ParseMotor(RouteSegmentInfo[] route, Dictionary<object, object> src)
         {
-
+            //todo : alert insufficient parameters when route.length > 2 
             var motor = new MotorInfo()
             {
                 Address = pr_addr.FromString((string)src["addr"]).First(),
-                RoutePositive = _prRouteLiteral.FromString((string)src["pos"]).First(),
-                RouteNegative = _prRouteLiteral.FromString((string)src["neg"]).First(),
+                RoutePositive = (src.ContainsKey("pos")) 
+                                    ? _prRouteLiteral.FromString((string)src["pos"]).First()
+                                    : route.First(),
+                RouteNegative = (src.ContainsKey("neg")) 
+                                    ? _prRouteLiteral.FromString((string)src["neg"]).First()
+                                    : route.Last(),
             };
 
             return motor;
         }
 
-        public SwitchInfo ParsePoint(Dictionary<object, object> src)
+        public SwitchInfo ParsePoint(RouteSegmentInfo[] route, Dictionary<object, object> src)
         {
             var pt = new SwitchInfo()
             {
@@ -89,7 +93,7 @@ namespace Tus.TransControl.Parser
             foreach (var r in src)
             {
                 var dict = (Dictionary<object, object>)r;
-                var route = _prRouteLiteral.FromString((string)dict["route"]);
+                var route = _prRouteLiteral.FromString((string)dict["route"]).ToArray();
 
                 var motor_src = (Dictionary<object, object>)extract_dict(dict, "motor");
                 var sens_src = (Dictionary<object, object>)extract_dict(dict, "sensor");
@@ -99,9 +103,9 @@ namespace Tus.TransControl.Parser
                 var block = ab.Find(b => b.Name == (string)dict["name"]);
 
                 block.Route = route.ToList();
-                block.Motor = (motor_src != null) ? ParseMotor(motor_src) : null;
+                block.Motor = (motor_src != null) ? ParseMotor(route, motor_src) : null;
                 block.Sensor = (sens_src != null) ? ParseSensor(sens_src) : null;
-                block.Switch = (ptr_src != null) ? ParsePoint(ptr_src) : null;
+                block.Switch = (ptr_src != null) ? ParsePoint(route, ptr_src) : null;
                 block.IsIsolated = isolate;
 
                 yield return block;
