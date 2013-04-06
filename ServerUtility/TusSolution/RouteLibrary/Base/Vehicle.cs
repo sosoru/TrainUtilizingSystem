@@ -59,7 +59,7 @@ namespace Tus.TransControl.Base
             this.Route = rt;
 
             this.CurrentBlock = this.Route.Blocks.First();
-            this.Length = 1;
+            this.Length = 2;
             this.Halt = new List<Halt>();
         }
 
@@ -94,6 +94,7 @@ namespace Tus.TransControl.Base
             }
 
             // todo : halts support
+            //todo : steady support and test with or without sensors 
             if (this.Route.LockedUnits.Count > 1)
             {
                 // verified i'm not halted and the next unit is not blocked by other vehicles
@@ -182,6 +183,19 @@ namespace Tus.TransControl.Base
 
             this.Sheet.Effect(cmdfactory, this.Route.LockedBlocks.Concat(lastlockedblocks).Distinct());
         }
+        public void Reverse()
+        {
+            //stop vehicle
+            this.Run(0);
+
+            var cnt = this.CurrentBlock;
+            this.Route.Reverse();
+            while (this.Route.ReleaseBeforeUnit()) ;
+
+            this.Route.AllocateTrain(cnt, this.Length);
+
+        }
+        
 
         #region "CreateCommandMethods"
         private CommandFactory CreateWithWaitingCommand(Func<float> cntspdFactory, Func<float> waitspdFactory)

@@ -68,7 +68,7 @@ namespace DialogConsole.Features
                         foreach (var h in halts)
                             vh.Halt.Add(h);
                     }
-                    
+
                     this.Param.VehiclePipeline.Subscribe();
                 }
                 catch (Exception ex)
@@ -85,6 +85,7 @@ namespace DialogConsole.Features
                 res.Headers.Add("Content-type: application/json");
                 res.Headers.Add("Access-Control-Allow-Headers: x-requested-with, accept");
                 res.Headers.Add("Access-Control-Allow-Origin: *");
+
                 using (var sw = new StreamWriter(res.OutputStream))
                 using (var ms = new MemoryStream())
                 {

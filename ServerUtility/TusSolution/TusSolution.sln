@@ -53,6 +53,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Factory", "Factory", "{42DD
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tus.Factory", "Tus.Factory\Tus.Factory.csproj", "{A367ED72-ABD5-4CFD-A9BD-4BA911D53584}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleJsonServer", "SimpleJsonServer\SimpleJsonServer.csproj", "{554FE933-54A5-4AD9-9C32-181559466ABC}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = TusSolution.vsmdi
@@ -214,6 +216,16 @@ Global
 		{A367ED72-ABD5-4CFD-A9BD-4BA911D53584}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{A367ED72-ABD5-4CFD-A9BD-4BA911D53584}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{A367ED72-ABD5-4CFD-A9BD-4BA911D53584}.Release|x86.ActiveCfg = Release|Any CPU
+		{554FE933-54A5-4AD9-9C32-181559466ABC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{554FE933-54A5-4AD9-9C32-181559466ABC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{554FE933-54A5-4AD9-9C32-181559466ABC}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{554FE933-54A5-4AD9-9C32-181559466ABC}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{554FE933-54A5-4AD9-9C32-181559466ABC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{554FE933-54A5-4AD9-9C32-181559466ABC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{554FE933-54A5-4AD9-9C32-181559466ABC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{554FE933-54A5-4AD9-9C32-181559466ABC}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{554FE933-54A5-4AD9-9C32-181559466ABC}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{554FE933-54A5-4AD9-9C32-181559466ABC}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

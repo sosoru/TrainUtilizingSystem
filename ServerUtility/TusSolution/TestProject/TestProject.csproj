@@ -118,6 +118,7 @@
     <Compile Include="RouteTest\StaLoopTest.cs" />
     <Compile Include="RouteTest\TwelveLayoutTest.cs" />
     <Compile Include="SensorStateTest.cs" />
+    <Compile Include="SerializeTest.cs" />
     <Compile Include="SwitchStateTest.cs" />
     <Compile Include="TestPacketProvider.cs" />
     <Compile Include="TrainSensorDataTest.cs" />

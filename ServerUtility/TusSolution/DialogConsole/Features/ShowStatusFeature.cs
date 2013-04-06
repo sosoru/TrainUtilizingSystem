@@ -8,7 +8,7 @@ using DialogConsole.Features.Base;
 
 namespace DialogConsole.Features
 {
-    [FeatureMetadata("1", "show statuses")]
+    [FeatureMetadata("", "show statuses")]
     [Export(typeof(IFeature))]
     class ShowStatusFeature
         : BaseFeature, IFeature

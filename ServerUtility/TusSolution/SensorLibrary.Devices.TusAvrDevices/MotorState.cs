@@ -122,12 +122,13 @@ namespace Tus.Communication.Device.AvrComposed
         WaitingPulseMode = 0x03,
     }
 
+    //todo:進行方向と極性を一致させるためのカプセル化
     public enum MotorDirection
         : byte
     {
         Standby = 0x00,
-        Positive = 0x01,
-        Negative = 0x02,
+        Positive = 0x02,
+        Negative = 0x01,
     }
 
 }

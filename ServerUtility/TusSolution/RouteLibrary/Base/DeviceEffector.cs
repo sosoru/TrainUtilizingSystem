@@ -144,9 +144,9 @@ namespace Tus.TransControl.Base
             var state = new MotorState()
             {
                 ControlMode = MotorControlMode.WaitingPulseMode,
-                MemoryWhenEntered = MotorMemoryStateEnum.Controlling,
+                MemoryWhenEntered = MotorMemoryStateEnum.Locked,
                 DestinationID = beforemtr.DeviceID,
-                DestinationMemory = MotorMemoryStateEnum.Locked,
+                DestinationMemory = MotorMemoryStateEnum.Controlling,
                 ThresholdCurrent = 0.05f,
             };
 

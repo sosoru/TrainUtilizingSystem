@@ -166,14 +166,20 @@ namespace MotorController
 					kstate.KernelCommand = ETHCMD_MEMORY;
 					pmstate->CurerntMemory = pstate->DestinationMemory;
 					
-					if(!g_packer.IsInitialized())
+					if( (pstate->DestinationID.raw & 0x000000FF) == (g_myDeviceID.raw & 0x000000FF))
 					{
-						g_packer.Init();
-						
-						g_packer.Pack((uint8_t*)&kstate);
-						g_packer.Send(&g_myDeviceID, &pstate->DestinationID);
-					}						
-					
+						ProcessKernelPacket(&kstate, &g_myDeviceID, &pstate->DestinationID);
+					}
+					else{
+						if(!g_packer.IsInitialized())
+						{
+							g_packer.Init();
+							
+							g_packer.Pack((uint8_t*)&kstate);
+							g_packer.Send(&g_myDeviceID, &pstate->DestinationID);
+						}
+					}
+										
 					buffer_index = pstate->MemoryAfterEntered;
 				}
 			}

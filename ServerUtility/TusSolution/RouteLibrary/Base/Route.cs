@@ -6,9 +6,10 @@ using System.Runtime.Serialization;
 
 namespace Tus.TransControl.Base
 {
-
+    [DataContract]
     public class ControllingRoute
     {
+        [DataMember]
         public IList<Block> Blocks { get; set; }
 
         public Block ControlBlock
@@ -70,6 +71,7 @@ namespace Tus.TransControl.Base
         public IList<Block> Blocks { get; private set; }
         public IList<ControllingRoute> Units { get; protected set; }
 
+        [DataMember]
         public Queue<ControllingRoute> LockedUnits { get; private set; }
 
         public bool IsRepeatable { get; set; }
@@ -227,7 +229,7 @@ namespace Tus.TransControl.Base
 
                 return new RouteSegment(first, this.Blocks[ind + 1]);
             }
-            else if (ind == this.Blocks.Count)
+            else if (ind >= this.Blocks.Count-1)
             {
                 Block last = null;
                 if (this.IsRepeatable)
@@ -302,6 +304,17 @@ namespace Tus.TransControl.Base
                 // IsSectionFinished And the locked units of this route reach the end of them
                 return this.ind_current == this.Units.Count() - 1 && this.IsSectionFinished;
             }
+        }
+
+        public void Reverse()
+        {
+            foreach (var cr in this.Units)
+            {
+                cr.Blocks = cr.Blocks.Reverse().ToList();
+            }
+            this.Blocks = this.Blocks.Reverse().ToList();
+            this.Units = this.Units.Reverse().ToList();
+            
         }
     }
 }

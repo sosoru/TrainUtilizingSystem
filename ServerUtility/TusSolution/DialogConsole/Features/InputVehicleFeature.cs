@@ -64,12 +64,13 @@ namespace DialogConsole.Features
             return new Route(rt.Select(s => Param.Sheet.GetBlock(s.Trim())).ToList());
         }
 
-        private Route InputRoute(out bool ignoreblockage)
+        private Route InputRoute(out bool ignoreblockage, out bool reversed)
         {
             Console.WriteLine("select route [name] [rev] [sub] [ign]");
             string ans = Console.ReadLine().ToLower().Trim();
 
-            bool rev = ans.Contains("rev");
+            //bool rev = ans.Contains("rev");
+            bool rev = false;
             bool sub = ans.Contains("sub");
             ignoreblockage = ans.Contains("ign");
 
@@ -81,7 +82,11 @@ namespace DialogConsole.Features
             if (null == rt)
                 throw new KeyNotFoundException("no route whose name is equal to the specified name is found");
             else
+            {
+                reversed = rev;
+                rt.IsRepeatable = true;
                 return rt;
+            }
         }
 
         private Vehicle CreateVehicle(string vhname, Block b)
@@ -95,7 +100,8 @@ namespace DialogConsole.Features
             }
 
             bool ign = false;
-            Route rt = InputRoute(out ign);
+            bool rev = false;
+            Route rt = InputRoute(out ign, out rev);
 
             rt.IsRepeatable = true;
             var v = new Vehicle(Param.Sheet, rt);
@@ -103,6 +109,8 @@ namespace DialogConsole.Features
             v.Speed = 0.0f;
             v.Name = vhname;
             v.IgnoreBlockage = (ign);
+            if (rev)
+                v.Reverse();
 
             Param.Vehicles.Add(v);
             return v;

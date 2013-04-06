@@ -103,7 +103,7 @@ bool ProcessKernelPacket(KernalState *pstate, DeviceID* psrcid, DeviceID* pdstid
 	switch(pstate->KernelCommand)
 	{
 		case ETHCMD_REPLY:
-			SendKernelPacket(pdstid, psrcid);	
+			SendKernelPacket(pdstid, psrcid);	//reply current memory 
 			CreatePacket(1, 2, pdstid, psrcid);
 			CreatePacket(3, 4, pdstid, psrcid);
 		break;
