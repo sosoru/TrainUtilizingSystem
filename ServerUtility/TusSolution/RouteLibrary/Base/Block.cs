@@ -21,6 +21,13 @@ namespace Tus.TransControl.Base
         public Func<Block, CommandInfo> CreateCommand { get; set; }
     }
 
+    public enum BlockPolar
+    {
+        Positive,
+        Negative,
+        Any,
+    }
+
     public class SensorDetector
     {
         public Block ParentBlock { get; private set; }

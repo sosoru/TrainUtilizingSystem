@@ -73,6 +73,7 @@ namespace Tus.TransControl.Base
 
         [DataMember]
         public Queue<ControllingRoute> LockedUnits { get; private set; }
+        public BlockPolar Polar { get; set; }
 
         public bool IsRepeatable { get; set; }
 
@@ -208,7 +209,7 @@ namespace Tus.TransControl.Base
                 if (this.LockedUnits == null)
                     return new Block[] { };
 
-                return this.LockedUnits.SelectMany(u => u.Blocks).ToList();
+                return this.LockedUnits.ToArray().SelectMany(u => u.Blocks).ToList();
             }
         }
 
@@ -281,15 +282,19 @@ namespace Tus.TransControl.Base
             if (len <= 0)
                 throw new ArgumentOutOfRangeException("len must be greater than 0");
 
-            var blockunit = this.Units.Select((r, i) => new { ind = i, route = r })
-                                            .FirstOrDefault(u => u.route.Blocks.Contains(cntblock));
+            var blocklist = this.Units.Select((r, i) => new {ind = i, route = r}).ToArray();
+            var blockunit = blocklist.FirstOrDefault(u => u.route.Blocks.Contains(cntblock));
 
             if (blockunit == null)
                 throw new IndexOutOfRangeException("block not found");
 
             while (this.ReleaseBeforeUnit()) ;
 
-            this.ind_current = blockunit.ind - 1;
+            this.ind_current = (blockunit.ind - 1) - (len-1); // (index of before block from current) - (vehicle length)
+
+            if (this.IsRepeatable && this.ind_current < 0)
+                this.ind_current += this.Units.Count;
+
             while (len-- > 0)
             {
                 if (!this.LockNextUnit())

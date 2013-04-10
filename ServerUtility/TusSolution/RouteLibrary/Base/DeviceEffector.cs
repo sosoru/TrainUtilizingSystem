@@ -139,16 +139,34 @@ namespace Tus.TransControl.Base
             return state;
         }
 
-        private MotorState CreateWaitingState(Motor beforemtr)
+        private MotorState CreateWaitingState(BlockPolar polar, Motor beforemtr)
         {
-            var state = new MotorState()
+            var threshold = 0.05f;
+            MotorState state;
+            if (polar == BlockPolar.Positive)
             {
-                ControlMode = MotorControlMode.WaitingPulseMode,
-                MemoryWhenEntered = MotorMemoryStateEnum.Locked,
-                DestinationID = beforemtr.DeviceID,
-                DestinationMemory = MotorMemoryStateEnum.Controlling,
-                ThresholdCurrent = 0.05f,
-            };
+                state = new MotorState()
+                            {
+                                ControlMode = MotorControlMode.WaitingPulseMode,
+                                MemoryWhenEntered = MotorMemoryStateEnum.Locked,
+                                DestinationID = beforemtr.DeviceID,
+                                DestinationMemory = MotorMemoryStateEnum.Controlling,
+                                ThresholdCurrent = threshold,
+                            };
+            }
+            else if (polar == BlockPolar.Negative)
+            {
+                state = new MotorState()
+                            {
+                                ControlMode = MotorControlMode.WaitingPulseMode,
+                                MemoryWhenEntered = MotorMemoryStateEnum.Controlling,
+                                DestinationID = beforemtr.DeviceID,
+                                DestinationMemory = MotorMemoryStateEnum.Locked,
+                                ThresholdCurrent = threshold,
+                            };
+            }
+            else
+                throw new NotImplementedException("polar undecidable");
 
             return state;
         }
@@ -199,11 +217,12 @@ namespace Tus.TransControl.Base
                     this.IsNeededExecution = true;
                     break;
                 case MotorMemoryStateEnum.Waiting:
+                    var polar = cmd.Route.Polar;
                     var cntstate = CreateMotorState(cmd);
                     var waitingblock = this.ParentBlock.BeforeBlockHavingMotor(cmd.Route);
 
                     states.Add(MotorMemoryStateEnum.Controlling, CreateMotorState(cmd));
-                    states.Add(MotorMemoryStateEnum.Waiting, CreateWaitingState(waitingblock.MotorEffector.Device));
+                    states.Add(MotorMemoryStateEnum.Waiting, CreateWaitingState(polar, waitingblock.MotorEffector.Device));
                     if (this.Device.States.ContainsKey(MotorMemoryStateEnum.Controlling) &&
                         this.Device.States[MotorMemoryStateEnum.Controlling].Duty == cntstate.Duty)
                     {
@@ -218,6 +237,10 @@ namespace Tus.TransControl.Base
                 case MotorMemoryStateEnum.NoEffect:
                     states.Add(MotorMemoryStateEnum.NoEffect, CreateNoEffectState());
                     break;
+                case MotorMemoryStateEnum.Locked:
+                    states.Add(MotorMemoryStateEnum.Locked, CreateLockedState());
+                    break;
+
                 case MotorMemoryStateEnum.Unknown:
                 default:
                     throw new InvalidOperationException("invalid mode applied");
@@ -282,7 +305,7 @@ namespace Tus.TransControl.Base
             }
             //}
 
-            if (_before_position != this.Device.CurrentState.Position)
+            //if (_before_position != this.Device.CurrentState.Position)
                 this.IsNeededExecution = true;
 
             _before_position = this.Device.CurrentState.Position;

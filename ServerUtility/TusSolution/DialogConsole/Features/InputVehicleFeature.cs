@@ -105,6 +105,7 @@ namespace DialogConsole.Features
 
             rt.IsRepeatable = true;
             var v = new Vehicle(Param.Sheet, rt);
+            v.AvailableRoutes = this.Param.Routes;
             v.CurrentBlock = b;
             v.Speed = 0.0f;
             v.Name = vhname;

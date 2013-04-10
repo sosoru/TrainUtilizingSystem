@@ -41,7 +41,7 @@ namespace DialogConsole
         }
     }
 
-    [Export(typeof (IFeatureParameters))]
+    [Export(typeof(IFeatureParameters))]
     public class DialogConsoleParameters
         : IFeatureParameters
     {
@@ -144,7 +144,7 @@ namespace DialogConsole
             this.Param.Sheet.Effect(new CommandFactory()
                                         {
                                             CreateCommand =
-                                                b => new CommandInfo() {MotorMode = MotorMemoryStateEnum.NoEffect,}
+                                                b => new CommandInfo() { MotorMode = MotorMemoryStateEnum.NoEffect, },
                                         },
                                     this.Param.Sheet.InnerBlocks);
 

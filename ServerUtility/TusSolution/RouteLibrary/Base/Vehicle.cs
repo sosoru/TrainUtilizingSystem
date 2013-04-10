@@ -10,8 +10,8 @@ namespace Tus.TransControl.Base
     {
         public float RawSpeed { get; set; }
         public float Go { get { return RawSpeed; } }
-        public float Caution { get { return RawSpeed * 0.5f ; } }
-        public float Stop { get { return RawSpeed * 0f; } }
+        public float Caution { get { return RawSpeed * 1.0f ; } }
+        public float Stop { get { return RawSpeed * 1.0f; } }
     }
 
     [DataContract]
@@ -116,6 +116,12 @@ namespace Tus.TransControl.Base
         public void ChangeRoute(Route rt)
         {
             //todo : check the routes can be changed
+            this.Speed = 0;
+            this.Refresh();
+            while (this.Route.ReleaseBeforeUnit()) ;
+
+            rt.IsRepeatable = this.Route.IsRepeatable;
+
             this.Route = rt;
             this.Refresh();
         }
@@ -183,6 +189,7 @@ namespace Tus.TransControl.Base
 
             this.Sheet.Effect(cmdfactory, this.Route.LockedBlocks.Concat(lastlockedblocks).Distinct());
         }
+
         public void Reverse()
         {
             //stop vehicle
@@ -196,6 +203,21 @@ namespace Tus.TransControl.Base
 
         }
         
+        private BlockPolar getBlockPolar(CommandInfo cmd, Block blk)
+        {
+            var rt = cmd.Route;
+
+            var pos = blk.Neighbors.First();
+            var neg = blk.Neighbors.Last();
+            var posind = rt.Blocks.IndexOf(pos);
+            var negind = rt.Blocks.IndexOf(neg);
+
+            //todo : fix to clockwise polar
+            if (posind > negind) // positive
+                return BlockPolar.Positive;
+            else
+                return BlockPolar.Negative;
+        }
 
         #region "CreateCommandMethods"
         private CommandFactory CreateWithWaitingCommand(Func<float> cntspdFactory, Func<float> waitspdFactory)
@@ -207,16 +229,25 @@ namespace Tus.TransControl.Base
                         Route = this.Route,
                     };
                     var lockedunits = this.Route.LockedUnits.ToArray();
-
-                    if (blk == lockedunits[lockedunits.Length - 2].ControlBlock)
+                    var cntblk = (cmd.Route.Polar == BlockPolar.Positive)
+                                     ? lockedunits.First().ControlBlock
+                                     : lockedunits[lockedunits.Length - 2].ControlBlock;
+                    var waitblk = lockedunits.Last().ControlBlock;
+                    
+                    if (blk == cntblk)// lockedunits[lockedunits.Length - 2].ControlBlock)
                     {
                         cmd.MotorMode = MotorMemoryStateEnum.Controlling;
                         cmd.Speed = cntspdFactory();
                     }
-                    else if (blk == lockedunits.Last().ControlBlock)
+                    else if (blk == waitblk)
                     {
                         cmd.MotorMode = MotorMemoryStateEnum.Waiting;
                         cmd.Speed = waitspdFactory();
+                    }
+                    else if (lockedunits.Any(cntrt => cntrt.ControlBlock == blk))
+                    {
+                        cmd.MotorMode = MotorMemoryStateEnum.Locked;
+                        cmd.Speed = 0.0f;
                     }
                     else
                     {

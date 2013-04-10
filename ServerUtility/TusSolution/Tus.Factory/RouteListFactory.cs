@@ -17,7 +17,7 @@ namespace Tus.Factory
             IEnumerable<object> routesobj = parser.ParseFrom(ApplicationSettings.RoutePath);
 
             IEnumerable<RouteSegmentOnYaml> routes = parser.ParseYamlContent(routesobj);
-            return routes.Select(rseg => new Route(Sheet, rseg.Routes) {Name = rseg.Name}).ToList();
+            return routes.Select(rseg => new Route(Sheet, rseg.Routes) { Name = rseg.Name, Polar = rseg.Polar }).ToList();
         }
     }
 }

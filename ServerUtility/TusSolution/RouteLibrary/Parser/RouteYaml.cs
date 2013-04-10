@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Yaml.Serialization;
+using Tus.TransControl.Base;
 
 namespace Tus.TransControl.Parser
 {
@@ -8,6 +10,7 @@ namespace Tus.TransControl.Parser
     {
         public string Name { get; set; }
         public IEnumerable<string> Routes { get; set; }
+        public BlockPolar Polar { get; set; }
     }
 
     public class RouteYaml
@@ -36,7 +39,30 @@ namespace Tus.TransControl.Parser
                                            {
                                                Name = (string)pair["name"],
                                                Routes = extractYamlRoute(pair["route"]),
+                                               Polar = extractYamlBlockPolar(pair["polar"])
                                            });
+        }
+
+        private BlockPolar extractYamlBlockPolar(object polar)
+        {
+            if (polar is string)
+            {
+                var pol = (string) polar;
+                pol = pol.Trim().ToLower();
+
+                if (pol == "pos")
+                {
+                    return BlockPolar.Positive;
+                }
+                else if (pol == "neg")
+                    return BlockPolar.Negative;
+                else if (pol == "any")
+                    return BlockPolar.Any;
+                else
+                    throw new InvalidOperationException("block polar parsing failed");
+
+            }
+            throw new InvalidOperationException("parsing block polar is not string");
         }
 
         private IEnumerable<string> extractYamlRoute(object route)
