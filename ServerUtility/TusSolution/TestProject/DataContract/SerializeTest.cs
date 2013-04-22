@@ -72,5 +72,25 @@ namespace TestProject.DataContract
             JsonSerializeWriteTest<Motor>(result);
         }
 
+        [TestMethod]
+        public void SensorStateDataContractTest()
+        {
+            var snsstate = new SensorState();
+
+            var result = JsonSerializeReadTest<SensorState>(snsstate);
+            result = result.Replace(@"""Voltage"":0,", "");
+            JsonSerializeWriteTest<SensorState>(result);
+        }
+
+        [TestMethod]
+        public void SensorDataContractTest()
+        {
+            var sns = new UsartSensor();
+
+            var result = JsonSerializeReadTest<UsartSensor>(sns);
+            result = result.Replace(@"""Voltage"":0,", "");
+            JsonSerializeWriteTest<UsartSensor>(result);
+        }
+
     }
 }

@@ -194,7 +194,11 @@
     <None Include="Signification.pfx" />
     <Shadow Include="テストの参照\RouteLibrary.accessor" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="VoltageTestCase.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

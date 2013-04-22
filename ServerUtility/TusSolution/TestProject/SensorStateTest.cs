@@ -7,8 +7,8 @@ using Tus.Communication.Device.AvrComposed;
 
 namespace TestProject
 {
-    
-    
+
+
     /// <summary>
     ///SensorStateTest のテスト クラスです。すべての
     ///SensorStateTest 単体テストをここに含めます
@@ -78,5 +78,62 @@ namespace TestProject
             }
         }
 
+        [DataSource("Microsoft.VisualStudio.TestTools.DataSource.CSV",
+              "|DataDirectory|\\VoltageTestCase.csv",
+              "VoltageTestCase#csv",
+              DataAccessMethod.Sequential),
+          DeploymentItem("VoltageTestCase.csv"),
+          TestMethod]
+        public void VoltageOnTest()
+        {
+            var target = new SensorState();
+            VoltageTest(v => target.VoltageOn = (float)v, () => target.VoltageOn);
+        }
+
+        
+        [DataSource("Microsoft.VisualStudio.TestTools.DataSource.CSV",
+            "|DataDirectory|\\VoltageTestCase.csv",
+            "VoltageTestCase#csv",
+            DataAccessMethod.Sequential),
+         DeploymentItem("VoltageTestCase.csv"),
+         TestMethod]
+        public void VoltageOffTest()
+        {
+            var target = new SensorState();
+            VoltageTest(v => target.VoltageOff = (float) v, () => target.VoltageOff);
+        }
+
+        [DataSource("Microsoft.VisualStudio.TestTools.DataSource.CSV",
+            "|DataDirectory|\\VoltageTestCase.csv",
+            "VoltageTestCase#csv",
+            DataAccessMethod.Sequential),
+         DeploymentItem("VoltageTestCase.csv"),
+         TestMethod]
+        public void VoltageThresholdTest()
+        {
+            var target = new SensorState();
+            VoltageTest(v => target.Threshold = (float) v, () => target.Threshold);
+        }
+
+
+        private void VoltageTest(Action<double> setfunc, Func<double> getfunc)
+        {
+            var expected = (double) this.TestContext.DataRow["Expected"];
+            var actual = (double) this.TestContext.DataRow["Result"];
+
+            try
+            {
+                setfunc(expected);
+                var result = getfunc();
+                Assert.AreEqual(actual, Math.Round(result, 1));
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                if (!(expected < 0.0f || 1.0f < expected))
+                {
+                    Assert.Fail("not thrown argument out of range exception");
+                }
+            }
+        }
     }
 }

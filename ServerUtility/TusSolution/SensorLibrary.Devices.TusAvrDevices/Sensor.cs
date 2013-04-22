@@ -58,7 +58,7 @@ namespace Tus.Communication.Device.AvrComposed
                 //lock (hist_lock)
                 //    hist = this.packet_history.ToArray();
 
-                //if (hist.Any(s => s.Voltage > 0.45f || s.OnVoltage > 200))
+                //if (hist.Any(s => s.Voltage > 0.45f || s.VoltageOn > 200))
                 //{
                 //    return true;
                 //}
