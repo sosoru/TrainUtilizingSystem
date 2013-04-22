@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Collections.ObjectModel;
 
@@ -8,6 +9,7 @@ using Tus.Communication;
 
 namespace Tus.Communication.Device.AvrComposed
 {
+    [DataContract]
     public class Motor
         : Device<MotorState>, ISensorDevice
     {
@@ -30,21 +32,27 @@ namespace Tus.Communication.Device.AvrComposed
             this.DeviceID = mtr.DeviceID;
         }
 
+        [DataMember(IsRequired=false)]
         public bool IsDetected
         {
             get
             {
                 return this.CurrentState.Current > this.CurrentState.ThresholdCurrent;
             }
+            set { throw new NotImplementedException(); }
         }
 
+        [DataMember]
         public IDictionary<MotorMemoryStateEnum, MotorState> States
         {
             get;
             set;
         }
 
+        [IgnoreDataMember]
         private Kernel deviceKernel_ = null;
+
+        [DataMember]
         public Kernel DeviceKernel
         {
             get
@@ -57,6 +65,13 @@ namespace Tus.Communication.Device.AvrComposed
                     };
 
                 return this.deviceKernel_;
+            }
+            set
+            {
+                var newkernel = value;
+                newkernel.DeviceID = this.DeviceID;
+                newkernel.ReceivingServer = this.ReceivingServer;
+                this.deviceKernel_ = newkernel;
             }
         }
 
@@ -103,6 +118,7 @@ namespace Tus.Communication.Device.AvrComposed
             //    this.ReceivingServer.SendPacket(p);
         }
 
+        [IgnoreDataMember]
         public MotorMemoryStateEnum CurrentMemory
         {
             get
@@ -119,6 +135,17 @@ namespace Tus.Communication.Device.AvrComposed
                 this.DeviceKernel.CurrentState = memstate;
             }
         }
+
+        [DataMember(Name="CurrentMemory")]
+        public string CurrentMemoryString
+        {
+            get { return Enum.GetName(typeof(MotorMemoryStateEnum), this.CurrentMemory); }
+            set
+            {
+                this.CurrentMemory = (MotorMemoryStateEnum)Enum.Parse(typeof(MotorMemoryStateEnum), value);
+            }
+        }
+
 
     }
 

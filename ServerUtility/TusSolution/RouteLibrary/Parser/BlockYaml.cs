@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Yaml.Serialization;
+using Tus.Communication;
 using Tus.TransControl.Base;
 
 namespace Tus.TransControl.Parser
@@ -33,7 +34,7 @@ namespace Tus.TransControl.Parser
             //todo : alert insufficient parameters when route.length > 2 
             var motor = new MotorInfo()
             {
-                Address = pr_addr.FromString((string)src["addr"]).First(),
+                Address = DeviceIdParser.FromString((string)src["addr"]).First(),
                 RoutePositive = (src.ContainsKey("pos")) 
                                     ? _prRouteLiteral.FromString((string)src["pos"]).First()
                                     : route.First(),
@@ -49,7 +50,7 @@ namespace Tus.TransControl.Parser
         {
             var pt = new SwitchInfo()
             {
-                Address = pr_addr.FromString((string)src["addr"]).First(),
+                Address = DeviceIdParser.FromString((string)src["addr"]).First(),
                 DirStraight = _prRouteLiteral.FromString((string)src["s"]),
                 DirCurved = _prRouteLiteral.FromString((string)src["c"]),
             };
@@ -61,7 +62,7 @@ namespace Tus.TransControl.Parser
         {
             var sens = new SensorInfo()
             {
-                Addresses = pr_addr.FromString((string)src["addr"]).ToList(),
+                Addresses = DeviceIdParser.FromString((string)src["addr"]).ToList(),
             };
 
             return sens;

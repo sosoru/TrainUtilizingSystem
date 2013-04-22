@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Tus.Communication;
 
-namespace Tus.TransControl.Parser
+namespace Tus.Communication
 {
     public class DeviceIdParser
     {
-        public IEnumerable<DeviceID> FromString(string context)
+        public static IEnumerable<DeviceID> FromString(string context)
         {
             if (context.TrimEnd().Last() != ';')
                 context += ';';

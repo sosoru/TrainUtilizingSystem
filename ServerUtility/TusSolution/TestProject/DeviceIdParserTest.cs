@@ -1,5 +1,4 @@
 ﻿using Tus.TransControl.Parser;
-using Tus.TransControl.Parser;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
@@ -83,7 +82,7 @@ namespace TestProject
             IEnumerable<DeviceID> expected = new DeviceID[] { new DeviceID() { ParentPart = 1, ModuleAddr = 2, InternalAddr = 3},
                                                               new DeviceID() { ParentPart = 4, ModuleAddr = 5, InternalAddr = 6}};
             IEnumerable<DeviceID> actual;
-            actual = target.FromString(context).ToList();
+            actual = DeviceIdParser.FromString(context).ToList();
             Assert.IsTrue(actual.SequenceEqual(expected));
         }
     }

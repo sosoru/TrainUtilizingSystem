@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Drawing;
@@ -36,19 +37,38 @@ namespace Tus.Communication
         event PacketReceivedDelegate<TState> PacketReceived;
     }
 
+    [DataContract]
     public class Device<TState>
         : IDevice<TState>, INotifyPropertyChanged
     where TState : class, IDeviceState<IPacketDeviceData>
     {
+        [IgnoreDataMember]
         protected IDisposable Unsubscriber = null;
+        [IgnoreDataMember]
         protected IObservable<IDeviceState<IPacketDeviceData>> Observing = null;
 
+        [IgnoreDataMember]
         public PacketServer ReceivingServer { get; set; }
+        [DataMember]
         public virtual TState CurrentState { get; set; }
+        [IgnoreDataMember]
         public ModuleTypeEnum ModuleType { get; protected set; }
+        [IgnoreDataMember]
         public IEqualityComparer<TState> StateEqualityComparer { get; set; }
 
+        [DataMember(Name="ModuleType")]
+        public string ModuleTypeString
+        {
+            get { return Enum.GetName(typeof(ModuleTypeEnum), this.ModuleType); }
+            set
+            {
+                this.ModuleType = (ModuleTypeEnum)Enum.Parse(typeof(ModuleTypeEnum), value);
+            }
+        }
+
+        [IgnoreDataMember]
         private DeviceID devid_;
+        [IgnoreDataMember]
         public DeviceID DeviceID
         {
             get
@@ -62,6 +82,13 @@ namespace Tus.Communication
             }
         }
 
+        [DataMember(Name="DeviceID")]
+        public string DeviceIDString
+        {
+            get { return this.DeviceID.ToString(); }
+            set { this.DeviceID = DeviceIdParser.FromString(value).First(); }
+        }
+
         public Device(ModuleTypeEnum type, TState state)
         {
             this.ModuleType = type;
@@ -69,8 +96,11 @@ namespace Tus.Communication
             //this.StateEqualityComparer = new GenericComparer<TState>((x, y) => x.Data.SequenceEqual(y.Data));
         }
 
+        [IgnoreDataMember]
         private object LockHold = new object();
+        [IgnoreDataMember]
         private bool _ishold;
+        [IgnoreDataMember]
         public bool IsHold
         {
             get
@@ -115,7 +145,7 @@ namespace Tus.Communication
             //    throw new InvalidOperationException("invalid state");
 
             //for (int i = 0; i < 3; i++)
-                this.ReceivingServer.EnqueueState(this);
+            this.ReceivingServer.EnqueueState(this);
 
         }
 

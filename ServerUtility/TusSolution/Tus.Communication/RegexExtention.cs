@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace Tus.TransControl.Parser
+namespace Tus.Communication
 {
-    static class RegexExtention
+    public static class RegexExtention
     {
         public static IEnumerable<Match> EnumerateMatches(this Regex reg, string text)
         {

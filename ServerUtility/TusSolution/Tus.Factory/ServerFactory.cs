@@ -26,7 +26,7 @@ namespace Tus.Factory
 
             var io = new TusEthernetIO(ipbase, ipmask)
             {
-                SourceID = new DeviceIdParser().FromString(this.ApplicationSettings.ParentDeviceID).First(),
+                SourceID = DeviceIdParser.FromString(this.ApplicationSettings.ParentDeviceID).First(),
                 Port = this.ApplicationSettings.IpPort,
             };
 

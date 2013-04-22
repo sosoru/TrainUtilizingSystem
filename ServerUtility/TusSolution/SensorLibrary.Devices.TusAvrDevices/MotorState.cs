@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 
 using Tus.Communication;
 
 namespace Tus.Communication.Device.AvrComposed
 {
+    [DataContract]
     public class MotorState
         : DeviceState<MotorData>
     {
@@ -16,6 +18,7 @@ namespace Tus.Communication.Device.AvrComposed
             this.Data = new MotorData();        
         }
 
+        [IgnoreDataMember]
         public MotorControlMode ControlMode
         {
             get
@@ -28,6 +31,17 @@ namespace Tus.Communication.Device.AvrComposed
             }
         }
 
+        [DataMember(Name="ControlMode")]
+        public string ControlModeString
+        {
+            get { return Enum.GetName(typeof(MotorControlMode), this.ControlMode); }
+            set
+            {
+                this.ControlMode = (MotorControlMode)Enum.Parse(typeof(MotorControlMode), value);
+            }
+        }
+
+        [IgnoreDataMember]
         public MotorDirection Direction
         {
             get
@@ -40,6 +54,17 @@ namespace Tus.Communication.Device.AvrComposed
             }
         }
 
+        [DataMember(Name="Direction")]
+        public string DirectionString
+        {
+            get { return Enum.GetName(typeof(MotorDirection), this.Direction); }
+            set
+            {
+                this.Direction = (MotorDirection)Enum.Parse(typeof(MotorDirection), value);
+            }
+        }
+
+        [DataMember]
         public float Duty
         {
             get
@@ -55,6 +80,7 @@ namespace Tus.Communication.Device.AvrComposed
             }
         }
 
+        [DataMember]
         public float Current
         {
             get
@@ -70,6 +96,7 @@ namespace Tus.Communication.Device.AvrComposed
             }
         }
 
+        [DataMember]
         public float ThresholdCurrent
         {
             get
@@ -85,31 +112,61 @@ namespace Tus.Communication.Device.AvrComposed
             }
         }
 
+        [IgnoreDataMember]
         public DeviceID DestinationID
         {
             get { return this.Data.DestinationID; }
             set { this.Data.DestinationID = value; }
         }
 
+        [DataMember(Name="DestinationID")]
+        public string DestinationIDString
+        {
+            get { return this.DestinationID.ToString(); }
+            set { this.DestinationID = DeviceIdParser.FromString(value).First(); }
+        }
+
+        [IgnoreDataMember]
         public MotorMemoryStateEnum MemoryWhenEntered
         {
             get { return (MotorMemoryStateEnum)this.Data.MemoryWhenEntered; }
             set { this.Data.MemoryWhenEntered = (byte)value; }
         }
 
+        [DataMember(Name="MemoryWhenEntered")]
+        public string MemoryWhenEnteredString
+        {
+            get { return Enum.GetName(typeof(MotorMemoryStateEnum), this.MemoryWhenEntered); }
+            set
+            {
+                this.MemoryWhenEntered = (MotorMemoryStateEnum)Enum.Parse(typeof(MotorMemoryStateEnum), value);
+            }
+        }
+
+        [IgnoreDataMember]
         public MotorMemoryStateEnum DestinationMemory
         {
             get { return (MotorMemoryStateEnum)this.Data.DestinationMemory; }
             set { this.Data.DestinationMemory = (byte)value; }
         }
 
+        [DataMember(Name="DestinationMemory")]
+        public string DestinationMemoryString
+        {
+            get { return Enum.GetName(typeof(MotorMemoryStateEnum), this.DestinationMemory); }
+            set
+            {
+                this.DestinationMemory = (MotorMemoryStateEnum)Enum.Parse(typeof(MotorMemoryStateEnum), value);
+            }
+        }
+
         public override string ToString()
         {
             return base.ToString() + string.Format("|mt : dir={0}, duty={1}, curr={2}, mode={3}",
-                    Enum.GetName(typeof(MotorDirection), this.Direction),
-                    this.Duty,
-                    this.Current,
-                    Enum.GetName(typeof(MotorControlMode), this.ControlMode));
+                                                   this.DirectionString,
+                                                   this.Duty,
+                                                   this.Current,
+                                                   this.ControlModeString);
         }
  
     }
@@ -117,6 +174,7 @@ namespace Tus.Communication.Device.AvrComposed
     public enum MotorControlMode
         : byte
     {
+        Unknown = 0x00,
         DutySpecifiedMode = 0x01,
         CurrentFeedBackMode = 0x02,
         WaitingPulseMode = 0x03,

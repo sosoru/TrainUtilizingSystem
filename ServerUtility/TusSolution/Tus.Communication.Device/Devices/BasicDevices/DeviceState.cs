@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.IO;
 
 namespace Tus.Communication
 {
+    [DataContract]
     public class DeviceState<T>
         : IDeviceState<T>
         where T : IPacketDeviceData, new()
@@ -32,20 +34,52 @@ namespace Tus.Communication
         {
         }
 
+        [IgnoreDataMember]
         public ModuleTypeEnum ModuleType
         {
             get { return (ModuleTypeEnum)this.Data.ModuleType; }
             set { this.Data.ModuleType = (byte)value; }
         }
 
+        [DataMember(Name="ModuleType")]
+        public string ModuleTypeString
+        {
+            get { return Enum.GetName(typeof(ModuleTypeEnum), this.ModuleType); }
+            set
+            {
+                this.ModuleType = (ModuleTypeEnum)Enum.Parse(typeof(ModuleTypeEnum), value);
+            }
+        }
+
+        [IgnoreDataMember]
         public DeviceID ID { get; set; }
+
+        [DataMember(Name = "ID")]
+        public string IDString
+        {
+            get { return this.ID.ToString(); }
+            set { this.ID = DeviceIdParser.FromString(value).First(); }
+        }
 
         //public override string ToString()
         //{
         //    return this.BasePacket.ToString();
         //}
 
-        private volatile object lock_Data = new object();
+        [IgnoreDataMember] private volatile object __lock_Data;
+        [IgnoreDataMember]
+        private object lock_Data
+        {
+            get
+            {
+                if (__lock_Data == null)
+                    this.__lock_Data = new object();
+
+                return this.__lock_Data;
+            }
+        }
+
+        [IgnoreDataMember]
         public T Data
         {
             get

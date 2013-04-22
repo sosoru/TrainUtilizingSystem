@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 
 using Tus.Communication;
 
 namespace Tus.Communication.Device.AvrComposed
 {
+    [DataContract]
     public class SwitchState
         : DeviceState<SwitchData>
     {
@@ -17,6 +20,7 @@ namespace Tus.Communication.Device.AvrComposed
         }
 
         //unit : msec
+        [DataMember(IsRequired = true)]
         public int DeadTime
         {
             get
@@ -33,6 +37,7 @@ namespace Tus.Communication.Device.AvrComposed
             }
         }
 
+        [DataMember(IsRequired = true)]
         public int ChangingTime
         {
             get
@@ -49,6 +54,7 @@ namespace Tus.Communication.Device.AvrComposed
             }
         }
 
+        [IgnoreDataMember]
         public PointStateEnum Position
         {
             get
@@ -61,7 +67,7 @@ namespace Tus.Communication.Device.AvrComposed
                 //    return PointStateEnum.Curve;
                 //else
                 //    return PointStateEnum.Any;
-                return (PointStateEnum) this.Data.Position;
+                return (PointStateEnum)this.Data.Position;
             }
             set
             {
@@ -73,6 +79,16 @@ namespace Tus.Communication.Device.AvrComposed
                 //    pt = (byte) PointStateEnum.Straight;
 
                 this.Data.Position = (byte)value;
+            }
+        }
+
+        [DataMember(Name="Position")]
+        public string PositionString
+        {
+            get { return Enum.GetName(typeof(PointStateEnum), this.Position); }
+            set
+            {
+                this.Position = (PointStateEnum)Enum.Parse(typeof(PointStateEnum), value);
             }
         }
 

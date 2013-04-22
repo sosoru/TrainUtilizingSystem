@@ -78,8 +78,6 @@
     <Compile Include="Base\Route.cs" />
     <Compile Include="Base\Vehicle.cs" />
     <Compile Include="Parser\BlockYaml.cs" />
-    <Compile Include="Parser\DeviceIdParser.cs" />
-    <Compile Include="Parser\RegexExtention.cs" />
     <Compile Include="Parser\RouteLiteralParser.cs" />
     <Compile Include="Parser\RouteYaml.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
