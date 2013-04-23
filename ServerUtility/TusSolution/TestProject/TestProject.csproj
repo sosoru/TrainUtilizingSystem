@@ -95,14 +95,15 @@
   <ItemGroup>
     <Compile Include="BlockSheetTest.cs" />
     <Compile Include="BlockTest.cs" />
+    <Compile Include="ConsoleTest\Page\DialogControllerTestHelper.cs" />
     <Compile Include="ConsoleTest\Page\SwitchPageTest.cs" />
     <Compile Include="DataContract\SerializeTest.cs" />
     <Compile Include="FileParseTest\BlockYamlTest.cs" />
     <Compile Include="ChunckedStreamTest.cs" />
     <Compile Include="ConsoleTest\Composition\FactoryTest.cs" />
     <Compile Include="DeviceIdParserTest.cs" />
-    <Compile Include="DialogController\MotorControllerTest.cs" />
-    <Compile Include="DialogController\SwitchControllerTest.cs" />
+    <Compile Include="ConsoleTest\Page\MotorControllerTest.cs" />
+    <Compile Include="ConsoleTest\Page\SwitchControllerTest.cs" />
     <Compile Include="EthClientTest.cs" />
     <Compile Include="FileParseTest\RouteYamlTest.cs" />
     <Compile Include="LoopingArrayTest.cs" />

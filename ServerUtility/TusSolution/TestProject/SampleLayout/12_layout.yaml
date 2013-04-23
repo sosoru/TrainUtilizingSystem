@@ -1,0 +1,504 @@
+# Loop A
+-
+  name : AT1
+  route : BAT11 <> BAT1
+  motor : 
+    addr : (24, 6, 1)
+    pos : BAT11 > BAT1
+    neg : BAT11 < BAT1
+-
+  name : BAT1
+  route : AT1 <> AT3
+  isolate : true
+-
+  name : AT3
+  route : BAT1 <> AT4, AT4S
+-
+  name : AT4
+  route : AT3 <> AT5
+-
+  name : AT4S
+  route : AT3 <> AT5S
+-
+  name : AT5
+  route : AT4 <> AT5-1, AT6
+  point :
+    addr : (25, 1, 5)
+    s : AT4 <> AT6
+    c : AT4 <> AT5-1
+-
+  name : AT6
+  route : AT5-1, AT5 <> BAT6
+  point : 
+    addr : (25, 1, 6)
+    s : AT5 <> BAT6
+    c : AT5-1 <> BAT6
+
+-
+  name : AT5S
+  route : AT4S <> AT5-1, AT6S
+  point :
+    addr : (25, 1, 7)
+    s : AT4S <> AT6S
+    c : AT4S <> AT5-1
+-
+  name : AT6S
+  route : AT5S, AT5-1 <> ABUF
+  point : 
+    addr : (25, 1, 8)
+    s : AT5S <> ABUF
+    c : AT5-1 <> ABUF
+-
+  name : AT5-1
+  route : AT5S <> AT6, AT5 <> AT6S
+-
+  name : ABUF
+  route : AT6S <> nil
+-
+  name : BAT6
+  route : AT6 <> AT7
+  isolate : false
+-
+  name : AT7
+  route : BAT6 <> BAT7
+  motor :
+    addr: (26, 2, 1)
+    pos : BAT6 < BAT7
+    neg : BAT6 > BAT7
+
+-
+  name : BAT7
+  route : AT7 <> AT8
+  isolate : true
+-
+  name : AT8
+  route : BAT7 <> BAT8
+
+-
+  name : BAT8
+  route : AT8 <> AT9
+  isolate : false
+-
+  name : AT9
+  route : BAT8 <> BAT9
+
+-
+  name : BAT9
+  route : AT9 <> AT10P
+  isolate : false
+-
+  name : AT10P
+  route : FT3, BAT9 <> AT10
+-
+
+  name : AT10
+  route : AT10P <> BAT10
+  motor : 
+    addr : (26, 1, 1)
+    pos : AT10P > BAT10
+    neg : AT10P < BAT10
+-
+  name : BAT10
+  route : AT10 <> AT11
+  isolate : true
+-
+  name : AT11
+  route : BAT10 <> BAT11
+  motor : 
+    addr : (24, 2, 1)
+    pos : BAT10 > BAT11
+    neg : BAT10 < BAT11
+-
+  name : BAT11
+  route : AT11 <> AT1
+  isolate : true
+  
+# Loop B
+-
+  name : BT1
+  route : BBT11 <> BBT1
+  motor : 
+    addr : (24, 6, 2)
+    pos : BBT11 > BBT1
+    neg : BBT11 < BBT1
+-
+  name : BBT1
+  route : BT1 <> BT3
+  isolate : true
+-
+  name : BT3
+  route : BBT1 <> BT4, BT4S
+-
+  name : BT4
+  route : BT3 <> BT5
+-
+  name : BT4S
+  route : BT3 <> BT5S
+-
+  name : BT5
+  route : BT4 <> BT5-1, BT6
+  point : 
+    addr : (25, 1, 1)
+    s : BT4 <> BT6
+    c : BT4 <> BT5-1
+-
+  name : BT6
+  route : BT5-1, BT5 <> BBT6
+  point :
+    addr : (25, 1, 2)
+    s : BT5 <> BBT6
+    c : BT5-1 <> BBT6
+
+-
+  name : BT5S
+  route : BT4S <> BT5-1, BT6S
+  point : 
+    addr : (25, 1, 3)
+    s : BT4S <> BT6S
+    c : BT4S <> BT5-1
+-
+  name : BT6S
+  route : BT5S, BT5-1 <> BBUF
+  point:
+    addr : (25, 1, 4)
+    s : BT5S <> BBUF
+    c : BT5-1 <> BBUF
+-
+  name : BT5-1
+  route : BT5S <> BT6, BT5 <> BT6S
+-
+  name : BBUF
+  route : BT6S <> nil
+-
+  name : BBT6
+  route : BT6 <> BT7
+  isolate : false
+-
+  name : BT7
+  route : BBT6 <> BBT7
+  motor : 
+    addr : (26, 2, 2)
+    pos : BBT6 > BBT7
+    neg : BBT6 < BBT7
+-
+  name : BBT7
+  route : BT7 <> BT8
+  isolate : true
+-
+  name : BT8
+  route : BBT7 <> BBT8
+-
+  name : BBT8
+  route : BT8 <> BT9
+  isolate : false
+-
+  name : BT9
+  route : BBT8 <> BT10P
+-
+  name : BBT9
+  route : BT9 <> BT10P
+  isolate : false
+
+-
+  name : BT10P
+  route : FT3, BBT9 <> BT10
+-
+  name : BT10
+  route : BT10P <> BBT10
+  motor : 
+    addr : (26, 1, 2)
+    pos : BT10P > BBT10
+    neg : BT10P < BBT10
+-
+  name : BBT10
+  route : BT10 <> BT11
+  isolate : true
+-
+  name : BT11
+  route : BBT10 <> BBT11
+  motor :
+    addr : (24, 2, 2)
+    pos : BBT10 > BBT11
+    neg : BBT10 < BBT11
+-
+  name : BBT11
+  route : BT11 <> BT1
+  isolate : true
+  
+# C Loop
+-
+  name : CT1
+  route : BCT11 <> BCT1
+  motor : 
+    addr : (24, 6, 3)
+    pos : BCT11 > BCT1
+    neg : BCT11 < BCT1
+-
+  name : BCT1
+  route : CT1 <> CT2-1
+  isolate : true
+-
+  name : CT2-1
+  route : BCT1 <> CT2-2, ET2-1
+-
+  name : CT2-2
+  route : CT2-1 <> CT2-3
+-
+  name : CT2-3
+  route : CT2-2, ET2-4 <> CT3
+-
+  name : CT3
+  route : CT2-3 <> CT4, CT4S
+-
+  name : CT4
+  route : CT3 <> CT5
+-
+  name : CT4S
+  route : CT3 <> CT5S
+-
+  name : CT5S
+  route : CT4S <> CT6S, CT5-1
+  point :
+    addr : (25, 5, 5)
+    s : CT4S <> CT6S
+    c : CT4S <> CT5-1
+-
+  name : CT6S
+  route : CT5-1, CT5 <> CBUF
+  point : 
+    addr : (25, 5, 6)
+    s : CT5 <> CBUF
+    c : CT5-1 <> CBUF
+-
+  name : CT5
+  route : CT4 <> CT5-1, CT6
+  point : 
+    addr : (25, 5, 7)
+    s: CT4 <> CT6
+    c : CT4 <> CT5-1
+-
+  name : CT6
+  route: CT5, CT5-1 <> CT6-1
+  point :
+    addr : (25, 5, 8)
+    s : CT5 <> CT6-1
+    c : CT5-1 <> CT6-1
+-
+  name : CT6-1
+  route : CT6 <> BCT6
+-
+  name : CT5-1
+  route : CT5 <> CT6S, CT5S <> CT6
+-
+  name : CBUF
+  route : CT6S <> nil
+-
+  name : BCT6
+  route : CT6 <> CT7
+  isolate : false
+-
+  name : CT7
+  route : BCT6 <> BCT7
+  motor :
+    addr : (26, 2, 3)
+    pos : BCT6 > BCT7
+    neg : BCT6 < BCT7 
+-
+  name : BCT7
+  route : CT7 <> CT8
+  isolate : true
+-
+  name : CT8
+  route : BCT7 <> BCT8
+-
+  name : BCT8
+  route : CT8 <> CT9
+  isolate : false
+-
+  name : CT9
+  route : BCT8 <> BCT9
+    
+-
+  name : BCT9
+  route : CT9 <> CT10
+  isolate : false
+-
+  name : CT10
+  route : BCT9 <> BCT10
+  motor:
+    addr : (26, 1, 3)
+    pos : BCT9 > BCT10
+    neg : BCT9 < BCT10
+-
+  name : BCT10
+  route : CT10 <> CT11
+  isolate : true
+-
+  name : CT11
+  route : BCT10 <> BCT11
+  motor :
+    addr : (24,2,3)
+    pos : BCT10 > BCT11
+    neg : BCT10 < BCT11
+-
+  name : BCT11
+  route : CT11 <> CT1
+  isolate : true
+  
+# D Loop
+-
+  name : DT1
+  route : BDT11 <> BDT1
+  motor : 
+    addr : (24, 6, 4)
+    pos : BDT11 > BDT1
+    neg : BDT11 < BDT1
+-
+  name : BDT1
+  route : DT1 <> DT2-1
+  isolate : true
+-
+  name : DT2-1
+  route : BDT1 <> DT2-2
+-
+  name : DT2-2
+  route : DT2-1 <> ET2-2, DT2-3
+-
+  name : DT2-3
+  route : DT2-2, ET2-4 <> DT2-4
+-
+  name : DT2-4
+  route : DT2-3, DT3
+-
+  name : DT3
+  route : DT2-4 <> DT4, DT4S
+-
+  name : DT4
+  route : DT3 <> DT5
+-
+  name : DT4S
+  route : DT3 <> DT5S
+-
+  name : DT5S
+  route : DT4S <> DT6S, DT5-1
+  point : 
+    addr : (25, 5, 1)
+    s : DT4S <> DT6S
+    c : DT4S <> DT5-1
+-
+  name : DT6S
+  route : DT5-1, DT5 <> DBUF
+  point : 
+    addr : (25, 5, 2)
+    s : DT5S <> DBUF
+    c : DT5-1 <> DBUF
+-
+  name : DT5
+  route : DT4 <> DT5-1, DT6
+  point : 
+    addr : (25, 5, 3)
+    s : DT4 <> DT6
+    c : DT4 <> DT5-1
+-
+  name : DT6
+  route: DT5, DT5-1 <> BDT6
+  point : 
+    addr : (25, 5, 4)
+    s : DT5 <> BDT6
+    c : DT5-1 <> BDT6
+
+-
+  name : DT5-1
+  route : DT5 <> DT6S, DT5S <> DT6
+-
+  name : DBUF
+  route : DT6S <> nil
+-
+  name : BDT6
+  route : DT6 <> DT7
+  isolate : false
+-
+  name : DT7
+  route : BDT6 <> BDT7
+  motor : 
+    addr : (26,2, 4)
+    pos : BDT6 > BDT7
+    neg : BDT6 < BDT7
+-
+  name : BDT7
+  route : DT7 <> DT8
+  isolate : true
+-
+  name : DT8
+  route : BDT7 <> BDT8
+    
+-
+  name : BDT8
+  route : DT8 <> DT9
+  isolate : false
+-
+  name : DT9
+  route : BDT8 <> BDT9
+  motor:
+    addr : (26, 6, 4)
+    pos : BDT8 > BDT9
+    neg : BDT8 < BDT9
+
+-
+  name : BDT9
+  route : DT9 <> DT10
+  isolate : true
+-
+  name : DT10
+  route : BDT9 <> BDT10
+  motor :
+    addr : (26, 1, 4)
+    pos : BDT9 > BDT10
+    neg : BDT9 < BDT10
+-
+  name : BDT10
+  route : DT10 <> DT11
+  isolate : true
+-
+  name : DT11
+  route : BDT10 <> BDT11
+  motor : 
+    addr : (24, 2, 4)
+    pos : BDT10 > BDT11
+    neg : BDT10 < BDT11
+-
+  name : BDT11
+  route : DT11 <> DT1
+  isolate : true
+
+# E Loop
+-
+  name : ET1
+  route : nil <> ET2-1
+-
+  name : ET2-1
+  route : CT2-1, ET1 <> ET2-2
+-
+  name : ET2-2
+  route : ET2-1, DT2-2 <> ET2-3
+-
+  name : ET2-3
+  route : ET2-2 <> EBUF1, ET2-4
+-
+  name : ET2-4
+  route : ET2-3 <> CT2-3, DT2-4
+-
+  name : EBUF1
+  route : ET2-3 <> nil
+
+# F Loop
+-
+  name : FT1
+  route : nil <> FT2
+-
+  name : FT2
+  route : FT1 <> FT3
+-
+  name : FT3
+  route : FT2 <> AT10P, BT10P
+  

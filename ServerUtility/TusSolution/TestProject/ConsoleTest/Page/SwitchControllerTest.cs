@@ -17,8 +17,8 @@ using Tus.Communication.Device.AvrComposed;
 namespace TestProject.DialogController
 {
     [TestClass]
-    public class SwitchControllerTest
-        : DialogControllerTests
+    public class SwitchControllerTestHelper
+        : DialogControllerTestHelper
     {
         [TestMethod]
         public void SwitchControllerPositionTest()
@@ -26,14 +26,11 @@ namespace TestProject.DialogController
             var sw = new Switch();
             var state = new SwitchState();
 
-            var fnc = new Action<string>(cmd =>
-            {
-                PrepareStateTest(cmd, (rst, wst) =>
-                    {
-                        var cnt = new SwitchController(rst, wst);
-                        state = cnt.ConfPosition(state);
-                    });
-            });
+            var fnc = new Action<string>(cmd => PrepareStateTest(cmd, (rst, wst) =>
+                                                                          {
+                                                                              var cnt = new SwitchController(rst, wst);
+                                                                              state = cnt.ConfPosition(state);
+                                                                          }));
 
             fnc("s");
             Assert.IsTrue(state.Position == PointStateEnum.Straight);
@@ -51,14 +48,11 @@ namespace TestProject.DialogController
             var sw = new Switch();
             var state = new SwitchState();
 
-            var fnc = new Action<string>(cmd =>
-            {
-                PrepareStateTest(cmd, (rst, wst) =>
-                    {
-                        var cnt = new SwitchController(rst, wst);
-                        state = cnt.ConfDeadTime(state);
-                    });
-            });
+            var fnc = new Action<string>(cmd => PrepareStateTest(cmd, (rst, wst) =>
+                                                                          {
+                                                                              var cnt = new SwitchController(rst, wst);
+                                                                              state = cnt.ConfDeadTime(state);
+                                                                          }));
 
             fnc("200");
             Assert.IsTrue(state.DeadTime == 200);
@@ -73,14 +67,11 @@ namespace TestProject.DialogController
             var sw = new Switch();
             var state = new SwitchState();
 
-            var fnc = new Action<string>(cmd =>
-            {
-                PrepareStateTest(cmd, (rst, wst) =>
-                    {
-                        var cnt = new SwitchController(rst, wst);
-                        state = cnt.ConfChangingTime(state);
-                    });
-            });
+            var fnc = new Action<string>(cmd => PrepareStateTest(cmd, (rst, wst) =>
+                                                                          {
+                                                                              var cnt = new SwitchController(rst, wst);
+                                                                              state = cnt.ConfChangingTime(state);
+                                                                          }));
 
             fnc("200");
             Assert.IsTrue(state.ChangingTime == 200);

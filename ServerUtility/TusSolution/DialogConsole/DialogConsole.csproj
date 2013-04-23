@@ -76,7 +76,8 @@
     <Compile Include="Features\InputVehicleFeature.cs" />
     <Compile Include="Features\RemoveVehicleFeature.cs" />
     <Compile Include="Features\StateWebServerFeature.cs" />
-    <Compile Include="MotorController.cs" />
+    <Compile Include="Controllers\DeviceController.cs" />
+    <Compile Include="Controllers\MotorController.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -84,7 +85,7 @@
     </Compile>
     <Compile Include="RouteGeneratorForTwelve.cs" />
     <Compile Include="Settings.cs" />
-    <Compile Include="SwitchController.cs" />
+    <Compile Include="Controllers\SwitchController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WebPages\SwitchPage.cs" />
     <Compile Include="WebPages\TusPageAttribute.cs" />

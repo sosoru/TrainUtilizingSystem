@@ -16,32 +16,10 @@ using Tus.Communication.Device.AvrComposed;
 
 namespace TestProject.DialogController
 {
-    public class DialogControllerTests
-    {
-
-        protected void PrepareStateTest(string cmd, Action<Stream, Stream> callTest)
-        {
-            using (var output = new MemoryStream())
-            using (var input = new MemoryStream())
-            using (var sr_input = new StreamReader(input))
-            using (var sw_output = new StreamWriter(output))
-            {
-                sw_output.AutoFlush = true;
-                sw_output.WriteLine(cmd);
-                output.Seek(0, SeekOrigin.Begin);
-
-                callTest(output, input);
-
-                input.Seek(0, SeekOrigin.Begin);
-                Console.WriteLine(sr_input.ReadToEnd());
-            }
-
-        }
-    }
 
     [TestClass]
-    public class DialogMotorControllerTests
-        : DialogControllerTests
+    public class DialogMotorControllerTestHelper
+        : DialogControllerTestHelper
     {
 
         [TestMethod]
