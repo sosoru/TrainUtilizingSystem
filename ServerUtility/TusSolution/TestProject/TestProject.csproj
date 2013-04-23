@@ -95,12 +95,12 @@
   <ItemGroup>
     <Compile Include="BlockSheetTest.cs" />
     <Compile Include="BlockTest.cs" />
+    <Compile Include="ConsoleTest\Page\SwitchPageTest.cs" />
     <Compile Include="DataContract\SerializeTest.cs" />
     <Compile Include="FileParseTest\BlockYamlTest.cs" />
     <Compile Include="ChunckedStreamTest.cs" />
     <Compile Include="ConsoleTest\Composition\FactoryTest.cs" />
     <Compile Include="DeviceIdParserTest.cs" />
-    <Compile Include="DialogConsole\DialogConsoleTest.cs" />
     <Compile Include="DialogController\MotorControllerTest.cs" />
     <Compile Include="DialogController\SwitchControllerTest.cs" />
     <Compile Include="EthClientTest.cs" />
@@ -117,7 +117,6 @@
     <Compile Include="RouteTest\MiddleTrackTest.cs" />
     <Compile Include="RouteTest\RouteTest_PointSample.cs" />
     <Compile Include="RouteTest\StaLoopTest.cs" />
-    <Compile Include="RouteTest\TwelveLayoutTest.cs" />
     <Compile Include="SensorStateTest.cs" />
     <Compile Include="SerializeTest.cs" />
     <Compile Include="SwitchStateTest.cs" />
@@ -170,6 +169,9 @@
     <None Include="RouteTest\OrderedTest1.orderedtest">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="SampleLayout\12_layout.yaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="SampleLayout\815.yaml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -183,7 +185,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="SampleLayout\route_test.yaml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="SampleLayout\Sample2.rrf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

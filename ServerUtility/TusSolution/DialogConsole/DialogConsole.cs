@@ -35,6 +35,8 @@ namespace DialogConsole
             catalog.Catalogs.Add((new AssemblyCatalog(System.Reflection.Assembly.GetExecutingAssembly())));
             var container = new CompositionContainer(catalog);
 
+            var sh = container.GetExport<RouteListFactory>();
+
             var dialog = container.GetExport<DialogConsole.DialogConsoleClass>();
 
             dialog.Value.Loop();
@@ -42,7 +44,7 @@ namespace DialogConsole
     }
 
     [Export(typeof(IFeatureParameters))]
-    public class DialogConsoleParameters
+    class DialogConsoleParameters
         : IFeatureParameters
     {
         public BlockSheet Sheet { get; set; }

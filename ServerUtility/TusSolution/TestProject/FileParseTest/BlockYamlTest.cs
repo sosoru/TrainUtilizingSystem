@@ -17,6 +17,7 @@ namespace TestProject
     ///BlockYamlTest 単体テストをここに含めます
     ///</summary>
     [TestClass()]
+    [DeploymentItem("SampleLayout/route_test.yaml")]
     public class BlockYamlTest
     {
 

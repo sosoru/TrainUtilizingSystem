@@ -30,6 +30,7 @@ namespace TestProject
     ///RouteTest 単体テストをここに含めます
     ///</summary>
     [TestClass()]
+     [DeploymentItem("SampleLayout/route_test.yaml")]
     public class RouteTest
     {
 
@@ -162,7 +163,7 @@ namespace TestProject
         //    Assert.IsTrue(target.LockedBlocks.Contains(sensoredblock));
         //}
 
-        [TestMethod]
+       [TestMethod]
         public void AllocateBlockTest()
         {
             var blocks = test_blocks.ToArray();

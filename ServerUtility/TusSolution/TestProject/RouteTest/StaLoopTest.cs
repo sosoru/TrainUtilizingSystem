@@ -27,6 +27,7 @@ namespace TestProject
     /// StaLoopTest の概要の説明
     /// </summary>
     [TestClass]
+    [DeploymentItem("SampleLayout/staloop.yaml")]
     public class StaLoopTest
     {
         public StaLoopTest()

@@ -57,7 +57,7 @@ namespace TestProject
     ///BlockSheetTest のテスト クラスです。すべての
     ///BlockSheetTest 単体テストをここに含めます
     ///</summary>
-    [TestClass()]
+    [TestClass()]    [DeploymentItem("SampleLayout/loop.yaml")]
     public class BlockSheetTest
     {
 

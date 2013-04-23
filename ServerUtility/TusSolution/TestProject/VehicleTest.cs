@@ -27,6 +27,7 @@ using Tus.TransControl.Parser;
 namespace TestProject
 {
     [TestClass]
+    [DeploymentItem("SampleLayout/staloop.yaml")]
     public class VehicleTest
     {
         IEnumerable<BlockInfo> target_sheet

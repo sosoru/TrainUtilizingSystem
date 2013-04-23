@@ -11,6 +11,7 @@ namespace TestProject
     ///RailroaderMapTest 単体テストをここに含めます
     ///</summary>
     [TestClass()]
+     [DeploymentItem("SampleLayout/Sample2.rrf")]
     public class RailroaderMapTest
     {
 

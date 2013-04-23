@@ -21,6 +21,7 @@ using Tus.TransControl.Parser;
 namespace TestProject
 {
     [TestClass]
+    [DeploymentItem("SampleLayout/point_sample.yaml")]
     public class RouteTest_PointSample
     {
 
@@ -37,8 +38,8 @@ namespace TestProject
 
         Route GetPositiveRoute(BlockSheet sht)
         {
-            var route = new Route(sht, new [] { "AT1", "AT2", "BT3", "AT4", "AT5"});
-            
+            var route = new Route(sht, new[] { "AT1", "AT2", "BT3", "AT4", "AT5" });
+
             //route.AddStopInfo(sht.GetBlock("BT3"));
 
             return route;
@@ -50,7 +51,7 @@ namespace TestProject
             var sht = sample_point_sheet.ToArray();
 
         }
-        
+
         [TestMethod]
         public void CreateRouteTest()
         {
@@ -80,10 +81,10 @@ namespace TestProject
 
             //1 : detected at AT1
             writtenstate.Clear();
-            
 
-            
-            
+
+
+
         }
     }
 }

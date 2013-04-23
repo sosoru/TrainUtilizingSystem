@@ -8,6 +8,7 @@ using DialogConsole;
 namespace TestProject.ConsoleTest.Composition
 {
     [TestClass]
+    [DeploymentItem("SampleLayout/815.yaml")]
     public class FactoryTest
     {
         [Export(typeof(IConsoleApplicationSettings))]
@@ -39,7 +40,7 @@ namespace TestProject.ConsoleTest.Composition
                 get { return @"815.yaml"; }
             }
             public string RoutePath
-            {get { return @"test_layout_route.yaml"; }}
+            { get { return @"test_layout_route.yaml"; } }
         }
 
         [TestMethod]
@@ -60,14 +61,13 @@ namespace TestProject.ConsoleTest.Composition
         {
             var catalog = new AggregateCatalog();
             catalog.Catalogs.Add(new AssemblyCatalog(".\\Tus.Factory.dll"));
-            catalog.Catalogs.Add(new TypeCatalog(typeof(TestConsoleSetting)));
+            //catalog.Catalogs.Add(new TypeCatalog(typeof(TestConsoleSetting)));
             catalog.Catalogs.Add(new AssemblyCatalog(".\\DialogConsole.exe"));
             var container = new CompositionContainer(catalog);
-
-            var shfact = container.GetExport<RouteListFactory>();
+            //var shfact = container.GetExport<RouteListFactory>();
 
             var result = container.GetExport<DialogConsoleClass>();
-        }   
-        
+        }
+
     }
 }

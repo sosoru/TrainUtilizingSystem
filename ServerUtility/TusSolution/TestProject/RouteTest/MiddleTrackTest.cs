@@ -26,6 +26,7 @@ namespace TestProject
     /// MiddleTrackTest の概要の説明
     /// </summary>
     [TestClass]
+    [DeploymentItem("SampleLayout/middletrack.yaml")]
     public class MiddleTrackTest
     {
         public MiddleTrackTest()
