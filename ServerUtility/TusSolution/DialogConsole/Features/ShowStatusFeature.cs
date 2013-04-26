@@ -17,8 +17,7 @@ namespace DialogConsole.Features
         {
             var blocks = this.Param.Sheet.InnerBlocks;
 
-            this.Param.Sheet.InquiryAllMotors();
-            this.Param.Sheet.InquiryDevices(this.Param.Sheet.AllSwitches());
+            this.Param.Sheet.InquiryDevices();
 
             foreach (var b in blocks)
                 Console.WriteLine(b.ToString());

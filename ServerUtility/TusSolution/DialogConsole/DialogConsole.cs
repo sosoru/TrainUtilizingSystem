@@ -30,17 +30,34 @@ namespace DialogConsole
     {
         private static void Main(string[] args)
         {
-            var catalog = new AggregateCatalog();
-            catalog.Catalogs.Add(new AssemblyCatalog(".\\Tus.Factory.dll"));
-            catalog.Catalogs.Add((new AssemblyCatalog(System.Reflection.Assembly.GetExecutingAssembly())));
-            var container = new CompositionContainer(catalog);
-
-            var sh = container.GetExport<RouteListFactory>();
-
+            var container = new DialogConsoleContainer();
             var dialog = container.GetExport<DialogConsole.DialogConsoleClass>();
 
             dialog.Value.Loop();
         }
+    }
+
+    [Export(typeof(CompositionContainer))]
+    class DialogConsoleContainer
+        : CompositionContainer
+    {
+        private static AggregateCatalog catalogs
+        {
+            get
+            {
+                var catalog = new AggregateCatalog();
+                catalog.Catalogs.Add(new AssemblyCatalog(".\\Tus.Factory.dll"));
+                catalog.Catalogs.Add((new AssemblyCatalog(System.Reflection.Assembly.GetExecutingAssembly())));
+                
+                return catalog;
+            }
+        }
+
+        public DialogConsoleContainer()
+            : base(catalogs)
+        {
+        }
+
     }
 
     [Export(typeof(IFeatureParameters))]

@@ -6,12 +6,15 @@ using System.Reactive.Linq;
 using System.Reactive.Concurrency;
 using Tus.Communication;
 using Tus.Communication.Device.AvrComposed;
+using IDeviceEffectorAlias = Tus.TransControl.Base.IDeviceEffector<
+    Tus.Communication.IDevice<Tus.Communication.IDeviceState<Tus.Communication.IPacketDeviceData>>, Tus.TransControl.Base.DeviceInfo>;
 
 namespace Tus.TransControl.Base
 {
     public class BlockSheet
         : IEquatable<BlockSheet>
     {
+
         public string Name { get; set; }
         public ReadOnlyCollection<Block> InnerBlocks { get; private set; }
         public PacketServer Server { get; private set; }
@@ -79,7 +82,7 @@ namespace Tus.TransControl.Base
 
         #endregion
 
-        public IEnumerable<IDeviceEffector> Effectors
+        public IEnumerable<IDeviceEffectorAlias> Effectors
         {
             get { return this.InnerBlocks.SelectMany(b => b.Effectors); }
         }
@@ -94,7 +97,7 @@ namespace Tus.TransControl.Base
                 .ForEach(p => p.ForEach(eff => eff.ExecuteCommand()));
         }
 
-        public IEnumerable<IDeviceEffector>[] GetEffectObservable(CommandFactory cmd, IEnumerable<Block> blocks)
+        public IEnumerable<IDeviceEffectorAlias>[] GetEffectObservable(CommandFactory cmd, IEnumerable<Block> blocks)
         {
             blocks.ForEach(b => b.Effect(new[] { cmd }));
 
@@ -104,7 +107,7 @@ namespace Tus.TransControl.Base
                  .GroupBy(e => 0)//(e is SwitchEffector) ? 0 : 1)
                  .OrderBy(g => g.Key);
 
-            return ob.Select(g => (IEnumerable<IDeviceEffector>)g.ToArray()).ToArray();
+            return ob.Select(g => (IEnumerable<IDeviceEffectorAlias>)g.ToArray()).ToArray();
         }
 
         public Block GetBlock(string p)
@@ -134,7 +137,7 @@ namespace Tus.TransControl.Base
                 .Subscribe();
 
         }
-        public void InquiryAllMotors()
+        public void InquiryStatusOfAllMotors()
         {
             var devs = this.InnerBlocks
                                 .Where(b => b.HasMotor)
@@ -154,7 +157,16 @@ namespace Tus.TransControl.Base
                                 .Where(b => b.HasSwitch)
                                 .Select(b => b.SwitchEffector.Device);
             return devs;
+        }
 
+        public IEnumerable<IDevice<IDeviceState<IPacketDeviceData>>> AllDevices
+        {
+            get { var dev = this.InnerBlocks.SelectMany(d => d.Devices).Distinct(d => d.DeviceID); return dev; }
+        }
+
+        public void InquiryDevices()
+        {
+            this.InquiryDevices(this.AllDevices);
         }
 
         public void InquiryDevices(IEnumerable<IDevice<IDeviceState<IPacketDeviceData>>> devs)

@@ -1,16 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition.Hosting;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
+using System.Reflection;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.Composition;
 using DialogConsole.Features.Base;
+using DialogConsole.WebPages;
 using Tus.TransControl.Base;
 
 namespace DialogConsole.Features
@@ -20,6 +23,12 @@ namespace DialogConsole.Features
     internal class StateWebServerFeature
         : BaseFeature, IFeature
     {
+        [Import]
+        public CompositionContainer Container { get; set; }
+
+        [Import]
+        public XmlObjectSerializer Serializer { get; set; }
+
         public void Execute()
         {
         }
@@ -27,6 +36,18 @@ namespace DialogConsole.Features
         public void Init()
         {
             this.StartHttpObservable();
+        }
+
+        public void ProcessResponse(HttpListenerRequest req)
+        {
+            var container = this.Container;
+            var exports = container.GetExports<IConsolePage>();
+
+            var query = req.Url.PathAndQuery;
+            var page = exports.First(p => query.Contains(p.Value.Query));
+
+
+            page.Value.SetResponseParameter(query);
         }
 
         private void FillVehicleInfoResponse(HttpListenerContext r)
@@ -128,6 +149,9 @@ namespace DialogConsole.Features
                                                                    {
                                                                        case "/vehicles":
                                                                            FillVehicleInfoResponse(r);
+                                                                           break;
+                                                                       default:
+                                                                           this.ProcessResponse(req);
                                                                            break;
                                                                    }
                                                                });

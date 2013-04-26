@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Runtime.Serialization.Json;
 using DialogConsole.Features.Base;
 using DialogConsole.WebPages;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -32,7 +34,8 @@ namespace TestProject.ConsoleTest.Composition
         [TestMethod]
         public void GetContextTest()
         {
-            var page = new SwitchPage();
+            var page = new ConsolePage();
+            //page.Serializer = new DataContractJsonSerializer(typeof(IEnumerable<Switch>));
             page.Param = this.SampleParams;
 
             var result = page.GetJsonContext();

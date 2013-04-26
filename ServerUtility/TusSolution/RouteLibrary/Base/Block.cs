@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Collections.ObjectModel;
+using Tus.Communication;
 using Tus.Communication.Device.AvrComposed;
+using IDeviceEffectorAlias = Tus.TransControl.Base.IDeviceEffector<
+    Tus.Communication.IDevice<Tus.Communication.IDeviceState<Tus.Communication.IPacketDeviceData>>, Tus.TransControl.Base.DeviceInfo>;
 
 namespace Tus.TransControl.Base
 {
@@ -72,8 +75,19 @@ namespace Tus.TransControl.Base
         public string Name { get; private set; }
         public BlockSheet Sheet { get; private set; }
 
-        public IList<IDeviceEffector> Effectors { get; set; }
+        public IList<IDeviceEffectorAlias> Effectors { get; set; }
         public SensorDetector Detector { get; set; }
+
+        public IEnumerable<IDevice<IDeviceState<IPacketDeviceData>>> Devices
+        {
+            get
+            {
+                var dev = this.Effectors.Select(e => e.Device);
+                if (this.Detector != null)
+                    dev = dev.Concat(this.Detector.Devices);
+                return dev.Distinct(d => d.DeviceID);
+            }
+        }
 
         public Block(BlockInfo info, BlockSheet sheet)
         {
@@ -81,14 +95,14 @@ namespace Tus.TransControl.Base
             this.Name = info.Name;
             this.Sheet = sheet;
 
-            var effs = new List<IDeviceEffector>();
+            var effs = new List<IDeviceEffectorAlias>();
             if (info.Motor != null)
                 effs.Add(new MotorEffector(info.Motor, this));
 
             if (info.Switch != null)
                 effs.Add(new SwitchEffector(info.Switch, this));
 
-            this.Effectors = new ReadOnlyCollection<IDeviceEffector>(effs);
+            this.Effectors = new ReadOnlyCollection<IDeviceEffectorAlias>(effs);
 
             if (info.Sensor != null)
                 this.Detector = new SensorDetector(info.Sensor, this);
@@ -117,7 +131,7 @@ namespace Tus.TransControl.Base
             }
         }
 
-        public IEnumerable<IDeviceEffector> Effect(IEnumerable<CommandFactory> infos)
+        public IEnumerable<IDeviceEffectorAlias> Effect(IEnumerable<CommandFactory> infos)
         {
             //var list_infos = infos.Select(info =>
             //{

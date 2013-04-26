@@ -6,15 +6,27 @@ using Tus.Communication.Device.AvrComposed;
 
 namespace Tus.TransControl.Base
 {
-    public interface IDeviceEffector
+    //public interface IDeviceEffector
+    //{
+    //    void ExecuteCommand();
+    //    void ApplyCommand(CommandFactory factory);
+    //    bool IsNeededExecution { get; }
+    //}
+
+    public interface IDeviceEffector<out TDev, out TInfo>
+        where TDev : IDevice<IDeviceState<IPacketDeviceData>>
+        where TInfo : DeviceInfo
     {
+        Block ParentBlock { get; }
+        TInfo Info { get; }
+        TDev Device { get; }
+        bool IsNeededExecution { get; set; }
         void ExecuteCommand();
         void ApplyCommand(CommandFactory factory);
-        bool IsNeededExecution { get; }
     }
 
     public abstract class DeviceEffector<TDev, TInfo, TState>
-    : IDeviceEffector
+    : IDeviceEffector<TDev, TInfo>
         where TDev : IDevice<IDeviceState<IPacketDeviceData>>, new()
         where TInfo : DeviceInfo
         where TState : class, IDeviceState<IPacketDeviceData>, new()
@@ -306,7 +318,7 @@ namespace Tus.TransControl.Base
             //}
 
             //if (_before_position != this.Device.CurrentState.Position)
-                this.IsNeededExecution = true;
+            this.IsNeededExecution = true;
 
             _before_position = this.Device.CurrentState.Position;
         }

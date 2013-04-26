@@ -95,15 +95,15 @@
   <ItemGroup>
     <Compile Include="BlockSheetTest.cs" />
     <Compile Include="BlockTest.cs" />
-    <Compile Include="ConsoleTest\Page\DialogControllerTestHelper.cs" />
+    <Compile Include="ConsoleTest\Controllers\DialogControllerTestHelper.cs" />
     <Compile Include="ConsoleTest\Page\SwitchPageTest.cs" />
     <Compile Include="DataContract\SerializeTest.cs" />
     <Compile Include="FileParseTest\BlockYamlTest.cs" />
     <Compile Include="ChunckedStreamTest.cs" />
     <Compile Include="ConsoleTest\Composition\FactoryTest.cs" />
     <Compile Include="DeviceIdParserTest.cs" />
-    <Compile Include="ConsoleTest\Page\MotorControllerTest.cs" />
-    <Compile Include="ConsoleTest\Page\SwitchControllerTest.cs" />
+    <Compile Include="ConsoleTest\Controllers\MotorControllerTest.cs" />
+    <Compile Include="ConsoleTest\Controllers\SwitchControllerTest.cs" />
     <Compile Include="EthClientTest.cs" />
     <Compile Include="FileParseTest\RouteYamlTest.cs" />
     <Compile Include="LoopingArrayTest.cs" />
@@ -195,12 +195,14 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Signification.pfx" />
-    <Shadow Include="テストの参照\RouteLibrary.accessor" />
   </ItemGroup>
   <ItemGroup>
     <None Include="VoltageTestCase.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="テストの参照\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

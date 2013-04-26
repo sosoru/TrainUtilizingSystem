@@ -11,7 +11,7 @@ using Tus.TransControl.Base;
 namespace DialogConsole.Features
 {
     [FeatureMetadata("5", "monitoring vehicles")]
-    [Export(typeof (IFeature))]
+    [Export(typeof(IFeature))]
     internal class InputVehicleFeature
         : BaseFeature, IFeature
     {
@@ -44,7 +44,8 @@ namespace DialogConsole.Features
 
             Param.VehiclePipeline = Observable.Defer(
                 () => Observable.Start(VehicleProcess, Param.SchedulerPacketProcessing))
-                                              .Do(u => Param.Sheet.InquiryAllMotors());
+                //.Do(u => Param.Sheet.InquiryStatusOfAllMotors());
+                                              .Do(u => this.Param.Sheet.InquiryDevices());
 
             Param.VehicleProcessing = Param.VehiclePipeline.Delay(TimeSpan.FromMilliseconds(1000)).Repeat()
                                            .SubscribeOn(Scheduler.NewThread)

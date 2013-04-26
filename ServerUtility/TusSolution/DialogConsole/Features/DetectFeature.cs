@@ -18,7 +18,7 @@ namespace DialogConsole.Features
             this.Param.Sheet.ChangeDetectingMode();
             System.Threading.Thread.Sleep(1000);
 
-            this.Param.Sheet.InquiryAllMotors();
+            this.Param.Sheet.InquiryStatusOfAllMotors();
             System.Threading.Thread.Sleep(2000);
 
             Console.WriteLine(this.Param.Sheet.InnerBlocks

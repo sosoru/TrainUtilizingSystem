@@ -231,7 +231,7 @@ namespace TestProject
 
             sht.ChangeDetectingMode(); // todo: value check
             System.Threading.Thread.Sleep(2000);
-            sht.InquiryAllMotors();
+            sht.InquiryStatusOfAllMotors();
             System.Threading.Thread.Sleep(2000);
 
             sht.PrepareVehicles();
