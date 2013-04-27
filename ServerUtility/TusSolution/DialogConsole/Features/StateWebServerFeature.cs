@@ -26,8 +26,8 @@ namespace DialogConsole.Features
         [Import]
         public CompositionContainer Container { get; set; }
 
-        [Import]
-        public XmlObjectSerializer Serializer { get; set; }
+        [ImportMany]
+        public IEnumerable<Lazy<IConsolePage, ITusPageMetadata>> Pages { get; set; }
 
         public void Execute()
         {
@@ -38,18 +38,20 @@ namespace DialogConsole.Features
             this.StartHttpObservable();
         }
 
-        public void ProcessResponse(HttpListenerRequest req)
+        public void ProcessResponse(HttpListenerRequest req, HttpListenerResponse res)
         {
             var container = this.Container;
-            var exports = container.GetExports<IConsolePage>();
+            var exports = this.Pages;
 
             var query = req.Url.PathAndQuery;
-            var page = exports.First(p => query.Contains(p.Value.Query));
-
+            var page = exports.First(p => query.Contains(p.Metadata.Query));
 
             page.Value.SetResponseParameter(query);
+            var content = page.Value.GetJsonContext();
+            FillResponse(res, content);
         }
 
+        private DateTime _updatebefore = DateTime.MinValue;
         private void FillVehicleInfoResponse(HttpListenerContext r)
         {
             var res = r.Response;
@@ -83,14 +85,19 @@ namespace DialogConsole.Features
                     if (recvinfo.Halts != null)
                     {
                         Console.WriteLine("{0} is changing halts set to {1}", vh.Name,
-                                          recvinfo.Halts.Aggregate("", (ag, s) => ag += s + ", "));
+                                          recvinfo.Halts.Aggregate("", (ag, s) => ag + (s + ", ")));
                         var halts = recvinfo.Halts.Select(h => new Halt(vh.Sheet.GetBlock(h)));
                         vh.Halt.Clear();
                         foreach (var h in halts)
                             vh.Halt.Add(h);
                     }
 
-                    this.Param.VehiclePipeline.Subscribe();
+                    //todo:ここ汚いから速くなおせ
+                    if ((DateTime.Now - this._updatebefore).Milliseconds > 200)
+                    {
+                        this.Param.VehiclePipeline.Subscribe();
+                        this._updatebefore = DateTime.Now;
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -103,38 +110,44 @@ namespace DialogConsole.Features
             }
             else
             {
-                res.Headers.Add("Content-type: application/json");
-                res.Headers.Add("Access-Control-Allow-Headers: x-requested-with, accept");
-                res.Headers.Add("Access-Control-Allow-Origin: *");
-
-                using (var sw = new StreamWriter(res.OutputStream))
                 using (var ms = new MemoryStream())
                 {
                     var cnt = new DataContractJsonSerializer(typeof(IEnumerable<Vehicle>));
                     var vehis = this.Param.Vehicles.ToArray();
 
                     cnt.WriteObject(ms, vehis);
-
-                    sw.WriteLine(System.Text.UnicodeEncoding.UTF8.GetString(ms.ToArray()));
+                    var s = Encoding.UTF8.GetString(ms.ToArray());
+                    FillResponse(res, s);
                 }
             }
         }
 
-        private HttpListener http_listener = null;
+        private static void FillResponse(HttpListenerResponse res, string s)
+        {
+            res.Headers.Add("Content-type: application/json");
+            res.Headers.Add("Access-Control-Allow-Headers: x-requested-with, accept");
+            res.Headers.Add("Access-Control-Allow-Origin: *");
+            using (var sw = new StreamWriter(res.OutputStream))
+            {
+                sw.WriteLine(s);
+            }
+        }
+
+        private HttpListener _httpListener;
 
         private void StartHttpObservable()
         {
-            if (this.http_listener == null)
+            if (this._httpListener == null)
             {
                 var listener = new HttpListener();
-                var prefix = "http://+:8012/";
+                const string prefix = "http://+:8012/";
 
                 listener.Prefixes.Add(prefix);
-                this.http_listener = listener;
-                this.http_listener.Start();
+                this._httpListener = listener;
+                this._httpListener.Start();
             }
-            var obsvfunc = Observable.FromAsyncPattern<HttpListenerContext>(this.http_listener.BeginGetContext,
-                                                                            this.http_listener.EndGetContext);
+            var obsvfunc = Observable.FromAsyncPattern<HttpListenerContext>(this._httpListener.BeginGetContext,
+                                                                            this._httpListener.EndGetContext);
 
             this.Param.ServingInfomation = Observable.Defer(obsvfunc)
                                                 .Repeat()
@@ -142,8 +155,8 @@ namespace DialogConsole.Features
                                                 .SubscribeOn(Scheduler.NewThread)
                                                 .Subscribe(r =>
                                                                {
-                                                                   var res = r.Response;
                                                                    var req = r.Request;
+                                                                   var res = r.Response;
 
                                                                    switch (r.Request.Url.PathAndQuery)
                                                                    {
@@ -151,7 +164,7 @@ namespace DialogConsole.Features
                                                                            FillVehicleInfoResponse(r);
                                                                            break;
                                                                        default:
-                                                                           this.ProcessResponse(req);
+                                                                           this.ProcessResponse(req, res);
                                                                            break;
                                                                    }
                                                                });

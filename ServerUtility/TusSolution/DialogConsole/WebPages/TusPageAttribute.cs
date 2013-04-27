@@ -9,7 +9,6 @@ using DialogConsole.Features.Base;
 namespace DialogConsole.WebPages
 {
     public interface ITusPageMetadata
-        : IFeatureMetadata
     {
         string Query { get; }
         string Name { get; }
@@ -18,7 +17,7 @@ namespace DialogConsole.WebPages
     [MetadataAttribute]
     [AttributeUsage(AttributeTargets.Class)]
     public class TusPageMetadataAttribute
-        : Attribute
+        : Attribute, ITusPageMetadata
     {
         public string Query { get; set; }
         public string Name { get; set; }
