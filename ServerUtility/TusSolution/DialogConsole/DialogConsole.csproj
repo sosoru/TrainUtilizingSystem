@@ -88,8 +88,12 @@
     <Compile Include="Settings.cs" />
     <Compile Include="Controllers\SwitchController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WebPages\ConsolePageBase.cs" />
+    <Compile Include="WebPages\IConsolePage.cs" />
     <Compile Include="WebPages\SwitchPage.cs" />
     <Compile Include="WebPages\TusPageAttribute.cs" />
+    <Compile Include="WebPages\VehiclePage.cs" />
+    <Compile Include="WebPages\MotorPage.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

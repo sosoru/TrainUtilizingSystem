@@ -27,18 +27,40 @@ namespace TestProject.ConsoleTest.Composition
                 var mock = new Mock<IFeatureParameters>();
                 mock.Setup(param => param.Sheet).Returns(() => sheet);
 
+                var vehicle = new Vehicle(sheet, new Route(sheet, new[] { "AT1" }));
+                mock.Setup(param => param.Vehicles).Returns(() => new[] { vehicle });
+
                 return mock.Object;
             }
         }
 
         [TestMethod]
-        public void GetContextTest()
+        public void GetSwitchContextTest()
         {
-            var page = new ConsolePage();
+            var page = new SwitchPage();
             //page.Serializer = new DataContractJsonSerializer(typeof(IEnumerable<Switch>));
             page.Param = this.SampleParams;
 
             var result = page.GetJsonContext();
         }
+
+        [TestMethod]
+        public void GetVehicleContextTest()
+        {
+            var page = new VehiclePage();
+            page.Param = this.SampleParams;
+
+            var result = page.GetJsonContext();
+        }
+
+        [TestMethod]
+        public void GetMotorContextTest()
+        {
+            var page = new MotorPage();
+            page.Param = this.SampleParams;
+
+            var result = page.GetJsonContext();
+        }
+
     }
 }

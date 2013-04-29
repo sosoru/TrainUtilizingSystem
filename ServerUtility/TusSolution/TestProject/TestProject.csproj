@@ -96,7 +96,7 @@
     <Compile Include="BlockSheetTest.cs" />
     <Compile Include="BlockTest.cs" />
     <Compile Include="ConsoleTest\Controllers\DialogControllerTestHelper.cs" />
-    <Compile Include="ConsoleTest\Page\SwitchPageTest.cs" />
+    <Compile Include="ConsoleTest\Page\ConsolePageTest.cs" />
     <Compile Include="DataContract\SerializeTest.cs" />
     <Compile Include="FileParseTest\BlockYamlTest.cs" />
     <Compile Include="ChunckedStreamTest.cs" />

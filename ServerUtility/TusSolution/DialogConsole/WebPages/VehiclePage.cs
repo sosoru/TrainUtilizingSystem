@@ -3,23 +3,20 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using Tus.Communication.Device.AvrComposed;
+using Tus.TransControl.Base;
 
 namespace DialogConsole.WebPages
 {
     [Export(typeof(IConsolePage))]
-    [TusPageMetadata("switch device control", "switch")]
+    [TusPageMetadata("vehicle control", "vehicle")]
     [PartCreationPolicy(CreationPolicy.NonShared)]
-    public class SwitchPage : ConsolePageBase
+    public class VehiclePage : ConsolePageBase
     {
         public override string GetJsonContext()
         {
-            var switches =
-                this.Param.Sheet.AllDevices.Where(d => d.ModuleType == Tus.Communication.ModuleTypeEnum.AvrSwitch)
-                .Cast<Switch>().ToArray();
-
-            return GetJsonContent<IEnumerable<Switch>>(switches);
+            var vehicles = this.Param.Vehicles;
+            return GetJsonContent<IEnumerable<Vehicle>>(vehicles);
         }
-
 
         public override void ApplyJsonRequest()
         {
