@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <script src="http://code.jquery.com/jquery-1.7.2.js"></script>
+    <script src="http://code.jquery.com/ui/1.8.21/jquery-ui.min.js"></script>
+    <script src="scripts/jquery.ui.touch-punch.min.js"></script>
+    <script src='scripts/jquery.timers.js' type='text/javascript'></script>
+    <script src="scripts/jsrender.js" type="text/javascript"   ></script>
+    <script src="testcase.js" type="text/javascript"></script>
+    <script src="tusControllers.js" type="text/javascript"></script>
+    <script src="testscript.js" type="text/javascript"></script>
+    <script id="SwitchTemplate" type="text/x-jquery-tmpl">
+        <label>{{:DeviceID}}</label>
+        <button class="positionChange">
+            {{if CurrentState.Position == 'Straight'}}
+            直
+            {{else CurrentState.Position == 'Curve'}}
+            曲
+            {{else}}
+            ？
+            {{/if}}
+        </button>
+    </script>
+
+    <script id="BlockTemplate" type="text/x-jquery-tmpl">
+        <label>{{:Name}}</label>
+        <br />
+    </script>
+
+    <title></title>
+</head>
+<body>
+
+    <div id="area">
+    </div>
+    <hr />
+    <div id="block">
+        
+    </div>
+</body>
+</html>
