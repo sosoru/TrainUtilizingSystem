@@ -37,14 +37,14 @@ namespace EthernetBridge{
 		typedef OutputPin6<PortE> SlaveModuleG;
 		typedef OutputPin7<PortE> SlaveModuleH;
 
-		typedef Reset::ResetModule< OutputPin0<PortA> > ResetModuleA;
-		typedef Reset::ResetModule< OutputPin1<PortA> > ResetModuleB;
-		typedef Reset::ResetModule< OutputPin2<PortA> > ResetModuleC;
-		typedef Reset::ResetModule< OutputPin3<PortA> > ResetModuleD;
-		typedef Reset::ResetModule< OutputPin4<PortA> > ResetModuleE;
-		typedef Reset::ResetModule< OutputPin5<PortA> > ResetModuleF;
-		typedef Reset::ResetModule< OutputPin6<PortA> > ResetModuleG;
-		typedef Reset::ResetModule< OutputPin7<PortA> > ResetModuleH;
+		typedef Reset::ResetModule< Pin0<PortA> > ResetModuleA;
+		typedef Reset::ResetModule< Pin1<PortA> > ResetModuleB;
+		typedef Reset::ResetModule< Pin2<PortA> > ResetModuleC;
+		typedef Reset::ResetModule< Pin3<PortA> > ResetModuleD;
+		typedef Reset::ResetModule< Pin4<PortA> > ResetModuleE;
+		typedef Reset::ResetModule< Pin5<PortA> > ResetModuleF;
+		typedef Reset::ResetModule< Pin6<PortA> > ResetModuleG;
+		typedef Reset::ResetModule< Pin7<PortA> > ResetModuleH;
 			
 		template<
 				class slave_module,
@@ -56,13 +56,18 @@ namespace EthernetBridge{
 			private:
 				static const uint8_t buffer_count = 8;
 				static const uint8_t message_size = 64;
+				
 			public:
 				typedef reset_module Reset;
 				typedef EthernetBridge::DispatchBuffer::PacketDispatcher<buffer_count, message_size, device_child_id> Dispatcher;
 				
+				static bool Ignored;
+				
 				static inline void Init()
 				{
-					reset_module::Init();
+					Ignored = !Reset::CheckModuleExist();
+					
+					Reset::Init();
 					Dispatcher::Init();
 				}
 			
@@ -98,7 +103,7 @@ namespace EthernetBridge{
 				static inline bool Transmit(EthPacket& received)
 				{
 					EthPacket* psend;
-										
+					
 					if(Dispatcher::PopPacket(&psend))
 					{
 						PORTB ^= _BV(PORTB6);
@@ -112,6 +117,13 @@ namespace EthernetBridge{
 					return IsReceivedCorrectly(received);
 				}
 		};
+		
+		template<
+		class slave_module,
+		class reset_module,
+		uint8_t device_child_id
+		> bool ChildModule<slave_module, reset_module, device_child_id>::Ignored;
+
 	}	
 	
 	typedef EthernetBridgeConfig::ChildModule<EthernetBridgeConfig::SlaveModuleA, EthernetBridgeConfig::ResetModuleA, 1> ModuleA;

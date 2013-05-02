@@ -66,7 +66,7 @@ void BoardInit()
 	EthDevice::Parameters.ipaddress[0] = 192;
 	EthDevice::Parameters.ipaddress[1] = 168;
 	EthDevice::Parameters.ipaddress[2] = 2;
-	EthDevice::Parameters.ipaddress[3] = 26;
+	EthDevice::Parameters.ipaddress[3] = 25;
 	
 	EthDevice::Parameters.macaddress[0] = 0x54;
 	EthDevice::Parameters.macaddress[1] = 0x55;
@@ -99,6 +99,9 @@ template < class t_module >
 void DispatchModulePackets()
 {
 	EthPacket received;
+	
+	if(t_module::Ignored)
+		return;
 	
 	do
 	{

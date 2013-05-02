@@ -22,19 +22,26 @@ namespace EthernetBridge
 		
 		static inline void Init()
 		{
-			RESETpin::InitOutput();	// nRESET
-			RESETpin::Set();
-			
+			RESETpin::Output::InitOutput();	// nRESET
+			RESETpin::Output::Set();
+		}
+		
+		// must check before Init()
+		static inline bool CheckModuleExist()
+		{
+			RESETpin::Input::InitInput();
+			RESETpin::Input::InitDefaultInput();
+			return RESETpin::Input::IsSet();
 		}
 		
 		static inline void ModuleOff()
 		{
-			RESETpin::Clear();
+			RESETpin::Output::Clear();
 		}
 		
 		static inline void ModuleOn()
 		{
-			RESETpin::Set();
+			RESETpin::Output::Set();
 		}
 		
 	};
