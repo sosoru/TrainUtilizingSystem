@@ -99,7 +99,8 @@ namespace DialogConsole.Features
                     //{
                     //    if ((DateTime.Now - this._updatebefore).Milliseconds > 200)
                     //    {
-                            this.Param.VehiclePipeline.Subscribe();
+                    this.Param.VehiclePipeline.Subscribe();
+                    this.Param.SendingPacketPipeline.Subscribe();
                     //        this._updatebefore = DateTime.Now;
                     //    }
                     //    else
@@ -111,7 +112,7 @@ namespace DialogConsole.Features
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    Console.WriteLine(ex.ToString());
                 }
                 finally
                 {

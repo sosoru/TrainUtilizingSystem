@@ -42,14 +42,20 @@ namespace DialogConsole.Features
                 return;
             }
 
-            Param.VehiclePipeline = Observable.Defer(
-                () => Observable.Start(VehicleProcess, Param.SchedulerPacketProcessing))
-                .Do(u => Param.Sheet.InquiryStatusOfAllMotors());
-                                              //.Do(u => this.Param.Sheet.InquiryDevices());
+            if (this.Param.VehicleProcessing == null)
+            {
+                Param.VehiclePipeline = Observable.Defer(
+                    () => Observable.Start(VehicleProcess, Param.SchedulerPacketProcessing));
+                //.Do(u => Param.Sheet.InquiryStatusOfAllMotors());
+                //.Do(u => this.Param.Sheet.InquiryDevices());
 
-            Param.VehicleProcessing = Param.VehiclePipeline.Delay(TimeSpan.FromMilliseconds(1000)).Repeat()
-                                           .SubscribeOn(Scheduler.NewThread)
-                                           .Subscribe();
+                Param.VehicleProcessing = Param.VehiclePipeline
+                    .Do(u => this.Param.Sheet.InquiryDevices())
+                    .Delay(TimeSpan.FromMilliseconds(1000)).Repeat()
+                                               .SubscribeOn(Scheduler.NewThread)
+                                               .Subscribe();
+            }
+
         }
 
         public void Init()

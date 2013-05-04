@@ -48,7 +48,7 @@ namespace DialogConsole
                 var catalog = new AggregateCatalog();
                 catalog.Catalogs.Add(new AssemblyCatalog(".\\Tus.Factory.dll"));
                 catalog.Catalogs.Add((new AssemblyCatalog(System.Reflection.Assembly.GetExecutingAssembly())));
-                
+
                 return catalog;
             }
         }
@@ -70,6 +70,8 @@ namespace DialogConsole
         public IDisposable ServingInfomation { get; set; }
         public IObservable<Unit> VehiclePipeline { get; set; }
         public IDisposable VehicleProcessing { get; set; }
+        public IObservable<DevicePacket> SendingPacketPipeline { get; set; }
+        public IObservable<DevicePacket> ReceivingPacketPipeline { get; set; }
 
         [ImportingConstructor]
         public DialogConsoleParameters(SheetFactory fact, RouteListFactory rtfact)
@@ -123,13 +125,17 @@ namespace DialogConsole
         public void Loop()
         {
             this.LogWriterSend = new StreamWriter("packet_log.txt", true);
-            this._logWriterRecv = new StreamWriter("packet_log_recv.txt", true);
+            this._logWriterRecv = new StreamWriter("packet_log_recv_.txt", true);
 
             this._syncPacketProcess = new SynchronizationContext();
             this.Param.SchedulerPacketProcessing = new SynchronizationContextScheduler(this._syncPacketProcess);
             this.Param.Sheet.AssociatedScheduler = this.Param.SchedulerPacketProcessing;
 
-            this.Param.Sheet.Server.SendingObservable
+            this.Param.SendingPacketPipeline = this.Param.Sheet.Server.SendingObservable
+                                                   .ObserveOn(this.Param.SchedulerPacketProcessing);
+
+            //this.Param.Sheet.Server.SendingObservable
+            this.Param.SendingPacketPipeline
                 .Delay(TimeSpan.FromMilliseconds(15))
                 .Repeat()
                 .SelectMany(g => g.ExtractPackedPacket())
@@ -139,26 +145,27 @@ namespace DialogConsole
                                                                     DateTime.Now.Millisecond,
                                                                     g.ToString()
                                                           )))
-                .ObserveOn(this.Param.SchedulerPacketProcessing)
+                //.ObserveOn(this.Param.SchedulerPacketProcessing)
                 .SubscribeOn(Scheduler.Default)
                 .Subscribe();
 
             var timer = Observable.Interval(TimeSpan.FromMilliseconds(20), Scheduler.Default);
-            this._receiving = Observable.Defer(() => this.Param.Sheet.Server.ReceivingObservable)
-                                        .ObserveOn(this.Param.SchedulerPacketProcessing)
-                                        .Repeat()
-                                        .Zip(timer, (v, _) => v)
-                                        .SelectMany(v => v.ExtractPackedPacket())
-                                        .Do(g => this._logWriterRecv.WriteLine(string.Format("({0}.{1}) : recving {2}",
-                                                                                             DateTime.Now
-                                                                                                     .ToLongDateString() +
-                                                                                             DateTime.Now
-                                                                                                     .ToLongTimeString(),
-                                                                                             DateTime.Now.Millisecond,
-                                                                                             g.ToString()
-                                                                                   )))
-                                        .SubscribeOn(Scheduler.Default)
-                                        .Subscribe();
+
+            this.Param.ReceivingPacketPipeline = Observable.Defer(() => this.Param.Sheet.Server.ReceivingObservable)
+                                                           .ObserveOn(this.Param.SchedulerPacketProcessing)
+                                                           .Repeat()
+            .SubscribeOn(Scheduler.Default)
+                                                           .Zip(timer, (v, _) => v);
+            this.Param.ReceivingPacketPipeline.SelectMany(v => v.ExtractPackedPacket())
+            .Do(g => this._logWriterRecv.WriteLine(string.Format("({0}.{1}) : recving {2}",
+                                                                 DateTime.Now
+                                                                         .ToLongDateString() +
+                                                                 DateTime.Now
+                                                                         .ToLongTimeString(),
+                                                                 DateTime.Now.Millisecond,
+                                                                 g.ToString()
+                                                       )))
+            .Subscribe();
 
             this.Param.Sheet.Effect(new CommandFactory()
                                         {
