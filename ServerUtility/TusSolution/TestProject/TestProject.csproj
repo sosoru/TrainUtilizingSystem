@@ -118,6 +118,7 @@
     <Compile Include="RouteTest\MiddleTrackTest.cs" />
     <Compile Include="RouteTest\RouteTest_PointSample.cs" />
     <Compile Include="RouteTest\StaLoopTest.cs" />
+    <Compile Include="RouteTest\FactoryTest.cs" />
     <Compile Include="SensorStateTest.cs" />
     <Compile Include="SerializeTest.cs" />
     <Compile Include="SwitchStateTest.cs" />
@@ -193,6 +194,12 @@
     </None>
     <None Include="SampleLayout\staloop.yaml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="SampleLayout\test_layout_route.yaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="SampleLayout\test_looping.yaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Signification.pfx" />
   </ItemGroup>

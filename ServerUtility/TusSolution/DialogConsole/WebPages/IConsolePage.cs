@@ -7,6 +7,6 @@ namespace DialogConsole.WebPages
         string Query { get; set; }
         IFeatureParameters Param { get; set; }
         void SetResponseParameter(string query);
-        string GetJsonContext();
+        string GetJsonContent();
     }
 }

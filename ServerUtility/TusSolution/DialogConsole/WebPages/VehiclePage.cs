@@ -12,7 +12,7 @@ namespace DialogConsole.WebPages
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public class VehiclePage : ConsolePageBase
     {
-        public override string GetJsonContext()
+        public override string GetJsonContent()
         {
             var vehicles = this.Param.Vehicles;
             return GetJsonContent<IEnumerable<Vehicle>>(vehicles);

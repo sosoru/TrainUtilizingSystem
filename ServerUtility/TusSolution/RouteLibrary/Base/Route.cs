@@ -126,9 +126,9 @@ namespace Tus.TransControl.Base
         public Route(BlockSheet sheet, IEnumerable<string> names)
             : this(names.Select(s => sheet.InnerBlocks.First(b => b.Name == s)).ToList()) { }
 
-        public Route(IList<Block> segs)
+        public Route(IEnumerable<Block> segs)
         {
-            this.Blocks = new ReadOnlyCollection<Block>(segs);
+            this.Blocks = new ReadOnlyCollection<Block>(segs.ToList());
 
             this.Units = new ReadOnlyCollection<ControllingRoute>(locked_blocks.ToArray());
             this.LockedUnits = new Queue<ControllingRoute>();
@@ -201,7 +201,7 @@ namespace Tus.TransControl.Base
             return false;
         }
 
-        [DataMember(IsRequired= false)]
+        [DataMember(IsRequired = false)]
         public ICollection<Block> LockedBlocks
         {
             get
@@ -230,7 +230,7 @@ namespace Tus.TransControl.Base
 
                 return new RouteSegment(first, this.Blocks[ind + 1]);
             }
-            else if (ind >= this.Blocks.Count-1)
+            else if (ind >= this.Blocks.Count - 1)
             {
                 Block last = null;
                 if (this.IsRepeatable)
@@ -282,7 +282,7 @@ namespace Tus.TransControl.Base
             if (len <= 0)
                 throw new ArgumentOutOfRangeException("len must be greater than 0");
 
-            var blocklist = this.Units.Select((r, i) => new {ind = i, route = r}).ToArray();
+            var blocklist = this.Units.Select((r, i) => new { ind = i, route = r }).ToArray();
             var blockunit = blocklist.FirstOrDefault(u => u.route.Blocks.Contains(cntblock));
 
             if (blockunit == null)
@@ -290,7 +290,7 @@ namespace Tus.TransControl.Base
 
             while (this.ReleaseBeforeUnit()) ;
 
-            this.ind_current = (blockunit.ind - 1) - (len-1); // (index of before block from current) - (vehicle length)
+            this.ind_current = (blockunit.ind - 1) - (len - 1); // (index of before block from current) - (vehicle length)
 
             if (this.IsRepeatable && this.ind_current < 0)
                 this.ind_current += this.Units.Count;
@@ -319,7 +319,36 @@ namespace Tus.TransControl.Base
             }
             this.Blocks = this.Blocks.Reverse().ToList();
             this.Units = this.Units.Reverse().ToList();
-            
+
+        }
+
+        private string GetBlockExpression(Block blk)
+        {
+            var exp = ":";
+            if (blk.HasMotor)
+                exp += "m";
+
+            if (blk.HasSwitch)
+                exp += "s";
+
+            if (blk.HasSensor)
+                exp += "e";
+
+            if (blk.IsIsolated)
+                exp += "i";
+
+            if (exp.Length == 1)
+                exp = "";
+
+            return blk.Name + exp;
+        }
+
+        public override string ToString()
+        {
+            var strunits = this.Units.Aggregate("", (ac, cntrt) =>
+                                                 ac + "(" + cntrt.Blocks.Aggregate("", (a, b) => a + GetBlockExpression(b) + " ").Trim() + ") ")
+                                                 .Trim();
+            return string.Format("{0} : {1}", this.Name, strunits);
         }
     }
 }

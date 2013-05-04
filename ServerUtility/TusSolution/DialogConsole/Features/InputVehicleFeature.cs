@@ -44,8 +44,8 @@ namespace DialogConsole.Features
 
             Param.VehiclePipeline = Observable.Defer(
                 () => Observable.Start(VehicleProcess, Param.SchedulerPacketProcessing))
-                //.Do(u => Param.Sheet.InquiryStatusOfAllMotors());
-                                              .Do(u => this.Param.Sheet.InquiryDevices());
+                .Do(u => Param.Sheet.InquiryStatusOfAllMotors());
+                                              //.Do(u => this.Param.Sheet.InquiryDevices());
 
             Param.VehicleProcessing = Param.VehiclePipeline.Delay(TimeSpan.FromMilliseconds(1000)).Repeat()
                                            .SubscribeOn(Scheduler.NewThread)

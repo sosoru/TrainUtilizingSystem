@@ -44,10 +44,10 @@ void BoardInit()
 	uint8_t i;
 	
 #ifndef DEBUG
-	_delay_ms(100);	//wait for launching eth device
+	//_delay_ms(100);	//wait for launching eth device
 #endif
 			
-	DDRA = 0xff;
+	DDRA = 0x00; // nRESET pins are initialized HiZ
 	DDRB = 0xff;
 	DDRC = 0xff;
 	DDRD = 0xff;
@@ -55,7 +55,7 @@ void BoardInit()
 	//DDRF = 0xff;
 	DDRG = 0xff;
 	
-	PORTA = 0;
+	PORTA = 0xFF; 
 	PORTB = 0;
 	PORTC = 0;
 	PORTD = 0;
@@ -66,7 +66,7 @@ void BoardInit()
 	EthDevice::Parameters.ipaddress[0] = 192;
 	EthDevice::Parameters.ipaddress[1] = 168;
 	EthDevice::Parameters.ipaddress[2] = 2;
-	EthDevice::Parameters.ipaddress[3] = 25;
+	EthDevice::Parameters.ipaddress[3] = 26;
 	
 	EthDevice::Parameters.macaddress[0] = 0x54;
 	EthDevice::Parameters.macaddress[1] = 0x55;
@@ -144,7 +144,7 @@ extern "C"
 		//UIController uicnt(ui_mac);
 		
 		MCUCSR = 0;
-		wdt_disable();
+		wdt_enable(WDTO_2S);
 		//fprintf(stderr, "hoge");
 	//#ifndef DEBUG
 		DDRB = 0xff;
@@ -154,9 +154,13 @@ extern "C"
 		BoardInit();
 		PORTB |= _BV(PORTB4);
 	
+		wdt_reset();
 		while(1)
 		{
-			while(EthDevice::ReceiveFromEthernet());		
+			while(EthDevice::ReceiveFromEthernet())
+			{
+				wdt_reset(); // 長時間パケットない場合はリセット
+			}					
 				
 			DispatchProcess();
 		

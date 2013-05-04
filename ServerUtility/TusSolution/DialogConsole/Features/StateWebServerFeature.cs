@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using System.ComponentModel.Composition;
 using DialogConsole.Features.Base;
 using DialogConsole.WebPages;
+using Tus.Communication.Device.AvrComposed;
 using Tus.TransControl.Base;
 
 namespace DialogConsole.Features
@@ -47,11 +48,12 @@ namespace DialogConsole.Features
             var page = exports.First(p => query.Contains(p.Metadata.Query));
 
             page.Value.SetResponseParameter(query);
-            var content = page.Value.GetJsonContext();
+            var content = page.Value.GetJsonContent();
             FillResponse(res, content);
         }
 
         private DateTime _updatebefore = DateTime.MinValue;
+        private object _update_lock = new object();
         private void FillVehicleInfoResponse(HttpListenerContext r)
         {
             var res = r.Response;
@@ -93,11 +95,19 @@ namespace DialogConsole.Features
                     }
 
                     //todo:ここ汚いから速くなおせ
-                    if ((DateTime.Now - this._updatebefore).Milliseconds > 200)
-                    {
-                        this.Param.VehiclePipeline.Subscribe();
-                        this._updatebefore = DateTime.Now;
-                    }
+                    //lock (this._update_lock)
+                    //{
+                    //    if ((DateTime.Now - this._updatebefore).Milliseconds > 200)
+                    //    {
+                            this.Param.VehiclePipeline.Subscribe();
+                    //        this._updatebefore = DateTime.Now;
+                    //    }
+                    //    else
+                    //    {
+                    //        Console.WriteLine("request ignored");
+                    //    }
+
+                    //}
                 }
                 catch (Exception ex)
                 {
@@ -110,14 +120,21 @@ namespace DialogConsole.Features
             }
             else
             {
-                using (var ms = new MemoryStream())
+                try
                 {
-                    var cnt = new DataContractJsonSerializer(typeof(IEnumerable<Vehicle>));
-                    var vehis = this.Param.Vehicles.ToArray();
+                    using (var ms = new MemoryStream())
+                    {
+                        var cnt = new DataContractJsonSerializer(typeof(IEnumerable<Vehicle>), new[] { typeof(Switch), typeof(Motor), typeof(UsartSensor), typeof(MemoryState) });
+                        var vehis = this.Param.Vehicles.ToArray();
 
-                    cnt.WriteObject(ms, vehis);
-                    var s = Encoding.UTF8.GetString(ms.ToArray());
-                    FillResponse(res, s);
+                        cnt.WriteObject(ms, vehis);
+                        var s = Encoding.UTF8.GetString(ms.ToArray());
+                        FillResponse(res, s);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
                 }
             }
         }
@@ -164,7 +181,7 @@ namespace DialogConsole.Features
                                                                            FillVehicleInfoResponse(r);
                                                                            break;
                                                                        default:
-                                                                           this.ProcessResponse(req, res);
+                                                                           //this.ProcessResponse(req, res);
                                                                            break;
                                                                    }
                                                                });

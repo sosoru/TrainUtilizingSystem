@@ -10,8 +10,8 @@ namespace Tus.TransControl.Base
     {
         public float RawSpeed { get; set; }
         public float Go { get { return RawSpeed; } }
-        public float Caution { get { return RawSpeed * 1.0f ; } }
-        public float Stop { get { return RawSpeed * 1.0f; } }
+        public float Caution { get { return RawSpeed * 0.5f; } }
+        public float Stop { get { return RawSpeed * 0f; } }
     }
 
     [DataContract]
@@ -32,7 +32,7 @@ namespace Tus.TransControl.Base
         public Block CurrentBlock { get; set; }
 
         [DataMember]
-        public Route Route { get;  set; }
+        public Route Route { get; set; }
         public BlockSheet Sheet { get; set; }
 
         [DataMember]
@@ -103,12 +103,12 @@ namespace Tus.TransControl.Base
                 if (waitingunit.ControlBlock.IsMotorDetectingTrain)
                 {
                     this.CurrentBlock = waitingunit.ControlBlock;
-                    Console.WriteLine("vehicle {0} moved : {1}", this.Name,  this.CurrentBlock.Name);
+                    Console.WriteLine("vehicle {0} moved : {1}", this.Name, this.CurrentBlock.Name);
                     //this.CurrentBlock.Neighbors.ForEach(b => Console.WriteLine(b.MotorEffector.Device.ToString()));
                     //Console.WriteLine(this.CurrentBlock.MotorEffector.Device.ToString());
 
                 }
-            } 
+            }
 
             Run(this.Speed, this.CurrentBlock);
         }
@@ -161,7 +161,7 @@ namespace Tus.TransControl.Base
             {
                 this.Route.AllocateTrain(this.CurrentBlock, this.Length);
             }
-            catch  { throw; }
+            catch { throw; }
 
             if (!this.Route.LockNextUnit())
             {
@@ -202,7 +202,7 @@ namespace Tus.TransControl.Base
             this.Route.AllocateTrain(cnt, this.Length);
 
         }
-        
+
         private BlockPolar getBlockPolar(CommandInfo cmd, Block blk)
         {
             var rt = cmd.Route;
@@ -233,7 +233,7 @@ namespace Tus.TransControl.Base
                                      ? lockedunits.First().ControlBlock
                                      : lockedunits[lockedunits.Length - 2].ControlBlock;
                     var waitblk = lockedunits.Last().ControlBlock;
-                    
+
                     if (blk == cntblk)// lockedunits[lockedunits.Length - 2].ControlBlock)
                     {
                         cmd.MotorMode = MotorMemoryStateEnum.Controlling;
@@ -282,7 +282,7 @@ namespace Tus.TransControl.Base
                 });
             return new CommandFactory() { CreateCommand = func };
         }
-        
+
         private CommandFactory CreateBlockageIgnoreCommand(Func<float> cntspdfact)
         {
             var fun = new Func<Block, CommandInfo>(blk =>
@@ -304,7 +304,7 @@ namespace Tus.TransControl.Base
             return CreateWithWaitingCommand(() => spdfactory.Go, () => spdfactory.Go);
         }
 
-       private CommandFactory Create2ndCommand(SpeedFactory spdfactory)
+        private CommandFactory Create2ndCommand(SpeedFactory spdfactory)
         {
             return CreateWithWaitingCommand(() => spdfactory.Go, () => spdfactory.Caution);
         }

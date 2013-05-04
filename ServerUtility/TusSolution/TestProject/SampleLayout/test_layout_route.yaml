@@ -1,0 +1,44 @@
+- &left
+    BAT5, AT5, BAT4
+- &left_rev
+    BAT4, AT5, BAT5
+    
+- &right
+    BAT12, AT12
+- &right_rev
+    AT12, BAT12
+    
+- &staA_top
+    AT4, AT3, AT1, AT14, AT13
+- &staA_top_rev
+    AT13, AT14, AT1, AT3, AT4
+    
+- &staB_top
+    AT13, AT14, BT1, AT3, AT4 # not fixed
+- &staA_bottom
+    BAT11, AT11, AT10, AT9, AT7, AT6
+- &staA_bottom_rev
+    AT6, AT7, AT9, AT10, AT11, BAT11
+    
+- &staB_bottom
+    AT6, AT7, BT9, AT10, AT11 # not fixed
+ 
+-
+  name : MAIN
+  polar : neg
+  route : 
+    - *staA_top
+    - *right
+    - *staA_bottom
+    - *left
+-
+  name : MAIN_REV
+  polar : pos
+  route:
+    - *staA_top_rev
+    - *left_rev
+    - *staA_bottom_rev
+    - *right_rev
+
+
+  

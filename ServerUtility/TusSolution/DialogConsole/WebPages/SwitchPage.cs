@@ -11,7 +11,7 @@ namespace DialogConsole.WebPages
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public class SwitchPage : ConsolePageBase
     {
-        public override string GetJsonContext()
+        public override string GetJsonContent()
         {
             var switches =
                 this.Param.Sheet.AllDevices.Where(d => d.ModuleType == Tus.Communication.ModuleTypeEnum.AvrSwitch)

@@ -238,7 +238,7 @@ namespace Tus.TransControl.Base
                     if (this.Device.States.ContainsKey(MotorMemoryStateEnum.Controlling) &&
                         this.Device.States[MotorMemoryStateEnum.Controlling].Duty == cntstate.Duty)
                     {
-                        this.IsNeededExecution = false;
+                        //this.IsNeededExecution = false;
                     }
                     else
                     {
@@ -282,7 +282,7 @@ namespace Tus.TransControl.Base
                 var state = new SwitchState()
                     {
                         Position = PointStateEnum.Straight,
-                        DeadTime = 100,
+                        DeadTime = 300,
                         ChangingTime = 250,
                     };
                 return state;
@@ -317,8 +317,8 @@ namespace Tus.TransControl.Base
             }
             //}
 
-            //if (_before_position != this.Device.CurrentState.Position)
-            this.IsNeededExecution = true;
+            if (_before_position != this.Device.CurrentState.Position)
+                this.IsNeededExecution = true;
 
             _before_position = this.Device.CurrentState.Position;
         }

@@ -18,13 +18,10 @@ namespace DialogConsole.WebPages
             Query = query;
         }
 
-        public abstract string GetJsonContext();
+        public abstract string GetJsonContent();
 
-        protected string GetJsonContent<T>(T obj)
+        protected string GetJsonContent<T>(T obj, DataContractJsonSerializer ser)
         {
-            // 実行時型はDataContractSerializerは処理できない
-            var ser = new DataContractJsonSerializer(typeof(T));
-
             using (var ms = new MemoryStream())
             using (var sr = new StreamReader(ms, Encoding.UTF8))
             {
@@ -32,6 +29,14 @@ namespace DialogConsole.WebPages
                 ms.Seek(0, SeekOrigin.Begin);
                 return sr.ReadToEnd();
             }
+
+        }
+
+        protected string GetJsonContent<T>(T obj)
+        {
+            // 実行時型はDataContractSerializerは処理できない
+            var ser = new DataContractJsonSerializer(typeof(T));
+            return GetJsonContent<T>(obj, ser);
         }
 
         public abstract void ApplyJsonRequest();

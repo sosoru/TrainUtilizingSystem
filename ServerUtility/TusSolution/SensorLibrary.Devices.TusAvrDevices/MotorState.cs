@@ -181,12 +181,13 @@ namespace Tus.Communication.Device.AvrComposed
     }
 
     //todo:進行方向と極性を一致させるためのカプセル化
+    //テスト線に併せて極性逆になってた
     public enum MotorDirection
         : byte
     {
         Standby = 0x00,
-        Positive = 0x02,
-        Negative = 0x01,
+        Positive = 0x01,
+        Negative = 0x02,
     }
 
 }

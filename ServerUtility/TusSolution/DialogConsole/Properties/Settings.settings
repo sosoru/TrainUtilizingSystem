@@ -18,7 +18,7 @@
       <Value Profile="(Default)">(9, 0, 0)</Value>
     </Setting>
     <Setting Name="RoutePath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">C:\Users\Administrator\Desktop\dummy_route.yaml</Value>
+      <Value Profile="(Default)">C:\Users\Administrator\Desktop\rail\032713_layout_route.yaml</Value>
     </Setting>
   </Settings>
 </SettingsFile>

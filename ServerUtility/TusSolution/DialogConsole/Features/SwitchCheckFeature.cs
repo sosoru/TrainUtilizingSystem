@@ -23,22 +23,41 @@ namespace DialogConsole.Features
             Console.WriteLine(pos);
             if (pos != PointStateEnum.Any)
             {
-                ChangeSwitch(pos);
+                var devs = this.Param.Sheet.AllDevices.Where(d => d is Switch).Cast<Switch>().ToArray();
+
+                Console.WriteLine("deviceid?");
+                var id = Console.ReadLine();
+
+                try
+                {
+                    var devid = DeviceIdParser.FromString(id).First();
+                    devs = devs.Where(dev => dev.DeviceID.ToString() == devid.ToString()).ToArray();
+                    Console.WriteLine("{0} switch found", devs.Length);
+                }
+                catch
+                {
+                    Console.WriteLine("all switch changes");
+                }
+
+                devs = devs.OrderBy(dev => dev.DeviceID.GetHashCode()).ToArray();
+                ChangeSwitch(pos, devs);
             }
             _beforePos = pos;
         }
 
-        private void ChangeSwitch(PointStateEnum dir)
+        private void ChangeSwitch(PointStateEnum dir, IEnumerable<Switch> devs)
         {
-            var devs = this.Param.Sheet.AllDevices.Where(d => d is Switch).Cast<Switch>();
             foreach (var d in devs)
             {
                 d.CurrentState.Position = dir;
-                d.CurrentState.DeadTime = 100;
+                d.CurrentState.DeadTime = 355;
                 d.CurrentState.ChangingTime = 200;
-                d.SendState();
-                System.Threading.Thread.Sleep(100);
+                //System.Threading.Thread.Sleep(100);
             }
+
+            var packets = PacketExtension.CreatePackedPacket(devs);
+            foreach(var packet in packets)
+                this.Param.Sheet.Server.EnqueuePacket(packet);
         }
 
         public void Init()

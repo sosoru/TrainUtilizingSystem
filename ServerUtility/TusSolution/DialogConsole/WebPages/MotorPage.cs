@@ -12,7 +12,7 @@ namespace DialogConsole.WebPages
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public class MotorPage : ConsolePageBase
     {
-        public override string GetJsonContext()
+        public override string GetJsonContent()
         {
             var motors =
                 this.Param.Sheet.AllDevices.Where(d => d.ModuleType == Tus.Communication.ModuleTypeEnum.AvrMotor)

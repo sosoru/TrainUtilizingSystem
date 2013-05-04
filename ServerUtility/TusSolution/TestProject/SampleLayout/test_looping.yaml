@@ -1,0 +1,86 @@
+-
+  name : AT13
+  route : BAT12 <> AT14
+  motor : 
+    addr : (24, 2, 2)
+-
+  name : AT14
+  route : AT13 <> AT1, BT1
+#  point :
+#    addr : (24, 1, 3)
+#    s : AT13 <> AT1
+#    c : AT13 <> BT1
+-
+  name : AT1
+  route : AT14 <> AT3
+-
+  name : BT1
+  route : AT14 <> AT3
+-
+  name : AT3
+  route : AT1, BT1 <> AT4
+  point :
+    addr : (25, 1, 1)
+    s : AT1 <> AT4
+    c : BT1 <> AT4
+-
+  name : AT4
+  route : AT3 <> BAT4
+
+-
+  name : BAT4
+  route : AT4 <> AT5
+  isolate : true
+-
+  name : AT5
+  route : BAT4 <> BAT5
+  motor :
+    addr : (25, 2, 1)
+
+-
+  name : BAT5
+  route : AT5 <> AT6
+  isolate : true
+-
+  name : AT6
+  route : BAT5 <> AT7
+  motor :
+    addr : (25, 2, 2)
+-
+  name : AT7
+  route : AT6 <> AT9, BT9
+  point : 
+    addr : (25, 1, 4)
+    s : AT6 <> AT9
+    c : AT6 <> BT9
+-
+  name : AT9
+  route : AT7 <> AT10
+-
+  name : BT9
+  route : AT7 <> AT10
+-
+  name : AT10
+  route : AT9, BT9 <> AT11
+#  point : 
+#    addr : (24, 1, 2)
+#    s : AT9 <> AT11
+#    c : BT9 <> AT11
+-
+  name : AT11
+  route : AT10 <> BAT11
+
+-
+  name : BAT11
+  route : AT11 <> AT12
+  isolate : true
+-
+  name : AT12
+  route : BAT11 <> BAT12
+  motor :
+    addr : (24, 2, 1)
+-
+  name : BAT12
+  route : AT12 <> AT13
+  isolate : true
+  

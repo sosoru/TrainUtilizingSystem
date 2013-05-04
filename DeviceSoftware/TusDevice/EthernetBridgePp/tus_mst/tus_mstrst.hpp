@@ -10,6 +10,7 @@
 #define TUS_MSTRST_H_
 
 #include "../avr_base.hpp"
+#include "../../libtus/avrlibdefs.h"
 
 namespace EthernetBridge
 {
@@ -22,6 +23,7 @@ namespace EthernetBridge
 		
 		static inline void Init()
 		{
+			sbi(SFIOR, PUD);
 			RESETpin::Output::InitOutput();	// nRESET
 			RESETpin::Output::Set();
 		}
@@ -29,8 +31,7 @@ namespace EthernetBridge
 		// must check before Init()
 		static inline bool CheckModuleExist()
 		{
-			RESETpin::Input::InitInput();
-			RESETpin::Input::InitDefaultInput();
+			RESETpin::Input::InitInput();	// when PUD enable, DDxn = 0, PORTx = 1 
 			return RESETpin::Input::IsSet();
 		}
 		

@@ -85,7 +85,7 @@ namespace DialogConsole.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\Administrator\\Desktop\\dummy_route.yaml")]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\Administrator\\Desktop\\rail\\032713_layout_route.yaml")]
         public string RoutePath {
             get {
                 return ((string)(this["RoutePath"]));

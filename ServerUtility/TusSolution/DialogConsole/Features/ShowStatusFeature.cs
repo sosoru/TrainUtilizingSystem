@@ -21,9 +21,11 @@ namespace DialogConsole.Features
 
             foreach (var b in blocks)
                 Console.WriteLine(b.ToString());
-            return;
-            //            return blocks.Select(b => b.ToString() + "\n")
-            //                            .Aggregate("", (ag, s) => ag += s);
+
+            Console.WriteLine();
+            foreach(var rt in this.Param.Routes)
+                Console.WriteLine(rt.ToString());
+
         }
 
         public void Init()

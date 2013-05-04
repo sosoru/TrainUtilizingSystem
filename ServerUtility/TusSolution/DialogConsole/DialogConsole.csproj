@@ -94,9 +94,11 @@
     <Compile Include="WebPages\TusPageAttribute.cs" />
     <Compile Include="WebPages\VehiclePage.cs" />
     <Compile Include="WebPages\MotorPage.cs" />
+    <Compile Include="WebPages\BlockPage.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="testscript.coffee" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -105,6 +107,8 @@
     <None Include="test_looping.yaml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="tusControllers.coffee" />
+    <None Include="vehiclemap.coffee" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RouteLibrary\Tus.TransControl.csproj">
@@ -128,7 +132,36 @@
       <Name>Tus.Factory</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="map.html" />
+    <Content Include="scripts\jquery-1.8.3.js" />
+    <Content Include="scripts\jquery-1.8.3.min.js" />
+    <Content Include="scripts\jquery-ui.custom.js" />
+    <Content Include="scripts\jquery.timers.js" />
+    <Content Include="scripts\jquery.tmpl.min.js" />
+    <Content Include="scripts\jquery.ui.touch-punch.min.js" />
+    <Content Include="scripts\jsrender.js" />
+    <Content Include="scripttest.html" />
+    <Content Include="testcase.js" />
+    <Content Include="testscript.js">
+      <DependentUpon>testscript.coffee</DependentUpon>
+    </Content>
+    <Content Include="testscript.min.js">
+      <DependentUpon>testscript.coffee</DependentUpon>
+    </Content>
+    <Content Include="tusControllers.js">
+      <DependentUpon>tusControllers.coffee</DependentUpon>
+    </Content>
+    <Content Include="tusControllers.min.js">
+      <DependentUpon>tusControllers.coffee</DependentUpon>
+    </Content>
+    <Content Include="vehiclemap.js">
+      <DependentUpon>vehiclemap.coffee</DependentUpon>
+    </Content>
+    <Content Include="vehiclemap.min.js">
+      <DependentUpon>vehiclemap.coffee</DependentUpon>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

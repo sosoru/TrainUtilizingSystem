@@ -68,7 +68,6 @@ namespace Tus.TransControl.Base
     [DataContract]
     public class Block
     {
-
         public BlockInfo info { get; private set; }
 
         [DataMember]
@@ -78,6 +77,7 @@ namespace Tus.TransControl.Base
         public IList<IDeviceEffectorAlias> Effectors { get; set; }
         public SensorDetector Detector { get; set; }
 
+        [DataMember]
         public IEnumerable<IDevice<IDeviceState<IPacketDeviceData>>> Devices
         {
             get

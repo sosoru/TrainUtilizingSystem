@@ -41,7 +41,8 @@ namespace TestProject.ConsoleTest.Composition
             //page.Serializer = new DataContractJsonSerializer(typeof(IEnumerable<Switch>));
             page.Param = this.SampleParams;
 
-            var result = page.GetJsonContext();
+            var result = page.GetJsonContent();
+            Console.WriteLine(result);
         }
 
         [TestMethod]
@@ -50,7 +51,7 @@ namespace TestProject.ConsoleTest.Composition
             var page = new VehiclePage();
             page.Param = this.SampleParams;
 
-            var result = page.GetJsonContext();
+            var result = page.GetJsonContent();
         }
 
         [TestMethod]
@@ -59,8 +60,17 @@ namespace TestProject.ConsoleTest.Composition
             var page = new MotorPage();
             page.Param = this.SampleParams;
 
-            var result = page.GetJsonContext();
+            var result = page.GetJsonContent();
         }
 
+        [TestMethod]
+        public void GetBlockConntextTest()
+        {
+            var page = new BlockPage();
+            page.Param = this.SampleParams;
+
+            var result = page.GetJsonContent();
+            Console.WriteLine(result);
+        }
     }
 }
