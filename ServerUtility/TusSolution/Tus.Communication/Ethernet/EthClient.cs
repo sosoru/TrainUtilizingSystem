@@ -37,13 +37,22 @@ namespace Tus.Communication.Ethernet
 
         public IObservable<EthPacket> AsyncReceive()
         {
-            IPEndPoint ipend = new IPEndPoint(IPAddress.Any, RECV_PORT);
-            var client = new UdpClient(RECV_PORT);
+            try
+            {
+                IPEndPoint ipend = new IPEndPoint(IPAddress.Any, RECV_PORT);
+                var client = new UdpClient(RECV_PORT);
 
             return Observable.FromAsyncPattern<byte[]>(client.BeginReceive,
                                                        res => client.EndReceive(res, ref ipend))()
                                                        .Do(data => client.Close())
                 .Select(a => a.ToObject<EthPacket>());
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return Observable.Empty<EthPacket>();
+            }
         }
 
         public IPEndPoint ApplyDestID(EthPacket packet)

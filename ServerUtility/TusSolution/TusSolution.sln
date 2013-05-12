@@ -31,8 +31,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{F47D62
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DialogConsole", "DialogConsole\DialogConsole.csproj", "{F2232BF9-17E6-4641-8326-D8B7BD90A1E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject", "TestProject\TestProject.csproj", "{AFD2FB98-D65E-4EA1-9D6C-C7B68B26ADDA}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RailroaderIO", "RailroaderIO\RailroaderIO.csproj", "{9C902CD5-20AE-45C4-918A-863F7D6064A0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RouteVisualizer", "RouteVisualizer\RouteVisualizer.csproj", "{E366CBAE-EDDF-4486-87A2-826A07E1D9CC}"
@@ -56,6 +54,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleJsonServer", "SimpleJsonServer\SimpleJsonServer.csproj", "{554FE933-54A5-4AD9-9C32-181559466ABC}"
 EndProject
 Project("{F088123C-0E9E-452A-89E6-6BA2F21D5CAC}") = "HogeModeling", "HogeModeling\HogeModeling.modelproj", "{B5A01056-690F-4D13-8581-AD5095C5E297}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TusTestProject", "TusTestProject\TusTestProject.csproj", "{DBCF0DCD-01CC-4109-98D0-36ED60C9D11C}"
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
@@ -148,16 +148,6 @@ Global
 		{F2232BF9-17E6-4641-8326-D8B7BD90A1E9}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{F2232BF9-17E6-4641-8326-D8B7BD90A1E9}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{F2232BF9-17E6-4641-8326-D8B7BD90A1E9}.Release|x86.ActiveCfg = Release|Any CPU
-		{AFD2FB98-D65E-4EA1-9D6C-C7B68B26ADDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AFD2FB98-D65E-4EA1-9D6C-C7B68B26ADDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AFD2FB98-D65E-4EA1-9D6C-C7B68B26ADDA}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{AFD2FB98-D65E-4EA1-9D6C-C7B68B26ADDA}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{AFD2FB98-D65E-4EA1-9D6C-C7B68B26ADDA}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{AFD2FB98-D65E-4EA1-9D6C-C7B68B26ADDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AFD2FB98-D65E-4EA1-9D6C-C7B68B26ADDA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AFD2FB98-D65E-4EA1-9D6C-C7B68B26ADDA}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{AFD2FB98-D65E-4EA1-9D6C-C7B68B26ADDA}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{AFD2FB98-D65E-4EA1-9D6C-C7B68B26ADDA}.Release|x86.ActiveCfg = Release|Any CPU
 		{9C902CD5-20AE-45C4-918A-863F7D6064A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9C902CD5-20AE-45C4-918A-863F7D6064A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C902CD5-20AE-45C4-918A-863F7D6064A0}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -238,6 +228,16 @@ Global
 		{B5A01056-690F-4D13-8581-AD5095C5E297}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{B5A01056-690F-4D13-8581-AD5095C5E297}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{B5A01056-690F-4D13-8581-AD5095C5E297}.Release|x86.ActiveCfg = Release|Any CPU
+		{DBCF0DCD-01CC-4109-98D0-36ED60C9D11C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBCF0DCD-01CC-4109-98D0-36ED60C9D11C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBCF0DCD-01CC-4109-98D0-36ED60C9D11C}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{DBCF0DCD-01CC-4109-98D0-36ED60C9D11C}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{DBCF0DCD-01CC-4109-98D0-36ED60C9D11C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{DBCF0DCD-01CC-4109-98D0-36ED60C9D11C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBCF0DCD-01CC-4109-98D0-36ED60C9D11C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DBCF0DCD-01CC-4109-98D0-36ED60C9D11C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{DBCF0DCD-01CC-4109-98D0-36ED60C9D11C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{DBCF0DCD-01CC-4109-98D0-36ED60C9D11C}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

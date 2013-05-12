@@ -290,6 +290,8 @@ namespace Tus.TransControl.Base
         public override string ToString()
         {
             var str = string.Format("({0}) ", this.Name);
+            if (this.IsBlocked)
+                str += "|Blocked|";
 
             if (this.HasMotor)
                 str += this.MotorEffector.Device.ToString();

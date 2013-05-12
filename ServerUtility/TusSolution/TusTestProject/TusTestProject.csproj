@@ -1,0 +1,221 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{DBCF0DCD-01CC-4109-98D0-36ED60C9D11C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TusTestProject</RootNamespace>
+    <AssemblyName>TusTestProject</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
+    <IsCodedUITest>False</IsCodedUITest>
+    <TestProjectType>UnitTest</TestProjectType>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Reactive.Testing">
+      <HintPath>..\packages\Rx-Testing.2.1.30214.0\lib\Net45-Full\Microsoft.Reactive.Testing.dll</HintPath>
+    </Reference>
+    <Reference Include="Moq">
+      <HintPath>..\packages\Moq.4.0.10827\lib\NET40\Moq.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.Composition.Registration" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Reactive.Core">
+      <HintPath>..\packages\Rx-Core.2.1.30214.0\lib\Net45\System.Reactive.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Interfaces">
+      <HintPath>..\packages\Rx-Interfaces.2.1.30214.0\lib\Net45\System.Reactive.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Linq">
+      <HintPath>..\packages\Rx-Linq.2.1.30214.0\lib\Net45\System.Reactive.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.PlatformServices">
+      <HintPath>..\packages\Rx-PlatformServices.2.1.30214.0\lib\Net45\System.Reactive.PlatformServices.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.XML" />
+  </ItemGroup>
+  <Choose>
+    <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+      </ItemGroup>
+    </When>
+    <Otherwise>
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
+      </ItemGroup>
+    </Otherwise>
+  </Choose>
+  <ItemGroup>
+    <Compile Include="BlockSheetTest.cs" />
+    <Compile Include="BlockTest.cs" />
+    <Compile Include="ChunckedStreamTest.cs" />
+    <Compile Include="ConsoleTest\Composition\FactoryTest.cs" />
+    <Compile Include="ConsoleTest\Controllers\DialogControllerTestHelper.cs" />
+    <Compile Include="ConsoleTest\Controllers\MotorControllerTest.cs" />
+    <Compile Include="ConsoleTest\Controllers\SwitchControllerTest.cs" />
+    <Compile Include="ConsoleTest\Page\ConsolePageTest.cs" />
+    <Compile Include="DataContract\SerializeTest.cs" />
+    <Compile Include="DeviceIdParserTest.cs" />
+    <Compile Include="EqualTest.cs" />
+    <Compile Include="EthClientTest.cs" />
+    <Compile Include="FileParseTest\BlockYamlTest.cs" />
+    <Compile Include="FileParseTest\RouteYamlTest.cs" />
+    <Compile Include="LoopingArrayTest.cs" />
+    <Compile Include="MotorStateTest.cs" />
+    <Compile Include="PackedPacketTest.cs" />
+    <Compile Include="PacketDispatcherSingleTest.cs" />
+    <Compile Include="PacketServerTest.cs" />
+    <Compile Include="PathDataViewModelTest.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RailDataViewModelTest.cs" />
+    <Compile Include="RailroaderMapTest.cs" />
+    <Compile Include="RouteParserTest.cs" />
+    <Compile Include="RouteTest.cs" />
+    <Compile Include="RouteTest\FactoryTest.cs" />
+    <Compile Include="RouteTest\MiddleTrackTest.cs" />
+    <Compile Include="RouteTest\RouteTest_PointSample.cs" />
+    <Compile Include="RouteTest\StaLoopTest.cs" />
+    <Compile Include="SensorStateTest.cs" />
+    <Compile Include="SerializeTest.cs" />
+    <Compile Include="SwitchStateTest.cs" />
+    <Compile Include="TestPacketProvider.cs" />
+    <Compile Include="TrainSensorDataTest.cs" />
+    <Compile Include="TrainSensorStateTest.cs" />
+    <Compile Include="TrainSensorTest.cs" />
+    <Compile Include="TusEthernetIOTest.cs" />
+    <Compile Include="VehicleTest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+    <None Include="RouteTest\OrderedTest1.orderedtest" />
+    <None Include="SampleLayout\12_layout.yaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="SampleLayout\815.yaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="SampleLayout\loop.yaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="SampleLayout\middletrack.yaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="SampleLayout\point_sample.yaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="SampleLayout\route_test.yaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="SampleLayout\Sample2.rrf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="SampleLayout\staloop.yaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="SampleLayout\test_layout_route.yaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="SampleLayout\test_looping.yaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Signification.pfx" />
+    <None Include="StyleCop.Cache" />
+    <None Include="VoltageTestCase.csv" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="TestProject.csproj.user" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DialogConsole\DialogConsole.csproj">
+      <Project>{f2232bf9-17e6-4641-8326-d8b7bd90a1e9}</Project>
+      <Name>DialogConsole</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RailroaderIO\RailroaderIO.csproj">
+      <Project>{9c902cd5-20ae-45c4-918a-863f7d6064a0}</Project>
+      <Name>RailroaderIO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RouteLibrary\Tus.TransControl.csproj">
+      <Project>{39e73a78-039d-45dd-ad32-879b81ea567e}</Project>
+      <Name>Tus.TransControl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SensorLibrary.Devices.TusAvrDevices\Tus.Communication.Device.AvrComposed.csproj">
+      <Project>{941abaca-ccf7-436b-8d63-c3751cc1d1a9}</Project>
+      <Name>Tus.Communication.Device.AvrComposed</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SimpleJsonServer\SimpleJsonServer.csproj">
+      <Project>{554fe933-54a5-4ad9-9c32-181559466abc}</Project>
+      <Name>SimpleJsonServer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tus.Communication.Device\Tus.Communication.Device.csproj">
+      <Project>{bbbd4a5a-1a91-436e-88bc-8621ac261b7f}</Project>
+      <Name>Tus.Communication.Device</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tus.Communication\Tus.Communication.csproj">
+      <Project>{2fcba61b-f967-442f-a3f6-3a8aa7126b17}</Project>
+      <Name>Tus.Communication</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tus.Factory\Tus.Factory.csproj">
+      <Project>{a367ed72-abd5-4cfd-a9bd-4ba911d53584}</Project>
+      <Name>Tus.Factory</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Choose>
+    <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.CodedUITestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Extension, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITesting, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

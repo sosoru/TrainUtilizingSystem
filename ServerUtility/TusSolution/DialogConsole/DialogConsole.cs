@@ -64,9 +64,9 @@ namespace DialogConsole
     class DialogConsoleParameters
         : IFeatureParameters
     {
+        public RouteListFactory AvailableRoutesFactory { get; set; }
         public BlockSheet Sheet { get; set; }
         public IList<Vehicle> Vehicles { get; set; }
-        public IList<Route> Routes { get; set; }
         public IDisposable ServingInfomation { get; set; }
         public IObservable<Unit> VehiclePipeline { get; set; }
         public IDisposable VehicleProcessing { get; set; }
@@ -76,10 +76,10 @@ namespace DialogConsole
         [ImportingConstructor]
         public DialogConsoleParameters(SheetFactory fact, RouteListFactory rtfact)
         {
+            AvailableRoutesFactory = rtfact;
             this.Sheet = fact.Create();
             rtfact.Sheet = this.Sheet;
 
-            this.Routes = rtfact.Create();
             this.Vehicles = new List<Vehicle>();
         }
 
@@ -124,7 +124,7 @@ namespace DialogConsole
 
         public void Loop()
         {
-            this.LogWriterSend = new StreamWriter("packet_log.txt", true);
+            this.LogWriterSend = new StreamWriter("packet_log_.txt", true);
             this._logWriterRecv = new StreamWriter("packet_log_recv_.txt", true);
 
             this._syncPacketProcess = new SynchronizationContext();
@@ -145,7 +145,7 @@ namespace DialogConsole
                                                                     DateTime.Now.Millisecond,
                                                                     g.ToString()
                                                           )))
-                //.ObserveOn(this.Param.SchedulerPacketProcessing)
+                .ObserveOn(this.Param.SchedulerPacketProcessing)
                 .SubscribeOn(Scheduler.Default)
                 .Subscribe();
 

@@ -8,8 +8,8 @@ using System.ComponentModel.Composition;
 namespace DialogConsole.Features.Base
 {
     [Export(typeof(IFeature))]
-    class Feature
-        : BaseFeature, IFeature
+    class LogingFeature
+            : BaseFeature, IFeature
     {
         public void Execute()
         {

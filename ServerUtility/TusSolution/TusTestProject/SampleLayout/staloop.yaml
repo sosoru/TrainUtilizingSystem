@@ -1,0 +1,106 @@
+-
+  name : AT1
+  route : AT16 <> BAT1
+  motor:
+    addr : (1, 2, 1)
+    pos : AT16 > BAT1
+    neg : AT16 < BAT1
+-
+  name : BAT1
+  route : AT1 <> AT2
+  isolate : true
+-
+  name : AT2
+  route : BAT1 <> AT3
+-
+  name : AT3
+  route : AT2 <> AT4, BT4
+  point : 
+    addr : (1, 1, 1)
+    s : AT2 <> AT4
+    c : AT2 <> BT4
+-
+  name : AT4
+  route : AT3 <> AT5
+  sensor :
+    addr : (1, 3, 1)
+-
+  name : BT4
+  route : AT3 <> AT5
+  sensor : 
+    addr : (1, 3, 2)
+-
+  name : AT5
+  route : AT6 <> AT4, BT4
+  point:
+    addr : (1, 1, 2)
+    s : AT4 <> AT6
+    c : BT4 <> AT6
+-
+  name : AT6
+  route : AT5 <> BAT6
+  motor :
+    addr : (1, 2, 2)
+    pos : AT5 > BAT6
+    neg : AT5 < BAT6 
+-
+  name : BAT6
+  route : AT6 <> AT7
+  isolate : true
+-
+  name : AT7
+  route : BAT6 <> AT8
+-
+  name : AT8
+  route : AT7 <> AT9
+-
+  name : AT9
+  route : AT8 <> BAT9
+  motor :
+    addr : (1, 2, 3)
+    pos : AT8 > BAT9
+    neg : AT8 < BAT9
+-
+  name : BAT9
+  route : AT9 <> AT10
+  isolate : true
+-
+  name : AT10
+  route : BAT9 <> AT11
+-
+  name : AT11
+  route : AT10 <> AT12
+-
+  name : AT12
+  route : AT11 <> BAT12
+  motor :
+    addr : (1, 2, 4)
+    pos : AT11 > BAT12
+    neg : AT11 < BAT12
+-
+  name : BAT12
+  route : AT12 <> AT13
+  isolate : true
+-
+  name : AT13
+  route : BAT12 <> AT14
+-
+  name : AT14
+  route : AT13 <> AT15
+  sensor:
+    addr : (1, 1, 3)
+-
+  name : AT15
+  route : AT14 <> BAT16
+  motor :
+    addr : (1, 2, 5)
+    pos : AT14 > BAT16
+    neg : AT14 < BAT16
+-
+  name : BAT16
+  route : AT15 <> AT16
+  isolate : true
+-
+  name : AT16
+  route : BAT16 <> AT1
+  

@@ -238,7 +238,7 @@ namespace Tus.TransControl.Base
                     if (this.Device.States.ContainsKey(MotorMemoryStateEnum.Controlling) &&
                         this.Device.States[MotorMemoryStateEnum.Controlling].Duty == cntstate.Duty)
                     {
-                        //this.IsNeededExecution = false;
+                        this.IsNeededExecution = false;
                     }
                     else
                     {

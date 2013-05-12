@@ -42,19 +42,16 @@ namespace DialogConsole.Features
                 return;
             }
 
-            if (this.Param.VehicleProcessing == null)
-            {
                 Param.VehiclePipeline = Observable.Defer(
                     () => Observable.Start(VehicleProcess, Param.SchedulerPacketProcessing));
                 //.Do(u => Param.Sheet.InquiryStatusOfAllMotors());
                 //.Do(u => this.Param.Sheet.InquiryDevices());
 
                 Param.VehicleProcessing = Param.VehiclePipeline
-                    .Do(u => this.Param.Sheet.InquiryDevices())
-                    .Delay(TimeSpan.FromMilliseconds(1000)).Repeat()
+                    .Do(u => this.Param.Sheet.InquiryStatusOfAllMotors())
+                    .Delay(TimeSpan.FromMilliseconds(500)).Repeat()
                                                .SubscribeOn(Scheduler.NewThread)
                                                .Subscribe();
-            }
 
         }
 
@@ -71,7 +68,7 @@ namespace DialogConsole.Features
             return new Route(rt.Select(s => Param.Sheet.GetBlock(s.Trim())).ToList());
         }
 
-        private Route InputRoute(out bool ignoreblockage, out bool reversed)
+        private Route InputRoute(out bool ignoreblockage, out bool reversed, IEnumerable<Route> routes)
         {
             Console.WriteLine("select route [name] [rev] [sub] [ign]");
             string ans = Console.ReadLine().ToLower().Trim();
@@ -85,7 +82,7 @@ namespace DialogConsole.Features
                 throw new ArgumentException("insufficient parameters");
 
             var routename = ans.Split(' ')[0];
-            var rt = this.Param.Routes.FirstOrDefault(r => r.Name.ToLower() == routename);
+            var rt = routes.FirstOrDefault(r => r.Name.ToLower() == routename);
             if (null == rt)
                 throw new KeyNotFoundException("no route whose name is equal to the specified name is found");
             else
@@ -108,11 +105,12 @@ namespace DialogConsole.Features
 
             bool ign = false;
             bool rev = false;
-            Route rt = InputRoute(out ign, out rev);
+            var routes = this.Param.AvailableRoutesFactory.Create();
+            Route rt = InputRoute(out ign, out rev, routes);
 
             rt.IsRepeatable = true;
             var v = new Vehicle(Param.Sheet, rt);
-            v.AvailableRoutes = this.Param.Routes;
+            v.AvailableRoutes = routes;
             v.CurrentBlock = b;
             v.Speed = 0.0f;
             v.Name = vhname;
@@ -124,11 +122,16 @@ namespace DialogConsole.Features
             return v;
         }
 
+        private object lock_vehicleprocess = new object();
         private void VehicleProcess()
         {
-            foreach (Vehicle v in Param.Vehicles)
+            lock (lock_vehicleprocess)
             {
-                v.Refresh();
+                foreach (Vehicle v in Param.Vehicles.ToArray())
+                {
+                    v.Refresh();
+                }
+
             }
         }
     }

@@ -10,7 +10,7 @@ namespace Tus.TransControl.Base
     {
         public float RawSpeed { get; set; }
         public float Go { get { return RawSpeed; } }
-        public float Caution { get { return RawSpeed * 0.5f; } }
+        public float Caution { get { return RawSpeed * 1.0f; } }
         public float Stop { get { return RawSpeed * 0f; } }
     }
 
@@ -59,7 +59,7 @@ namespace Tus.TransControl.Base
             this.Route = rt;
 
             this.CurrentBlock = this.Route.Blocks.First();
-            this.Length = 2;
+            this.Length = 2; //todo : 閉塞管理を見直して動的にLengthを変えた方が良いかも
             this.Halt = new List<Halt>();
         }
 
@@ -81,6 +81,7 @@ namespace Tus.TransControl.Base
             }
         }
 
+        private DateTime _beforeMoving = DateTime.MinValue;
         public void Refresh()
         {
             if (this.ShouldHalt)
@@ -100,13 +101,15 @@ namespace Tus.TransControl.Base
                 // verified i'm not halted and the next unit is not blocked by other vehicles
 
                 var waitingunit = this.Route.LockedUnits.Last();
-                if (waitingunit.ControlBlock.IsMotorDetectingTrain)
+                if ((DateTime.Now - this._beforeMoving).TotalSeconds > 5 
+                    && waitingunit.ControlBlock.IsMotorDetectingTrain)
                 {
                     this.CurrentBlock = waitingunit.ControlBlock;
                     Console.WriteLine("vehicle {0} moved : {1}", this.Name, this.CurrentBlock.Name);
                     //this.CurrentBlock.Neighbors.ForEach(b => Console.WriteLine(b.MotorEffector.Device.ToString()));
                     //Console.WriteLine(this.CurrentBlock.MotorEffector.Device.ToString());
 
+                    this._beforeMoving = DateTime.Now;
                 }
             }
 
@@ -157,22 +160,19 @@ namespace Tus.TransControl.Base
             var spdfactory = new SpeedFactory() { RawSpeed = spd };
 
             var lastlockedblocks = this.Route.LockedBlocks.ToArray();
-            try
-            {
+            //try
+            //{
                 this.Route.AllocateTrain(this.CurrentBlock, this.Length);
-            }
-            catch { throw; }
+            //}
+            //catch
+            //{
+            //    cmdfactory = this.CanHalt ? CreateHaltCommand(spdfactory) : CreateZeroCommand(spdfactory);
+            //}
 
             if (!this.Route.LockNextUnit())
             {
-                if (this.CanHalt)
-                {
-                    cmdfactory = CreateHaltCommand(spdfactory);
-                }
-                else
-                {
-                    cmdfactory = CreateZeroCommand(spdfactory);
-                }
+                cmdfactory = this.CanHalt ? CreateHaltCommand(spdfactory)
+ : CreateZeroCommand(spdfactory);
             }
             else if (!this.Route.TryLockNeighborUnit(1))
             {

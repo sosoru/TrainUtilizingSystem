@@ -23,8 +23,8 @@ namespace DialogConsole.Features
                 Console.WriteLine(b.ToString());
 
             Console.WriteLine();
-            foreach(var rt in this.Param.Routes)
-                Console.WriteLine(rt.ToString());
+            //foreach(var rt in this.Param.Routes)
+            //    Console.WriteLine(rt.ToString());
 
         }
 
