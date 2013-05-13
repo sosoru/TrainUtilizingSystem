@@ -7,7 +7,7 @@ using System.Runtime.Serialization;
 namespace Tus.TransControl.Base
 {
     [DataContract]
-    public class ControllingRoute
+    public class ControllingUnit
     {
         [DataMember]
         public IList<Block> Blocks { get; set; }
@@ -61,23 +61,77 @@ namespace Tus.TransControl.Base
                     b.IsBlocked = false;
                 });
         }
-    }
 
+        public bool IsBlocked
+        {
+            get
+            {
+                return this.Blocks.Any(b => b.IsBlocked);
+            }
+        }
+    }
+    /// <summary>
+    /// 列車が運行する経路を保持するクラス．
+    /// 与えられたBlockの配列を，運行に必要なBlockを加味しながら，シーケンシャルに確保・解放する
+    /// </summary>
     [DataContract]
     public class Route
     {
         [DataMember]
         public string Name { get; set; }
         public IList<Block> Blocks { get; private set; }
-        public IList<ControllingRoute> Units { get; protected set; }
+        public IList<ControllingUnit> Units { get; protected set; }
 
         [DataMember]
-        public Queue<ControllingRoute> LockedUnits { get; private set; }
+        public Queue<ControllingUnit> LockedUnits { get; private set; }
         public BlockPolar Polar { get; set; }
 
         public bool IsRepeatable { get; set; }
 
         private int ind_current;
+
+        [DataMember(IsRequired = false)]
+        public ICollection<Block> LockedBlocks
+        {
+            get
+            {
+                if (this.LockedUnits == null)
+                    return new Block[] { };
+
+                return this.LockedUnits.ToArray().SelectMany(u => u.Blocks).ToList();
+            }
+        }
+
+        public bool IsSectionFinished
+        {
+            get
+            {
+                // a sensor on end of locked section detects train
+                //return this.LockedBlocks.Last().IsDetectingTrain;
+                return this.Units.Last().ControlBlock.IsDetectingTrain;
+            }
+        }
+
+        public bool IsLeftSectionFirst
+        {
+            get
+            {
+                //return this.LockedBlocks.First().IsDetectingTrain;
+                return this.Units.First().ControlBlock.IsDetectingTrain;
+            }
+        }
+
+        public bool IsRouteFinished
+        {
+            get
+            {
+                // IsSectionFinished And the locked units of this route reach the end of them
+                return this.ind_current == this.Units.Count() - 1 && this.IsSectionFinished;
+            }
+        }
+
+        #region Initialize
+
         private IDictionary<Block, RouteSegment> to_route_dict(IList<Block> list)
         {
             int i;
@@ -98,7 +152,7 @@ namespace Tus.TransControl.Base
             return dict;
         }
 
-        private IEnumerable<ControllingRoute> locked_blocks
+        private IEnumerable<ControllingUnit> locked_blocks
         {
             get
             {
@@ -109,7 +163,7 @@ namespace Tus.TransControl.Base
                     l.Add(b);
                     if (b.IsIsolated)
                     {
-                        var cr = new ControllingRoute() { Blocks = new List<Block>(l) };
+                        var cr = new ControllingUnit() { Blocks = new List<Block>(l) };
 
                         yield return cr;
                         l.Clear();
@@ -117,21 +171,23 @@ namespace Tus.TransControl.Base
                 }
 
                 if (l.Count > 0)
-                    yield return new ControllingRoute() { Blocks = new List<Block>(l) };
+                    yield return new ControllingUnit() { Blocks = new List<Block>(l) };
 
                 //todo : throw exception (not terminated by a block having a sensor
             }
         }
 
         public Route(BlockSheet sheet, IEnumerable<string> names)
-            : this(names.Select(s => sheet.InnerBlocks.First(b => b.Name == s)).ToList()) { }
+            : this(names.Select(s => sheet.InnerBlocks.First(b => b.Name == s)).ToList())
+        {
+        }
 
         public Route(IEnumerable<Block> segs)
         {
             this.Blocks = new ReadOnlyCollection<Block>(segs.ToList());
 
-            this.Units = new ReadOnlyCollection<ControllingRoute>(locked_blocks.ToArray());
-            this.LockedUnits = new Queue<ControllingRoute>();
+            this.Units = new ReadOnlyCollection<ControllingUnit>(locked_blocks.ToArray());
+            this.LockedUnits = new Queue<ControllingUnit>();
             this.ind_current = -1;
 
             InitLockingPosition();
@@ -143,14 +199,18 @@ namespace Tus.TransControl.Base
 
         }
 
+        #endregion
+
+        #region TryLock Methods
+
         public bool TryLockNeighborUnit(int i)
         {
-            ControllingRoute nextroute;
+            ControllingUnit nextroute;
 
             return TryLockNeighborUnit(i, out nextroute);
         }
 
-        public bool TryLockNeighborUnit(int i, out ControllingRoute nextunit)
+        public bool TryLockNeighborUnit(int i, out ControllingUnit nextunit)
         {
             // todo: minus value support
             int ind = ind_current + i;
@@ -171,11 +231,16 @@ namespace Tus.TransControl.Base
 
         }
 
+        #endregion
+
+        #region Lock Methods
+
         public bool LockNextUnit()
         {
-            if (TryLockNeighborUnit(1))
+            var cntlocking = 1;
+            if (TryLockNeighborUnit(cntlocking))
             {
-                var ind = ind_current + 1;
+                var ind = ind_current + cntlocking;
                 if (this.IsRepeatable)
                     ind = ind % this.Units.Count;
 
@@ -201,19 +266,9 @@ namespace Tus.TransControl.Base
             return false;
         }
 
-        [DataMember(IsRequired = false)]
-        public ICollection<Block> LockedBlocks
-        {
-            get
-            {
-                if (this.LockedUnits == null)
-                    return new Block[] { };
+        #endregion
 
-                return this.LockedUnits.ToArray().SelectMany(u => u.Blocks).ToList();
-            }
-        }
-
-        public ControllingRoute GetLockingControlingRoute(Block parentBlock)
+        public ControllingUnit GetLockingControlingRoute(Block parentBlock)
         {
             return this.Units.FirstOrDefault(b => b.ControlBlock == parentBlock);
         }
@@ -244,25 +299,6 @@ namespace Tus.TransControl.Base
             }
         }
 
-        public bool IsSectionFinished
-        {
-            get
-            {
-                // a sensor on end of locked section detects train
-                //return this.LockedBlocks.Last().IsDetectingTrain;
-                return this.Units.Last().ControlBlock.IsDetectingTrain;
-            }
-        }
-
-        public bool IsLeftSectionFirst
-        {
-            get
-            {
-                //return this.LockedBlocks.First().IsDetectingTrain;
-                return this.Units.First().ControlBlock.IsDetectingTrain;
-            }
-        }
-
         public void LookUpTrain()
         {
             while (!this.IsRouteFinished)
@@ -290,11 +326,13 @@ namespace Tus.TransControl.Base
 
             while (this.ReleaseBeforeUnit()) ;
 
-            this.ind_current = (blockunit.ind - 1) - (len - 1); // (index of before block from current) - (vehicle length)
+            //渡されたcntblockは先頭のブロック
+            this.ind_current = blockunit.ind - (len - 1); // (index of before block from current) - (vehicle length -1)
 
             if (this.IsRepeatable && this.ind_current < 0)
                 this.ind_current += this.Units.Count;
 
+            this.ind_current--;
             while (len-- > 0)
             {
                 if (!this.LockNextUnit())
@@ -302,25 +340,7 @@ namespace Tus.TransControl.Base
             }
         }
 
-        public bool IsRouteFinished
-        {
-            get
-            {
-                // IsSectionFinished And the locked units of this route reach the end of them
-                return this.ind_current == this.Units.Count() - 1 && this.IsSectionFinished;
-            }
-        }
-
-        public void Reverse()
-        {
-            foreach (var cr in this.Units)
-            {
-                cr.Blocks = cr.Blocks.Reverse().ToList();
-            }
-            this.Blocks = this.Blocks.Reverse().ToList();
-            this.Units = this.Units.Reverse().ToList();
-
-        }
+        #region ToString
 
         private string GetBlockExpression(Block blk)
         {
@@ -346,9 +366,63 @@ namespace Tus.TransControl.Base
         public override string ToString()
         {
             var strunits = this.Units.Aggregate("", (ac, cntrt) =>
-                                                 ac + "(" + cntrt.Blocks.Aggregate("", (a, b) => a + GetBlockExpression(b) + " ").Trim() + ") ")
-                                                 .Trim();
+                                                    ac + "(" +
+                                                    cntrt.Blocks.Aggregate("", (a, b) => a + GetBlockExpression(b) + " ")
+                                                         .Trim() + ") ")
+                               .Trim();
             return string.Format("{0} : {1}", this.Name, strunits);
+        }
+
+        #endregion
+
+        public ControllingUnit GetNeighborUnit(int p)
+        {
+            int ind = this.ind_current + p;
+
+            if (this.IsRepeatable)
+                ind = ind % this.Units.Count;
+
+            //is valid index
+            if (ind < 0 || this.Units.Count <= ind)
+                throw new ArgumentOutOfRangeException("no unit is found");
+
+            return this.Units[ind];
+        }
+
+        public int GetDistanceOfBlockedUnit(int limit)
+        {
+            for (int i = 1; i <= limit; ++i)
+            {
+                if (this.BlockRemainsCount > i
+                    && this.GetNeighborUnit(i).IsBlocked)
+                {
+                    return i;
+                }
+            }
+            return limit; 
+        }
+
+        public int BlockRemainsCount
+        {
+            get
+            {
+                if (this.IsRepeatable)
+                    return int.MaxValue;
+                else
+                    return this.Units.Count - this.ind_current - 1;
+            }
+        }
+
+        public int BlockPassedCount
+        {
+            get
+            {
+                if (this.IsRepeatable)
+                    return int.MaxValue;
+                else
+                    return (this.ind_current < 0) ? 0 : this.ind_current + 1;
+            }
+
         }
     }
 }

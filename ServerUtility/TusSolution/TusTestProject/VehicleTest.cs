@@ -55,6 +55,7 @@ namespace TestProject
         private PacketServer serv;
         private BlockSheet sht;
         private TestScheduler scheduler;
+        private CommandFactory lastcmdinfo;
 
         [TestInitialize]
         public void TestInitialize()
@@ -68,12 +69,17 @@ namespace TestProject
                 .Returns(Observable.Empty<DevicePacket>());
             serv = new PacketServer();
             serv.Controller = mockio.Object;
+
+            var mocksht = new Mock<BlockSheet>(target_sheet, serv);
+            mocksht.Setup(sht => sht.Effect(It.IsAny<CommandFactory>(), It.IsAny<IEnumerable<Block>>()))
+                .Callback<CommandFactory>(f => this.lastcmdinfo = f);
+
             sht = new BlockSheet(target_sheet, serv);
 
             this.scheduler = new TestScheduler();
             sht.AssociatedScheduler = scheduler;
         }
-           
+
         [TestMethod]
         public void SerializeAsJson()
         {
@@ -86,15 +92,62 @@ namespace TestProject
             v.Run();
 
             var cnt = new DataContractJsonSerializer(typeof(Vehicle));
-            
-            using(var ms = new MemoryStream())
+
+            using (var ms = new MemoryStream())
             {
-                cnt.WriteObject(ms,  v);
+                cnt.WriteObject(ms, v);
 
                 var str = System.Text.UnicodeEncoding.UTF8.GetString(ms.ToArray());
                 Console.WriteLine(str);
             }
+
+        }
+
+        [TestMethod]
+        public void PrintRouteString()
+        {
+            var rt = GetRouteFirst(sht);
+            Console.WriteLine(rt.ToString());
+        }
+
+        [TestMethod]
+        public void VehicleRouteAllocatingTest()
+        {
+            var rt = GetRouteFirst(sht);
+            var v = new Vehicle(sht, rt);
+
+            var halt = new Mock<Halt>();
+            halt.Setup(h => h.HaltBlock).Returns(sht.GetBlock("AT14"));
+            halt.Setup(h => h.HaltState).Returns(true);
+
+            v.CurrentBlock = sht.GetBlock("AT6");
+            v.Speed = 1.0f;
+            v.Length = 1;
+
+            //１，停車時のVehicleのLengthはlen
+            Assert.AreEqual<int>(v.CurrentLength, 1);
+
+            //２，発車後，BlockをReleaseする条件（停車するとか，センサを通過するとか）を満たすまでVehicle.Lengthはlen+1を保つ
+            v.CurrentBlock = sht.GetBlock("AT9");
+            v.Run(); //閉塞を通過（1回目）
+            Assert.AreEqual<int>(v.CurrentLength, 2); // RouteがRepetableでないから，打ち切って1が返る
+
+            v.CurrentBlock = sht.GetBlock("AT12");
+            v.Run(); //閉塞を通過（2回目）
+            Assert.AreEqual<int>(v.CurrentLength, 2);
+
+            v.Halt.Add(halt.Object);
+            v.CurrentBlock = sht.GetBlock("AT14");
+            v.Run(); //停車（haltable blockへの進入につき）
+            Assert.AreEqual<int>(v.CurrentLength, 1);
+        }
+
+        public void VehicleRunCheckTest()
+        {
+            var rt = GetRouteFirst(sht);
+            var v = new Vehicle(sht, rt);
             
+
         }
     }
 }

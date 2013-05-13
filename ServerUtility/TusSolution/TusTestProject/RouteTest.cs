@@ -30,7 +30,7 @@ namespace TestProject
     ///RouteTest 単体テストをここに含めます
     ///</summary>
     [TestClass()]
-     [DeploymentItem("SampleLayout/route_test.yaml")]
+    [DeploymentItem("SampleLayout/route_test.yaml")]
     public class RouteTest
     {
 
@@ -147,6 +147,20 @@ namespace TestProject
             Assert.IsTrue(target.Units[0].Blocks.All(b => !b.IsBlocked));
         }
 
+        [TestMethod]
+        public void GetNeighborUnitTest()
+        {
+            Route target = new Route(test_blocks.ToList());
+
+            target.AllocateTrain(test_sheet.GetBlock("T7"), 1);
+
+            var before = target.GetNeighborUnit(-1);
+            var next = target.GetNeighborUnit(1);
+
+            Assert.IsTrue(before.ControlBlock.Name == "T4");
+            Assert.IsTrue(next.ControlBlock.Name == "T1");
+        }
+
         //[TestMethod]
         //public void LookUpTrainTest()
         //{
@@ -163,7 +177,7 @@ namespace TestProject
         //    Assert.IsTrue(target.LockedBlocks.Contains(sensoredblock));
         //}
 
-       [TestMethod]
+        [TestMethod]
         public void AllocateBlockTest()
         {
             var blocks = test_blocks.ToArray();
@@ -230,8 +244,8 @@ namespace TestProject
         public void TryLockNeighborTest()
         {
             var blocks = test_blocks.ToArray();
-            var target  = new Route(blocks);
-            ControllingRoute unit;
+            var target = new Route(blocks);
+            ControllingUnit unit;
 
             target.LockNextUnit();
 
@@ -240,7 +254,7 @@ namespace TestProject
 
             target.TryLockNeighborUnit(1, out unit);
             Assert.IsTrue(unit.ControlBlock.Name == second.ControlBlock.Name);
-            
+
         }
     }
 }

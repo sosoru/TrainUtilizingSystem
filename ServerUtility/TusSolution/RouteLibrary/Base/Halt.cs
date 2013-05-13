@@ -12,14 +12,16 @@ namespace Tus.TransControl.Base
     public class Halt
     {
         [DataMember]
-        public Block HaltBlock { get; set; }
+        public virtual Block HaltBlock { get; set; }
         [DataMember]
         public SensingMethod Method { get; set; }
 
-        public Halt(Block blk) {
+        public Halt(Block blk)
+        {
             this.HaltBlock = blk;
             this.Method = SensingMethod.IRComming;
         }
+        public Halt() { }
 
         public bool IRSensingHalt()
         {
@@ -30,7 +32,7 @@ namespace Tus.TransControl.Base
             return sens.Devices.Any(s => s.IsDetected);
         }
 
-        public bool HaltState
+        public virtual bool HaltState
         {
             get
             {

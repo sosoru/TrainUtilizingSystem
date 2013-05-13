@@ -97,6 +97,13 @@ namespace TestProject
             return new Route(sht, new[] { "CT1", "CT2", "BT2", "BT3", "BT4" });
         }
 
+        Route GetConcatedRoute(BlockSheet sht)
+        {
+            var first = GetFirstRoute(sht);
+            var second = GetSecondRoute(sht);
+            return new Route(sht, first.Blocks.Select(b => b.Name).Concat(second.Blocks.Select(b => b.Name)));
+        }
+
         [TestMethod]
         public void ReadSheetTest()
         {
@@ -107,6 +114,9 @@ namespace TestProject
             var rsec = GetSecondRoute(sht);
         }
 
+        /// <summary>
+        /// Vehicleは，HaltableなBlockに進入したときに，減速しながら停止すること．
+        /// </summary>
         [TestMethod]
         public void HaltTest()
         {
@@ -122,7 +132,7 @@ namespace TestProject
             serv.Controller = mockio.Object;
             var sht = new BlockSheet(target_sheet, serv);
 
-            Route rt = this.GetFirstRoute(sht);
+            Route rt = this.GetConcatedRoute(sht);
 
             var vh = new Vehicle(sht, rt);
             var halt = new Halt(sht.GetBlock("CT1"));

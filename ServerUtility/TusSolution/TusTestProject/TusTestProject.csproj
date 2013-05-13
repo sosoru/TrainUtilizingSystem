@@ -151,7 +151,9 @@
     </None>
     <None Include="Signification.pfx" />
     <None Include="StyleCop.Cache" />
-    <None Include="VoltageTestCase.csv" />
+    <None Include="VoltageTestCase.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="TestProject.csproj.user" />
