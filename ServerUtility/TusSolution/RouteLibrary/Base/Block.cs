@@ -65,6 +65,10 @@ namespace Tus.TransControl.Base
         }
     }
 
+    /// <summary>
+    /// 経路を構成するブロック．通常，1or0個のEffectorもしくはisolatorを所持．これをつなぎ合わせてRouteを形成
+    /// 現実の閉塞に相当するのはControllingUnit
+    /// </summary>
     [DataContract]
     public class Block
     {

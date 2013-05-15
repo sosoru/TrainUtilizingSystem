@@ -14,7 +14,7 @@ namespace DialogConsole.WebPages
         public override string GetJsonContent()
         {
             var switches =
-                this.Param.Sheet.AllDevices.Where(d => d.ModuleType == Tus.Communication.ModuleTypeEnum.AvrSwitch)
+                this.Param.UsingLayout.Sheet.AllDevices.Where(d => d.ModuleType == Tus.Communication.ModuleTypeEnum.AvrSwitch)
                 .Cast<Switch>().ToArray();
 
             return GetJsonContent<IEnumerable<Switch>>(switches);

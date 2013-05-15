@@ -15,13 +15,13 @@ namespace DialogConsole.Features
     {
         public void Execute()
         {
-            this.Param.Sheet.ChangeDetectingMode();
+            this.Param.UsingLayout.Sheet.ChangeDetectingMode();
             System.Threading.Thread.Sleep(1000);
 
-            this.Param.Sheet.InquiryStatusOfAllMotors();
+            this.Param.UsingLayout.Sheet.InquiryStatusOfAllMotors();
             System.Threading.Thread.Sleep(2000);
 
-            Console.WriteLine(this.Param.Sheet.InnerBlocks
+            Console.WriteLine(this.Param.UsingLayout.Sheet.InnerBlocks
                .Where(b => b.IsDetectingTrain || b.IsMotorDetectingTrain)
                 .Aggregate("", (ac, b) => ac += b.Name + ", "));
         }

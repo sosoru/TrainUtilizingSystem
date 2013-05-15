@@ -113,6 +113,7 @@
     <Compile Include="TrainSensorStateTest.cs" />
     <Compile Include="TrainSensorTest.cs" />
     <Compile Include="TusEthernetIOTest.cs" />
+    <Compile Include="UnitTest1.cs" />
     <Compile Include="VehicleTest.cs" />
   </ItemGroup>
   <ItemGroup>

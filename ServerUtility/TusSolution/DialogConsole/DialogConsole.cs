@@ -62,11 +62,10 @@ namespace DialogConsole
 
     [Export(typeof(IFeatureParameters))]
     class DialogConsoleParameters
-        : IFeatureParameters
+        : IFeatureParameters 
     {
-        public RouteListFactory AvailableRoutesFactory { get; set; }
-        public BlockSheet Sheet { get; set; }
-        public IList<Vehicle> Vehicles { get; set; }
+        public Layout UsingLayout { get; set; }
+
         public IDisposable ServingInfomation { get; set; }
         public IObservable<Unit> VehiclePipeline { get; set; }
         public IDisposable VehicleProcessing { get; set; }
@@ -76,11 +75,10 @@ namespace DialogConsole
         [ImportingConstructor]
         public DialogConsoleParameters(SheetFactory fact, RouteListFactory rtfact)
         {
-            AvailableRoutesFactory = rtfact;
-            this.Sheet = fact.Create();
-            rtfact.Sheet = this.Sheet;
+            UsingLayout = new Layout(rtfact, fact.Create());
+            rtfact.Sheet = this.UsingLayout.Sheet;
 
-            this.Vehicles = new List<Vehicle>();
+            this.UsingLayout.Vehicles = new List<Vehicle>();
         }
 
         public IScheduler SchedulerPacketProcessing { get; set; }
@@ -129,9 +127,9 @@ namespace DialogConsole
 
             this._syncPacketProcess = new SynchronizationContext();
             this.Param.SchedulerPacketProcessing = new SynchronizationContextScheduler(this._syncPacketProcess);
-            this.Param.Sheet.AssociatedScheduler = this.Param.SchedulerPacketProcessing;
+            this.Param.UsingLayout.Sheet.AssociatedScheduler = this.Param.SchedulerPacketProcessing;
 
-            this.Param.SendingPacketPipeline = this.Param.Sheet.Server.SendingObservable
+            this.Param.SendingPacketPipeline = this.Param.UsingLayout.Sheet.Server.SendingObservable
                                                    .ObserveOn(this.Param.SchedulerPacketProcessing);
 
             //this.Param.Sheet.Server.SendingObservable
@@ -151,7 +149,7 @@ namespace DialogConsole
 
             var timer = Observable.Interval(TimeSpan.FromMilliseconds(20), Scheduler.Default);
 
-            this.Param.ReceivingPacketPipeline = Observable.Defer(() => this.Param.Sheet.Server.ReceivingObservable)
+            this.Param.ReceivingPacketPipeline = Observable.Defer(() => this.Param.UsingLayout.Sheet.Server.ReceivingObservable)
                                                            .ObserveOn(this.Param.SchedulerPacketProcessing)
                                                            .Repeat()
             .SubscribeOn(Scheduler.Default)
@@ -167,12 +165,12 @@ namespace DialogConsole
                                                        )))
             .Subscribe();
 
-            this.Param.Sheet.Effect(new CommandFactory()
+            this.Param.UsingLayout.Sheet.Effect(new CommandFactory()
                                         {
                                             CreateCommand =
                                                 b => new CommandInfo() { MotorMode = MotorMemoryStateEnum.NoEffect, },
                                         },
-                                    this.Param.Sheet.InnerBlocks);
+                                    this.Param.UsingLayout.Sheet.InnerBlocks);
 
             foreach (var f in this.Features)
                 f.Value.Init();

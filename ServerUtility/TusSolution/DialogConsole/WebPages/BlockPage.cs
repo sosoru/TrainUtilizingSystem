@@ -15,7 +15,7 @@ namespace DialogConsole.WebPages
     {
         public override string GetJsonContent()
         {
-            var blocks = this.Param.Sheet.InnerBlocks.ToArray();
+            var blocks = this.Param.UsingLayout.Sheet.InnerBlocks.ToArray();
             var ser = new DataContractJsonSerializer(typeof(IEnumerable<Block>),
                                                      new[] { typeof(Switch), typeof(Motor), typeof(Vehicle), typeof(UsartSensor) });
             return GetJsonContent<IEnumerable<Block>>(blocks, ser);

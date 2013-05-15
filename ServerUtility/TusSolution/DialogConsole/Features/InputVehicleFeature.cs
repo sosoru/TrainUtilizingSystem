@@ -23,7 +23,7 @@ namespace DialogConsole.Features
                 string vhname = Console.ReadLine();
 
                 Console.WriteLine("Which block your vehicle halt on?");
-                Block bk = Param.Sheet.GetBlock(Console.ReadLine());
+                Block bk = Param.UsingLayout.Sheet.GetBlock(Console.ReadLine());
 
                 //if block is not found
                 if (bk == null)
@@ -42,16 +42,16 @@ namespace DialogConsole.Features
                 return;
             }
 
-                Param.VehiclePipeline = Observable.Defer(
-                    () => Observable.Start(VehicleProcess, Param.SchedulerPacketProcessing));
-                //.Do(u => Param.Sheet.InquiryStatusOfAllMotors());
-                //.Do(u => this.Param.Sheet.InquiryDevices());
+            Param.VehiclePipeline = Observable.Defer(
+                () => Observable.Start(VehicleProcess, Param.SchedulerPacketProcessing));
+            //.Do(u => Param.Sheet.InquiryStatusOfAllMotors());
+            //.Do(u => this.Param.Sheet.InquiryDevices());
 
-                Param.VehicleProcessing = Param.VehiclePipeline
-                    .Do(u => this.Param.Sheet.InquiryStatusOfAllMotors())
-                    .Delay(TimeSpan.FromMilliseconds(500)).Repeat()
-                                               .SubscribeOn(Scheduler.NewThread)
-                                               .Subscribe();
+            Param.VehicleProcessing = Param.VehiclePipeline
+                .Do(u => this.Param.UsingLayout.Sheet.InquiryStatusOfAllMotors())
+                .Delay(TimeSpan.FromMilliseconds(500)).Repeat()
+                                           .SubscribeOn(Scheduler.NewThread)
+                                           .Subscribe();
 
         }
 
@@ -65,10 +65,10 @@ namespace DialogConsole.Features
             Console.WriteLine("write route manually");
 
             string[] rt = Console.ReadLine().Split(',');
-            return new Route(rt.Select(s => Param.Sheet.GetBlock(s.Trim())).ToList());
+            return new Route(rt.Select(s => Param.UsingLayout.Sheet.GetBlock(s.Trim())).ToList());
         }
 
-        private Route InputRoute(out bool ignoreblockage,  IEnumerable<Route> routes)
+        private Route InputRoute(out bool ignoreblockage, IEnumerable<Route> routes)
         {
             Console.WriteLine("select route [name] [sub] [ign]");
             string ans = Console.ReadLine().ToLower().Trim();
@@ -96,25 +96,25 @@ namespace DialogConsole.Features
             if (Param.VehicleProcessing != null)
                 Param.VehicleProcessing.Dispose();
 
-            foreach (Vehicle vh in Param.Vehicles.ToArray())
+            foreach (Vehicle vh in Param.UsingLayout.Vehicles.ToArray())
             {
                 vh.Route.InitLockingPosition();
             }
 
             bool ign = false;
             bool rev = false;
-            var routes = this.Param.AvailableRoutesFactory.Create();
-            Route rt = InputRoute(out ign,  routes);
+            var routes = this.Param.UsingLayout.AvailableRoutesFactory.Create();
+            Route rt = InputRoute(out ign, routes);
 
             rt.IsRepeatable = true;
-            var v = new Vehicle(Param.Sheet, rt);
+            var v = new Vehicle(Param.UsingLayout.Sheet, rt);
             v.AvailableRoutes = routes;
             v.CurrentBlock = b;
             v.Speed = 0.0f;
             v.Name = vhname;
             v.IgnoreBlockage = (ign);
 
-            Param.Vehicles.Add(v);
+            Param.UsingLayout.Vehicles.Add(v);
             return v;
         }
 
@@ -123,7 +123,7 @@ namespace DialogConsole.Features
         {
             lock (lock_vehicleprocess)
             {
-                foreach (Vehicle v in Param.Vehicles.ToArray())
+                foreach (Vehicle v in Param.UsingLayout.Vehicles.ToArray())
                 {
                     v.Refresh();
                 }

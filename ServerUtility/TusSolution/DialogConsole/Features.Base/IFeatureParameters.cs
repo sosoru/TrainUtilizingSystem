@@ -9,8 +9,7 @@ namespace DialogConsole.Features.Base
 {
     public interface IFeatureParameters
     {
-        BlockSheet Sheet { get; set; }
-        System.Collections.Generic.IList<Vehicle> Vehicles { get; set; }
+        Layout UsingLayout { get; set; }
         IDisposable ServingInfomation { get; set; }
         IScheduler SchedulerPacketProcessing { get; set; }
 
@@ -19,6 +18,5 @@ namespace DialogConsole.Features.Base
         IObservable<Unit> VehiclePipeline { get; set; }
         IDisposable VehicleProcessing { get; set; }
         IObservable<DevicePacket> ReceivingPacketPipeline { get; set; }
-        RouteListFactory AvailableRoutesFactory { get; set; }
     }
 }

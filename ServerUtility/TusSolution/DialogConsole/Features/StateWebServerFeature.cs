@@ -65,7 +65,7 @@ namespace DialogConsole.Features
                 {
                     var cnt = new DataContractJsonSerializer(typeof(VehicleInfoReceived));
                     var recvinfo = (VehicleInfoReceived)cnt.ReadObject(req.InputStream);
-                    var vh = this.Param.Vehicles.First(v => v.Name == recvinfo.Name);
+                    var vh = this.Param.UsingLayout.Vehicles.First(v => v.Name == recvinfo.Name);
 
                     if (recvinfo.Speed != null)
                     {
@@ -126,7 +126,7 @@ namespace DialogConsole.Features
                     using (var ms = new MemoryStream())
                     {
                         var cnt = new DataContractJsonSerializer(typeof(IEnumerable<Vehicle>), new[] { typeof(Switch), typeof(Motor), typeof(UsartSensor), typeof(MemoryState) });
-                        var vehis = this.Param.Vehicles.ToArray();
+                        var vehis = this.Param.UsingLayout.Vehicles.ToArray();
 
                         cnt.WriteObject(ms, vehis);
                         var s = Encoding.UTF8.GetString(ms.ToArray());

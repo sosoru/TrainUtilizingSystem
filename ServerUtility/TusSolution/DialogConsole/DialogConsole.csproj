@@ -84,6 +84,7 @@
     <Compile Include="Controllers\DeviceController.cs" />
     <Compile Include="Controllers\MotorController.cs" />
     <Compile Include="Features\SwitchCheckFeature.cs" />
+    <Compile Include="Layout.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>

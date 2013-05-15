@@ -18,7 +18,7 @@ namespace DialogConsole.Features
             Console.WriteLine("type name? ");
             var name = Console.ReadLine();
 
-            var v = this.Param.Vehicles.FirstOrDefault(b => b.Name == name);
+            var v = this.Param.UsingLayout.Vehicles.FirstOrDefault(b => b.Name == name);
 
             if (v == null)
             {
@@ -30,7 +30,7 @@ namespace DialogConsole.Features
             v.Run(0);
             v.Route.InitLockingPosition();
 
-            this.Param.Vehicles.Remove(v);
+            this.Param.UsingLayout.Vehicles.Remove(v);
         }
 
         public void Init()

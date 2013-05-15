@@ -15,7 +15,7 @@ namespace DialogConsole.WebPages
         public override string GetJsonContent()
         {
             var motors =
-                this.Param.Sheet.AllDevices.Where(d => d.ModuleType == Tus.Communication.ModuleTypeEnum.AvrMotor)
+                this.Param.UsingLayout.Sheet.AllDevices.Where(d => d.ModuleType == Tus.Communication.ModuleTypeEnum.AvrMotor)
                     .Cast<Motor>().ToArray();
             return this.GetJsonContent<IEnumerable<Motor>>(motors);
         }

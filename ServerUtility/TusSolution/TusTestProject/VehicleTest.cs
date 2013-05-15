@@ -72,7 +72,7 @@ namespace TestProject
 
             var mocksht = new Mock<BlockSheet>(target_sheet, serv);
             mocksht.Setup(sht => sht.Effect(It.IsAny<CommandFactory>(), It.IsAny<IEnumerable<Block>>()))
-                .Callback<CommandFactory>(f => this.lastcmdinfo = f);
+                .Callback<CommandFactory, IEnumerable<Block>>((f,bs) => this.lastcmdinfo = f);
 
             sht = new BlockSheet(target_sheet, serv);
 
@@ -144,10 +144,22 @@ namespace TestProject
 
         public void VehicleRunCheckTest()
         {
-            var rt = GetRouteFirst(sht);
-            var v = new Vehicle(sht, rt);
-            
+            var v1 = new Vehicle(sht, GetRouteFirst(sht));
+            var v2 = new Vehicle(sht, GetRouteFirst(sht));
 
+            v1.CurrentBlock = sht.GetBlock("AT6");
+            v1.Run();
+            Assert.IsTrue(CheckMtrMode("AT6", MotorMemoryStateEnum.Controlling));
+            Assert.IsTrue(CheckMtrMode("AT9", MotorMemoryStateEnum.Waiting));
+
+            v2.CurrentBlock = sht.GetBlock("AT12");
+            v2.Run(); 
+
+        }
+
+        private bool CheckMtrMode(string blkname, MotorMemoryStateEnum state)
+        {
+            return this.lastcmdinfo.CreateCommand(sht.GetBlock(blkname)).MotorMode == state;
         }
     }
 }

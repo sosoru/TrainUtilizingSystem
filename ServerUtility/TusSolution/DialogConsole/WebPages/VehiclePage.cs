@@ -14,7 +14,7 @@ namespace DialogConsole.WebPages
     {
         public override string GetJsonContent()
         {
-            var vehicles = this.Param.Vehicles;
+            var vehicles = this.Param.UsingLayout.Vehicles;
             return GetJsonContent<IEnumerable<Vehicle>>(vehicles);
         }
 

@@ -15,9 +15,9 @@ namespace DialogConsole.Features
     {
         public void Execute()
         {
-            var blocks = this.Param.Sheet.InnerBlocks;
+            var blocks = this.Param.UsingLayout.Sheet.InnerBlocks;
 
-            this.Param.Sheet.InquiryDevices();
+            this.Param.UsingLayout.Sheet.InquiryDevices();
 
             foreach (var b in blocks)
                 Console.WriteLine(b.ToString());

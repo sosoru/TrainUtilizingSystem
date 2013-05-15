@@ -237,7 +237,6 @@ namespace TestProject
         [TestMethod]
         public void HaltTest()
         {
-            Assert.Inconclusive("halting feature is not implemented");
 
             Route rt = GetRouteFirst(sht);
             var vh = new Vehicle(sht, rt);

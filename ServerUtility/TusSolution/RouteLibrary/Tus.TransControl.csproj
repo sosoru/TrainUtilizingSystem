@@ -74,7 +74,6 @@
     <Compile Include="Base\BlockSheet.cs" />
     <Compile Include="Base\DeviceEffector.cs" />
     <Compile Include="Base\Halt.cs" />
-    <Compile Include="Base\Layout.cs" />
     <Compile Include="Base\Route.cs" />
     <Compile Include="Base\Vehicle.cs" />
     <Compile Include="Parser\BlockYaml.cs" />

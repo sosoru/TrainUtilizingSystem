@@ -44,7 +44,7 @@ namespace Tus.TransControl.Base
             Route = rt;
 
             CurrentBlock = Route.Blocks.First();
-            Length = 2; //todo : 閉塞管理を見直して動的にLengthを変えた方が良いかも
+            Length = 1;
             CurrentLength = Length;
             Halt = new List<Halt>();
 

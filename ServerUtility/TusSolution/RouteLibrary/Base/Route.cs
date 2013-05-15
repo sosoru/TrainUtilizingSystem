@@ -6,6 +6,9 @@ using System.Runtime.Serialization;
 
 namespace Tus.TransControl.Base
 {
+    /// <summary>
+    /// ひとつの駆動源を持ち，絶縁されたセクションを表す．（having one motor, being terminated by a isolator)
+    /// </summary>
     [DataContract]
     public class ControllingUnit
     {

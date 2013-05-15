@@ -169,6 +169,13 @@ namespace Tus.TransControl.Base
             this.InquiryDevices(this.AllDevices);
         }
 
+        public void InquiryDevices(IEnumerable<Block> blocks)
+        {
+            var devs = blocks.SelectMany(d => d.Devices).Distinct(d => d.DeviceID);
+            InquiryDevices(devs);
+
+        }
+
         public void InquiryDevices(IEnumerable<IDevice<IDeviceState<IPacketDeviceData>>> devs)
         {
             var addrs = devs

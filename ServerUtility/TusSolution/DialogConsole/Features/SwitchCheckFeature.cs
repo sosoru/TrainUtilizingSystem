@@ -23,7 +23,7 @@ namespace DialogConsole.Features
             Console.WriteLine(pos);
             if (pos != PointStateEnum.Any)
             {
-                var devs = this.Param.Sheet.AllDevices.Where(d => d is Switch).Cast<Switch>().ToArray();
+                var devs = this.Param.UsingLayout.Sheet.AllDevices.Where(d => d is Switch).Cast<Switch>().ToArray();
 
                 Console.WriteLine("deviceid?");
                 var id = Console.ReadLine();
@@ -57,7 +57,7 @@ namespace DialogConsole.Features
 
             var packets = PacketExtension.CreatePackedPacket(devs);
             foreach(var packet in packets)
-                this.Param.Sheet.Server.EnqueuePacket(packet);
+                this.Param.UsingLayout.Sheet.Server.EnqueuePacket(packet);
         }
 
         public void Init()
