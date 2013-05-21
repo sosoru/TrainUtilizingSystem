@@ -76,10 +76,10 @@ namespace DialogConsole.Features
                     }
                     if (recvinfo.RouteName != null)
                     {
-                        Console.WriteLine("{0} is changing route from {1} to {2}", vh.Name, vh.Route.Name,
+                        Console.WriteLine("{0} is changing route from {1} to {2}", vh.Name, vh.AssociatedRoute.RouteOrder.Name,
                                           recvinfo.RouteName);
-                        var route = vh.AvailableRoutes.First(rt => rt.Name == recvinfo.RouteName);
-                        if (route.Blocks.Contains(vh.CurrentBlock))
+                        var route = vh.AvailableRoutes.First(rt => rt.RouteOrder.Name == recvinfo.RouteName);
+                        if (route.RouteOrder.Blocks.Contains(vh.CurrentBlock))
                         {
                             vh.ChangeRoute(route);
                         }

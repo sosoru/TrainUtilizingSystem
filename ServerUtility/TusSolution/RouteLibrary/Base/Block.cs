@@ -139,7 +139,7 @@ namespace Tus.TransControl.Base
         {
             //var list_infos = infos.Select(info =>
             //{
-            //    var avl = info.Route.Blocks;//.SkipWhile(b => b == this).Where(b => b.IsHaltable);
+            //    var avl = info.AssociatedRoute.Blocks;//.SkipWhile(b => b == this).Where(b => b.IsHaltable);
 
             //    var neighbor = avl.First();
             //    if (neighbor != null && neighbor.IsBlocked)

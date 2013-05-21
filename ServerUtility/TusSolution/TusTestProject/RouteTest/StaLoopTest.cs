@@ -74,7 +74,7 @@ namespace TestProject
                 "AT10", "AT11", "AT12", "BAT12",
                 "AT13", "AT14", "AT15", "BAT16",
                 "AT16", "AT1", "BAT1" });
-            route.IsRepeatable = true;
+            route.RouteOrder.IsRepeatable = true;
             return route;
         }
 
@@ -135,7 +135,7 @@ namespace TestProject
         public void RouteConstructTest()
         {
             Route rt = GetRouteFirst(sht);
-            var units = rt.Units.ToArray();
+            var units = rt.RouteOrder.Units.ToArray();
             Assert.IsTrue(units[0].Blocks.Select(b => b.Name)
                             .SequenceEqual(new[] { "AT2", "AT3", "AT4", "AT5", "AT6", "BAT6" }));
             Assert.IsTrue(units[1].Blocks.Select(b => b.Name)
@@ -223,7 +223,7 @@ namespace TestProject
                 Assert.Fail();
             }
             catch (InvalidOperationException ex) { }
-            vh.Route.InitLockingPosition();
+            vh.AssociatedRoute.InitLockingPosition();
             othervh.Run(1.0f, sht.GetBlock("AT9"));
             vh.Run(1.0f, sht.GetBlock("AT2"));
 

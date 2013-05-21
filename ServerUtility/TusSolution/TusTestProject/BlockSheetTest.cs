@@ -170,10 +170,10 @@ namespace TestProject
 
         //    var sht = new BlockSheet(sample_loop_sheet, serv.Object);
 
-        //    var route = new Route(sht, new[] { "AT1", "AT2", "AT3", "AT4", });
+        //    var route = new AssociatedRoute(sht, new[] { "AT1", "AT2", "AT3", "AT4", });
         //    var cmd = new CommandInfo()
         //    {
-        //        Route = route,
+        //        AssociatedRoute = route,
         //        Speed = 0.5f,
         //        MotorMode = MotorMemoryStateEnum.Controlling,
         //    };
@@ -250,10 +250,10 @@ namespace TestProject
         //        .Subscribe(state => log.Add(state));
 
         //    var sht = new BlockSheet(sample_loop_sheet, serv);
-        //    var route = new Route(sht, new[] { "AT1", "AT2", "AT3", "AT4" });
+        //    var route = new AssociatedRoute(sht, new[] { "AT1", "AT2", "AT3", "AT4" });
         //    var cmd = new CommandInfo()
         //    {
-        //        Route = route,
+        //        AssociatedRoute = route,
         //        Speed = 0.5f
         //    };
 

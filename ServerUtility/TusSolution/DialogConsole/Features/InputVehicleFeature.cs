@@ -81,12 +81,12 @@ namespace DialogConsole.Features
                 throw new ArgumentException("insufficient parameters");
 
             var routename = ans.Split(' ')[0];
-            var rt = routes.FirstOrDefault(r => r.Name.ToLower() == routename);
+            var rt = routes.FirstOrDefault(r => r.RouteOrder.Name.ToLower() == routename);
             if (null == rt)
                 throw new KeyNotFoundException("no route whose name is equal to the specified name is found");
             else
             {
-                rt.IsRepeatable = true;
+                rt.RouteOrder.IsRepeatable = true;
                 return rt;
             }
         }
@@ -98,7 +98,7 @@ namespace DialogConsole.Features
 
             foreach (Vehicle vh in Param.UsingLayout.Vehicles.ToArray())
             {
-                vh.Route.InitLockingPosition();
+                vh.AssociatedRoute.InitLockingPosition();
             }
 
             bool ign = false;
@@ -106,7 +106,7 @@ namespace DialogConsole.Features
             var routes = this.Param.UsingLayout.AvailableRoutesFactory.Create();
             Route rt = InputRoute(out ign, routes);
 
-            rt.IsRepeatable = true;
+            rt.RouteOrder.IsRepeatable = true;
             var v = new Vehicle(Param.UsingLayout.Sheet, rt);
             v.AvailableRoutes = routes;
             v.CurrentBlock = b;

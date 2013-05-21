@@ -24,7 +24,7 @@ namespace DialogConsole
 
         public void SendInquiryState(IList<Vehicle> vehicles)
         {
-            var blocks = vehicles.SelectMany(v => v.Route.LockedBlocks).Distinct();
+            var blocks = vehicles.SelectMany(v => v.AssociatedRoute.LockedBlocks).Distinct();
             this.Sheet.InquiryDevices(blocks);
         }
 

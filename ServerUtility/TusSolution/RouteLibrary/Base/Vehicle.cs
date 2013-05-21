@@ -41,9 +41,9 @@ namespace Tus.TransControl.Base
             VehicleID = LastVehicleID++;
 
             Sheet = sht;
-            Route = rt;
+            AssociatedRoute = rt;
 
-            CurrentBlock = Route.Blocks.First();
+            CurrentBlock = AssociatedRoute.RouteOrder.Blocks.First();
             Length = 1;
             CurrentLength = Length;
             Halt = new List<Halt>();
@@ -64,7 +64,7 @@ namespace Tus.TransControl.Base
         public Block CurrentBlock { get; set; }
 
         [DataMember]
-        public Route Route { get; set; }
+        public Route AssociatedRoute { get; set; }
 
         public BlockSheet Sheet { get; set; }
 
@@ -87,7 +87,7 @@ namespace Tus.TransControl.Base
             get
             {
                 return Halt != null
-                       && Halt.Any(bh => Route.LockedBlocks.Contains(bh.HaltBlock) && bh.HaltState);
+                       && Halt.Any(bh => AssociatedRoute.LockedBlocks.Contains(bh.HaltBlock) && bh.HaltState);
             }
         }
 
@@ -96,7 +96,7 @@ namespace Tus.TransControl.Base
             get
             {
                 return Halt != null
-                       && Halt.Any(bh => Route.LockedBlocks.Contains(bh.HaltBlock));
+                       && Halt.Any(bh => AssociatedRoute.LockedBlocks.Contains(bh.HaltBlock));
             }
         }
 
@@ -114,19 +114,20 @@ namespace Tus.TransControl.Base
 
             // todo : halts support
             //todo : steady support and test with or without sensors 
-            //if (this.Route.LockedUnits.Count > 1)
-            //{
-            // verified i'm not halted and the next unit is not blocked by other vehicles
-
-            ControllingUnit waitingunit = Route.LockedUnits.Last();
-            if (waitingunit.ControlBlock.IsMotorDetectingTrain)
+            if (this.AssociatedRoute.LockedUnits.Count > 2)
             {
-                CurrentBlock = waitingunit.ControlBlock;
-                Console.WriteLine("vehicle {0} moved : {1}", Name, CurrentBlock.Name);
-                //this.CurrentBlock.Neighbors.ForEach(b => Console.WriteLine(b.MotorEffector.Device.ToString()));
-                //Console.WriteLine(this.CurrentBlock.MotorEffector.Device.ToString());
+                // verified i'm not halted and the next unit is not blocked by other vehicles
+
+                ControlUnit waitingunit = AssociatedRoute.LockedUnits.Last();
+                if (waitingunit.ControlBlock.IsMotorDetectingTrain)
+                {
+                    var units = AssociatedRoute.LockedUnits.ToArray();
+                    this.CurrentBlock = units[units.Length - 2].ControlBlock;
+                    Console.WriteLine("vehicle {0} moved : {1}", Name, CurrentBlock.Name);
+                    //this.CurrentBlock.Neighbors.ForEach(b => Console.WriteLine(b.MotorEffector.Device.ToString()));
+                    //Console.WriteLine(this.CurrentBlock.MotorEffector.Device.ToString());
+                }
             }
-            //}
 
             Run(Speed, CurrentBlock);
         }
@@ -136,11 +137,11 @@ namespace Tus.TransControl.Base
             //todo : check the routes can be changed
             Speed = 0;
             Refresh();
-            while (Route.ReleaseBeforeUnit()) ;
+            while (AssociatedRoute.ReleaseLastUnit()) ;
 
-            rt.IsRepeatable = Route.IsRepeatable;
+            rt.RouteOrder.IsRepeatable = AssociatedRoute.RouteOrder.IsRepeatable;
 
-            Route = rt;
+            AssociatedRoute = rt;
             Refresh();
         }
 
@@ -149,13 +150,13 @@ namespace Tus.TransControl.Base
             var spdfact = new SpeedFactory { RawSpeed = spd };
 
             //all alocate
-            while (Route.LockNextUnit()) ;
+            while (AssociatedRoute.LockNextUnit()) ;
 
             CommandFactory cmdfact = null;
 
             cmdfact = CreateBlockageIgnoreCommand(() => spdfact.Go);
 
-            Sheet.Effect(cmdfact, Route.Blocks.ToList().Distinct());
+            Sheet.Effect(cmdfact, AssociatedRoute.RouteOrder.Blocks.ToList().Distinct());
         }
 
         public void Run()
@@ -174,40 +175,47 @@ namespace Tus.TransControl.Base
             CommandFactory cmdfactory = null;
             var spdfactory = new SpeedFactory { RawSpeed = spd };
 
-            Block[] lastlockedblocks = Route.LockedBlocks.ToArray();
+            Block[] lastlockedblocks = AssociatedRoute.LockedBlocks.ToArray();
 
             //temporalily allocate
-            Route.AllocateTrain(CurrentBlock, 1);
-            var distance = Route.GetDistanceOfBlockedUnit(3);
+            AssociatedRoute.AllocateTrain(CurrentBlock, 1);
+            var distance = AssociatedRoute.HeadContainer.GetDistanceOfBlockedUnit(3);
 
-            if (this.ShouldHalt || distance == 1)
+            this.Speed = spd;
+            if (this.Speed == 0.0f || distance == 1)
+                this.CurrentLength = this.Length;
+            else
+            {
+                if (this.CurrentLength < this.Length + 2)
+                    this.CurrentLength++;
+            }
+
+            AssociatedRoute.AllocateTrain(CurrentBlock, this.CurrentLength);
+
+            if (this.ShouldHalt || this.Speed == 0.0f || distance == 1)
             {
                 cmdfactory = CanHalt
                                  ? CreateHaltCommand(spdfactory)
                                  : CreateZeroCommand(spdfactory);
-                CurrentLength = Length;
             }
             else if (distance == 2)
             {
                 cmdfactory = Create1stCommand(spdfactory);
-                CurrentLength = Length + 1;
             }
             else if (distance == 3)
             {
                 cmdfactory = Create2ndCommand(spdfactory);
-                CurrentLength = Length + 1;
             }
             else
             {
                 cmdfactory = CreateNthCommand(spdfactory);
-                CurrentLength = Length + 1;
             }
 
-            if (this.CurrentLength > Route.BlockPassedCount)
-                this.CurrentLength = Route.BlockPassedCount;
+            if (this.CurrentLength > AssociatedRoute.HeadContainer.BlockPassedCount)
+                this.CurrentLength = AssociatedRoute.HeadContainer.BlockPassedCount;
 
-            Route.AllocateTrain(this.CurrentBlock, this.CurrentLength);
-            Sheet.Effect(cmdfactory, Route.LockedBlocks.Concat(lastlockedblocks).Distinct());
+            AssociatedRoute.AllocateTrain(this.CurrentBlock, this.CurrentLength);
+            Sheet.Effect(cmdfactory, AssociatedRoute.LockedBlocks.Concat(lastlockedblocks).Distinct());
         }
 
         private BlockPolar getBlockPolar(CommandInfo cmd, Block blk)
@@ -216,8 +224,8 @@ namespace Tus.TransControl.Base
 
             Block pos = blk.Neighbors.First();
             Block neg = blk.Neighbors.Last();
-            int posind = rt.Blocks.IndexOf(pos);
-            int negind = rt.Blocks.IndexOf(neg);
+            int posind = rt.RouteOrder.Blocks.IndexOf(pos);
+            int negind = rt.RouteOrder.Blocks.IndexOf(neg);
 
             //todo : fix to clockwise polar
             if (posind > negind) // positive
@@ -235,10 +243,10 @@ namespace Tus.TransControl.Base
                      {
                          var cmd = new CommandInfo
                                        {
-                                           Route = Route,
+                                           Route = AssociatedRoute,
                                        };
-                         ControllingUnit[] lockedunits = Route.LockedUnits.ToArray();
-                         Block cntblk = (cmd.Route.Polar == BlockPolar.Positive)
+                         ControlUnit[] lockedunits = AssociatedRoute.LockedUnits.ToArray();
+                         Block cntblk = (cmd.Route.RouteOrder.Polar == BlockPolar.Positive)
                                             ? lockedunits.First().ControlBlock
                                             : lockedunits[lockedunits.Length - 2]
                                                   .ControlBlock;
@@ -277,10 +285,10 @@ namespace Tus.TransControl.Base
                      {
                          var cmd = new CommandInfo
                                        {
-                                           Route = Route,
+                                           Route = AssociatedRoute,
                                        };
 
-                         if (blk == Route.LockedUnits.Last().ControlBlock)
+                         if (blk == AssociatedRoute.LockedUnits.Last().ControlBlock)
                          {
                              cmd.MotorMode = MotorMemoryStateEnum.Controlling;
                              cmd.Speed = cntspdFactory();
@@ -302,7 +310,7 @@ namespace Tus.TransControl.Base
                      {
                          var cmd = new CommandInfo
                                        {
-                                           Route = Route,
+                                           Route = AssociatedRoute,
                                            Speed = cntspdfact(),
                                            MotorMode =
                                                MotorMemoryStateEnum.Controlling

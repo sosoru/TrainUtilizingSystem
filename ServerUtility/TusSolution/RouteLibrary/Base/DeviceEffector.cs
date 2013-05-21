@@ -115,14 +115,14 @@ namespace Tus.TransControl.Base
         {
             MotorDirection dir = MotorDirection.Standby;
             float duty = 0f;
-            var locked = cmd.Route.GetLockingControlingRoute(this.ParentBlock);
+            var locked = cmd.Route.RouteOrder.GetLockingControlingRoute(this.ParentBlock);
 
             if (locked == null)
             {
                 return CreateNoEffectState();
             }
 
-            var seg = cmd.Route.GetSegment(this.ParentBlock);
+            var seg = cmd.Route.RouteOrder.GetSegment(this.ParentBlock);
             dir = this.Info.SelectDirection(seg.Info);
             duty = cmd.Speed;
 
@@ -229,7 +229,7 @@ namespace Tus.TransControl.Base
                     this.IsNeededExecution = true;
                     break;
                 case MotorMemoryStateEnum.Waiting:
-                    var polar = cmd.Route.Polar;
+                    var polar = cmd.Route.RouteOrder.Polar;
                     var cntstate = CreateMotorState(cmd);
                     var waitingblock = this.ParentBlock.BeforeBlockHavingMotor(cmd.Route);
 
@@ -299,7 +299,7 @@ namespace Tus.TransControl.Base
             if (cmd.Route == null)
                 return;
 
-            var segment = cmd.Route.GetSegment(this.ParentBlock);
+            var segment = cmd.Route.RouteOrder.GetSegment(this.ParentBlock);
 
             if ((segment.IsFromAny || this.Info.DirStraight.Any(i => i.From.Name == segment.From.Name))
                     && (segment.IsToAny || this.Info.DirStraight.Any(i => i.To.Name == segment.To.Name)))

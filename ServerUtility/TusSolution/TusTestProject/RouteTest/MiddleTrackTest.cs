@@ -101,7 +101,7 @@ namespace TestProject
         {
             var first = GetFirstRoute(sht);
             var second = GetSecondRoute(sht);
-            return new Route(sht, first.Blocks.Select(b => b.Name).Concat(second.Blocks.Select(b => b.Name)));
+            return new Route(sht, first.RouteOrder.Blocks.Select(b => b.Name).Concat(second.RouteOrder.Blocks.Select(b => b.Name)));
         }
 
         [TestMethod]

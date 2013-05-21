@@ -53,7 +53,7 @@ namespace TestProject
         }
         private List<IDeviceState<IPacketDeviceData>> written;
         private PacketServer serv;
-        private BlockSheet sht;
+        private BlockSheet sheet;
         private TestScheduler scheduler;
         private CommandFactory lastcmdinfo;
 
@@ -70,24 +70,24 @@ namespace TestProject
             serv = new PacketServer();
             serv.Controller = mockio.Object;
 
-            var mocksht = new Mock<BlockSheet>(target_sheet, serv);
-            mocksht.Setup(sht => sht.Effect(It.IsAny<CommandFactory>(), It.IsAny<IEnumerable<Block>>()))
-                .Callback<CommandFactory, IEnumerable<Block>>((f,bs) => this.lastcmdinfo = f);
+            //var mocksht = new Mock<BlockSheet>(target_sheet, serv);
+            //mocksht.Setup(sht => sht.Effect(It.IsAny<CommandFactory>(), It.IsAny<IEnumerable<Block>>()))
+            //    .Callback<CommandFactory, IEnumerable<Block>>((f,bs) => this.lastcmdinfo = f);
 
-            sht = new BlockSheet(target_sheet, serv);
+            sheet = new BlockSheet(target_sheet, serv);
 
             this.scheduler = new TestScheduler();
-            sht.AssociatedScheduler = scheduler;
+            sheet.AssociatedScheduler = scheduler;
         }
 
         [TestMethod]
         public void SerializeAsJson()
         {
-            var rt = GetRouteFirst(sht);
+            var rt = GetRouteFirst(sheet);
 
-            var v = new Vehicle(sht, rt);
+            var v = new Vehicle(sheet, rt);
 
-            v.CurrentBlock = sht.GetBlock("AT2");
+            v.CurrentBlock = sheet.GetBlock("AT2");
             v.Speed = 0.5f;
             v.Run();
 
@@ -106,60 +106,65 @@ namespace TestProject
         [TestMethod]
         public void PrintRouteString()
         {
-            var rt = GetRouteFirst(sht);
+            var rt = GetRouteFirst(sheet);
             Console.WriteLine(rt.ToString());
         }
 
         [TestMethod]
         public void VehicleRouteAllocatingTest()
         {
-            var rt = GetRouteFirst(sht);
-            var v = new Vehicle(sht, rt);
+            var rt = GetRouteFirst(sheet);
+            var v = new Vehicle(sheet, rt);
 
             var halt = new Mock<Halt>();
-            halt.Setup(h => h.HaltBlock).Returns(sht.GetBlock("AT14"));
+            halt.Setup(h => h.HaltBlock).Returns(sheet.GetBlock("AT14"));
             halt.Setup(h => h.HaltState).Returns(true);
 
-            v.CurrentBlock = sht.GetBlock("AT6");
-            v.Speed = 1.0f;
+            v.CurrentBlock = sheet.GetBlock("AT6");
             v.Length = 1;
 
             //１，停車時のVehicleのLengthはlen
+            v.Run(0.0f);
+            Assert.AreEqual(v.Speed, 0.0f);
             Assert.AreEqual<int>(v.CurrentLength, 1);
 
-            //２，発車後，BlockをReleaseする条件（停車するとか，センサを通過するとか）を満たすまでVehicle.Lengthはlen+1を保つ
-            v.CurrentBlock = sht.GetBlock("AT9");
-            v.Run(); //閉塞を通過（1回目）
-            Assert.AreEqual<int>(v.CurrentLength, 2); // RouteがRepetableでないから，打ち切って1が返る
-
-            v.CurrentBlock = sht.GetBlock("AT12");
-            v.Run(); //閉塞を通過（2回目）
+            //発車
+            v.Run(0.5f);
             Assert.AreEqual<int>(v.CurrentLength, 2);
 
+            //２，発車後，BlockをReleaseする条件（停車するとか，センサを通過するとか）を満たすまでVehicle.Lengthはlen+1を保つ
+            v.CurrentBlock = sheet.GetBlock("AT9");
+            v.Run(); //閉塞を通過（1回目）
+            Assert.AreEqual<int>(v.CurrentLength, 3); 
+
+            v.CurrentBlock = sheet.GetBlock("AT12");
+            v.Run(); //閉塞を通過（2回目）
+            Assert.AreEqual<int>(v.CurrentLength, 3);
+
             v.Halt.Add(halt.Object);
-            v.CurrentBlock = sht.GetBlock("AT14");
-            v.Run(); //停車（haltable blockへの進入につき）
+            v.CurrentBlock = sheet.GetBlock("AT14");
+            v.Run(0.0f); //停車（haltable blockへの進入につき）
             Assert.AreEqual<int>(v.CurrentLength, 1);
         }
 
         public void VehicleRunCheckTest()
         {
-            var v1 = new Vehicle(sht, GetRouteFirst(sht));
-            var v2 = new Vehicle(sht, GetRouteFirst(sht));
+            var v1 = new Vehicle(sheet, GetRouteFirst(sheet));
+            var v2 = new Vehicle(sheet, GetRouteFirst(sheet));
 
-            v1.CurrentBlock = sht.GetBlock("AT6");
+            v1.CurrentBlock = sheet.GetBlock("AT6");
             v1.Run();
             Assert.IsTrue(CheckMtrMode("AT6", MotorMemoryStateEnum.Controlling));
             Assert.IsTrue(CheckMtrMode("AT9", MotorMemoryStateEnum.Waiting));
 
-            v2.CurrentBlock = sht.GetBlock("AT12");
+            v2.CurrentBlock = sheet.GetBlock("AT12");
             v2.Run(); 
 
         }
 
         private bool CheckMtrMode(string blkname, MotorMemoryStateEnum state)
         {
-            return this.lastcmdinfo.CreateCommand(sht.GetBlock(blkname)).MotorMode == state;
+            return this.lastcmdinfo.CreateCommand(sheet.GetBlock(blkname)).MotorMode == state;
         }
     }
 }

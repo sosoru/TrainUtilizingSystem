@@ -8,13 +8,6 @@ namespace TusTestProject
     [TestClass]
     public class LayoutTest
     {
-        Layout createTarget
-        {
-            get
-            {
-                
-            }
-        }
         [TestMethod]
         public void TestMethod1()
         {

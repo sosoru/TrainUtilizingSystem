@@ -25,10 +25,10 @@ namespace TestProject.ConsoleTest.Composition
                 var sheet = new BlockSheet(blocks, new PacketServer());
 
                 var mock = new Mock<IFeatureParameters>();
-                mock.Setup(param => param.Sheet).Returns(() => sheet);
+                mock.Setup(param => param.UsingLayout.Sheet).Returns(() => sheet);
 
                 var vehicle = new Vehicle(sheet, new Route(sheet, new[] { "AT1" }));
-                mock.Setup(param => param.Vehicles).Returns(() => new[] { vehicle });
+                mock.Setup(param => param.UsingLayout.Vehicles).Returns(() => new[] { vehicle });
 
                 return mock.Object;
             }

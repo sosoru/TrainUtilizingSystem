@@ -13,14 +13,14 @@ namespace Tus.Factory
 
         public Route ReverseRoute(Route posrt)
         {
-            var blocks = alignBlocks(posrt.Blocks.Reverse());
+            var blocks = alignBlocks(posrt.RouteOrder.Blocks.Reverse());
 
             var reverseRoute = new Route(blocks);
-            reverseRoute.Name = posrt.Name + "_REV";
-            reverseRoute.Polar =
-                (posrt.Polar == BlockPolar.Positive)
+            reverseRoute.RouteOrder.Name = posrt.RouteOrder.Name + "_REV";
+            reverseRoute.RouteOrder.Polar =
+                (posrt.RouteOrder.Polar == BlockPolar.Positive)
                     ? BlockPolar.Negative
-                    : (posrt.Polar == BlockPolar.Negative)
+                    : (posrt.RouteOrder.Polar == BlockPolar.Negative)
                           ? BlockPolar.Positive
                           : BlockPolar.Any;
             return reverseRoute;
@@ -63,7 +63,7 @@ namespace Tus.Factory
             IEnumerable<RouteSegmentOnYaml> routes = parser.ParseYamlContent(routesobj);
 
             var list = routes.Select(rseg => new Route(Sheet, rseg.Routes) { Name = rseg.Name, Polar = rseg.Polar, IsRepeatable = true })
-                             .Select(rt => new Route(alignBlocks(rt.Blocks)) { Name = rt.Name, Polar = rt.Polar, IsRepeatable = true });
+                             .Select(rt => new Route(alignBlocks(rt.RouteOrder.Blocks)) { Name = rt.RouteOrder.Name, Polar = rt.RouteOrder.Polar, IsRepeatable = true });
 
             return list.Concat(list.ToArray().Select(rt => ReverseRoute(rt))).ToList();
         }

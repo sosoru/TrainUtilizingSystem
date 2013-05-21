@@ -108,7 +108,7 @@ namespace TestProject
         }
 
         /// <summary>
-        ///Route コンストラクター のテスト
+        ///AssociatedRoute コンストラクター のテスト
         ///</summary>
         [TestMethod()]
         public void RouteConstructorTest()
@@ -126,13 +126,13 @@ namespace TestProject
             Route target = new Route(test_blocks.ToList());
 
             target.LockNextUnit();
-            Assert.IsTrue(target.Units[0].Blocks.SequenceEqual(target.LockedBlocks));
-            Assert.IsFalse(target.Units[0].CanBeAllocated);
+            Assert.IsTrue(target.RouteOrder.Units[0].Blocks.SequenceEqual(target.LockedBlocks));
+            Assert.IsFalse(target.RouteOrder.Units[0].CanBeAllocated);
 
         }
 
         /// <summary>
-        ///ReleaseBeforeUnit のテスト
+        ///ReleaseLastUnit のテスト
         ///</summary>
         [TestMethod()]
         public void ReleaseBeforeUnitTest()
@@ -141,10 +141,10 @@ namespace TestProject
 
             target.LockNextUnit();
             target.LockNextUnit();
-            target.ReleaseBeforeUnit();
+            target.ReleaseLastUnit();
 
-            Assert.IsTrue(target.LockedBlocks.SequenceEqual(target.Units[1].Blocks));
-            Assert.IsTrue(target.Units[0].Blocks.All(b => !b.IsBlocked));
+            Assert.IsTrue(target.LockedBlocks.SequenceEqual(target.RouteOrder.Units[1].Blocks));
+            Assert.IsTrue(target.RouteOrder.Units[0].Blocks.All(b => !b.IsBlocked));
         }
 
         [TestMethod]
@@ -172,7 +172,7 @@ namespace TestProject
         //    var sensoredblock = blocks[3];
         //    sensoredblock.Detector = detectedmock.Object;
 
-        //    target = new Route(blocks);
+        //    target = new AssociatedRoute(blocks);
         //    target.LookUpTrain();
         //    Assert.IsTrue(target.LockedBlocks.Contains(sensoredblock));
         //}
@@ -182,7 +182,7 @@ namespace TestProject
         {
             var blocks = test_blocks.ToArray();
             Route target = new Route(blocks);
-            target.IsRepeatable = true;
+            target.RouteOrder.IsRepeatable = true;
 
             // allocate single block
             Block allocblk = blocks[1];
@@ -220,14 +220,14 @@ namespace TestProject
             var blocks = test_blocks.ToArray();
 
             var target = new Route(blocks);
-            target.IsRepeatable = true;
+            target.RouteOrder.IsRepeatable = true;
 
             target.LockNextUnit();
             Observable.Range(0, 5)
                 .Subscribe(i =>
                 {
                     Assert.IsTrue(target.LockNextUnit());
-                    Assert.IsTrue(target.ReleaseBeforeUnit());
+                    Assert.IsTrue(target.ReleaseLastUnit());
 
                 });
         }
@@ -237,7 +237,7 @@ namespace TestProject
         {
             var blocks = test_blocks.ToArray();
             var target = new Route(blocks);
-            target.IsRepeatable = true;
+            target.RouteOrder.IsRepeatable = true;
         }
 
         [TestMethod]
@@ -245,12 +245,12 @@ namespace TestProject
         {
             var blocks = test_blocks.ToArray();
             var target = new Route(blocks);
-            ControllingUnit unit;
+            ControlUnit unit;
 
             target.LockNextUnit();
 
-            var first = target.Units.First();
-            var second = target.Units.ToArray()[1];
+            var first = target.RouteOrder.Units.First();
+            var second = target.RouteOrder.Units.ToArray()[1];
 
             target.TryLockNeighborUnit(1, out unit);
             Assert.IsTrue(unit.ControlBlock.Name == second.ControlBlock.Name);

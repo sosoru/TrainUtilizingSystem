@@ -28,7 +28,7 @@ namespace DialogConsole.Features
 
             v.Length = 1;
             v.Run(0);
-            v.Route.InitLockingPosition();
+            v.AssociatedRoute.InitLockingPosition();
 
             this.Param.UsingLayout.Vehicles.Remove(v);
         }
