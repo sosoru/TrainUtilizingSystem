@@ -38,11 +38,11 @@ namespace TestProject
 
         Route GetPositiveRoute(BlockSheet sht)
         {
-            var route = new Route(sht, new[] { "AT1", "AT2", "BT3", "AT4", "AT5" });
+            var order = new RouteOrder(sht, new[] { "AT1", "AT2", "BT3", "AT4", "AT5" });
 
             //route.AddStopInfo(sht.GetBlock("BT3"));
 
-            return route;
+            return new Route(order);
         }
 
         [TestMethod]

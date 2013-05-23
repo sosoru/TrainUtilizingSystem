@@ -73,7 +73,7 @@ namespace DialogConsole
         public IObservable<DevicePacket> ReceivingPacketPipeline { get; set; }
 
         [ImportingConstructor]
-        public DialogConsoleParameters(SheetFactory fact, RouteListFactory rtfact)
+        public DialogConsoleParameters(SheetFactory fact, RouteOrderListFactory rtfact)
         {
             UsingLayout = new Layout(rtfact, fact.Create());
             rtfact.Sheet = this.UsingLayout.Sheet;
@@ -201,7 +201,7 @@ namespace DialogConsole
             }
         }
 
-        public Route InputRoute(BlockSheet sht, Route before)
+        public RouteOrder InputRouteOrder(BlockSheet sht, RouteOrder before)
         {
             Console.WriteLine("route?");
             var content = Console.ReadLine();
@@ -212,7 +212,7 @@ namespace DialogConsole
             try
             {
                 var spil = content.Split(',');
-                var rt = new Route(sht, spil.Select(s => sht.GetBlock(s.Trim()).Name));
+                var rt = new RouteOrder(sht, spil.Select(s => sht.GetBlock(s.Trim()).Name));
 
                 return rt;
             }

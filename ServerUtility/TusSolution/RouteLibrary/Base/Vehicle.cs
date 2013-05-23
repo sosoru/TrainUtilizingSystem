@@ -26,6 +26,35 @@ namespace Tus.TransControl.Base
         }
     }
 
+    public interface IRouteLockPredicator
+    {
+        bool ShouldLockNext(Vehicle v);
+        bool ShouldReleaseBefore(Vehicle v);
+    }
+
+    public class RouteLockPredicator : IRouteLockPredicator
+    {
+        public bool ShouldLockNext(Vehicle v)
+        {
+            if (!v.IsStopped && v.AssociatedRoute.LockedUnits.Count > 2)
+            {
+                ControlUnit waitingunit = v.AssociatedRoute.HeadContainer.Unit;
+                var detected = waitingunit.ControlBlock.IsMotorDetectingTrain;
+                return detected;
+            }
+
+            return false;
+        }
+
+        public bool ShouldReleaseBefore(Vehicle v)
+        {
+            var manyunitslocked = v.CurrentLength > v.Length + 2;
+            var stopped = v.IsStopped && v.CurrentLength > v.Length + 1;
+
+            return manyunitslocked || stopped;
+        }
+    }
+
     [DataContract]
     public class Vehicle
     {
@@ -36,19 +65,17 @@ namespace Tus.TransControl.Base
             LastVehicleID = 0;
         }
 
-        public Vehicle(BlockSheet sht, Route rt)
+        public Vehicle(BlockSheet sht, RouteOrder rt)
         {
             VehicleID = LastVehicleID++;
 
             Sheet = sht;
-            AssociatedRoute = rt;
+            AssociatedRoute = new Route(rt);
 
-            CurrentBlock = AssociatedRoute.RouteOrder.Blocks.First();
             Length = 1;
-            CurrentLength = Length;
             Halt = new List<Halt>();
-
-            this.Run(0.0f);
+            Predicators = new List<IRouteLockPredicator>();
+            Predicators.Add(new RouteLockPredicator());
         }
 
         [DataMember]
@@ -58,10 +85,17 @@ namespace Tus.TransControl.Base
         public string Name { get; set; }
 
         [DataMember]
-        public IList<Route> AvailableRoutes { get; set; }
+        public IList<RouteOrder> AvailableRoutes { get; set; }
 
-        [DataMember]
-        public Block CurrentBlock { get; set; }
+        public Block CurrentBlock
+        {
+            get
+            {
+                var unit = this.AssociatedRoute.CenterUnit;
+                if (unit != null) return unit.ControlBlock;
+                else return null;
+            }
+        }
 
         [DataMember]
         public Route AssociatedRoute { get; set; }
@@ -77,8 +111,13 @@ namespace Tus.TransControl.Base
         [DataMember]
         public int Length { get; set; }
 
-        [DataMember]
-        public int CurrentLength { get; private set; }
+        public int CurrentLength
+        {
+            get
+            {
+                return this.AssociatedRoute.LockedUnits.Count;
+            }
+        }
 
         public bool IgnoreBlockage { get; set; }
 
@@ -100,6 +139,16 @@ namespace Tus.TransControl.Base
             }
         }
 
+        public bool IsStopped
+        {
+            get
+            {
+                return this.Speed == 0.0f || this.ShouldHalt;
+            }
+        }
+
+        public IList<IRouteLockPredicator> Predicators { get; set; }
+
         public void Refresh()
         {
             if (ShouldHalt)
@@ -114,35 +163,28 @@ namespace Tus.TransControl.Base
 
             // todo : halts support
             //todo : steady support and test with or without sensors 
-            if (this.AssociatedRoute.LockedUnits.Count > 2)
+            // verified i'm not halted and the next unit is not blocked by other vehicles
+            if (this.Predicators.Any(l => l.ShouldLockNext(this)))
             {
-                // verified i'm not halted and the next unit is not blocked by other vehicles
-
-                ControlUnit waitingunit = AssociatedRoute.LockedUnits.Last();
-                if (waitingunit.ControlBlock.IsMotorDetectingTrain)
-                {
-                    var units = AssociatedRoute.LockedUnits.ToArray();
-                    this.CurrentBlock = units[units.Length - 2].ControlBlock;
-                    Console.WriteLine("vehicle {0} moved : {1}", Name, CurrentBlock.Name);
-                    //this.CurrentBlock.Neighbors.ForEach(b => Console.WriteLine(b.MotorEffector.Device.ToString()));
-                    //Console.WriteLine(this.CurrentBlock.MotorEffector.Device.ToString());
-                }
+                this.AssociatedRoute.LockNextUnit();
+                Console.WriteLine("vehicle {0} moved : {1}", Name, CurrentBlock.Name);
             }
 
-            Run(Speed, CurrentBlock);
+            Run(Speed);
         }
 
-        public void ChangeRoute(Route rt)
+        public void ChangeRoute(RouteOrder rt)
         {
             //todo : check the routes can be changed
             Speed = 0;
             Refresh();
+            var currentpos = this.CurrentBlock;
             while (AssociatedRoute.ReleaseLastUnit()) ;
 
-            rt.RouteOrder.IsRepeatable = AssociatedRoute.RouteOrder.IsRepeatable;
+            rt.IsRepeatable = AssociatedRoute.RouteOrder.IsRepeatable;
 
-            AssociatedRoute = rt;
-            Refresh();
+            AssociatedRoute = new Route(rt);
+            Run(0.0f, currentpos);
         }
 
         public void RunIfIgnored(float spd)
@@ -153,9 +195,7 @@ namespace Tus.TransControl.Base
             while (AssociatedRoute.LockNextUnit()) ;
 
             CommandFactory cmdfact = null;
-
             cmdfact = CreateBlockageIgnoreCommand(() => spdfact.Go);
-
             Sheet.Effect(cmdfact, AssociatedRoute.RouteOrder.Blocks.ToList().Distinct());
         }
 
@@ -164,35 +204,35 @@ namespace Tus.TransControl.Base
             Run(0.5f);
         }
 
-        public void Run(float spd, Block blk)
-        {
-            CurrentBlock = blk;
-            Run(spd);
-        }
-
         public void Run(float spd)
         {
+            if (this.CurrentBlock == null)
+            {
+                var blk = this.AssociatedRoute.RouteOrder.Blocks.First();
+                this.AssociatedRoute.AllocateTrain(blk, this.Length);
+            }
+            Run(spd, this.CurrentBlock);
+        }
+
+        public void Run(float spd, Block blk)
+        {
+            if (this.CurrentBlock != blk)
+            {
+                this.AssociatedRoute.AllocateTrain(blk, this.Length);
+            }
             CommandFactory cmdfactory = null;
             var spdfactory = new SpeedFactory { RawSpeed = spd };
 
             Block[] lastlockedblocks = AssociatedRoute.LockedBlocks.ToArray();
-
-            //temporalily allocate
-            AssociatedRoute.AllocateTrain(CurrentBlock, 1);
             var distance = AssociatedRoute.HeadContainer.GetDistanceOfBlockedUnit(3);
 
             this.Speed = spd;
-            if (this.Speed == 0.0f || distance == 1)
-                this.CurrentLength = this.Length;
-            else
+            if (this.Predicators.Any(l => l.ShouldReleaseBefore(this)))
             {
-                if (this.CurrentLength < this.Length + 2)
-                    this.CurrentLength++;
+                this.AssociatedRoute.ReleaseLastUnit();
             }
 
-            AssociatedRoute.AllocateTrain(CurrentBlock, this.CurrentLength);
-
-            if (this.ShouldHalt || this.Speed == 0.0f || distance == 1)
+            if (this.IsStopped || distance == 1)
             {
                 cmdfactory = CanHalt
                                  ? CreateHaltCommand(spdfactory)
@@ -211,27 +251,7 @@ namespace Tus.TransControl.Base
                 cmdfactory = CreateNthCommand(spdfactory);
             }
 
-            if (this.CurrentLength > AssociatedRoute.HeadContainer.BlockPassedCount)
-                this.CurrentLength = AssociatedRoute.HeadContainer.BlockPassedCount;
-
-            AssociatedRoute.AllocateTrain(this.CurrentBlock, this.CurrentLength);
             Sheet.Effect(cmdfactory, AssociatedRoute.LockedBlocks.Concat(lastlockedblocks).Distinct());
-        }
-
-        private BlockPolar getBlockPolar(CommandInfo cmd, Block blk)
-        {
-            Route rt = cmd.Route;
-
-            Block pos = blk.Neighbors.First();
-            Block neg = blk.Neighbors.Last();
-            int posind = rt.RouteOrder.Blocks.IndexOf(pos);
-            int negind = rt.RouteOrder.Blocks.IndexOf(neg);
-
-            //todo : fix to clockwise polar
-            if (posind > negind) // positive
-                return BlockPolar.Positive;
-            else
-                return BlockPolar.Negative;
         }
 
         #region "CreateCommandMethods"

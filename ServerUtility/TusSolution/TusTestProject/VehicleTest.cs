@@ -41,9 +41,9 @@ namespace TestProject
             }
         }
 
-        Route GetRouteFirst(BlockSheet sht)
+        RouteOrder GetRouteOrderFirst(BlockSheet sht)
         {
-            var route = new Route(sht, new[] {
+            var route = new RouteOrder(sht, new[] {
                 "AT2", "AT3", "AT4", "AT5", "AT6", "BAT6",
                 "AT7", "AT8","AT9", "BAT9",
                 "AT10", "AT11", "AT12", "BAT12",
@@ -83,21 +83,19 @@ namespace TestProject
         [TestMethod]
         public void SerializeAsJson()
         {
-            var rt = GetRouteFirst(sheet);
+            var rt = GetRouteOrderFirst(sheet);
 
             var v = new Vehicle(sheet, rt);
 
-            v.CurrentBlock = sheet.GetBlock("AT2");
-            v.Speed = 0.5f;
-            v.Run();
+            v.Run(0.5f, sheet.GetBlock("AT2"));
 
-            var cnt = new DataContractJsonSerializer(typeof(Vehicle));
+            var cnt = new DataContractJsonSerializer(typeof(Vehicle), new[] { typeof(Switch), typeof(UsartSensor), typeof(Motor), typeof(MemoryState) });
 
             using (var ms = new MemoryStream())
             {
                 cnt.WriteObject(ms, v);
 
-                var str = System.Text.UnicodeEncoding.UTF8.GetString(ms.ToArray());
+                var str = System.Text.Encoding.UTF8.GetString(ms.ToArray());
                 Console.WriteLine(str);
             }
 
@@ -106,59 +104,66 @@ namespace TestProject
         [TestMethod]
         public void PrintRouteString()
         {
-            var rt = GetRouteFirst(sheet);
+            var rt = GetRouteOrderFirst(sheet);
             Console.WriteLine(rt.ToString());
         }
 
         [TestMethod]
         public void VehicleRouteAllocatingTest()
         {
-            var rt = GetRouteFirst(sheet);
+            var rt = GetRouteOrderFirst(sheet);
             var v = new Vehicle(sheet, rt);
+            var locklogicmock = new Mock<IRouteLockPredicator>();
+            locklogicmock.Setup(l => l.ShouldLockNext(It.IsAny<Vehicle>())).Returns(true);
+            locklogicmock.Setup(l => l.ShouldReleaseBefore(It.IsAny<Vehicle>())).Returns(false);
+            v.Predicators.Add(locklogicmock.Object);
 
             var halt = new Mock<Halt>();
             halt.Setup(h => h.HaltBlock).Returns(sheet.GetBlock("AT14"));
             halt.Setup(h => h.HaltState).Returns(true);
 
-            v.CurrentBlock = sheet.GetBlock("AT6");
             v.Length = 1;
 
             //１，停車時のVehicleのLengthはlen
-            v.Run(0.0f);
+            v.Run(0.0f, sheet.GetBlock("AT6"));
             Assert.AreEqual(v.Speed, 0.0f);
             Assert.AreEqual<int>(v.CurrentLength, 1);
 
             //発車
-            v.Run(0.5f);
+            v.Speed = 0.5f;
+            v.Refresh();
             Assert.AreEqual<int>(v.CurrentLength, 2);
 
             //２，発車後，BlockをReleaseする条件（停車するとか，センサを通過するとか）を満たすまでVehicle.Lengthはlen+1を保つ
-            v.CurrentBlock = sheet.GetBlock("AT9");
-            v.Run(); //閉塞を通過（1回目）
-            Assert.AreEqual<int>(v.CurrentLength, 3); 
+            //v.Run(0.5f, sheet.GetBlock("AT9")); //閉塞を通過（1回目）
+            v.Refresh();
+            Assert.AreEqual<int>(v.CurrentLength, 3);
 
-            v.CurrentBlock = sheet.GetBlock("AT12");
-            v.Run(); //閉塞を通過（2回目）
+            //v.Run(0.5f, sheet.GetBlock("AT12")); //閉塞を通過（2回目）
+            v.Refresh();
             Assert.AreEqual<int>(v.CurrentLength, 3);
 
             v.Halt.Add(halt.Object);
-            v.CurrentBlock = sheet.GetBlock("AT14");
-            v.Run(0.0f); //停車（haltable blockへの進入につき）
-            Assert.AreEqual<int>(v.CurrentLength, 1);
+            //v.Run(0.0f, sheet.GetBlock("AT14")); //停車（haltable blockへの進入につき）
+            v.Predicators.Remove(locklogicmock.Object);
+            v.Refresh();
+            Assert.AreEqual<int>(v.CurrentLength, 2);
+            v.Refresh();
+            Assert.AreEqual<int>(v.CurrentLength, 2);
+            v.Refresh();
+            Assert.AreEqual<int>(v.CurrentLength, 2);
         }
 
         public void VehicleRunCheckTest()
         {
-            var v1 = new Vehicle(sheet, GetRouteFirst(sheet));
-            var v2 = new Vehicle(sheet, GetRouteFirst(sheet));
+            var v1 = new Vehicle(sheet, GetRouteOrderFirst(sheet));
+            var v2 = new Vehicle(sheet, GetRouteOrderFirst(sheet));
 
-            v1.CurrentBlock = sheet.GetBlock("AT6");
-            v1.Run();
+            v1.Run(0.5f, sheet.GetBlock("AT6"));
             Assert.IsTrue(CheckMtrMode("AT6", MotorMemoryStateEnum.Controlling));
             Assert.IsTrue(CheckMtrMode("AT9", MotorMemoryStateEnum.Waiting));
 
-            v2.CurrentBlock = sheet.GetBlock("AT12");
-            v2.Run(); 
+            v2.Run(0.5f, sheet.GetBlock("AT12"));
 
         }
 

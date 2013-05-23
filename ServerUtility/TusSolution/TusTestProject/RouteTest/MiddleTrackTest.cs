@@ -87,21 +87,21 @@ namespace TestProject
             }
         }
 
-        Route GetFirstRoute(BlockSheet sht)
+        RouteOrder GetFirstRoute(BlockSheet sht)
         {
-            return new Route(sht, new[] { "AT4", "AT3", "AT2", "CT2", "CT1" });
+            return new RouteOrder(sht, new[] { "AT4", "AT3", "AT2", "CT2", "CT1" });
         }
 
-        Route GetSecondRoute(BlockSheet sht)
+        RouteOrder GetSecondRoute(BlockSheet sht)
         {
-            return new Route(sht, new[] { "CT1", "CT2", "BT2", "BT3", "BT4" });
+            return new RouteOrder(sht, new[] { "CT1", "CT2", "BT2", "BT3", "BT4" });
         }
 
-        Route GetConcatedRoute(BlockSheet sht)
+        RouteOrder GetConcatedRoute(BlockSheet sht)
         {
             var first = GetFirstRoute(sht);
             var second = GetSecondRoute(sht);
-            return new Route(sht, first.RouteOrder.Blocks.Select(b => b.Name).Concat(second.RouteOrder.Blocks.Select(b => b.Name)));
+            return new RouteOrder(sht, first.Blocks.Select(b => b.Name).Concat(second.Blocks.Select(b => b.Name)));
         }
 
         [TestMethod]
@@ -132,7 +132,7 @@ namespace TestProject
             serv.Controller = mockio.Object;
             var sht = new BlockSheet(target_sheet, serv);
 
-            Route rt = this.GetConcatedRoute(sht);
+            RouteOrder rt = this.GetConcatedRoute(sht);
 
             var vh = new Vehicle(sht, rt);
             var halt = new Halt(sht.GetBlock("CT1"));
@@ -140,7 +140,7 @@ namespace TestProject
             vh.Halt.Add(halt);
 
             written.Clear();
-            vh.CurrentBlock = sht.GetBlock("AT4");
+            vh.Run(1.0f, sht.GetBlock("AT4"));
             vh.Refresh();
             serv.SendingObservable.Repeat(50).Subscribe();
             Assert.IsTrue(written.ExtractDevices<MotorState>(1,1,1).Any(s => Math.Round(s.Duty, 1) == 0.5f));

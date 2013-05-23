@@ -20,6 +20,7 @@ namespace TestProject.FileParseTest
    AT1, AT2
 -
   name : AT
+  polar : pos
   route : 
     - *rt_seg
     - *rt_seg";

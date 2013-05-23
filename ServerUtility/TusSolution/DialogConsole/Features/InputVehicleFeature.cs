@@ -59,16 +59,16 @@ namespace DialogConsole.Features
         {
         }
 
-        private Route InputRouteManually(out bool ignoreblockage)
+        private RouteOrder InputRouteManually(out bool ignoreblockage)
         {
             ignoreblockage = true;
             Console.WriteLine("write route manually");
 
             string[] rt = Console.ReadLine().Split(',');
-            return new Route(rt.Select(s => Param.UsingLayout.Sheet.GetBlock(s.Trim())).ToList());
+            return new RouteOrder(rt.Select(s => Param.UsingLayout.Sheet.GetBlock(s.Trim())).ToArray());
         }
 
-        private Route InputRoute(out bool ignoreblockage, IEnumerable<Route> routes)
+        private RouteOrder InputRouteOrder(out bool ignoreblockage, IEnumerable<RouteOrder> routes)
         {
             Console.WriteLine("select route [name] [sub] [ign]");
             string ans = Console.ReadLine().ToLower().Trim();
@@ -81,12 +81,12 @@ namespace DialogConsole.Features
                 throw new ArgumentException("insufficient parameters");
 
             var routename = ans.Split(' ')[0];
-            var rt = routes.FirstOrDefault(r => r.RouteOrder.Name.ToLower() == routename);
+            var rt = routes.FirstOrDefault(r => r.Name.ToLower() == routename);
             if (null == rt)
                 throw new KeyNotFoundException("no route whose name is equal to the specified name is found");
             else
             {
-                rt.RouteOrder.IsRepeatable = true;
+                rt.IsRepeatable = true;
                 return rt;
             }
         }
@@ -103,13 +103,11 @@ namespace DialogConsole.Features
 
             bool ign = false;
             bool rev = false;
-            var routes = this.Param.UsingLayout.AvailableRoutesFactory.Create();
-            Route rt = InputRoute(out ign, routes);
+            var routes = this.Param.UsingLayout.AvailableRoutesOrderFactory.Create();
+            RouteOrder rt = InputRouteOrder(out ign, routes);
 
-            rt.RouteOrder.IsRepeatable = true;
+            rt.IsRepeatable = true;
             var v = new Vehicle(Param.UsingLayout.Sheet, rt);
-            v.AvailableRoutes = routes;
-            v.CurrentBlock = b;
             v.Speed = 0.0f;
             v.Name = vhname;
             v.IgnoreBlockage = (ign);

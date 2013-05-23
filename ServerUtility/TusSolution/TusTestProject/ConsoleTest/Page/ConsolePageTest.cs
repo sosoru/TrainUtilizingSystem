@@ -27,7 +27,7 @@ namespace TestProject.ConsoleTest.Composition
                 var mock = new Mock<IFeatureParameters>();
                 mock.Setup(param => param.UsingLayout.Sheet).Returns(() => sheet);
 
-                var vehicle = new Vehicle(sheet, new Route(sheet, new[] { "AT1" }));
+                var vehicle = new Vehicle(sheet, new RouteOrder(sheet, new[] { "AT1" }));
                 mock.Setup(param => param.UsingLayout.Vehicles).Returns(() => new[] { vehicle });
 
                 return mock.Object;

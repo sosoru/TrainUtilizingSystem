@@ -39,7 +39,7 @@ namespace TestProject
         [TestMethod]
         public void CreateReverseTest()
         {
-            var rtfact = new RouteListFactory();
+            var rtfact = new RouteOrderListFactory();
             rtfact.Sheet = sheet;
             rtfact.ApplicationSettings = Settings;
 

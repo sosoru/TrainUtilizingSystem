@@ -113,7 +113,7 @@ namespace TestProject
         [TestMethod()]
         public void RouteConstructorTest()
         {
-            Route target = new Route(test_blocks.ToList());
+            var target = new Route(new RouteOrder(test_blocks.ToArray()));
             Assert.IsTrue(!target.LockedBlocks.Any());
         }
 
@@ -123,9 +123,9 @@ namespace TestProject
         [TestMethod()]
         public void LockNextUnitTest()
         {
-            Route target = new Route(test_blocks.ToList());
+            var target = new Route(new RouteOrder(test_blocks.ToArray()));
 
-            target.LockNextUnit();
+            target.AllocateTrain(test_blocks.First(), 1);
             Assert.IsTrue(target.RouteOrder.Units[0].Blocks.SequenceEqual(target.LockedBlocks));
             Assert.IsFalse(target.RouteOrder.Units[0].CanBeAllocated);
 
@@ -137,9 +137,9 @@ namespace TestProject
         [TestMethod()]
         public void ReleaseBeforeUnitTest()
         {
-            Route target = new Route(test_blocks.ToList());
+            var target = new Route(new RouteOrder(test_blocks.ToArray()));
 
-            target.LockNextUnit();
+            target.AllocateTrain(test_blocks.First(), 1);
             target.LockNextUnit();
             target.ReleaseLastUnit();
 
@@ -150,15 +150,15 @@ namespace TestProject
         [TestMethod]
         public void GetNeighborUnitTest()
         {
-            Route target = new Route(test_blocks.ToList());
+            var target = new Route(new RouteOrder(test_blocks.ToArray()));
 
             target.AllocateTrain(test_sheet.GetBlock("T7"), 1);
 
-            var before = target.GetNeighborUnit(-1);
-            var next = target.GetNeighborUnit(1);
+            var before = target.HeadContainer.GetNeighbor(-1);
+            var next = target.HeadContainer.GetNeighbor(1);
 
-            Assert.IsTrue(before.ControlBlock.Name == "T4");
-            Assert.IsTrue(next.ControlBlock.Name == "T1");
+            Assert.IsTrue(before.Unit.ControlBlock.Name == "T4");
+            Assert.IsTrue(next.Unit.ControlBlock.Name == "T1");
         }
 
         //[TestMethod]
@@ -181,7 +181,7 @@ namespace TestProject
         public void AllocateBlockTest()
         {
             var blocks = test_blocks.ToArray();
-            Route target = new Route(blocks);
+            var target = new Route(new RouteOrder(test_blocks.ToArray()));
             target.RouteOrder.IsRepeatable = true;
 
             // allocate single block
@@ -219,9 +219,10 @@ namespace TestProject
         {
             var blocks = test_blocks.ToArray();
 
-            var target = new Route(blocks);
+            var target = new Route(new RouteOrder(test_blocks.ToArray()));
             target.RouteOrder.IsRepeatable = true;
 
+            target.AllocateTrain(test_blocks.First(), 1);
             target.LockNextUnit();
             Observable.Range(0, 5)
                 .Subscribe(i =>
@@ -236,25 +237,25 @@ namespace TestProject
         public void ValidateRouteSegmentWhenRepeating()
         {
             var blocks = test_blocks.ToArray();
-            var target = new Route(blocks);
+            var target = new Route(new RouteOrder(test_blocks.ToArray()));
             target.RouteOrder.IsRepeatable = true;
         }
 
-        [TestMethod]
-        public void TryLockNeighborTest()
-        {
-            var blocks = test_blocks.ToArray();
-            var target = new Route(blocks);
-            ControlUnit unit;
+        //[TestMethod]
+        //public void TryLockNeighborTest()
+        //{
+        //    var blocks = test_blocks.ToArray();
+        //    var target = new Route(new RouteOrder(test_blocks.ToArray()));
+        //    ControlUnit unit;
 
-            target.LockNextUnit();
+        //    target.LockNextUnit();
 
-            var first = target.RouteOrder.Units.First();
-            var second = target.RouteOrder.Units.ToArray()[1];
+        //    var first = target.RouteOrder.Units.First();
+        //    var second = target.RouteOrder.Units.ToArray()[1];
 
-            target.TryLockNeighborUnit(1, out unit);
-            Assert.IsTrue(unit.ControlBlock.Name == second.ControlBlock.Name);
+        //    target.TryLockNeighborUnit(1, out unit);
+        //    Assert.IsTrue(unit.ControlBlock.Name == second.ControlBlock.Name);
 
-        }
+        //}
     }
 }

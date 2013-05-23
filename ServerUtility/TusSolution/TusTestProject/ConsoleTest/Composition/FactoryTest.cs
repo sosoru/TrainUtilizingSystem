@@ -64,7 +64,7 @@ namespace TestProject.ConsoleTest.Composition
             //catalog.Catalogs.Add(new TypeCatalog(typeof(TestConsoleSetting)));
             catalog.Catalogs.Add(new AssemblyCatalog(".\\DialogConsole.exe"));
             var container = new CompositionContainer(catalog);
-            //var shfact = container.GetExport<RouteListFactory>();
+            //var shfact = container.GetExport<RouteOrderListFactory>();
 
             var result = container.GetExport<DialogConsoleClass>();
         }

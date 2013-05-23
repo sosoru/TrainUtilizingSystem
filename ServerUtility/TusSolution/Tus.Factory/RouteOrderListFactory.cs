@@ -7,20 +7,20 @@ using Tus.TransControl.Parser;
 namespace Tus.Factory
 {
     [Export]
-    public class RouteListFactory : FactoryBase<IList<Route>>
+    public class RouteOrderListFactory : FactoryBase<IList<RouteOrder>>
     {
         public BlockSheet Sheet { get; set; }
 
-        public Route ReverseRoute(Route posrt)
+        public RouteOrder ReverseRoute(RouteOrder posrt)
         {
-            var blocks = alignBlocks(posrt.RouteOrder.Blocks.Reverse());
+            var blocks = alignBlocks(posrt.Blocks.Reverse());
 
-            var reverseRoute = new Route(blocks);
-            reverseRoute.RouteOrder.Name = posrt.RouteOrder.Name + "_REV";
-            reverseRoute.RouteOrder.Polar =
-                (posrt.RouteOrder.Polar == BlockPolar.Positive)
+            var reverseRoute = new RouteOrder(blocks.ToArray());
+            reverseRoute.Name = posrt.Name + "_REV";
+            reverseRoute.Polar =
+                (posrt.Polar == BlockPolar.Positive)
                     ? BlockPolar.Negative
-                    : (posrt.RouteOrder.Polar == BlockPolar.Negative)
+                    : (posrt.Polar == BlockPolar.Negative)
                           ? BlockPolar.Positive
                           : BlockPolar.Any;
             return reverseRoute;
@@ -56,14 +56,14 @@ namespace Tus.Factory
         }
 
         //todo : extract alignBlocks to super project
-        public override IList<Route> Create()
+        public override IList<RouteOrder> Create()
         {
             var parser = new RouteYaml();
             IEnumerable<object> routesobj = parser.ParseFrom(ApplicationSettings.RoutePath);
             IEnumerable<RouteSegmentOnYaml> routes = parser.ParseYamlContent(routesobj);
 
-            var list = routes.Select(rseg => new Route(Sheet, rseg.Routes) { Name = rseg.Name, Polar = rseg.Polar, IsRepeatable = true })
-                             .Select(rt => new Route(alignBlocks(rt.RouteOrder.Blocks)) { Name = rt.RouteOrder.Name, Polar = rt.RouteOrder.Polar, IsRepeatable = true });
+            var list = routes.Select(rseg => new RouteOrder(Sheet, rseg.Routes) { Name = rseg.Name, Polar = rseg.Polar, IsRepeatable = true })
+                             .Select(rt => new RouteOrder(alignBlocks(rt.Blocks).ToArray()) { Name = rt.Name, Polar = rt.Polar, IsRepeatable = true });
 
             return list.Concat(list.ToArray().Select(rt => ReverseRoute(rt))).ToList();
         }

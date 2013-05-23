@@ -37,7 +37,7 @@ namespace Tus.TransControl.Base
 
         public bool CanBeAllocated
         {
-            get { return Blocks.All(b => !b.IsBlocked); }
+            get { return !this.IsBlocked; }
         }
 
         public bool IsBlocked
@@ -74,10 +74,16 @@ namespace Tus.TransControl.Base
     /// </summary>
     public class RouteOrder
     {
+
         public RouteOrder(Block[] blocks)
         {
             Blocks = blocks;
             Units = new ReadOnlyCollection<ControlUnit>(locked_blocks.ToArray());
+        }
+
+        public RouteOrder(BlockSheet sheet, IEnumerable<string> names)
+            : this(names.Select(s => sheet.InnerBlocks.First(b => b.Name == s)).ToArray())
+        {
         }
 
         [DataMember]
@@ -129,35 +135,6 @@ namespace Tus.TransControl.Base
             return Units.FirstOrDefault(b => b.ControlBlock == parentBlock);
         }
 
-
-        //todo : move to iterator
-        public RouteSegment GetSegment(Block blk)
-        {
-            //var ind = this.Blocks.Where(b => blk == b).Select((b, i) => i).First();
-
-            //if (this.Blocks.First() == blk)
-            //{
-            //    Block first = null;
-            //    if (this.IsRepeatable)
-            //        first = this.Blocks.Last();
-
-            //    return new RouteSegment(first, this.Blocks[ind + 1]);
-            //}
-            //else if (this.Blocks.Last() == blk)
-            //{
-            //    Block last = null;
-            //    if (this.IsRepeatable)
-            //        last = this.Blocks.First();
-
-            //    return new RouteSegment(this.Blocks[ind - 1], last);
-            //}
-            //else
-            //{
-            //    return new RouteSegment(this.Blocks[ind - 1], this.Blocks[ind + 1]);
-            //}
-            throw new NotImplementedException();
-        }
-
         private string GetBlockExpression(Block blk)
         {
             string exp = ":";
@@ -195,13 +172,16 @@ namespace Tus.TransControl.Base
                 if (next == null)
                     break;
                 else
+                {
                     yield return next;
+                    container = next;
+                }
             }
         }
 
         public ControlUnitContainer CreateContainer(ControlUnit unit)
         {
-            int ind = Units.Where(u => u == unit).Select((u, i) => i).First();
+            var ind = Units.Select((b, i) => new { unit = b, ind = i }).First(_ => _.unit == unit).ind;
 
             if (ind < 0)
                 throw new KeyNotFoundException("block is notfound");
@@ -220,6 +200,33 @@ namespace Tus.TransControl.Base
 
             return blockunit.unit;
         }
+
+        public RouteSegment GetSegment(Block blk)
+        {
+            var ind = this.Blocks.Select((b, i) => new { blk = b, ind = i }).First(_ => _.blk == blk).ind;
+
+            if (ind == 0)
+            {
+                Block first = null;
+                if (this.IsRepeatable)
+                    first = this.Blocks.Last();
+
+                return new RouteSegment(first, this.Blocks[ind + 1]);
+            }
+            else if (ind == this.Blocks.Count - 1)
+            {
+                Block last = null;
+                if (this.IsRepeatable)
+                    last = this.Blocks.First();
+
+                return new RouteSegment(this.Blocks[ind - 1], last);
+            }
+            else
+            {
+                return new RouteSegment(this.Blocks[ind - 1], this.Blocks[ind + 1]);
+            }
+        }
+
     }
 
     [DataContract]
@@ -289,8 +296,8 @@ namespace Tus.TransControl.Base
 
         public int GetDistanceOfBlockedUnit(int limit)
         {
-            ControlUnitContainer container = this;
-            for (int i = 0; i <= limit; ++i)
+            ControlUnitContainer container = this.Next;
+            for (int i = 1; i <= limit; ++i)
             {
                 if (container == null || container.Unit.IsBlocked)
                     return i;
@@ -374,7 +381,7 @@ namespace Tus.TransControl.Base
             {
                 int len = LockedUnits.Count;
 
-                if (len < 0) // 確保していなければnull
+                if (len <= 0) // 確保していなければnull
                     return null;
                 else if (len >= 2) //先頭から2つめのブロックがCenterUnit
                     return LockedUnits.ToArray()[1];
@@ -395,18 +402,12 @@ namespace Tus.TransControl.Base
 
         #region Initialize
 
-        public Route(BlockSheet sheet, IEnumerable<string> names)
-            : this(names.Select(s => sheet.InnerBlocks.First(b => b.Name == s)).ToList())
+        public Route(RouteOrder order)
         {
-        }
-
-        public Route(IEnumerable<Block> segs)
-        {
-            _routeOrder = new RouteOrder(segs.ToArray());
+            _routeOrder = order;
             LockedUnits = new Queue<ControlUnit>();
             //this.ind_current = -1;
 
-            InitLockingPosition();
         }
 
         private IDictionary<Block, RouteSegment> to_route_dict(IList<Block> list)
@@ -493,7 +494,7 @@ namespace Tus.TransControl.Base
                 throw new InvalidOperationException("ロックできる状態にありません．AllocateTrainが呼び出されているか確認してください");
 
             ControlUnitContainer next = _order_enmtor.Current.Next;
-            if (next != null && !next.Unit.CanBeAllocated)
+            if (next != null && next.Unit.CanBeAllocated)
             {
                 bool movecond = _order_enmtor.MoveNext();
                 if (!movecond)
@@ -560,7 +561,7 @@ namespace Tus.TransControl.Base
                 tail = container.GetNeighbor(-(len - 2));
 
             initEnumerator(tail.Unit);
-            while (len-- > 0)
+            for (int i = 1; i < len; ++i)
             {
                 if (!LockNextUnit())
                     throw new InvalidOperationException("cannot allocate block");

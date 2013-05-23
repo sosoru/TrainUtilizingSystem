@@ -7,15 +7,19 @@ namespace DialogConsole
 {
     public class Layout
     {
-        public Layout(RouteListFactory availableRoutesFactory, BlockSheet sheet)
+        public Layout(RouteOrderListFactory availableRoutesOrderFactory, BlockSheet sheet)
         {
-            AvailableRoutesFactory = availableRoutesFactory;
+            AvailableRoutesOrderFactory = availableRoutesOrderFactory;
             Sheet = sheet;
         }
 
-        public RouteListFactory AvailableRoutesFactory { get; set; }
-        public BlockSheet Sheet { get; set; }
-        public IList<Vehicle> Vehicles { get; set; }
+        public Layout()
+        {
+        }
+
+        public virtual RouteOrderListFactory AvailableRoutesOrderFactory { get; set; }
+        public virtual BlockSheet Sheet { get; set; }
+        public virtual IList<Vehicle> Vehicles { get; set; }
 
         public void SendInquiryState()
         {
