@@ -113,6 +113,7 @@ namespace TestProject
         {
             var rt = GetRouteOrderFirst(sheet);
             var v = new Vehicle(sheet, rt);
+            var len = 2;
             var locklogicmock = new Mock<IRouteLockPredicator>();
             locklogicmock.Setup(l => l.ShouldLockNext(It.IsAny<Vehicle>())).Returns(true);
             locklogicmock.Setup(l => l.ShouldReleaseBefore(It.IsAny<Vehicle>())).Returns(false);
@@ -122,36 +123,36 @@ namespace TestProject
             halt.Setup(h => h.HaltBlock).Returns(sheet.GetBlock("AT14"));
             halt.Setup(h => h.HaltState).Returns(true);
 
-            v.Length = 1;
+            v.Length = len;
 
             //１，停車時のVehicleのLengthはlen
             v.Run(0.0f, sheet.GetBlock("AT6"));
             Assert.AreEqual(v.Speed, 0.0f);
-            Assert.AreEqual<int>(v.CurrentLength, 1);
+            Assert.AreEqual<int>(v.CurrentLength, len);
 
             //発車
             v.Speed = 0.5f;
             v.Refresh();
-            Assert.AreEqual<int>(v.CurrentLength, 2);
+            Assert.AreEqual<int>(v.CurrentLength, len+1);
 
             //２，発車後，BlockをReleaseする条件（停車するとか，センサを通過するとか）を満たすまでVehicle.Lengthはlen+1を保つ
             //v.Run(0.5f, sheet.GetBlock("AT9")); //閉塞を通過（1回目）
             v.Refresh();
-            Assert.AreEqual<int>(v.CurrentLength, 3);
+            Assert.AreEqual<int>(v.CurrentLength, len+2);
 
             //v.Run(0.5f, sheet.GetBlock("AT12")); //閉塞を通過（2回目）
             v.Refresh();
-            Assert.AreEqual<int>(v.CurrentLength, 3);
+            Assert.AreEqual<int>(v.CurrentLength, len+2);
 
             v.Halt.Add(halt.Object);
             //v.Run(0.0f, sheet.GetBlock("AT14")); //停車（haltable blockへの進入につき）
             v.Predicators.Remove(locklogicmock.Object);
             v.Refresh();
-            Assert.AreEqual<int>(v.CurrentLength, 2);
+            Assert.AreEqual<int>(v.CurrentLength, len+1);
             v.Refresh();
-            Assert.AreEqual<int>(v.CurrentLength, 2);
+            Assert.AreEqual<int>(v.CurrentLength, len+1);
             v.Refresh();
-            Assert.AreEqual<int>(v.CurrentLength, 2);
+            Assert.AreEqual<int>(v.CurrentLength, len+1);
         }
 
         public void VehicleRunCheckTest()

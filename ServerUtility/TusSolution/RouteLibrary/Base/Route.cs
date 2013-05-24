@@ -70,10 +70,11 @@ namespace Tus.TransControl.Base
     }
 
     /// <summary>
-    ///     列車の進むべき経路をブロックから生成するクラス．ControlUnitのIEnumeratableファクトリに相当．
+    ///     列車の進むべき経路を保持するクラス．ControlUnitContainerのIEnumeratableファクトリに相当．
     /// </summary>
     public class RouteOrder
     {
+        #region constructor
 
         public RouteOrder(Block[] blocks)
         {
@@ -81,18 +82,47 @@ namespace Tus.TransControl.Base
             Units = new ReadOnlyCollection<ControlUnit>(locked_blocks.ToArray());
         }
 
+        /// <summary>
+        /// 単一シートとブロック名からRouteOrderを初期化
+        /// </summary>
+        /// <param name="sheet">使用するシート</param>
+        /// <param name="names">ブロック名の配列</param>
         public RouteOrder(BlockSheet sheet, IEnumerable<string> names)
             : this(names.Select(s => sheet.InnerBlocks.First(b => b.Name == s)).ToArray())
         {
         }
 
+        #endregion
+
+        #region properties
+
+        /// <summary>
+        /// RouteOrderの名前
+        /// </summary>
         [DataMember]
         public string Name { get; set; }
 
-        public IReadOnlyList<Block> Blocks { get; private set; }
-        public IReadOnlyList<ControlUnit> Units { get; private set; }
+        /// <summary>
+        /// ルートを構成しているブロックの物理的な極性．
+        /// +方向が時計回りに配置されるときPositive．反時計回りの時Negative．
+        /// 配置の詳細はマニュアル参照のこと
+        /// </summary>
         public BlockPolar Polar { get; set; }
+
+        /// <summary>
+        /// RouteOrderがエンドレス（ループ状）であるかどうか．
+        /// </summary>
         public bool IsRepeatable { get; set; }
+
+        /// <summary>
+        /// RouteOrderを構成するBlock．代入不可・変更不可
+        /// </summary>
+        public IReadOnlyList<Block> Blocks { get; private set; }
+
+        /// <summary>
+        /// RouteOrderを構成するControlUnit．代入不可・変更不可
+        /// </summary>
+        public IReadOnlyList<ControlUnit> Units { get; private set; }
 
         //todo : move logic to ControlUnit
         private IEnumerable<ControlUnit> locked_blocks
@@ -120,20 +150,9 @@ namespace Tus.TransControl.Base
             }
         }
 
-        public string ToString()
-        {
-            string strunits = Units.Aggregate("", (ac, cntrt) =>
-                                                  ac + "(" +
-                                                  cntrt.Blocks.Aggregate("", (a, b) => a + GetBlockExpression(b) + " ")
-                                                       .Trim() + ") ")
-                                   .Trim();
-            return string.Format("{0} : {1}", Name, strunits);
-        }
+        #endregion
 
-        public ControlUnit GetLockingControlingRoute(Block parentBlock)
-        {
-            return Units.FirstOrDefault(b => b.ControlBlock == parentBlock);
-        }
+        #region ToString
 
         private string GetBlockExpression(Block blk)
         {
@@ -156,29 +175,31 @@ namespace Tus.TransControl.Base
             return blk.Name + exp;
         }
 
+        public string ToString()
+        {
+            string strunits = Units.Aggregate("", (ac, cntrt) =>
+                                                  ac + "(" +
+                                                  cntrt.Blocks.Aggregate("", (a, b) => a + GetBlockExpression(b) + " ")
+                                                       .Trim() + ") ")
+                                   .Trim();
+            return string.Format("{0} : {1}", Name, strunits);
+        }
+
+        #endregion
+
+        #region methods
+
         private ControlUnitContainer createContainer(int index)
         {
             return new ControlUnitContainer(this, index);
         }
 
-        public IEnumerable<ControlUnitContainer> Enumerate(ControlUnit from)
-        {
-            ControlUnitContainer container = CreateContainer(@from);
-
-            yield return container;
-            while (true)
-            {
-                ControlUnitContainer next = container.Next;
-                if (next == null)
-                    break;
-                else
-                {
-                    yield return next;
-                    container = next;
-                }
-            }
-        }
-
+        /// <summary>
+        /// ControlUnitContainerの作成
+        /// </summary>
+        /// <param name="unit">作成するControlUnit</param>
+        /// <returns>作成したControllUnitContainer．</returns>
+        /// <exception cref="KeyNotFoundException">unitがこのRouteOrder内から見つからない場合に送出されます</exception>
         public ControlUnitContainer CreateContainer(ControlUnit unit)
         {
             var ind = Units.Select((b, i) => new { unit = b, ind = i }).First(_ => _.unit == unit).ind;
@@ -190,6 +211,12 @@ namespace Tus.TransControl.Base
             return container;
         }
 
+        /// <summary>
+        /// ControlUnitの検索．指定されたBlockが含まれるControlUnitを返却
+        /// </summary>
+        /// <param name="blk">検索するBlock</param>
+        /// <returns>blkが含まれるControlUnit</returns>
+        /// <exception cref="IndexOutOfRangeException">blkが見つからないとき送出</exception>
         public ControlUnit SearchUnit(Block blk)
         {
             var blocklist = Units.Select((r, i) => new { ind = i, unit = r }).ToArray();
@@ -201,6 +228,22 @@ namespace Tus.TransControl.Base
             return blockunit.unit;
         }
 
+        /// <summary>
+        /// 指定されたBlockが操作しているControlUnitを返す．ControlUnit内のControlBlockのみを比較
+        /// </summary>
+        /// <param name="parentBlock">ControlUnitを操作するBlock</param>
+        /// <returns>parentBlockが操作しているControlUnit．見つからなければnull</returns>
+        public ControlUnit GetControlingUnit(Block parentBlock)
+        {
+            return Units.FirstOrDefault(b => b.ControlBlock == parentBlock);
+        }
+
+        /// <summary>
+        /// BlockのRouteSegmentを作成．
+        /// </summary>
+        /// <param name="blk"></param>
+        /// <returns></returns>
+        [Obsolete]
         public RouteSegment GetSegment(Block blk)
         {
             var ind = this.Blocks.Select((b, i) => new { blk = b, ind = i }).First(_ => _.blk == blk).ind;
@@ -227,6 +270,32 @@ namespace Tus.TransControl.Base
             }
         }
 
+        /// <summary>
+        /// 指定されたControlUnitから列挙を開始．各要素はControlUnitContainerとして返却．
+        /// ControlUnitContainer.UnitからControlUnit取れます.
+        /// IsRepeatableがtrueの時，Unitsの終点ユニットの次は始点を返そうとし，無限要素個のIEnumerableとして振る舞います．
+        /// </summary>
+        /// <param name="from">列挙の始点となるControlUnit</param>
+        /// <returns>fromを始点とするIEnumerable</returns>
+        public IEnumerable<ControlUnitContainer> Enumerate(ControlUnit from)
+        {
+            ControlUnitContainer container = CreateContainer(@from);
+
+            yield return container;
+            while (true)
+            {
+                ControlUnitContainer next = container.Next;
+                if (next != null)
+                {
+                    yield return next;
+                    container = next;
+                }
+                else // nullの時はNext存在しない
+                    yield break;
+            }
+        }
+
+        #endregion
     }
 
     [DataContract]
@@ -384,9 +453,9 @@ namespace Tus.TransControl.Base
                 if (len <= 0) // 確保していなければnull
                     return null;
                 else if (len >= 2) //先頭から2つめのブロックがCenterUnit
-                    return LockedUnits.ToArray()[1];
+                    return LockedUnits.ToArray()[len - 2];
                 else
-                    return LockedUnits.First();
+                    return LockedUnits.Last();
             }
         }
 
@@ -512,6 +581,21 @@ namespace Tus.TransControl.Base
             _order_enmtor.Current.Unit.Allocate();
             LockedUnits.Enqueue(_order_enmtor.Current.Unit);
         }
+
+        //public bool ReleaseHeadUnit()
+        //{
+        //    if (_order_enmtor == null)
+        //        throw new InvalidOperationException("ロックできる状態にありません．AllocateTrainが呼び出されているか確認してください");
+
+        //    if (this.LockedUnits.Count > 1)
+        //    {
+        //        var deleted = this.LockedUnits.Last();
+        //        this.LockedUnits = new Queue<ControlUnit>(this.LockedUnits.Take(this.LockedUnits.Count - 1));
+        //        deleted.Release();
+        //        return true;
+        //    }
+        //    return false;
+        //}
 
         public bool ReleaseLastUnit()
         {

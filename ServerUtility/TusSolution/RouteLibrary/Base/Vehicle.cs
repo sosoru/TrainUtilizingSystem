@@ -30,28 +30,40 @@ namespace Tus.TransControl.Base
     {
         bool ShouldLockNext(Vehicle v);
         bool ShouldReleaseBefore(Vehicle v);
+        bool ShouldReleaseHead(Vehicle v);
+
     }
 
     public class RouteLockPredicator : IRouteLockPredicator
     {
         public bool ShouldLockNext(Vehicle v)
         {
-            if (!v.IsStopped && v.AssociatedRoute.LockedUnits.Count > 2)
+            if (v.IsStopped)
+                return false;
+
+            if (v.AssociatedRoute.LockedUnits.Count == 0)
+            {
+                return true;
+            }
+            else
             {
                 ControlUnit waitingunit = v.AssociatedRoute.HeadContainer.Unit;
                 var detected = waitingunit.ControlBlock.IsMotorDetectingTrain;
                 return detected;
             }
-
-            return false;
         }
 
         public bool ShouldReleaseBefore(Vehicle v)
         {
             var manyunitslocked = v.CurrentLength > v.Length + 2;
-            var stopped = v.IsStopped && v.CurrentLength > v.Length + 1;
 
-            return manyunitslocked || stopped;
+            return manyunitslocked;
+        }
+
+        public bool ShouldReleaseHead(Vehicle v)
+        {
+            var stopped = v.IsStopped && v.CurrentLength > v.Length + 1;
+            return stopped;
         }
     }
 
@@ -87,6 +99,7 @@ namespace Tus.TransControl.Base
         [DataMember]
         public IList<RouteOrder> AvailableRoutes { get; set; }
 
+        [DataMember]
         public Block CurrentBlock
         {
             get
@@ -94,6 +107,10 @@ namespace Tus.TransControl.Base
                 var unit = this.AssociatedRoute.CenterUnit;
                 if (unit != null) return unit.ControlBlock;
                 else return null;
+            }
+            set
+            {
+                throw new NotImplementedException();
             }
         }
 
@@ -227,6 +244,10 @@ namespace Tus.TransControl.Base
             var distance = AssociatedRoute.HeadContainer.GetDistanceOfBlockedUnit(3);
 
             this.Speed = spd;
+            if (this.Predicators.Any(l => l.ShouldReleaseHead(this)))
+            {
+                this.AssociatedRoute.AllocateTrain(blk, this.Length + 1);
+            }
             if (this.Predicators.Any(l => l.ShouldReleaseBefore(this)))
             {
                 this.AssociatedRoute.ReleaseLastUnit();

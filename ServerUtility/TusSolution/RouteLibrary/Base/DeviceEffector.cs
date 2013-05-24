@@ -115,7 +115,7 @@ namespace Tus.TransControl.Base
         {
             MotorDirection dir = MotorDirection.Standby;
             float duty = 0f;
-            var locked = cmd.Route.RouteOrder.GetLockingControlingRoute(this.ParentBlock);
+            var locked = cmd.Route.RouteOrder.GetControlingUnit(this.ParentBlock);
 
             if (locked == null)
             {

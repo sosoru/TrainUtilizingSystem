@@ -107,11 +107,9 @@ namespace DialogConsole.Features
             RouteOrder rt = InputRouteOrder(out ign, routes);
 
             rt.IsRepeatable = true;
-            var v = new Vehicle(Param.UsingLayout.Sheet, rt);
-            v.Speed = 0.0f;
-            v.Name = vhname;
-            v.IgnoreBlockage = (ign);
+            var v = new Vehicle(Param.UsingLayout.Sheet, rt) {Name = vhname, IgnoreBlockage = (ign)};
 
+            v.Run(0.0f, b);
             Param.UsingLayout.Vehicles.Add(v);
             return v;
         }
