@@ -72,6 +72,7 @@ namespace Tus.TransControl.Base
     /// <summary>
     ///     列車の進むべき経路を保持するクラス．ControlUnitContainerのIEnumeratableファクトリに相当．
     /// </summary>
+    [DataContract]
     public class RouteOrder
     {
         #region constructor
@@ -464,9 +465,11 @@ namespace Tus.TransControl.Base
             get { return this._order_enmtor.Current; }
         }
 
+        [DataMember]
         public RouteOrder RouteOrder
         {
             get { return _routeOrder; }
+            set { throw new NotImplementedException(); }
         }
 
         #region Initialize
@@ -629,20 +632,18 @@ namespace Tus.TransControl.Base
             throw new NotImplementedException();
         }
 
-        public void AllocateTrain(Block cntblock, int len)
+        public void AllocateTrain(Block headblock, int len)
         {
             if (len <= 0)
                 throw new ArgumentOutOfRangeException("len must be greater than 0");
 
-            ControlUnit unit = RouteOrder.SearchUnit(cntblock);
+            ControlUnit unit = RouteOrder.SearchUnit(headblock);
             ControlUnitContainer container = RouteOrder.CreateContainer(unit);
 
-            //len == 1,2 -> 渡されたブロック
-            //len > 2 -> 先頭の一個前
             //get tail
             ControlUnitContainer tail = container;
-            if (len > 2)
-                tail = container.GetNeighbor(-(len - 2));
+            if (len > 1)
+                tail = container.GetNeighbor(-(len - 1));
 
             initEnumerator(tail.Unit);
             for (int i = 1; i < len; ++i)

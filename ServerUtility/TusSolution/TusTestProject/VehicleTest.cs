@@ -113,7 +113,7 @@ namespace TestProject
         {
             var rt = GetRouteOrderFirst(sheet);
             var v = new Vehicle(sheet, rt);
-            var len = 2;
+            var len = 1;
             var locklogicmock = new Mock<IRouteLockPredicator>();
             locklogicmock.Setup(l => l.ShouldLockNext(It.IsAny<Vehicle>())).Returns(true);
             locklogicmock.Setup(l => l.ShouldReleaseBefore(It.IsAny<Vehicle>())).Returns(false);
