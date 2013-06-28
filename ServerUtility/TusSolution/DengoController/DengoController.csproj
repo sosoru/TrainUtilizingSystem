@@ -80,7 +80,7 @@
       <Project>{f2232bf9-17e6-4641-8326-d8b7bd90a1e9}</Project>
       <Name>DialogConsole</Name>
     </ProjectReference>
-    <ProjectReference Include="..\RouteLibrary\RouteLibrary.csproj">
+    <ProjectReference Include="..\RouteLibrary\Tus.TransControl.csproj">
       <Project>{39e73a78-039d-45dd-ad32-879b81ea567e}</Project>
       <Name>RouteLibrary</Name>
     </ProjectReference>

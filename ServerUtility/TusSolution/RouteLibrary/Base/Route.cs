@@ -426,12 +426,31 @@ namespace Tus.TransControl.Base
     [DataContract]
     public class Route
     {
-        //private int ind_current;
         private readonly RouteOrder _routeOrder;
         private IEnumerator<ControlUnitContainer> _order_enmtor;
 
         [DataMember]
-        public Queue<ControlUnit> LockedUnits { get; private set; }
+        public IEnumerable<ControlUnit> LockedUnits
+        {
+            get
+            {
+                var controlUnitContainer = this.ReservedUnit;
+                if (controlUnitContainer != null)
+                    return this.PassedUnits.Concat(new[] {  controlUnitContainer.Unit });
+                else
+                    return this.PassedUnits;
+            }
+        }
+
+        [DataMember]
+        public Queue<ControlUnit> PassedUnits { get; private set; }
+
+        [DataMember]
+        //先頭の一個先をリザーブ
+        public ControlUnitContainer ReservedUnit { get; private set; }
+
+        [DataMember]
+        public bool IsReserving { get; private set; }
 
         [DataMember(IsRequired = false)]
         public ICollection<Block> LockedBlocks
@@ -449,14 +468,12 @@ namespace Tus.TransControl.Base
         {
             get
             {
-                int len = LockedUnits.Count;
+                int len = this.PassedUnits.Count;
 
                 if (len <= 0) // 確保していなければnull
                     return null;
-                else if (len >= 2) //先頭から2つめのブロックがCenterUnit
-                    return LockedUnits.ToArray()[len - 2];
                 else
-                    return LockedUnits.Last();
+                    return this.PassedUnits.Last();
             }
         }
 
@@ -477,29 +494,9 @@ namespace Tus.TransControl.Base
         public Route(RouteOrder order)
         {
             _routeOrder = order;
-            LockedUnits = new Queue<ControlUnit>();
+            this.PassedUnits = new Queue<ControlUnit>();
             //this.ind_current = -1;
 
-        }
-
-        private IDictionary<Block, RouteSegment> to_route_dict(IList<Block> list)
-        {
-            int i;
-            var dict = new Dictionary<Block, RouteSegment>();
-
-            if (list.Count < 2)
-                return dict;
-
-            dict.Add(list[0], new RouteSegment(null, list[1]));
-            for (i = 1; i < list.Count - 1; ++i)
-            {
-                dict.Add(list[i], new RouteSegment(list[i - 1], list[i + 1]));
-            }
-
-            if (!dict.ContainsKey(list.Last()))
-                dict.Add(list.Last(), new RouteSegment(list[list.Count - 2], null));
-
-            return dict;
         }
 
         public void InitLockingPosition()
@@ -520,37 +517,6 @@ namespace Tus.TransControl.Base
             _order_enmtor.MoveNext();
             allocateCurrent();
         }
-
-        #endregion
-
-        #region TryLock Methods
-
-        //public bool TryLockNeighborUnit(int i)
-        //{
-        //    ControlUnit nextroute;
-
-        //    return TryLockNeighborUnit(i, out nextroute);
-        //}
-
-        //public bool TryLockNeighborUnit(int i, out ControlUnit nextunit)
-        //{
-        //    // todo: minus value support
-        //    int ind = ind_current + i;
-        //    nextunit = null;
-
-        //    if (RouteOrder.IsRepeatable)
-        //    {
-        //        ind = ind%RouteOrder.Units.Count;
-        //    }
-
-        //    if (ind < RouteOrder.Units.Count
-        //        && RouteOrder.Units[ind].CanBeAllocated)
-        //    {
-        //        nextunit = RouteOrder.Units[ind];
-        //        return true;
-        //    }
-        //    return false;
-        //}
 
         #endregion
 
@@ -582,37 +548,50 @@ namespace Tus.TransControl.Base
         private void allocateCurrent()
         {
             _order_enmtor.Current.Unit.Allocate();
-            LockedUnits.Enqueue(_order_enmtor.Current.Unit);
+            this.PassedUnits.Enqueue(_order_enmtor.Current.Unit);
+
+            if (this.IsReserving)
+            {
+                this.ReservedUnit = this.HeadContainer.Next;
+            }
         }
-
-        //public bool ReleaseHeadUnit()
-        //{
-        //    if (_order_enmtor == null)
-        //        throw new InvalidOperationException("ロックできる状態にありません．AllocateTrainが呼び出されているか確認してください");
-
-        //    if (this.LockedUnits.Count > 1)
-        //    {
-        //        var deleted = this.LockedUnits.Last();
-        //        this.LockedUnits = new Queue<ControlUnit>(this.LockedUnits.Take(this.LockedUnits.Count - 1));
-        //        deleted.Release();
-        //        return true;
-        //    }
-        //    return false;
-        //}
 
         public bool ReleaseLastUnit()
         {
             if (_order_enmtor == null)
                 throw new InvalidOperationException("ロックできる状態にありません．AllocateTrainが呼び出されているか確認してください");
 
-            if (LockedUnits.Count > 0)
+            if (this.PassedUnits.Count > 0)
             {
-                ControlUnit deleted = LockedUnits.Dequeue();
+                ControlUnit deleted = this.PassedUnits.Dequeue();
                 deleted.Release();
 
                 return true;
             }
             return false;
+        }
+
+        public void ReserveHead()
+        {
+            if (_order_enmtor == null)
+                throw new InvalidOperationException("ロックできる状態にありません．AllocateTrainが呼び出されているか確認してください");
+
+            if (!this.IsReserving)
+            {
+                this.IsReserving = true;
+                this.ReservedUnit = this.HeadContainer.Next;
+            }
+        }
+
+        public void UnReserveHead()
+        {
+            if (_order_enmtor == null)
+                throw new InvalidOperationException("ロックできる状態にありません．AllocateTrainが呼び出されているか確認してください");
+            if (this.IsReserving)
+            {
+                this.IsReserving = false;
+                this.ReservedUnit = null;
+            }
         }
 
         #endregion

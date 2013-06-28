@@ -178,6 +178,29 @@ namespace TestProject
         //}
 
         [TestMethod]
+        public void ReservingTest()
+        {
+            var blocks = test_blocks.Where(b => b.HasMotor).ToArray();
+            var target = new Route(new RouteOrder(test_blocks.ToArray()));
+            target.RouteOrder.IsRepeatable = true;
+
+            target.AllocateTrain(blocks[0], 1);
+            target.ReserveHead();
+            Assert.AreEqual(target.ReservedUnit.Unit.ControlBlock.Name, blocks[1].Name);
+            Assert.AreEqual(target.LockedUnits.Count(), 2);
+            Assert.AreEqual(target.LockedUnits.Any(b => b.ControlBlock.Name == blocks[0].Name), true);
+            Assert.AreEqual(target.LockedUnits.Any(b => b.ControlBlock.Name == blocks[1].Name), true);
+
+            target.LockNextUnit();
+            Assert.AreEqual(target.ReservedUnit.Unit.ControlBlock.Name, blocks[2].Name);
+            Assert.AreEqual(target.LockedUnits.Count(), 3);
+            Assert.AreEqual(target.LockedUnits.Any(b => b.ControlBlock.Name == blocks[0].Name), true);
+            Assert.AreEqual(target.LockedUnits.Any(b => b.ControlBlock.Name == blocks[1].Name), true);
+            Assert.AreEqual(target.LockedUnits.Any(b => b.ControlBlock.Name == blocks[2].Name), true);
+
+        }
+
+        [TestMethod]
         public void AllocateBlockTest()
         {
             var blocks = test_blocks.ToArray();

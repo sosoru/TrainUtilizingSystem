@@ -30,7 +30,6 @@ namespace Tus.TransControl.Base
     {
         bool ShouldLockNext(Vehicle v);
         bool ShouldReleaseBefore(Vehicle v);
-        bool ShouldReleaseHead(Vehicle v);
 
     }
 
@@ -38,32 +37,19 @@ namespace Tus.TransControl.Base
     {
         public bool ShouldLockNext(Vehicle v)
         {
-            if (v.IsStopped)
+            if (v.IsStopped || !v.AssociatedRoute.IsReserving)
                 return false;
 
-            if (v.AssociatedRoute.LockedUnits.Count == 0)
-            {
-                return true;
-            }
-            else
-            {
-                ControlUnit waitingunit = v.AssociatedRoute.HeadContainer.Unit;
-                var detected = waitingunit.ControlBlock.IsMotorDetectingTrain;
-                return detected;
-            }
+            ControlUnit waitingunit = v.AssociatedRoute.ReservedUnit.Unit;
+            var detected = waitingunit.ControlBlock.IsMotorDetectingTrain;
+            return detected;
         }
 
         public bool ShouldReleaseBefore(Vehicle v)
         {
-            var manyunitslocked = v.CurrentLength > v.Length + 2;
+            var manyunitslocked = v.AssociatedRoute.PassedUnits.Count > v.Length;
 
             return manyunitslocked;
-        }
-
-        public bool ShouldReleaseHead(Vehicle v)
-        {
-            var stopped = v.IsStopped && v.CurrentLength > v.Length + 1;
-            return stopped;
         }
     }
 
@@ -128,14 +114,6 @@ namespace Tus.TransControl.Base
         [DataMember]
         public int Length { get; set; }
 
-        public int CurrentLength
-        {
-            get
-            {
-                return this.AssociatedRoute.LockedUnits.Count;
-            }
-        }
-
         public bool IgnoreBlockage { get; set; }
 
         public bool ShouldHalt
@@ -143,7 +121,7 @@ namespace Tus.TransControl.Base
             get
             {
                 return Halt != null
-                       && Halt.Any(bh => AssociatedRoute.LockedBlocks.Contains(bh.HaltBlock) && bh.HaltState);
+                       && Halt.Any(bh => AssociatedRoute.HeadContainer.Unit.Blocks.Contains(bh.HaltBlock) && bh.HaltState);
             }
         }
 
@@ -152,7 +130,7 @@ namespace Tus.TransControl.Base
             get
             {
                 return Halt != null
-                       && Halt.Any(bh => AssociatedRoute.LockedBlocks.Contains(bh.HaltBlock));
+                       && Halt.Any(bh => AssociatedRoute.HeadContainer.Unit.Blocks.Contains(bh.HaltBlock));
             }
         }
 
@@ -168,25 +146,6 @@ namespace Tus.TransControl.Base
 
         public void Refresh()
         {
-            if (ShouldHalt)
-            {
-                Speed = 0.0f;
-            }
-            if (IgnoreBlockage)
-            {
-                RunIfIgnored(Speed);
-                return;
-            }
-
-            // todo : halts support
-            //todo : steady support and test with or without sensors 
-            // verified i'm not halted and the next unit is not blocked by other vehicles
-            if (this.Predicators.Any(l => l.ShouldLockNext(this)))
-            {
-                this.AssociatedRoute.LockNextUnit();
-                Console.WriteLine("vehicle {0} moved : {1}", Name, CurrentBlock.Name);
-            }
-
             Run(Speed);
         }
 
@@ -221,14 +180,10 @@ namespace Tus.TransControl.Base
             Run(0.5f);
         }
 
-        public void Run(float spd)
+        public void Run(float spd, string name)
         {
-            if (this.CurrentBlock == null)
-            {
-                var blk = this.AssociatedRoute.RouteOrder.Blocks.First();
-                this.AssociatedRoute.AllocateTrain(blk, this.Length);
-            }
-            Run(spd, this.CurrentBlock);
+            var blk = this.Sheet.GetBlock(name);
+            this.Run(spd, blk);
         }
 
         public void Run(float spd, Block blk)
@@ -237,18 +192,51 @@ namespace Tus.TransControl.Base
             {
                 this.AssociatedRoute.AllocateTrain(blk, this.Length);
             }
+            Run(spd);
+        }
+
+        public void Run(float spd)
+        {
+            this.Speed = spd;
+            if (this.CurrentBlock == null)
+            {
+                var blk = this.AssociatedRoute.RouteOrder.Blocks.First();
+                this.AssociatedRoute.AllocateTrain(blk, this.Length);
+            }
+            if (IgnoreBlockage)
+            {
+                RunIfIgnored(Speed);
+                return;
+            }
+
+            // todo : halts support
+            //todo : steady support and test with or without sensors 
+            // verified i'm not halted and the next unit is not blocked by other vehicles
+            if (this.Predicators.Any(l => l.ShouldLockNext(this)))
+            {
+                this.AssociatedRoute.LockNextUnit();
+                Console.WriteLine("vehicle {0} moved : {1}", Name, CurrentBlock.Name);
+            }
+
+            if (ShouldHalt)
+            {
+                Speed = 0.0f;
+            }
+
+            if (this.IsStopped)
+            {
+                this.AssociatedRoute.UnReserveHead();
+            }
+            else
+                this.AssociatedRoute.ReserveHead();
+
             CommandFactory cmdfactory = null;
             var spdfactory = new SpeedFactory { RawSpeed = spd };
 
             Block[] lastlockedblocks = AssociatedRoute.LockedBlocks.ToArray();
             var distance = AssociatedRoute.HeadContainer.GetDistanceOfBlockedUnit(3);
 
-            this.Speed = spd;
-            if (this.Predicators.Any(l => l.ShouldReleaseHead(this)))
-            {
-                this.AssociatedRoute.AllocateTrain(blk, this.Length + 1);
-            }
-            if (this.Predicators.Any(l => l.ShouldReleaseBefore(this)))
+            if (this.Predicators.All(l => l.ShouldReleaseBefore(this)))
             {
                 this.AssociatedRoute.ReleaseLastUnit();
             }
@@ -289,9 +277,8 @@ namespace Tus.TransControl.Base
                          ControlUnit[] lockedunits = AssociatedRoute.LockedUnits.ToArray();
                          Block cntblk = (cmd.Route.RouteOrder.Polar == BlockPolar.Positive)
                                             ? lockedunits.First().ControlBlock
-                                            : lockedunits[lockedunits.Length - 2]
-                                                  .ControlBlock;
-                         Block waitblk = lockedunits.Last().ControlBlock;
+                                            : lockedunits.Last().ControlBlock;
+                         Block waitblk = AssociatedRoute.ReservedUnit.Unit.ControlBlock;
 
                          if (blk == cntblk)
                          // lockedunits[lockedunits.Length - 2].ControlBlock)
@@ -328,8 +315,12 @@ namespace Tus.TransControl.Base
                                        {
                                            Route = AssociatedRoute,
                                        };
+                         ControlUnit[] lockedunits = AssociatedRoute.LockedUnits.ToArray();
+                         Block cntblk = (cmd.Route.RouteOrder.Polar == BlockPolar.Positive)
+                                           ? lockedunits.First().ControlBlock
+                                           : lockedunits.Last().ControlBlock;
 
-                         if (blk == AssociatedRoute.LockedUnits.Last().ControlBlock)
+                         if (blk == cntblk)
                          {
                              cmd.MotorMode = MotorMemoryStateEnum.Controlling;
                              cmd.Speed = cntspdFactory();

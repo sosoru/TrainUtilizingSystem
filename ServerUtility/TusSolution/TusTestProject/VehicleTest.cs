@@ -115,44 +115,53 @@ namespace TestProject
             var v = new Vehicle(sheet, rt);
             var len = 1;
             var locklogicmock = new Mock<IRouteLockPredicator>();
-            locklogicmock.Setup(l => l.ShouldLockNext(It.IsAny<Vehicle>())).Returns(true);
-            locklogicmock.Setup(l => l.ShouldReleaseBefore(It.IsAny<Vehicle>())).Returns(false);
+            var block_entering = locklogicmock.Setup(l => l.ShouldLockNext(It.IsAny<Vehicle>()));
+            var block_leaving = locklogicmock.Setup(l => l.ShouldReleaseBefore(It.IsAny<Vehicle>()));
             v.Predicators.Add(locklogicmock.Object);
 
             var halt = new Mock<Halt>();
             halt.Setup(h => h.HaltBlock).Returns(sheet.GetBlock("AT14"));
             halt.Setup(h => h.HaltState).Returns(true);
 
+            v.Halt.Add(halt.Object);
             v.Length = len;
 
-            //１，停車時のVehicleのLengthはlen
-            v.Run(0.0f, sheet.GetBlock("AT6"));
-            Assert.AreEqual(v.Speed, 0.0f);
-            Assert.AreEqual<int>(v.CurrentLength, len);
+            //１，停車．Lenのみ確保．Reserveしない
+            block_leaving.Returns(false);
+            block_entering.Returns(false);
+            v.Run(0.0f, "AT2");
+            Assert.AreEqual(v.AssociatedRoute.LockedUnits.Count(), v.Length);
+            Assert.AreEqual(v.AssociatedRoute.IsReserving, false);
 
-            //発車
-            v.Speed = 0.5f;
-            v.Refresh();
-            Assert.AreEqual<int>(v.CurrentLength, len+1);
+            //２，進行開始．Len+1のみ確保．Reserveされてる
+            block_leaving.Returns(false);
+            block_entering.Returns(false);
+            v.Run(1.0f);
+            Assert.AreEqual(v.AssociatedRoute.LockedUnits.Count(), v.Length + 1);
+            Assert.AreEqual(v.AssociatedRoute.IsReserving, true);
 
-            //２，発車後，BlockをReleaseする条件（停車するとか，センサを通過するとか）を満たすまでVehicle.Lengthはlen+1を保つ
-            //v.Run(0.5f, sheet.GetBlock("AT9")); //閉塞を通過（1回目）
-            v.Refresh();
-            Assert.AreEqual<int>(v.CurrentLength, len+2);
+            //３，閉塞境界を通過．Len+1のみ確保．Reserveされてる．次の閉塞移っていること
+            block_leaving.Returns(true);
+            block_entering.Returns(true);
+            v.Run(1.0f);
+            Assert.AreEqual(v.AssociatedRoute.LockedUnits.Count(), v.Length + 1);
+            Assert.AreEqual(v.AssociatedRoute.IsReserving, true);
+            Assert.AreEqual(v.AssociatedRoute.HeadContainer.Unit.ControlBlock.Name, "AT9");
 
-            //v.Run(0.5f, sheet.GetBlock("AT12")); //閉塞を通過（2回目）
-            v.Refresh();
-            Assert.AreEqual<int>(v.CurrentLength, len+2);
+            //４，Haltに接近．Len+1のみ確保．Reserveされてる．次の閉塞に移っている．速度減少
+            block_leaving.Returns(true);
+            block_entering.Returns(true);
+            v.Run(1.0f);
+            Assert.AreEqual(v.AssociatedRoute.LockedUnits.Count(), v.Length + 1);
+            Assert.AreEqual(v.AssociatedRoute.IsReserving, true);
+            Assert.AreEqual(v.AssociatedRoute.HeadContainer.Unit.ControlBlock.Name, "AT12");
 
-            v.Halt.Add(halt.Object);
-            //v.Run(0.0f, sheet.GetBlock("AT14")); //停車（haltable blockへの進入につき）
-            v.Predicators.Remove(locklogicmock.Object);
-            v.Refresh();
-            Assert.AreEqual<int>(v.CurrentLength, len+1);
-            v.Refresh();
-            Assert.AreEqual<int>(v.CurrentLength, len+1);
-            v.Refresh();
-            Assert.AreEqual<int>(v.CurrentLength, len+1);
+            //５，Haltと接触．Len+1のみ確保．Reserveしない．停車．
+            block_leaving.Returns(true);
+            block_entering.Returns(true);
+            v.Run(1.0f);
+            Assert.AreEqual(v.AssociatedRoute.LockedUnits.Count(), v.Length);
+            Assert.AreEqual(v.AssociatedRoute.IsReserving, false);
         }
 
         public void VehicleRunCheckTest()
