@@ -6,6 +6,7 @@ using System.Runtime.Serialization;
 
 namespace Tus.TransControl.Base
 {
+    //TODO:むやみにsetアクセサ増やしたくないんだけど
     /// <summary>
     ///     ひとつの駆動源を持ち，絶縁されたセクションを表す．（having one motor, being terminated by a isolator)
     /// </summary>
@@ -15,11 +16,14 @@ namespace Tus.TransControl.Base
         [DataMember]
         public IList<Block> Blocks { get; set; }
 
+        [DataMember]
         public Block ControlBlock
         {
             get { return Blocks.First(b => b.HasMotor); }
+            set { throw new InvalidOperationException(); }
         }
 
+        [DataMember]
         public IEnumerable<Block> HaltableBlocks
         {
             get
@@ -33,6 +37,7 @@ namespace Tus.TransControl.Base
                         yield return b; // stop by a IR sensor
                 }
             }
+            set { throw new InvalidOperationException(); }
         }
 
         public bool CanBeAllocated
@@ -40,32 +45,32 @@ namespace Tus.TransControl.Base
             get { return !this.IsBlocked; }
         }
 
+        [DataMember]
         public bool IsBlocked
         {
             get { return Blocks.Any(b => b.IsBlocked); }
+            set { throw new InvalidOperationException(); }
         }
 
         public void Allocate()
         {
+            if (this.IsBlocked)
+                throw new InvalidOperationException("Allocate() tried to allocate a blocked block");
             Blocks.ForEach(b =>
                                {
-                                   if (b.IsBlocked)
-                                       throw new InvalidOperationException(
-                                           "Allocate() tried to allocate a blocked block");
-
                                    b.IsBlocked = true;
                                });
         }
 
         public void Release()
         {
+            if (!this.IsBlocked)
+                throw new InvalidOperationException("Release() tried to relase a released block");
             Blocks.ForEach(b =>
-                               {
-                                   if (!b.IsBlocked)
-                                       throw new InvalidOperationException("Release() tried to relase a released block");
+                                {
 
-                                   b.IsBlocked = false;
-                               });
+                                    b.IsBlocked = false;
+                                });
         }
     }
 
@@ -311,9 +316,11 @@ namespace Tus.TransControl.Base
         public int Index { get; set; }
         public RouteOrder Order { get; set; }
 
+        [DataMember]
         public ControlUnit Unit
         {
             get { return Order.Units[Index]; }
+            set { throw new InvalidOperationException(); }
         }
 
         public ControlUnitContainer Next
@@ -436,7 +443,7 @@ namespace Tus.TransControl.Base
             {
                 var controlUnitContainer = this.ReservedUnit;
                 if (controlUnitContainer != null)
-                    return this.PassedUnits.Concat(new[] {  controlUnitContainer.Unit });
+                    return this.PassedUnits.Concat(new[] { controlUnitContainer.Unit });
                 else
                     return this.PassedUnits;
             }
@@ -479,7 +486,10 @@ namespace Tus.TransControl.Base
 
         public ControlUnitContainer HeadContainer
         {
-            get { return this._order_enmtor.Current; }
+            get
+            {
+                return this._order_enmtor.Current;
+            }
         }
 
         [DataMember]
@@ -487,6 +497,19 @@ namespace Tus.TransControl.Base
         {
             get { return _routeOrder; }
             set { throw new NotImplementedException(); }
+        }
+
+        public ControlUnit WaitingUnit
+        {
+            get
+            {
+                //if (this.RouteOrder.Polar == BlockPolar.Positive)
+                return (this.ReservedUnit ?? this.HeadContainer).Unit;
+                //else if (this.RouteOrder.Polar == BlockPolar.Negative)
+                //    return this.LockedUnits.Last();
+                //else
+                //    throw new InvalidOperationException("極性が不明");
+            }
         }
 
         #region Initialize
@@ -532,7 +555,7 @@ namespace Tus.TransControl.Base
                 throw new InvalidOperationException("ロックできる状態にありません．AllocateTrainが呼び出されているか確認してください");
 
             ControlUnitContainer next = _order_enmtor.Current.Next;
-            if (next != null && next.Unit.CanBeAllocated)
+            if (next != null && (next.Unit.CanBeAllocated || this.IsReserving))
             {
                 bool movecond = _order_enmtor.MoveNext();
                 if (!movecond)
@@ -547,12 +570,16 @@ namespace Tus.TransControl.Base
 
         private void allocateCurrent()
         {
-            _order_enmtor.Current.Unit.Allocate();
+            if (!_order_enmtor.Current.Unit.IsBlocked)
+                _order_enmtor.Current.Unit.Allocate();
+
             this.PassedUnits.Enqueue(_order_enmtor.Current.Unit);
 
             if (this.IsReserving)
             {
-                this.ReservedUnit = this.HeadContainer.Next;
+                var reserved = this.HeadContainer.Next;
+                reserved.Unit.Allocate();
+                this.ReservedUnit = reserved;
             }
         }
 
@@ -578,8 +605,10 @@ namespace Tus.TransControl.Base
 
             if (!this.IsReserving)
             {
+                var reserved = this.HeadContainer.Next;
+                reserved.Unit.Allocate();
                 this.IsReserving = true;
-                this.ReservedUnit = this.HeadContainer.Next;
+                this.ReservedUnit = reserved;
             }
         }
 
@@ -589,6 +618,7 @@ namespace Tus.TransControl.Base
                 throw new InvalidOperationException("ロックできる状態にありません．AllocateTrainが呼び出されているか確認してください");
             if (this.IsReserving)
             {
+                this.ReservedUnit.Unit.Release();
                 this.IsReserving = false;
                 this.ReservedUnit = null;
             }

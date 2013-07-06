@@ -156,7 +156,7 @@ namespace TestProject
             Assert.AreEqual(v.AssociatedRoute.IsReserving, true);
             Assert.AreEqual(v.AssociatedRoute.HeadContainer.Unit.ControlBlock.Name, "AT12");
 
-            //５，Haltと接触．Len+1のみ確保．Reserveしない．停車．
+            //５，Haltと接触．Len+1のみ確保．Reserveしない．
             block_leaving.Returns(true);
             block_entering.Returns(true);
             v.Run(1.0f);

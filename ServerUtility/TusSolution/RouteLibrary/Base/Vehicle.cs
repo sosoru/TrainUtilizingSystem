@@ -17,7 +17,7 @@ namespace Tus.TransControl.Base
 
         public float Caution
         {
-            get { return RawSpeed * 1.0f; }
+            get { return RawSpeed * 0.75f; }
         }
 
         public float Stop
@@ -40,7 +40,7 @@ namespace Tus.TransControl.Base
             if (v.IsStopped || !v.AssociatedRoute.IsReserving)
                 return false;
 
-            ControlUnit waitingunit = v.AssociatedRoute.ReservedUnit.Unit;
+            ControlUnit waitingunit = v.AssociatedRoute.WaitingUnit;
             var detected = waitingunit.ControlBlock.IsMotorDetectingTrain;
             return detected;
         }
@@ -156,6 +156,7 @@ namespace Tus.TransControl.Base
             Refresh();
             var currentpos = this.CurrentBlock;
             while (AssociatedRoute.ReleaseLastUnit()) ;
+            AssociatedRoute.UnReserveHead();
 
             rt.IsRepeatable = AssociatedRoute.RouteOrder.IsRepeatable;
 
@@ -209,57 +210,75 @@ namespace Tus.TransControl.Base
                 return;
             }
 
-            // todo : halts support
-            //todo : steady support and test with or without sensors 
-            // verified i'm not halted and the next unit is not blocked by other vehicles
-            if (this.Predicators.Any(l => l.ShouldLockNext(this)))
-            {
-                this.AssociatedRoute.LockNextUnit();
-                Console.WriteLine("vehicle {0} moved : {1}", Name, CurrentBlock.Name);
-            }
-
             if (ShouldHalt)
             {
                 Speed = 0.0f;
             }
 
-            if (this.IsStopped)
+            // todo : halts support
+            //todo : steady support and test with or without sensors 
+            // verified i'm not halted and the next unit is not blocked by other vehicles
+            if (this.Predicators.Any(l => l.ShouldLockNext(this)))
             {
-                this.AssociatedRoute.UnReserveHead();
+                try
+                {
+                    this.AssociatedRoute.LockNextUnit();
+                }
+                catch (InvalidOperationException) { }
+                Console.WriteLine("vehicle {0} moved : {1}", Name, CurrentBlock.Name);
             }
-            else
-                this.AssociatedRoute.ReserveHead();
-
-            CommandFactory cmdfactory = null;
-            var spdfactory = new SpeedFactory { RawSpeed = spd };
-
-            Block[] lastlockedblocks = AssociatedRoute.LockedBlocks.ToArray();
-            var distance = AssociatedRoute.HeadContainer.GetDistanceOfBlockedUnit(3);
 
             if (this.Predicators.All(l => l.ShouldReleaseBefore(this)))
             {
-                this.AssociatedRoute.ReleaseLastUnit();
+                try
+                {
+                    this.AssociatedRoute.ReleaseLastUnit();
+                }
+                catch (InvalidOperationException) { }
             }
 
-            if (this.IsStopped || distance == 1)
+            CommandFactory cmdfactory = null;
+            var spdfactory = new SpeedFactory { RawSpeed = spd };
+            var lastlockedblocks = AssociatedRoute.LockedBlocks.ToArray();
+
+            if (this.IsStopped)
             {
+                this.AssociatedRoute.UnReserveHead();
                 cmdfactory = CanHalt
                                  ? CreateHaltCommand(spdfactory)
                                  : CreateZeroCommand(spdfactory);
             }
-            else if (distance == 2)
-            {
-                cmdfactory = Create1stCommand(spdfactory);
-            }
-            else if (distance == 3)
-            {
-                cmdfactory = Create2ndCommand(spdfactory);
-            }
             else
             {
-                cmdfactory = CreateNthCommand(spdfactory);
-            }
+                int distance = 1; // stops
+                try
+                {
+                    this.AssociatedRoute.ReserveHead();
+                    distance = AssociatedRoute.ReservedUnit.GetDistanceOfBlockedUnit(4);
+                }
+                catch (InvalidOperationException)
+                {
+                }
 
+                if (distance == 1)
+                {
+                    cmdfactory = CanHalt
+                                     ? CreateHaltCommand(spdfactory)
+                                     : CreateZeroCommand(spdfactory);
+                }
+                else if (distance == 2)
+                {
+                    cmdfactory = Create1stCommand(spdfactory);
+                }
+                else if (distance == 3)
+                {
+                    cmdfactory = Create2ndCommand(spdfactory);
+                }
+                else
+                {
+                    cmdfactory = CreateNthCommand(spdfactory);
+                }
+            }
             Sheet.Effect(cmdfactory, AssociatedRoute.LockedBlocks.Concat(lastlockedblocks).Distinct());
         }
 
@@ -274,7 +293,8 @@ namespace Tus.TransControl.Base
                                        {
                                            Route = AssociatedRoute,
                                        };
-                         ControlUnit[] lockedunits = AssociatedRoute.LockedUnits.ToArray();
+                         ControlUnit[] lockedunits =
+                             AssociatedRoute.LockedUnits.Except(new[] { AssociatedRoute.ReservedUnit.Unit }).ToArray();
                          Block cntblk = (cmd.Route.RouteOrder.Polar == BlockPolar.Positive)
                                             ? lockedunits.First().ControlBlock
                                             : lockedunits.Last().ControlBlock;

@@ -93,13 +93,11 @@ namespace DialogConsole.Features
 
         private Vehicle CreateVehicle(string vhname, Block b)
         {
-            if (Param.VehicleProcessing != null)
-                Param.VehicleProcessing.Dispose();
 
-            foreach (Vehicle vh in Param.UsingLayout.Vehicles.ToArray())
-            {
-                vh.AssociatedRoute.InitLockingPosition();
-            }
+            //foreach (Vehicle vh in Param.UsingLayout.Vehicles.ToArray())
+            //{
+            //    vh.AssociatedRoute.InitLockingPosition();
+            //}
 
             bool ign = false;
             bool rev = false;
@@ -114,9 +112,15 @@ namespace DialogConsole.Features
                 AvailableRoutes = routes
             };
 
-            v.Run(0.0f, b);
-            Param.UsingLayout.Vehicles.Add(v);
-            return v;
+            lock (lock_vehicleprocess)
+            {
+                if (Param.VehicleProcessing != null)
+                    Param.VehicleProcessing.Dispose();
+
+                v.Run(0.0f, b);
+                Param.UsingLayout.Vehicles.Add(v);
+                return v;
+            }
         }
 
         private object lock_vehicleprocess = new object();

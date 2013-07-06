@@ -78,6 +78,7 @@
     <Compile Include="Features.Base\FeatureMetadata.cs" />
     <Compile Include="Features.Base\IFeature.cs" />
     <Compile Include="Features.Base\IFeatureMetadata.cs" />
+    <Compile Include="Features\JsonTestFeature.cs" />
     <Compile Include="Features\LogingFeature.cs" />
     <Compile Include="Features\ShowStatusFeature.cs" />
     <Compile Include="Features.Base\Feature.cs" />

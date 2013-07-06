@@ -125,7 +125,7 @@ namespace DialogConsole.Features
                 {
                     using (var ms = new MemoryStream())
                     {
-                        var cnt = new DataContractJsonSerializer(typeof(IEnumerable<Vehicle>), new[] { typeof(Switch), typeof(Motor), typeof(UsartSensor), typeof(MemoryState) });
+                        var cnt = new DataContractJsonSerializer(typeof(IEnumerable<Vehicle>), new[] {typeof(ControlUnit), typeof(Switch), typeof(Motor), typeof(UsartSensor), typeof(MemoryState) });
                         var vehis = this.Param.UsingLayout.Vehicles.ToArray();
 
                         cnt.WriteObject(ms, vehis);
