@@ -153,7 +153,7 @@ namespace module_UartControl
 						
 						int16_t sub = (((int16_t)ppacket->OnState) - ((int16_t)ppacket->OffState));
 
-						if(abs(sub) > ppacket->Threshold)
+						if(abs(sub) >= ppacket->Threshold)
 							return 1;
 					}		
 					return 0;

@@ -29,6 +29,13 @@ namespace Tus.Communication.Device.Composition
     { }
 
     [Export(typeof(IDeviceFactory))]
+    [DeviceFactoryMetadata(ModuleTypeEnum.AvrUartSetting)]
+    public class UartSettingFactory
+        : DeviceFactory<UsartSetting, UsartSettingState, UsartSettingData>
+    {
+    }
+
+    [Export(typeof(IDeviceFactory))]
     [DeviceFactoryMetadata(ModuleTypeEnum.AvrKernel)]
     public class KernelDeviceFactory
         : DeviceFactory<Kernel, KernelState, KernelData>

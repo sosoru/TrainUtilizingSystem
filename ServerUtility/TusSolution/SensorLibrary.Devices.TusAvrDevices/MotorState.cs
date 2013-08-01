@@ -15,7 +15,7 @@ namespace Tus.Communication.Device.AvrComposed
         public MotorState()
             : base()
         {
-            this.Data = new MotorData();        
+            this.Data = new MotorData();
         }
 
         [IgnoreDataMember]
@@ -31,7 +31,7 @@ namespace Tus.Communication.Device.AvrComposed
             }
         }
 
-        [DataMember(Name="ControlMode")]
+        [DataMember(Name = "ControlMode")]
         public string ControlModeString
         {
             get { return Enum.GetName(typeof(MotorControlMode), this.ControlMode); }
@@ -54,7 +54,7 @@ namespace Tus.Communication.Device.AvrComposed
             }
         }
 
-        [DataMember(Name="Direction")]
+        [DataMember(Name = "Direction")]
         public string DirectionString
         {
             get { return Enum.GetName(typeof(MotorDirection), this.Direction); }
@@ -73,7 +73,7 @@ namespace Tus.Communication.Device.AvrComposed
             }
             set
             {
-                if(value < 0.0f || value > 1.0f)
+                if (value < 0.0f || value > 1.0f)
                     throw new ArgumentOutOfRangeException("Duty value must be in [0, 1]");
 
                 this.Data.Duty = (byte)Math.Round(value * 255.0f);
@@ -97,18 +97,19 @@ namespace Tus.Communication.Device.AvrComposed
         }
 
         [DataMember]
+        [Obsolete("ThresholdCurrentの設定は反映されません")]
         public float ThresholdCurrent
         {
             get
             {
-                return (float)this.Data.ThresholdValue / 255.0f * 5.0f ;
+                return 0;// (float)this.Data.ThresholdValue / 255.0f * 5.0f;
             }
             set
             {
-                if (value < 0.0f || value > 5.0f)
-                    throw new ArgumentOutOfRangeException("Current value must be in [0, 5]");
+                //if (value < 0.0f || value > 5.0f)
+                //    throw new ArgumentOutOfRangeException("Current value must be in [0, 5]");
 
-                this.Data.ThresholdValue = (byte)Math.Round(value / 5.0f * 255.0f);
+                //this.Data.ThresholdValue = (byte)Math.Round(value / 5.0f * 255.0f);
             }
         }
 
@@ -119,7 +120,7 @@ namespace Tus.Communication.Device.AvrComposed
             set { this.Data.DestinationID = value; }
         }
 
-        [DataMember(Name="DestinationID")]
+        [DataMember(Name = "DestinationID")]
         public string DestinationIDString
         {
             get { return this.DestinationID.ToString(); }
@@ -129,11 +130,17 @@ namespace Tus.Communication.Device.AvrComposed
         [IgnoreDataMember]
         public MotorMemoryStateEnum MemoryWhenEntered
         {
-            get { return (MotorMemoryStateEnum)this.Data.MemoryWhenEntered; }
-            set { this.Data.MemoryWhenEntered = (byte)value; }
+            get { return (MotorMemoryStateEnum)(this.Data.TransitMemory >> 4); }
+            set
+            {
+                var entered = (int)this.Data.TransitMemory;
+                entered &= 0x0F;
+                entered |= ((int)value) << 4;
+                this.Data.TransitMemory = (byte)entered;
+            }
         }
 
-        [DataMember(Name="MemoryWhenEntered")]
+        [DataMember(Name = "MemoryWhenEntered")]
         public string MemoryWhenEnteredString
         {
             get { return Enum.GetName(typeof(MotorMemoryStateEnum), this.MemoryWhenEntered); }
@@ -146,11 +153,15 @@ namespace Tus.Communication.Device.AvrComposed
         [IgnoreDataMember]
         public MotorMemoryStateEnum DestinationMemory
         {
-            get { return (MotorMemoryStateEnum)this.Data.DestinationMemory; }
-            set { this.Data.DestinationMemory = (byte)value; }
+            get { return (MotorMemoryStateEnum)(this.Data.TransitMemory & 0x0F); }
+            set
+            {
+                this.Data.TransitMemory &= 0xF0;
+                this.Data.TransitMemory |= Convert.ToByte((byte)value & 0x0F);
+            }
         }
 
-        [DataMember(Name="DestinationMemory")]
+        [DataMember(Name = "DestinationMemory")]
         public string DestinationMemoryString
         {
             get { return Enum.GetName(typeof(MotorMemoryStateEnum), this.DestinationMemory); }
@@ -158,6 +169,16 @@ namespace Tus.Communication.Device.AvrComposed
             {
                 this.DestinationMemory = (MotorMemoryStateEnum)Enum.Parse(typeof(MotorMemoryStateEnum), value);
             }
+        }
+
+        [IgnoreDataMember]
+        public MotorMemoryStateEnum TargetMemory
+        {
+            get
+            {
+                return (MotorMemoryStateEnum)this.Data.CurrentMemory;
+            }
+            set { this.Data.CurrentMemory = (byte)value; }
         }
 
         public override string ToString()
@@ -168,7 +189,7 @@ namespace Tus.Communication.Device.AvrComposed
                                                    this.Current,
                                                    this.ControlModeString);
         }
- 
+
     }
 
     public enum MotorControlMode

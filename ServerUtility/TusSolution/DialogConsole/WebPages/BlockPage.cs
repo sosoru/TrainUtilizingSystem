@@ -17,7 +17,7 @@ namespace DialogConsole.WebPages
         {
             var blocks = this.Param.UsingLayout.Sheet.InnerBlocks.ToArray();
             var ser = new DataContractJsonSerializer(typeof(IEnumerable<Block>),
-                                                     new[] { typeof(Switch), typeof(Motor), typeof(Vehicle), typeof(UsartSensor) });
+                                                     new[] { typeof(Switch), typeof(Motor), typeof(Vehicle), typeof(UsartSensor), typeof(MemoryState) });
             return GetJsonContent<IEnumerable<Block>>(blocks, ser);
         }
 

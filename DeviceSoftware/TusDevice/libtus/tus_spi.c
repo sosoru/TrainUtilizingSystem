@@ -96,8 +96,8 @@ void tus_spi_process_packets()
 	uint8_t reg_cache = SREG;
 	uint8_t i, recv_pos_obj, recv_pos_spare;
 	args_received e;
-		
-	while(IS_SPI_COMMUNICATING) { _delay_us(100); };
+	
+	while(IS_SPI_COMMUNICATING) { _delay_us(1); };
 	
 	//enter the spi critical section
 	cli();
@@ -173,7 +173,7 @@ void tus_spi_set_handler(spi_received_handler handler)
 {
 	uint8_t reg_cache = SREG;
 	
-	while(IS_SPI_COMMUNICATING) {_delay_us(100);};
+	while(IS_SPI_COMMUNICATING) {_delay_us(1);};
 	
 	cli();
 	SpiReceive = handler;	
@@ -185,7 +185,7 @@ uint8_t tus_spi_lock_send_buffer(spi_send_object ** ppsendobj)
 	uint8_t i;
 	uint8_t reg_cache = SREG;	
 
-	while(IS_SPI_COMMUNICATING) { _delay_us(100);}		
+	while(IS_SPI_COMMUNICATING) { _delay_us(1);}		
 	
 	cli();
 	

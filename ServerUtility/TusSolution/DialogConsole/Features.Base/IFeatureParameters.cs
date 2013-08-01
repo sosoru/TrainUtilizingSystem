@@ -16,7 +16,11 @@ namespace DialogConsole.Features.Base
         IObservable<DevicePacket> SendingPacketPipeline { get; set; }
 
         IObservable<Unit> VehiclePipeline { get; set; }
+        IObservable<Unit> SyncDevicePipeline { get; set; }
+
         IDisposable VehicleProcessing { get; set; }
+        IDisposable SyncDeviceProcessing { get; set; }
+
         IObservable<DevicePacket> ReceivingPacketPipeline { get; set; }
     }
 }

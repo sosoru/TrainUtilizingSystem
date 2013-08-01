@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Collections.ObjectModel;
-
-using Tus.Communication;
 
 namespace Tus.Communication.Device.AvrComposed
 {
@@ -13,109 +8,52 @@ namespace Tus.Communication.Device.AvrComposed
     public class Motor
         : Device<MotorState>, ISensorDevice
     {
+        private MotorMemoryStateEnum _before_sending = MotorMemoryStateEnum.Unknown;
+        [IgnoreDataMember] private Kernel deviceKernel_;
+
         public Motor()
             : base(ModuleTypeEnum.AvrMotor, new MotorState())
         {
-            this.States = new Dictionary<MotorMemoryStateEnum, MotorState>();
+            States = new Dictionary<MotorMemoryStateEnum, MotorState>();
         }
 
         public Motor(PacketServer server)
             : this()
         {
-            this.ReceivingServer = server;
+            ReceivingServer = server;
         }
 
         protected Motor(Motor mtr, MotorState state)
             : this()
         {
-            this.CurrentState = state;
-            this.DeviceID = mtr.DeviceID;
-        }
-
-        [DataMember(IsRequired=false)]
-        public bool IsDetected
-        {
-            get
-            {
-                return this.CurrentState.Current > this.CurrentState.ThresholdCurrent;
-            }
-            set { throw new NotImplementedException(); }
+            CurrentState = state;
+            DeviceID = mtr.DeviceID;
         }
 
         [DataMember]
-        public IDictionary<MotorMemoryStateEnum, MotorState> States
-        {
-            get;
-            set;
-        }
-
-        [IgnoreDataMember]
-        private Kernel deviceKernel_ = null;
+        public IDictionary<MotorMemoryStateEnum, MotorState> States { get; set; }
 
         [DataMember]
         public Kernel DeviceKernel
         {
             get
             {
-                if (this.deviceKernel_ == null)
-                    this.deviceKernel_ = new Kernel()
-                    {
-                        DeviceID = this.DeviceID,
-                        ReceivingServer = this.ReceivingServer
-                    };
+                if (deviceKernel_ == null)
+                    deviceKernel_ = new Kernel
+                                        {
+                                            DeviceID = DeviceID,
+                                            ReceivingServer = ReceivingServer
+                                        };
 
-                return this.deviceKernel_;
+                return deviceKernel_;
             }
             set
             {
-                var newkernel = value;
-                newkernel.DeviceID = this.DeviceID;
-                newkernel.ReceivingServer = this.ReceivingServer;
-                this.deviceKernel_ = newkernel;
+                Kernel newkernel = value;
+                newkernel.DeviceID = DeviceID;
+                newkernel.ReceivingServer = ReceivingServer;
+                deviceKernel_ = newkernel;
             }
-        }
-
-        public IEnumerable<DevicePacket> ChangeMemoryTo(MotorMemoryStateEnum mem)
-        {
-            var kernel = Kernel.MemoryState(this.DeviceID, new MemoryState((int)mem));
-            var devp = PacketExtension.CreatePackedPacket(kernel);
-
-            return devp;
-        }
-
-        private IEnumerable<DevicePacket> CreateApplyingStates()
-        {
-            var statelist = new List<IDevice<IDeviceState<IPacketDeviceData>>>();
-
-            foreach (var state in States.OrderBy(k => k.Key == CurrentMemory))
-            {
-                statelist.Add(Kernel.MemoryState(this.DeviceID, new MemoryState((int)state.Key)));
-                statelist.Add(new Motor(this, state.Value));
-            }
-
-            return PacketExtension.CreatePackedPacket(statelist);
-
-        }
-
-        public override void Observe(IObservable<IDeviceState<IPacketDeviceData>> observable)
-        {
-            base.Observe(observable);
-
-            this.DeviceKernel.Observe(observable);
-        }
-
-        public override void SendState()
-        {
-            if (this.CurrentMemory == MotorMemoryStateEnum.Unknown)
-                this.CurrentMemory = MotorMemoryStateEnum.NoEffect;
-
-            var app = this.CreateApplyingStates();
-            foreach (var p in app)
-                this.ReceivingServer.EnqueuePacket(p);
-
-            //var pack = this.ChangeMemoryTo(this.CurrentMemory);
-            //foreach (var p in pack)
-            //    this.ReceivingServer.SendPacket(p);
         }
 
         [IgnoreDataMember]
@@ -123,30 +61,107 @@ namespace Tus.Communication.Device.AvrComposed
         {
             get
             {
-                if (!(this.DeviceKernel.CurrentState.Command == KernelCommand.MemoryState ))
+                if (!(DeviceKernel.CurrentState.Command == KernelCommand.MemoryState))
                     return MotorMemoryStateEnum.Unknown;
 
-                return (MotorMemoryStateEnum)this.DeviceKernel.CurrentState.Data.Content1;
+                return (MotorMemoryStateEnum) DeviceKernel.CurrentState.Data.Content1;
             }
             set
             {
-                var memstate = new MemoryState((int)value);
+                var memstate = new MemoryState((int) value);
 
-                this.DeviceKernel.CurrentState = memstate;
+                MotorState currentState = CurrentState;
+                if (currentState != null) currentState.TargetMemory = value;
+
+                DeviceKernel.CurrentState = memstate;
             }
         }
 
-        [DataMember(Name="CurrentMemory")]
+        [DataMember(Name = "CurrentMemory")]
         public string CurrentMemoryString
         {
-            get { return Enum.GetName(typeof(MotorMemoryStateEnum), this.CurrentMemory); }
+            get { return Enum.GetName(typeof (MotorMemoryStateEnum), CurrentMemory); }
+            set { CurrentMemory = (MotorMemoryStateEnum) Enum.Parse(typeof (MotorMemoryStateEnum), value); }
+        }
+
+        public override MotorState CurrentState
+        {
+            get { return base.CurrentState; }
             set
             {
-                this.CurrentMemory = (MotorMemoryStateEnum)Enum.Parse(typeof(MotorMemoryStateEnum), value);
+                if (value != null)
+                {
+                    CurrentMemory = value.TargetMemory;
+                }
+                else
+                {
+                    CurrentMemory = MotorMemoryStateEnum.Unknown;
+                }
+
+                base.CurrentState = value;
             }
         }
 
+        [DataMember(IsRequired = false)]
+        public bool IsDetected
+        {
+            get { return CurrentState.Current > CurrentState.ThresholdCurrent; }
+            set { throw new NotImplementedException(); }
+        }
 
+        public IEnumerable<DevicePacket> ChangeMemoryTo(MotorMemoryStateEnum mem)
+        {
+            Kernel kernel = Kernel.MemoryState(DeviceID, new MemoryState((int) mem));
+            IEnumerable<DevicePacket> devp = PacketExtension.CreatePackedPacket(kernel);
+
+            return devp;
+        }
+
+        private IEnumerable<DevicePacket> createApplyingStates()
+        {
+            var statelist = new List<IDevice<IDeviceState<IPacketDeviceData>>>();
+
+            foreach (var state in States)
+            {
+                state.Value.TargetMemory = state.Key;
+                statelist.Add(new Motor(this, state.Value));
+            }
+
+            //waiting stateが継続する場合は連続して送信しない
+            if (CurrentMemory != MotorMemoryStateEnum.Waiting ||
+                _before_sending != MotorMemoryStateEnum.Waiting)
+            {
+                // send packet changing memory
+                statelist.Add(Kernel.MemoryState(DeviceID, new MemoryState((int) CurrentMemory)));
+            }
+            _before_sending = CurrentMemory;
+
+            return PacketExtension.CreatePackedPacket(statelist);
+        }
+
+        public override void Observe(IObservable<IDeviceState<IPacketDeviceData>> observable)
+        {
+            // TODO: in out で状態を分ける
+            //base.Observe(observable);
+
+            DeviceKernel.Observe(observable);
+        }
+
+        public override void SendState()
+        {
+            if (CurrentMemory == MotorMemoryStateEnum.Unknown)
+                CurrentMemory = MotorMemoryStateEnum.NoEffect;
+
+            IEnumerable<DevicePacket> app = createApplyingStates();
+            foreach (DevicePacket p in app)
+                ReceivingServer.EnqueuePacket(p);
+
+            this.CurrentState = this.States[this.CurrentMemory];
+
+            //var pack = this.ChangeMemoryTo(this.CurrentMemory);
+            //foreach (var p in pack)
+            //    this.ReceivingServer.SendPacket(p);
+        }
     }
 
     public enum MotorMemoryStateEnum

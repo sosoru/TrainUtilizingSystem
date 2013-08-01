@@ -130,11 +130,11 @@ int main(void)
 	TrainSensorD::LedOff();
 	
 	tus_spi_init();
-	tus_spi_set_handler(spi_received);
+//	tus_spi_set_handler(spi_received);
 		
     while(1)
     {						
-		tus_spi_process_packets();		
+		//tus_spi_process_packets();		
 		
 		TrainSensorA::CheckSensors();
 		TrainSensorB::CheckSensors();

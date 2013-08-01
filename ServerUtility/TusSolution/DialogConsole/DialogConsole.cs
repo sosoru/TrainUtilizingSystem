@@ -62,13 +62,15 @@ namespace DialogConsole
 
     [Export(typeof(IFeatureParameters))]
     class DialogConsoleParameters
-        : IFeatureParameters 
+        : IFeatureParameters
     {
         public Layout UsingLayout { get; set; }
 
         public IDisposable ServingInfomation { get; set; }
         public IObservable<Unit> VehiclePipeline { get; set; }
+        public IObservable<Unit> SyncDevicePipeline { get; set; }
         public IDisposable VehicleProcessing { get; set; }
+        public IDisposable SyncDeviceProcessing { get; set; }
         public IObservable<DevicePacket> SendingPacketPipeline { get; set; }
         public IObservable<DevicePacket> ReceivingPacketPipeline { get; set; }
 
@@ -122,8 +124,8 @@ namespace DialogConsole
 
         public void Loop()
         {
-            this.LogWriterSend = new StreamWriter("packet_log_.txt", true);
-            this._logWriterRecv = new StreamWriter("packet_log_recv_.txt", true);
+            this.LogWriterSend = new StreamWriter("packet_log.txt", true);
+            this._logWriterRecv = new StreamWriter("packet_log_recv.txt", true);
 
             this._syncPacketProcess = new SynchronizationContext();
             this.Param.SchedulerPacketProcessing = new SynchronizationContextScheduler(this._syncPacketProcess);
@@ -134,17 +136,18 @@ namespace DialogConsole
 
             //this.Param.Sheet.Server.SendingObservable
             this.Param.SendingPacketPipeline
-                .Delay(TimeSpan.FromMilliseconds(15))
+                .ObserveOn(this.Param.SchedulerPacketProcessing)
+                .SubscribeOn(Scheduler.Default)
                 .Repeat()
                 .SelectMany(g => g.ExtractPackedPacket())
-                .Do(g => this.LogWriterSend.WriteLine(string.Format("({0}.{1}) : sending {2}",
+                .Do(g => this.LogWriterSend.WriteLine(string.Format("({0}.{1}) - {3} : sending {2}",
                                                                     DateTime.Now.ToLongDateString() +
                                                                     DateTime.Now.ToLongTimeString(),
                                                                     DateTime.Now.Millisecond,
-                                                                    g.ToString()
+                                                                    g.ToString(),
+                                                                    this.Param.UsingLayout.Sheet.Server.QueuingCount
                                                           )))
-                .ObserveOn(this.Param.SchedulerPacketProcessing)
-                .SubscribeOn(Scheduler.Default)
+                .Do(g => this.LogWriterSend.Flush())
                 .Subscribe();
 
             var timer = Observable.Interval(TimeSpan.FromMilliseconds(20), Scheduler.Default);
@@ -155,14 +158,15 @@ namespace DialogConsole
             .SubscribeOn(Scheduler.Default)
                                                            .Zip(timer, (v, _) => v);
             this.Param.ReceivingPacketPipeline.SelectMany(v => v.ExtractPackedPacket())
-            .Do(g => this._logWriterRecv.WriteLine(string.Format("({0}.{1}) : recving {2}",
-                                                                 DateTime.Now
-                                                                         .ToLongDateString() +
-                                                                 DateTime.Now
-                                                                         .ToLongTimeString(),
-                                                                 DateTime.Now.Millisecond,
-                                                                 g.ToString()
-                                                       )))
+            //.Do(g => this._logWriterRecv.WriteLine(string.Format("({0}.{1}) : recving {2}",
+            //                                                     DateTime.Now
+            //                                                             .ToLongDateString() +
+            //                                                     DateTime.Now
+            //                                                             .ToLongTimeString(),
+            //                                                     DateTime.Now.Millisecond,
+            //                                                     g.ToString()
+            //                                           )))
+            //                                           .Do(g => this._logWriterRecv.Flush())
             .Subscribe();
 
             this.Param.UsingLayout.Sheet.Effect(new CommandFactory()

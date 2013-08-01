@@ -43,7 +43,7 @@ namespace Tus.Communication
         {
             var bufind = 0;
 
-            while (bufind <= DevicePacket.DATA_SIZE && packet.Data[bufind] != 0x00)
+            while (bufind < DevicePacket.DATA_SIZE && packet.Data[bufind] != 0x00)
             {
                 var len = packet.Data[bufind];
                 var internelid = packet.Data[bufind + 1];

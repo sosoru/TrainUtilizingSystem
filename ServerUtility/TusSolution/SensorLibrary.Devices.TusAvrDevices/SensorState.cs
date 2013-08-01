@@ -22,6 +22,11 @@ namespace Tus.Communication.Device.AvrComposed
             get { return (int)this.Data.ModuleCount; }
             set { this.Data.ModuleCount = (byte)value; }
         }
+
+        public override string ToString()
+        {
+            return base.ToString() + string.Format("|senssetting : modulecnt={0}", this.ModuleCount);
+        }
     }
 
     [DataContract]
@@ -93,6 +98,11 @@ namespace Tus.Communication.Device.AvrComposed
                     this.Data.Threshold = (byte)(value * 255.0f);
                 }
             }
+        }
+
+        public override string ToString()
+        {
+            return base.ToString() + string.Format("|sens : On={0}, Off={1}, Th={2}", this.VoltageOn, this.VoltageOff, this.Threshold);
         }
     }
 }

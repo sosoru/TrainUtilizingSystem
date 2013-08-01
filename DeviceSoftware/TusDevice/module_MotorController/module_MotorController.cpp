@@ -12,6 +12,7 @@
 #include <util/delay.h>
 #include <stdlib.h>
 #include <avr/interrupt.h>
+#include <avr/wdt.h>
 #include <tus.h>
 
 using namespace Tus;
@@ -69,7 +70,6 @@ void SendKernelPacket(DeviceID *psrcid, DeviceID *pdstid)
 	state.KernelCommand = ETHCMD_MEMORY;
 	
 	g_packer.Init();
-
 	mtrA.get_KernelState((KernalState*)&state);
 	g_packer.Pack((uint8_t*)&state);
 	mtrB.get_KernelState((KernalState*)&state);
@@ -81,7 +81,6 @@ void SendKernelPacket(DeviceID *psrcid, DeviceID *pdstid)
 	g_packer.Pack((uint8_t*)&state);
 	mtrD.get_KernelState((KernalState*)&state);
 	g_packer.Pack((uint8_t*)&state);
-	
 	g_packer.Send(psrcid, pdstid);
 }
 
@@ -117,6 +116,8 @@ bool ProcessKernelPacket(KernalState *pstate, DeviceID* psrcid, DeviceID* pdstid
 
 void spi_received(args_received *e)
 {	
+	wdt_reset();
+	
 	g_myDeviceID.raw = e->pdstId->raw;
 		
 	if(ProcessMtrPacket((MtrControllerPacket*)e->ppack)){}
@@ -128,17 +129,21 @@ int main(void)
 {	
 	uint8_t i;
 	
-	MCUCR = 0b01100000; //todo: turn off bods
+//	MCUCR = 0b01100000; //todo: turn off bods
 	MCUSR = 0; // Do not omit to clear this resistor, otherwise suffer a terrible reseting cause.
+	wdt_enable(WDTO_4S);
 	
 	mtrA.Init();
 	mtrB.Init();
 	mtrC.Init();
 	mtrD.Init();
 	
+	//TimerCounter0::SetUp(Prescale1024B, FastPWM8, ClearA, ClearB);
+	
 	tus_spi_init();
 	tus_spi_set_handler(spi_received);
 	
+	wdt_reset();
 	while(1)
 	{	
 		tus_spi_process_packets();
@@ -147,5 +152,10 @@ int main(void)
 		mtrB.Process();
 		mtrC.Process();
 		mtrD.Process();
+		
+		//if(TimerCounter0::OverflowInterrupt::IsTriggered())
+		//{
+			//TimerCounter0::OverflowInterrupt::ClearFlag();
+		//}
     }
 }

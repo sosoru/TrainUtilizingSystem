@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 
 namespace Tus.Communication.Device.AvrComposed
 {
-    [StructLayout(LayoutKind.Sequential, Pack = 1, Size= 3)]
+    [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 3)]
     public class PacketDeviceHeader
         : IPacketDeviceData
     {
@@ -21,21 +21,24 @@ namespace Tus.Communication.Device.AvrComposed
     //	DutyValue	: 1 byte
     //	VoltageValue: 1 byte
     //
-    [StructLayout(LayoutKind.Sequential, Pack=1, Size=14)]
+    [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 13)]
     public class MotorData
         : PacketDeviceHeader
     {
-        public MotorData() { DataLength=14;  ModuleType = (byte)ModuleTypeEnum.AvrMotor; }
+        public MotorData() { DataLength = 13; ModuleType = (byte)ModuleTypeEnum.AvrMotor; }
 
         public byte ControlMode;
+        public byte CurrentMemory;
+
+        // MtrRunningState-----
         public byte Direction;
         public byte Duty;
         public byte Current;
-        public byte ThresholdValue;
+        //public byte ThresholdValue;
         public DeviceID DestinationID;
-        public byte MemoryWhenEntered;
-        public byte DestinationMemory;
-   }
+        public byte TransitMemory; //(MemoryWhenEntered << 4 | DestinationMemory)
+        // --------------------
+    }
 
     //struct PointModuleState
     //{
@@ -56,7 +59,7 @@ namespace Tus.Communication.Device.AvrComposed
 
     [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 10)]
     public class SensorData
-        : PacketDeviceHeader 
+        : PacketDeviceHeader
     {
         public SensorData() { DataLength = 10; ModuleType = (byte)ModuleTypeEnum.AvrSensor; }
 
@@ -65,7 +68,7 @@ namespace Tus.Communication.Device.AvrComposed
         public byte Threshold;
     }
 
-    [StructLayout(LayoutKind.Sequential, Pack= 1, Size=4)]
+    [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 4)]
     public class UsartSettingData
         : PacketDeviceHeader
     {
@@ -74,7 +77,7 @@ namespace Tus.Communication.Device.AvrComposed
         public byte ModuleCount;
     }
 
-    [StructLayout(LayoutKind.Sequential, Pack=1, Size = 8)]
+    [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 8)]
     public class KernelData
         : PacketDeviceHeader
     {

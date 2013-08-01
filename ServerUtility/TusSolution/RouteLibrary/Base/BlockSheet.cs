@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Collections.ObjectModel;
@@ -92,9 +93,27 @@ namespace Tus.TransControl.Base
             //Observable.Timer(DateTimeOffset.MinValue, this.TimeWaitingSwitchChanged, this.AssociatedScheduler)
             //    .Zip(GetEffectObservable(cmd, blocks), (l, effectors) => new { l, effectors })
             //    .Subscribe(val => val.effectors.ForEach(e => e.ExecuteCommand()));
-            //
+
+            //this.GetDetectorEffects().ForEach(us => us.SendState());
+
             this.GetEffectObservable(cmd, blocks)
                 .ForEach(p => p.ForEach(eff => eff.ExecuteCommand()));
+        }
+
+        public IEnumerable<UsartSetting> GetDetectorEffects()
+        {
+            //detector init
+            //todo : move out of this class for layer inversion
+            var detectors = this.InnerBlocks.Where(b => b.HasSensor).SelectMany(b => b.Detector.Devices);
+            foreach (
+                var taildetector in
+                    detectors.GroupBy(d => d.DeviceID.InternalAddr & 0xF0)
+                             .Select(g => g.OrderBy(s => s.DeviceID.InternalAddr).Last()))
+            {
+                var modulecount = (taildetector.DeviceID.InternalAddr & 0x0F);
+                yield return taildetector.CreateSettingDevice(modulecount);
+            }
+
         }
 
         public IEnumerable<IDeviceEffectorAlias>[] GetEffectObservable(CommandFactory cmd, IEnumerable<Block> blocks)

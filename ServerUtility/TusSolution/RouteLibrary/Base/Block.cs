@@ -50,15 +50,6 @@ namespace Tus.TransControl.Base
             this.devices = devs;
         }
 
-        public void SendCheckCommand()
-        {
-            this.devices.ForEach(d =>
-                                     {
-                                         d.ReceivingServer = this.ParentBlock.Sheet.Server;
-                                         //d.SendPacket();
-                                     });
-        }
-
         public virtual bool IsDetected
         {
             get { return this.devices.Any(d => d.IsDetected); }
@@ -137,27 +128,6 @@ namespace Tus.TransControl.Base
 
         public IEnumerable<IDeviceEffectorAlias> Effect(IEnumerable<CommandFactory> infos)
         {
-            //var list_infos = infos.Select(info =>
-            //{
-            //    var avl = info.AssociatedRoute.Blocks;//.SkipWhile(b => b == this).Where(b => b.IsHaltable);
-
-            //    var neighbor = avl.First();
-            //    if (neighbor != null && neighbor.IsBlocked)
-            //    {
-            //        info.Speed = 0;
-            //    }
-            //    else
-            //    {
-            //        neighbor = avl.Skip(1).First();
-            //        if (neighbor != null && neighbor.IsBlocked)
-            //        {
-            //            info.Speed /= 2.0F;
-            //        }
-            //    }
-
-            //    return info;
-            //}).ToList();
-
             var efs = this.Effectors.ToArray();
 
             infos.ForEach(info => efs.ForEach(e => e.ApplyCommand(info)));
@@ -295,13 +265,16 @@ namespace Tus.TransControl.Base
         {
             var str = string.Format("({0}) ", this.Name);
             if (this.IsBlocked)
-                str += "|Blocked|";
+                str += "|Locked|";
 
             if (this.HasMotor)
                 str += this.MotorEffector.Device.ToString();
 
             if (this.HasSwitch)
                 str += this.SwitchEffector.Device.ToString();
+
+            if (this.HasSensor)
+                str += this.Detector.Devices.Aggregate("", (s, d) => s + d.ToString());
 
             return str;
         }

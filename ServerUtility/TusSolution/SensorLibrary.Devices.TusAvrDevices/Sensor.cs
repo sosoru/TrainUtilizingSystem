@@ -11,7 +11,7 @@ namespace Tus.Communication.Device.AvrComposed
         : Device<UsartSettingState>
     {
         public UsartSetting()
-            : base(ModuleTypeEnum.AvrSensor, new UsartSettingState())
+            : base(ModuleTypeEnum.AvrUartSetting, new UsartSettingState())
         {
         }
 
@@ -34,7 +34,7 @@ namespace Tus.Communication.Device.AvrComposed
 
             var state = value as SensorState;
 
-            if (state == null) 
+            if (state == null)
                 return;
 
             lock (hist_lock)
@@ -84,8 +84,9 @@ namespace Tus.Communication.Device.AvrComposed
             setting.DeviceID = id;
 
             setting.CurrentState.ModuleCount = modulecount;
+            setting.ReceivingServer = this.ReceivingServer;
 
-            return setting;            
+            return setting;
         }
     }
 }

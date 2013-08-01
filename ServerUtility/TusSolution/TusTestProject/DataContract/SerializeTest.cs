@@ -11,22 +11,22 @@ namespace TestProject.DataContract
     [TestClass]
     public class SerializeTest
     {
-        public string JsonSerializeReadTest<T>(T target)
+        public string JsonSerializeReadTest<T>(T target, IEnumerable<Type> additionalTypes = null)
         {
             using (var ms = new MemoryStream())
             {
-                var cnt = new DataContractJsonSerializer(typeof(T));
+                var cnt = new DataContractJsonSerializer(typeof(T), additionalTypes ?? new Type[] { });
                 cnt.WriteObject(ms, target);
                 ms.Seek(0, SeekOrigin.Begin);
                 return System.Text.Encoding.UTF8.GetString(ms.ToArray());
             }
         }
 
-        public T JsonSerializeWriteTest<T>(string target)
+        public T JsonSerializeWriteTest<T>(string target, IEnumerable<Type> additionalTypes = null)
         {
             using (var ms = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(target)))
             {
-                var cnt = new DataContractJsonSerializer(typeof(T));
+                var cnt = new DataContractJsonSerializer(typeof(T), additionalTypes ?? new Type[] { });
                 return (T)cnt.ReadObject(ms);
             }
         }
@@ -67,9 +67,9 @@ namespace TestProject.DataContract
         {
             var mtr = new Motor();
 
-            var result = JsonSerializeReadTest<Motor>(mtr);
+            var result = JsonSerializeReadTest<Motor>(mtr, new[] { typeof(MemoryState) });
             result = result.Replace(@"""IsDetected"":false,", ""); // IsDetected is not required parameter
-            JsonSerializeWriteTest<Motor>(result);
+            JsonSerializeWriteTest<Motor>(result, new[] { typeof(MemoryState) });
         }
 
         [TestMethod]

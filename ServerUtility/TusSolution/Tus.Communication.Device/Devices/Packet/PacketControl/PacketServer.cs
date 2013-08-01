@@ -11,10 +11,10 @@ namespace Tus.Communication
     {
         private readonly List<PacketServerAction> actionList = new List<PacketServerAction>();
 
-        private readonly Queue<DevicePacket> sending_queue = new Queue<DevicePacket>(128);
+        private List<DevicePacket> sending_queue = new List<DevicePacket>();
         private readonly PacketDispatcher thisobsv_;
         private bool blockLoopStarting;
-        private volatile object lockStream = new object();
+        private volatile object lockqueue = new object();
         private IDisposable recv_disp;
         private IDisposable send_disp;
 
@@ -30,6 +30,17 @@ namespace Tus.Communication
             get { return recv_disp != null || send_disp != null; }
         }
 
+        public int QueuingCount
+        {
+            get
+            {
+                lock (this.lockqueue)
+                {
+                    return this.sending_queue == null ? 0 : this.sending_queue.Count;
+                }
+            }
+        }
+
         public IDeviceIO Controller { get; set; }
 
         public IObservable<DevicePacket> ReceivingObservable
@@ -39,10 +50,10 @@ namespace Tus.Communication
                 return Observable.Defer(Controller.GetReadingPacket)
                                  .Do(
                                      pack =>
-                                         {
-                                             actionList.ForEach(
-                                                 (item) => pack.ExtractPackedPacket().ToList().ForEach(s => item.Act(s)));
-                                         });
+                                     {
+                                         actionList.ForEach(
+                                             (item) => pack.ExtractPackedPacket().ToList().ForEach(s => item.Act(s)));
+                                     });
             }
         }
 
@@ -51,6 +62,7 @@ namespace Tus.Communication
             get
             {
                 return Observable.Defer(SendState)
+                    //.Delay(TimeSpan.FromMilliseconds(15))
                                  .SelectMany(Controller.GetWritingPacket);
             }
         }
@@ -87,7 +99,10 @@ namespace Tus.Communication
 
         public virtual void EnqueuePacket(DevicePacket packet)
         {
-            sending_queue.Enqueue(packet);
+            lock (this.lockqueue)
+            {
+                sending_queue.Add(packet);
+            }
         }
 
         public virtual void EnqueueState(IDevice<IDeviceState<IPacketDeviceData>> dev)
@@ -113,7 +128,14 @@ namespace Tus.Communication
         private IObservable<DevicePacket> SendState()
         {
             if (sending_queue.Count > 0)
-                return new[] {sending_queue.Dequeue()}.ToObservable();
+            {
+                lock (sending_queue)
+                {
+                    var obsv = this.sending_queue.ToObservable();
+                    this.sending_queue = new List<DevicePacket>();
+                    return obsv;
+                }
+            }
             else
                 return Observable.Empty<DevicePacket>();
         }

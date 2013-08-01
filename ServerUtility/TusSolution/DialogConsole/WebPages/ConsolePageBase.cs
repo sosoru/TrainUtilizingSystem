@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.Composition;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.IO;
 using System.Runtime.Serialization.Json;
 using System.Text;
@@ -32,10 +34,10 @@ namespace DialogConsole.WebPages
 
         }
 
-        protected string GetJsonContent<T>(T obj)
+        protected string GetJsonContent<T>(T obj, IEnumerable<Type> additoinalTypes = null)
         {
             // 実行時型はDataContractSerializerは処理できない
-            var ser = new DataContractJsonSerializer(typeof(T));
+            var ser = new DataContractJsonSerializer(typeof(T), additoinalTypes ?? new Type[] { });
             return GetJsonContent<T>(obj, ser);
         }
 

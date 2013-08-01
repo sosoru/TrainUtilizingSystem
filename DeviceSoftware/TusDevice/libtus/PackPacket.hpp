@@ -39,7 +39,7 @@ namespace Tus
 			
 			static bool IsFull(uint8_t len)
 			{
-				return ind_state_g + len >= ETH_DATA_LEN;
+				return ind_state_g + len > ETH_DATA_LEN;
 			}
 			
 			static bool Pack(const uint8_t* pdata)
