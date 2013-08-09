@@ -144,7 +144,7 @@ namespace TestProject
             target.ReleaseLastUnit();
 
             Assert.IsTrue(target.LockedBlocks.SequenceEqual(target.RouteOrder.Units[1].Blocks));
-            Assert.IsTrue(target.RouteOrder.Units[0].Blocks.All(b => !b.IsBlocked));
+            Assert.IsTrue(target.RouteOrder.Units[0].Blocks.All(b => !b.IsLocked));
         }
 
         [TestMethod]

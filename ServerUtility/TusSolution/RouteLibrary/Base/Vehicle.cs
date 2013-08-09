@@ -8,21 +8,66 @@ namespace Tus.TransControl.Base
 {
     public class SpeedFactory
     {
-        public float RawSpeed { get; set; }
+        protected float InitSpeed { get; private set; }
+        protected float TargetSpeed { get; private set; }
+        public float Accelation { get; set; }
+        private DateTime startedtime;
+
+        public float RawSpeed
+        {
+            get
+            {
+                return this.TargetSpeed;
+            }
+            set
+            {
+                var current = this.CurrentSpeed;
+                this.InitSpeed = current;
+                this.TargetSpeed = value;
+                this.startedtime = DateTime.Now;
+            }
+        }
 
         public float Go
         {
-            get { return RawSpeed; }
+            get { return this.CurrentSpeed; }
         }
 
         public float Caution
         {
-            get { return RawSpeed * 0.75f; }
+            get { return this.CurrentSpeed; }
         }
 
         public float Stop
         {
-            get { return RawSpeed * 0f; }
+            get { return this.CurrentSpeed; }
+        }
+
+        public float CurrentSpeed
+        {
+            get
+            {
+                var acceldir = (this.InitSpeed < TargetSpeed) ? 1.0f : -1.0f; // 加速度の向き
+                var diff = (DateTime.Now - startedtime).TotalSeconds * acceldir * Accelation;
+                var current = InitSpeed + diff;
+
+                if (acceldir > 0.0f)
+                {
+                    if (current < InitSpeed)
+                        current = InitSpeed;
+                    else if (TargetSpeed < current)
+                        current = TargetSpeed;
+                }
+                else // if acceldir is minus
+                {
+                    if (current < TargetSpeed)
+                        current = TargetSpeed;
+                    else if (InitSpeed < current)
+                        current = InitSpeed;
+                }
+
+                return (float)current;
+            }
         }
     }
 
@@ -41,6 +86,11 @@ namespace Tus.TransControl.Base
                 return false;
 
             ControlUnit waitingunit = v.AssociatedRoute.WaitingUnit;
+
+            //IsBlockedが変化してから500ミリ秒は待機
+            if (waitingunit.ControlBlock.ElaspedMilisecondsFromBlockingChanged < 500)
+                return false;
+
             var detected = waitingunit.ControlBlock.IsMotorDetectingTrain;
             return detected;
         }
@@ -71,6 +121,7 @@ namespace Tus.TransControl.Base
             AssociatedRoute = new Route(rt);
 
             Length = 1;
+            Accelation = 0.1f;
             Halt = new List<Halt>();
             Predicators = new List<IRouteLockPredicator>();
             Predicators.Add(new RouteLockPredicator());
@@ -108,8 +159,32 @@ namespace Tus.TransControl.Base
         [DataMember]
         public IList<Halt> Halt { get; set; }
 
+        [IgnoreDataMember]
+        private SpeedFactory speedfactry = new SpeedFactory();
         [DataMember]
-        public float Speed { get; set; }
+        public float Speed
+        {
+            get
+            {
+                return this.speedfactry.RawSpeed;
+            }
+            set
+            {
+                this.speedfactry.RawSpeed = value;
+            }
+        }
+        [DataMember]
+        public float Accelation
+        {
+            get
+            {
+                return this.speedfactry.Accelation;
+            }
+            set
+            {
+                this.speedfactry.Accelation = value;
+            }
+        }
 
         [DataMember]
         public int Length { get; set; }
@@ -166,7 +241,7 @@ namespace Tus.TransControl.Base
 
         public void RunIfIgnored(float spd)
         {
-            var spdfact = new SpeedFactory { RawSpeed = spd };
+            var spdfact = this.speedfactry;
 
             //all alocate
             while (AssociatedRoute.LockNextUnit()) ;
@@ -238,7 +313,7 @@ namespace Tus.TransControl.Base
             }
 
             CommandFactory cmdfactory = null;
-            var spdfactory = new SpeedFactory { RawSpeed = spd };
+            var spdfactory = this.speedfactry;
             var lastlockedblocks = AssociatedRoute.LockedBlocks.ToArray();
 
             if (this.IsStopped)

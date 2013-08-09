@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="SheetPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">C:\Users\Administrator\BTSync\console_page\inspective_loop.yaml</Value>
+      <Value Profile="(Default)">C:\Users\Administrator\BTSync\console_page\katsushika.yaml</Value>
     </Setting>
     <Setting Name="IpSegment" Type="System.String" Scope="User">
       <Value Profile="(Default)">192.168.2.0</Value>
@@ -18,7 +18,7 @@
       <Value Profile="(Default)">(9, 0, 0)</Value>
     </Setting>
     <Setting Name="RoutePath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">C:\Users\Administrator\BTSync\console_page\inspective_loop_route.yaml</Value>
+      <Value Profile="(Default)">C:\Users\Administrator\BTSync\console_page\katsushika_route.yaml</Value>
     </Setting>
   </Settings>
 </SettingsFile>

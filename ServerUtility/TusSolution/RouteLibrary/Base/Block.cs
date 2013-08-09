@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Collections.ObjectModel;
@@ -247,13 +248,13 @@ namespace Tus.TransControl.Base
             }
         }
 
-        //public bool IsBlocked
+        //public bool IsLocked
         //{
         //    get
         //    {
         //        if (!this.IsHaltable)
         //        {
-        //            throw new InvalidOperationException("IsBlocked property requires Haltable state");
+        //            throw new InvalidOperationException("IsLocked property requires Haltable state");
         //        }
 
         //        return this.MotorEffector.Device.IsDetected;
@@ -264,7 +265,7 @@ namespace Tus.TransControl.Base
         public override string ToString()
         {
             var str = string.Format("({0}) ", this.Name);
-            if (this.IsBlocked)
+            if (this.IsLocked)
                 str += "|Locked|";
 
             if (this.HasMotor)
@@ -279,6 +280,31 @@ namespace Tus.TransControl.Base
             return str;
         }
 
-        public bool IsBlocked { get; set; }
+        private Stopwatch lockingWatch = new Stopwatch();
+        private bool isLocked;
+        private object lock_islocked = new object();
+        public bool IsLocked
+        {
+            get { lock (lock_islocked) { return this.isLocked; } }
+            set
+            {
+                lock (lock_islocked)
+                {
+                    if (this.isLocked != value)
+                    {
+                        lockingWatch.Restart();
+                    }
+                    this.isLocked = value;
+                }
+            }
+        }
+
+        public long ElaspedMilisecondsFromBlockingChanged
+        {
+            get
+            {
+                return this.lockingWatch.ElapsedMilliseconds;
+            }
+        }
     }
 }

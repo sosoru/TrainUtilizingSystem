@@ -205,6 +205,20 @@ namespace Tus.TransControl.Base
             this.Device.SendState();
         }
 
+        public void SetNoEffectMode()
+        {
+            var mode = MotorMemoryStateEnum.NoEffect;
+            var states = new Dictionary<MotorMemoryStateEnum, MotorState>()
+            {
+                {mode, CreateNoEffectState()}
+            };
+
+            this.Device.States = states;
+            this.Device.CurrentMemory = mode;
+
+            this.Device.SendState();
+        }
+
         private MotorState _before_mtr_state;
         private MotorMemoryStateEnum _before_state = MotorMemoryStateEnum.Unknown;
         public override void ApplyCommand(CommandFactory factory)
@@ -235,19 +249,21 @@ namespace Tus.TransControl.Base
 
                     states.Add(MotorMemoryStateEnum.Controlling, CreateMotorState(cmd));
                     states.Add(MotorMemoryStateEnum.Waiting, CreateWaitingState(polar, waitingblock.MotorEffector.Device));
-                    if (this.Device.States.ContainsKey(MotorMemoryStateEnum.Controlling) &&
-                        this.Device.States[MotorMemoryStateEnum.Controlling].Duty == cntstate.Duty)
-                    {
-                        this.IsNeededExecution = false;
-                    }
-                    else
-                    {
-                        this.IsNeededExecution = true;
-                    }
+                    //if (this.Device.States.ContainsKey(MotorMemoryStateEnum.Controlling) &&
+                    //    this.Device.States[MotorMemoryStateEnum.Controlling].Duty == cntstate.Duty)
+                    //{
+                    //    this.IsNeededExecution = false;
+                    //}
+                    //else
+                    //{
+                    //    this.IsNeededExecution = true;
+                    //}
+                    this.IsNeededExecution = true;
 
                     break;
                 case MotorMemoryStateEnum.NoEffect:
                     states.Add(MotorMemoryStateEnum.NoEffect, CreateNoEffectState());
+                    this.IsNeededExecution = true;
                     break;
                 case MotorMemoryStateEnum.Locked:
                     states.Add(MotorMemoryStateEnum.Locked, CreateLockedState());

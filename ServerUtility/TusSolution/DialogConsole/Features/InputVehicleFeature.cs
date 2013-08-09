@@ -46,13 +46,19 @@ namespace DialogConsole.Features
             {
                 Param.SyncDevicePipeline = Observable.Defer(() =>
                         Observable.Start(this.Param.UsingLayout.Sheet.InquiryStatusOfAllMotors))
-                    .Delay(TimeSpan.FromMilliseconds(500))
+                    .Delay(TimeSpan.FromMilliseconds(300))
                     .Repeat()
                     .ObserveOn(this.Param.SchedulerPacketProcessing)
                     .SubscribeOn(Scheduler.NewThread);
 
                 Param.SyncDeviceProcessing = this.Param.SyncDevicePipeline.Subscribe();
 
+                Observable.Defer(() => Observable.Start(this.Param.UsingLayout.Sheet.SetUnlockedBlocksToDefault)
+                        .Delay(TimeSpan.FromMilliseconds(1000)))
+                        .Repeat()
+                        .ObserveOn(this.Param.SchedulerPacketProcessing)
+                        .SubscribeOn(Scheduler.NewThread)
+                        .Subscribe();
             }
 
             Param.VehiclePipeline = Observable.Defer(

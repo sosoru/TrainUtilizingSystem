@@ -110,7 +110,7 @@ namespace TestProject
             var vh = new Vehicle(_sht, rt);
 
             // vh will allocate the first control block of the route at Constructor
-
+            vh.Accelation = 100.0f; // ignoring speed control
             vh.Run();
             var waitingTicks1 = _sht.TimeWaitingSwitchChanged + TimeSpan.FromSeconds(0.5);
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
+using System.Threading;
 
 namespace Tus.Communication
 {
@@ -61,9 +62,8 @@ namespace Tus.Communication
         {
             get
             {
-                return Observable.Defer(SendState)
-                    //.Delay(TimeSpan.FromMilliseconds(15))
-                                 .SelectMany(Controller.GetWritingPacket);
+                return Observable.Defer(sendState)
+                    .SelectMany(Controller.GetWritingPacket);
             }
         }
 
@@ -125,15 +125,25 @@ namespace Tus.Communication
             actionList.ForEach((item) => item.Act(state));
         }
 
-        private IObservable<DevicePacket> SendState()
+        private IEnumerable<DevicePacket> yieldFunc(IEnumerable<DevicePacket> list)
+        {
+            foreach (var p in list)
+            {
+                yield return p;
+                Thread.Sleep(10);
+            }
+        }
+
+        private IObservable<DevicePacket> sendState()
         {
             if (sending_queue.Count > 0)
             {
-                lock (sending_queue)
+                lock (lockqueue)
                 {
-                    var obsv = this.sending_queue.ToObservable();
+                    var packets = this.sending_queue;
                     this.sending_queue = new List<DevicePacket>();
-                    return obsv;
+
+                    return yieldFunc(packets).ToObservable();
                 }
             }
             else

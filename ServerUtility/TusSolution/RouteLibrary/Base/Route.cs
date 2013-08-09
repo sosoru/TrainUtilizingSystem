@@ -48,7 +48,7 @@ namespace Tus.TransControl.Base
         [DataMember]
         public bool IsBlocked
         {
-            get { return Blocks.Any(b => b.IsBlocked); }
+            get { return Blocks.Any(b => b.IsLocked); }
             set { throw new InvalidOperationException(); }
         }
 
@@ -58,7 +58,7 @@ namespace Tus.TransControl.Base
                 throw new InvalidOperationException("Allocate() tried to allocate a blocked block");
             Blocks.ForEach(b =>
                                {
-                                   b.IsBlocked = true;
+                                   b.IsLocked = true;
                                });
         }
 
@@ -69,7 +69,7 @@ namespace Tus.TransControl.Base
             Blocks.ForEach(b =>
                                 {
 
-                                    b.IsBlocked = false;
+                                    b.IsLocked = false;
                                 });
         }
     }

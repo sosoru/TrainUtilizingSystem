@@ -170,6 +170,16 @@ namespace Tus.TransControl.Base
             }
         }
 
+        public void SetUnlockedBlocksToDefault()
+        {
+            var blocks = this.InnerBlocks.Where(b => !b.IsLocked && b.HasMotor);
+
+            foreach (var b in blocks)
+            {
+                b.MotorEffector.SetNoEffectMode();
+            }
+        }
+
         public IEnumerable<Switch> AllSwitches()
         {
             var devs = this.InnerBlocks

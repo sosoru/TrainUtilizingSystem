@@ -7,21 +7,12 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Net;
+using DialogConsole.Features;
 using Tao.Platform.Windows;
-
-using SensorLibrary;
-using SensorLibrary.Packet;
-using SensorLibrary.Packet.Control;
-
-using SensorLibrary.Devices;
-using SensorLibrary.Devices.TusAvrDevices;
 
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 
-using DialogConsole;
-using RouteLibrary;
-using RouteLibrary.Base;
 
 using System.Reactive;
 using System.Reactive.Linq;
@@ -42,10 +33,10 @@ namespace DengoController
             return client.DownloadString(serverAddr);
         }
 
-        static void SendCommand(DialogCnosole.VehicleInfoReceived send)
+        static void SendCommand(VehicleInfoReceived send)
         {
             var client = new WebClient();
-            var json = new DataContractJsonSerializer(typeof(DialogCnosole.VehicleInfoReceived));
+            var json = new DataContractJsonSerializer(typeof(VehicleInfoReceived));
 
             using (var ns = client.OpenWrite(serverAddr))
             {
@@ -60,10 +51,12 @@ namespace DengoController
 
             var vs = (dynamic[])DynamicJson.Parse(GetVehiclesAsString());
 
-            vs
-                .ToObservable()
-                .Select((v, i) => string.Format("{0} : {1}", i, v.Name))
-                .Subscribe(Console.WriteLine);
+            foreach (var str in vs
+                .Select((v, i) => string.Format("{0} : {1}", i, v.Name)))
+            {
+                Console.WriteLine(str);
+            }
+
 
             int index;
             if (int.TryParse(Console.ReadLine(), out index))
@@ -125,7 +118,7 @@ namespace DengoController
                 {
                     Console.WriteLine("accel : {0}, brake : {1}, duty : {2},  ",
                                 ac * 6, br * 14, infl);
-                    var data = new DialogCnosole.VehicleInfoReceived()
+                    var data = new VehicleInfoReceived()
                     {
                         Name = RouteName,
                         Speed = (infl / 250.0f * 100f).ToString(),
