@@ -20,10 +20,7 @@ namespace Tus.TransControl.Base
         public ReadOnlyCollection<Block> InnerBlocks { get; private set; }
         public PacketServer Server { get; private set; }
         public PacketDispatcher Dispatcher { get; private set; }
-        public IScheduler AssociatedScheduler { get; set; }
-
         public TimeSpan TimeWaitingSwitchChanged { get; set; }
-
         public BlockSheet(IEnumerable<BlockInfo> blockinfos, PacketServer server)
         {
             this.Server = server;
@@ -34,7 +31,6 @@ namespace Tus.TransControl.Base
             this.Name = "";
             this.InnerBlocks = new ReadOnlyCollection<Block>(blocks.ToList());
 
-            this.AssociatedScheduler = Scheduler.CurrentThread;
             this.TimeWaitingSwitchChanged = TimeSpan.FromTicks(1);
         }
 

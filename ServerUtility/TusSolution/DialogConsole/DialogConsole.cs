@@ -138,9 +138,9 @@ namespace DialogConsole
                 .Repeat()
                 .Subscribe();
 
-            ////sync leds
-            //Observable.Defer(() => Observable.Start(this.Param.UsingLayout.Illumination.SyncLedDuty))
-            //    .Delay(TimeSpan.FromMilliseconds(1000)).Repeat().Subscribe();
+            //sync leds
+            Observable.Defer(() => Observable.Start(this.Param.UsingLayout.Illumination.SyncLedDuty))
+                .Delay(TimeSpan.FromMilliseconds(1000)).Repeat().Subscribe();
             ////sync switches
             //Observable.Defer(() => Observable.Start(this.Param.UsingLayout.Sheet.SyncSwitches))
             //    .Delay(TimeSpan.FromSeconds(1)).Repeat().Subscribe();

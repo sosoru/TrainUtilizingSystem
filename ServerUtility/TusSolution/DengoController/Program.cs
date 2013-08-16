@@ -118,6 +118,7 @@ namespace DengoController
                 {
                     Console.WriteLine("accel : {0}, brake : {1}, duty : {2},  ",
                                 ac * 6, br * 14, infl);
+                    
                     var data = new VehicleInfoReceived()
                     {
                         Name = RouteName,
@@ -163,6 +164,7 @@ namespace DengoController
                 if (Winmm.joyGetPos(this.sticknumber, ref info) == 0)
                 {
                     return info.wButtons;
+                    Console.WriteLine(info.wButtons);
                 }
 
                 throw new InvalidOperationException("some error occured when getting keyboard info");
