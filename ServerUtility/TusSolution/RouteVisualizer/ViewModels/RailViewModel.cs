@@ -5,7 +5,7 @@ using System.Text;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Media;
-
+using System.Xml;
 using Livet;
 using Livet.Command;
 using Livet.Messaging;
@@ -75,6 +75,18 @@ namespace RouteVisualizer.ViewModels
 
         }
 
+        //public string ToMarkupGeometryStatement(IEnumerable<Geometry> geos)
+        //{
+        //    var cmd = "";
+
+        //    foreach (var g in geos)
+        //    {
+        //        if (g is LineGeometry)
+        //        {
+        //        }
+        //    }
+        //}
+
         public override Geometry CurrentGeometry
         {
             get
@@ -85,13 +97,13 @@ namespace RouteVisualizer.ViewModels
                 foreach (var gate in this.Gates)
                 {
                     //conn.BasePosition = gateposes [conn];
-                    var geo  = gate.CurrentGeometry;
+                    var geo = gate.CurrentGeometry;
                     geogroup.Children.Add(geo);
                 }
 
                 foreach (var path in this.Pathes)
                 {
-                    var geo  =path.CurrentGeometry;
+                    var geo = path.CurrentGeometry;
                     geogroup.Children.Add(geo);
                 }
 
@@ -104,6 +116,9 @@ namespace RouteVisualizer.ViewModels
         {
             get
             {
+                if (this.Pathes.Count == 0)
+                    return Rect.Empty;
+
                 if (this._rectCache == Rect.Empty)
                 {
                     var rect = this.Pathes.First().Bound;
@@ -119,6 +134,12 @@ namespace RouteVisualizer.ViewModels
             }
         }
 
+        public void WriteSvgGeometry(XmlTextWriter writer)
+        {
+            foreach (var path in this.Pathes)
+                path.WriteSvgGeometry(writer);
+        }
+
         public IDictionary<GateViewModel, Point> LocateGate()
         {
             if (this.Pathes == null || this.Pathes.Count == 0)
@@ -132,9 +153,9 @@ namespace RouteVisualizer.ViewModels
             {
                 var sentvec = path.Bound.BottomLeft - path.Bound.TopRight;
 
-                var basepoint = dict [path.PreviousGate];
+                var basepoint = dict[path.PreviousGate];
 
-                dict [path.NextGate] = basepoint + sentvec;
+                dict[path.NextGate] = basepoint + sentvec;
             }
 
             return dict;

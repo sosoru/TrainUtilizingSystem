@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Collections.ObjectModel;
 using System.Windows;
 
-using SensorLibrary;
 using System.Data.Entity;
 using RouteVisualizer.Views;
 using RouteVisualizer.EF;

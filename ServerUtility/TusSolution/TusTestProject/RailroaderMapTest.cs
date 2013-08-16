@@ -64,7 +64,7 @@ namespace TestProject
         //
         #endregion
 
-        string path = @"Sample2.rrf";
+        string path = @"C:\Users\Administrator\Dropbox\rail\JAM2013レイアウト案(0805Ver).rrf";
 
         /// <summary>
         ///RailroaderMap コンストラクター のテスト

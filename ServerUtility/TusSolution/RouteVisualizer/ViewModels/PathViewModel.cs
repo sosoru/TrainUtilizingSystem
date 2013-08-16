@@ -5,7 +5,7 @@ using System.Text;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Media;
-
+using System.Xml;
 using Livet;
 using Livet.Command;
 using Livet.Messaging;
@@ -123,18 +123,24 @@ namespace RouteVisualizer.ViewModels
                 else
                 {
                     var r = this.Radius;
-                    var t =  this.Angle.dtor();
+                    var t = this.Angle.dtor();
                     var startpos = castedprev.Position;
                     var endpos = castednext.Position;
+                    var cr = r / Math.Cos(t / 2);
 
                     //a = sqrt(2) * b * sqrt( 1- cos(t))
 
-                    var centervec =this.CenterPosition - startpos;
+                    var centervec = this.CenterPosition - startpos;
                     centervec.Normalize();
                     var tovec = endpos - startpos;
                     tovec.Normalize();
 
                     var clockwise = centervec.Y * tovec.X - centervec.X * tovec.Y >= 0.0;
+
+                    //var tan = Math.Tan(t /2);
+                    //var controlpoint = new Point( tan *(-startpos.Y) + startpos.X,
+                    //     tan*startpos.X + startpos.Y);
+                    //var segment = new BezierSegment(controlpoint, controlpoint, endpos, true);
 
                     var segment = new ArcSegment(endpos,
                                                   new Size(r, r),
@@ -142,11 +148,46 @@ namespace RouteVisualizer.ViewModels
                                                   false,
                                                   (clockwise) ? SweepDirection.Clockwise : SweepDirection.Counterclockwise,
                                                   true);
-                    geo = new PathGeometry(new [] { new PathFigure(startpos, new [] { segment }, false) });
+                    geo = new PathGeometry(new[] { new PathFigure(startpos, new[] { segment }, false) });
 
                 }
 
                 return geo;
+            }
+        }
+
+        public void WriteSvgGeometry(XmlTextWriter writer)
+        {
+            var geo = this.CurrentGeometry;
+
+            this.PreviousGate.WriteSvgGeometry(writer);
+            this.NextGate.WriteSvgGeometry(writer);
+
+            if (geo is LineGeometry)
+            {
+                var line = (LineGeometry)geo;
+                writer.WriteStartElement("line");
+                writer.WriteAttributeString("x1", line.StartPoint.X.ToString());
+                writer.WriteAttributeString("y1", line.StartPoint.Y.ToString());
+                writer.WriteAttributeString("x2", line.EndPoint.X.ToString());
+                writer.WriteAttributeString("y2", line.EndPoint.Y.ToString());
+                writer.WriteAttributeString("stroke", "black");
+                writer.WriteAttributeString("stroke-width", "1");
+                writer.WriteEndElement();
+
+            }
+            else if (geo is PathGeometry)
+            {
+                var path = (PathGeometry)geo;
+                foreach (var f in path.Figures)
+                {
+                    writer.WriteStartElement("path");
+                    writer.WriteAttributeString("d", f.ToString());
+                    writer.WriteAttributeString("stroke", "black");
+                    writer.WriteAttributeString("fill", "none");
+                    writer.WriteEndElement();
+
+                }
             }
         }
 

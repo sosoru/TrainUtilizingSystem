@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.Composition;
-
+using SensorLibrary.Devices.TusAvrDevices;
 using Tus.Communication;
 using Tus.Communication.Device.AvrComposed;
 
@@ -34,6 +34,12 @@ namespace Tus.Communication.Device.Composition
         : DeviceFactory<UsartSetting, UsartSettingState, UsartSettingData>
     {
     }
+
+    [Export(typeof(IDeviceFactory))]
+    [DeviceFactoryMetadata(ModuleTypeEnum.AvrLed)]
+    public class LedFactory
+        : DeviceFactory<Led, LedState, LedData>
+    {}
 
     [Export(typeof(IDeviceFactory))]
     [DeviceFactoryMetadata(ModuleTypeEnum.AvrKernel)]

@@ -16,44 +16,44 @@ namespace RailroaderIO
 
             this.internalData_ = new ReadOnlyCollection<string>(data);
 
-            this.IsVisible = railroaderBoolParse(data [0]);
-            this.id = int.Parse(data [1]);
-            this.name = data [2];
-            this.sort = (Sort)Enum.Parse(typeof(Sort), data [3]);
+            this.IsVisible = railroaderBoolParse(data[0]);
+            this.id = int.Parse(data[1]);
+            this.name = data[2];
+            this.sort = (Sort)Enum.Parse(typeof(Sort), data[3]);
             //data[4];
-            this.StraightLength = float.Parse(data [5]);
-            this.CurveLength = float.Parse(data [6]);
-            this.CurveDegree = int.Parse(data [7]);
+            this.StraightLength = float.Parse(data[5]);
+            this.CurveLength = float.Parse(data[6]);
+            this.CurveDegree = float.Parse(data[7]);
             //data[8];
-            this.CornerPos1X = float.Parse(data [9]);
-            this.CornerPos1Y = float.Parse(data [10]);
-            this.CornerPos2X = float.Parse(data [11]);
-            this.CornerPos2Y = float.Parse(data [12]);
-            this.CornerPos3X = float.Parse(data [13]);
-            this.CornerPos3Y = float.Parse(data [14]);
-            this.UpperLeft_x = float.Parse(data [15]);
-            this.UpperLeft_y = float.Parse(data [16]);
-            this.BottomLeft_x = float.Parse(data [17]);
-            this.BottomLeft_y = float.Parse(data [18]);
-            this.BottomRight_x = float.Parse(data [19]);
-            this.BottomRight_y = float.Parse(data [20]);
-            this.UpperRight_x = float.Parse(data [21]);
-            this.UpperRight_y = float.Parse(data [22]);
-            this.BottomRight2_x = float.Parse(data [23]);
-            this.BottomRight2_y = float.Parse(data [24]);
-            this.UpperRight2_x = float.Parse(data [25]);
-            this.UpperRight2_y = float.Parse(data [26]);
-            this.CurveCenterPos_x = float.Parse(data [27]);
-            this.CurveCenterPos_y = float.Parse(data [28]);
-            this.CenterPos_x = float.Parse(data [29]);
-            this.CenterPos_y = float.Parse(data [30]);
+            this.CornerPos1X = float.Parse(data[9]);
+            this.CornerPos1Y = float.Parse(data[10]);
+            this.CornerPos2X = float.Parse(data[11]);
+            this.CornerPos2Y = float.Parse(data[12]);
+            this.CornerPos3X = float.Parse(data[13]);
+            this.CornerPos3Y = float.Parse(data[14]);
+            this.UpperLeft_x = float.Parse(data[15]);
+            this.UpperLeft_y = float.Parse(data[16]);
+            this.BottomLeft_x = float.Parse(data[17]);
+            this.BottomLeft_y = float.Parse(data[18]);
+            this.BottomRight_x = float.Parse(data[19]);
+            this.BottomRight_y = float.Parse(data[20]);
+            this.UpperRight_x = float.Parse(data[21]);
+            this.UpperRight_y = float.Parse(data[22]);
+            this.BottomRight2_x = float.Parse(data[23]);
+            this.BottomRight2_y = float.Parse(data[24]);
+            this.UpperRight2_x = float.Parse(data[25]);
+            this.UpperRight2_y = float.Parse(data[26]);
+            this.CurveCenterPos_x = float.Parse(data[27]);
+            this.CurveCenterPos_y = float.Parse(data[28]);
+            this.CenterPos_x = float.Parse(data[29]);
+            this.CenterPos_y = float.Parse(data[30]);
             //data[31];
             //data[32];
-            this.StartGradient = int.Parse(data [33]);
-            this.EndGradient = int.Parse(data [34]);
-            this.ThirdGradient = int.Parse(data [35]);
+            this.StartGradient = float.Parse(data[33]);
+            this.EndGradient = float.Parse(data[34]);
+            this.ThirdGradient = int.Parse(data[35]);
             //data[36];
-            this.CurveRadian = float.Parse(data [37]);
+            this.CurveRadian = float.Parse(data[37]);
             //data[38];
             //data[39];
             //data[40];
@@ -65,18 +65,18 @@ namespace RailroaderIO
             //data[46];
             //data[47];
             //data[48];
-            this.NeighborRail1Cnt = int.Parse(data [49]);
-            this.NeighborRail1 = int.Parse(data [50]);
-            this.NeighborRail2Cnt = int.Parse(data [51]);
-            this.NeighborRail2 = int.Parse(data [52]);
-            this.NeighborRail3Cnt = int.Parse(data [53]);
-            this.NeighborRail3 = int.Parse(data [54]);
-            this.IsElevated = railroaderBoolParse(data [55]);
+            this.NeighborRail1Cnt = int.Parse(data[49]);
+            this.NeighborRail1 = int.Parse(data[50]);
+            this.NeighborRail2Cnt = int.Parse(data[51]);
+            this.NeighborRail2 = int.Parse(data[52]);
+            this.NeighborRail3Cnt = int.Parse(data[53]);
+            this.NeighborRail3 = int.Parse(data[54]);
+            this.IsElevated = railroaderBoolParse(data[55]);
             //data[56];
             //data[57];
             //data[58];
-            this.Color = int.Parse(data [59]);
-            this.InternalId = int.Parse(data [60]);
+            this.Color = int.Parse(data[59]);
+            this.InternalId = int.Parse(data[60]);
 
         }
 
@@ -102,7 +102,7 @@ namespace RailroaderIO
 
         public float CurveLength { get; set; }
         public float StraightLength { get; set; }
-        public int CurveDegree { get; set; }
+        public float CurveDegree { get; set; }
 
         public float CornerPos1X { get; set; }
         public float CornerPos1Y { get; set; }
@@ -131,8 +131,8 @@ namespace RailroaderIO
         public float CenterPos_x { get; set; }
         public float CenterPos_y { get; set; }
 
-        public int StartGradient { get; set; }
-        public int EndGradient { get; set; }
+        public float StartGradient { get; set; }
+        public float EndGradient { get; set; }
         public int ThirdGradient { get; set; }
 
         public float CurveRadian { get; set; }

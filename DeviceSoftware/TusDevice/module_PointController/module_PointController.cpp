@@ -5,6 +5,7 @@
  *  Author: Administrator
  */ 
 
+#include "avr_base.hpp"
 #include "module_PointController.hpp"
 #include "PointModule.hpp"
 #include "PointConfig.hpp"

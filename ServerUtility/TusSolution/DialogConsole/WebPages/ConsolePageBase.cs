@@ -8,11 +8,10 @@ using DialogConsole.Features.Base;
 
 namespace DialogConsole.WebPages
 {
-    public abstract class ConsolePageBase : IConsolePage
+    public abstract class ConsolePageBase<T> : IConsolePage
     {
         [Import]
         public IFeatureParameters Param { get; set; }
-
         public string Query { get; set; }
 
         public void SetResponseParameter(string query)
@@ -20,10 +19,17 @@ namespace DialogConsole.WebPages
             Query = query;
         }
 
-        public abstract string GetJsonContent();
-
-        protected string GetJsonContent<T>(T obj, DataContractJsonSerializer ser)
+        protected virtual DataContractJsonSerializer JsonSerializer
         {
+            get { return new DataContractJsonSerializer(typeof (T)); }
+        }
+
+        public abstract T GetContent();
+
+        public string GetJsonContent()
+        {
+            var ser = this.JsonSerializer;
+            var obj = GetContent();
             using (var ms = new MemoryStream())
             using (var sr = new StreamReader(ms, Encoding.UTF8))
             {
@@ -31,16 +37,18 @@ namespace DialogConsole.WebPages
                 ms.Seek(0, SeekOrigin.Begin);
                 return sr.ReadToEnd();
             }
-
         }
 
-        protected string GetJsonContent<T>(T obj, IEnumerable<Type> additoinalTypes = null)
+        public abstract void ApplyJsonRequest(T obj);
+
+        public void ApplyJsonContent(string content)
         {
-            // 実行時型はDataContractSerializerは処理できない
-            var ser = new DataContractJsonSerializer(typeof(T), additoinalTypes ?? new Type[] { });
-            return GetJsonContent<T>(obj, ser);
+            var ser = this.JsonSerializer;
+            using (var st = new MemoryStream(Encoding.UTF8.GetBytes(content)))
+            {
+                var deserialized = ser.ReadObject(st);
+                this.ApplyJsonRequest((T) deserialized);
+            }   
         }
-
-        public abstract void ApplyJsonRequest();
     }
 }

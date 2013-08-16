@@ -201,43 +201,6 @@ namespace TestProject
 
         //}
 
-        [TestMethod()]
-        public void PrepareVehiclesTest()
-        {
-            BlockSheet target = sample_sheet;
-
-            var serv = sample_server;
-            var log = new List<IDeviceState<IPacketDeviceData>>();
-
-            serv.GetDispatcher()
-                .Subscribe(state => log.Add(state));
-
-            var sht = new BlockSheet(sample_loop_sheet, serv);
-            var route = new Route(new RouteOrder(sht, new[] { "AT1", "AT2", "AT3", "AT4" }));
-            var cmd = new CommandInfo()
-            {
-                Route = route,
-                Speed = 0.5f
-            };
-
-            //set dummy train
-            //var train = new Mock<SensorDetector>();
-            //train.Setup(e => e.IsDetected).Returns(() => true);
-
-            //sht.GetBlock("AT3").Detector = train.Object;
-
-            if (!serv.IsLooping)
-                serv.LoopStart(new NewThreadScheduler());
-
-            sht.ChangeDetectingMode(); // todo: value check
-            System.Threading.Thread.Sleep(2000);
-            sht.InquiryStatusOfAllMotors();
-            System.Threading.Thread.Sleep(2000);
-
-            sht.PrepareVehicles();
-
-        }
-
         //[TestMethod]
         //public void VehiclesTest()
         //{

@@ -13,6 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.Composition;
 using DialogConsole.Features.Base;
+using DialogConsole.Properties;
 using DialogConsole.WebPages;
 using Tus.Communication.Device.AvrComposed;
 using Tus.TransControl.Base;
@@ -39,7 +40,7 @@ namespace DialogConsole.Features
             this.StartHttpObservable();
         }
 
-        public void ProcessResponse(HttpListenerRequest req, HttpListenerResponse res)
+        public void ProcessResponseOrReqest(HttpListenerRequest req, HttpListenerResponse res)
         {
             var container = this.Container;
             var exports = this.Pages;
@@ -47,9 +48,29 @@ namespace DialogConsole.Features
             var query = req.Url.PathAndQuery;
             var page = exports.First(p => query.Contains(p.Metadata.Query));
 
-            page.Value.SetResponseParameter(query);
-            var content = page.Value.GetJsonContent();
-            FillResponse(res, content);
+            if (req.HttpMethod == "GET")
+            {
+                page.Value.SetResponseParameter(query);
+                var content = page.Value.GetJsonContent();
+                FillResponse(res, content);
+            }
+            else if (req.HttpMethod == "POST")
+            {
+                try
+                {
+                    using (var sr = new StreamReader(req.InputStream))
+                        page.Value.ApplyJsonContent(sr.ReadToEnd());
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                }
+                finally
+                {
+                    res.Close();
+                }
+            }
+
         }
 
         private DateTime _updatebefore = DateTime.MinValue;
@@ -67,14 +88,14 @@ namespace DialogConsole.Features
                     var recvinfo = (VehicleInfoReceived)cnt.ReadObject(req.InputStream);
                     var vh = this.Param.UsingLayout.Vehicles.First(v => v.Name == recvinfo.Name);
 
-                    if (recvinfo.Speed != null)
+                    if (recvinfo.Speed != null && float.Parse(recvinfo.Speed) != vh.Speed)
                     {
-                        var changeto = float.Parse(recvinfo.Speed) / 100.0f;
+                        var changeto = float.Parse(recvinfo.Speed);
                         Console.WriteLine("{0} is changing speed from {1} to {2}", vh.Name, vh.Speed, changeto);
 
                         vh.Speed = changeto;
                     }
-                    if (recvinfo.RouteName != null)
+                    if (recvinfo.RouteName != null && recvinfo.RouteName != vh.AssociatedRoute.RouteOrder.Name)
                     {
                         Console.WriteLine("{0} is changing route from {1} to {2}", vh.Name, vh.AssociatedRoute.RouteOrder.Name,
                                           recvinfo.RouteName);
@@ -83,6 +104,17 @@ namespace DialogConsole.Features
                         {
                             vh.ChangeRoute(route);
                         }
+                    }
+                    if (recvinfo.Accelation != null && float.Parse(recvinfo.Accelation) != vh.Accelation)
+                    {
+                        var changeto = float.Parse(recvinfo.Accelation);
+                        Console.WriteLine("{0} is changing accelation from {1} to {2}", vh.Name, vh.Accelation, changeto);
+
+                        vh.Accelation = changeto;
+                    }
+                    if (recvinfo.Timeout != null)
+                    {
+
                     }
                     if (recvinfo.Halts != null)
                     {
@@ -125,7 +157,12 @@ namespace DialogConsole.Features
                 {
                     using (var ms = new MemoryStream())
                     {
-                        var cnt = new DataContractJsonSerializer(typeof(IEnumerable<Vehicle>), new[] {typeof(ControlUnit), typeof(Switch), typeof(Motor), typeof(UsartSensor), typeof(MemoryState) });
+                        var cnt = new DataContractJsonSerializer(typeof(IEnumerable<Vehicle>),
+                            new[]
+                            {
+                                typeof (ControlUnit), typeof (Switch), typeof (Motor), typeof (UsartSensor),
+                                typeof (MemoryState)
+                            });
                         var vehis = this.Param.UsingLayout.Vehicles.ToArray();
 
                         cnt.WriteObject(ms, vehis);
@@ -136,6 +173,10 @@ namespace DialogConsole.Features
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.ToString());
+                }
+                finally
+                {
+                    res.Close();
                 }
             }
         }
@@ -158,7 +199,7 @@ namespace DialogConsole.Features
             if (this._httpListener == null)
             {
                 var listener = new HttpListener();
-                const string prefix = "http://+:8012/";
+                string prefix = Settings.Default.http;
 
                 listener.Prefixes.Add(prefix);
                 this._httpListener = listener;
@@ -182,7 +223,7 @@ namespace DialogConsole.Features
                                                                            FillVehicleInfoResponse(r);
                                                                            break;
                                                                        default:
-                                                                           //this.ProcessResponse(req, res);
+                                                                           this.ProcessResponseOrReqest(req, res);
                                                                            break;
                                                                    }
                                                                });
@@ -197,6 +238,12 @@ namespace DialogConsole.Features
 
         [DataMember(IsRequired = false)]
         public string Speed;
+
+        [DataMember(IsRequired = false)]
+        public string Accelation;
+
+        [DataMember(IsRequired = false)]
+        public string Timeout;
 
         [DataMember(IsRequired = false)]
         public string RouteName;

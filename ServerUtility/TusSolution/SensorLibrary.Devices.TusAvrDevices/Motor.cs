@@ -55,24 +55,34 @@ namespace Tus.Communication.Device.AvrComposed
             }
         }
 
+        private object lock_memory = new object();
         [IgnoreDataMember]
         public MotorMemoryStateEnum CurrentMemory
         {
             get
             {
-                if (!(DeviceKernel.CurrentState.Command == KernelCommand.MemoryState))
-                    return MotorMemoryStateEnum.Unknown;
+                lock (lock_memory)
+                {
+                    if (!(DeviceKernel.CurrentState.Command == KernelCommand.MemoryState))
+                        return MotorMemoryStateEnum.Unknown;
 
-                return (MotorMemoryStateEnum)DeviceKernel.CurrentState.Data.Content1;
+                    return (MotorMemoryStateEnum)DeviceKernel.CurrentState.Data.Content1;
+
+                }
             }
             set
             {
-                var memstate = new MemoryState((int)value);
+                lock (lock_memory)
+                {
+                    var memstate = new MemoryState((int)value);
 
-                MotorState currentState = CurrentState;
-                if (currentState != null) currentState.TargetMemory = value;
+                    MotorState currentState = CurrentState;
+                    if (currentState != null) currentState.TargetMemory = value;
 
-                DeviceKernel.CurrentState = memstate;
+                    DeviceKernel.CurrentState = memstate;
+                    //if (currentState != null) Console.WriteLine(currentState.ToString());
+
+                }
             }
         }
 
@@ -132,7 +142,7 @@ namespace Tus.Communication.Device.AvrComposed
             //ストップウォッチが動いていない場合，
             if ((CurrentMemory != MotorMemoryStateEnum.Waiting ||
                 _before_sending != MotorMemoryStateEnum.Waiting)
-                ||(!_before_sending_time.IsRunning))
+                || (!_before_sending_time.IsRunning))
             {
                 // send packet changing memory
                 statelist.Add(Kernel.MemoryState(DeviceID, new MemoryState((int)CurrentMemory)));

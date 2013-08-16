@@ -19,7 +19,7 @@ namespace Tus.TransControl.Base
     {
         Block ParentBlock { get; }
         TInfo Info { get; }
-        TDev Device { get; }
+        IEnumerable<TDev> Devices { get; }
         bool IsNeededExecution { get; set; }
         void ExecuteCommand();
         void ApplyCommand(CommandFactory factory);
@@ -33,28 +33,32 @@ namespace Tus.TransControl.Base
     {
         public Block ParentBlock { get; private set; }
         public TInfo Info { get; private set; }
-        public TDev Device { get; private set; }
+        public IEnumerable<TDev> Devices { get; private set; }
 
         public DeviceEffector(TInfo info, Block block)
         {
             this.Info = info;
             this.ParentBlock = block;
 
-            this.Device = new TDev()
-            {
-                DeviceID = info.Address,
-                ReceivingServer = this.ParentBlock.Sheet.Server,
-            };
+            this.Devices = info.Addresses.Select(id => new TDev()
+                                                       {
+                                                           DeviceID = id,
+                                                           ReceivingServer = this.ParentBlock.Sheet.Server,
+                                                       }).ToArray();
 
-            this.Device.Observe(block.Sheet.Dispatcher);
+
+            this.Devices.ForEach(dev => dev.Observe(block.Sheet.Dispatcher));
             this.IsNeededExecution = false;
         }
 
         private DateTime before_send;
         public void ExecuteCommand()
         {
-            this.Device.ReceivingServer = ParentBlock.Sheet.Server;
-            this.Device.SendState();
+            this.Devices.ForEach(dev =>
+                                 {
+                                     dev.ReceivingServer = this.ParentBlock.Sheet.Server;
+                                     dev.SendState();
+                                 });
             this.before_send = DateTime.Now;
 
             this.IsNeededExecution = false;
@@ -198,11 +202,13 @@ namespace Tus.TransControl.Base
             {
                 {mode, CreateMotorState(MotorDirection.Positive, duty)}
             };
+            this.Devices.ForEach(dev =>
+                                 {
+                                     dev.States = states;
+                                     dev.CurrentMemory = mode;
+                                 });
 
-            this.Device.States = states;
-            this.Device.CurrentMemory = mode;
-
-            this.Device.SendState();
+            PacketExtension.CreatePackedPacket(this.Devices).Send(this.ParentBlock.Sheet.Server);
         }
 
         public void SetNoEffectMode()
@@ -213,10 +219,13 @@ namespace Tus.TransControl.Base
                 {mode, CreateNoEffectState()}
             };
 
-            this.Device.States = states;
-            this.Device.CurrentMemory = mode;
+            this.Devices.ForEach(dev =>
+                                 {
+                                     dev.States = states;
+                                     dev.CurrentMemory = mode;
+                                 });
 
-            this.Device.SendState();
+            PacketExtension.CreatePackedPacket(this.Devices).Send(this.ParentBlock.Sheet.Server);
         }
 
         private MotorState _before_mtr_state;
@@ -248,7 +257,7 @@ namespace Tus.TransControl.Base
                     var waitingblock = this.ParentBlock.BeforeBlockHavingMotor(cmd.Route);
 
                     states.Add(MotorMemoryStateEnum.Controlling, CreateMotorState(cmd));
-                    states.Add(MotorMemoryStateEnum.Waiting, CreateWaitingState(polar, waitingblock.MotorEffector.Device));
+                    states.Add(MotorMemoryStateEnum.Waiting, CreateWaitingState(polar, waitingblock.MotorEffector.Devices.First()));
                     //if (this.Device.States.ContainsKey(MotorMemoryStateEnum.Controlling) &&
                     //    this.Device.States[MotorMemoryStateEnum.Controlling].Duty == cntstate.Duty)
                     //{
@@ -274,8 +283,11 @@ namespace Tus.TransControl.Base
                     throw new InvalidOperationException("invalid mode applied");
             }
 
-            this.Device.CurrentMemory = cmd.MotorMode;
-            this.Device.States = states;
+            this.Devices.ForEach(dev =>
+                                 {
+                                     dev.States = states;
+                                     dev.CurrentMemory = cmd.MotorMode;
+                                 });
 
             if (_before_state != cmd.MotorMode)
                 this.IsNeededExecution = true;
@@ -305,7 +317,7 @@ namespace Tus.TransControl.Base
             }
         }
 
-        private PointStateEnum _before_position = PointStateEnum.Any;
+        //private PointStateEnum _before_position = PointStateEnum.Any;
         public override void ApplyCommand(CommandFactory factory)
         {
             if (this.IsNeededExecution)
@@ -317,26 +329,33 @@ namespace Tus.TransControl.Base
 
             var segment = cmd.Route.RouteOrder.GetSegment(this.ParentBlock);
 
-            if ((segment.IsFromAny || this.Info.DirStraight.Any(i => i.From.Name == segment.From.Name))
-                    && (segment.IsToAny || this.Info.DirStraight.Any(i => i.To.Name == segment.To.Name)))
-            {
-                this.Device.CurrentState.Position = PointStateEnum.Straight;
-            }
-            else if ((segment.IsFromAny || this.Info.DirCurved.Any(i => i.From.Name == segment.From.Name))
-                        && (segment.IsToAny || this.Info.DirCurved.Any(i => i.To.Name == segment.To.Name)))
-            {
-                this.Device.CurrentState.Position = PointStateEnum.Curve;
-            }
-            else
-            {
-                this.Device.CurrentState.Position = PointStateEnum.Any;
-            }
-            //}
+            this.Devices.ForEach(dev =>
+                                 {
+                                     if ((segment.IsFromAny ||
+                                          this.Info.DirStraight.Any(i => i.From.Name == segment.From.Name))
+                                         &&
+                                         (segment.IsToAny ||
+                                          this.Info.DirStraight.Any(i => i.To.Name == segment.To.Name)))
+                                     {
+                                         dev.CurrentState.Position = PointStateEnum.Straight;
+                                     }
+                                     else if ((segment.IsFromAny ||
+                                               this.Info.DirCurved.Any(i => i.From.Name == segment.From.Name))
+                                              &&
+                                              (segment.IsToAny ||
+                                               this.Info.DirCurved.Any(i => i.To.Name == segment.To.Name)))
+                                     {
+                                         dev.CurrentState.Position = PointStateEnum.Curve;
+                                     }
+                                     else
+                                     {
+                                         dev.CurrentState.Position = PointStateEnum.Any;
+                                     }
+                                 });
+            //if (_before_position != this.Device.CurrentState.Position)
+            //    this.IsNeededExecution = true;
 
-            if (_before_position != this.Device.CurrentState.Position)
-                this.IsNeededExecution = true;
-
-            _before_position = this.Device.CurrentState.Position;
+            //_before_position = this.Device.CurrentState.Position;
         }
     }
 

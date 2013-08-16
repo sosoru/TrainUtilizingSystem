@@ -17,6 +17,8 @@ namespace Tus.Communication.Device.AvrComposed
             : base()
         {
             this.Data = new SwitchData();
+            this.Data.DeadTime = 200;
+            this.Data.ChangingTime = 20;
         }
 
         //unit : msec

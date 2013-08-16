@@ -6,7 +6,6 @@ using System.ComponentModel;
 using System.Collections.ObjectModel;
 using System.Windows;
 
-using SensorLibrary;
 using System.Data.Entity;
 using RouteVisualizer.Views;
 using RouteVisualizer.ViewModels;
@@ -19,10 +18,7 @@ using Livet.Messaging.File;
 using Livet.Messaging.Window;
 
 using RouteVisualizer.Models;
-
-using SensorViewLibrary;
 using SensorViewLibrary.ViewModels;
-
 namespace RouteVisualizer.RailEditor.ViewModels
 {
     public class PathDataViewModel

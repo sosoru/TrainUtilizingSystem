@@ -10,6 +10,7 @@
 #define MOTORPROCESS_H_
 
 #include <avr/io.h>
+#include <avr/delay.h>
 #include <mtr_packet.h>
 #include <PackPacket.hpp>
 #include "Pulse.hpp"
@@ -48,6 +49,7 @@ namespace MotorController
 		float internal_duty;
 		
 		uint8_t m_voltage;
+		Direction m_before_dir;
 		
 		MtrControllerPacket m_buffer_packet[MTRPROCESS_MEM_CAPACITY];
 		uint8_t m_buffer_index;
@@ -55,7 +57,7 @@ namespace MotorController
 		
 		MotorProcess()
 		: fb_bef(0.0f), fb_bef2(0.0f), fb_cur(0.0f), internal_duty(0.0f)
-		, m_voltage(0), m_buffer_index(0)
+		, m_voltage(0), m_buffer_index(0), m_before_dir(Standby)
 		{
 			MtrRunningState *pstate = (MtrRunningState*)CurrentPacket()->State;
 			
@@ -101,10 +103,18 @@ namespace MotorController
 				AssociatedMotor::SetNegative();
 				break;
 				case Standby:
-				default:
 				AssociatedMotor::SetStandby();
 				break;
+				default:
+					return;
+				break;
 			}
+			
+			if(dir != m_before_dir && (dir == Standby || m_before_dir == Standby))
+			{
+				_delay_ms(25);
+			}
+			m_before_dir = dir;
 		}
 		
 		uint8_t MeisureCurrent()

@@ -7,8 +7,6 @@ using System.Windows;
 using System.Windows.Media;
 using RouteVisualizer;
 using RouteVisualizer.EF;
-using System.Reactive.Linq;
-
 using Livet;
 
 namespace RouteVisualizer.Models

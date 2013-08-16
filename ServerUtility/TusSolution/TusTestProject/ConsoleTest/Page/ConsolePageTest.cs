@@ -46,15 +46,6 @@ namespace TestProject.ConsoleTest.Composition
         }
 
         [TestMethod]
-        public void GetVehicleContextTest()
-        {
-            var page = new VehiclePage();
-            page.Param = this.SampleParams;
-
-            var result = page.GetJsonContent();
-        }
-
-        [TestMethod]
         public void GetMotorContextTest()
         {
             var page = new MotorPage();

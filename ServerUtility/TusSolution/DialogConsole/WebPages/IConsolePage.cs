@@ -8,5 +8,6 @@ namespace DialogConsole.WebPages
         IFeatureParameters Param { get; set; }
         void SetResponseParameter(string query);
         string GetJsonContent();
+        void ApplyJsonContent(string query);
     }
 }

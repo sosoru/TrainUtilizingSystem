@@ -75,9 +75,9 @@ namespace DialogConsole
         public IObservable<DevicePacket> ReceivingPacketPipeline { get; set; }
 
         [ImportingConstructor]
-        public DialogConsoleParameters(SheetFactory fact, RouteOrderListFactory rtfact)
+        public DialogConsoleParameters(SheetFactory fact, RouteOrderListFactory rtfact, IlluminativeSheetFactory ilfact)
         {
-            UsingLayout = new Layout(rtfact, fact.Create());
+            UsingLayout = new Layout(rtfact, fact.Create(), ilfact.Create());
             rtfact.Sheet = this.UsingLayout.Sheet;
 
             this.UsingLayout.Vehicles = new List<Vehicle>();
@@ -132,41 +132,27 @@ namespace DialogConsole
             this.Param.UsingLayout.Sheet.AssociatedScheduler = this.Param.SchedulerPacketProcessing;
 
             this.Param.SendingPacketPipeline = this.Param.UsingLayout.Sheet.Server.SendingObservable;
-            //.ObserveOn(this.Param.SchedulerPacketProcessing);
-
-            //this.Param.Sheet.Server.SendingObservable
             this.Param.SendingPacketPipeline
                 .ObserveOn(this.Param.SchedulerPacketProcessing)
-                .SubscribeOn(Scheduler.Default)
+                .SubscribeOn(Scheduler.NewThread)
                 .Repeat()
-                //.SelectMany(g => g.ExtractPackedPacket())
-                //.Do(g => this.LogWriterSend.WriteLine(string.Format("({0}.{1}) - {3} : sending {2}",
-                //                                                    DateTime.Now.ToLongDateString() +
-                //                                                    DateTime.Now.ToLongTimeString(),
-                //                                                    DateTime.Now.Millisecond,
-                //                                                    g.ToString(),
-                //                                                    this.Param.UsingLayout.Sheet.Server.QueuingCount
-                //                                          )))
-                //.Do(g => this.LogWriterSend.Flush())
                 .Subscribe();
+
+            ////sync leds
+            //Observable.Defer(() => Observable.Start(this.Param.UsingLayout.Illumination.SyncLedDuty))
+            //    .Delay(TimeSpan.FromMilliseconds(1000)).Repeat().Subscribe();
+            ////sync switches
+            //Observable.Defer(() => Observable.Start(this.Param.UsingLayout.Sheet.SyncSwitches))
+            //    .Delay(TimeSpan.FromSeconds(1)).Repeat().Subscribe();
 
             var timer = Observable.Interval(TimeSpan.FromMilliseconds(20), Scheduler.Default);
 
             this.Param.ReceivingPacketPipeline = Observable.Defer(() => this.Param.UsingLayout.Sheet.Server.ReceivingObservable)
                                                            .ObserveOn(this.Param.SchedulerPacketProcessing)
                                                            .Repeat()
-            .SubscribeOn(Scheduler.Default)
+            .SubscribeOn(Scheduler.NewThread)
                                                            .Zip(timer, (v, _) => v);
             this.Param.ReceivingPacketPipeline.SelectMany(v => v.ExtractPackedPacket())
-                //.Do(g => this._logWriterRecv.WriteLine(string.Format("({0}.{1}) : recving {2}",
-                //                                                     DateTime.Now
-                //                                                             .ToLongDateString() +
-                //                                                     DateTime.Now
-                //                                                             .ToLongTimeString(),
-                //                                                     DateTime.Now.Millisecond,
-                //                                                     g.ToString()
-                //                                           )))
-                //                                           .Do(g => this._logWriterRecv.Flush())
             .Subscribe();
 
             this.Param.UsingLayout.Sheet.Effect(new CommandFactory()

@@ -5,11 +5,6 @@ using System.Text;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
 using System.Windows;
-
-using SensorLibrary.Devices;
-using SensorLibrary.Devices.PicUsbDevices;
-using SensorLibrary.Packet;
-
 using System.Data.Entity;
 using RouteVisualizer.Views;
 using RouteVisualizer.ViewModels;
@@ -20,11 +15,10 @@ using Livet.Command;
 using Livet.Messaging;
 using Livet.Messaging.File;
 using Livet.Messaging.Window;
-
-using RouteVisualizer.Models;
-using SensorViewLibrary;
 using SensorViewLibrary.ViewModels;
 
+using RouteVisualizer.Models;
+using Tus.Communication;
 namespace RouteVisualizer.RailEditor.ViewModels
 {
     public class RailDataViewModel
@@ -174,6 +168,7 @@ namespace RouteVisualizer.RailEditor.ViewModels
                 parameter.RestoreObject(cache);
             }
         }
+
         #endregion
 
 

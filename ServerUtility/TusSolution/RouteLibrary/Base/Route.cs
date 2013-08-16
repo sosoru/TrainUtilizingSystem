@@ -13,13 +13,18 @@ namespace Tus.TransControl.Base
     [DataContract]
     public class ControlUnit
     {
+        public ControlUnit()
+        {
+            this.Blocks = new List<Block>();
+        }
+
         [DataMember]
         public IList<Block> Blocks { get; set; }
 
         [DataMember]
         public Block ControlBlock
         {
-            get { return Blocks.First(b => b.HasMotor); }
+            get { return Blocks.FirstOrDefault(b => b.HasMotor); }
             set { throw new InvalidOperationException(); }
         }
 
@@ -45,32 +50,69 @@ namespace Tus.TransControl.Base
             get { return !this.IsBlocked; }
         }
 
+        private object lock_unitlock = new object();
+        private bool unlockedIsBlocked
+        {
+            get
+            {
+                return Blocks.Any(b =>
+                {
+                    lock (b.lock_islocked)
+                    {
+                        return b.IsLocked;
+                    }
+                });
+
+            }
+        }
         [DataMember]
         public bool IsBlocked
         {
-            get { return Blocks.Any(b => b.IsLocked); }
+            get
+            {
+                lock (lock_unitlock)
+                {
+                    return this.unlockedIsBlocked;
+                }
+            }
             set { throw new InvalidOperationException(); }
         }
 
         public void Allocate()
         {
-            if (this.IsBlocked)
-                throw new InvalidOperationException("Allocate() tried to allocate a blocked block");
-            Blocks.ForEach(b =>
-                               {
-                                   b.IsLocked = true;
-                               });
+            lock (this.lock_unitlock)
+            {
+                if (this.unlockedIsBlocked)
+                    throw new InvalidOperationException("Allocate() tried to allocate a blocked block");
+
+                Blocks.ForEach(b =>
+                                   {
+                                       lock (b.lock_islocked)
+                                       {
+                                           b.IsLocked = true;
+
+                                       }
+                                   });
+
+            }
         }
 
         public void Release()
         {
-            if (!this.IsBlocked)
-                throw new InvalidOperationException("Release() tried to relase a released block");
-            Blocks.ForEach(b =>
-                                {
+            lock (this.lock_unitlock)
+            {
+                if (!this.unlockedIsBlocked)
+                    throw new InvalidOperationException("Release() tried to relase a released block");
+                Blocks.ForEach(b =>
+                                    {
+                                        lock (b.lock_islocked)
+                                        {
+                                            b.IsLocked = false;
 
-                                    b.IsLocked = false;
-                                });
+                                        }
+                                    });
+
+            }
         }
     }
 
@@ -129,6 +171,19 @@ namespace Tus.TransControl.Base
         /// RouteOrderを構成するControlUnit．代入不可・変更不可
         /// </summary>
         public IReadOnlyList<ControlUnit> Units { get; private set; }
+
+        [DataMember]
+        public IEnumerable<ControlUnit> EnumeratedUnits
+        {
+            get
+            {
+                return Units;
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
 
         //todo : move logic to ControlUnit
         private IEnumerable<ControlUnit> locked_blocks
@@ -499,18 +554,18 @@ namespace Tus.TransControl.Base
             set { throw new NotImplementedException(); }
         }
 
-        public ControlUnit WaitingUnit
-        {
-            get
-            {
-                //if (this.RouteOrder.Polar == BlockPolar.Positive)
-                return (this.ReservedUnit ?? this.HeadContainer).Unit;
-                //else if (this.RouteOrder.Polar == BlockPolar.Negative)
-                //    return this.LockedUnits.Last();
-                //else
-                //    throw new InvalidOperationException("極性が不明");
-            }
-        }
+        //public ControlUnit WaitingUnit
+        //{
+        //    get
+        //    {
+        //        //if (this.RouteOrder.Polar == BlockPolar.Positive)
+        //        return (this.ReservedUnit ?? this.HeadContainer).Unit;
+        //        //else if (this.RouteOrder.Polar == BlockPolar.Negative)
+        //        //    return this.LockedUnits.Last();
+        //        //else
+        //        //    throw new InvalidOperationException("極性が不明");
+        //    }
+        //}
 
         #region Initialize
 

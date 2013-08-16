@@ -6,8 +6,11 @@ using System.Text;
 using System.ComponentModel;
 
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Markup;
 using System.Windows.Media;
-
+using System.Windows.Shapes;
+using System.Xml;
 using Livet;
 using Livet.Command;
 using Livet.Messaging;
@@ -53,7 +56,7 @@ namespace RouteVisualizer.ViewModels
 
             ViewModelHelper.BindNotifyChanged(this._model, this, (sender, e) =>
                 {
-                    this.RaisePropertyChanged(e.PropertyName); 
+                    this.RaisePropertyChanged(e.PropertyName);
                 });
 
             this.Rails = ViewModelHelper.CreateReadOnlyNotifyDispatcherCollection(this._model.Rails,
@@ -98,6 +101,21 @@ namespace RouteVisualizer.ViewModels
                     .ForEach(r => dr.Children.Add(new GeometryDrawing(Brushes.Transparent, new Pen(Brushes.Black, 1.0), r.CurrentGeometry)));
 
             this.CurrentDrwaing = dr;
+            using (var xw = new XmlTextWriter("rail.svg", Encoding.UTF8))
+            {
+                xw.WriteStartDocument();
+                xw.WriteStartElement("svg");
+                xw.WriteAttributeString("viewBox", "0 0 2000 2000");
+                foreach (var r in this.Rails)
+                {
+                    xw.WriteStartElement("g");
+                    r.WriteSvgGeometry(xw);
+                    xw.WriteEndElement();
+                }
+                xw.WriteEndElement();
+                xw.WriteEndDocument();
+            }
+
         }
 
 
@@ -124,7 +142,7 @@ namespace RouteVisualizer.ViewModels
                 return this.Rails.IndexOf(this.SelectedRail).ToString();
             }
         }
-      
+
 
         Size _DrawingSize;
 
@@ -140,7 +158,7 @@ namespace RouteVisualizer.ViewModels
                 RaisePropertyChanged("DrawingSize");
             }
         }
-      
+
 
     }
 }

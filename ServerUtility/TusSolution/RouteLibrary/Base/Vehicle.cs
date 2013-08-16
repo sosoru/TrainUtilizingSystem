@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Serialization;
 using Tus.Communication.Device.AvrComposed;
@@ -35,12 +36,12 @@ namespace Tus.TransControl.Base
 
         public float Caution
         {
-            get { return this.CurrentSpeed; }
+            get { return this.CurrentSpeed * 0.75f; }
         }
 
         public float Stop
         {
-            get { return this.CurrentSpeed; }
+            get { return this.CurrentSpeed * 0.3f; }
         }
 
         public float CurrentSpeed
@@ -85,13 +86,22 @@ namespace Tus.TransControl.Base
             if (v.IsStopped || !v.AssociatedRoute.IsReserving)
                 return false;
 
-            ControlUnit waitingunit = v.AssociatedRoute.WaitingUnit;
+            ControlUnit waitingunit = v.AssociatedRoute.ReservedUnit.Unit;
 
-            //IsBlockedが変化してから500ミリ秒は待機
-            if (waitingunit.ControlBlock.ElaspedMilisecondsFromBlockingChanged < 500)
+            //IsBlockedが変化してから200ミリ秒は待機
+            if (waitingunit.ControlBlock.ElaspedMilisecondsFromBlockingChanged < 200)
                 return false;
 
-            var detected = waitingunit.ControlBlock.IsMotorDetectingTrain;
+            var mtr = (Motor)waitingunit.ControlBlock.Devices.First();
+            var detected = v.AssociatedRoute.RouteOrder.Polar == BlockPolar.Positive
+                ? mtr.CurrentMemory == MotorMemoryStateEnum.Controlling
+                : mtr.CurrentMemory == MotorMemoryStateEnum.Locked;
+
+            if (v.AssociatedRoute.RouteOrder.Polar == BlockPolar.Negative)
+            {
+                Console.WriteLine(mtr.CurrentMemory);
+            }
+
             return detected;
         }
 
@@ -120,7 +130,7 @@ namespace Tus.TransControl.Base
             Sheet = sht;
             AssociatedRoute = new Route(rt);
 
-            Length = 1;
+            Length = 2;
             Accelation = 0.1f;
             Halt = new List<Halt>();
             Predicators = new List<IRouteLockPredicator>();
@@ -239,6 +249,13 @@ namespace Tus.TransControl.Base
             Run(0.0f, currentpos);
         }
 
+        public void RunRelease()
+        {
+            while (AssociatedRoute.LockNextUnit()) ;
+            var cmdfact = CreateBlockageReleaseCommand(() => this.speedfactry.Stop);
+            Sheet.Effect(cmdfact, AssociatedRoute.RouteOrder.Blocks.ToList().Distinct());
+        }
+
         public void RunIfIgnored(float spd)
         {
             var spdfact = this.speedfactry;
@@ -284,6 +301,11 @@ namespace Tus.TransControl.Base
                 RunIfIgnored(Speed);
                 return;
             }
+            if (ReleaseBlockage)
+            {
+                RunRelease();
+                return;
+            }
 
             if (ShouldHalt)
             {
@@ -320,21 +342,22 @@ namespace Tus.TransControl.Base
             {
                 this.AssociatedRoute.UnReserveHead();
                 cmdfactory = CanHalt
-                                 ? CreateHaltCommand(spdfactory)
-                                 : CreateZeroCommand(spdfactory);
+                    ? CreateHaltCommand(spdfactory)
+                    : CreateZeroCommand(spdfactory);
             }
             else
             {
                 int distance = 1; // stops
+                //neighbor check
                 try
                 {
+                    //this.AssociatedRoute.UnReserveHead();
                     this.AssociatedRoute.ReserveHead();
-                    distance = AssociatedRoute.ReservedUnit.GetDistanceOfBlockedUnit(4);
                 }
                 catch (InvalidOperationException)
                 {
                 }
-
+                distance = AssociatedRoute.ReservedUnit.GetDistanceOfBlockedUnit(4);
                 if (distance == 1)
                 {
                     cmdfactory = CanHalt
@@ -354,7 +377,7 @@ namespace Tus.TransControl.Base
                     cmdfactory = CreateNthCommand(spdfactory);
                 }
             }
-            Sheet.Effect(cmdfactory, AssociatedRoute.LockedBlocks.Concat(lastlockedblocks).Distinct());
+            Sheet.Effect(cmdfactory, AssociatedRoute.LockedBlocks);
         }
 
         #region "CreateCommandMethods"
@@ -370,10 +393,10 @@ namespace Tus.TransControl.Base
                                        };
                          ControlUnit[] lockedunits =
                              AssociatedRoute.LockedUnits.Except(new[] { AssociatedRoute.ReservedUnit.Unit }).ToArray();
-                         Block cntblk = (cmd.Route.RouteOrder.Polar == BlockPolar.Positive)
-                                            ? lockedunits.First().ControlBlock
-                                            : lockedunits.Last().ControlBlock;
                          Block waitblk = AssociatedRoute.ReservedUnit.Unit.ControlBlock;
+                         Block cntblk = (cmd.Route.RouteOrder.Polar == BlockPolar.Positive)
+                                             ? lockedunits.First().ControlBlock
+                                             : lockedunits.Last().ControlBlock;
 
                          if (blk == cntblk)
                          // lockedunits[lockedunits.Length - 2].ControlBlock)
@@ -420,6 +443,11 @@ namespace Tus.TransControl.Base
                              cmd.MotorMode = MotorMemoryStateEnum.Controlling;
                              cmd.Speed = cntspdFactory();
                          }
+                         else if (lockedunits.Any(u => u.ControlBlock.Name == blk.Name))
+                         {
+                             cmd.MotorMode = MotorMemoryStateEnum.Locked;
+                             cmd.Speed = 0.0f;
+                         }
                          else
                          {
                              cmd.MotorMode = MotorMemoryStateEnum.NoEffect;
@@ -445,6 +473,23 @@ namespace Tus.TransControl.Base
 
                          return cmd;
                      });
+            return new CommandFactory { CreateCommand = fun };
+        }
+
+        private CommandFactory CreateBlockageReleaseCommand(Func<float> cntspdfact)
+        {
+            var fun = new Func<Block, CommandInfo>
+            (blk =>
+                 {
+                     var cmd = new CommandInfo
+                                   {
+                                       Route = AssociatedRoute,
+                                       Speed = cntspdfact(),
+                                       MotorMode = MotorMemoryStateEnum.Locked
+                                   };
+                     return cmd;
+                 }
+            );
             return new CommandFactory { CreateCommand = fun };
         }
 
@@ -514,5 +559,7 @@ namespace Tus.TransControl.Base
         }
 
         #endregion
+
+        public bool ReleaseBlockage { get; set; }
     }
 }

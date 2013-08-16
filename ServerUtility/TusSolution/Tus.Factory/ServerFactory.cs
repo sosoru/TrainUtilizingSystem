@@ -19,8 +19,12 @@ namespace Tus.Factory
     [Export]
     public class ServerFactory : FactoryBase<PacketServer>
     {
+        private PacketServer _cache;
         public override PacketServer Create()
         {
+            if (_cache != null)
+                return _cache; 
+
             var ipbase = IPAddress.Parse(this.ApplicationSettings.IpSegment);
             var ipmask = IPAddress.Parse(this.ApplicationSettings.IpMask);
 
@@ -33,6 +37,7 @@ namespace Tus.Factory
             var serv = new PacketServer();
             serv.Controller = io;
 
+            this._cache = serv;
             return serv;
         }
     }

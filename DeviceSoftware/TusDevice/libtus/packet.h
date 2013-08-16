@@ -24,6 +24,7 @@
 #define MODULETYPE_SWITCH	0x13
 #define MODULETYPE_UART 0x14
 #define MODULETYPE_UART_MOUDLESETTING 0x15
+#define MODULETYPE_LED	0x16
 
 typedef union tag_DeviceID
 {

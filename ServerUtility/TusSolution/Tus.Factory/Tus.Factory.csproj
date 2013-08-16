@@ -63,6 +63,7 @@
   <ItemGroup>
     <Compile Include="FactoryBase.cs" />
     <Compile Include="IConsoleApplicationSettings.cs" />
+    <Compile Include="IlluminateSheetFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RouteOrderListFactory.cs" />
     <Compile Include="ServerFactory.cs" />
@@ -80,6 +81,10 @@
     <ProjectReference Include="..\Tus.Communication\Tus.Communication.csproj">
       <Project>{2fcba61b-f967-442f-a3f6-3a8aa7126b17}</Project>
       <Name>Tus.Communication</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tus.Illumination\Tus.Illumination.csproj">
+      <Project>{a1c4f9c0-7ad4-4a72-b463-70c2bd221373}</Project>
+      <Name>Tus.Illumination</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

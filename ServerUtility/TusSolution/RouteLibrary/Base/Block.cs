@@ -78,7 +78,7 @@ namespace Tus.TransControl.Base
         {
             get
             {
-                var dev = this.Effectors.Select(e => e.Device);
+                var dev = this.Effectors.SelectMany(e => e.Devices);
                 if (this.Detector != null)
                     dev = dev.Concat(this.Detector.Devices);
                 return dev.Distinct(d => d.DeviceID);
@@ -235,18 +235,21 @@ namespace Tus.TransControl.Base
             }
         }
 
-        public bool IsMotorDetectingTrain
-        {
-            get
-            {
-                if (this.HasMotor)
-                    return this.MotorEffector.Device.CurrentMemory == MotorMemoryStateEnum.Controlling ||
-                           this.MotorEffector.Device.CurrentMemory == MotorMemoryStateEnum.Locked ||
-                           this.MotorEffector.Device.IsDetected;
-                else
-                    return false;
-            }
-        }
+        //public bool IsMotorDetectingTrain
+        //{
+        //    get
+        //    {
+        //        if (this.HasMotor)
+        //        {
+        //            var dev = this.MotorEffector.Devices.First();
+        //            return dev.CurrentMemory == MotorMemoryStateEnum.Controlling ||
+        //                   dev.CurrentMemory == MotorMemoryStateEnum.Locked;
+        //                   //dev.IsDetected;
+        //        }
+        //        else
+        //            return false;
+        //    }
+        //}
 
         //public bool IsLocked
         //{
@@ -269,10 +272,10 @@ namespace Tus.TransControl.Base
                 str += "|Locked|";
 
             if (this.HasMotor)
-                str += this.MotorEffector.Device.ToString();
+                str += this.MotorEffector.Devices.Aggregate("", (ac, dev) => ac + dev.ToString());
 
             if (this.HasSwitch)
-                str += this.SwitchEffector.Device.ToString();
+                str += this.SwitchEffector.Devices.Aggregate("", (ac, dev) => ac + dev.ToString());
 
             if (this.HasSensor)
                 str += this.Detector.Devices.Aggregate("", (s, d) => s + d.ToString());
@@ -282,20 +285,17 @@ namespace Tus.TransControl.Base
 
         private Stopwatch lockingWatch = new Stopwatch();
         private bool isLocked;
-        private object lock_islocked = new object();
+        public object lock_islocked = new object();
         public bool IsLocked
         {
-            get { lock (lock_islocked) { return this.isLocked; } }
+            get {   return this.isLocked;  }
             set
             {
-                lock (lock_islocked)
-                {
                     if (this.isLocked != value)
                     {
                         lockingWatch.Restart();
                     }
                     this.isLocked = value;
-                }
             }
         }
 

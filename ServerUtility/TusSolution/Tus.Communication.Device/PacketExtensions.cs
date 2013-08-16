@@ -47,7 +47,7 @@ namespace Tus.Communication
             {
                 var len = packet.Data[bufind];
                 var internelid = packet.Data[bufind + 1];
-                var mtype = (ModuleTypeEnum) packet.Data[bufind + 2];
+                var mtype = (ModuleTypeEnum)packet.Data[bufind + 2];
 
                 if (AvrDeviceFactoryProvider.Factories.Value.Any(p => p.Metadata.ModuleType == mtype))
                 {
@@ -84,10 +84,10 @@ namespace Tus.Communication
             IEnumerable<IDevice<IDeviceState<IPacketDeviceData>>> devenumerator)
         {
             if (devenumerator == null || !devenumerator.Any())
-                return new DevicePacket[] {};
+                return new DevicePacket[] { };
 
-            var devs = devenumerator.Select((a, ind) => new {ind = ind, val = a});
-            var pack = new DevicePacket() {ID = devs.First().val.DeviceID};
+            var devs = devenumerator.Select((a, ind) => new { ind = ind, val = a });
+            var pack = new DevicePacket() { ID = devs.First().val.DeviceID };
 
             using (var mst = new MemoryStream(pack.Data))
             {
@@ -98,7 +98,7 @@ namespace Tus.Communication
 
                     if (mst.Position + data.DataLength > pack.Data.Length)
                     {
-                        return new[] {pack}.Concat(CreatePackedPacket(devenumerator.Skip(dev.ind)));
+                        return new[] { pack }.Concat(CreatePackedPacket(devenumerator.Skip(dev.ind)));
                     }
                     else
                     {
@@ -107,7 +107,13 @@ namespace Tus.Communication
                 }
             }
 
-            return new[] {pack};
+            return new[] { pack };
+        }
+
+        public static void Send(this IEnumerable<DevicePacket> packets, PacketServer serv)
+        {
+            foreach (var p in packets)
+                serv.EnqueuePacket(p);
         }
 
         //public static void WritePacket(this ChunckedStreamController st, DevicePacket pack)

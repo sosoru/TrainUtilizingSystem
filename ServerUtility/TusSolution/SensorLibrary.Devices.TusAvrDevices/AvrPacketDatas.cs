@@ -77,6 +77,18 @@ namespace Tus.Communication.Device.AvrComposed
         public byte ModuleCount;
     }
 
+    [StructLayout(LayoutKind.Sequential, Pack=1, Size=4)]
+    public class LedData
+        : PacketDeviceHeader
+    {
+        public LedData()
+        {
+            DataLength = 4; ModuleType = (byte)ModuleTypeEnum.AvrLed;
+        }
+
+        public byte DutyValue;
+    }
+
     [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 8)]
     public class KernelData
         : PacketDeviceHeader

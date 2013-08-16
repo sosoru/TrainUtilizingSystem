@@ -47,15 +47,15 @@ namespace RouteVisualizer.ViewModels
         {
             try
             {
-                var path = @"C:\Users\root\Desktop\val_point.rrf";
+                var path = @"C:\Users\Administrator\Dropbox\rail\JAM2013レイアウト案(0811Ver).rrf";
 
                 var map = new RailroaderIO.RailroaderMap(path);
 
                 var layout = map.ToLayout();
-                this.LayoutVm = new LayoutViewModel(layout) { DrawingSize = new System.Windows.Size(500, 1100) };
+                this.LayoutVm = new LayoutViewModel(layout) { DrawingSize = new System.Windows.Size(1000, 1500) };
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
             }

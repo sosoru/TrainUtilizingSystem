@@ -68,6 +68,8 @@
     <Compile Include="ISensor.cs" />
     <Compile Include="Kernel.cs" />
     <Compile Include="KernelState.cs" />
+    <Compile Include="Led.cs" />
+    <Compile Include="LedState.cs" />
     <Compile Include="Motor.cs" />
     <Compile Include="MotorState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

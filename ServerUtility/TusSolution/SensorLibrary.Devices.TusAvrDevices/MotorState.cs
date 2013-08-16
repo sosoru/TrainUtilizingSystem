@@ -183,11 +183,12 @@ namespace Tus.Communication.Device.AvrComposed
 
         public override string ToString()
         {
-            return base.ToString() + string.Format("|mt : dir={0}, duty={1}, curr={2}, mode={3}",
+            return base.ToString() + string.Format("|mt : dir={0}, duty={1}, curr={2}, mode={3}, mem={4}",
                                                    this.DirectionString,
                                                    this.Duty,
                                                    this.Current,
-                                                   this.ControlModeString);
+                                                   this.ControlModeString,
+                                                   this.TargetMemory);
         }
 
     }

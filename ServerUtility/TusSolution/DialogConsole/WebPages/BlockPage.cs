@@ -11,18 +11,33 @@ namespace DialogConsole.WebPages
     [Export(typeof(IConsolePage))]
     [TusPageMetadata("block control", "block")]
     [PartCreationPolicy(CreationPolicy.NonShared)]
-    public class BlockPage : ConsolePageBase
+    public class BlockPage : ConsolePageBase<IEnumerable<Block>>
     {
-        public override string GetJsonContent()
+        protected override DataContractJsonSerializer JsonSerializer
         {
-            var blocks = this.Param.UsingLayout.Sheet.InnerBlocks.ToArray();
-            var ser = new DataContractJsonSerializer(typeof(IEnumerable<Block>),
+            get
+            {
+                return new DataContractJsonSerializer(typeof(IEnumerable<Block>),
                                                      new[] { typeof(Switch), typeof(Motor), typeof(Vehicle), typeof(UsartSensor), typeof(MemoryState) });
-            return GetJsonContent<IEnumerable<Block>>(blocks, ser);
+            }
+        }
+        private IEnumerable<Block> Blocks
+        {
+            get
+            {
+                var blocks = this.Param.UsingLayout.Sheet.InnerBlocks;
+                return blocks;
+            }
         }
 
-        public override void ApplyJsonRequest()
+        public override IEnumerable<Block> GetContent()
         {
+            return Blocks;
+        }
+
+        public override void ApplyJsonRequest(IEnumerable<Block> obj)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using SensorLibrary.Devices.TusAvrDevices;
 using Tus.Factory;
+using Tus.Illumination;
 using Tus.TransControl.Base;
 using System.Linq;
 
@@ -7,10 +9,11 @@ namespace DialogConsole
 {
     public class Layout
     {
-        public Layout(RouteOrderListFactory availableRoutesOrderFactory, BlockSheet sheet)
+        public Layout(RouteOrderListFactory availableRoutesOrderFactory, BlockSheet sheet, IlluminativeSheet illumi)
         {
             AvailableRoutesOrderFactory = availableRoutesOrderFactory;
             Sheet = sheet;
+            this.Illumination = illumi;
         }
 
         public Layout()
@@ -19,6 +22,7 @@ namespace DialogConsole
 
         public virtual RouteOrderListFactory AvailableRoutesOrderFactory { get; set; }
         public virtual BlockSheet Sheet { get; set; }
+        public virtual IlluminativeSheet Illumination { get; set; }
         public virtual IList<Vehicle> Vehicles { get; set; }
 
         public void SendInquiryState()

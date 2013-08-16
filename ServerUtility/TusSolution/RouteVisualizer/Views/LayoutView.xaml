@@ -6,7 +6,7 @@
 	mc:Ignorable="d"
 	x:Class="RouteVisualizer.LayoutView"
 	x:Name="UserControl"
-	d:DesignWidth="640" d:DesignHeight="480">
+	d:DesignWidth="640" d:DesignHeight="480" Loaded="UserControl_Loaded">
 
 	<Grid x:Name="LayoutRoot">
 		<ListBox ItemsSource="{Binding Rails}" SelectedItem="{Binding SelectedRail, Mode=TwoWay}" >
@@ -28,10 +28,10 @@
 			
 			<ListBox.ItemContainerStyle>
 				<Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">  
-                    <Setter Property="Canvas.Top" Value="{Binding Path=PositionTop}" />  
-                    <Setter Property="Canvas.Left" Value="{Binding Path=PositionLeft}" /> 
-                </Style>  
+					<Setter Property="Canvas.Top" Value="{Binding Path=PositionTop}" />  
+					<Setter Property="Canvas.Left" Value="{Binding Path=PositionLeft}" /> 
+				</Style>  
 			</ListBox.ItemContainerStyle>
-        </ListBox>
+		</ListBox>
 	</Grid>
 </UserControl>

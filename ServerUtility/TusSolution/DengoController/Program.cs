@@ -121,7 +121,7 @@ namespace DengoController
                     var data = new VehicleInfoReceived()
                     {
                         Name = RouteName,
-                        Speed = (infl / 250.0f * 100f).ToString(),
+                        Speed = (infl / 250.0f ).ToString(),
                     };
                     SendCommand(data);
                 }

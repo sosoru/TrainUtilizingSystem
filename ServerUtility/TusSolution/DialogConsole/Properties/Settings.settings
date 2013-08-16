@@ -20,5 +20,11 @@
     <Setting Name="RoutePath" Type="System.String" Scope="User">
       <Value Profile="(Default)">C:\Users\Administrator\BTSync\console_page\katsushika_route.yaml</Value>
     </Setting>
+    <Setting Name="IlluminationPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\Users\Administrator\BTSync\console_page\katsushika_illuminate.yaml</Value>
+    </Setting>
+    <Setting Name="http" Type="System.String" Scope="User">
+      <Value Profile="(Default)">http://+:8012/</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

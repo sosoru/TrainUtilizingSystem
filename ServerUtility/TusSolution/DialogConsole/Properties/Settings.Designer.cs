@@ -94,5 +94,29 @@ namespace DialogConsole.Properties {
                 this["RoutePath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\Administrator\\BTSync\\console_page\\katsushika_illuminate.yaml")]
+        public string IlluminationPath {
+            get {
+                return ((string)(this["IlluminationPath"]));
+            }
+            set {
+                this["IlluminationPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://+:8012/")]
+        public string http {
+            get {
+                return ((string)(this["http"]));
+            }
+            set {
+                this["http"] = value;
+            }
+        }
     }
 }

@@ -22,7 +22,6 @@ namespace Tus.TransControl.Base
         public PacketDispatcher Dispatcher { get; private set; }
         public IScheduler AssociatedScheduler { get; set; }
 
-        public IList<Vehicle> Vehicles { get; private set; }
         public TimeSpan TimeWaitingSwitchChanged { get; set; }
 
         public BlockSheet(IEnumerable<BlockInfo> blockinfos, PacketServer server)
@@ -35,7 +34,6 @@ namespace Tus.TransControl.Base
             this.Name = "";
             this.InnerBlocks = new ReadOnlyCollection<Block>(blocks.ToList());
 
-            this.Vehicles = new List<Vehicle>();
             this.AssociatedScheduler = Scheduler.CurrentThread;
             this.TimeWaitingSwitchChanged = TimeSpan.FromTicks(1);
         }
@@ -134,45 +132,29 @@ namespace Tus.TransControl.Base
             return this.InnerBlocks.FirstOrDefault(b => b.Name == p);
         }
 
-        public void ChangeDetectingMode()
-        {
-            var detectionduty = 0.5f;
-
-            this.InnerBlocks.Where(b => b.HasMotor)
-                .ToObservable()
-                .Select(b => b.MotorEffector)
-                .Do(e =>
-                {
-                    e.SetDetectingMode(detectionduty);
-                })
-                .Delay(TimeSpan.FromSeconds(1))
-                .GroupBy(e => e.Device.DeviceID.GetUniqueIdByBoard())
-                .Select(e => e.First().Device)
-                .Do(dev =>
-                {
-                    var pack = PacketExtension.CreatePackedPacket(Kernel.InquiryState(dev.DeviceID));
-                    this.Server.EnqueuePacket(pack.First());
-                })
-                .Subscribe();
-
-        }
-        public void InquiryStatusOfAllMotors()
-        {
-            var devs = this.InnerBlocks
-                                .Where(b => b.HasMotor)
-                                .Select(b => b.info.Motor.Address)
-                                .GroupBy(g => g.GetUniqueIdByBoard())
-                                .Select(g => g.First());
-            foreach (var d in devs)
-            {
-                var pack = PacketExtension.CreatePackedPacket(Kernel.InquiryState(d));
-                this.Server.EnqueuePacket(pack.First());
-            }
-        }
+        //public void InquiryStatusOfAllMotors()
+        //{
+        //    var devs = this.InnerBlocks
+        //                        .Where(b => b.HasMotor)
+        //                        .Select(b => b.info.Motor.Address)
+        //                        .GroupBy(g => g.GetUniqueIdByBoard())
+        //                        .Select(g => g.First());
+        //    foreach (var d in devs)
+        //    {
+        //        var pack = PacketExtension.CreatePackedPacket(Kernel.InquiryState(d));
+        //        this.Server.EnqueuePacket(pack.First());
+        //    }
+        //}
 
         public void SetUnlockedBlocksToDefault()
         {
-            var blocks = this.InnerBlocks.Where(b => !b.IsLocked && b.HasMotor);
+            var blocks = this.InnerBlocks.Where(b =>
+                                                    {
+                                                        lock (b.lock_islocked)
+                                                        {
+                                                            return !b.IsLocked && b.HasMotor;
+                                                        }
+                                                    });
 
             foreach (var b in blocks)
             {
@@ -180,12 +162,20 @@ namespace Tus.TransControl.Base
             }
         }
 
-        public IEnumerable<Switch> AllSwitches()
+        public IEnumerable<Switch> AllSwitches
         {
-            var devs = this.InnerBlocks
-                                .Where(b => b.HasSwitch)
-                                .Select(b => b.SwitchEffector.Device);
-            return devs;
+            get
+            {
+                var devs = this.InnerBlocks
+                                    .Where(b => b.HasSwitch)
+                                    .SelectMany(b => b.SwitchEffector.Devices);
+                return devs;
+            }
+        }
+
+        public void SyncSwitches()
+        {
+            this.InquiryDevices(this.AllSwitches);
         }
 
         public IEnumerable<IDevice<IDeviceState<IPacketDeviceData>>> AllDevices

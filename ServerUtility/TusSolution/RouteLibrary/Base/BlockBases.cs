@@ -88,7 +88,7 @@ namespace Tus.TransControl.Base
 
     public class DeviceInfo
     {
-        public DeviceID Address { get; set; }
+        public IEnumerable<DeviceID> Addresses { get; set; }
     }
 
     public class MotorInfo

@@ -5,7 +5,7 @@ using System.Text;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Media;
-
+using System.Xml;
 using Livet;
 using Livet.Command;
 using Livet.Messaging;
@@ -64,6 +64,21 @@ namespace RouteVisualizer.ViewModels
 
                 return geo;
             }
+        }
+
+        public void WriteSvgGeometry(XmlTextWriter writer)
+        {
+            var centerX = Bound.X + Bound.Width/2.0;
+            var centerY = Bound.Y + Bound.Height/2.0;
+            var r = Bound.Width/2.0;
+
+            writer.WriteStartElement("circle");
+            writer.WriteAttributeString("cx", centerX.ToString());
+            writer.WriteAttributeString("cy", centerY.ToString());
+            writer.WriteAttributeString("r", r.ToString());
+            writer.WriteAttributeString("stroke", "black");
+            writer.WriteAttributeString("stroke-width", "1");
+            writer.WriteEndElement();
         }
 
         public string Name

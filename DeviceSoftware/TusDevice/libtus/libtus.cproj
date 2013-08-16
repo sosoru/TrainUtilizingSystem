@@ -76,6 +76,9 @@
     <Compile Include="avrlibtypes.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="led_packet.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="mtr_packet.h">
       <SubType>compile</SubType>
     </Compile>

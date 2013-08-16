@@ -92,6 +92,7 @@
     <Compile Include="EqualTest.cs" />
     <Compile Include="EthClientTest.cs" />
     <Compile Include="FileParseTest\BlockYamlTest.cs" />
+    <Compile Include="FileParseTest\IlluminateYamlTest.cs" />
     <Compile Include="FileParseTest\RouteYamlTest.cs" />
     <Compile Include="LoopingArrayTest.cs" />
     <Compile Include="MotorStateTest.cs" />
@@ -127,6 +128,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="SampleLayout\815.yaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="SampleLayout\katsushika_illuminate.yaml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="SampleLayout\loop.yaml">
@@ -194,6 +198,10 @@
     <ProjectReference Include="..\Tus.Factory\Tus.Factory.csproj">
       <Project>{a367ed72-abd5-4cfd-a9bd-4ba911d53584}</Project>
       <Name>Tus.Factory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tus.Illumination\Tus.Illumination.csproj">
+      <Project>{a1c4f9c0-7ad4-4a72-b463-70c2bd221373}</Project>
+      <Name>Tus.Illumination</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

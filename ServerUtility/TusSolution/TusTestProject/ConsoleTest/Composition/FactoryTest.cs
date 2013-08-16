@@ -41,6 +41,15 @@ namespace TestProject.ConsoleTest.Composition
             }
             public string RoutePath
             { get { return @"test_layout_route.yaml"; } }
+            public string IlluminationPath
+            {
+                get
+                {
+                    {
+                        return "";
+                    }
+                }
+            }
         }
 
         [TestMethod]
