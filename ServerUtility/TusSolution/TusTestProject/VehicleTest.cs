@@ -77,7 +77,7 @@ namespace TestProject
             sheet = new BlockSheet(target_sheet, serv);
 
             this.scheduler = new TestScheduler();
-            sheet.AssociatedScheduler = scheduler;
+            //sheet.AssociatedScheduler = scheduler;
         }
 
         [TestMethod]

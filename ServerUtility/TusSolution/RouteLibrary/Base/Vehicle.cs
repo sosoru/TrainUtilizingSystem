@@ -351,30 +351,27 @@ namespace Tus.TransControl.Base
                 //neighbor check
                 try
                 {
-                    //this.AssociatedRoute.UnReserveHead();
+                    this.AssociatedRoute.UnReserveHead();
                     this.AssociatedRoute.ReserveHead();
+                    distance = AssociatedRoute.ReservedUnit.GetDistanceOfBlockedUnit(4);
+                    if (distance == 2)
+                    {
+                        cmdfactory = Create1stCommand(spdfactory);
+                    }
+                    else if (distance == 3)
+                    {
+                        cmdfactory = Create2ndCommand(spdfactory);
+                    }
+                    else
+                    {
+                        cmdfactory = CreateNthCommand(spdfactory);
+                    }
                 }
                 catch (InvalidOperationException)
                 {
-                }
-                distance = AssociatedRoute.ReservedUnit.GetDistanceOfBlockedUnit(4);
-                if (distance == 1)
-                {
                     cmdfactory = CanHalt
-                                     ? CreateHaltCommand(spdfactory)
-                                     : CreateZeroCommand(spdfactory);
-                }
-                else if (distance == 2)
-                {
-                    cmdfactory = Create1stCommand(spdfactory);
-                }
-                else if (distance == 3)
-                {
-                    cmdfactory = Create2ndCommand(spdfactory);
-                }
-                else
-                {
-                    cmdfactory = CreateNthCommand(spdfactory);
+                                    ? CreateHaltCommand(spdfactory)
+                                    : CreateZeroCommand(spdfactory);
                 }
             }
             Sheet.Effect(cmdfactory, AssociatedRoute.LockedBlocks);

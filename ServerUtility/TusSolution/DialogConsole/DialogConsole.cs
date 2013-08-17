@@ -129,7 +129,6 @@ namespace DialogConsole
 
             this._syncPacketProcess = new SynchronizationContext();
             this.Param.SchedulerPacketProcessing = new SynchronizationContextScheduler(this._syncPacketProcess);
-            this.Param.UsingLayout.Sheet.AssociatedScheduler = this.Param.SchedulerPacketProcessing;
 
             this.Param.SendingPacketPipeline = this.Param.UsingLayout.Sheet.Server.SendingObservable;
             this.Param.SendingPacketPipeline

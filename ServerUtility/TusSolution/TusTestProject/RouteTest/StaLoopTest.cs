@@ -72,7 +72,7 @@ namespace TestProject
             _sht = new BlockSheet(target_sheet, _serv);
 
             _scheduler = new TestScheduler();
-            _sht.AssociatedScheduler = _scheduler;
+            //_sht.AssociatedScheduler = _scheduler;
         }
 
         [TestMethod]
