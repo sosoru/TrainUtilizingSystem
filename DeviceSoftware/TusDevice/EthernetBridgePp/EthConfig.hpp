@@ -134,6 +134,7 @@ namespace EthernetBridge
 												
 					if(IsForChildren(*ppacket))
 					{
+								PORTB |= _BV(PORTB4);
 						StockToChildren(ppacket);
 						return true;
 					}							

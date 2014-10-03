@@ -50,7 +50,7 @@ namespace Tus.TransControl.Base
             get { return !this.IsBlocked; }
         }
 
-        private object lock_unitlock = new object();
+        public object LockUnitlock = new object();
         private bool unlockedIsBlocked
         {
             get
@@ -70,7 +70,7 @@ namespace Tus.TransControl.Base
         {
             get
             {
-                lock (lock_unitlock)
+                lock (LockUnitlock)
                 {
                     return this.unlockedIsBlocked;
                 }
@@ -80,7 +80,7 @@ namespace Tus.TransControl.Base
 
         public void Allocate()
         {
-            lock (this.lock_unitlock)
+            lock (this.LockUnitlock)
             {
                 if (this.unlockedIsBlocked)
                     throw new InvalidOperationException("Allocate() tried to allocate a blocked block");
@@ -99,7 +99,7 @@ namespace Tus.TransControl.Base
 
         public void Release()
         {
-            lock (this.lock_unitlock)
+            lock (this.LockUnitlock)
             {
                 if (!this.unlockedIsBlocked)
                     throw new InvalidOperationException("Release() tried to relase a released block");
@@ -112,6 +112,18 @@ namespace Tus.TransControl.Base
                                         }
                                     });
 
+            }
+        }
+
+        public override string ToString()
+        {
+            if (this.Blocks != null)
+            {
+                return "(" + this.Blocks.Aggregate("", (s, b) => s + b.Name + " ").TrimEnd() + ")";
+            }
+            else
+            {
+                return "(null)";
             }
         }
     }
@@ -436,7 +448,7 @@ namespace Tus.TransControl.Base
                 else
                     container = container.Next;
             }
-            return limit;
+            return limit; // >=1
         }
 
         // override object.Equals
@@ -505,7 +517,7 @@ namespace Tus.TransControl.Base
         }
 
         [DataMember]
-        public Queue<ControlUnit> PassedUnits { get; private set; }
+        public Queue<ControlUnit> PassedUnits { get; private set; } //locked units without reserved
 
         [DataMember]
         //先頭の一個先をリザーブ
@@ -539,6 +551,7 @@ namespace Tus.TransControl.Base
             }
         }
 
+        // ReservedUnitはHeadとは見なさない．列車の先頭が存在するcontainer
         public ControlUnitContainer HeadContainer
         {
             get
@@ -579,6 +592,9 @@ namespace Tus.TransControl.Base
 
         public void InitLockingPosition()
         {
+            if (this.IsReserving)
+                this.UnReserveHead();
+
             while (ReleaseLastUnit()) ;
         }
 
@@ -612,6 +628,9 @@ namespace Tus.TransControl.Base
             ControlUnitContainer next = _order_enmtor.Current.Next;
             if (next != null && (next.Unit.CanBeAllocated || this.IsReserving))
             {
+                if (this.IsReserving)
+                    this.UnReserveHead();
+
                 bool movecond = _order_enmtor.MoveNext();
                 if (!movecond)
                     return false;
@@ -625,17 +644,9 @@ namespace Tus.TransControl.Base
 
         private void allocateCurrent()
         {
-            if (!_order_enmtor.Current.Unit.IsBlocked)
-                _order_enmtor.Current.Unit.Allocate();
+            _order_enmtor.Current.Unit.Allocate();
 
             this.PassedUnits.Enqueue(_order_enmtor.Current.Unit);
-
-            if (this.IsReserving)
-            {
-                var reserved = this.HeadContainer.Next;
-                reserved.Unit.Allocate();
-                this.ReservedUnit = reserved;
-            }
         }
 
         public bool ReleaseLastUnit()
@@ -653,7 +664,7 @@ namespace Tus.TransControl.Base
             return false;
         }
 
-        public void ReserveHead()
+        public bool ReserveHead()
         {
             if (_order_enmtor == null)
                 throw new InvalidOperationException("ロックできる状態にありません．AllocateTrainが呼び出されているか確認してください");
@@ -661,10 +672,15 @@ namespace Tus.TransControl.Base
             if (!this.IsReserving)
             {
                 var reserved = this.HeadContainer.Next;
-                reserved.Unit.Allocate();
-                this.IsReserving = true;
-                this.ReservedUnit = reserved;
+                if (!reserved.Unit.IsBlocked)
+                {
+                    reserved.Unit.Allocate();
+                    this.IsReserving = true;
+                    this.ReservedUnit = reserved;
+                    return true;
+                }
             }
+            return false;
         }
 
         public void UnReserveHead()

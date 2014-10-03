@@ -9,6 +9,7 @@
 #ifndef MOTORPROCESS_H_
 #define MOTORPROCESS_H_
 
+#include <stdio.h>
 #include <avr/io.h>
 #include <avr/delay.h>
 #include <mtr_packet.h>
@@ -51,13 +52,15 @@ namespace MotorController
 		uint8_t m_voltage;
 		Direction m_before_dir;
 		
+		uint8_t m_deadcount;
+		
 		MtrControllerPacket m_buffer_packet[MTRPROCESS_MEM_CAPACITY];
 		uint8_t m_buffer_index;
 		public :
 		
 		MotorProcess()
 		: fb_bef(0.0f), fb_bef2(0.0f), fb_cur(0.0f), internal_duty(0.0f)
-		, m_voltage(0), m_buffer_index(0), m_before_dir(Standby)
+		, m_voltage(0), m_buffer_index(0), m_before_dir(Standby) 
 		{
 			MtrRunningState *pstate = (MtrRunningState*)CurrentPacket()->State;
 			
@@ -110,10 +113,10 @@ namespace MotorController
 				break;
 			}
 			
-			if(dir != m_before_dir && (dir == Standby || m_before_dir == Standby))
-			{
-				_delay_ms(25);
-			}
+			//if(dir != m_before_dir && (dir == Standby || m_before_dir == Standby))
+			//{
+				//_delay_ms(25);
+			//}
 			m_before_dir = dir;
 		}
 		
@@ -203,7 +206,7 @@ namespace MotorController
 			Pulse::SetDuty(0);
 			
 			curr = MeisureCurrent();
-			
+			//g_dbgmsgind += sprintf(g_dbgmsg+g_dbgmsgind, "waiting dst=(%d, %d, %d)", pstate->DestinationID.SubnetAddr, pstate->DestinationID.ModuleAddr, pstate->DestinationID.InternalAddr);
 			if(curr > 15 /*pstate->ThresholdValue*/) // entered
 			{
 				KernalState kstate;
@@ -215,31 +218,37 @@ namespace MotorController
 				kstate.KernelCommand = ETHCMD_MEMORY;
 				pmstate->CurerntMemory = pstate->DestinationMemory;
 				
+				if(pstate->MemoryAfterEntered < MTRPROCESS_MEM_CAPACITY )
+				{
+					m_buffer_index = pstate->MemoryAfterEntered;
+				}
+				
 				if( (pstate->DestinationID.raw & 0x000000FF) == (g_myDeviceID.raw & 0x000000FF))
 				{
 					ProcessKernelPacket(&kstate, &g_myDeviceID, &pstate->DestinationID);
 				}
-				else{
+				else
+				{
+					bool res = true;
+					
 					if(!g_packer.IsInitialized())
 					{
-						g_packer.Init();
-						
-						g_packer.Pack((uint8_t*)&kstate);
-						g_packer.Send(&g_myDeviceID, &pstate->DestinationID);
+						res = g_packer.Init();
 					}
+					if(res) res = g_packer.Pack((uint8_t*)&kstate);
+					if(res) res = g_packer.Send(&g_myDeviceID, &pstate->DestinationID);
 				}
-				
-				if(pstate->MemoryAfterEntered < MTRPROCESS_MEM_CAPACITY )
-					m_buffer_index = pstate->MemoryAfterEntered;
 			}
 		}
 		
 		void MemoryProcess(const MemoryState *pstate)
 		{
-			if(pstate->CurerntMemory < MTRPROCESS_MEM_CAPACITY)
+			if(pstate->CurerntMemory >= MTRPROCESS_MEM_CAPACITY)
 			{
-				m_buffer_index = pstate->CurerntMemory;
+				return;
 			}
+				
+			m_buffer_index = pstate->CurerntMemory;
 		}
 		
 		void set_Packet(const MtrControllerPacket *ppacket)

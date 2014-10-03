@@ -113,6 +113,8 @@ namespace Tus.TransControl.Base
     {
         public IEnumerable<RouteSegmentInfo> DirStraight { get; set; }
         public IEnumerable<RouteSegmentInfo> DirCurved { get; set; }
+
+        public IEnumerable<DeviceID> PositionReversed { get; set; }
     }
 
     public class SensorInfo

@@ -1,0 +1,32 @@
+-
+  groupname : 内回り(単行)
+  idential : A
+  vehicles :
+    -
+      name : A
+      mode : alone
+      pos : AT1
+      route : A
+-
+  groupname : 内回り（閉塞1列車）
+  idential : A
+  vehicles :
+    -
+      name : A
+      mode : blockage
+      pos : AT1
+      route : A
+-
+  groupname : 内回り（閉塞2列車）
+  idential : A
+  vehicles : 
+    -
+      name : A1
+      mode : blockage
+      pos : AT1
+      route : A
+    -
+      name : A2
+      mode : blockage
+      pos : AT5
+      route : A

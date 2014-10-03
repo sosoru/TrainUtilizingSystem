@@ -60,6 +60,9 @@ namespace Tus.Communication
 
         public void WritePacket(DevicePacket packet)
         {
+            if (packet == null)
+                return;
+
             var end = ToEndPoint(packet.ID);
             var eth = new EthPacket()
             {
@@ -70,14 +73,12 @@ namespace Tus.Communication
             //this.Client.Connect(end);
             this.Client.Address = end.Address;
             this.Client.Send(eth);
+            //System.Threading.Thread.Sleep(1);//Sleep(TimeSpan.FromTicks(5000));
             //this.Client.Close();
         }
 
-        public IObservable<DevicePacket> GetWritingPacket(DevicePacket pack)
+        private EthPacket createEthPacket(DevicePacket pack)
         {
-            if (pack == null)
-                return Observable.Empty<DevicePacket>();
-
             this.Client.Address = ToEndPoint(pack.ID).Address;
             var eth = new EthPacket()
                           {
@@ -85,6 +86,14 @@ namespace Tus.Communication
                               destId = pack.ID,
                               DataPacket = pack,
                           };
+            return eth;
+        }
+
+        public IObservable<DevicePacket> GetWritingPacket(DevicePacket pack)
+        {
+            if (pack == null)
+                return Observable.Empty<DevicePacket>();
+            var eth = createEthPacket(pack);
             return this.Client.AsyncSend(eth).Select(u => pack);
         }
 

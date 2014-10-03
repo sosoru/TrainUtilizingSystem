@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Concurrency;
@@ -12,8 +13,9 @@ namespace Tus.Communication
     {
         private readonly List<PacketServerAction> actionList = new List<PacketServerAction>();
 
-        private List<DevicePacket> sending_queue = new List<DevicePacket>();
-        private readonly PacketDispatcher thisobsv_;
+        public ConcurrentQueue<DevicePacket> sending_queue = new ConcurrentQueue<DevicePacket>();
+        public ConcurrentQueue<DevicePacket> receving_queue = new ConcurrentQueue<DevicePacket>();
+        public readonly PacketDispatcher thisobsv_;
         private bool blockLoopStarting;
         private volatile object lockqueue = new object();
         private IDisposable recv_disp;
@@ -52,18 +54,25 @@ namespace Tus.Communication
                                  .Do(
                                      pack =>
                                      {
-                                         actionList.ForEach(
-                                             (item) => pack.ExtractPackedPacket().ToList().ForEach(s => item.Act(s)));
+                                         this.receving_queue.Enqueue(pack);
                                      });
             }
         }
 
-        public IObservable<DevicePacket> SendingObservable
+        //public IObservable<DevicePacket> SendingObservable
+        //{
+        //    get
+        //    {
+        //        return Observable.Defer(sendState)
+        //            .SelectMany(Controller.GetWritingPacket);
+        //    }
+        //}
+        public void SendAll()
         {
-            get
+            var states = sendState();
+            foreach (var state in states)
             {
-                return Observable.Defer(sendState)
-                    .SelectMany(Controller.GetWritingPacket);
+                this.Controller.WritePacket(state);
             }
         }
 
@@ -99,10 +108,7 @@ namespace Tus.Communication
 
         public virtual void EnqueuePacket(DevicePacket packet)
         {
-            lock (this.lockqueue)
-            {
-                sending_queue.Add(packet);
-            }
+                sending_queue.Enqueue(packet);
         }
 
         public virtual void EnqueueState(IDevice<IDeviceState<IPacketDeviceData>> dev)
@@ -134,22 +140,21 @@ namespace Tus.Communication
             }
         }
 
-        private IObservable<DevicePacket> sendState()
+        private IEnumerable<DevicePacket> sendState()
         {
-            if (sending_queue.Count > 0)
-            {
-                lock (lockqueue)
-                {
-                    var packets = this.sending_queue;
-                    this.sending_queue = new List<DevicePacket>();
+            if (this.sending_queue.Count == 0)
+                return Enumerable.Empty<DevicePacket>();
 
-                    return yieldFunc(packets).ToObservable();
-                }
+            var list = new List<DevicePacket>();
+            DevicePacket pack;
+            while (this.sending_queue.TryDequeue(out pack))
+            {
+                list.Add(pack);
             }
-            else
-                return Observable.Empty<DevicePacket>();
+            return list;
         }
 
+        [Obsolete]
         public void LoopStart(IScheduler scheduler)
         {
             if (!blockLoopStarting)
@@ -158,7 +163,7 @@ namespace Tus.Communication
                 if (!IsLooping)
                 {
                     recv_disp = ReceivingObservable.SubscribeOn(scheduler).Subscribe();
-                    send_disp = SendingObservable.SubscribeOn(scheduler).Subscribe();
+       //             send_disp = SendingObservable.SubscribeOn(scheduler).Subscribe();
                 }
                 blockLoopStarting = false;
             }

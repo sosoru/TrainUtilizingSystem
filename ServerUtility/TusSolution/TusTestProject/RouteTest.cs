@@ -192,6 +192,7 @@ namespace TestProject
             Assert.AreEqual(target.LockedUnits.Any(b => b.ControlBlock.Name == blocks[1].Name), true);
 
             target.LockNextUnit();
+            target.ReserveHead();
             Assert.AreEqual(target.ReservedUnit.Unit.ControlBlock.Name, blocks[2].Name);
             Assert.AreEqual(target.LockedUnits.Count(), 3);
             Assert.AreEqual(target.LockedUnits.Any(b => b.ControlBlock.Name == blocks[0].Name), true);

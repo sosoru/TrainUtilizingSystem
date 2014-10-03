@@ -15,5 +15,6 @@
 //for boost including
 #define BOOST_NO_STDLIB_CONFIG
 
+//#define F_CPU 16000000UL
 
 #endif /* ETHERNETBRIDGE_H_ */

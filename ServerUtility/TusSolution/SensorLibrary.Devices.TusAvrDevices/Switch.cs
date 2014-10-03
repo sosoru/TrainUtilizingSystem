@@ -15,5 +15,11 @@ namespace Tus.Communication.Device.AvrComposed
         {
         }
 
+        public bool PositionReversed { get; set; }
+
+        public override string ToString()
+        {
+            return ((this.PositionReversed)? "r!" : "" )+  base.ToString();
+        }
     }
 }

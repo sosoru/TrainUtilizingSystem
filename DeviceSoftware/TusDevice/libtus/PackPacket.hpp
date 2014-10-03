@@ -27,7 +27,9 @@ namespace Tus
 				if(IsInitialized())
 					return false;
 				
-				tus_spi_lock_send_buffer(&psend_g);
+				if(!tus_spi_lock_send_buffer(&psend_g))
+					return false;
+					
 				ind_state_g = 0;
 				return true;
 			}	
@@ -57,6 +59,8 @@ namespace Tus
 			
 			static bool Send(DeviceID *psrcid, DeviceID *pdstid)
 			{
+				uint8_t SREGcache = SREG;
+				
 				if(!IsInitialized())
 					return false;
 				
@@ -68,7 +72,9 @@ namespace Tus
 				if(!IsFull(0))
 					psend_g->packet.pdata[ind_state_g] = 0x00; // null termination if not fully packed
 				
+				cli();
 				psend_g->is_locked = false;
+				SREG = SREGcache;
 				
 				psend_g = NULL;
 				return true;

@@ -8,8 +8,7 @@ namespace DialogConsole.WebPages
 {
     [Export(typeof(IConsolePage))]
     [TusPageMetadata("switch device control", "switch")]
-    [PartCreationPolicy(CreationPolicy.NonShared)]
-    public class SwitchPage : ConsolePageBase<IEnumerable<Switch>>
+    public class SwitchPage : ConsolePageBase<IEnumerable<Switch>, IEnumerable<Switch>>
     {
         private IEnumerable<Switch> Switches
         {
@@ -23,20 +22,32 @@ namespace DialogConsole.WebPages
             }
         }
 
-        public override IEnumerable<Switch> GetContent()
+        public override IEnumerable<Switch> CreateSendingContent()
         {
             return Switches;
         }
 
-        public override void ApplyJsonRequest(IEnumerable<Switch> obj)
+        public override void ApplyReceivedJsonRequest()
         {
+            IEnumerable<Switch> obj;
+            if (!this.ReceivedContents.TryDequeue(out obj)) return;
             foreach (var sentsw in obj)
             {
                 var sw = this.Switches.FirstOrDefault(dev => dev.DeviceID == sentsw.DeviceID);
                 if (sw != null)
                 {
-                    
+                    sw.CurrentState.DeadTime = 100;
+                    sw.CurrentState.ChangingTime = 200;
+
+                    if (sw.PositionReversed)
+                    {
+                        if (sentsw.CurrentState.Position == Tus.Communication.PointStateEnum.Straight)
+                            sentsw.CurrentState.Position = Tus.Communication.PointStateEnum.Curve;
+                        else if (sentsw.CurrentState.Position == Tus.Communication.PointStateEnum.Curve)
+                            sentsw.CurrentState.Position = Tus.Communication.PointStateEnum.Straight;
+                    }
                     sw.CurrentState.Position = sentsw.CurrentState.Position;
+
                     Console.WriteLine("{0}(switch): Position is changed to {1}", sw.DeviceIDString, sw.CurrentState.PositionString);
                     sw.SendState();
                 }

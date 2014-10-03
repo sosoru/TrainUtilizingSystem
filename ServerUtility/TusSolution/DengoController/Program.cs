@@ -1,57 +1,47 @@
 ﻿using System;
 using System.IO;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
 using System.Net;
+using System.Runtime.Serialization.Json;
+using System.Threading;
+using Codeplex.Data;
 using DialogConsole.Features;
 using Tao.Platform.Windows;
-
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Json;
-
-
-using System.Reactive;
 using System.Reactive.Linq;
-using Codeplex.Data;
 
 namespace DengoController
 {
-    class Program
+    internal class Program
     {
-        const string serverAddr = @"http://192.168.2.9:8012/vehicles";
+        private const string serverAddr = @"http://192.168.2.9:8012/vehicles";
 
-        static IPAddress ipaddr;
-        static string RouteName;
+        private static IPAddress ipaddr;
+        private static string RouteName;
 
-        static string GetVehiclesAsString()
+        private static string GetVehiclesAsString()
         {
             var client = new WebClient();
             return client.DownloadString(serverAddr);
         }
 
-        static void SendCommand(VehicleInfoReceived send)
+        private static void SendCommand(VehicleInfoReceived send)
         {
             var client = new WebClient();
             var json = new DataContractJsonSerializer(typeof(VehicleInfoReceived));
 
-            using (var ns = client.OpenWrite(serverAddr))
+            using (Stream ns = client.OpenWrite(serverAddr))
             {
                 json.WriteObject(ns, send);
             }
-
         }
 
-        static bool InputVehicles()
+        private static bool InputVehicles()
         {
             bool result = false;
 
             var vs = (dynamic[])DynamicJson.Parse(GetVehiclesAsString());
 
-            foreach (var str in vs
+            foreach (dynamic str in vs
                 .Select((v, i) => string.Format("{0} : {1}", i, v.Name)))
             {
                 Console.WriteLine(str);
@@ -63,7 +53,7 @@ namespace DengoController
             {
                 if (index >= 0 && index < vs.Count())
                 {
-                    var v = vs[index];
+                    dynamic v = vs[index];
 
                     Console.WriteLine("catched vehicle sucessfully");
                     RouteName = v.Name;
@@ -79,76 +69,143 @@ namespace DengoController
                 Console.WriteLine("parse error");
             }
             return result;
+        }
+
+        private static IDengoController cnt = new DengoController();
+        private static double infl = 0;
+        private static double before_infl = infl + 1;
+        private static double spdmax = 250;
+        private static double spdmin = 0;
+        private static double accel = 5.0;
+        private static double brake = 10.0;
+        private static void sendingloop()
+        {
+            double ac = cnt.AccelLevel;
+            double br = cnt.BrakeLevel;
+
+            if (ac < 0.0 || br < 0.0)
+                return;
+
+            if (br > 0)
+            {
+                infl += -br * brake;
+            }
+            else
+            {
+                infl += ac * accel;
+            }
+
+            if (infl < spdmin)
+                infl = spdmin;
+            else if (infl > spdmax)
+                infl = spdmax;
+
+            //AddAccel(infl, (cnt.Position) ? MotorDirection.Positive : MotorDirection.Negative);
+            if (infl != before_infl)
+            {
+                Console.WriteLine("accel : {0}, brake : {1}, duty : {2},  ",
+                                  ac * 6, br * 14, infl);
+                var data = new VehicleInfoReceived
+                               {
+                                   Name = RouteName,
+                                   Speed = (infl / 250.0f).ToString(),
+                                   Accelation = "1.0"
+                               };
+                SendCommand(data);
+            }
+            before_infl = infl;
+
+
 
         }
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            IDengoController cnt = new DengoController();
-
             if (!InputVehicles())
                 return;
 
-            double infl = 0;
-            double before_infl = infl + 1;
+            IDisposable sending = null;
             while (true)
             {
-                var ac = cnt.AccelLevel;
-                var br = cnt.BrakeLevel;
+                Console.WriteLine("cmd?");
+                var cmd = Console.ReadLine();
 
-                if (ac < 0.0 || br < 0.0)
-                    continue;
-
-                if (br > 0)
+                if (cmd.Contains("loop start"))
                 {
-                    infl += -br * 10.0;
+                    if (sending == null)
+                        sending = Observable.Defer(() =>Observable.Start(sendingloop))
+                            .Delay(TimeSpan.FromMilliseconds(500))
+                            .Repeat()
+                            .Subscribe();
                 }
-                else
+                else if (cmd.Contains("loop stop"))
                 {
-                    infl += ac * 5.0;
-                }
-
-                if (infl < 0)
-                    infl = 0;
-                else if (infl > 250)
-                    infl = 250;
-
-                //AddAccel(infl, (cnt.Position) ? MotorDirection.Positive : MotorDirection.Negative);
-                if (infl != before_infl)
-                {
-                    Console.WriteLine("accel : {0}, brake : {1}, duty : {2},  ",
-                                ac * 6, br * 14, infl);
-                    
-                    var data = new VehicleInfoReceived()
+                    if (sending != null)
                     {
-                        Name = RouteName,
-                        Speed = (infl / 250.0f ).ToString(),
-                    };
-                    SendCommand(data);
+                        sending.Dispose();
+                        sending = null;
+                    }
                 }
-                before_infl = infl;
-
-
-                System.Threading.Thread.Sleep(500);
-
-
+                else if (cmd.Contains("max"))
+                {
+                    try
+                    {
+                        var res = double.TryParse(cmd.Split(' ').Last(), out spdmax);
+                        Console.WriteLine("spdmax = {0}", spdmax);
+                    }
+                    catch 
+                    {
+                    }
+                }
+                else if (cmd.Contains("min"))
+                {
+                    try
+                    {
+                        var res = double.TryParse(cmd.Split(' ').Last(), out spdmin);
+                        Console.WriteLine("spdmin = {0}", spdmin);
+                    }catch
+                    {
+                    }
+                }
+                 else if (cmd.Contains("accel"))
+                {
+                    try
+                    {
+                        var res = double.TryParse(cmd.Split(' ').Last(), out accel);
+                        Console.WriteLine("accel = {0}", accel);
+                    }
+                    catch
+                    {
+                    }
+                }
+               else if (cmd.Contains("brake"))
+                {
+                    try
+                    {
+                        var res = double.TryParse(cmd.Split(' ').Last(), out brake);
+                        Console.WriteLine("brake = {0}", brake);
+                    }
+                    catch
+                    {
+                    }
+                }
             }
         }
     }
 
-    class DengoController : IDengoController
+    internal class DengoController : IDengoController
     {
-        private int sticknumber;
+        private readonly int sticknumber;
 
         public DengoController()
         {
-            Winmm.JOYINFO info = new Winmm.JOYINFO();
+            var info = new Winmm.JOYINFO();
 
             for (int i = 0; i < Winmm.joyGetNumDevs(); ++i)
             {
                 if (Winmm.joyGetPos(i, ref info) == Winmm.JOYERR_NOERROR)
                 {
-                    this.sticknumber = i;
+                    sticknumber = i;
                     return;
                 }
             }
@@ -160,65 +217,61 @@ namespace DengoController
         {
             get
             {
-                Winmm.JOYINFO info = new Winmm.JOYINFO();
-                if (Winmm.joyGetPos(this.sticknumber, ref info) == 0)
+                var info = new Winmm.JOYINFO();
+                if (Winmm.joyGetPos(sticknumber, ref info) == 0)
                 {
                     return info.wButtons;
-                    Console.WriteLine(info.wButtons);
                 }
 
                 throw new InvalidOperationException("some error occured when getting keyboard info");
             }
         }
 
-        private int extractbit(int state, int bit)
-        {
-            return (state & (1 << bit)) >> bit;
-        }
-
         public bool Position
         {
             get
             {
-                var state = getkeystate;
+                int state = getkeystate;
 
                 return extractbit(state, 4) > 0;
             }
         }
 
+        private double _before_accel =0 ;
         public double AccelLevel
         {
             get
             {
-                var state = getkeystate;
-                var level = extractbit(state, 0) << 0
+                int state = getkeystate;
+                int level = extractbit(state, 0) << 0
                             | extractbit(state, 15) << 1
                             | extractbit(state, 13) << 2;
 
                 if (level == 0)
-                    return -1.0;
+                    return _before_accel;
 
                 //invert
                 level ^= 7;
                 --level;
 
-                return (double)level / 6.0;
-
+                _before_accel = level / 6.0;
+                return _before_accel;
             }
         }
 
+        private double _before_brake = 0;
         public double BrakeLevel
         {
             get
             {
-                var state = getkeystate;
-                var level = extractbit(state, 6) << 0
+                int state = getkeystate;
+                int level = extractbit(state, 6) << 0
                             | extractbit(state, 4) << 1
                             | extractbit(state, 7) << 2
                             | extractbit(state, 5) << 3;
 
                 if (level == 15)
-                    return -1.0;
+                    return _before_brake;
 
                 //invert
                 level ^= 15;
@@ -227,9 +280,14 @@ namespace DengoController
                 if (level == 14)
                     return double.MaxValue;
 
-                return (double)level / 14.0;
-
+                _before_brake = level / 14.0;
+                return _before_brake;
             }
+        }
+
+        private int extractbit(int state, int bit)
+        {
+            return (state & (1 << bit)) >> bit;
         }
     }
 }

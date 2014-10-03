@@ -1,0 +1,160 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" Namespace="LightSwitchApplication" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+  <EntityType Name="NeededParts">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Edm.Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Board" Type="Edm.String" Nullable="false" MaxLength="255" />
+    <Property Name="Value" Type="Edm.String" MaxLength="255" />
+    <Property Name="Device" Type="Edm.String" Nullable="false" MaxLength="255" />
+    <Property Name="Parts" Type="Edm.String" Nullable="false" MaxLength="255" />
+    <Property Name="Qty" Type="Edm.Int32" Nullable="false" />
+    <Property Name="RowVersion" Type="Edm.Binary" Nullable="false" ConcurrencyMode="Fixed" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="NeededParts_AvailableParts" Type="Edm.Int32" />
+    <NavigationProperty Name="NeededBoardsCollection" Relationship="LightSwitchApplication.NeededBoards_NeededParts" ToRole="NeededBoards" FromRole="NeededParts" />
+    <NavigationProperty Name="AvailableParts" Relationship="LightSwitchApplication.NeededParts_AvailableParts" ToRole="AvailableParts" FromRole="NeededParts" />
+  </EntityType>
+  <EntityType Name="AvailableParts">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Edm.Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Category" Type="Edm.String" Nullable="false" MaxLength="255" />
+    <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="255" />
+    <Property Name="LongName" Type="Edm.String" MaxLength="255" />
+    <Property Name="Comment" Type="Edm.String" Nullable="false" MaxLength="255" />
+    <Property Name="PartsUri" Type="Edm.String" Nullable="false" MaxLength="255" />
+    <Property Name="PartsImageUri" Type="Edm.String" Nullable="false" MaxLength="255" />
+    <Property Name="Stock" Type="Edm.Int32" Nullable="false" />
+    <Property Name="RowVersion" Type="Edm.Binary" Nullable="false" ConcurrencyMode="Fixed" annotation:StoreGeneratedPattern="Computed" />
+    <NavigationProperty Name="PriceInfoCollection" Relationship="LightSwitchApplication.AvailableParts_PriceInfo" ToRole="PriceInfo" FromRole="AvailableParts" />
+    <NavigationProperty Name="NeededPartsCollection" Relationship="LightSwitchApplication.NeededParts_AvailableParts" ToRole="NeededParts" FromRole="AvailableParts" />
+  </EntityType>
+  <EntityType Name="PriceInfo">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Edm.Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Unit" Type="Edm.String" Nullable="false" MaxLength="255" />
+    <Property Name="Price" Type="Edm.Int32" Nullable="false" />
+    <Property Name="Qty" Type="Edm.Int32" Nullable="false" />
+    <Property Name="RowVersion" Type="Edm.Binary" Nullable="false" ConcurrencyMode="Fixed" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="PriceInfo_StoreInfo" Type="Edm.Int32" Nullable="false" />
+    <Property Name="AvailableParts_PriceInfo" Type="Edm.Int32" Nullable="false" />
+    <NavigationProperty Name="StoreInfo" Relationship="LightSwitchApplication.PriceInfo_StoreInfo" ToRole="StoreInfo" FromRole="PriceInfo" />
+    <NavigationProperty Name="AvailableParts" Relationship="LightSwitchApplication.AvailableParts_PriceInfo" ToRole="AvailableParts" FromRole="PriceInfo" />
+  </EntityType>
+  <EntityType Name="StoreInfo">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Edm.Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="StoreName" Type="Edm.String" Nullable="false" MaxLength="255" />
+    <Property Name="StoreUri" Type="Edm.String" Nullable="false" MaxLength="255" />
+    <Property Name="RowVersion" Type="Edm.Binary" Nullable="false" ConcurrencyMode="Fixed" annotation:StoreGeneratedPattern="Computed" />
+    <NavigationProperty Name="PriceInfoCollection" Relationship="LightSwitchApplication.PriceInfo_StoreInfo" ToRole="PriceInfo" FromRole="StoreInfo" />
+  </EntityType>
+  <EntityType Name="NeededBoards">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Edm.Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="BoardName" Type="Edm.String" Nullable="false" MaxLength="255" />
+    <Property Name="Count" Type="Edm.Int32" Nullable="false" />
+    <Property Name="RowVersion" Type="Edm.Binary" Nullable="false" ConcurrencyMode="Fixed" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="NeededBoards_NeededParts" Type="Edm.Int32" />
+    <NavigationProperty Name="NeededParts" Relationship="LightSwitchApplication.NeededBoards_NeededParts" ToRole="NeededParts" FromRole="NeededBoards" />
+  </EntityType>
+  <EntityType Name="Table1Item">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Edm.Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="RowVersion" Type="Edm.Binary" Nullable="false" ConcurrencyMode="Fixed" annotation:StoreGeneratedPattern="Computed" />
+  </EntityType>
+  <EntityType Name="Table2Item">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Edm.Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="RowVersion" Type="Edm.Binary" Nullable="false" ConcurrencyMode="Fixed" annotation:StoreGeneratedPattern="Computed" />
+  </EntityType>
+  <Association Name="PriceInfo_StoreInfo">
+    <End Role="StoreInfo" Type="LightSwitchApplication.StoreInfo" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="PriceInfo" Type="LightSwitchApplication.PriceInfo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="StoreInfo">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PriceInfo">
+        <PropertyRef Name="PriceInfo_StoreInfo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="AvailableParts_PriceInfo">
+    <End Role="AvailableParts" Type="LightSwitchApplication.AvailableParts" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="PriceInfo" Type="LightSwitchApplication.PriceInfo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AvailableParts">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PriceInfo">
+        <PropertyRef Name="AvailableParts_PriceInfo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="NeededBoards_NeededParts">
+    <End Role="NeededParts" Type="LightSwitchApplication.NeededParts" Multiplicity="0..1" />
+    <End Role="NeededBoards" Type="LightSwitchApplication.NeededBoards" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="NeededParts">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="NeededBoards">
+        <PropertyRef Name="NeededBoards_NeededParts" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="NeededParts_AvailableParts">
+    <End Role="AvailableParts" Type="LightSwitchApplication.AvailableParts" Multiplicity="0..1" />
+    <End Role="NeededParts" Type="LightSwitchApplication.NeededParts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AvailableParts">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="NeededParts">
+        <PropertyRef Name="NeededParts_AvailableParts" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="ApplicationDataObjectContext" m:IsDefaultEntityContainer="true">
+    <EntitySet Name="NeededPartsSet" EntityType="LightSwitchApplication.NeededParts" />
+    <EntitySet Name="AvailablePartsSet" EntityType="LightSwitchApplication.AvailableParts" />
+    <EntitySet Name="PriceInfoSet" EntityType="LightSwitchApplication.PriceInfo" />
+    <EntitySet Name="StoreInfoSet" EntityType="LightSwitchApplication.StoreInfo" />
+    <EntitySet Name="NeededBoardsSet" EntityType="LightSwitchApplication.NeededBoards" />
+    <EntitySet Name="Table1ItemSet" EntityType="LightSwitchApplication.Table1Item" />
+    <EntitySet Name="Table2ItemSet" EntityType="LightSwitchApplication.Table2Item" />
+    <AssociationSet Name="PriceInfo_StoreInfo" Association="LightSwitchApplication.PriceInfo_StoreInfo">
+      <End Role="StoreInfo" EntitySet="StoreInfoSet" />
+      <End Role="PriceInfo" EntitySet="PriceInfoSet" />
+    </AssociationSet>
+    <AssociationSet Name="AvailableParts_PriceInfo" Association="LightSwitchApplication.AvailableParts_PriceInfo">
+      <End Role="AvailableParts" EntitySet="AvailablePartsSet" />
+      <End Role="PriceInfo" EntitySet="PriceInfoSet" />
+    </AssociationSet>
+    <AssociationSet Name="NeededBoards_NeededParts" Association="LightSwitchApplication.NeededBoards_NeededParts">
+      <End Role="NeededParts" EntitySet="NeededPartsSet" />
+      <End Role="NeededBoards" EntitySet="NeededBoardsSet" />
+    </AssociationSet>
+    <AssociationSet Name="NeededParts_AvailableParts" Association="LightSwitchApplication.NeededParts_AvailableParts">
+      <End Role="AvailableParts" EntitySet="AvailablePartsSet" />
+      <End Role="NeededParts" EntitySet="NeededPartsSet" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

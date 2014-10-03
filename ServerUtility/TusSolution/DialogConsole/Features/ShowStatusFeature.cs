@@ -26,6 +26,8 @@ namespace DialogConsole.Features
             //foreach(var rt in this.Param.Routes)
             //    Console.WriteLine(rt.ToString());
 
+            //write pending queue
+            Console.WriteLine("server pending queue: {0}", this.Param.UsingLayout.Sheet.Server.QueuingCount);
         }
 
         public void Init()

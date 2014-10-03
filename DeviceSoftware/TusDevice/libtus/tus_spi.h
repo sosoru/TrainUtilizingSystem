@@ -34,6 +34,33 @@ typedef struct tag_spi_send_object
 	uint8_t is_sent;
 } spi_send_object;
 
+typedef struct tag_spi_send_lock
+{
+	union{
+		struct  
+		{
+			uint8_t is_locked1 : 1;
+			uint8_t is_locked2 : 1;
+			uint8_t is_locked3 : 1;
+			uint8_t is_locked4 : 1;
+		
+			uint8_t is_commed1 : 1;
+			uint8_t is_commed2 : 1;
+			uint8_t is_commed3 : 1;
+			uint8_t is_commed4 : 1;		
+			
+		};
+		uint8_t raw;
+	};	
+} spi_comm_lock;
+
+typedef struct tag_psi_recv_object
+{
+	EthPacket packet;
+	uint8_t is_locked;
+	uint8_t is_recved;
+} spi_recv_object;
+
 // nSS is set to low while the hardwares are communicating.
 #define IS_SPI_COMMUNICATING !(TUS_CONTROL_PIN & (1 << TUS_CONTROL_SS))
 
@@ -43,6 +70,7 @@ typedef void (*spi_received_handler)(args_received* e) ;
 void tus_spi_init();
 void tus_spi_process_packets();
 void tus_spi_set_handler(spi_received_handler handler);
+void tus_spi_receive_reset();
 uint8_t tus_spi_lock_send_buffer(spi_send_object ** ppsendobj);
 
 #ifdef __cplusplus

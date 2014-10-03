@@ -1,0 +1,26 @@
+-
+  name : platform
+  luminary : 
+    devices :
+      - type : Led
+        addr : (24,4,1)
+      - type : Led
+        addr : (24,4,2)
+      - type : Led
+        addr : (24,4,3)
+      - type : Led
+        addr : (24,4,4)
+      - type : Led
+        addr : (24,4,5)
+      - type : Led
+        addr : (24,4,6)
+      - type : Led
+        addr : (24,4,7)
+      - type : Led
+        addr : (24,4,8)
+      - type : Led
+        addr : (24,4,9)
+      - type : Led
+        addr : (24,4,10)
+
+      

@@ -49,8 +49,11 @@ namespace EthernetBridge
 			template<class SSpin>
 			static void TransData(EthPacket *ppack, EthPacket& received)
 			{
+				MISOpin::InitDefaultInput();
+				MOSIpin::Clear();
+				SCKpin::Clear();
 				SSpin::Clear(); // notify starting transfer for slave 
-	
+				_delay_us(5);
 				for(uint8_t i=0; i< sizeof(EthPacket); ++i)
 				{
 					uint8_t send;
@@ -106,12 +109,17 @@ namespace EthernetBridge
 		
 				data <<= 1;	
 				
-				_delay_us(6);
+				_delay_us(3);
 				SCKpin::Set();
-				_delay_us(3);
-				receive |= MISOpin::IsSet() << (7-i);
+				_delay_us(2);
 				
-				_delay_us(3);
+				if(MISOpin::IsSet())
+				{
+					receive |= 1 << (7-i);
+				}				
+				//receive |= MISOpin::IsSet() << (7-i);
+				
+				_delay_us(2);
 				SCKpin::Clear();		
 			}
 

@@ -42,7 +42,6 @@ namespace Tus.Communication
         public static IEnumerable<IDeviceState<IPacketDeviceData>> ExtractPackedPacket(this DevicePacket packet)
         {
             var bufind = 0;
-
             while (bufind < DevicePacket.DATA_SIZE && packet.Data[bufind] != 0x00)
             {
                 var len = packet.Data[bufind];
@@ -51,14 +50,23 @@ namespace Tus.Communication
 
                 if (AvrDeviceFactoryProvider.Factories.Value.Any(p => p.Metadata.ModuleType == mtype))
                 {
-                    var f = AvrDeviceFactoryProvider.Factories.Value.First(p => p.Metadata.ModuleType == mtype).Value;
+                    var f =
+                        AvrDeviceFactoryProvider.Factories.Value.First(p => p.Metadata.ModuleType == mtype).Value;
                     var state = f.CreateDeviceState();
                     var data = state.Data;
                     var cpbuffer = new byte[len];
 
                     state.ID = new DeviceID(packet.ID.ParentPart, packet.ID.ModuleAddr, internelid);
+                    try
+                    {
 
-                    Array.Copy(packet.Data, bufind, cpbuffer, 0, len);
+                        Array.Copy(packet.Data, bufind, cpbuffer, 0, len);
+                    }
+                    catch (ArgumentException ex)
+                    {
+                        Console.WriteLine("ソース長さが足りない？");
+                        Console.WriteLine(ex.ToString());
+                    }
                     data.RestoreObject(cpbuffer);
 
                     yield return state;

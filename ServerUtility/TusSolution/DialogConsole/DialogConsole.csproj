@@ -55,6 +55,7 @@
       <HintPath>..\packages\Rx-PlatformServices.2.1.30214.0\lib\Net45\System.Reactive.PlatformServices.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -76,10 +77,12 @@
     <Compile Include="Features\JsonTestFeature.cs" />
     <Compile Include="Features\LogingFeature.cs" />
     <Compile Include="Features\MotorFeature.cs" />
+    <Compile Include="Features\SelectVehicleGroupFeature.cs" />
     <Compile Include="Features\ShowStatusFeature.cs" />
     <Compile Include="Features.Base\Feature.cs" />
     <Compile Include="Features\InputVehicleFeature.cs" />
     <Compile Include="Features\RemoveVehicleFeature.cs" />
+    <Compile Include="Features\ShowVehicleStatusFeature.cs" />
     <Compile Include="Features\StateWebServerFeature.cs" />
     <Compile Include="Controllers\DeviceController.cs" />
     <Compile Include="Controllers\MotorController.cs" />
@@ -98,10 +101,12 @@
     <Compile Include="WebPages\LedPage.cs" />
     <Compile Include="WebPages\ConsolePageBase.cs" />
     <Compile Include="WebPages\IConsolePage.cs" />
+    <Compile Include="WebPages\ShutdownPage.cs" />
     <Compile Include="WebPages\SwitchPage.cs" />
     <Compile Include="WebPages\TusPageAttribute.cs" />
     <Compile Include="WebPages\MotorPage.cs" />
     <Compile Include="WebPages\BlockPage.cs" />
+    <Compile Include="WebPages\VehiclePage.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

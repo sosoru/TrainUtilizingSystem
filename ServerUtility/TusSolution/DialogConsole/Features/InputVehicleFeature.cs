@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using DialogConsole.Features.Base;
+using DialogConsole.WebPages;
+using Tus.Communication;
 using Tus.TransControl.Base;
 
 namespace DialogConsole.Features
@@ -15,10 +19,19 @@ namespace DialogConsole.Features
     internal class InputVehicleFeature
         : BaseFeature, IFeature
     {
+        [ImportMany]
+        public IEnumerable<Lazy<IConsolePage, ITusPageMetadata>> Pages { get; set; }
+
         public void Execute()
         {
             Console.WriteLine("Vehicle Name ?");
             string vhname = Console.ReadLine();
+
+            if (this.Param.UsingLayout.Vehicles.Any(vh => vh.Name == vhname))
+            {
+                Console.WriteLine("Duplicated vehicle name");
+                return;
+            }
 
             Console.WriteLine("Which block your vehicle halt on?");
             Block bk = Param.UsingLayout.Sheet.GetBlock(Console.ReadLine());
@@ -31,32 +44,27 @@ namespace DialogConsole.Features
             }
 
             //this.Vehicles.Clear();
-            Vehicle v = CreateVehicle(vhname, bk);
-
-
-            if (this.Param.SyncDevicePipeline == null)
+            Vehicle v = null;
+            if (TryCreateVehicle(vhname, bk, out v))
             {
-                Param.SyncDevicePipeline = Observable.Defer(() =>
-                        Observable.Start(this.Param.UsingLayout.Sheet.InquiryDevices))
-                    .Delay(TimeSpan.FromMilliseconds(300))
-                    .Repeat()
-                    .ObserveOn(this.Param.SchedulerPacketProcessing)
-                    .SubscribeOn(Scheduler.NewThread);
-
-                Param.SyncDeviceProcessing = this.Param.SyncDevicePipeline.Subscribe();
-
-                //Observable.Defer(() => Observable.Start(() =>
+                //if (this.Param.SyncDevicePipeline == null)
                 //{
-                //    lock (this.lock_vehicleprocess)
-                //        this.Param.UsingLayout.Sheet.SetUnlockedBlocksToDefault();
-                //})
-                //        .Delay(TimeSpan.FromMilliseconds(1000)))
+                //    Param.SyncDevicePipeline = Observable.Defer(() =>
+                //            Observable.Start(this.Param.UsingLayout.Sheet.InquiryDevices))
+                //        .Delay(TimeSpan.FromMilliseconds(300))
                 //        .Repeat()
-                //        .ObserveOn(this.Param.SchedulerPacketProcessing)
-                //        .SubscribeOn(Scheduler.NewThread)
-                //        .Subscribe();
-            }
+                //        .SubscribeOn(Scheduler.NewThread);
 
+                //    Param.SyncDeviceProcessing = this.Param.SyncDevicePipeline.Subscribe();
+
+                //}
+
+
+            }
+        }
+
+        public void Init()
+        {
             Param.VehiclePipeline = Observable.Defer(
                 () => Observable.Start(VehicleProcess));
             //.Do(u => Param.Sheet.InquiryStatusOfAllMotors());
@@ -64,15 +72,10 @@ namespace DialogConsole.Features
 
             Param.VehicleProcessing = Param.VehiclePipeline
                 //.Do(u => this.Param.UsingLayout.Sheet.InquiryStatusOfAllMotors())
-                .Delay(TimeSpan.FromMilliseconds(100)).Repeat()
-                .ObserveOn(this.Param.SchedulerPacketProcessing)
+                .Delay(TimeSpan.FromMilliseconds(500)).Repeat()
                                            .SubscribeOn(Scheduler.NewThread)
                                            .Subscribe();
 
-        }
-
-        public void Init()
-        {
         }
 
         private RouteOrder InputRouteManually(out bool ignoreblockage)
@@ -109,7 +112,7 @@ namespace DialogConsole.Features
         }
 
         private IList<RouteOrder> routeorders = null;
-        private Vehicle CreateVehicle(string vhname, Block b)
+        private bool TryCreateVehicle(string vhname, Block b, out Vehicle vh)
         {
 
             //foreach (Vehicle vh in Param.UsingLayout.Vehicles.ToArray())
@@ -137,12 +140,23 @@ namespace DialogConsole.Features
 
             lock (lock_vehicleprocess)
             {
-                if (Param.VehicleProcessing != null)
-                    Param.VehicleProcessing.Dispose();
+                //if (Param.VehicleProcessing != null)
+                //    Param.VehicleProcessing.Dispose();
 
-                v.Run(0.0f, b);
-                Param.UsingLayout.Vehicles.Add(v);
-                return v;
+                // VehicleをRouteに抑えられるかチェックすること
+                if (v.CanLockRoute(b))
+                {
+                    v.Run(0.0f, b);
+                    Param.UsingLayout.Vehicles.Add(v);
+                    vh = v;
+                    return true;
+                }
+                else
+                {
+                    Console.WriteLine("full block");
+                    vh = null;
+                    return false;
+                }
             }
         }
 
@@ -151,16 +165,42 @@ namespace DialogConsole.Features
         {
             lock (lock_vehicleprocess)
             {
-                foreach (Vehicle v in Param.UsingLayout.Vehicles.ToArray())
+                try
                 {
-                    try
+                    DevicePacket packet;
+                    while (this.Param.UsingLayout.Sheet.Server.receving_queue.TryDequeue(out packet))
+                    {
+                        var states = packet.ExtractPackedPacket();
+                        foreach (var state in states)
+                            this.Param.UsingLayout.Sheet.Server.thisobsv_.Notify(state);
+                    }
+
+                    //Webから更新を反映
+                    foreach (var page in this.Pages)
+                    {
+                        page.Value.ApplyReceivedJsonRequest();
+                    }
+
+                    foreach (Vehicle v in Param.UsingLayout.Vehicles.ToArray())
                     {
                         v.Refresh();
                     }
-                    catch (Exception ex)
+
+                    this.Param.UsingLayout.Sheet.SetUnlockedBlocksToDefault();
+                    //inquiry devices
+                    this.Param.UsingLayout.Sheet.InquiryDevices();
+
+                    //send packets to device
+                    //this.Param.SendingPacketPipeline.Subscribe();
+
+                    foreach (var page in this.Pages)
                     {
-                        Console.WriteLine(ex.ToString());
+                        page.Value.RefreshSendingJsonContent();
                     }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
                 }
 
             }

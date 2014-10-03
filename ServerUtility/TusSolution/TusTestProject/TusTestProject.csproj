@@ -94,6 +94,7 @@
     <Compile Include="FileParseTest\BlockYamlTest.cs" />
     <Compile Include="FileParseTest\IlluminateYamlTest.cs" />
     <Compile Include="FileParseTest\RouteYamlTest.cs" />
+    <Compile Include="FileParseTest\VehicleGroupYamlTest.cs" />
     <Compile Include="LoopingArrayTest.cs" />
     <Compile Include="MotorStateTest.cs" />
     <Compile Include="PackedPacketTest.cs" />
@@ -155,6 +156,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="SampleLayout\test_looping.yaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="SampleLayout\test_vehicles.yaml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Signification.pfx" />

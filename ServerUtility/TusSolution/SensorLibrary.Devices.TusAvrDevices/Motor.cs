@@ -16,6 +16,7 @@ namespace Tus.Communication.Device.AvrComposed
             : base(ModuleTypeEnum.AvrMotor, new MotorState())
         {
             States = new Dictionary<MotorMemoryStateEnum, MotorState>();
+            this.deviceKernel_ = new Kernel();
         }
 
         public Motor(PacketServer server)
@@ -34,34 +35,28 @@ namespace Tus.Communication.Device.AvrComposed
         [DataMember]
         public IDictionary<MotorMemoryStateEnum, MotorState> States { get; set; }
 
-        [DataMember]
         public Kernel DeviceKernel
         {
             get
             {
-                if (deviceKernel_ == null)
-                    deviceKernel_ = new Kernel();
-
                 this.deviceKernel_.DeviceID = this.DeviceID;
                 this.deviceKernel_.ReceivingServer = this.ReceivingServer;
                 return deviceKernel_;
             }
-            set
-            {
-                Kernel newkernel = value;
-                newkernel.DeviceID = DeviceID;
-                newkernel.ReceivingServer = ReceivingServer;
-                deviceKernel_ = newkernel;
-            }
         }
 
+        public MotorMemoryStateEnum ReceivedMemory
+        {
+            get;
+            set;
+        }
         private object lock_memory = new object();
         [IgnoreDataMember]
         public MotorMemoryStateEnum CurrentMemory
         {
             get
             {
-                lock (lock_memory)
+                lock (lock_memory ?? new object())
                 {
                     if (!(DeviceKernel.CurrentState.Command == KernelCommand.MemoryState))
                         return MotorMemoryStateEnum.Unknown;
@@ -72,7 +67,7 @@ namespace Tus.Communication.Device.AvrComposed
             }
             set
             {
-                lock (lock_memory)
+                lock (lock_memory ?? new object())
                 {
                     var memstate = new MemoryState((int)value);
 
@@ -93,23 +88,30 @@ namespace Tus.Communication.Device.AvrComposed
             set { CurrentMemory = (MotorMemoryStateEnum)Enum.Parse(typeof(MotorMemoryStateEnum), value); }
         }
 
-        public override MotorState CurrentState
+        public string ReceivedMemoryString
         {
-            get { return base.CurrentState; }
-            set
-            {
-                if (value != null)
-                {
-                    CurrentMemory = value.TargetMemory;
-                }
-                else
-                {
-                    CurrentMemory = MotorMemoryStateEnum.Unknown;
-                }
+            get { return Enum.GetName(typeof(MotorMemoryStateEnum), this.ReceivedMemory); }
+            set { this.ReceivedMemory = (MotorMemoryStateEnum)Enum.Parse(typeof(MotorMemoryStateEnum), value); }
 
-                base.CurrentState = value;
-            }
         }
+
+        //public override MotorState CurrentState
+        //{
+        //    get { return base.CurrentState; }
+        //    set
+        //    {
+        //        if (value != null && this.deviceKernel_!= null)
+        //        {
+        //            CurrentMemory = value.TargetMemory;
+        //        }
+        //        else
+        //        {
+        //            CurrentMemory = MotorMemoryStateEnum.Unknown;
+        //        }
+
+        //        base.CurrentState = value;
+        //    }
+        //}
 
         [DataMember(IsRequired = false)]
         public bool IsDetected
@@ -117,6 +119,8 @@ namespace Tus.Communication.Device.AvrComposed
             get { return CurrentState.Current > CurrentState.ThresholdCurrent; }
             set { throw new NotImplementedException(); }
         }
+
+        public MotorMemoryStateEnum ModeAfterWaiting { get; set; }
 
         public IEnumerable<DevicePacket> ChangeMemoryTo(MotorMemoryStateEnum mem)
         {
@@ -126,30 +130,42 @@ namespace Tus.Communication.Device.AvrComposed
             return devp;
         }
 
-        private MotorMemoryStateEnum _before_sending = MotorMemoryStateEnum.Unknown;
-        private Stopwatch _before_sending_time = new Stopwatch();
+        private MotorMemoryStateEnum _before_current = MotorMemoryStateEnum.Unknown;
+        private DateTime _before_sent_waiting = DateTime.MinValue;
         private IEnumerable<DevicePacket> createApplyingStates()
         {
             var statelist = new List<IDevice<IDeviceState<IPacketDeviceData>>>();
+            bool withoutwaiting = (this.CurrentMemory == MotorMemoryStateEnum.Waiting &&
+                                    this._before_current == MotorMemoryStateEnum.Waiting);
 
             foreach (var state in States)
             {
+                //if (withoutwaiting && state.Key == MotorMemoryStateEnum.Waiting)
+                //    continue;
+
                 state.Value.TargetMemory = state.Key;
                 statelist.Add(new Motor(this, state.Value));
             }
 
             //waiting stateが連続出ない場合，
-            //ストップウォッチが動いていない場合，
-            if ((CurrentMemory != MotorMemoryStateEnum.Waiting ||
-                _before_sending != MotorMemoryStateEnum.Waiting)
-                || (!_before_sending_time.IsRunning))
+            // Stateを送る条件：
+            //  1，CurrentMemoryがUnknown（初期化）
+            var exprinit = this.CurrentMemory == MotorMemoryStateEnum.Unknown;            //  2，CurrentMemoryとReceivedMemoryの不一致(Waiting以外で)
+            var exprrefresh = this.CurrentMemory != MotorMemoryStateEnum.Waiting
+                && this.CurrentMemory != this.ReceivedMemory;
+            //  3，CurrentMemoryがWaitingStateで，ReceivedMemoryがMotorAfterWaiting||Waitingでない場合
+            var exprwaiting = this.CurrentMemory == MotorMemoryStateEnum.Waiting
+                && this.ReceivedMemory != this.ModeAfterWaiting
+                && this.ReceivedMemory != MotorMemoryStateEnum.Waiting;
+            if (exprinit|| exprrefresh|| exprwaiting)
             {
                 // send packet changing memory
                 statelist.Add(Kernel.MemoryState(DeviceID, new MemoryState((int)CurrentMemory)));
-                _before_sending_time.Restart();
+                Console.WriteLine("Motor {0} changed to {1} ({2})", this.DeviceID, this.CurrentMemoryString, this.ReceivedMemoryString);
+                this._before_sent_waiting = DateTime.Now;
             }
-            _before_sending = CurrentMemory;
 
+            _before_current = CurrentMemory;
             return PacketExtension.CreatePackedPacket(statelist);
         }
 
@@ -159,8 +175,23 @@ namespace Tus.Communication.Device.AvrComposed
             //base.Observe(observable);
 
             DeviceKernel.Observe(observable);
+            DeviceKernel.PacketReceived += DeviceKernel_PacketReceived;
         }
 
+        void DeviceKernel_PacketReceived(IDevice<KernelState> sender, PacketReceiveEventArgs args)
+        {
+            if (sender is Kernel)
+            {
+                var dev = (Kernel)sender;
+                if (dev.IsMemoryState)
+                {
+                    this.ReceivedMemory = (MotorMemoryStateEnum)dev.CurrentState.Data.Content1;
+                }
+
+            }
+        }
+
+        // TODO: SendState使わないとMotorのデータがちゃんと送れない
         public override void SendState()
         {
             // TODO: DeviceKernelとのスレッドセーフ

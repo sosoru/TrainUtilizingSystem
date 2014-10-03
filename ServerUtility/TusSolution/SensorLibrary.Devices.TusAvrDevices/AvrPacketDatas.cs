@@ -36,7 +36,7 @@ namespace Tus.Communication.Device.AvrComposed
         public byte Current;
         //public byte ThresholdValue;
         public DeviceID DestinationID;
-        public byte TransitMemory; //(MemoryWhenEntered << 4 | DestinationMemory)
+        public byte TransitMemory; //(DestinationMemory << 4 | MemoryWhenEntered )
         // --------------------
     }
 

@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="SheetPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">C:\Users\Administrator\BTSync\console_page\katsushika.yaml</Value>
+      <Value Profile="(Default)">C:\Users\Administrator\Desktop\DropboxPortableAHK\DropboxPortableAHK\DropboxProg\console_page\2014signal_blocks.yaml</Value>
     </Setting>
     <Setting Name="IpSegment" Type="System.String" Scope="User">
       <Value Profile="(Default)">192.168.2.0</Value>
@@ -18,13 +18,16 @@
       <Value Profile="(Default)">(9, 0, 0)</Value>
     </Setting>
     <Setting Name="RoutePath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">C:\Users\Administrator\BTSync\console_page\katsushika_route.yaml</Value>
+      <Value Profile="(Default)">C:\Users\Administrator\Desktop\DropboxPortableAHK\DropboxPortableAHK\DropboxProg\console_page\2014signal_routes.yaml</Value>
     </Setting>
     <Setting Name="IlluminationPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">C:\Users\Administrator\BTSync\console_page\katsushika_illuminate.yaml</Value>
+      <Value Profile="(Default)">C:\Users\Administrator\Desktop\DropboxPortableAHK\DropboxPortableAHK\DropboxProg\console_page\2014signal_illuminate.yaml</Value>
     </Setting>
     <Setting Name="http" Type="System.String" Scope="User">
       <Value Profile="(Default)">http://+:8012/</Value>
+    </Setting>
+    <Setting Name="VehicleGroupPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\Users\Administrator\Desktop\DropboxPortableAHK\DropboxPortableAHK\DropboxProg\console_page\test_vehicles.yaml</Value>
     </Setting>
   </Settings>
 </SettingsFile>

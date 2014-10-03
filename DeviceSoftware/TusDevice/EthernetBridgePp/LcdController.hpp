@@ -37,7 +37,7 @@ namespace EthernetBridge
 			static char lcd_buf[base::WIDTH * base::HEIGHT];
 			static uint8_t lcd_buf_pos;
 			
-			static inline uint8_t writeStringInner(const char* buf, uint8_t line, void*(fn)(void*, const void*, size_t))
+			static inline uint8_t writeStringInner(char* buf, uint8_t line)
 			{
 				uint8_t pos=0, bufpos=0, copied;
 				
@@ -45,58 +45,68 @@ namespace EthernetBridge
 					 && line < 4
 					 )
 				{				
-					pos = GetPositionOfLine(line);
+					pos = GetFirstPosOfLine(line);
 					++line;
 					
 					for(copied=0; copied<base::WIDTH; ++copied)
 					{
-						fn(lcd_buf+(pos++), (const void*)buf+(bufpos++), sizeof(char));
-						
 						if(buf[bufpos]==0x00)
-							break;
+							goto func_ret;
+							
+						lcd_buf[pos++] = buf[bufpos++];
+						
 					}
 														
 				}
-								
+			func_ret : 			
 				return bufpos;			
 			}
 			
 			public :
 			
-			static inline uint8_t GetPositionOfLine(uint8_t line)
+			static inline uint8_t GetFirstPosOfLine(uint8_t line)
 			{
-				return 0x40 * (line & 1) + base::WIDTH * (line >> 1);				
+				return line * base::WIDTH;
 			}
 			
-
 			static void Init()
 			{
+				uint8_t i;
 				base::InitPort();
 				base::InitLcd();
 				
-				memset(lcd_buf, 0x20, sizeof(lcd_buf));
+				//memset(lcd_buf, 0xAE, sizeof(lcd_buf));
+				for (i = 0; i<sizeof(lcd_buf); i++)
+				{					
+					lcd_buf[i] = 0x20;
+				}
 				lcd_buf_pos = 0;
 			}
 			
 			static void StepRendering()
 			{
-				if(lcd_buf_pos >= sizeof(lcd_buf))
+				if(lcd_buf_pos > sizeof(lcd_buf))
 					lcd_buf_pos = 0;
-					
-				WriteData(lcd_buf[lcd_buf_pos++]);
 				
+				//while(base::IsBusy()) ;
+				base::SetPosition(lcd_buf_pos);
+				_delay_us(40);
+				//while(base::IsBusy()) ;
+				base::WriteData(lcd_buf[lcd_buf_pos]);
+				_delay_us(40);			
+				lcd_buf_pos++;	
 			}
 						
 			static uint8_t WriteString(char* buf, uint8_t line)
 			{
-				return writeStringInner((char*)buf, line, memcpy);
+				return writeStringInner(buf, line);
 			}
 			
-			static uint8_t WriteStringProg(const char* buf, uint8_t line)
-			{
-				return writeStringInner((const char*)buf, line, memcpy_P);
-			}
-		
+			//static uint8_t WriteStringProg(const char* buf, uint8_t line)
+			//{
+				//return writeStringInner((const char*)buf, line, memcpy_P);
+			//}
+		//
 		};
 
 	template <

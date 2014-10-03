@@ -29,10 +29,7 @@ Tus::PacketPacker g_packer;
 
 ISR(TIMER1_COMPA_vect)
 {
-	if(!IS_SPI_COMMUNICATING)
-	{
-		tus_spi_process_packets();	
-	}
+	tus_spi_process_packets();
 }
 
 void InitBoard()
@@ -108,6 +105,15 @@ int main(void)
 	
 	TimerCounter1::SetUp(NoPrescaleB, Normal16, NormalPortOperationA, NormalPortOperationB, Off, Fall);
 	TimerCounter1::CompareMatchAInterrupt::Enable();
+	
+	PointA::Init();
+	PointB::Init();
+	PointC::Init();
+	PointD::Init();
+	PointE::Init();
+	PointF::Init();
+	PointG::Init();
+	PointH::Init();
 	
 	while(1)
     {

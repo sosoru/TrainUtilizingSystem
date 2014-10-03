@@ -148,8 +148,8 @@ namespace EthernetBridge { namespace UI
 		{
 			refresh_str_mac_addr(Eth::EthDevice::Parameters.macaddress);
 			
-			Display::WriteStringProg(data_mac_addr::title, 0);
-			Display::WriteString(str_mac_addr, 1);
+			//Display::WriteStringProg(data_mac_addr::title, 0);
+			Lcd::Display::WriteString(str_mac_addr, 1);
 			
 			if(params.entered)
 			{
@@ -179,7 +179,7 @@ namespace EthernetBridge { namespace UI
 			Display::DisplayMode(DisplayOn, CursorShown, CursorBlinking);
 			_delay_us(37);
 			
-			for(uint8_t i=0; i<Display::GetPositionOfLine(1) + INDENT_WIDTH; ++i)
+			for(uint8_t i=0; i<Display::GetFirstPosOfLine(1) + INDENT_WIDTH; ++i)
 			{
 				Display::CursorDisplayShift(ShiftCursor, ShiftToRight);
 				_delay_us(37);

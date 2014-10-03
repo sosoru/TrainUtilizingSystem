@@ -9,6 +9,7 @@
 #ifndef LCDCFG_H_
 #define LCDCFG_H_
 
+#include "EthernetBridge.hpp"
 #include "avr_base.hpp"
 #include "LcdController.hpp"
 
@@ -17,7 +18,7 @@ namespace EthernetBridge
 	namespace Lcd
 	{
 		
-		typedef LcdController< PortC, OutputPin6<PortF>, OutputPin3<PortE>, OutputPin2<PortE> > Display;
+		typedef LcdController< AVRCpp::PortC, AVRCpp::OutputPin6<AVRCpp::PortF>, AVRCpp::OutputPin3<AVRCpp::PortE>, AVRCpp::OutputPin2<AVRCpp::PortE> > Display;
 		
 	}
 }

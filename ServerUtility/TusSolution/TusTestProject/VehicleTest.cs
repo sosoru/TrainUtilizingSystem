@@ -49,6 +49,7 @@ namespace TestProject
                 "AT10", "AT11", "AT12", "BAT12",
                 "AT13", "AT14", "AT15", "BAT16",
                 "AT16", "AT1", "BAT1" });
+            route.IsRepeatable = true;
             return route;
         }
         private List<IDeviceState<IPacketDeviceData>> written;
@@ -77,7 +78,7 @@ namespace TestProject
             sheet = new BlockSheet(target_sheet, serv);
 
             this.scheduler = new TestScheduler();
-            //sheet.AssociatedScheduler = scheduler;
+            sheet.AssociatedScheduler = scheduler;
         }
 
         [TestMethod]

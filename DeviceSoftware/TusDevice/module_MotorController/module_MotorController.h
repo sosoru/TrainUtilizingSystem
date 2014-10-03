@@ -18,5 +18,8 @@ extern DeviceID g_myDeviceID;
 
 extern bool ProcessKernelPacket(KernalState *pstate, DeviceID* psrcid, DeviceID* pdstid);
 
+extern char g_dbgmsg[256];
+extern uint8_t g_dbgmsgind;
+
 
 #endif /* MODULE_MOTORCONTROLLER_H_ */

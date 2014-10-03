@@ -55,6 +55,9 @@ namespace Tus.TransControl.Parser
                 DirCurved = _prRouteLiteral.FromString((string)src["c"]),
             };
 
+            if (src.ContainsKey("rev"))
+                pt.PositionReversed = DeviceIdParser.FromString((string)src["rev"]);
+
             return pt;
         }
 

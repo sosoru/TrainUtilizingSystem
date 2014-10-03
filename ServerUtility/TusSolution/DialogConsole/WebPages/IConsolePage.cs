@@ -1,13 +1,16 @@
-﻿using DialogConsole.Features.Base;
+﻿using System.Collections.Specialized;
+using DialogConsole.Features.Base;
 
 namespace DialogConsole.WebPages
 {
     public interface IConsolePage
     {
-        string Query { get; set; }
+        NameValueCollection Query { get; set; }
         IFeatureParameters Param { get; set; }
-        void SetResponseParameter(string query);
+        void SetParameter(NameValueCollection query);
         string GetJsonContent();
-        void ApplyJsonContent(string query);
+        void RefreshSendingJsonContent();
+        void CacheReceivedJsonContent(string query);
+        void ApplyReceivedJsonRequest();
     }
 }

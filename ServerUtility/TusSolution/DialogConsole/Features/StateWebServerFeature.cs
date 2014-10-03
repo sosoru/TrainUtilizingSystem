@@ -28,9 +28,6 @@ namespace DialogConsole.Features
         [Import]
         public CompositionContainer Container { get; set; }
 
-        [ImportMany]
-        public IEnumerable<Lazy<IConsolePage, ITusPageMetadata>> Pages { get; set; }
-
         public void Execute()
         {
         }
@@ -42,158 +39,50 @@ namespace DialogConsole.Features
 
         public void ProcessResponseOrReqest(HttpListenerRequest req, HttpListenerResponse res)
         {
-            var container = this.Container;
-            var exports = this.Pages;
-
-            var query = req.Url.PathAndQuery;
-            var page = exports.First(p => query.Contains(p.Metadata.Query));
-
-            if (req.HttpMethod == "GET")
+            try
             {
-                page.Value.SetResponseParameter(query);
-                var content = page.Value.GetJsonContent();
-                FillResponse(res, content);
-            }
-            else if (req.HttpMethod == "POST")
-            {
-                try
+                var container = this.Container;
+                var exports = this.Param.Pages;
+
+                var query = req.QueryString;
+                var page = exports.FirstOrDefault(p => req.Url.LocalPath.Contains(p.Metadata.Query));
+
+                if (page == null)
+                    return;
+                
+            page.Value.SetParameter(query);
+                if (req.HttpMethod == "GET")
+                {
+                    var content = page.Value.GetJsonContent();
+                    res.Headers.Add("Content-type: application/json");
+                    res.Headers.Add("Access-Control-Allow-Headers: x-requested-with, accept");
+                    res.Headers.Add("Access-Control-Allow-Origin: *");
+                    using (var sw = new StreamWriter(res.OutputStream))
+                    {
+                        sw.Write(content);
+                    }
+                }
+                else if (req.HttpMethod == "POST")
                 {
                     using (var sr = new StreamReader(req.InputStream))
-                        page.Value.ApplyJsonContent(sr.ReadToEnd());
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.ToString());
-                }
-                finally
-                {
-                    res.Close();
+                        page.Value.CacheReceivedJsonContent(sr.ReadToEnd());
+
+                    using (var sw = new StreamWriter(res.OutputStream))
+                        sw.Write("success");
                 }
             }
-
-        }
-
-        private DateTime _updatebefore = DateTime.MinValue;
-        private object _update_lock = new object();
-        private void FillVehicleInfoResponse(HttpListenerContext r)
-        {
-            var res = r.Response;
-            var req = r.Request;
-
-            if (req.HttpMethod == "POST")
+            catch (Exception ex)
             {
-                try
-                {
-                    var cnt = new DataContractJsonSerializer(typeof(VehicleInfoReceived));
-                    var recvinfo = (VehicleInfoReceived)cnt.ReadObject(req.InputStream);
-                    var vh = this.Param.UsingLayout.Vehicles.First(v => v.Name == recvinfo.Name);
-
-                    if (recvinfo.Speed != null && float.Parse(recvinfo.Speed) != vh.Speed)
-                    {
-                        var changeto = float.Parse(recvinfo.Speed);
-                        Console.WriteLine("{0} is changing speed from {1} to {2}", vh.Name, vh.Speed, changeto);
-
-                        vh.Speed = changeto;
-                    }
-                    if (recvinfo.RouteName != null && recvinfo.RouteName != vh.AssociatedRoute.RouteOrder.Name)
-                    {
-                        Console.WriteLine("{0} is changing route from {1} to {2}", vh.Name, vh.AssociatedRoute.RouteOrder.Name,
-                                          recvinfo.RouteName);
-                        var route = vh.AvailableRoutes.First(rt => rt.Name == recvinfo.RouteName);
-                        if (route.Blocks.Contains(vh.CurrentBlock))
-                        {
-                            vh.ChangeRoute(route);
-                        }
-                    }
-                    if (recvinfo.Accelation != null && float.Parse(recvinfo.Accelation) != vh.Accelation)
-                    {
-                        var changeto = float.Parse(recvinfo.Accelation);
-                        Console.WriteLine("{0} is changing accelation from {1} to {2}", vh.Name, vh.Accelation, changeto);
-
-                        vh.Accelation = changeto;
-                    }
-                    if (recvinfo.Timeout != null)
-                    {
-
-                    }
-                    if (recvinfo.Halts != null)
-                    {
-                        Console.WriteLine("{0} is changing halts set to {1}", vh.Name,
-                                          recvinfo.Halts.Aggregate("", (ag, s) => ag + (s + ", ")));
-                        var halts = recvinfo.Halts.Select(h => new Halt(vh.Sheet.GetBlock(h)));
-                        vh.Halt.Clear();
-                        foreach (var h in halts)
-                            vh.Halt.Add(h);
-                    }
-
-                    //todo:ここ汚いから速くなおせ
-                    //lock (this._update_lock)
-                    //{
-                    //    if ((DateTime.Now - this._updatebefore).Milliseconds > 200)
-                    //    {
-                    //this.Param.VehiclePipeline.Subscribe();
-                    //this.Param.SendingPacketPipeline.Subscribe();
-                    //        this._updatebefore = DateTime.Now;
-                    //    }
-                    //    else
-                    //    {
-                    //        Console.WriteLine("request ignored");
-                    //    }
-
-                    //}
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.ToString());
-                }
-                finally
-                {
-                    res.Close();
-                }
+                Console.WriteLine(ex.ToString());
             }
-            else
+            finally
             {
-                try
-                {
-                    using (var ms = new MemoryStream())
-                    {
-                        var cnt = new DataContractJsonSerializer(typeof(IEnumerable<Vehicle>),
-                            new[]
-                            {
-                                typeof (ControlUnit), typeof (Switch), typeof (Motor), typeof (UsartSensor),
-                                typeof (MemoryState)
-                            });
-                        var vehis = this.Param.UsingLayout.Vehicles.ToArray();
-
-                        cnt.WriteObject(ms, vehis);
-                        var s = Encoding.UTF8.GetString(ms.ToArray());
-                        FillResponse(res, s);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.ToString());
-                }
-                finally
-                {
-                    res.Close();
-                }
+                res.Close();
             }
-        }
 
-        private static void FillResponse(HttpListenerResponse res, string s)
-        {
-            res.Headers.Add("Content-type: application/json");
-            res.Headers.Add("Access-Control-Allow-Headers: x-requested-with, accept");
-            res.Headers.Add("Access-Control-Allow-Origin: *");
-            using (var sw = new StreamWriter(res.OutputStream))
-            {
-                sw.WriteLine(s);
-            }
         }
 
         private HttpListener _httpListener;
-
         private void StartHttpObservable()
         {
             if (this._httpListener == null)
@@ -210,28 +99,19 @@ namespace DialogConsole.Features
 
             this.Param.ServingInfomation = Observable.Defer(obsvfunc)
                                                 .Repeat()
-                                                .ObserveOn(this.Param.SchedulerPacketProcessing)
                                                 .SubscribeOn(Scheduler.NewThread)
                                                 .Subscribe(r =>
                                                                {
                                                                    var req = r.Request;
                                                                    var res = r.Response;
 
-                                                                   switch (r.Request.Url.PathAndQuery)
-                                                                   {
-                                                                       case "/vehicles":
-                                                                           FillVehicleInfoResponse(r);
-                                                                           break;
-                                                                       default:
-                                                                           this.ProcessResponseOrReqest(req, res);
-                                                                           break;
-                                                                   }
+                                                                   this.ProcessResponseOrReqest(req, res);
                                                                });
         }
     }
 
     [DataContract]
-    public class VehicleInfoReceived
+    public struct VehicleInfoReceived
     {
         [DataMember(IsRequired = true)]
         public string Name;
@@ -247,6 +127,9 @@ namespace DialogConsole.Features
 
         [DataMember(IsRequired = false)]
         public string RouteName;
+
+        [DataMember(IsRequired = false)]
+        public string CurrentBlockName;
 
         [DataMember(IsRequired = false)]
         public ICollection<string> Halts;

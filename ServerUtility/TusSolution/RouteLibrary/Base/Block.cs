@@ -272,7 +272,7 @@ namespace Tus.TransControl.Base
                 str += "|Locked|";
 
             if (this.HasMotor)
-                str += this.MotorEffector.Devices.Aggregate("", (ac, dev) => ac + dev.ToString());
+                str += this.MotorEffector.Devices.Aggregate("", (ac, dev) => ac + dev.ToString() + " " + dev.ReceivedMemory);
 
             if (this.HasSwitch)
                 str += this.SwitchEffector.Devices.Aggregate("", (ac, dev) => ac + dev.ToString());
@@ -288,23 +288,23 @@ namespace Tus.TransControl.Base
         public object lock_islocked = new object();
         public bool IsLocked
         {
-            get {   return this.isLocked;  }
+            get { return this.isLocked; }
             set
             {
-                    if (this.isLocked != value)
-                    {
-                        lockingWatch.Restart();
-                    }
-                    this.isLocked = value;
+                if (this.isLocked != value)
+                {
+                    //lockingWatch.Restart();
+                }
+                this.isLocked = value;
             }
         }
 
-        public long ElaspedMilisecondsFromBlockingChanged
-        {
-            get
-            {
-                return this.lockingWatch.ElapsedMilliseconds;
-            }
-        }
+        //public long ElaspedMilisecondsFromBlockingChanged
+        //{
+        //    get
+        //    {
+        //        return this.lockingWatch.ElapsedMilliseconds;
+        //    }
+        //}
     }
 }

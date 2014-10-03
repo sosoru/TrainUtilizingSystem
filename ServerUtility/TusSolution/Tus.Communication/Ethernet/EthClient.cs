@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Threading.Tasks;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -42,10 +43,16 @@ namespace Tus.Communication.Ethernet
                 IPEndPoint ipend = new IPEndPoint(IPAddress.Any, RECV_PORT);
                 var client = new UdpClient(RECV_PORT);
 
-            return Observable.FromAsyncPattern<byte[]>(client.BeginReceive,
-                                                       res => client.EndReceive(res, ref ipend))()
-                                                       .Do(data => client.Close())
-                .Select(a => a.ToObject<EthPacket>());
+                return Task.Factory.FromAsync<byte[]>(client.BeginReceive, res => client.EndReceive(res, ref ipend), "")
+                    .ToObservable()
+                    .Finally(client.Close)
+                    .Select(a => a.ToObject<EthPacket>());
+
+
+            //return Observable.FromAsyncPattern<byte[]>(client.BeginReceive,
+            //                                           res => client.EndReceive(res, ref ipend))()
+            //                                           .Do(data => client.Close())
+            //    .Select(a => a.ToObject<EthPacket>());
 
             }
             catch (Exception ex)
@@ -68,22 +75,25 @@ namespace Tus.Communication.Ethernet
 
         public virtual IObservable<Unit> AsyncSend(EthPacket packet)
         {
-            return Observable.Start(() =>
-                                        {
                                             var data = packet.ToByteArray();
                                             var client = new UdpClient();
                                             try
                                             {
                                                 client.Connect(ApplyDestID(packet));
 
-                                                Observable
-                                                    .FromAsyncPattern<byte[], int>(client.BeginSend,
-                                                                                   (res) => client.EndSend(res))(data,
-                                                                                                                 data.Length);
+                                                return
+                                                    Task.Factory.FromAsync<byte[], int>(
+                                                        (a, b, c) => client.BeginSend(a, a.Length, b, c),
+                                                        client.EndSend, data, "").ToObservable().Select(i => Unit.Default);
+                                                //Observable
+                                                //    .FromAsyncPattern<byte[], int>(client.BeginSend,
+                                                //                                   (res) => client.EndSend(res))(data,
+                                                //                                                                 data.Length);
                                             }
-                                            catch (SocketException ex) { }
-
-                                        });
+                                            catch (SocketException ex)
+                                            {
+                                                return Observable.Empty<Unit>();
+                                            }
         }
 
         public void Send(EthPacket packet)

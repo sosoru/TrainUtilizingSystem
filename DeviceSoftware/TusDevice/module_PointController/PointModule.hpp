@@ -30,6 +30,8 @@ namespace module_PointController
 	{
 		private :
 		
+		static PointModuleState usingState;
+		
 		template<uint8_t wait_base>
 		static inline void _dynamic_delay_ms(uint8_t wait)
 		{
@@ -43,6 +45,15 @@ namespace module_PointController
 		
 		static PointModuleState State;
 		static bool IsChanged;
+		
+		static void Init()
+		{
+			IsChanged = false;
+			
+			State.ChangingTime = 20;
+			State.DeadTime = 0;
+			State.Position = StayPosition;
+		}
 		
 		static inline void Stop()
 		{
@@ -60,12 +71,13 @@ namespace module_PointController
 		{		
 			Stop(); _delay_us(100);
 			Brake();
-			_dynamic_delay_ms<1>(State.DeadTime);
+			_delay_ms(100);
+			_dynamic_delay_ms<1>(usingState.DeadTime);
 			
 			Stop(); _delay_us(100);
 			ControllApin::Set();
 			
-			_dynamic_delay_ms<10>(State.ChangingTime);
+			_dynamic_delay_ms<10>(usingState.ChangingTime);
 			Stop();
 		}
 		
@@ -73,12 +85,13 @@ namespace module_PointController
 		{
 			Stop(); _delay_us(100);
 			Brake();
-			_dynamic_delay_ms<1>(State.DeadTime);
+			_delay_ms(100);
+			_dynamic_delay_ms<1>(usingState.DeadTime);
 			
 			Stop(); _delay_us(100);
 			ControllBpin::Set();
 			
-			_dynamic_delay_ms<10>(State.ChangingTime);
+			_dynamic_delay_ms<10>(usingState.ChangingTime);
 			Stop();
 		}
 		
@@ -86,8 +99,15 @@ namespace module_PointController
 		{
 			if(IsChanged)
 				return;
+			
+			uint8_t cache = SREG;
+			cli();
+			usingState.ChangingTime = State.ChangingTime;
+			usingState.DeadTime = State.DeadTime;
+			usingState.Position = State.Position;
+			SREG = cache;
 				
-			switch(State.Position)
+			switch(usingState.Position)
 			{
 				case PositivePosition:
 					Positive();
@@ -106,9 +126,9 @@ namespace module_PointController
 		static inline void ApplyState(const PointModuleState *pstate)
 		{			
 			//if(pstate->Position != State.Position)
-			{
+			
 				IsChanged = false;
-			}
+			
 			
 			//memcpy((void*)&State, (const void*)(pstate), sizeof(PointModuleState));	
 			State.ChangingTime = pstate->ChangingTime;
@@ -137,6 +157,12 @@ namespace module_PointController
 			class ControllBpin,
 			ModuleNumberEnum module_number
 	> PointModuleState PointModule<ControllApin, ControllBpin, module_number>::State;
+	
+	template<
+	class ControllApin,
+	class ControllBpin,
+	ModuleNumberEnum module_number
+	> PointModuleState PointModule<ControllApin, ControllBpin, module_number>::usingState;
 
 	template<
 			class ControllApin,

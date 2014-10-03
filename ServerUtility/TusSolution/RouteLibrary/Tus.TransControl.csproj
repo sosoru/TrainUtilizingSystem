@@ -79,6 +79,7 @@
     <Compile Include="Parser\BlockYaml.cs" />
     <Compile Include="Parser\RouteLiteralParser.cs" />
     <Compile Include="Parser\RouteYaml.cs" />
+    <Compile Include="Parser\VehicleGroupYaml.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

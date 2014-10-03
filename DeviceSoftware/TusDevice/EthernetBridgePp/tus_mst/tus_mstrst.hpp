@@ -11,28 +11,46 @@
 
 #include "../avr_base.hpp"
 #include "../../libtus/avrlibdefs.h"
+#include <ADC.h>
 
 namespace EthernetBridge
 {
 	namespace Reset
 	{
-		template<class RESETpin>
+		using namespace AVRCpp;
+		using namespace AnalogToDigital;
+		
+		template<class RESETpin, uint8_t channel>
 		class ResetModule
 	{
 		public:
 		
 		static inline void Init()
 		{
-			sbi(SFIOR, PUD);
-			RESETpin::Output::InitOutput();	// nRESET
-			RESETpin::Output::Set();
+			//sbi(SFIOR, PUD);
+			//RESETpin::Output::InitOutput();	// nRESET
+			//RESETpin::Output::Set();
+			RESETpin::Input::InitDefaultInput();
 		}
 		
 		// must check before Init()
 		static inline bool CheckModuleExist()
 		{
-			RESETpin::Input::InitInput();	// when PUD enable, DDxn = 0, PORTx = 1 
+			RESETpin::Input::InitDefaultInput(); // Hi-Z
+			
 			return RESETpin::Input::IsSet();
+			
+			//RESETpin::Output::InitOutput();
+			//RESETpin::Output::Clear();
+			//_delay_ms(1);
+			//RESETpin::Input::InitDefaultInput();
+			//
+			//AnalogToDigital::ControlSetUp(ADCEnable, StartLater, FreeRunStopped, InterruptDisable, Div32);
+			//AnalogToDigital::SelectionSetUp(AVCC, AlignLeft, (AnalogChannel)channel);
+			//AnalogToDigital::StartConversion();
+			//AnalogToDigital::WaitWhileConverting();
+						//
+			//return ADCH > 0x80; // 2.5V‚®‚ç‚¢
 		}
 		
 		static inline void ModuleOff()

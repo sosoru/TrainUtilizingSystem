@@ -40,16 +40,16 @@ namespace TestProject
             this.Server = serv;
         }
 
-        [TestMethod]
-        public void TestMethod1()
-        {
-            this.Server.LoopStart(Scheduler.Default);
+        //[TestMethod]
+        //public void TestMethod1()
+        //{
+        //    this.Server.LoopStart(Scheduler.Default);
 
-            var device = new Motor(this.Server);
-            device.DeviceID = new DeviceID(1, 1, 1);
-            this.Server.EnqueueState(device);
+        //    var device = new Motor(this.Server);
+        //    device.DeviceID = new DeviceID(1, 1, 1);
+        //    this.Server.EnqueueState(device);
 
-            this.Server.SendingObservable.Do(p => Console.WriteLine("pero")).Repeat(10).Subscribe();
-        }
+        //    this.Server.SendingObservable.Do(p => Console.WriteLine("pero")).Repeat(10).Subscribe();
+        //}
     }
 }

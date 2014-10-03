@@ -128,18 +128,6 @@ namespace Tus.Communication.Device.AvrComposed
         }
 
         [IgnoreDataMember]
-        public MotorMemoryStateEnum MemoryWhenEntered
-        {
-            get { return (MotorMemoryStateEnum)(this.Data.TransitMemory >> 4); }
-            set
-            {
-                var entered = (int)this.Data.TransitMemory;
-                entered &= 0x0F;
-                entered |= ((int)value) << 4;
-                this.Data.TransitMemory = (byte)entered;
-            }
-        }
-
         [DataMember(Name = "MemoryWhenEntered")]
         public string MemoryWhenEnteredString
         {
@@ -151,7 +139,7 @@ namespace Tus.Communication.Device.AvrComposed
         }
 
         [IgnoreDataMember]
-        public MotorMemoryStateEnum DestinationMemory
+        public MotorMemoryStateEnum MemoryWhenEntered
         {
             get { return (MotorMemoryStateEnum)(this.Data.TransitMemory & 0x0F); }
             set
@@ -168,6 +156,18 @@ namespace Tus.Communication.Device.AvrComposed
             set
             {
                 this.DestinationMemory = (MotorMemoryStateEnum)Enum.Parse(typeof(MotorMemoryStateEnum), value);
+            }
+        }
+
+        public MotorMemoryStateEnum DestinationMemory
+        {
+            get { return (MotorMemoryStateEnum)(this.Data.TransitMemory >> 4); }
+            set
+            {
+                var entered = (int)this.Data.TransitMemory;
+                entered &= 0x0F;
+                entered |= ((int)value) << 4;
+                this.Data.TransitMemory = (byte)entered;
             }
         }
 

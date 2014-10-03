@@ -26,6 +26,9 @@ MotorControllerD mtrD;
 DeviceID g_myDeviceID;
 PacketPacker g_packer;
 
+char g_dbgmsg[256];
+uint8_t g_dbgmsgind=0;
+
 void DispatchPacket(uint8_t devnum, const MtrControllerPacket *ppacket)
 {
 	if(devnum == 1) { mtrA.set_Packet(ppacket); }
@@ -69,19 +72,23 @@ void SendKernelPacket(DeviceID *psrcid, DeviceID *pdstid)
 	KernalState state;
 	state.KernelCommand = ETHCMD_MEMORY;
 	
-	g_packer.Init();
-	mtrA.get_KernelState((KernalState*)&state);
-	g_packer.Pack((uint8_t*)&state);
-	mtrB.get_KernelState((KernalState*)&state);
-	g_packer.Pack((uint8_t*)&state);
-	g_packer.Send(psrcid, pdstid);
-	
-	g_packer.Init();
-	mtrC.get_KernelState((KernalState*)&state);
-	g_packer.Pack((uint8_t*)&state);
-	mtrD.get_KernelState((KernalState*)&state);
-	g_packer.Pack((uint8_t*)&state);
-	g_packer.Send(psrcid, pdstid);
+	if(g_packer.Init())
+	{
+		mtrA.get_KernelState((KernalState*)&state);
+		g_packer.Pack((uint8_t*)&state);
+		mtrB.get_KernelState((KernalState*)&state);
+		g_packer.Pack((uint8_t*)&state);
+		g_packer.Send(psrcid, pdstid);
+	}
+		
+	if(g_packer.Init())
+	{
+		mtrC.get_KernelState((KernalState*)&state);
+		g_packer.Pack((uint8_t*)&state);
+		mtrD.get_KernelState((KernalState*)&state);
+		g_packer.Pack((uint8_t*)&state);
+		g_packer.Send(psrcid, pdstid);
+	}		
 }
 
 bool ProcessMtrPacket(MtrControllerPacket *ppacket)
@@ -102,6 +109,7 @@ bool ProcessKernelPacket(KernalState *pstate, DeviceID* psrcid, DeviceID* pdstid
 	switch(pstate->KernelCommand)
 	{
 		case ETHCMD_REPLY:
+
 			SendKernelPacket(pdstid, psrcid);	//reply current memory 
 			//CreatePacket(1, 2, pdstid, psrcid);
 			//CreatePacket(3, 4, pdstid, psrcid);
@@ -130,6 +138,7 @@ int main(void)
 	uint8_t i;
 	
 //	MCUCR = 0b01100000; //todo: turn off bods
+
 	MCUSR = 0; // Do not omit to clear this resistor, otherwise suffer a terrible reseting cause.
 	wdt_enable(WDTO_4S);
 	
@@ -142,7 +151,6 @@ int main(void)
 	
 	tus_spi_init();
 	tus_spi_set_handler(spi_received);
-	
 	wdt_reset();
 	while(1)
 	{	

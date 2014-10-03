@@ -1,69 +1,99 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Net;
-using System.IO;
-using System.Threading;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Json;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
+using System.IO;
+using System.Linq;
 using System.Reactive;
-using System.Reactive.Linq;
 using System.Reactive.Concurrency;
-using System.Reactive.Threading;
+using System.Reactive.Linq;
+using System.Reflection;
+using System.Threading;
+using DialogConsole.Features.Base;
+using DialogConsole.WebPages;
 using Tus.Communication;
-using Tus.Communication.Device;
 using Tus.Communication.Device.AvrComposed;
-using Tus;
+using Tus.Factory;
 using Tus.TransControl.Base;
-
 
 namespace DialogConsole
 {
-    using Tus.Factory;
-    using DialogConsole.Features.Base;
-
     internal class MainClass
     {
         private static void Main(string[] args)
         {
-            var container = new DialogConsoleContainer();
-            var dialog = container.GetExport<DialogConsole.DialogConsoleClass>();
+            // コンソールウィンドウのサイズを指定
+            Console.BufferWidth = 160;
+            Console.WindowWidth = 160;
+            Console.WindowHeight = 30;
 
+            // DIコンテナの初期化
+            var container = new DialogConsoleContainer();
+            Lazy<DialogConsoleClass> dialog = container.GetExport<DialogConsoleClass>();
+
+            // コマンドループの開始
             dialog.Value.Loop();
         }
     }
 
+    /// <summary>
+    ///    DialogConsoleで使用するDIコンテナの定義
+    /// </summary>
     [Export(typeof(CompositionContainer))]
-    class DialogConsoleContainer
+    internal class DialogConsoleContainer
         : CompositionContainer
     {
-        private static AggregateCatalog catalogs
-        {
-            get
-            {
-                var catalog = new AggregateCatalog();
-                catalog.Catalogs.Add(new AssemblyCatalog(".\\Tus.Factory.dll"));
-                catalog.Catalogs.Add((new AssemblyCatalog(System.Reflection.Assembly.GetExecutingAssembly())));
-
-                return catalog;
-            }
-        }
-
         public DialogConsoleContainer()
             : base(catalogs)
         {
         }
 
+           /// <summary>
+           /// 使用するカタログの定義
+           /// </summary>
+        private static AggregateCatalog catalogs
+        {
+            get
+            {
+                var catalog = new AggregateCatalog();
+
+                // 通信・閉塞系のファクトリはTus.Factoryに定義
+                catalog.Catalogs.Add(new AssemblyCatalog(".\\Tus.Factory.dll"));
+                // DialogConsoleでもFeature等はDIで作るので追加
+                catalog.Catalogs.Add((new AssemblyCatalog(Assembly.GetExecutingAssembly())));
+
+                return catalog;
+            }
+        }
     }
 
+    /// <summary>
+    /// Featureで使うな要素を格納する
+    /// </summary>
     [Export(typeof(IFeatureParameters))]
-    class DialogConsoleParameters
+    internal class DialogConsoleParameters
         : IFeatureParameters
     {
+        /// <summary>
+        /// 初期化時にLayoutを生成します
+        /// </summary>
+        /// <param name="fact">BlockSheetのファクトリ</param>
+        /// <param name="rtfact"></param>
+        /// <param name="ilfact"></param>
+        [ImportingConstructor]
+        public DialogConsoleParameters(SheetFactory fact, RouteOrderListFactory rtfact, IlluminativeSheetFactory ilfact)
+        {
+            UsingLayout = new Layout(rtfact, fact.Create(), ilfact.Create());
+            rtfact.Sheet = UsingLayout.Sheet;
+            LockObjectPacketProcessing = new object();
+
+            UsingLayout.Vehicles = new List<Vehicle>();
+        }
+
+        public ConcurrentQueue<IConsolePage> WebRequestsQueue { get; set; }
+        public object LockObjectPacketProcessing { get; set; }
+
         public Layout UsingLayout { get; set; }
 
         public IDisposable ServingInfomation { get; set; }
@@ -71,17 +101,11 @@ namespace DialogConsole
         public IObservable<Unit> SyncDevicePipeline { get; set; }
         public IDisposable VehicleProcessing { get; set; }
         public IDisposable SyncDeviceProcessing { get; set; }
-        public IObservable<DevicePacket> SendingPacketPipeline { get; set; }
+        public IObservable<Unit> SendingPacketPipeline { get; set; }
         public IObservable<DevicePacket> ReceivingPacketPipeline { get; set; }
 
-        [ImportingConstructor]
-        public DialogConsoleParameters(SheetFactory fact, RouteOrderListFactory rtfact, IlluminativeSheetFactory ilfact)
-        {
-            UsingLayout = new Layout(rtfact, fact.Create(), ilfact.Create());
-            rtfact.Sheet = this.UsingLayout.Sheet;
-
-            this.UsingLayout.Vehicles = new List<Vehicle>();
-        }
+        [ImportMany]
+        public IEnumerable<Lazy<IConsolePage, ITusPageMetadata>> Pages { get; set; }
 
         public IScheduler SchedulerPacketProcessing { get; set; }
     }
@@ -90,102 +114,114 @@ namespace DialogConsole
     public class DialogConsoleClass
         : IPartImportsSatisfiedNotification
     {
+        private readonly object lock_writer = new object();
+        private StreamWriter _logWriter;
+        private StreamWriter _logWriterRecv;
+        private IDisposable _receiving;
+        private SynchronizationContext _syncPacketProcess;
+
         [Import]
         public IFeatureParameters Param { get; set; }
 
         [ImportMany]
         public IEnumerable<Lazy<IFeature, IFeatureMetadata>> Features { get; set; }
 
-        private SynchronizationContext _syncPacketProcess;
-
-        private IDisposable _receiving;
-
-        private StreamWriter _logWriterRecv;
-        private object lock_writer = new object();
-        private StreamWriter _logWriter;
-
         private StreamWriter LogWriterSend
         {
             get
             {
-                lock (this.lock_writer)
+                lock (lock_writer)
                 {
-                    return this._logWriter;
+                    return _logWriter;
                 }
             }
             set
             {
-                lock (this.lock_writer)
+                lock (lock_writer)
                 {
-                    this._logWriter = value;
+                    _logWriter = value;
                 }
             }
         }
 
+        public void OnImportsSatisfied()
+        {
+            Features = Features.OrderBy(f => f.Metadata.FeatureExpression).ToList();
+        }
+
         public void Loop()
         {
-            this.LogWriterSend = new StreamWriter("packet_log.txt", true);
-            this._logWriterRecv = new StreamWriter("packet_log_recv.txt", true);
+            // ----通信系のスレッドの実行-------------------------------------------------
 
-            this._syncPacketProcess = new SynchronizationContext();
-            this.Param.SchedulerPacketProcessing = new SynchronizationContextScheduler(this._syncPacketProcess);
+            // PacketServerにストアされているパケットを送信する．10ミリ秒ごとに実行
+            Param.SendingPacketPipeline =
+                Observable.Defer(() => Observable.Start(Param.UsingLayout.Sheet.Server.SendAll));
+            Param.SendingPacketPipeline
+                 .Repeat().Delay(TimeSpan.FromMilliseconds(10))
+                 .Subscribe();
 
-            this.Param.SendingPacketPipeline = this.Param.UsingLayout.Sheet.Server.SendingObservable;
-            this.Param.SendingPacketPipeline
-                .ObserveOn(this.Param.SchedulerPacketProcessing)
-                .SubscribeOn(Scheduler.NewThread)
-                .Repeat()
-                .Subscribe();
+            // LED系デバイスの更新．1秒おきに同期
+            Observable.Timer(DateTimeOffset.MinValue, TimeSpan.FromMilliseconds(1000))
+                      .SelectMany(Observable.Defer(() => Observable.Start(Param.UsingLayout.Illumination.SyncLedDuty)))
+                      .Subscribe();
 
-            //sync leds
-            Observable.Defer(() => Observable.Start(this.Param.UsingLayout.Illumination.SyncLedDuty))
-                .Delay(TimeSpan.FromMilliseconds(1000)).Repeat().Subscribe();
-            ////sync switches
-            //Observable.Defer(() => Observable.Start(this.Param.UsingLayout.Sheet.SyncSwitches))
-            //    .Delay(TimeSpan.FromSeconds(1)).Repeat().Subscribe();
+            // Switchデバイスの更新，1秒おきに同期
+            Observable.Timer(DateTimeOffset.MinValue, TimeSpan.FromMilliseconds(500))
+                 .SelectMany(Observable.Defer(() => Observable.Start(this.Param.UsingLayout.Sheet.SyncSwitches)))
+                 .Subscribe();
 
-            var timer = Observable.Interval(TimeSpan.FromMilliseconds(20), Scheduler.Default);
+            // デバイスからのパケットを受信し，PacketServerにストア．20ミリ秒ごとに確認．
+            IObservable<long> timer = Observable.Interval(TimeSpan.FromMilliseconds(20), Scheduler.Default);
+            Param.ReceivingPacketPipeline = Observable.Defer(() => Param.UsingLayout.Sheet.Server.ReceivingObservable)
+                                                      .Repeat()
+                                                      .SubscribeOn(Scheduler.NewThread)
+                                                      .Zip(timer, (v, _) => v);
+            Param.ReceivingPacketPipeline.SelectMany(v => v.ExtractPackedPacket())
+                 .Subscribe();
+            // ------------------------------------------------------------------------------
 
-            this.Param.ReceivingPacketPipeline = Observable.Defer(() => this.Param.UsingLayout.Sheet.Server.ReceivingObservable)
-                                                           .ObserveOn(this.Param.SchedulerPacketProcessing)
-                                                           .Repeat()
-            .SubscribeOn(Scheduler.NewThread)
-                                                           .Zip(timer, (v, _) => v);
-            this.Param.ReceivingPacketPipeline.SelectMany(v => v.ExtractPackedPacket())
-            .Subscribe();
+            // レイアウトファイルに記載された，全てのMotorの状態をNoEffectに初期化する
+            Param.UsingLayout.Sheet.Effect(new CommandFactory
+                                               {
+                                                   CreateCommand =
+                                                       b => new CommandInfo { MotorMode = MotorMemoryStateEnum.NoEffect, },
+                                               },
+                                           Param.UsingLayout.Sheet.InnerBlocks);
 
-            this.Param.UsingLayout.Sheet.Effect(new CommandFactory()
-                                        {
-                                            CreateCommand =
-                                                b => new CommandInfo() { MotorMode = MotorMemoryStateEnum.NoEffect, },
-                                        },
-                                    this.Param.UsingLayout.Sheet.InnerBlocks);
-
-            foreach (var f in this.Features)
+            // Featureクラスの初期化
+            foreach (var f in Features)
                 f.Value.Init();
 
+            // コマンドループ
             while (true)
             {
-                foreach (var f in this.Features.Where(f => f.Metadata.IsShown))
+                // コマンドを受け付けるFeatureを列挙して，ボタンと名前を表示
+                // ex) 5 - monitoring vehicles
+                foreach (var f in Features.Where(f => f.Metadata.IsShown))
                     Console.WriteLine("{0} - {1}", f.Metadata.FeatureExpression, f.Metadata.FeatureName);
 
+                // 改行してコマンド待ち
                 Console.WriteLine();
-                var cmd = Console.ReadLine();
+                string cmd = Console.ReadLine();
 
                 try
                 {
-                    var feature = this.Features.FirstOrDefault(f => f.Metadata.FeatureExpression == cmd);
+                    // 入力されたコマンドに一致するFeatureを探す．最初に一致するFeatureを実行
+                    Lazy<IFeature, IFeatureMetadata> feature =
+                        Features.FirstOrDefault(f => f.Metadata.FeatureExpression == cmd);
 
+                    // 見つからなければ抜ける
                     if (feature == default(IFeature))
                         Console.WriteLine("parse error");
                     else
                     {
+                        // 一致したFeatureの実行
                         feature.Value.Execute();
                     }
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    Console.WriteLine(ex.ToString());
                 }
             }
         }
@@ -193,14 +229,14 @@ namespace DialogConsole
         public RouteOrder InputRouteOrder(BlockSheet sht, RouteOrder before)
         {
             Console.WriteLine("route?");
-            var content = Console.ReadLine();
+            string content = Console.ReadLine();
 
             if (content == "")
                 return before;
 
             try
             {
-                var spil = content.Split(',');
+                string[] spil = content.Split(',');
                 var rt = new RouteOrder(sht, spil.Select(s => sht.GetBlock(s.Trim()).Name));
 
                 return rt;
@@ -210,11 +246,6 @@ namespace DialogConsole
                 Console.WriteLine(ex.Message);
                 return before;
             }
-        }
-
-        public void OnImportsSatisfied()
-        {
-            this.Features = this.Features.OrderBy(f => f.Metadata.FeatureExpression).ToList();
         }
     }
 }

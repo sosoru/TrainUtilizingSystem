@@ -20,7 +20,10 @@ namespace Tus.TransControl.Base
         public ReadOnlyCollection<Block> InnerBlocks { get; private set; }
         public PacketServer Server { get; private set; }
         public PacketDispatcher Dispatcher { get; private set; }
+        public IScheduler AssociatedScheduler { get; set; }
+
         public TimeSpan TimeWaitingSwitchChanged { get; set; }
+
         public BlockSheet(IEnumerable<BlockInfo> blockinfos, PacketServer server)
         {
             this.Server = server;
@@ -31,6 +34,7 @@ namespace Tus.TransControl.Base
             this.Name = "";
             this.InnerBlocks = new ReadOnlyCollection<Block>(blocks.ToList());
 
+            this.AssociatedScheduler = Scheduler.CurrentThread;
             this.TimeWaitingSwitchChanged = TimeSpan.FromTicks(1);
         }
 
@@ -151,10 +155,10 @@ namespace Tus.TransControl.Base
                                                             return !b.IsLocked && b.HasMotor;
                                                         }
                                                     });
-
             foreach (var b in blocks)
             {
                 b.MotorEffector.SetNoEffectMode();
+                b.MotorEffector.ExecuteCommand();
             }
         }
 
@@ -196,11 +200,11 @@ namespace Tus.TransControl.Base
             var addrs = devs
                 .GroupBy(d => d.DeviceID.GetUniqueIdByBoard())
                 .Select(g => g.First().DeviceID);
-            foreach (var d in addrs)
-            {
-                var pack = PacketExtension.CreatePackedPacket(Kernel.InquiryState(d));
-                this.Server.EnqueuePacket(pack.First());
-            }
+            var kernels = addrs.Select(Kernel.InquiryState);
+
+            //send inquiry state per board
+            foreach (var kernel in kernels)
+                PacketExtension.CreatePackedPacket(kernel).Send(this.Server);
         }
 
 

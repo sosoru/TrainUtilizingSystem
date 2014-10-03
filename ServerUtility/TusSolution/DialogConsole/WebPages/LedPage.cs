@@ -10,21 +10,22 @@ namespace DialogConsole.WebPages
 {
     [Export(typeof(IConsolePage))]
     [TusPageMetadata("led device control", "led")]
-    [PartCreationPolicy(CreationPolicy.NonShared)]
-    public class LedPage : ConsolePageBase<IEnumerable<Led>>
+    public class LedPage : ConsolePageBase<IEnumerable<Led>, IEnumerable<Led>>
     {
         private IEnumerable<Led> leds
         {
             get { return this.Param.UsingLayout.Illumination.Objects.SelectMany(o => o.AssociatedLuminary.Leds); }
         }
 
-        public override IEnumerable<Led> GetContent()
+        public override IEnumerable<Led> CreateSendingContent()
         {
             return this.leds;
         }
 
-        public override void ApplyJsonRequest(IEnumerable<Led> obj)
+        public override void ApplyReceivedJsonRequest()
         {
+            IEnumerable<Led> obj;
+            if (!this.ReceivedContents.TryDequeue(out obj)) return;
             foreach (var led in obj)
             {
                 var found = this.leds.FirstOrDefault(dev => dev.DeviceID == led.DeviceID);

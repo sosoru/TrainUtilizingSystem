@@ -9,18 +9,15 @@ namespace DialogConsole.WebPages
 {
     [Export(typeof(IConsolePage))]
     [TusPageMetadata("motor device control", "motor")]
-    [PartCreationPolicy(CreationPolicy.NonShared)]
-    public class MotorPage : ConsolePageBase<IEnumerable<Motor>>
+    public class MotorPage : ConsolePageBase<IEnumerable<Motor>, IEnumerable<Motor>>
     {
-        protected override System.Runtime.Serialization.Json.DataContractJsonSerializer JsonSerializer
+        protected override IEnumerable<Type> KnownTypesWhenSerialization
         {
             get
             {
-                return new System.Runtime.Serialization.Json.DataContractJsonSerializer(typeof(IEnumerable<Motor>),
-                    new[] { typeof(MemoryState) });
+                return new[] { typeof(MemoryState) };
             }
         }
-
         private IEnumerable<Motor> motors
         {
             get
@@ -30,13 +27,12 @@ namespace DialogConsole.WebPages
             }
         }
 
-        public override IEnumerable<Motor> GetContent()
+        public override IEnumerable<Motor> CreateSendingContent()
         {
             return motors;
         }
-        public override void ApplyJsonRequest(IEnumerable<Motor> obj)
+        public override void ApplyReceivedJsonRequest()
         {
-            throw new NotImplementedException();
         }
 
     }

@@ -56,7 +56,7 @@ namespace Tus.Communication
         [IgnoreDataMember]
         public IEqualityComparer<TState> StateEqualityComparer { get; set; }
 
-        [DataMember(Name="ModuleType")]
+        [DataMember(Name = "ModuleType")]
         public string ModuleTypeString
         {
             get { return Enum.GetName(typeof(ModuleTypeEnum), this.ModuleType); }
@@ -82,7 +82,7 @@ namespace Tus.Communication
             }
         }
 
-        [DataMember(Name="DeviceID")]
+        [DataMember(Name = "DeviceID")]
         public string DeviceIDString
         {
             get { return this.DeviceID.ToString(); }
@@ -140,7 +140,6 @@ namespace Tus.Communication
                 throw new InvalidOperationException("missing Device");
 
             //state.BasePacket.ID = this.DeviceID;
-
             //if (!(state is TState))
             //    throw new InvalidOperationException("invalid state");
 
@@ -211,6 +210,7 @@ namespace Tus.Communication
                 this.Unsubscriber.Dispose();
         }
 
+        private DateTime _before_received_Date = DateTime.MinValue;
         public void OnNext(TState value)
         {
             if (value == null || this.DeviceID != value.ID)
@@ -219,12 +219,16 @@ namespace Tus.Communication
             var casted = value;
             var before = this.CurrentState;
 
-            if (!this.IsHold)
+            if (!this.IsHold && (DateTime.Now - this._before_received_Date).TotalSeconds > 1.0)
+            {
+                this._before_received_Date = DateTime.Now;
                 this.CurrentState = casted;
 
-            OnPacketReceived(new PacketReceiveEventArgs() { state = casted, beforestate = before });
+                OnPacketReceived(new PacketReceiveEventArgs() { state = casted, beforestate = before });
 
-            OnPropertyChanged("");
+                OnPropertyChanged("");
+
+            }
 
         }
 

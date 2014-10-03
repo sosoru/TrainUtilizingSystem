@@ -154,21 +154,23 @@ namespace EthernetBridge
 				_delay_ms(5);
 
 				SetFunction(0b100);
-				_delay_us(37);
+				_delay_us(40);
 	
 				//8-bit, dual line, 5x8 dots
 				SetFunction(0b110);
-				_delay_us(37);
+				_delay_us(40);
 		
+				DisplayMode(DisplayOff, CursorHidden, CursorNotBlinking);
+				_delay_us(40);
 				
 				DisplayMode(DisplayOn, CursorHidden, CursorNotBlinking);
-				_delay_us(37);
+				_delay_us(40);
 				
 				ClearDisplay();
 				_delay_ms(2);
 
 				EntryMode(DirectionRight, DisplayShiftDisable);
-				_delay_us(37);
+				_delay_us(40);
 
 			}
 
@@ -252,6 +254,22 @@ namespace EthernetBridge
 						| (addr & 0b01111111));
 				
 				PulseEnable();
+			}
+			
+			static void SetPosition(uint8_t pos)
+			{
+				uint8_t addr;
+				
+				if(pos < 20)
+					addr = pos - WIDTH * 0;
+				else if (pos < 40)
+					addr = pos - WIDTH * 1 + 0x40;
+				else if (pos < 60)
+					addr = pos - WIDTH * 2 + 0x14;
+				else
+					addr = pos - WIDTH * 3 + 0x54;
+				
+				SetAddressOfDDRAM(addr);
 			}
 			
 			static bool IsBusy()
