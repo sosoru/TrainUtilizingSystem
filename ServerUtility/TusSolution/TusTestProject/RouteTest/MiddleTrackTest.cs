@@ -142,7 +142,7 @@ namespace TestProject
             written.Clear();
             vh.Run(1.0f, sht.GetBlock("AT4"));
             vh.Refresh();
-            serv.SendingObservable.Repeat(50).Subscribe();
+            serv.SendAll();
             Assert.IsTrue(written.ExtractDevices<MotorState>(1,1,1).Any(s => Math.Round(s.Duty, 1) == 0.5f));
 
             var sens = new UsartSensor() { DeviceID = new DeviceID(1, 3, 3) };
@@ -153,7 +153,7 @@ namespace TestProject
 
             written.Clear();
             vh.Refresh();
-            serv.SendingObservable.Subscribe();
+            serv.SendAll();
             Assert.IsTrue(written.ExtractDevices<MotorState>(1, 1, 1).Any(s => Math.Round(s.Duty, 1) == 0.0f));
 
            

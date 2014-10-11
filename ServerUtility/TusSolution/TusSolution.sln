@@ -53,9 +53,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleJsonServer", "SimpleJ
 EndProject
 Project("{F088123C-0E9E-452A-89E6-6BA2F21D5CAC}") = "HogeModeling", "HogeModeling\HogeModeling.modelproj", "{B5A01056-690F-4D13-8581-AD5095C5E297}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TusTestProject", "TusTestProject\TusTestProject.csproj", "{DBCF0DCD-01CC-4109-98D0-36ED60C9D11C}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tus.Illumination", "Tus.Illumination\Tus.Illumination.csproj", "{A1C4F9C0-7AD4-4A72-B463-70C2BD221373}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TusTestProject", "TusTestProject\TusTestProject.csproj", "{DBCF0DCD-01CC-4109-98D0-36ED60C9D11C}"
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
@@ -216,16 +216,6 @@ Global
 		{B5A01056-690F-4D13-8581-AD5095C5E297}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{B5A01056-690F-4D13-8581-AD5095C5E297}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{B5A01056-690F-4D13-8581-AD5095C5E297}.Release|x86.ActiveCfg = Release|Any CPU
-		{DBCF0DCD-01CC-4109-98D0-36ED60C9D11C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DBCF0DCD-01CC-4109-98D0-36ED60C9D11C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DBCF0DCD-01CC-4109-98D0-36ED60C9D11C}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{DBCF0DCD-01CC-4109-98D0-36ED60C9D11C}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{DBCF0DCD-01CC-4109-98D0-36ED60C9D11C}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{DBCF0DCD-01CC-4109-98D0-36ED60C9D11C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DBCF0DCD-01CC-4109-98D0-36ED60C9D11C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DBCF0DCD-01CC-4109-98D0-36ED60C9D11C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{DBCF0DCD-01CC-4109-98D0-36ED60C9D11C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{DBCF0DCD-01CC-4109-98D0-36ED60C9D11C}.Release|x86.ActiveCfg = Release|Any CPU
 		{A1C4F9C0-7AD4-4A72-B463-70C2BD221373}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A1C4F9C0-7AD4-4A72-B463-70C2BD221373}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1C4F9C0-7AD4-4A72-B463-70C2BD221373}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -236,6 +226,16 @@ Global
 		{A1C4F9C0-7AD4-4A72-B463-70C2BD221373}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{A1C4F9C0-7AD4-4A72-B463-70C2BD221373}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{A1C4F9C0-7AD4-4A72-B463-70C2BD221373}.Release|x86.ActiveCfg = Release|Any CPU
+		{DBCF0DCD-01CC-4109-98D0-36ED60C9D11C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBCF0DCD-01CC-4109-98D0-36ED60C9D11C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBCF0DCD-01CC-4109-98D0-36ED60C9D11C}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{DBCF0DCD-01CC-4109-98D0-36ED60C9D11C}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{DBCF0DCD-01CC-4109-98D0-36ED60C9D11C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{DBCF0DCD-01CC-4109-98D0-36ED60C9D11C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBCF0DCD-01CC-4109-98D0-36ED60C9D11C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DBCF0DCD-01CC-4109-98D0-36ED60C9D11C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{DBCF0DCD-01CC-4109-98D0-36ED60C9D11C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{DBCF0DCD-01CC-4109-98D0-36ED60C9D11C}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

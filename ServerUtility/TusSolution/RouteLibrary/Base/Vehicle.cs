@@ -257,7 +257,7 @@ namespace Tus.TransControl.Base
 
         public void Refresh()
         {
-            Run(Speed);
+            if (!this.IsHalted) Run(Speed);
         }
 
         public void ChangeRoute(string routename, string blockname)
@@ -269,7 +269,7 @@ namespace Tus.TransControl.Base
             ControlUnit blockpos = routeorder.Units.FirstOrDefault(ut => ut.ControlBlock.Name == blockname);
             if (blockpos == null)
                 throw new InvalidOperationException("blockname is not found");
-    
+
             var newrt = new Route(routeorder);
             if (!CanLockRoute(newrt, blockpos.ControlBlock))
                 throw new InvalidOperationException("full block");
@@ -342,6 +342,13 @@ namespace Tus.TransControl.Base
             {
                 Block blk = AssociatedRoute.RouteOrder.Blocks.First();
                 AssociatedRoute.AllocateTrain(blk, Length);
+            }
+            if (this.IsHalted )
+            {
+                if (this.CanLeaveHere)
+                    this.LeaveHere();
+                else
+                    return;
             }
             if (IgnoreBlockage)
             {
@@ -419,6 +426,77 @@ namespace Tus.TransControl.Base
                 }
             }
             Sheet.Effect(cmdfactory, AssociatedRoute.LockedBlocks.Concat(lastlockedblocks).Distinct(b => b.Name));
+        }
+        public bool IsHalted { get; private set; }
+
+
+        public bool CanHaltHere
+        {
+            get { return this.Speed == 0 && this.AssociatedRoute.HeadContainer.Unit.HaltableBlocks.Any(); }
+        }
+        public bool CanLeaveHere
+        {
+            get
+            {
+                var head = this.AssociatedRoute.HeadContainer.Unit;
+                // HaltしているUnit内の全てのBlockが解放状態でなければならない
+                // 他の列車が進入している可能性あり
+                if (head.Blocks.Except(head.HaltableBlocks).Any(b => b.IsLocked))
+                    return false;
+
+                // Length分のUnitをLockできるかどうかのチェック
+                var units = new List<ControlUnitContainer>();
+                var currentunit = this.AssociatedRoute.HeadContainer.Before;
+                for (int i = 1; i < this.Length; ++i)
+                {
+                    if (currentunit == null)
+                        break;
+
+                    units.Add(currentunit);
+                    currentunit = currentunit.Before;
+                }
+
+                if (units.Any(u => u.Unit.IsBlocked))
+                    return false;
+
+                return true;
+            }
+        }
+
+        public void HaltHere()
+        {
+            if (this.IsHalted) throw new InvalidOperationException("すでにHaltしています．");
+            if (!this.CanHaltHere) throw new InvalidOperationException("cannot halt here");
+
+            try
+            {
+                //抑えているUnitが一つになるまでRelease
+                while (this.AssociatedRoute.LockedUnits.Count() > 1) this.AssociatedRoute.ReleaseLastUnit();
+
+                this.AssociatedRoute.LockAsHalted();
+                this.IsHalted = true;
+            }
+            catch
+            {
+                throw;
+            }
+        }
+        public void LeaveHere()
+        {
+            if (!this.IsHalted) throw new InvalidOperationException("Haltしていません");
+
+            try
+            {
+                var head = this.AssociatedRoute.HeadContainer;
+                this.AssociatedRoute.ReleaseAsHalted();
+
+                //一旦すべてのblockを解放してから，取得し直す
+                while (this.AssociatedRoute.ReleaseLastUnit()) ;
+                this.AssociatedRoute.AllocateTrain(head.Unit.ControlBlock, this.Length);
+
+                this.IsHalted = false;
+            }
+            catch { throw; }
         }
 
         #region "CreateCommandMethods"

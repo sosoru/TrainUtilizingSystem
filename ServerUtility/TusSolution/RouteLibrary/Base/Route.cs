@@ -35,8 +35,8 @@ namespace Tus.TransControl.Base
             {
                 foreach (Block b in Blocks)
                 {
-                    if (b == Blocks.First())
-                        yield return b; // stop at entrance of the blocks this class govern
+                    //if (b == Blocks.First())
+                    //    yield return b; // stop at entrance of the blocks this class govern
 
                     if (b.HasSensor)
                         yield return b; // stop by a IR sensor
@@ -78,14 +78,14 @@ namespace Tus.TransControl.Base
             set { throw new InvalidOperationException(); }
         }
 
-        public void Allocate()
+        private void allocate(IList<Block> blocks)
         {
             lock (this.LockUnitlock)
             {
                 if (this.unlockedIsBlocked)
                     throw new InvalidOperationException("Allocate() tried to allocate a blocked block");
 
-                Blocks.ForEach(b =>
+                blocks.ForEach(b =>
                                    {
                                        lock (b.lock_islocked)
                                        {
@@ -97,13 +97,22 @@ namespace Tus.TransControl.Base
             }
         }
 
-        public void Release()
+        public void Allocate()
+        {
+            this.allocate(this.Blocks);
+        }
+        public void AllocateOnlyHaltable()
+        {
+            this.allocate(this.HaltableBlocks.ToList());
+        }
+
+        private void release(IList<Block> blocks)
         {
             lock (this.LockUnitlock)
             {
                 if (!this.unlockedIsBlocked)
                     throw new InvalidOperationException("Release() tried to relase a released block");
-                Blocks.ForEach(b =>
+                blocks.ForEach(b =>
                                     {
                                         lock (b.lock_islocked)
                                         {
@@ -113,6 +122,16 @@ namespace Tus.TransControl.Base
                                     });
 
             }
+        }
+
+        public void Release()
+        {
+            this.release(this.Blocks);
+        }
+
+        public void ReleaseOnlyHaltable()
+        {
+            this.release(this.HaltableBlocks.ToList());
         }
 
         public override string ToString()
@@ -126,6 +145,7 @@ namespace Tus.TransControl.Base
                 return "(null)";
             }
         }
+
     }
 
     /// <summary>
@@ -747,5 +767,31 @@ namespace Tus.TransControl.Base
         //    set { ind_current = value; }
         //    get { return ind_current; }
         //}
+
+        public void LockAsHalted()
+        {
+            // LockしているUnitが2つ以上の場合例外
+            if (this.LockedUnits.Count() > 2)
+                throw new InvalidOperationException("LockしているUnit数が2つ以上です．");
+
+            if (this.IsReserving)
+                throw new InvalidOperationException("他のUnitをReservedしている状態ではHaltできません．");
+
+            try
+            {
+                this.HeadContainer.Unit.Release();
+                this.HeadContainer.Unit.AllocateOnlyHaltable();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public void ReleaseAsHalted()
+        {
+            this.HeadContainer.Unit.ReleaseOnlyHaltable();
+            this.HeadContainer.Unit.Allocate();
+        }
     }
 }

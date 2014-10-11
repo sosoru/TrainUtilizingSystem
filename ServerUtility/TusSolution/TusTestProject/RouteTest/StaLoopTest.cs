@@ -51,7 +51,7 @@ namespace TestProject
                                                     "AT10", "AT11", "AT12", "BAT12",
                                                     "AT13", "AT14", "AT15", "BAT16",
                                                     "AT16", "AT1", "BAT1"
-                                                }) {IsRepeatable = true};
+                                                }) { IsRepeatable = true };
             return route;
         }
 
@@ -61,14 +61,14 @@ namespace TestProject
             var mockio = new Mock<IDeviceIO>();
             _written = new List<IDeviceState<IPacketDeviceData>>();
             mockio.Setup(e => e.GetReadingPacket()).Returns(Observable.Empty<DevicePacket>());
-            mockio.Setup(e => e.GetWritingPacket(It.IsAny<DevicePacket>())).Callback<DevicePacket>(pack =>
-                                                                                                   _written.AddRange(
-                                                                                                       pack
-                                                                                                           .ExtractPackedPacket
-                                                                                                           ())
-                )
-                  .Returns(Observable.Empty<DevicePacket>());
-            _serv = new PacketServer {Controller = mockio.Object};
+            mockio.Setup(e =>
+                         e.WritePacket(It.IsAny<DevicePacket>())).Callback<DevicePacket>(pack =>
+                                                                                         _written.AddRange(
+                                                                                             pack
+                                                                                                 .ExtractPackedPacket
+                                                                                                 ())
+                );
+            _serv = new PacketServer { Controller = mockio.Object };
             _sht = new BlockSheet(target_sheet, _serv);
 
             _scheduler = new TestScheduler();
@@ -89,15 +89,15 @@ namespace TestProject
             var rt = GetRouteFirst(_sht);
             var units = rt.Units.ToArray();
             Assert.IsTrue(units[0].Blocks.Select(b => b.Name)
-                                  .SequenceEqual(new[] {"AT2", "AT3", "AT4", "AT5", "AT6", "BAT6"}));
+                                  .SequenceEqual(new[] { "AT2", "AT3", "AT4", "AT5", "AT6", "BAT6" }));
             Assert.IsTrue(units[1].Blocks.Select(b => b.Name)
-                                  .SequenceEqual(new[] {"AT7", "AT8", "AT9", "BAT9"}));
+                                  .SequenceEqual(new[] { "AT7", "AT8", "AT9", "BAT9" }));
             Assert.IsTrue(units[2].Blocks.Select(b => b.Name)
-                                  .SequenceEqual(new[] {"AT10", "AT11", "AT12", "BAT12"}));
+                                  .SequenceEqual(new[] { "AT10", "AT11", "AT12", "BAT12" }));
             Assert.IsTrue(units[3].Blocks.Select(b => b.Name)
-                                  .SequenceEqual(new[] {"AT13", "AT14", "AT15", "BAT16"}));
+                                  .SequenceEqual(new[] { "AT13", "AT14", "AT15", "BAT16" }));
             Assert.IsTrue(units[4].Blocks.Select(b => b.Name)
-                                  .SequenceEqual(new[] {"AT16", "AT1", "BAT1"}));
+                                  .SequenceEqual(new[] { "AT16", "AT1", "BAT1" }));
         }
 
 
@@ -116,7 +116,7 @@ namespace TestProject
 
             _scheduler.Schedule(TimeSpan.FromSeconds(0.5), () =>
                                                               {
-                                                                  _serv.SendingObservable.Repeat(50).Subscribe();
+                                                                  _serv.SendAll();
                                                                   Assert.IsTrue(
                                                                       _written.ExtractDevice<SwitchState>(1, 1, 1)
                                                                              .Position == PointStateEnum.Straight);
@@ -127,7 +127,7 @@ namespace TestProject
 
             _scheduler.Schedule(waitingTicks1, () =>
                                                   {
-                                                      _serv.SendingObservable.Repeat(50).Subscribe();
+                                                      _serv.SendAll();
                                                       Assert.IsTrue(
                                                           _written.ExtractDevices<MotorState>(1, 2, 2)
                                                                  .Any(s => s.Duty > 0.0f));
@@ -145,7 +145,7 @@ namespace TestProject
             // N-th case : the vehicle goes at specified speed
             vh.Run(1.0f, _sht.GetBlock("AT2"));
             _scheduler.Start();
-            _serv.SendingObservable.Repeat(50).Subscribe();
+            _serv.SendAll();
             bool any = _written.ExtractDevices<MotorState>(1, 2, 2).Any(s => s.Duty == 1.0f);
             Assert.IsTrue(any);
 
@@ -159,7 +159,7 @@ namespace TestProject
             vh.Run(1.0f, _sht.GetBlock("AT2"));
 
             _scheduler.Start();
-            _serv.SendingObservable.Repeat(50).Subscribe();
+            _serv.SendAll();
             Assert.IsTrue(_written.ExtractDevices<MotorState>(1, 2, 2).Any(s => s.Duty == 1.0f));
             Assert.IsTrue(_written.ExtractDevices<MotorState>(1, 2, 3).Any(s => Math.Round(s.Duty, 1) == 0.5f));
 
@@ -169,7 +169,7 @@ namespace TestProject
             vh.Run(1.0f, _sht.GetBlock("AT2"));
 
             _scheduler.Start();
-            _serv.SendingObservable.Repeat(50).Subscribe();
+            _serv.SendAll();
             Assert.IsTrue(_written.ExtractDevices<MotorState>(1, 2, 2).Any(s => Math.Round(s.Duty, 1) == 0.5f));
             Assert.IsTrue(_written.ExtractDevices<MotorState>(1, 2, 3).Any(s => s.Duty == 0.0f));
 
@@ -188,7 +188,7 @@ namespace TestProject
             vh.Run(1.0f, _sht.GetBlock("AT2"));
 
             _scheduler.Start();
-            _serv.SendingObservable.Repeat(50).Subscribe();
+            _serv.SendAll();
             Assert.IsTrue(_written.ExtractDevices<MotorState>(1, 2, 2).Any(s => s.Duty == 0.0f));
         }
 
@@ -200,11 +200,63 @@ namespace TestProject
 
             vh.Halt.Add(new Halt(_sht.GetBlock("AT4")));
 
+            vh.Accelation = 1.0f;
             vh.Run(0.5f, _sht.GetBlock("AT2"));
-            vh.Refresh();
-            _serv.SendingObservable.Repeat(50).Subscribe();
+            //vh.Refresh();
+            _serv.SendAll();
             Assert.IsTrue(_written.ExtractDevices<MotorState>(1, 2, 2).Any(d => d.Duty == 1.0f));
             Assert.IsTrue(_written.ExtractDevices<MotorState>(1, 2, 3).Any(d => Math.Round(d.Duty, 1) == 0.5f));
+        }
+
+        [TestMethod]
+        public void HaltHereTest()
+        {
+            var rt = GetRouteFirst(_sht);
+            var vh = new Vehicle(_sht, rt);
+
+            vh.Halt.Add(new Halt(_sht.GetBlock("AT4")));
+
+            vh.Accelation = 1.0f;
+            vh.Run(0.0f, _sht.GetBlock("AT2"));
+            Assert.IsTrue(vh.CanHaltHere);
+            vh.HaltHere();
+
+            //LockedBlock is only one
+            Assert.IsFalse(rt.Blocks.Except(new[] { _sht.GetBlock("AT4") }).Any(b => b.IsLocked));
+            Assert.IsTrue(vh.Speed == 0.0f);
+            Assert.IsTrue(vh.IsHalted);
+
+            Assert.IsTrue(vh.CanLeaveHere);
+            vh.LeaveHere();
+            Assert.IsFalse(vh.IsHalted);
+
+            vh.Run(0.5f);
+            vh.Run(0.0f);
+            Assert.IsTrue(vh.CanHaltHere);
+            vh.HaltHere();
+            Assert.IsTrue(vh.CanLeaveHere);
+            vh.Run(0.5f);
+            Assert.IsFalse(vh.IsHalted); // RunでHalt状態は解除される
+        }
+
+        [TestMethod]
+        public void CanLeaveHere_If_Other_Vehicle_Comming()
+        {
+            var rt = GetRouteFirst(_sht);
+            var vh = new Vehicle(_sht, rt);
+
+            vh.Halt.Add(new Halt(_sht.GetBlock("AT4")));
+
+            vh.Accelation = 1.0f;
+            vh.Run(0.0f, _sht.GetBlock("AT2"));
+            Assert.IsTrue(vh.CanHaltHere);
+            vh.HaltHere();
+
+            var rt2 = GetRouteFirst(_sht);
+            var vh2 = new Vehicle(_sht, rt2);
+            vh2.Accelation = 1.0f;
+            vh2.Run(0.0f, "AT16");
+            Assert.IsFalse(vh.CanLeaveHere); // 他の列車が前の閉塞にいるのでLeaveできない
         }
 
         #region 追加のテスト属性

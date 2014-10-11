@@ -47,7 +47,7 @@ namespace RouteVisualizer.ViewModels
         {
             try
             {
-                var path = @"C:\Users\Administrator\Dropbox\rail\2013年10月12日レイアウトプラン(1009Ver).rrf";
+                var path = @"C:\Users\Administrator\Dropbox\rail\20141004_e.rrf";
 
                 var map = new RailroaderIO.RailroaderMap(path);
 
