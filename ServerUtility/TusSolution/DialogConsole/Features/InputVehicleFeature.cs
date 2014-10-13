@@ -196,7 +196,16 @@ namespace DialogConsole.Features
                     foreach (var page in this.Pages)
                     {
                         page.Value.RefreshSendingJsonContent();
+
+                        // 状態をファイルに保存
+                        if (Param.UsingLayout.Vehicles.Count > 0 && page.Value is VehiclePage)
+                        {
+                            var vpage = page.Value as VehiclePage;
+                            var content = vpage.CreateReceivingJsonContent(vpage.CreateShortInfo().ToArray());
+                            File.WriteAllText("last_vehicle.txt", content);
+                        }
                     }
+
                 }
                 catch (Exception ex)
                 {

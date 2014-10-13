@@ -33,23 +33,23 @@ namespace DialogConsole.WebPages
         }
 
         private DataContractJsonSerializer _jsonSendingSerializer = null;
-        protected DataContractJsonSerializer JsonSendingTypeSerializer
+        public DataContractJsonSerializer JsonSendingTypeSerializer
         {
             get
             {
                 if (_jsonSendingSerializer == null)
-                    this._jsonSendingSerializer = new DataContractJsonSerializer(typeof (TSend),
+                    this._jsonSendingSerializer = new DataContractJsonSerializer(typeof(TSend),
                                                                                  KnownTypesWhenSerialization);
                 return this._jsonSendingSerializer;
             }
         }
         private DataContractJsonSerializer _jsonReceivedSerializer = null;
-        protected DataContractJsonSerializer JsonReceivedTypeSerializer
+        public DataContractJsonSerializer JsonReceivedTypeSerializer
         {
             get
             {
                 if (_jsonReceivedSerializer == null)
-                    this._jsonReceivedSerializer = new DataContractJsonSerializer(typeof (TRecv),
+                    this._jsonReceivedSerializer = new DataContractJsonSerializer(typeof(TRecv),
                                                                                   this.KnownTypesWhenSerialization);
                 return this._jsonReceivedSerializer;
             }
@@ -70,15 +70,34 @@ namespace DialogConsole.WebPages
 
         public string CreateSendingJsonContent()
         {
+            return CreateSendingJsonContent(this.CreateSendingContent());
+        }
+
+        public string CreateSendingJsonContent(TSend content)
+        {
+            if (content == null)
+                return "";
+
             var ser = this.JsonSendingTypeSerializer;
             using (var ms = new MemoryStream())
             using (var sr = new StreamReader(ms, Encoding.UTF8))
             {
-                var content = this.CreateSendingContent();
-                if (content == null)
-                    return "";
+                ser.WriteObject(ms, content);
+                ms.Seek(0, SeekOrigin.Begin);
+                return sr.ReadToEnd();
+            }
+        }
 
-                ser.WriteObject(ms, this.CreateSendingContent());
+        public string CreateReceivingJsonContent(TRecv content)
+        {
+            if (content == null)
+                return "";
+
+            var ser = this.JsonReceivedTypeSerializer;
+            using (var ms = new MemoryStream())
+            using (var sr = new StreamReader(ms, Encoding.UTF8))
+            {
+                ser.WriteObject(ms, content);
                 ms.Seek(0, SeekOrigin.Begin);
                 return sr.ReadToEnd();
             }

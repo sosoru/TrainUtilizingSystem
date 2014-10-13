@@ -134,4 +134,5 @@ namespace DialogConsole.Features
         [DataMember(IsRequired = false)]
         public ICollection<string> Halts;
     }
+
 }
