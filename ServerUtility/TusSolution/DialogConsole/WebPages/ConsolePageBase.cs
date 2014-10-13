@@ -31,13 +31,28 @@ namespace DialogConsole.WebPages
         {
             get { return new Type[] { }; }
         }
+
+        private DataContractJsonSerializer _jsonSendingSerializer = null;
         protected DataContractJsonSerializer JsonSendingTypeSerializer
         {
-            get { return new DataContractJsonSerializer(typeof(TSend), KnownTypesWhenSerialization); }
+            get
+            {
+                if (_jsonSendingSerializer == null)
+                    this._jsonSendingSerializer = new DataContractJsonSerializer(typeof (TSend),
+                                                                                 KnownTypesWhenSerialization);
+                return this._jsonSendingSerializer;
+            }
         }
+        private DataContractJsonSerializer _jsonReceivedSerializer = null;
         protected DataContractJsonSerializer JsonReceivedTypeSerializer
         {
-            get { return new DataContractJsonSerializer(typeof(TRecv), this.KnownTypesWhenSerialization); }
+            get
+            {
+                if (_jsonReceivedSerializer == null)
+                    this._jsonReceivedSerializer = new DataContractJsonSerializer(typeof (TRecv),
+                                                                                  this.KnownTypesWhenSerialization);
+                return this._jsonReceivedSerializer;
+            }
         }
 
         private string _json_content;

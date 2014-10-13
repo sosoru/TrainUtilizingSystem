@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Runtime.InteropServices;
 using System.IO;
+using Tus.Diagnostics;
 
 namespace Tus.Communication
 {
@@ -59,13 +60,12 @@ namespace Tus.Communication
                     state.ID = new DeviceID(packet.ID.ParentPart, packet.ID.ModuleAddr, internelid);
                     try
                     {
-
                         Array.Copy(packet.Data, bufind, cpbuffer, 0, len);
                     }
                     catch (ArgumentException ex)
                     {
-                        Console.WriteLine("ソース長さが足りない？");
-                        Console.WriteLine(ex.ToString());
+                        Logger.WriteLineAsTransInfo("ソース長さが足りない？");
+                        Logger.WriteLineAsTransInfo(ex.ToString());
                     }
                     data.RestoreObject(cpbuffer);
 

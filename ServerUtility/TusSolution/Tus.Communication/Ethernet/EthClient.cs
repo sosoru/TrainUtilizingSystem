@@ -13,6 +13,7 @@ using System.Reactive.Threading;
 
 using System.Net;
 using System.Net.Sockets;
+using Tus.Diagnostics;
 
 namespace Tus.Communication.Ethernet
 {
@@ -57,7 +58,7 @@ namespace Tus.Communication.Ethernet
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
+                Logger.WriteLineAsTransInfo(ex.ToString());
                 return Observable.Empty<EthPacket>();
             }
         }

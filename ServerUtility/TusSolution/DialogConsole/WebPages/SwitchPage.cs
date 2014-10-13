@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using Tus.Communication.Device.AvrComposed;
+using Tus.Diagnostics;
 
 namespace DialogConsole.WebPages
 {
@@ -48,7 +49,7 @@ namespace DialogConsole.WebPages
                     }
                     sw.CurrentState.Position = sentsw.CurrentState.Position;
 
-                    Console.WriteLine("{0}(switch): Position is changed to {1}", sw.DeviceIDString, sw.CurrentState.PositionString);
+                    Logger.WriteLineAsWebInfo("{0}(switch): Position is changed to {1}", sw.DeviceIDString, sw.CurrentState.PositionString);
                     sw.SendState();
                 }
             }

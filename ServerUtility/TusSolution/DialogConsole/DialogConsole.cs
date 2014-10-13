@@ -3,13 +3,16 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Threading;
+using System.Windows.Forms;
 using DialogConsole.Features.Base;
 using DialogConsole.WebPages;
 using Tus.Communication;
@@ -20,13 +23,33 @@ using Tus.TransControl.Base;
 namespace DialogConsole
 {
     internal class MainClass
-    {
+    {        //        BOOL MoveWindow(
+        //            HWND hWnd,      // ウィンドウのハンドル
+        //            int X,          // 横方向の位置
+        //            int Y,          // 縦方向の位置
+        //            int nWidth,     // 幅
+        //            int nHeight,    // 高さ
+        //            BOOL bRepaint   // 再描画オプション
+        //            );
+        [DllImport("User32.dll")]
+        static extern int MoveWindow(
+            IntPtr hWnd,
+            int x,
+            int y,
+            int nWidth,
+            int nHeight,
+            int bRepaint
+            );
+
         private static void Main(string[] args)
         {
+            // 画面サイズの取得
+            var scrsize = Screen.PrimaryScreen.Bounds;
+
             // コンソールウィンドウのサイズを指定
-            Console.BufferWidth = 160;
-            Console.WindowWidth = 160;
-            Console.WindowHeight = 30;
+            Console.WindowWidth = Console.LargestWindowWidth;
+            Console.WindowHeight = Console.LargestWindowHeight;
+            MoveWindow(Process.GetCurrentProcess().MainWindowHandle, 0, 0, scrsize.Width/2, scrsize.Height, 1);
 
             // DIコンテナの初期化
             var container = new DialogConsoleContainer();
@@ -49,9 +72,9 @@ namespace DialogConsole
         {
         }
 
-           /// <summary>
-           /// 使用するカタログの定義
-           /// </summary>
+        /// <summary>
+        /// 使用するカタログの定義
+        /// </summary>
         private static AggregateCatalog catalogs
         {
             get
@@ -166,7 +189,7 @@ namespace DialogConsole
                       .Subscribe();
 
             // Switchデバイスの更新，1秒おきに同期
-            Observable.Timer(DateTimeOffset.MinValue, TimeSpan.FromMilliseconds(500))
+            Observable.Timer(DateTimeOffset.MinValue, TimeSpan.FromMilliseconds(1000))
                  .SelectMany(Observable.Defer(() => Observable.Start(this.Param.UsingLayout.Sheet.SyncSwitches)))
                  .Subscribe();
 

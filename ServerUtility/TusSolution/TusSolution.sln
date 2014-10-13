@@ -15,6 +15,9 @@ EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "TusServer", "TusServer\TusServer.pyproj", "{D58C2A9E-FB74-4D92-87A9-67E47AEA7007}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tus.TransControl", "RouteLibrary\Tus.TransControl.csproj", "{39E73A78-039D-45DD-AD32-879B81EA567E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FD19AF7F-4B6C-424A-B57A-06B8D1180C0B} = {FD19AF7F-4B6C-424A-B57A-06B8D1180C0B}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RouteServerConsole", "RouteServerConsole\RouteServerConsole.csproj", "{59D80A24-B488-46D2-9A1A-514166D20AEA}"
 EndProject
@@ -28,34 +31,62 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{F47D62
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DialogConsole", "DialogConsole\DialogConsole.csproj", "{F2232BF9-17E6-4641-8326-D8B7BD90A1E9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FD19AF7F-4B6C-424A-B57A-06B8D1180C0B} = {FD19AF7F-4B6C-424A-B57A-06B8D1180C0B}
+		{935D8FDE-0880-40D5-A5BA-B8F02807BD69} = {935D8FDE-0880-40D5-A5BA-B8F02807BD69}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RailroaderIO", "RailroaderIO\RailroaderIO.csproj", "{9C902CD5-20AE-45C4-918A-863F7D6064A0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RouteVisualizer", "RouteVisualizer\RouteVisualizer.csproj", "{E366CBAE-EDDF-4486-87A2-826A07E1D9CC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tus.Communication.Device.AvrComposed", "SensorLibrary.Devices.TusAvrDevices\Tus.Communication.Device.AvrComposed.csproj", "{941ABACA-CCF7-436B-8D63-C3751CC1D1A9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FD19AF7F-4B6C-424A-B57A-06B8D1180C0B} = {FD19AF7F-4B6C-424A-B57A-06B8D1180C0B}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DevicePlugin", "DevicePlugin", "{46EF153C-B6DD-41C7-A904-BD5CF9051F13}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tus.Communication", "Tus.Communication\Tus.Communication.csproj", "{2FCBA61B-F967-442F-A3F6-3A8AA7126B17}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FD19AF7F-4B6C-424A-B57A-06B8D1180C0B} = {FD19AF7F-4B6C-424A-B57A-06B8D1180C0B}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Communication", "Communication", "{D48E877B-B792-4A79-8888-A3588AECDB3A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tus.Communication.Device", "Tus.Communication.Device\Tus.Communication.Device.csproj", "{BBBD4A5A-1A91-436E-88BC-8621AC261B7F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FD19AF7F-4B6C-424A-B57A-06B8D1180C0B} = {FD19AF7F-4B6C-424A-B57A-06B8D1180C0B}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Route", "Route", "{4AED919F-FD3A-4808-ACD4-7B7166976793}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Factory", "Factory", "{42DD2714-BB39-4FED-9704-2E0A160EDF80}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tus.Factory", "Tus.Factory\Tus.Factory.csproj", "{A367ED72-ABD5-4CFD-A9BD-4BA911D53584}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FD19AF7F-4B6C-424A-B57A-06B8D1180C0B} = {FD19AF7F-4B6C-424A-B57A-06B8D1180C0B}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleJsonServer", "SimpleJsonServer\SimpleJsonServer.csproj", "{554FE933-54A5-4AD9-9C32-181559466ABC}"
 EndProject
 Project("{F088123C-0E9E-452A-89E6-6BA2F21D5CAC}") = "HogeModeling", "HogeModeling\HogeModeling.modelproj", "{B5A01056-690F-4D13-8581-AD5095C5E297}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tus.Illumination", "Tus.Illumination\Tus.Illumination.csproj", "{A1C4F9C0-7AD4-4A72-B463-70C2BD221373}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FD19AF7F-4B6C-424A-B57A-06B8D1180C0B} = {FD19AF7F-4B6C-424A-B57A-06B8D1180C0B}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TusTestProject", "TusTestProject\TusTestProject.csproj", "{DBCF0DCD-01CC-4109-98D0-36ED60C9D11C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FD19AF7F-4B6C-424A-B57A-06B8D1180C0B} = {FD19AF7F-4B6C-424A-B57A-06B8D1180C0B}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Diagnostics", "Diagnostics", "{AA196E14-EBE9-49FF-AC58-E19B33256B10}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tus.Diagnostics", "Tus.Diagnostics\Tus.Diagnostics.csproj", "{FD19AF7F-4B6C-424A-B57A-06B8D1180C0B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogingConsole", "LogingConsole\LogingConsole.csproj", "{935D8FDE-0880-40D5-A5BA-B8F02807BD69}"
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
@@ -236,6 +267,26 @@ Global
 		{DBCF0DCD-01CC-4109-98D0-36ED60C9D11C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{DBCF0DCD-01CC-4109-98D0-36ED60C9D11C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{DBCF0DCD-01CC-4109-98D0-36ED60C9D11C}.Release|x86.ActiveCfg = Release|Any CPU
+		{FD19AF7F-4B6C-424A-B57A-06B8D1180C0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD19AF7F-4B6C-424A-B57A-06B8D1180C0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD19AF7F-4B6C-424A-B57A-06B8D1180C0B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{FD19AF7F-4B6C-424A-B57A-06B8D1180C0B}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{FD19AF7F-4B6C-424A-B57A-06B8D1180C0B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FD19AF7F-4B6C-424A-B57A-06B8D1180C0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD19AF7F-4B6C-424A-B57A-06B8D1180C0B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD19AF7F-4B6C-424A-B57A-06B8D1180C0B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{FD19AF7F-4B6C-424A-B57A-06B8D1180C0B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{FD19AF7F-4B6C-424A-B57A-06B8D1180C0B}.Release|x86.ActiveCfg = Release|Any CPU
+		{935D8FDE-0880-40D5-A5BA-B8F02807BD69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{935D8FDE-0880-40D5-A5BA-B8F02807BD69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{935D8FDE-0880-40D5-A5BA-B8F02807BD69}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{935D8FDE-0880-40D5-A5BA-B8F02807BD69}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{935D8FDE-0880-40D5-A5BA-B8F02807BD69}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{935D8FDE-0880-40D5-A5BA-B8F02807BD69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{935D8FDE-0880-40D5-A5BA-B8F02807BD69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{935D8FDE-0880-40D5-A5BA-B8F02807BD69}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{935D8FDE-0880-40D5-A5BA-B8F02807BD69}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{935D8FDE-0880-40D5-A5BA-B8F02807BD69}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -247,5 +298,9 @@ Global
 		{2FCBA61B-F967-442F-A3F6-3A8AA7126B17} = {D48E877B-B792-4A79-8888-A3588AECDB3A}
 		{BBBD4A5A-1A91-436E-88BC-8621AC261B7F} = {D48E877B-B792-4A79-8888-A3588AECDB3A}
 		{A367ED72-ABD5-4CFD-A9BD-4BA911D53584} = {42DD2714-BB39-4FED-9704-2E0A160EDF80}
+		{FD19AF7F-4B6C-424A-B57A-06B8D1180C0B} = {AA196E14-EBE9-49FF-AC58-E19B33256B10}
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
 	EndGlobalSection
 EndGlobal

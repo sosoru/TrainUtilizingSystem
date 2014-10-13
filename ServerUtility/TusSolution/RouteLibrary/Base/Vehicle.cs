@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using Tus.Communication.Device.AvrComposed;
+using Tus.Diagnostics;
 
 namespace Tus.TransControl.Base
 {
@@ -373,7 +374,7 @@ namespace Tus.TransControl.Base
             {
                 if (AssociatedRoute.LockNextUnit())
                 {
-                    Console.WriteLine("vehicle {0} moved : {1}", Name, CurrentBlock.Name);
+                    Logger.WriteLineAsTransInfo("vehicle {0} moved : {1}", Name, CurrentBlock.Name);
                 }
             }
 
@@ -381,7 +382,7 @@ namespace Tus.TransControl.Base
             if (Predicators.All(l => l.ShouldReleaseBefore(this)))
             {
                 AssociatedRoute.ReleaseLastUnit();
-                Console.WriteLine("vehicle {0} leaved : {1}", Name, tail.ControlBlock.Name);
+                Logger.WriteLineAsTransInfo("vehicle {0} leaved : {1}", Name, tail.ControlBlock.Name);
             }
 
             CommandFactory cmdfactory = null;

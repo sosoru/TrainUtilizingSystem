@@ -4,6 +4,7 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tus.Diagnostics;
 using Tus.Illumination;
 
 namespace DialogConsole.WebPages
@@ -36,7 +37,7 @@ namespace DialogConsole.WebPages
                 if (found != null)
                 {
                     found.Luminance = ill.Luminance;
-                    Console.WriteLine("{0}(Led): Luminance value is changed to {1}", found.Name, found.Luminance);
+                    Logger.WriteLineAsWebInfo("{0}(Led): Luminance value is changed to {1}", found.Name, found.Luminance);
 
                     found.SwitchingBlocks = ill.SwitchingBlocks;
                     if (!string.IsNullOrEmpty(found.SwitchingBlocks))

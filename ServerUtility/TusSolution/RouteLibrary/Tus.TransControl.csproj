@@ -102,6 +102,10 @@
       <Project>{2fcba61b-f967-442f-a3f6-3a8aa7126b17}</Project>
       <Name>Tus.Communication</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Tus.Diagnostics\Tus.Diagnostics.csproj">
+      <Project>{fd19af7f-4b6c-424a-b57a-06b8d1180c0b}</Project>
+      <Name>Tus.Diagnostics</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

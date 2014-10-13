@@ -42,6 +42,7 @@
     <Reference Include="System.ComponentModel.Composition.Registration" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Reactive.Core">
       <HintPath>..\packages\Rx-Core.2.1.30214.0\lib\Net45\System.Reactive.Core.dll</HintPath>
     </Reference>
@@ -123,6 +124,10 @@
     <None Include="vehiclemap.coffee" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\LogingConsole\LogingConsole.csproj">
+      <Project>{935d8fde-0880-40d5-a5ba-b8f02807bd69}</Project>
+      <Name>LogingConsole</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RouteLibrary\Tus.TransControl.csproj">
       <Project>{39e73a78-039d-45dd-ad32-879b81ea567e}</Project>
       <Name>Tus.TransControl</Name>
@@ -138,6 +143,10 @@
     <ProjectReference Include="..\Tus.Communication\Tus.Communication.csproj">
       <Project>{2fcba61b-f967-442f-a3f6-3a8aa7126b17}</Project>
       <Name>Tus.Communication</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tus.Diagnostics\Tus.Diagnostics.csproj">
+      <Project>{fd19af7f-4b6c-424a-b57a-06b8d1180c0b}</Project>
+      <Name>Tus.Diagnostics</Name>
     </ProjectReference>
     <ProjectReference Include="..\Tus.Factory\Tus.Factory.csproj">
       <Project>{a367ed72-abd5-4cfd-a9bd-4ba911d53584}</Project>

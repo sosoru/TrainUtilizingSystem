@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using Tus.Diagnostics;
 
 namespace DialogConsole.WebPages
 {
@@ -48,7 +49,7 @@ namespace DialogConsole.WebPages
                     v.Accelation = 0.8f;
                     v.Speed = 0.0f;
 
-                    Console.WriteLine("Shutdown All Vehicles");
+                    Logger.WriteLineAsWebInfo("Shutdown All Vehicles");
                 }
             }
         }

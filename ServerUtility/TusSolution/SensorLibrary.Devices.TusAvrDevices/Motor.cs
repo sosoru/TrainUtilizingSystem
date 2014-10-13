@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.Serialization;
+using Tus.Diagnostics;
 
 namespace Tus.Communication.Device.AvrComposed
 {
@@ -150,7 +151,8 @@ namespace Tus.Communication.Device.AvrComposed
             //waiting stateが連続出ない場合，
             // Stateを送る条件：
             //  1，CurrentMemoryがUnknown（初期化）
-            var exprinit = this.CurrentMemory == MotorMemoryStateEnum.Unknown;            //  2，CurrentMemoryとReceivedMemoryの不一致(Waiting以外で)
+            var exprinit = this.CurrentMemory == MotorMemoryStateEnum.Unknown;
+            //  2，CurrentMemoryとReceivedMemoryの不一致(Waiting以外で)
             var exprrefresh = this.CurrentMemory != MotorMemoryStateEnum.Waiting
                 && this.CurrentMemory != this.ReceivedMemory;
             //  3，CurrentMemoryがWaitingStateで，ReceivedMemoryがMotorAfterWaiting||Waitingでない場合
@@ -161,7 +163,7 @@ namespace Tus.Communication.Device.AvrComposed
             {
                 // send packet changing memory
                 statelist.Add(Kernel.MemoryState(DeviceID, new MemoryState((int)CurrentMemory)));
-                Console.WriteLine("Motor {0} changed to {1} ({2})", this.DeviceID, this.CurrentMemoryString, this.ReceivedMemoryString);
+                Logger.WriteLineAsDeviceInfo("Motor {0} changed to {1} ({2})", this.DeviceID, this.CurrentMemoryString, this.ReceivedMemoryString);
                 this._before_sent_waiting = DateTime.Now;
             }
 
@@ -207,7 +209,7 @@ namespace Tus.Communication.Device.AvrComposed
                 this.CurrentState = this.States[currentmem];
             }
             catch (KeyNotFoundException ex)
-            { Console.WriteLine("motor current memory is changed"); }
+            { Logger.WriteLineAsDeviceInfo("motor current memory is changed"); }
             //var pack = this.ChangeMemoryTo(this.CurrentMemory);
             //foreach (var p in pack)
             //    this.ReceivingServer.SendPacket(p);

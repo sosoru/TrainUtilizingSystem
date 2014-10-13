@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Web;
 using DialogConsole.Features;
 using Tus.Communication.Device.AvrComposed;
+using Tus.Diagnostics;
 using Tus.TransControl.Base;
 
 namespace DialogConsole.WebPages
@@ -48,28 +49,28 @@ namespace DialogConsole.WebPages
             if (obj.Speed != null && float.Parse(obj.Speed) != vh.Speed)
             {
                 var changeto = float.Parse(obj.Speed);
-                Console.WriteLine("{0} is changing speed from {1} to {2}", vh.Name, vh.Speed, changeto);
+                Logger.WriteLineAsWebInfo("{0} is changing speed from {1} to {2}", vh.Name, vh.Speed, changeto);
 
                 vh.Speed = changeto;
             }
             if (obj.Accelation != null && float.Parse(obj.Accelation) != vh.Accelation)
             {
                 var changeto = float.Parse(obj.Accelation);
-                Console.WriteLine("{0} is changing accelation from {1} to {2}", vh.Name, vh.Accelation, changeto);
+                Logger.WriteLineAsWebInfo("{0} is changing accelation from {1} to {2}", vh.Name, vh.Accelation, changeto);
 
                 vh.Accelation = changeto;
             }
 
             if (obj.RouteName != null && obj.RouteName != vh.AssociatedRoute.RouteOrder.Name)
             {
-                Console.WriteLine("{0} is changing route from {1} to {2}", vh.Name, vh.AssociatedRoute.RouteOrder.Name,
+                Logger.WriteLineAsWebInfo("{0} is changing route from {1} to {2}", vh.Name, vh.AssociatedRoute.RouteOrder.Name,
                                   obj.RouteName);
                 vh.ChangeRoute(obj.RouteName, vh.CurrentBlock.Name);
 
             }
             if (obj.CurrentBlockName != null && obj.CurrentBlockName != vh.CurrentBlock.Name && vh.AssociatedRoute.RouteOrder.Units.Any(u => u.ControlBlock.Name == obj.CurrentBlockName))
             {
-                Console.WriteLine("{0} is changing position from {1} to {2}", vh.Name, vh.CurrentBlock.Name, obj.CurrentBlockName);
+                Logger.WriteLineAsWebInfo("{0} is changing position from {1} to {2}", vh.Name, vh.CurrentBlock.Name, obj.CurrentBlockName);
                 vh.ChangeRoute(vh.AssociatedRoute.RouteOrder.Name, obj.CurrentBlockName);
             }
             if (obj.Timeout != null)
@@ -78,7 +79,7 @@ namespace DialogConsole.WebPages
             }
             //if (obj.Halts != null)
             //{
-            //    Console.WriteLine("{0} is changing halts set to {1}", vh.Name,
+            //    Logger.WriteLineAsWebInfo("{0} is changing halts set to {1}", vh.Name,
             //                      obj.Halts.Aggregate("", (ag, s) => ag + (s + ", ")));
             //    var halts = obj.Halts.Select(h => new Halt(vh.Sheet.GetBlock(h)));
             //    vh.Halt.Clear();

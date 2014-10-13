@@ -25,8 +25,7 @@ namespace DialogConsole.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\Administrator\\Desktop\\DropboxPortableAHK\\DropboxPortableAHK\\DropboxProg\\" +
-            "console_page\\2014signal_blocks.yaml")]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\Administrator\\ProgSync\\console_page\\2014signal_blocks.yaml")]
         public string SheetPath {
             get {
                 return ((string)(this["SheetPath"]));
@@ -86,8 +85,7 @@ namespace DialogConsole.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\Administrator\\Desktop\\DropboxPortableAHK\\DropboxPortableAHK\\DropboxProg\\" +
-            "console_page\\2014signal_routes.yaml")]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\Administrator\\ProgSync\\console_page\\2014signal_routes.yaml")]
         public string RoutePath {
             get {
                 return ((string)(this["RoutePath"]));
@@ -99,8 +97,7 @@ namespace DialogConsole.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\Administrator\\Desktop\\DropboxPortableAHK\\DropboxPortableAHK\\DropboxProg\\" +
-            "console_page\\2014signal_illuminate.yaml")]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\Administrator\\ProgSync\\console_page\\2014signal_illuminate.yaml")]
         public string IlluminationPath {
             get {
                 return ((string)(this["IlluminationPath"]));
@@ -124,8 +121,7 @@ namespace DialogConsole.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\Administrator\\Desktop\\DropboxPortableAHK\\DropboxPortableAHK\\DropboxProg\\" +
-            "console_page\\test_vehicles.yaml")]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\Administrator\\ProgSync\\console_page\\test_vehicles.yaml")]
         public string VehicleGroupPath {
             get {
                 return ((string)(this["VehicleGroupPath"]));
