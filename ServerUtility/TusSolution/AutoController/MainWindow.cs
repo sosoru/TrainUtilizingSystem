@@ -239,12 +239,12 @@ namespace AutoController
             this.RefreshStartCheckBox.Checked = false;
             using (var fs = new FileStream(this.openFileDialog1.FileName, FileMode.Open))
             {
-                var unten = ser.ReadObject(fs) as Unten;
-                if (unten == null) return;
+                var unten_ = ser.ReadObject(fs) as Unten;
+                if (unten_ == null) return;
 
                 this.unten.AbortWatching();
-                this.unten.PhaseBatch = unten.PhaseBatch;
-                this.unten.VehicleName = unten.VehicleName;
+                this.unten.PhaseBatch = unten_.PhaseBatch;
+                this.unten.VehicleName = unten_.VehicleName;
                 this.unten.InitializeWatching();
                 this.unten.AbortWatching();
 

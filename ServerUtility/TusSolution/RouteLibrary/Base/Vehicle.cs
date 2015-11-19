@@ -193,8 +193,7 @@ namespace Tus.TransControl.Base
             set { speedfactry.RawSpeed = value;
               stopSpeedfactory.RawSpeed = StopThreshold;
             }
-<<<<<<< HEAD
-=======
+
         }
 
         [DataMember]
@@ -207,22 +206,16 @@ namespace Tus.TransControl.Base
                 else return speedfactry.CurrentSpeed;
             }
             set { throw new NotImplementedException(); }
->>>>>>> c25b11619efab8dcba4bcf1bb07df7dc075f702d
         }
 
         [DataMember]
         public float Accelation
         {
             get { return speedfactry.Accelation; }
-<<<<<<< HEAD
-            set { speedfactry.Accelation = value;
-            stopSpeedfactory.Accelation = value * 2.0f;
-=======
             set
             {
                 if (speedfactry != null) speedfactry.Accelation = value;
                 if (stopSpeedfactory != null) stopSpeedfactory.Accelation = value * 2.0f;
->>>>>>> c25b11619efab8dcba4bcf1bb07df7dc075f702d
             }
         }
 
