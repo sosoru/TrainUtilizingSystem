@@ -15,7 +15,8 @@
     <AssemblyName>EthernetBridgePp</AssemblyName>
     <Name>EthernetBridgePp</Name>
     <RootNamespace>EthernetBridgePp</RootNamespace>
-    <ToolchainFlavour>Native</ToolchainFlavour>
+    <ToolchainFlavour>
+    </ToolchainFlavour>
     <AsfVersion>2.11.1</AsfVersion>
     <avrtoolinterface>ISP</avrtoolinterface>
     <avrtool>com.atmel.avrdbg.tool.jtagicemkii</avrtool>

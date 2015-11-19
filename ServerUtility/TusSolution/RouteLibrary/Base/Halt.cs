@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Runtime.Serialization;
 
 namespace Tus.TransControl.Base
@@ -6,6 +7,7 @@ namespace Tus.TransControl.Base
     public enum SensingMethod
     {
         IRComming,
+        None,
     }
 
     [DataContract]
@@ -19,7 +21,6 @@ namespace Tus.TransControl.Base
         public Halt(Block blk)
         {
             this.HaltBlock = blk;
-            this.Method = SensingMethod.IRComming;
         }
         public Halt() { }
 
@@ -32,11 +33,22 @@ namespace Tus.TransControl.Base
             return sens.Devices.Any(s => s.IsDetected);
         }
 
+        private bool _haltstate = false;
         public virtual bool HaltState
         {
             get
             {
-                return IRSensingHalt();
+                if (this.Method == SensingMethod.IRComming)
+                    return IRSensingHalt();
+                else
+                    return _haltstate;
+            }
+            set
+            {
+                if (this.Method == SensingMethod.IRComming)
+                    throw new InvalidOperationException("cannot set haltstate if method is IRcomming");
+                else
+                    _haltstate = value;
             }
         }
     }

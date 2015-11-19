@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ModelFragment xmlns="http://schemas.microsoft.com/LightSwitch/2010/xaml/model">
+  <ServiceApplication
+    Name="LightSwitchServiceApplication"
+    Version="1.0.0.0">
+    <ServiceApplication.Attributes>
+      <ModuleNamespace
+        Namespace="LightSwitchApplication" />
+    </ServiceApplication.Attributes>
+  </ServiceApplication>
+  <DataService
+    DataProvider="EntityFrameworkDataProvider"
+    EntityContainer="LightSwitchCommonModule:ApplicationData"
+    Name="ApplicationDataMapping">
+    <AssociationSetMapping
+      AssociationSet="PriceInfo_StoreInfoSet">
+      <AssociationSetMapping.Attributes>
+        <SsdlAssociationSet
+          Name="PriceInfo_StoreInfoSet" />
+        <SsdlAssociationSetEnd
+          End="LightSwitchCommonModule:ApplicationData/Members[PriceInfo_StoreInfoSet]/Members[PriceInfo]">
+          <SsdlAssociationSetEnd.Attributes>
+            <SsdlPropertyRef
+              Name="PriceInfo_StoreInfo" />
+          </SsdlAssociationSetEnd.Attributes>
+        </SsdlAssociationSetEnd>
+        <SsdlAssociationSetEnd
+          End="LightSwitchCommonModule:ApplicationData/Members[PriceInfo_StoreInfoSet]/Members[StoreInfo]">
+          <SsdlAssociationSetEnd.Attributes>
+            <SsdlPropertyRef
+              Name="Id" />
+          </SsdlAssociationSetEnd.Attributes>
+        </SsdlAssociationSetEnd>
+      </AssociationSetMapping.Attributes>
+    </AssociationSetMapping>
+    <EntitySetMapping
+      EntitySet="PriceInfoSet">
+      <EntitySetMapping.Attributes>
+        <SsdlForeignKeyProperty
+          Name="PriceInfo_StoreInfo"
+          Nullable="False"
+          Type="int" />
+        <SsdlForeignKeyProperty
+          Name="AvailableParts_PriceInfo"
+          Nullable="False"
+          Type="int" />
+      </EntitySetMapping.Attributes>
+    </EntitySetMapping>
+    <AssociationSetMapping
+      AssociationSet="AvailableParts_PriceInfoSet">
+      <AssociationSetMapping.Attributes>
+        <SsdlAssociationSet
+          Name="AvailableParts_PriceInfoSet" />
+        <SsdlAssociationSetEnd
+          End="LightSwitchCommonModule:ApplicationData/Members[AvailableParts_PriceInfoSet]/Members[AvailableParts]">
+          <SsdlAssociationSetEnd.Attributes>
+            <SsdlPropertyRef
+              Name="Id" />
+          </SsdlAssociationSetEnd.Attributes>
+        </SsdlAssociationSetEnd>
+        <SsdlAssociationSetEnd
+          End="LightSwitchCommonModule:ApplicationData/Members[AvailableParts_PriceInfoSet]/Members[PriceInfo]">
+          <SsdlAssociationSetEnd.Attributes>
+            <SsdlPropertyRef
+              Name="AvailableParts_PriceInfo" />
+          </SsdlAssociationSetEnd.Attributes>
+        </SsdlAssociationSetEnd>
+      </AssociationSetMapping.Attributes>
+    </AssociationSetMapping>
+    <EntitySetMapping
+      EntitySet="NeededPartsSet">
+      <EntitySetMapping.Attributes>
+        <SsdlForeignKeyProperty
+          Name="NeededParts_AvailableParts"
+          Nullable="True"
+          Type="int" />
+      </EntitySetMapping.Attributes>
+    </EntitySetMapping>
+    <AssociationSetMapping
+      AssociationSet="NeededBoards_NeededPartsSet">
+      <AssociationSetMapping.Attributes>
+        <SsdlAssociationSet
+          Name="NeededBoards_NeededPartsSet" />
+        <SsdlAssociationSetEnd
+          End="LightSwitchCommonModule:ApplicationData/Members[NeededBoards_NeededPartsSet]/Members[NeededBoards]">
+          <SsdlAssociationSetEnd.Attributes>
+            <SsdlPropertyRef
+              Name="NeededBoards_NeededParts" />
+          </SsdlAssociationSetEnd.Attributes>
+        </SsdlAssociationSetEnd>
+        <SsdlAssociationSetEnd
+          End="LightSwitchCommonModule:ApplicationData/Members[NeededBoards_NeededPartsSet]/Members[NeededParts]">
+          <SsdlAssociationSetEnd.Attributes>
+            <SsdlPropertyRef
+              Name="Id" />
+          </SsdlAssociationSetEnd.Attributes>
+        </SsdlAssociationSetEnd>
+      </AssociationSetMapping.Attributes>
+    </AssociationSetMapping>
+    <EntitySetMapping
+      EntitySet="NeededBoardsSet">
+      <EntitySetMapping.Attributes>
+        <SsdlForeignKeyProperty
+          Name="NeededBoards_NeededParts"
+          Nullable="True"
+          Type="int" />
+      </EntitySetMapping.Attributes>
+    </EntitySetMapping>
+    <EntitySetMapping
+      EntitySet="AvailablePartsSet" />
+    <AssociationSetMapping
+      AssociationSet="NeededParts_AvailablePartsSet">
+      <AssociationSetMapping.Attributes>
+        <SsdlAssociationSet
+          Name="NeededParts_AvailablePartsSet" />
+        <SsdlAssociationSetEnd
+          End="LightSwitchCommonModule:ApplicationData/Members[NeededParts_AvailablePartsSet]/Members[NeededParts]">
+          <SsdlAssociationSetEnd.Attributes>
+            <SsdlPropertyRef
+              Name="NeededParts_AvailableParts" />
+          </SsdlAssociationSetEnd.Attributes>
+        </SsdlAssociationSetEnd>
+        <SsdlAssociationSetEnd
+          End="LightSwitchCommonModule:ApplicationData/Members[NeededParts_AvailablePartsSet]/Members[AvailableParts]">
+          <SsdlAssociationSetEnd.Attributes>
+            <SsdlPropertyRef
+              Name="Id" />
+          </SsdlAssociationSetEnd.Attributes>
+        </SsdlAssociationSetEnd>
+      </AssociationSetMapping.Attributes>
+    </AssociationSetMapping>
+  </DataService>
+</ModelFragment>

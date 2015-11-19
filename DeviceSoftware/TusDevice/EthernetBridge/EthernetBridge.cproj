@@ -53,7 +53,8 @@
       </ToolOptions>
     </com_atmel_avrdbg_tool_jtagicemkii>
     <ToolchainName>com.Atmel.AVRGCC8.C</ToolchainName>
-    <ToolchainFlavour>Native</ToolchainFlavour>
+    <ToolchainFlavour>
+    </ToolchainFlavour>
     <KeepTimersRunning>true</KeepTimersRunning>
     <OverrideVtor>false</OverrideVtor>
     <CacheFlash>true</CacheFlash>

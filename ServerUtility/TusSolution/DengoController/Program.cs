@@ -71,7 +71,7 @@ namespace DengoController
             return result;
         }
 
-        private static IDengoController cnt = new DengoController();
+        private static IDengoController cnt;
         private static double infl = 0;
         private static double before_infl = infl + 1;
         private static double spdmax = 250;
@@ -121,6 +121,8 @@ namespace DengoController
 
         private static void Main(string[] args)
         {
+            cnt = new DengoController();
+
             if (!InputVehicles())
                 return;
 

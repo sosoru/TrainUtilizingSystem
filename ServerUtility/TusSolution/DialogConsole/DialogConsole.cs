@@ -43,17 +43,18 @@ namespace DialogConsole
 
         private static void Main(string[] args)
         {
+            // DIコンテナの初期化
+            var container = new DialogConsoleContainer();
+            Lazy<DialogConsoleClass> dialog = container.GetExport<DialogConsoleClass>();
+
             // 画面サイズの取得
             var scrsize = Screen.PrimaryScreen.Bounds;
+            scrsize.Height = scrsize.Height - 30;
 
             // コンソールウィンドウのサイズを指定
             Console.WindowWidth = Console.LargestWindowWidth;
             Console.WindowHeight = Console.LargestWindowHeight;
             MoveWindow(Process.GetCurrentProcess().MainWindowHandle, 0, 0, scrsize.Width/2, scrsize.Height, 1);
-
-            // DIコンテナの初期化
-            var container = new DialogConsoleContainer();
-            Lazy<DialogConsoleClass> dialog = container.GetExport<DialogConsoleClass>();
 
             // コマンドループの開始
             dialog.Value.Loop();
@@ -180,18 +181,13 @@ namespace DialogConsole
             Param.SendingPacketPipeline =
                 Observable.Defer(() => Observable.Start(Param.UsingLayout.Sheet.Server.SendAll));
             Param.SendingPacketPipeline
-                 .Repeat().Delay(TimeSpan.FromMilliseconds(10))
+                 .Repeat().Delay(TimeSpan.FromMilliseconds(250))
                  .Subscribe();
 
             // LED系デバイスの更新．1秒おきに同期
             Observable.Timer(DateTimeOffset.MinValue, TimeSpan.FromMilliseconds(1000))
                       .SelectMany(Observable.Defer(() => Observable.Start(Param.UsingLayout.Illumination.SyncLedDuty)))
                       .Subscribe();
-
-            // Switchデバイスの更新，1秒おきに同期
-            Observable.Timer(DateTimeOffset.MinValue, TimeSpan.FromMilliseconds(1000))
-                 .SelectMany(Observable.Defer(() => Observable.Start(this.Param.UsingLayout.Sheet.SyncSwitches)))
-                 .Subscribe();
 
             // デバイスからのパケットを受信し，PacketServerにストア．20ミリ秒ごとに確認．
             IObservable<long> timer = Observable.Interval(TimeSpan.FromMilliseconds(20), Scheduler.Default);

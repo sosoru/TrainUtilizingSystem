@@ -14,7 +14,7 @@ using Tus.Diagnostics;
 
 namespace DialogConsole.Features.Base
 {
-    [FeatureMetadata("l", "Manage Loging Windows")]
+    [FeatureMetadata("l", "Manage Loging Windows", IsShown=false)]
     [Export(typeof(IFeature))]
     class LogingFeature
             : BaseFeature, IFeature
@@ -32,6 +32,8 @@ namespace DialogConsole.Features.Base
             Task.Run(new Action(pipeManageLoop));
 
             var scr = Screen.PrimaryScreen.Bounds;
+            scr.Height = scr.Height - 30;
+
             var xpos = scr.Width/2;
             var ypos = scr.Height/3;
             var width = scr.Width/2;

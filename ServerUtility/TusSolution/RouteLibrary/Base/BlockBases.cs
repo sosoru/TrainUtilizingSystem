@@ -156,5 +156,7 @@ namespace Tus.TransControl.Base
             // TODO: write your implementation of GetHashCode() here
             return this.Name.GetHashCode();
         }
+
+        public bool Haltable { get; set; }
     }
 }

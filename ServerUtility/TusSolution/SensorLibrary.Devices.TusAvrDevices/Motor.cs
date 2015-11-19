@@ -152,13 +152,16 @@ namespace Tus.Communication.Device.AvrComposed
             // Stateを送る条件：
             //  1，CurrentMemoryがUnknown（初期化）
             var exprinit = this.CurrentMemory == MotorMemoryStateEnum.Unknown;
+
             //  2，CurrentMemoryとReceivedMemoryの不一致(Waiting以外で)
             var exprrefresh = this.CurrentMemory != MotorMemoryStateEnum.Waiting
                 && this.CurrentMemory != this.ReceivedMemory;
+
             //  3，CurrentMemoryがWaitingStateで，ReceivedMemoryがMotorAfterWaiting||Waitingでない場合
             var exprwaiting = this.CurrentMemory == MotorMemoryStateEnum.Waiting
                 && this.ReceivedMemory != this.ModeAfterWaiting
                 && this.ReceivedMemory != MotorMemoryStateEnum.Waiting;
+
             if (exprinit|| exprrefresh|| exprwaiting)
             {
                 // send packet changing memory

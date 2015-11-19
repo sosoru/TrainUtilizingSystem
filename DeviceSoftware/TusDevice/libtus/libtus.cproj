@@ -15,7 +15,8 @@
     <Name>libtus</Name>
     <RootNamespace>libtus</RootNamespace>
     <ToolchainName>com.Atmel.AVRGCC8.C</ToolchainName>
-    <ToolchainFlavour>Native</ToolchainFlavour>
+    <ToolchainFlavour>
+    </ToolchainFlavour>
     <avrtool />
     <AsfVersion>2.11.1</AsfVersion>
     <avrtoolinterface />

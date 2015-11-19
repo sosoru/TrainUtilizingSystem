@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace LogingConsole
 {
     class Program
-    {      
+    {
         //        BOOL MoveWindow(
         //            HWND hWnd,      // ウィンドウのハンドル
         //            int X,          // 横方向の位置
@@ -39,7 +39,6 @@ namespace LogingConsole
             Console.Title = string.Format("{0} - {1}", "Logger", filter == "" ? "all" : filter);
             Console.WindowHeight = Console.LargestWindowHeight;
             Console.WindowWidth = Console.LargestWindowWidth;
-            MoveWindow(Process.GetCurrentProcess().MainWindowHandle, scr[0], scr[1], scr[2], scr[3], 1);
             try
             {
                 using (var st = new NamedPipeClientStream(".", pipename, PipeDirection.In))
@@ -47,6 +46,7 @@ namespace LogingConsole
                 {
                     st.Connect();
                     Console.WriteLine("pipe connected");
+                    MoveWindow(Process.GetCurrentProcess().MainWindowHandle, scr[0], scr[1], scr[2], scr[3], 1);
                     while (true)
                     {
                         string temp;

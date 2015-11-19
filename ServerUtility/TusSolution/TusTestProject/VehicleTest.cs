@@ -101,6 +101,26 @@ namespace TestProject
             }
 
         }
+        [TestMethod]
+        public void DeserializeVehicleTest()
+        {
+            var rt = GetRouteOrderFirst(sheet);
+
+            var v = new Vehicle(sheet, rt);
+
+            v.Run(0.5f, sheet.GetBlock("AT2"));
+
+            var cnt = new DataContractJsonSerializer(typeof(Vehicle[]), new[] { typeof(Switch), typeof(UsartSensor), typeof(Motor), typeof(MemoryState) });
+            var deserializedcnt = new DataContractJsonSerializer(typeof(Tus.AutoController.Deserialized.DeserializedVehicle[]));
+
+            using (var ms = new MemoryStream())
+            {
+                cnt.WriteObject(ms, new[] { v, v });
+                ms.Seek(0, SeekOrigin.Begin);
+
+                var obj = deserializedcnt.ReadObject(ms);
+            }
+        }
 
         [TestMethod]
         public void PrintRouteString()

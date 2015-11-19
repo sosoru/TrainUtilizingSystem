@@ -101,14 +101,14 @@ void device_init()
 	PORT_DATA = led_signal_buffer;
 	PORT_CLK = 1<<2;
 	
-	APPLY_TO_LED(3,0);
-	APPLY_TO_LED(3,1);
+	//APPLY_TO_LED(3,0);
+	//APPLY_TO_LED(3,1);
 	APPLY_TO_LED(3,2);
 	APPLY_TO_LED(3,3);
 	APPLY_TO_LED(3,4);
 	APPLY_TO_LED(3,5);
-	//APPLY_TO_LED(3,6);
-	//APPLY_TO_LED(3,7);
+	APPLY_TO_LED(3,6);
+	APPLY_TO_LED(3,7);
 	PORT_DATA = led_signal_buffer;
 	PORT_CLK = 1<<3;
 	PORT_CLK = 0;

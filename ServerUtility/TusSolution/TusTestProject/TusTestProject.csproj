@@ -79,6 +79,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="AutoControllerUnitTest.cs" />
     <Compile Include="BlockSheetTest.cs" />
     <Compile Include="BlockTest.cs" />
     <Compile Include="ChunckedStreamTest.cs" />
@@ -171,6 +172,10 @@
     <Content Include="TestProject.csproj.user" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AutoController\AutoController.csproj">
+      <Project>{0b599869-8f86-4fd3-93a0-29a95721bb04}</Project>
+      <Name>AutoController</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DialogConsole\DialogConsole.csproj">
       <Project>{f2232bf9-17e6-4641-8326-d8b7bd90a1e9}</Project>
       <Name>DialogConsole</Name>

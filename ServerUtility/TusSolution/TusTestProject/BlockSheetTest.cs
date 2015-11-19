@@ -241,7 +241,7 @@ namespace TestProject
         //    // 2: AT1 leaves and AT2 is detected
         //    sht.GetBlock("AT1").Detector = mockfalse.Object;
         //    sht.GetBlock("AT2").Detector = mocktrue.Object;
-        //    vehicles = sht.Vehicles.ToArray();
+        //    vehicles = sht.VehiclesStatus.ToArray();
 
         //    Assert.IsTrue(vehicles.Count() == 1);
         //    //Assert.IsTrue(vehicles.First().CurrentBlock == sht.GetBlock("AT2"));

@@ -38,7 +38,7 @@ namespace Tus.TransControl.Base
                     //if (b == Blocks.First())
                     //    yield return b; // stop at entrance of the blocks this class govern
 
-                    if (b.HasSensor)
+                    if (b.HasSensor || b.info.Haltable)
                         yield return b; // stop by a IR sensor
                 }
             }
@@ -730,6 +730,22 @@ namespace Tus.TransControl.Base
             //while (RouteOrder.IsLeftSectionFirst)
             //    this.ReleaseLastUnit();
             throw new NotImplementedException();
+        }
+
+        public IEnumerable<ControlUnitContainer> CalcBlocksAllocated(Block headblock, int len)
+        {
+            if (len <= 0)
+                throw new ArgumentOutOfRangeException("len must be greater than 0");
+
+            ControlUnit unit = RouteOrder.SearchUnit(headblock);
+            ControlUnitContainer container = RouteOrder.CreateContainer(unit);
+
+            //get tail
+            ControlUnitContainer tail = container;
+            if (len > 1)
+                tail = container.GetNeighbor(-(len - 1));
+
+            return this.RouteOrder.Enumerate(tail.Unit).Take(len);         
         }
 
         public void AllocateTrain(Block headblock, int len)

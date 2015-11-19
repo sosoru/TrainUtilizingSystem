@@ -121,7 +121,7 @@ namespace Tus.TransControl.Base
             var ob = blocks
                 .SelectMany(b => b.Effectors)
                    .Where(e => e.IsNeededExecution)
-                 .GroupBy(e => 0)//(e is SwitchEffector) ? 0 : 1)
+                 .GroupBy(e => (e is SwitchEffector) ? 0 : 1)
                  .OrderBy(g => g.Key);
 
             return ob.Select(g => (IEnumerable<IDeviceEffectorAlias>)g.ToArray()).ToArray();
@@ -152,13 +152,21 @@ namespace Tus.TransControl.Base
                                                     {
                                                         lock (b.lock_islocked)
                                                         {
-                                                            return !b.IsLocked && b.HasMotor;
+                                                            return !b.IsLocked && (b.HasMotor || b.HasSwitch);
                                                         }
                                                     });
             foreach (var b in blocks)
             {
-                b.MotorEffector.SetNoEffectMode();
-                b.MotorEffector.ExecuteCommand();
+                if (b.HasMotor)
+                {
+                    b.MotorEffector.SetNoEffectMode();
+                    b.MotorEffector.ExecuteCommand();
+                }
+                if (b.HasSwitch)
+                {
+                    b.SwitchEffector.SetAnyState();
+                    b.SwitchEffector.ExecuteCommand();
+                }
             }
         }
 
@@ -171,6 +179,11 @@ namespace Tus.TransControl.Base
                                     .SelectMany(b => b.SwitchEffector.Devices);
                 return devs;
             }
+        }
+
+        public IEnumerable<Motor> AllMotors
+        {
+            get { return this.InnerBlocks.Where(b => b.HasMotor).SelectMany(b => b.MotorEffector.Devices); }
         }
 
         public void SyncSwitches()
