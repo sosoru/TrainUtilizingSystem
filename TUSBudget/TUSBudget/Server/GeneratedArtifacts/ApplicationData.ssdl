@@ -35,6 +35,7 @@
     <Property Name="Device" Type="nvarchar" Nullable="false" MaxLength="255" />
     <Property Name="Parts" Type="nvarchar" Nullable="false" MaxLength="255" />
     <Property Name="Qty" Type="int" Nullable="false" />
+    <Property Name="RowVersion" Type="rowversion" Nullable="false" StoreGeneratedPattern="Computed" />
     <Property Name="NeededParts_AvailableParts" Type="int" />
   </EntityType>
   <EntityType Name="AvailableParts">
@@ -49,6 +50,7 @@
     <Property Name="PartsUri" Type="nvarchar" Nullable="false" MaxLength="255" />
     <Property Name="PartsImageUri" Type="nvarchar" Nullable="false" MaxLength="255" />
     <Property Name="Stock" Type="int" Nullable="false" />
+    <Property Name="RowVersion" Type="rowversion" Nullable="false" StoreGeneratedPattern="Computed" />
   </EntityType>
   <EntityType Name="PriceInfo">
     <Key>
@@ -58,6 +60,7 @@
     <Property Name="Unit" Type="nvarchar" Nullable="false" MaxLength="255" />
     <Property Name="Price" Type="int" Nullable="false" />
     <Property Name="Qty" Type="int" Nullable="false" />
+    <Property Name="RowVersion" Type="rowversion" Nullable="false" StoreGeneratedPattern="Computed" />
     <Property Name="PriceInfo_StoreInfo" Type="int" Nullable="false" />
     <Property Name="AvailableParts_PriceInfo" Type="int" Nullable="false" />
   </EntityType>
@@ -68,6 +71,7 @@
     <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
     <Property Name="StoreName" Type="nvarchar" Nullable="false" MaxLength="255" />
     <Property Name="StoreUri" Type="nvarchar" Nullable="false" MaxLength="255" />
+    <Property Name="RowVersion" Type="rowversion" Nullable="false" StoreGeneratedPattern="Computed" />
   </EntityType>
   <EntityType Name="NeededBoards">
     <Key>
@@ -76,6 +80,7 @@
     <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
     <Property Name="BoardName" Type="nvarchar" Nullable="false" MaxLength="255" />
     <Property Name="Count" Type="int" Nullable="false" />
+    <Property Name="RowVersion" Type="rowversion" Nullable="false" StoreGeneratedPattern="Computed" />
     <Property Name="NeededBoards_NeededParts" Type="int" />
   </EntityType>
   <EntityType Name="Table1Item">
@@ -83,12 +88,14 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="RowVersion" Type="rowversion" Nullable="false" StoreGeneratedPattern="Computed" />
   </EntityType>
   <EntityType Name="Table2Item">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="RowVersion" Type="rowversion" Nullable="false" StoreGeneratedPattern="Computed" />
   </EntityType>
   <Association Name="PriceInfo_StoreInfo">
     <End Role="StoreInfo" Type="ApplicationDataStore.StoreInfo" Multiplicity="1">

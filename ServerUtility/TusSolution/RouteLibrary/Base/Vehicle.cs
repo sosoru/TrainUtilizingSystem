@@ -134,6 +134,10 @@ namespace Tus.TransControl.Base
             LastVehicleID = 0;
         }
 
+        public Vehicle() // for test method
+        {
+        }
+
         public Vehicle(BlockSheet sht, RouteOrder rt)
         {
             VehicleID = LastVehicleID++;
@@ -163,7 +167,7 @@ namespace Tus.TransControl.Base
         public IList<RouteOrder> AvailableRoutes { get; set; }
 
         [DataMember]
-        public Block CurrentBlock
+        public virtual Block CurrentBlock
         {
             get
             {
@@ -189,14 +193,36 @@ namespace Tus.TransControl.Base
             set { speedfactry.RawSpeed = value;
               stopSpeedfactory.RawSpeed = StopThreshold;
             }
+<<<<<<< HEAD
+=======
+        }
+
+        [DataMember]
+        public virtual float CurrentSpeed
+        {
+            get
+            {
+                if (Distance < 0) return 0.0f; // distance property is not prepared
+                else if (Distance == 1) return stopSpeedfactory.CurrentSpeed;
+                else return speedfactry.CurrentSpeed;
+            }
+            set { throw new NotImplementedException(); }
+>>>>>>> c25b11619efab8dcba4bcf1bb07df7dc075f702d
         }
 
         [DataMember]
         public float Accelation
         {
             get { return speedfactry.Accelation; }
+<<<<<<< HEAD
             set { speedfactry.Accelation = value;
             stopSpeedfactory.Accelation = value * 2.0f;
+=======
+            set
+            {
+                if (speedfactry != null) speedfactry.Accelation = value;
+                if (stopSpeedfactory != null) stopSpeedfactory.Accelation = value * 2.0f;
+>>>>>>> c25b11619efab8dcba4bcf1bb07df7dc075f702d
             }
         }
 
@@ -250,7 +276,7 @@ namespace Tus.TransControl.Base
         }
 
         [DataMember]
-        public int Distance
+        public virtual int Distance
         {
             get
             {
@@ -758,12 +784,16 @@ namespace Tus.TransControl.Base
 
         public static bool operator ==(Vehicle A, Vehicle B)
         {
-            return A.Equals(B);
+            var a = object.Equals(A, null);
+            var b = object.Equals(B, null);
+            if (a && b) return true;
+            else if (!a && !b) return  A.Equals(B);
+            else return false; // A == null || B == null
         }
 
         public static bool operator !=(Vehicle A, Vehicle B)
         {
-            return !(A.Equals(B));
+            return !(A == B);
         }
 
         // override object.GetHashCode

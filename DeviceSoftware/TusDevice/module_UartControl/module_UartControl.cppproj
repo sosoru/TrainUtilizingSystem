@@ -15,7 +15,8 @@
     <AssemblyName>module_UartControl</AssemblyName>
     <Name>module_UartControl</Name>
     <RootNamespace>module_UartControl</RootNamespace>
-    <ToolchainFlavour>Native</ToolchainFlavour>
+    <ToolchainFlavour>
+    </ToolchainFlavour>
     <AsfVersion>2.11.1</AsfVersion>
     <avrtool>com.atmel.avrdbg.tool.jtagicemkii</avrtool>
     <avrtoolinterface>JTAG</avrtoolinterface>

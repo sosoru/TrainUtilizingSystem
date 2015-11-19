@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="AppDatabaseDataStore" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+  <EntityContainer Name="AppDatabaseDataStore">
+    <EntitySet Name="AvailablePartsSet" EntityType="AppDatabaseDataStore.AvailablePartsSetItem" store:Type="Tables" Schema="dbo" Table="AvailablePartsSet" />
+    <EntitySet Name="NeededBoardsSet" EntityType="AppDatabaseDataStore.NeededBoardsSetItem" store:Type="Tables" Schema="dbo" Table="NeededBoardsSet" />
+    <EntitySet Name="NeededPartsSet" EntityType="AppDatabaseDataStore.NeededPartsSetItem" store:Type="Tables" Schema="dbo" Table="NeededPartsSet" />
+    <EntitySet Name="PriceInfoSet" EntityType="AppDatabaseDataStore.PriceInfoSetItem" store:Type="Tables" Schema="dbo" Table="PriceInfoSet" />
+    <EntitySet Name="StockSet" EntityType="AppDatabaseDataStore.StockSetItem" store:Type="Tables" Schema="dbo" Table="StockSet" />
+    <EntitySet Name="StoreInfoSet" EntityType="AppDatabaseDataStore.StoreInfoSetItem" store:Type="Tables" Schema="dbo" Table="StoreInfoSet" />
+    <AssociationSet Name="AvailableParts_PriceInfo1" Association="AppDatabaseDataStore.AvailableParts_PriceInfo1">
+      <End Role="AvailablePartsSet" EntitySet="AvailablePartsSet" />
+      <End Role="PriceInfoSet" EntitySet="PriceInfoSet" />
+    </AssociationSet>
+    <AssociationSet Name="NeededBoards_NeededParts1" Association="AppDatabaseDataStore.NeededBoards_NeededParts1">
+      <End Role="NeededPartsSet" EntitySet="NeededPartsSet" />
+      <End Role="NeededBoardsSet" EntitySet="NeededBoardsSet" />
+    </AssociationSet>
+    <AssociationSet Name="NeededParts_AvailableParts1" Association="AppDatabaseDataStore.NeededParts_AvailableParts1">
+      <End Role="AvailablePartsSet" EntitySet="AvailablePartsSet" />
+      <End Role="NeededPartsSet" EntitySet="NeededPartsSet" />
+    </AssociationSet>
+    <AssociationSet Name="PriceInfo_StoreInfo1" Association="AppDatabaseDataStore.PriceInfo_StoreInfo1">
+      <End Role="StoreInfoSet" EntitySet="StoreInfoSet" />
+      <End Role="PriceInfoSet" EntitySet="PriceInfoSet" />
+    </AssociationSet>
+    <AssociationSet Name="StockSet_AvailableParts" Association="AppDatabaseDataStore.StockSet_AvailableParts">
+      <End Role="AvailablePartsSet" EntitySet="AvailablePartsSet" />
+      <End Role="StockSet" EntitySet="StockSet" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="AvailablePartsSetItem">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Category" Type="nvarchar" Nullable="false" MaxLength="255" />
+    <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="255" />
+    <Property Name="LongName" Type="nvarchar" MaxLength="255" />
+    <Property Name="Comment" Type="nvarchar" Nullable="false" MaxLength="255" />
+    <Property Name="PartsUri" Type="nvarchar" Nullable="false" MaxLength="255" />
+    <Property Name="PartsImageUri" Type="nvarchar" Nullable="false" MaxLength="255" />
+    <Property Name="Stock" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="NeededBoardsSetItem">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="BoardName" Type="nvarchar" Nullable="false" MaxLength="255" />
+    <Property Name="Count" Type="int" Nullable="false" />
+    <Property Name="NeededBoards_NeededParts" Type="int" />
+  </EntityType>
+  <EntityType Name="NeededPartsSetItem">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Board" Type="nvarchar" Nullable="false" MaxLength="255" />
+    <Property Name="Value" Type="nvarchar" MaxLength="255" />
+    <Property Name="Device" Type="nvarchar" Nullable="false" MaxLength="255" />
+    <Property Name="Parts" Type="nvarchar" Nullable="false" MaxLength="255" />
+    <Property Name="Qty" Type="int" Nullable="false" />
+    <Property Name="NeededParts_AvailableParts" Type="int" />
+  </EntityType>
+  <EntityType Name="PriceInfoSetItem">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Unit" Type="nvarchar" Nullable="false" MaxLength="255" />
+    <Property Name="Price" Type="int" Nullable="false" />
+    <Property Name="Qty" Type="int" Nullable="false" />
+    <Property Name="AvailableParts_PriceInfo" Type="int" Nullable="false" />
+    <Property Name="PriceInfo_StoreInfo" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="StockSetItem">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="StackQty" Type="int" Nullable="false" />
+    <Property Name="StockSet_AvailableParts" Type="int" />
+  </EntityType>
+  <EntityType Name="StoreInfoSetItem">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="StoreName" Type="nvarchar" Nullable="false" MaxLength="255" />
+    <Property Name="StoreUri" Type="nvarchar" Nullable="false" MaxLength="255" />
+  </EntityType>
+  <Association Name="AvailableParts_PriceInfo1">
+    <End Role="AvailablePartsSet" Type="AppDatabaseDataStore.AvailablePartsSetItem" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="PriceInfoSet" Type="AppDatabaseDataStore.PriceInfoSetItem" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AvailablePartsSet">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PriceInfoSet">
+        <PropertyRef Name="AvailableParts_PriceInfo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="NeededBoards_NeededParts1">
+    <End Role="NeededPartsSet" Type="AppDatabaseDataStore.NeededPartsSetItem" Multiplicity="0..1" />
+    <End Role="NeededBoardsSet" Type="AppDatabaseDataStore.NeededBoardsSetItem" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="NeededPartsSet">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="NeededBoardsSet">
+        <PropertyRef Name="NeededBoards_NeededParts" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="NeededParts_AvailableParts1">
+    <End Role="AvailablePartsSet" Type="AppDatabaseDataStore.AvailablePartsSetItem" Multiplicity="0..1" />
+    <End Role="NeededPartsSet" Type="AppDatabaseDataStore.NeededPartsSetItem" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AvailablePartsSet">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="NeededPartsSet">
+        <PropertyRef Name="NeededParts_AvailableParts" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="PriceInfo_StoreInfo1">
+    <End Role="StoreInfoSet" Type="AppDatabaseDataStore.StoreInfoSetItem" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="PriceInfoSet" Type="AppDatabaseDataStore.PriceInfoSetItem" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="StoreInfoSet">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PriceInfoSet">
+        <PropertyRef Name="PriceInfo_StoreInfo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="StockSet_AvailableParts">
+    <End Role="AvailablePartsSet" Type="AppDatabaseDataStore.AvailablePartsSetItem" Multiplicity="0..1" />
+    <End Role="StockSet" Type="AppDatabaseDataStore.StockSetItem" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AvailablePartsSet">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="StockSet">
+        <PropertyRef Name="StockSet_AvailableParts" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

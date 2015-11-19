@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+  <EntityContainerMapping CdmEntityContainer="AppDatabaseDataObjectContext" StorageEntityContainer="AppDatabaseDataStore">
+    <EntitySetMapping Name="AvailablePartsSet">
+      <EntityTypeMapping TypeName="IsTypeOf(AppDatabaseData.AvailablePartsSetItem)">
+        <MappingFragment StoreEntitySet="AvailablePartsSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Category" ColumnName="Category" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="LongName" ColumnName="LongName" />
+          <ScalarProperty Name="Comment" ColumnName="Comment" />
+          <ScalarProperty Name="PartsUri" ColumnName="PartsUri" />
+          <ScalarProperty Name="PartsImageUri" ColumnName="PartsImageUri" />
+          <ScalarProperty Name="Stock" ColumnName="Stock" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="NeededBoardsSet">
+      <EntityTypeMapping TypeName="IsTypeOf(AppDatabaseData.NeededBoardsSetItem)">
+        <MappingFragment StoreEntitySet="NeededBoardsSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="BoardName" ColumnName="BoardName" />
+          <ScalarProperty Name="Count" ColumnName="Count" />
+          <ScalarProperty Name="NeededBoards_NeededParts" ColumnName="NeededBoards_NeededParts" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="NeededPartsSet">
+      <EntityTypeMapping TypeName="IsTypeOf(AppDatabaseData.NeededPartsSetItem)">
+        <MappingFragment StoreEntitySet="NeededPartsSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Board" ColumnName="Board" />
+          <ScalarProperty Name="Value" ColumnName="Value" />
+          <ScalarProperty Name="Device" ColumnName="Device" />
+          <ScalarProperty Name="Parts" ColumnName="Parts" />
+          <ScalarProperty Name="Qty" ColumnName="Qty" />
+          <ScalarProperty Name="NeededParts_AvailableParts" ColumnName="NeededParts_AvailableParts" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PriceInfoSet">
+      <EntityTypeMapping TypeName="IsTypeOf(AppDatabaseData.PriceInfoSetItem)">
+        <MappingFragment StoreEntitySet="PriceInfoSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Unit" ColumnName="Unit" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+          <ScalarProperty Name="Qty" ColumnName="Qty" />
+          <ScalarProperty Name="AvailableParts_PriceInfo" ColumnName="AvailableParts_PriceInfo" />
+          <ScalarProperty Name="PriceInfo_StoreInfo" ColumnName="PriceInfo_StoreInfo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="StockSet">
+      <EntityTypeMapping TypeName="IsTypeOf(AppDatabaseData.StockSetItem)">
+        <MappingFragment StoreEntitySet="StockSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="StackQty" ColumnName="StackQty" />
+          <ScalarProperty Name="StockSet_AvailableParts" ColumnName="StockSet_AvailableParts" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="StoreInfoSet">
+      <EntityTypeMapping TypeName="IsTypeOf(AppDatabaseData.StoreInfoSetItem)">
+        <MappingFragment StoreEntitySet="StoreInfoSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="StoreName" ColumnName="StoreName" />
+          <ScalarProperty Name="StoreUri" ColumnName="StoreUri" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

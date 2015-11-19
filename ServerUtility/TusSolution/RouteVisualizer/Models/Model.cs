@@ -19,7 +19,7 @@ namespace RouteVisualizer.Models
          *
          * Notificatorはイベント代替手段です。コードスニペット lnev でCLRイベントと同時に定義できます。
          *
-         * Model同士でNotificatorを使用した通知を行う場合はNotificatorHelper、
+         * MRouteVisualizer.RailViewodel同士でNotificatorを使用した通知を行う場合はNotificatorHelper、
          * ViewModelへNotificatorを使用した通知を行う場合はViewModelHelperを使用して受信側の登録をしてください。
          */
     }

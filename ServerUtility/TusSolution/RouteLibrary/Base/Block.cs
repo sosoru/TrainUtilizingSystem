@@ -67,7 +67,7 @@ namespace Tus.TransControl.Base
         public BlockInfo info { get; private set; }
 
         [DataMember]
-        public string Name { get; private set; }
+        public virtual string Name { get; private set; }
         public BlockSheet Sheet { get; private set; }
 
         public IList<IDeviceEffectorAlias> Effectors { get; set; }
@@ -78,11 +78,17 @@ namespace Tus.TransControl.Base
         {
             get
             {
+                if (this.Effectors == null) return new IDevice<IDeviceState<IPacketDeviceData>>[] { };
+
                 var dev = this.Effectors.SelectMany(e => e.Devices);
                 if (this.Detector != null)
                     dev = dev.Concat(this.Detector.Devices);
                 return dev.Distinct(d => d.DeviceID);
             }
+        }
+
+        public Block() // for test purpose
+        {
         }
 
         public Block(BlockInfo info, BlockSheet sheet)
