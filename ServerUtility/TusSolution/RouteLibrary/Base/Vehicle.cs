@@ -11,7 +11,7 @@ namespace Tus.TransControl.Base
     {
         private DateTime startedtime;
 
-        public float InitSpeed { get;  set; }
+        public float InitSpeed { get; set; }
         protected float TargetSpeed { get; private set; }
         public float Accelation { get; set; }
 
@@ -93,8 +93,8 @@ namespace Tus.TransControl.Base
                 ? MotorMemoryStateEnum.Locked
                 : MotorMemoryStateEnum.Controlling;
             bool detected = //!isearly // デッドタイムを越えた
-                // Waitingを命令しているけれども，受け取った状態は変更済み
-                //mtr.CurrentMemory == MotorMemoryStateEnum.Waiting &&
+                            // Waitingを命令しているけれども，受け取った状態は変更済み
+                            //mtr.CurrentMemory == MotorMemoryStateEnum.Waiting &&
                  mtr.ReceivedMemory == memtobechanged
                 && mtr.ReceivedMemory != MotorMemoryStateEnum.Unknown;
 
@@ -124,7 +124,8 @@ namespace Tus.TransControl.Base
         [IgnoreDataMember]
         private readonly SpeedFactory speedfactry = new SpeedFactory();
 
-        [IgnoreDataMember] private readonly SpeedFactory stopSpeedfactory = new SpeedFactory();
+        [IgnoreDataMember]
+        private readonly SpeedFactory stopSpeedfactory = new SpeedFactory();
 
         [DataMember]
         public float StopThreshold { get; set; }
@@ -150,7 +151,7 @@ namespace Tus.TransControl.Base
             Predicators = new List<IRouteLockPredicator>();
             Predicators.Add(new RouteLockPredicator());
 
-            Halt = this.AssociatedRoute.RouteOrder.Blocks.Where(b => b.info.Haltable).Select(b => new Halt() { HaltBlock = b, Method = SensingMethod.None,})
+            Halt = this.AssociatedRoute.RouteOrder.Blocks.Where(b => b.info.Haltable).Select(b => new Halt() { HaltBlock = b, Method = SensingMethod.None, })
                 .ToList();
         }
 
@@ -166,7 +167,6 @@ namespace Tus.TransControl.Base
         [DataMember]
         public IList<RouteOrder> AvailableRoutes { get; set; }
 
-        [DataMember]
         public virtual Block CurrentBlock
         {
             get
@@ -175,6 +175,13 @@ namespace Tus.TransControl.Base
                 if (unit != null) return unit.ControlBlock;
                 else return null;
             }
+            set { throw new NotImplementedException(); }
+        }
+
+        [DataMember]
+        public BlockSendingObject CurrentBlockObject
+        {
+            get { return this.CurrentBlock.ToSendingObject(); }
             set { throw new NotImplementedException(); }
         }
 
@@ -190,8 +197,10 @@ namespace Tus.TransControl.Base
         public float Speed
         {
             get { return speedfactry.RawSpeed; }
-            set { speedfactry.RawSpeed = value;
-              stopSpeedfactory.RawSpeed = StopThreshold;
+            set
+            {
+                speedfactry.RawSpeed = value;
+                stopSpeedfactory.RawSpeed = StopThreshold;
             }
 
         }
@@ -420,7 +429,7 @@ namespace Tus.TransControl.Base
             this.stopSpeedfactory.Accelation = this.Accelation * 2.0f;
             this.stopSpeedfactory.RawSpeed = StopThreshold;
             this.stopSpeedfactory.InitSpeed = this.speedfactry.CurrentSpeed;
-            Logger.WriteLineAsTransInfo("{0}({1}) : stop init={2} accr={3}",this.Name, this.ShownName, this.stopSpeedfactory.InitSpeed,
+            Logger.WriteLineAsTransInfo("{0}({1}) : stop init={2} accr={3}", this.Name, this.ShownName, this.stopSpeedfactory.InitSpeed,
                                         this.stopSpeedfactory.Accelation);
         }
 
@@ -428,7 +437,7 @@ namespace Tus.TransControl.Base
         {
             this.speedfactry.RawSpeed = this.speedfactry.RawSpeed;
             this.speedfactry.InitSpeed = this.stopSpeedfactory.CurrentSpeed;
-            Logger.WriteLineAsTransInfo("{0}({1}) : run init={2} accr={3}",  this.Name, this.ShownName, this.speedfactry.InitSpeed,
+            Logger.WriteLineAsTransInfo("{0}({1}) : run init={2} accr={3}", this.Name, this.ShownName, this.speedfactry.InitSpeed,
                                         this.speedfactry.Accelation);
         }
 
@@ -622,9 +631,9 @@ namespace Tus.TransControl.Base
                 (blk =>
                      {
                          var cmd = new CommandInfo
-                                       {
-                                           Route = AssociatedRoute,
-                                       };
+                         {
+                             Route = AssociatedRoute,
+                         };
                          ControlUnit[] lockedunits =
                              AssociatedRoute.LockedUnits.Except(new[] { AssociatedRoute.ReservedUnit.Unit }).ToArray();
                          Block waitblk = AssociatedRoute.ReservedUnit.Unit.ControlBlock;
@@ -664,9 +673,9 @@ namespace Tus.TransControl.Base
                 (blk =>
                      {
                          var cmd = new CommandInfo
-                                       {
-                                           Route = AssociatedRoute,
-                                       };
+                         {
+                             Route = AssociatedRoute,
+                         };
                          ControlUnit[] lockedunits = AssociatedRoute.LockedUnits.ToArray();
                          Block cntblk = (cmd.Route.RouteOrder.Polar == BlockPolar.Positive)
                                             ? lockedunits.First().ControlBlock
@@ -698,12 +707,12 @@ namespace Tus.TransControl.Base
                 (blk =>
                      {
                          var cmd = new CommandInfo
-                                       {
-                                           Route = AssociatedRoute,
-                                           Speed = cntspdfact(),
-                                           MotorMode =
+                         {
+                             Route = AssociatedRoute,
+                             Speed = cntspdfact(),
+                             MotorMode =
                                                MotorMemoryStateEnum.Controlling
-                                       };
+                         };
 
                          return cmd;
                      });
@@ -716,11 +725,11 @@ namespace Tus.TransControl.Base
                 (blk =>
                      {
                          var cmd = new CommandInfo
-                                       {
-                                           Route = AssociatedRoute,
-                                           Speed = cntspdfact(),
-                                           MotorMode = MotorMemoryStateEnum.Locked
-                                       };
+                         {
+                             Route = AssociatedRoute,
+                             Speed = cntspdfact(),
+                             MotorMode = MotorMemoryStateEnum.Locked
+                         };
                          return cmd;
                      }
                 );
@@ -780,7 +789,7 @@ namespace Tus.TransControl.Base
             var a = object.Equals(A, null);
             var b = object.Equals(B, null);
             if (a && b) return true;
-            else if (!a && !b) return  A.Equals(B);
+            else if (!a && !b) return A.Equals(B);
             else return false; // A == null || B == null
         }
 
@@ -810,4 +819,5 @@ namespace Tus.TransControl.Base
             return !blocks.Where(b => !this.AssociatedRoute.LockedBlocks.Contains(b)).Any(b => b.IsLocked);
         }
     }
+
 }

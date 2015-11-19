@@ -18,10 +18,16 @@ namespace Tus.TransControl.Base
             this.Blocks = new List<Block>();
         }
 
-        [DataMember]
         public IList<Block> Blocks { get; set; }
 
         [DataMember]
+        public BlockSendingObject[] BlocksObject
+        {
+            get { return this.Blocks.Select(s => s.ToSendingObject()).ToArray(); }
+            set { throw new InvalidOperationException(); }
+
+        }
+
         public Block ControlBlock
         {
             get { return Blocks.FirstOrDefault(b => b.HasMotor); }
@@ -29,6 +35,13 @@ namespace Tus.TransControl.Base
         }
 
         [DataMember]
+        public BlockSendingObject ControlBlockObject
+        {
+            get { return this.ControlBlock.ToSendingObject(); }
+            set { throw new InvalidOperationException(); }
+
+        }
+
         public IEnumerable<Block> HaltableBlocks
         {
             get
@@ -43,6 +56,16 @@ namespace Tus.TransControl.Base
                 }
             }
             set { throw new InvalidOperationException(); }
+        }
+        [DataMember]
+        public BlockSendingObject[] HaltableBlocksObject
+        {
+            get
+            {
+                return this.HaltableBlocks.Select(s => s.ToSendingObject()).ToArray();
+            }
+            set { throw new InvalidOperationException(); }
+
         }
 
         public bool CanBeAllocated
@@ -536,7 +559,6 @@ namespace Tus.TransControl.Base
             }
         }
 
-        [DataMember]
         public Queue<ControlUnit> PassedUnits { get; private set; } //locked units without reserved
 
         [DataMember]
@@ -546,7 +568,6 @@ namespace Tus.TransControl.Base
         [DataMember]
         public bool IsReserving { get; private set; }
 
-        [DataMember(IsRequired = false)]
         public ICollection<Block> LockedBlocks
         {
             get
@@ -556,6 +577,13 @@ namespace Tus.TransControl.Base
 
                 return LockedUnits.ToArray().SelectMany(u => u.Blocks).ToList();
             }
+        }
+
+        [DataMember(IsRequired = false)]
+        public BlockSendingObject[] LockedBlocksObject
+        {
+            get { return this.LockedBlocks.Select(s => s.ToSendingObject()).ToArray(); }
+            set { throw new NotImplementedException(); }
         }
 
         public ControlUnit CenterUnit
@@ -745,7 +773,7 @@ namespace Tus.TransControl.Base
             if (len > 1)
                 tail = container.GetNeighbor(-(len - 1));
 
-            return this.RouteOrder.Enumerate(tail.Unit).Take(len);         
+            return this.RouteOrder.Enumerate(tail.Unit).Take(len);
         }
 
         public void AllocateTrain(Block headblock, int len)
@@ -810,4 +838,5 @@ namespace Tus.TransControl.Base
             this.HeadContainer.Unit.Allocate();
         }
     }
+
 }

@@ -3,16 +3,37 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SensorViewLibrary", "..\SensorViewLibrary\SensorViewLibrary.csproj", "{67364770-A9D3-42C1-ADB9-DF160FB38A27}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SensorLivetView", "..\SensorLivetView\SensorLivetView.csproj", "{6DDB5211-7C3D-40EC-B826-B928AFFCD432}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6D232EBE-87CD-4D4E-BFDE-FB2402676506}"
 	ProjectSection(SolutionItems) = preProject
 		TusSolution.vsmdi = TusSolution.vsmdi
 		UnitTestSettings.testsettings = UnitTestSettings.testsettings
 		パフォーマンス1.psess = パフォーマンス1.psess
+		パフォーマンス2.psess = パフォーマンス2.psess
+		パフォーマンス3.psess = パフォーマンス3.psess
+		パフォーマンス4.psess = パフォーマンス4.psess
+		パフォーマンス6.psess = パフォーマンス6.psess
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{F47D62E0-33F8-4867-BA65-052C8BFFC1E0}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DevicePlugin", "DevicePlugin", "{46EF153C-B6DD-41C7-A904-BD5CF9051F13}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Communication", "Communication", "{D48E877B-B792-4A79-8888-A3588AECDB3A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Route", "Route", "{4AED919F-FD3A-4808-ACD4-7B7166976793}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Factory", "Factory", "{42DD2714-BB39-4FED-9704-2E0A160EDF80}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Diagnostics", "Diagnostics", "{AA196E14-EBE9-49FF-AC58-E19B33256B10}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SensorViewLibrary", "..\SensorViewLibrary\SensorViewLibrary.csproj", "{67364770-A9D3-42C1-ADB9-DF160FB38A27}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SensorLivetView", "..\SensorLivetView\SensorLivetView.csproj", "{6DDB5211-7C3D-40EC-B826-B928AFFCD432}"
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "TusServer", "TusServer\TusServer.pyproj", "{D58C2A9E-FB74-4D92-87A9-67E47AEA7007}"
 EndProject
@@ -29,13 +50,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DengoController", "DengoController\DengoController.csproj", "{4D1C6B04-A0FF-45A0-837E-3C0FD5E478AA}"
 	ProjectSection(ProjectDependencies) = postProject
 		{F2232BF9-17E6-4641-8326-D8B7BD90A1E9} = {F2232BF9-17E6-4641-8326-D8B7BD90A1E9}
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{F47D62E0-33F8-4867-BA65-052C8BFFC1E0}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DialogConsole", "DialogConsole\DialogConsole.csproj", "{F2232BF9-17E6-4641-8326-D8B7BD90A1E9}"
@@ -55,23 +69,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tus.Communication.Device.Av
 		{FD19AF7F-4B6C-424A-B57A-06B8D1180C0B} = {FD19AF7F-4B6C-424A-B57A-06B8D1180C0B}
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DevicePlugin", "DevicePlugin", "{46EF153C-B6DD-41C7-A904-BD5CF9051F13}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tus.Communication", "Tus.Communication\Tus.Communication.csproj", "{2FCBA61B-F967-442F-A3F6-3A8AA7126B17}"
 	ProjectSection(ProjectDependencies) = postProject
 		{FD19AF7F-4B6C-424A-B57A-06B8D1180C0B} = {FD19AF7F-4B6C-424A-B57A-06B8D1180C0B}
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Communication", "Communication", "{D48E877B-B792-4A79-8888-A3588AECDB3A}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tus.Communication.Device", "Tus.Communication.Device\Tus.Communication.Device.csproj", "{BBBD4A5A-1A91-436E-88BC-8621AC261B7F}"
 	ProjectSection(ProjectDependencies) = postProject
 		{FD19AF7F-4B6C-424A-B57A-06B8D1180C0B} = {FD19AF7F-4B6C-424A-B57A-06B8D1180C0B}
 	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Route", "Route", "{4AED919F-FD3A-4808-ACD4-7B7166976793}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Factory", "Factory", "{42DD2714-BB39-4FED-9704-2E0A160EDF80}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tus.Factory", "Tus.Factory\Tus.Factory.csproj", "{A367ED72-ABD5-4CFD-A9BD-4BA911D53584}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -95,8 +101,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TusTestProject", "TusTestPr
 		{935D8FDE-0880-40D5-A5BA-B8F02807BD69} = {935D8FDE-0880-40D5-A5BA-B8F02807BD69}
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Diagnostics", "Diagnostics", "{AA196E14-EBE9-49FF-AC58-E19B33256B10}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tus.Diagnostics", "Tus.Diagnostics\Tus.Diagnostics.csproj", "{FD19AF7F-4B6C-424A-B57A-06B8D1180C0B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogingConsole", "LogingConsole\LogingConsole.csproj", "{935D8FDE-0880-40D5-A5BA-B8F02807BD69}"
@@ -113,6 +117,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoController", "AutoContr
 	EndProjectSection
 EndProject
 Global
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|Mixed Platforms = Debug|Mixed Platforms
@@ -331,10 +338,7 @@ Global
 		{A1C4F9C0-7AD4-4A72-B463-70C2BD221373} = {4AED919F-FD3A-4808-ACD4-7B7166976793}
 		{FD19AF7F-4B6C-424A-B57A-06B8D1180C0B} = {AA196E14-EBE9-49FF-AC58-E19B33256B10}
 	EndGlobalSection
-<<<<<<< HEAD
-=======
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = TusSolution.vsmdi
 	EndGlobalSection
->>>>>>> c25b11619efab8dcba4bcf1bb07df7dc075f702d
 EndGlobal

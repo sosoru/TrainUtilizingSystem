@@ -38,8 +38,10 @@ namespace DialogConsole.WebPages
             get
             {
                 if (_jsonSendingSerializer == null)
+                {
                     this._jsonSendingSerializer = new DataContractJsonSerializer(typeof(TSend),
-                                                                                 KnownTypesWhenSerialization);
+                        KnownTypesWhenSerialization);
+                }
                 return this._jsonSendingSerializer;
             }
         }
