@@ -335,7 +335,7 @@ namespace Tus.TransControl.Base
             {
                 var state = new SwitchState
                                 {
-                                    Position = PointStateEnum.Straight,
+                                    Position = PointStateEnum.Any,
                                     DeadTime = 300,
                                     ChangingTime = 250,
                                 };
@@ -343,7 +343,15 @@ namespace Tus.TransControl.Base
             }
         }
 
-        //private PointStateEnum _before_position = PointStateEnum.Any;
+        public void SetAnyState()
+        {
+            foreach (var sw in this.Devices)
+            {
+                sw.CurrentState.Position = PointStateEnum.Any;
+            }
+        }
+
+        private PointStateEnum _before_position = PointStateEnum.Any;
         public override void ApplyCommand(CommandFactory factory)
         {
             if (IsNeededExecution)
@@ -355,6 +363,7 @@ namespace Tus.TransControl.Base
 
             RouteSegment segment = cmd.Route.RouteOrder.GetSegment(ParentBlock);
 
+            var ischanged = false;
             Devices.ForEach(dev =>
                                 {
                                     if ((segment.IsFromAny ||
@@ -363,6 +372,7 @@ namespace Tus.TransControl.Base
                                         (segment.IsToAny ||
                                          Info.DirStraight.Any(i => i.To.Name == segment.To.Name)))
                                     {
+                                        ischanged = dev.CurrentState.Position != PointStateEnum.Straight;
                                         dev.CurrentState.Position = PointStateEnum.Straight;
                                     }
                                     else if ((segment.IsFromAny ||
@@ -371,6 +381,7 @@ namespace Tus.TransControl.Base
                                              (segment.IsToAny ||
                                               Info.DirCurved.Any(i => i.To.Name == segment.To.Name)))
                                     {
+                                        ischanged = dev.CurrentState.Position != PointStateEnum.Curve;
                                         dev.CurrentState.Position = PointStateEnum.Curve;
                                     }
                                     else
@@ -378,8 +389,8 @@ namespace Tus.TransControl.Base
                                         dev.CurrentState.Position = PointStateEnum.Any;
                                     }
                                 });
-            //if (_before_position != this.Device.CurrentState.Position)
-            //    this.IsNeededExecution = true;
+            if (ischanged)
+                this.IsNeededExecution = true;
 
             //_before_position = this.Device.CurrentState.Position;
         }

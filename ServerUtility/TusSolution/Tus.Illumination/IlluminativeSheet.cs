@@ -23,7 +23,8 @@ namespace Tus.Illumination
         public void SyncLedDuty()
         {
             var leds = this.Objects.SelectMany(o => o.AssociatedLuminary.Leds);
-            var packets = PacketExtension.CreatePackedPacket(leds);
+            var devices = leds.GroupBy(d => (((int) d.DeviceID.ParentPart) << 8) + (int)d.DeviceID.ModuleAddr);
+            var packets = devices.SelectMany(PacketExtension.CreatePackedPacket);
             foreach (var p in packets)
                 this.Server.EnqueuePacket(p);
         }

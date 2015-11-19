@@ -10,9 +10,15 @@ namespace Tus.TransControl.Base
     public class SpeedFactory
     {
         private DateTime startedtime;
-        protected float InitSpeed { get; private set; }
+
+        public float InitSpeed { get;  set; }
         protected float TargetSpeed { get; private set; }
         public float Accelation { get; set; }
+
+        public SpeedFactory()
+        {
+            TargetSpeed = InitSpeed;
+        }
 
         public float RawSpeed
         {
@@ -26,40 +32,32 @@ namespace Tus.TransControl.Base
             }
         }
 
-        public float Go
-        {
-            get { return CurrentSpeed; }
-        }
-
-        public float Caution
-        {
-            get { return CurrentSpeed; }
-        }
-
-        public float Stop
-        { // 0.1f だとWaitingUnitに電流が流れて誤検知する？
-            get { return 0f; }
-        }
+        public float Go { get { return CurrentSpeed; } }
+        public float Caution { get { return CurrentSpeed; } }
+        public float Stop { get { return CurrentSpeed; } }
 
         public float CurrentSpeed
         {
             get
             {
-                float acceldir = (InitSpeed < TargetSpeed) ? 1.0f : -1.0f; // 加速度の向き
-                double diff = (DateTime.Now - startedtime).TotalSeconds * acceldir * Accelation;
+                var target = this.TargetSpeed;
+
+                float acceldir = (InitSpeed < target) ? 1.0f : -1.0f; // 加速度の向き
+                double diff = (DateTime.Now - startedtime).TotalSeconds * acceldir * Accelation * 0.5f;
                 double current = InitSpeed + diff;
+
 
                 if (acceldir > 0.0f)
                 {
                     if (current < InitSpeed)
                         current = InitSpeed;
-                    else if (TargetSpeed < current)
-                        current = TargetSpeed;
+                    else if (target < current)
+                        current = target;
                 }
                 else // if acceldir is minus
                 {
-                    if (current < TargetSpeed)
-                        current = TargetSpeed;
+                    if (current < target)
+                        current = target;
                     else if (InitSpeed < current)
                         current = InitSpeed;
                 }
@@ -94,9 +92,10 @@ namespace Tus.TransControl.Base
             var memtobechanged = (v.AssociatedRoute.RouteOrder.Polar == BlockPolar.Positive)
                 ? MotorMemoryStateEnum.Locked
                 : MotorMemoryStateEnum.Controlling;
-            bool detected = !isearly // デッドタイムを越えた
+            bool detected = //!isearly // デッドタイムを越えた
                 // Waitingを命令しているけれども，受け取った状態は変更済み
-                && (mtr.CurrentMemory == MotorMemoryStateEnum.Waiting && mtr.ReceivedMemory == memtobechanged)
+                //mtr.CurrentMemory == MotorMemoryStateEnum.Waiting &&
+                 mtr.ReceivedMemory == memtobechanged
                 && mtr.ReceivedMemory != MotorMemoryStateEnum.Unknown;
 
             //v.AssociatedRoute.RouteOrder.Polar == BlockPolar.Positive
@@ -106,6 +105,7 @@ namespace Tus.TransControl.Base
             if (detected)
                 this._lastchnaged = DateTime.Now;
 
+            //Logger.WriteLineAsTransInfo("detecting {0} {1} {2}", detected, mtr.CurrentMemory.ToString(), mtr.ReceivedMemory.ToString());
             return detected;
         }
 
@@ -124,6 +124,11 @@ namespace Tus.TransControl.Base
         [IgnoreDataMember]
         private readonly SpeedFactory speedfactry = new SpeedFactory();
 
+        [IgnoreDataMember] private readonly SpeedFactory stopSpeedfactory = new SpeedFactory();
+
+        [DataMember]
+        public float StopThreshold { get; set; }
+
         static Vehicle()
         {
             LastVehicleID = 0;
@@ -138,16 +143,21 @@ namespace Tus.TransControl.Base
 
             Length = 2;
             Accelation = 1.0f;
-            Halt = new List<Halt>();
             Predicators = new List<IRouteLockPredicator>();
             Predicators.Add(new RouteLockPredicator());
+
+            Halt = this.AssociatedRoute.RouteOrder.Blocks.Where(b => b.info.Haltable).Select(b => new Halt() { HaltBlock = b, Method = SensingMethod.None,})
+                .ToList();
         }
 
         [DataMember]
-        public int VehicleID { get; private set; }
+        public int VehicleID { get; set; }
 
         [DataMember]
         public string Name { get; set; }
+
+        [DataMember]
+        public string ShownName { get; set; }
 
         [DataMember]
         public IList<RouteOrder> AvailableRoutes { get; set; }
@@ -176,14 +186,18 @@ namespace Tus.TransControl.Base
         public float Speed
         {
             get { return speedfactry.RawSpeed; }
-            set { speedfactry.RawSpeed = value; }
+            set { speedfactry.RawSpeed = value;
+              stopSpeedfactory.RawSpeed = StopThreshold;
+            }
         }
 
         [DataMember]
         public float Accelation
         {
             get { return speedfactry.Accelation; }
-            set { speedfactry.Accelation = value; }
+            set { speedfactry.Accelation = value;
+            stopSpeedfactory.Accelation = value * 2.0f;
+            }
         }
 
         [DataMember]
@@ -212,7 +226,7 @@ namespace Tus.TransControl.Base
 
         public bool IsStopped
         {
-            get { return Speed == 0.0f || ShouldHalt; }
+            get { return Speed <= StopThreshold || ShouldHalt; }
         }
 
         [DataMember]
@@ -277,6 +291,7 @@ namespace Tus.TransControl.Base
 
             var ignored = this.AssociatedRoute.LockedUnits.Count() > 3;
 
+            var beforespd = Speed;
             Speed = 0;
             Refresh();
             while (AssociatedRoute.ReleaseLastUnit()) ;
@@ -288,11 +303,11 @@ namespace Tus.TransControl.Base
 
             if (ignored)
             {
-                this.RunIfIgnored(0.0f);
+                this.RunIfIgnored(beforespd);
             }
             else
             {
-                Run(0.0f, blockpos.ControlBlock);
+                Run(beforespd, blockpos.ControlBlock);
 
             }
         }
@@ -336,6 +351,69 @@ namespace Tus.TransControl.Base
             Run(spd);
         }
 
+        //閉塞遷移を行っている状態かどうかを推定
+        public bool EstimateVehicleMoving()
+        {
+            //閉塞を作っていない状態の時は抜ける
+            if (!this.AssociatedRoute.IsReserving)
+            {
+                return false;
+            }
+
+            ControlUnit[] lockedunits =
+                AssociatedRoute.LockedUnits.Except(new[] { AssociatedRoute.ReservedUnit.Unit, }).ToArray();
+            Block waitblk = AssociatedRoute.ReservedUnit.Unit.ControlBlock;
+            Block cntblk = (this.AssociatedRoute.RouteOrder.Polar == BlockPolar.Positive)
+                               ? lockedunits.First().ControlBlock
+                               : lockedunits.Last().ControlBlock;
+
+            var statetrans = new Func<MotorMemoryStateEnum, string>((s) =>
+                    (s == MotorMemoryStateEnum.Waiting) ? "W"
+                    : (s == MotorMemoryStateEnum.Controlling) ? "C"
+                    : (s == MotorMemoryStateEnum.Locked) ? "L"
+                    : (s == MotorMemoryStateEnum.NoEffect) ? "N"
+                    : (s == MotorMemoryStateEnum.Unknown) ? "U"
+                    : "_");
+            Logger.WriteLineAsTransInfo("current state : {0}",
+                                        statetrans(waitblk.MotorEffector.Devices.First().CurrentMemory) +
+                                        new string(
+                                            lockedunits.Select(
+                                                u => u.ControlBlock.MotorEffector.Devices.First().CurrentMemory).SelectMany(statetrans)
+                                                       .ToArray()));
+            Logger.WriteLineAsTransInfo("received state : {0}", statetrans(waitblk.MotorEffector.Devices.First().ReceivedMemory)
+                                                                +
+                                                                new string(lockedunits.Select(u => u.ControlBlock.MotorEffector.Devices.First().ReceivedMemory)
+                                                                                       .SelectMany(statetrans).ToArray()));
+
+            var waitblkChanged = waitblk.MotorEffector.Devices.First().ReceivedMemory != MotorMemoryStateEnum.Waiting;
+            //var cntblkChanged = cntblk.MotorEffector.Devices.First().ReceivedMemory != MotorMemoryStateEnum.Controlling;
+            var lockedunitsChangedCount =
+                lockedunits.Count(u => Enumerable.First<Motor>(u.ControlBlock.MotorEffector.Devices).ReceivedMemory != MotorMemoryStateEnum.Locked);
+
+            //WaitingBlockが変わっていないけれども，lockedunitsが変わっている場合を閉塞遷移状態と判定
+            return lockedunitsChangedCount >= 2 && !waitblkChanged; // 
+
+        }
+
+        public void RefreshStoppingSpeedBehavior()
+        {
+            //TODO: SpeedFactory のコンストラクタで初期化した方が良い
+            this.stopSpeedfactory.Accelation = this.Accelation * 2.0f;
+            this.stopSpeedfactory.RawSpeed = StopThreshold;
+            this.stopSpeedfactory.InitSpeed = this.speedfactry.CurrentSpeed;
+            Logger.WriteLineAsTransInfo("{0}({1}) : stop init={2} accr={3}",this.Name, this.ShownName, this.stopSpeedfactory.InitSpeed,
+                                        this.stopSpeedfactory.Accelation);
+        }
+
+        public void RefreshRunningSpeedBehavior()
+        {
+            this.speedfactry.RawSpeed = this.speedfactry.RawSpeed;
+            this.speedfactry.InitSpeed = this.stopSpeedfactory.CurrentSpeed;
+            Logger.WriteLineAsTransInfo("{0}({1}) : run init={2} accr={3}",  this.Name, this.ShownName, this.speedfactry.InitSpeed,
+                                        this.speedfactry.Accelation);
+        }
+
+        private bool isStoppedLast = true;
         public void Run(float spd)
         {
             Speed = spd;
@@ -344,7 +422,7 @@ namespace Tus.TransControl.Base
                 Block blk = AssociatedRoute.RouteOrder.Blocks.First();
                 AssociatedRoute.AllocateTrain(blk, Length);
             }
-            if (this.IsHalted )
+            if (this.IsHalted)
             {
                 if (this.CanLeaveHere)
                     this.LeaveHere();
@@ -367,6 +445,13 @@ namespace Tus.TransControl.Base
                 Speed = 0.0f;
             }
 
+            // 閉塞遷移しつつある状態か推定
+            //if (EstimateVehicleMoving())
+            //{
+            //    Logger.WriteLineAsTransInfo("Exit by estimated vehicle moving");
+            //    return; // 遷移しつつある状態なら抜けて様子見
+            //}
+
             // todo : halts support
             //todo : steady support and test with or without sensors 
             // verified i'm not halted and the next unit is not blocked by other vehicles
@@ -374,7 +459,7 @@ namespace Tus.TransControl.Base
             {
                 if (AssociatedRoute.LockNextUnit())
                 {
-                    Logger.WriteLineAsTransInfo("vehicle {0} moved : {1}", Name, CurrentBlock.Name);
+                    Logger.WriteLineAsTransInfo("vehicle {0}({1}) moved : {2}", Name, ShownName, CurrentBlock.Name);
                 }
             }
 
@@ -382,21 +467,24 @@ namespace Tus.TransControl.Base
             if (Predicators.All(l => l.ShouldReleaseBefore(this)))
             {
                 AssociatedRoute.ReleaseLastUnit();
-                Logger.WriteLineAsTransInfo("vehicle {0} leaved : {1}", Name, tail.ControlBlock.Name);
+                Logger.WriteLineAsTransInfo("vehicle {0}({1}) leaved : {2}", Name, ShownName, tail.ControlBlock.Name);
             }
 
             CommandFactory cmdfactory = null;
             SpeedFactory spdfactory = speedfactry;
+            SpeedFactory stopspdfactory = stopSpeedfactory;
+
             Block[] lastlockedblocks = AssociatedRoute.LockedBlocks.ToArray();
 
             if (IsStopped)
             {
+                if (!isStoppedLast) RefreshStoppingSpeedBehavior();
+
                 if (AssociatedRoute.IsReserving)
                     AssociatedRoute.UnReserveHead();
 
-                cmdfactory = CanHalt
-                                 ? CreateHaltCommand(spdfactory)
-                                 : CreateZeroCommand(spdfactory);
+                cmdfactory = CreateZeroCommand(stopSpeedfactory);
+                isStoppedLast = true;
             }
             else
             {
@@ -406,6 +494,8 @@ namespace Tus.TransControl.Base
                 int distance = AssociatedRoute.HeadContainer.GetDistanceOfBlockedUnit(3);
                 if (AssociatedRoute.ReserveHead())
                 {
+                    if (isStoppedLast) RefreshRunningSpeedBehavior();
+
                     if (distance <= 1)
                     {
                         cmdfactory = Create1stCommand(spdfactory);
@@ -418,23 +508,28 @@ namespace Tus.TransControl.Base
                     {
                         cmdfactory = CreateNthCommand(spdfactory);
                     }
+
+                    isStoppedLast = false;
                 }
                 else
                 {
-                    cmdfactory = CanHalt
-                                     ? CreateHaltCommand(spdfactory)
-                                     : CreateZeroCommand(spdfactory);
+                    if (!isStoppedLast) RefreshStoppingSpeedBehavior();
+
+                    cmdfactory = CreateZeroCommand(stopSpeedfactory);
+                    isStoppedLast = true;
                 }
             }
             Sheet.Effect(cmdfactory, AssociatedRoute.LockedBlocks.Concat(lastlockedblocks).Distinct(b => b.Name));
         }
-        public bool IsHalted { get; private set; }
 
+        [DataMember]
+        public bool IsHalted { get; private set; }
 
         public bool CanHaltHere
         {
-            get { return this.Speed == 0 && this.AssociatedRoute.HeadContainer.Unit.HaltableBlocks.Any(); }
+            get { return this.Speed <= StopThreshold && this.AssociatedRoute.HeadContainer.Unit.HaltableBlocks.Any(); }
         }
+
         public bool CanLeaveHere
         {
             get
@@ -532,7 +627,7 @@ namespace Tus.TransControl.Base
                          else if (lockedunits.Any(cntrt => cntrt.ControlBlock == blk))
                          {
                              cmd.MotorMode = MotorMemoryStateEnum.Locked;
-                             cmd.Speed = 0.0f;
+                             cmd.Speed = cntspdFactory();
                          }
                          else
                          {
@@ -566,7 +661,7 @@ namespace Tus.TransControl.Base
                          else if (lockedunits.Any(u => u.ControlBlock.Name == blk.Name))
                          {
                              cmd.MotorMode = MotorMemoryStateEnum.Locked;
-                             cmd.Speed = 0.0f;
+                             cmd.Speed = cntspdFactory();
                          }
                          else
                          {
@@ -687,19 +782,9 @@ namespace Tus.TransControl.Base
 
         public bool CanLockRoute(Route rt, Block blk)
         {
-            try
-            {
-                AssociatedRoute.AllocateTrain(blk, Length);
-                return true;
-            }
-            catch (InvalidOperationException ex)
-            {
-                return false;
-            }
-            finally
-            {
-                while (AssociatedRoute.ReleaseLastUnit()) ;
-            }
+            var blocks = rt.CalcBlocksAllocated(blk, 2).SelectMany(c => c.Unit.Blocks);
+
+            return !blocks.Where(b => !this.AssociatedRoute.LockedBlocks.Contains(b)).Any(b => b.IsLocked);
         }
     }
 }

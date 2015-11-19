@@ -219,7 +219,7 @@ namespace Tus.Communication
             var casted = value;
             var before = this.CurrentState;
 
-            if (!this.IsHold && (DateTime.Now - this._before_received_Date).TotalSeconds > 1.0)
+            if (!this.IsHold)// && (DateTime.Now - this._before_received_Date).TotalSeconds > 1.0)
             {
                 this._before_received_Date = DateTime.Now;
                 this.CurrentState = casted;

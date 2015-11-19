@@ -72,7 +72,7 @@ namespace DialogConsole.Features
 
             Param.VehicleProcessing = Param.VehiclePipeline
                 //.Do(u => this.Param.UsingLayout.Sheet.InquiryStatusOfAllMotors())
-                .Delay(TimeSpan.FromMilliseconds(500)).Repeat()
+                .Delay(TimeSpan.FromMilliseconds(200)).Repeat()
                                            .SubscribeOn(Scheduler.NewThread)
                                            .Subscribe();
 
@@ -133,6 +133,7 @@ namespace DialogConsole.Features
             var v = new Vehicle(Param.UsingLayout.Sheet, rt)
             {
                 Name = vhname,
+                ShownName = vhname,
                 IgnoreBlockage = (ign),
                 ReleaseBlockage = release,
                 AvailableRoutes = routes
@@ -167,6 +168,7 @@ namespace DialogConsole.Features
             {
                 try
                 {
+                    //送られてきたパケットを処理
                     DevicePacket packet;
                     while (this.Param.UsingLayout.Sheet.Server.receving_queue.TryDequeue(out packet))
                     {
@@ -181,18 +183,22 @@ namespace DialogConsole.Features
                         page.Value.ApplyReceivedJsonRequest();
                     }
 
+                    //Vehicleによる更新処理
                     foreach (Vehicle v in Param.UsingLayout.Vehicles.ToArray())
                     {
                         v.Refresh();
                     }
 
+                    //LockしていないブロックをNoEffectに設定
                     this.Param.UsingLayout.Sheet.SetUnlockedBlocksToDefault();
-                    //inquiry devices
-                    this.Param.UsingLayout.Sheet.InquiryDevices();
+                    
+                    //デバイスの状態を問い合わせ
+                    this.Param.UsingLayout.Sheet.InquiryDevices(this.Param.UsingLayout.Sheet.AllMotors);
 
                     //send packets to device
                     //this.Param.SendingPacketPipeline.Subscribe();
 
+                    //現在の状態をファイルに保存しておく
                     foreach (var page in this.Pages)
                     {
                         page.Value.RefreshSendingJsonContent();

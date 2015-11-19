@@ -36,7 +36,8 @@ namespace DialogConsole.Features
             {
                 var rt = v.AssociatedRoute;
                 var rtstr = rt.RouteOrder.Units.Aggregate("", (s, u) => s + wrapbystate(rt, u) + ", ").TrimEnd(',', ' ');
-                Console.WriteLine("{0} on {1}: {2}", v.Name, rt.RouteOrder.Name, rtstr);
+                var haltedtext = (v.IsHalted) ? "(HALTED) " : "";
+                Console.WriteLine(haltedtext + "{0}({1}) on {2}: {3}", v.Name, v.ShownName, rt.RouteOrder.Name, rtstr);
             }
         }
     }

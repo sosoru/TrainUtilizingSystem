@@ -67,8 +67,15 @@ namespace DialogConsole.Features
                     using (var sr = new StreamReader(req.InputStream))
                         page.Value.CacheReceivedJsonContent(sr.ReadToEnd());
 
-                    using (var sw = new StreamWriter(res.OutputStream))
-                        sw.Write("success");
+                         res.Headers.Add("Content-type: application/json");
+                        res.Headers.Add("Access-Control-Allow-Headers: x-requested-with, accept");
+                        res.Headers.Add("Access-Control-Allow-Origin: *");
+                   using (var sw = new StreamWriter(res.OutputStream))
+                   {
+                       //page.Value.RefreshSendingJsonContent();
+                       // sw.WriteLine(page.Value.GetJsonContent());
+                       sw.WriteLine(@"[{""status""=""200""}]");
+                   }
                 }
             }
             catch (Exception ex)
@@ -116,6 +123,9 @@ namespace DialogConsole.Features
         [DataMember(IsRequired = true)]
         public string Name;
 
+        [DataMember(IsRequired=false)]
+        public string ShownName;
+
         [DataMember(IsRequired = false)]
         public string Speed;
 
@@ -133,6 +143,12 @@ namespace DialogConsole.Features
 
         [DataMember(IsRequired = false)]
         public ICollection<string> Halts;
+
+        [DataMember(IsRequired = false)]
+        public string IsHalt;
+
+        [DataMember(IsRequired=false)]
+        public string StopThreshold;
     }
 
 }

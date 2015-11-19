@@ -23,6 +23,7 @@ namespace Tus.Factory
                     : (posrt.Polar == BlockPolar.Negative)
                           ? BlockPolar.Positive
                           : BlockPolar.Any;
+            reverseRoute.IsRepeatable = true;
             return reverseRoute;
         }
 

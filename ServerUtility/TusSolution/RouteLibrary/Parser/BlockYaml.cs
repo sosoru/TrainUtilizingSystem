@@ -103,6 +103,7 @@ namespace Tus.TransControl.Parser
                 var sens_src = (Dictionary<object, object>)extract_dict(dict, "sensor");
                 var ptr_src = (Dictionary<object, object>)extract_dict(dict, "point");
                 var isolate = ((bool?)extract_dict(dict, "isolate")) ?? false;
+                var halt = ((bool?)extract_dict(dict, "halt")) ?? false;
 
                 var block = ab.Find(b => b.Name == (string)dict["name"]);
 
@@ -111,6 +112,7 @@ namespace Tus.TransControl.Parser
                 block.Sensor = (sens_src != null) ? ParseSensor(sens_src) : null;
                 block.Switch = (ptr_src != null) ? ParsePoint(route, ptr_src) : null;
                 block.IsIsolated = isolate;
+                block.Haltable = halt;
 
                 yield return block;
             }
