@@ -15,8 +15,7 @@
     <AssemblyName>module_ledController_cpp</AssemblyName>
     <Name>module_ledController_cpp</Name>
     <RootNamespace>module_ledController_cpp</RootNamespace>
-    <ToolchainFlavour>
-    </ToolchainFlavour>
+    <ToolchainFlavour>Native</ToolchainFlavour>
     <KeepTimersRunning>true</KeepTimersRunning>
     <avrtool>com.atmel.avrdbg.tool.jtagicemkii</avrtool>
     <avrtoolinterface>JTAG</avrtoolinterface>
