@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="SheetPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">C:\DropboxProg\console_page\2014fes_blocks.yaml</Value>
+      <Value Profile="(Default)">C:\DropboxProg\console_page\2015fes_inspective_blocks.yaml</Value>
     </Setting>
     <Setting Name="IpSegment" Type="System.String" Scope="User">
       <Value Profile="(Default)">192.168.2.0</Value>
@@ -18,7 +18,7 @@
       <Value Profile="(Default)">(9, 0, 0)</Value>
     </Setting>
     <Setting Name="RoutePath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">C:\DropboxProg\console_page\2014fes_routes.yaml</Value>
+      <Value Profile="(Default)">C:\DropboxProg\console_page\2015fes_inspective_routes.yaml</Value>
     </Setting>
     <Setting Name="IlluminationPath" Type="System.String" Scope="User">
       <Value Profile="(Default)">C:\DropboxProg\console_page\2014fes_illuminate.yaml</Value>
