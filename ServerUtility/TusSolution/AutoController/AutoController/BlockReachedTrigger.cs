@@ -15,9 +15,9 @@ namespace Tus.AutoController
         {
             var vehi = VehiclesProvider.FindByName(this.VehicleName);
 
-            if (vehi == null || vehi.CurrentBlock == null) return false; // triggering vehicle is found but is not prepared.
+            if (vehi == null || vehi.CurrentBlockObject == null) return false; // triggering vehicle is found but is not prepared.
 
-            return vehi.CurrentBlock.Name == this.BlockName; // triggering vehicle is reached to specified block.
+            return vehi.CurrentBlockObject.Name == this.BlockName; // triggering vehicle is reached to specified block.
         }
     }
 }
