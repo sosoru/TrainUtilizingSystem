@@ -67,7 +67,8 @@ namespace DialogConsole.WebPages
 
             foreach (var obj in objs)
             {
-                var vh = this.Param.UsingLayout.Vehicles.First(v => v.Name == obj.Name);
+                var vh = this.Param.UsingLayout.Vehicles.FirstOrDefault(v => v.Name == obj.Name);
+                if (vh == null) continue;
 
                 if (obj.IsHalt != vh.IsHalted.ToString())
                 {

@@ -194,11 +194,11 @@ namespace TusTestProject.AutoController
             Assert.IsFalse(t.CheckTriggered());
 
             // set false block, returning false
-            v1.SetupGet(v => v.CurrentBlock).Returns(b1.Object);
+            v1.SetupGet(v => v.CurrentBlockObject).Returns(b1.Object);
             Assert.IsFalse(t.CheckTriggered());
 
             // set true block, returning true
-            v1.SetupGet(v => v.CurrentBlock).Returns(b2.Object);
+            v1.SetupGet(v => v.CurrentBlockObject).Returns(b2.Object);
             Assert.IsTrue(t.CheckTriggered());
         }
 

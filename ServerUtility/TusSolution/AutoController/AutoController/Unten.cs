@@ -60,6 +60,12 @@ namespace Tus.AutoController
             this.IsWatching = true;
         }
 
+        public void SkipPhases(int count)
+        {
+            for (int i = 0; i < count; i++)
+                this.PhaseBatch.StepNextPhase();
+        }
+
         private void InitializeTriggerFactory()
         {
             this._trigerFactory = new TriggerFactory()

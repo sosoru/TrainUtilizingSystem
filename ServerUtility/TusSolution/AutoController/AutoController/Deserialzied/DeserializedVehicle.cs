@@ -6,14 +6,14 @@ namespace Tus.AutoController.Deserialized
         {
             this.Name = "";
             this.ShownName = "";
-            this.CurrentBlock = new DeserializedBlock();
+            this.CurrentBlockObject = new DeserializedBlock();
             this.Halt = new object[] { };
             this.ReallocatableBlockNames = new string[] { };
 
         }
 
         public float Accelation { get; set; }
-        public virtual DeserializedBlock CurrentBlock { get; set; }
+        public virtual DeserializedBlock CurrentBlockObject { get; set; }
         public virtual float CurrentSpeed { get; set; }
         public virtual int Distance { get; set; }
         public object[] Halt { get; set; }

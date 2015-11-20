@@ -33,7 +33,7 @@ namespace AutoController
                                               CurrentSpeed = 0.1f,
                                               Accelation = 0.5f,
                                               Distance = 2,
-                                              CurrentBlock = new DeserializedBlock() {Name = "AT1"},
+                                              CurrentBlockObject     = new DeserializedBlock() {Name = "AT1"},
                                           },
                                       },
             };

@@ -39,6 +39,7 @@
             this.StopButton = new System.Windows.Forms.Button();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.CurrentStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.CurrentBlockStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.PhaseBatchTabControl = new System.Windows.Forms.TabControl();
             this.VehicleNameComboBox = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -98,7 +99,7 @@
             this.StartButton.Name = "StartButton";
             this.StartButton.Size = new System.Drawing.Size(243, 23);
             this.StartButton.TabIndex = 26;
-            this.StartButton.Text = "運転開始";
+            this.StartButton.Text = "運転開始(↓で選択したPhaseから開始)";
             this.StartButton.UseVisualStyleBackColor = true;
             this.StartButton.Click += new System.EventHandler(this.StartButton_Click);
             // 
@@ -138,19 +139,29 @@
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.CurrentStatusLabel});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 437);
+            this.CurrentStatusLabel,
+            this.CurrentBlockStatusLabel1});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 435);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(517, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(517, 24);
             this.statusStrip1.TabIndex = 29;
             this.statusStrip1.Text = "statusStrip1";
             // 
             // CurrentStatusLabel
             // 
+            this.CurrentStatusLabel.Font = new System.Drawing.Font("Meiryo UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.CurrentStatusLabel.Name = "CurrentStatusLabel";
-            this.CurrentStatusLabel.Size = new System.Drawing.Size(65, 17);
+            this.CurrentStatusLabel.Size = new System.Drawing.Size(83, 19);
             this.CurrentStatusLabel.Text = "現在の状況";
             this.CurrentStatusLabel.Click += new System.EventHandler(this.toolStripStatusLabel1_Click);
+            // 
+            // CurrentBlockStatusLabel1
+            // 
+            this.CurrentBlockStatusLabel1.Name = "CurrentBlockStatusLabel1";
+            this.CurrentBlockStatusLabel1.Size = new System.Drawing.Size(55, 19);
+            this.CurrentBlockStatusLabel1.Text = "現在位置";
+            this.CurrentBlockStatusLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.CurrentBlockStatusLabel1.Click += new System.EventHandler(this.toolStripStatusLabel1_Click_1);
             // 
             // PhaseBatchTabControl
             // 
@@ -300,5 +311,6 @@
         private System.Windows.Forms.ToolStripMenuItem 設定のセーブToolStripMenuItem;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
+        private System.Windows.Forms.ToolStripStatusLabel CurrentBlockStatusLabel1;
     }
 }

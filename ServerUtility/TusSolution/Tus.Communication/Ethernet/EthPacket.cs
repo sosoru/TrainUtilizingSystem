@@ -10,7 +10,7 @@ using System.Reactive;
 
 namespace Tus.Communication.Ethernet
 {
-    [StructLayout(LayoutKind.Sequential, Size = 40)]
+    [StructLayout(LayoutKind.Sequential, Size = 104)]
     public class EthPacket
     {
         public EthPacket()
