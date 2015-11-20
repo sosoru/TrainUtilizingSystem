@@ -116,8 +116,12 @@ namespace AutoController
                 }
 
                 // find the vehicle spicified by VehicleNameColumn
+                if (string.IsNullOrWhiteSpace(this.VehicleNameComboBox.Text)) return;  
                 var associatedVehi = unten.VehiclesProvider.FindByName(this.VehicleNameComboBox.Text);
                 if (associatedVehi == null) return; // if the vehicle is not found in received data, then exit this function.
+
+                // show current position of the vehicle
+                this.CurrentBlockStatusLabel1.Text = associatedVehi.CurrentBlockObject.Name;
 
                 // collect current state on control
                 Phase vehistateFromControl;
@@ -189,10 +193,19 @@ namespace AutoController
 
         private void StartButton_Click(object sender, EventArgs e)
         {
+            // Phaseが未設定 == タブコントロールにページがないならreturn
+            if (this.PhaseBatchTabControl.TabPages.Count == 0) return;
+
             if (this.unten.IsWatching) this.unten.AbortWatching();
             this.unten.InitializeWatching();
+
+            // 選択されているPhaseから運転開始
+            var selectedindex = this.PhaseBatchTabControl.SelectedIndex;
+            if (selectedindex > 0) this.unten.SkipPhases(selectedindex);
+
             this.StartButton.Enabled = false;
             this.StopButton.Enabled = true;
+            this.VehicleNameComboBox.Enabled = false;
         }
 
         private void StopButton_Click(object sender, EventArgs e)
@@ -203,6 +216,7 @@ namespace AutoController
             }
             this.StartButton.Enabled = true;
             this.StopButton.Enabled = false;
+            this.VehicleNameComboBox.Enabled = true;
         }
 
         private void 編集ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -289,6 +303,9 @@ namespace AutoController
 
             // select tab page before selected
             this.PhaseBatchTabControl.SelectTab(index);
+
+            // refresh controlling vehicle name
+            this.VehicleNameComboBox.Text = this.unten.VehicleName;
         }
 
         private void VehicleNameComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -296,5 +313,9 @@ namespace AutoController
             this.unten.VehicleName = (string)this.VehicleNameComboBox.SelectedItem;
         }
 
+        private void toolStripStatusLabel1_Click_1(object sender, EventArgs e)
+        {
+
+        }
     }
 }

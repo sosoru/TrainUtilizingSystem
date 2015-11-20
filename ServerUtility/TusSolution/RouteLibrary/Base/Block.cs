@@ -73,7 +73,7 @@ namespace Tus.TransControl.Base
         public IList<IDeviceEffectorAlias> Effectors { get; set; }
         public SensorDetector Detector { get; set; }
 
-        [DataMember]
+        [DataMember(IsRequired = false)]
         public IEnumerable<IDevice<IDeviceState<IPacketDeviceData>>> Devices
         {
             get
@@ -312,5 +312,21 @@ namespace Tus.TransControl.Base
         //        return this.lockingWatch.ElapsedMilliseconds;
         //    }
         //}
+
+        public BlockSendingObject ToSendingObject()
+        {
+            return
+                new BlockSendingObject()
+                {
+                    Name = this.Name,
+                    IsLocked = this.isLocked,
+                };
+        }
+    }
+
+    public class BlockSendingObject
+    {
+        public string Name { get; set; }
+        public bool IsLocked { get; set; }
     }
 }

@@ -20,6 +20,8 @@
 using namespace EthernetBridge;
 using namespace EthernetBridge::Eth;
 
+EthPacket ReceivedFromDevicePacket;
+
 //
 //SPI_TRANS_PORT g_spi_trans_port = SPI_TRANS_PORTINST;
 //
@@ -94,14 +96,13 @@ void BoardInit()
 template < class t_module >
 void DispatchModulePackets()
 {
-	EthPacket received;
-	uint8_t i=0, bufpos=0;
-	char printbuf[100];
+	//uint8_t i=0, bufpos=0;
+	//char printbuf[100];
 	
 	if(t_module::Ignored)
 	return;
 			
-		if(t_module::Transmit(received))
+		if(t_module::Transmit(ReceivedFromDevicePacket))
 		{
 			//bool flag = false;
 			//
@@ -124,13 +125,13 @@ void DispatchModulePackets()
 				//Lcd::Display::WriteString(printbuf,0);
 //
 				PORTB ^= _BV(PORTB7);
-				if(EthDevice::IsForChildren(received))
+				if(EthDevice::IsForChildren(ReceivedFromDevicePacket))
 				{
-					EthDevice::StockToChildren(&received);
+					EthDevice::StockToChildren(&ReceivedFromDevicePacket);
 				}
 				else
 				{
-					EthDevice::SendToEthernet(&received);
+					EthDevice::SendToEthernet(&ReceivedFromDevicePacket);
 				}
 				
 			//}
