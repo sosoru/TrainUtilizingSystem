@@ -15,8 +15,7 @@
     <AssemblyName>module_PointController</AssemblyName>
     <Name>module_PointController</Name>
     <RootNamespace>module_PointController</RootNamespace>
-    <ToolchainFlavour>
-    </ToolchainFlavour>
+    <ToolchainFlavour>Native</ToolchainFlavour>
     <AsfVersion>2.11.1</AsfVersion>
     <avrtoolinterface>JTAG</avrtoolinterface>
     <avrtool>com.atmel.avrdbg.tool.jtagicemkii</avrtool>

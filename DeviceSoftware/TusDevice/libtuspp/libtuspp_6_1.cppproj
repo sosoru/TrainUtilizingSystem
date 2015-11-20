@@ -17,8 +17,7 @@
     <AssemblyName>libtuspp</AssemblyName>
     <Name>libtuspp</Name>
     <RootNamespace>libtuspp</RootNamespace>
-    <ToolchainFlavour>
-    </ToolchainFlavour>
+    <ToolchainFlavour>Native</ToolchainFlavour>
     <AsfVersion>2.11.1</AsfVersion>
     <KeepTimersRunning>true</KeepTimersRunning>
     <OverrideVtor>false</OverrideVtor>

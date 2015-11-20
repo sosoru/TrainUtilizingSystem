@@ -55,7 +55,7 @@ namespace EthernetBridge{
 		class ChildModule
 		{
 			private:
-			static const uint8_t buffer_count = 4;
+			static const uint8_t buffer_count = 3;
 			static const uint8_t message_size = 1;
 			
 			public:
