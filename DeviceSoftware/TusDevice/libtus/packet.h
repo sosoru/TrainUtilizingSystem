@@ -17,7 +17,7 @@
 #define ETHCMD_REPLY 1
 #define ETHCMD_MEMORY 2
 
-#define ETH_DATA_LEN 92 
+#define ETH_DATA_LEN 46
 
 #define MODULETYPE_KERNEL 0x11
 #define MODULETYPE_MOTOR 0x12
@@ -55,7 +55,7 @@ typedef struct tag_EthPacket
 		};
 		
 		//todo : how to read the size of unnamed structs or unions 
-		BYTE raw_array[104];
+		BYTE raw_array[58];
 	};
 } EthPacket;
 
