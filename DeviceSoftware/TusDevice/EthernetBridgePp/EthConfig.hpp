@@ -40,7 +40,7 @@ namespace EthernetBridge
 		{
 			private:
 									
-				static const uint8_t BUFFER_SIZE = 128;
+				static const uint8_t BUFFER_SIZE = 256;
 				static uint8_t buf[BUFFER_SIZE];
 
 			public:
