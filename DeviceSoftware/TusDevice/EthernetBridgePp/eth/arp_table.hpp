@@ -17,7 +17,7 @@ typedef struct tag_arp_record
 	uint8_t ipAddr[4];
 } arp_record;
 
-#define ARPTABLE_LEN 32
+#define ARPTABLE_LEN 16
 extern arp_record g_arpTable[];
 
 extern "C"

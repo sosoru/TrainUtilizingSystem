@@ -1,8 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
+Microsoft Visual Studio Solution File, Format Version 11.00
 # Atmel Studio Solution File, Format Version 11.00
-VisualStudioVersion = 14.0.23107.0
-MinimumVisualStudioVersion = 10.0.40219.1
 Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "EthernetBridge", "EthernetBridge\EthernetBridge.cproj", "{99B24970-9312-4EA7-A97E-CDE90D2E6281}"
 EndProject
 Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "libtus", "libtus\libtus.cproj", "{3D121C5B-155C-47B1-B93C-761A9952C20F}"

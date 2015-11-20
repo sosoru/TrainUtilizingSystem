@@ -40,8 +40,8 @@ static spi_send_object *psending_obj = NULL;
 static spi_received_handler SpiReceive = 0;
 
 //debug
-//static char dbgbuffer[2048];
-//static int16_t dbgbufferpos = 0;
+static char dbgbuffer[2048];
+static int16_t dbgbufferpos = 0;
 
 static inline uint8_t seek_sending_buffer(uint8_t index)
 {
