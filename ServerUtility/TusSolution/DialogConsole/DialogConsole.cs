@@ -14,6 +14,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 using DialogConsole.Features.Base;
+using DialogConsole.Properties;
 using DialogConsole.WebPages;
 using Tus.Communication;
 using Tus.Communication.Device.AvrComposed;
@@ -177,11 +178,11 @@ namespace DialogConsole
         {
             // ----通信系のスレッドの実行-------------------------------------------------
 
-            // PacketServerにストアされているパケットを送信する．10ミリ秒ごとに実行
+            // PacketServerにストアされているパケットを送信する．
             Param.SendingPacketPipeline =
                 Observable.Defer(() => Observable.Start(Param.UsingLayout.Sheet.Server.SendAll));
             Param.SendingPacketPipeline
-                 .Repeat().Delay(TimeSpan.FromMilliseconds(250))
+                 .Repeat().Delay(TimeSpan.FromMilliseconds(Settings.Default.ContactIntervalToDevicesMillisecond))
                  .Subscribe();
 
             // LED系デバイスの更新．1秒おきに同期
