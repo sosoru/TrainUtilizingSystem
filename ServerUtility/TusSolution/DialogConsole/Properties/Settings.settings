@@ -29,8 +29,5 @@
     <Setting Name="VehicleGroupPath" Type="System.String" Scope="User">
       <Value Profile="(Default)">C:\DropboxProg\console_page\test_vehicles.yaml</Value>
     </Setting>
-    <Setting Name="ContactIntervalToDevicesMillisecond" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">150</Value>
-    </Setting>
   </Settings>
 </SettingsFile>

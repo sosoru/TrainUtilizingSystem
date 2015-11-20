@@ -8,7 +8,6 @@ using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using DialogConsole.Features.Base;
-using DialogConsole.Properties;
 using DialogConsole.WebPages;
 using Tus.Communication;
 using Tus.TransControl.Base;
@@ -73,7 +72,7 @@ namespace DialogConsole.Features
 
             Param.VehicleProcessing = Param.VehiclePipeline
                 //.Do(u => this.Param.UsingLayout.Sheet.InquiryStatusOfAllMotors())
-                .Delay(TimeSpan.FromMilliseconds(Settings.Default.ContactIntervalToDevicesMillisecond)).Repeat()
+                .Delay(TimeSpan.FromMilliseconds(200)).Repeat()
                                            .SubscribeOn(Scheduler.NewThread)
                                            .Subscribe();
 
