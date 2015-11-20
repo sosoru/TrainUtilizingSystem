@@ -12,14 +12,19 @@ namespace Tus.Communication.Device.Composition
 {
     class AvrDeviceFactoryProvider
     {
+        private static Lazy<IDeviceFactory, IDeviceFactoryMetadataAttribute>[] container;
         public static Lazy<IEnumerable<Lazy<IDeviceFactory, IDeviceFactoryMetadataAttribute>>> Factories
-            = new Lazy<IEnumerable<Lazy<IDeviceFactory,IDeviceFactoryMetadataAttribute>>>(() =>
+            = new Lazy<IEnumerable<Lazy<IDeviceFactory, IDeviceFactoryMetadataAttribute>>>(() =>
                 {
-                    var catalog = new AggregateCatalog();
-                    catalog.Catalogs.Add(new DirectoryCatalog(System.IO.Directory.GetCurrentDirectory()));
+                    if (AvrDeviceFactoryProvider.container == null)
+                    {
+                        var catalog = new AggregateCatalog();
+                        catalog.Catalogs.Add(new DirectoryCatalog(System.IO.Directory.GetCurrentDirectory()));
 
-                    var container = new CompositionContainer(catalog);
-                    return container.GetExports<IDeviceFactory, IDeviceFactoryMetadataAttribute>();
+                        container = new CompositionContainer(catalog).GetExports<IDeviceFactory, IDeviceFactoryMetadataAttribute>().ToArray() ;
+
+                    }
+                    return container;
                 });
     }
 }

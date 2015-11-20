@@ -9,7 +9,7 @@ using System.Reactive.Linq;
 using System.Reactive;
 namespace Tus.Communication
 {
-    [StructLayout(LayoutKind.Sequential, Size = 96)]
+    [StructLayout(LayoutKind.Sequential, Size = 50)]
     public class DevicePacket
     {
         //[MarshalAs(UnmanagedType.U1, SizeConst = 1)]
@@ -22,9 +22,9 @@ namespace Tus.Communication
         //public ModuleTypeEnum ModuleType;
 
 
-        public const int DATA_SIZE = 92;
-        public const int PACKET_SIZE = 96;
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 92)]
+        public const int DATA_SIZE = 46;
+        public const int PACKET_SIZE = 50;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 46)]
         private byte[] _data = new byte[DATA_SIZE];
         public byte[] Data
         {
