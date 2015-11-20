@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="Devices\AvrDeviceFactoryProvider.cs" />
     <Compile Include="Devices\BasicDevices\Device.cs" />
+    <Compile Include="Devices\BasicDevices\DeviceChunck.cs" />
     <Compile Include="Devices\BasicDevices\DeviceFactoryMetadataAttribute.cs" />
     <Compile Include="Devices\BasicDevices\DeviceState.cs" />
     <Compile Include="Devices\BasicDevices\DeviceStateComparer.cs" />

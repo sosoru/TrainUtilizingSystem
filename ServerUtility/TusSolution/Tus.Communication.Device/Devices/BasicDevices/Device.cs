@@ -9,6 +9,7 @@ using System.Drawing;
 using System.ComponentModel;
 using System.Reactive.Linq;
 using System.Reactive;
+using Tus.Communication.Device.Devices.BasicDevices;
 
 namespace Tus.Communication
 {
@@ -144,7 +145,7 @@ namespace Tus.Communication
             //    throw new InvalidOperationException("invalid state");
 
             //for (int i = 0; i < 3; i++)
-            this.ReceivingServer.EnqueueState(this);
+            this.ReceivingServer.EnqueueChunck(new [] {this.ToDeviceChunck()});
 
         }
 
