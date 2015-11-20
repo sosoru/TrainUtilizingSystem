@@ -22,6 +22,8 @@ namespace Tus.Communication
         //public ModuleTypeEnum ModuleType;
 
         public const int DATA_SIZE = 26;
+        public const int PACKET_SIZE = 32; // size of this structure 
+
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 26)]
         private byte[] _data = new byte[DATA_SIZE];
         public byte[] Data

@@ -53,8 +53,7 @@
       </Channel>
     </com_atmel_avrdbg_tool_simulator>
     <ToolchainName>com.Atmel.AVRGCC8.C</ToolchainName>
-    <ToolchainFlavour>
-    </ToolchainFlavour>
+    <ToolchainFlavour>Native</ToolchainFlavour>
     <AsfVersion>2.11.1</AsfVersion>
     <KeepTimersRunning>true</KeepTimersRunning>
     <OverrideVtor>false</OverrideVtor>

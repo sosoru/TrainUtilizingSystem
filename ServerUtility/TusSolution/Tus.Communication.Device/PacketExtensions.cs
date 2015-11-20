@@ -19,7 +19,7 @@ namespace Tus.Communication
             //while (st.ReadByte() != 0xFF) ;
             st.ReadByte();
 
-            byte[] buf = new byte[31];
+            byte[] buf = new byte[DevicePacket.PACKET_SIZE - 1];
             st.Read(buf, 0, buf.Length);
 
             return buf.ToDevicePacket();
