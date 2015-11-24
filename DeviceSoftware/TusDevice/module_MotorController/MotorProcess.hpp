@@ -207,7 +207,7 @@ namespace MotorController
 			
 			curr = MeisureCurrent();
 			//g_dbgmsgind += sprintf(g_dbgmsg+g_dbgmsgind, "waiting dst=(%d, %d, %d)", pstate->DestinationID.SubnetAddr, pstate->DestinationID.ModuleAddr, pstate->DestinationID.InternalAddr);
-			if(curr > 15 /*pstate->ThresholdValue*/) // entered
+			if(curr > 5 /*pstate->ThresholdValue*/) // entered
 			{
 				KernalState kstate;
 				MemoryState *pmstate = (MemoryState*)kstate.pdata;

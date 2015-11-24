@@ -86,7 +86,11 @@ namespace Tus.AutoController
             if (currentPhase == null) return false;
 
             // 先行列車が居るときはPhaseを進めない
-            if (vehicle.Distance <= 1 && currentPhase.StayGoSignal) return false;
+            if (vehicle.Distance <= currentPhase.StayDistance && currentPhase.StayGoSignal)
+            {
+                currentPhase.InitializeTrigger(); // 先行列車待ちの時はトリガーを初期化
+                return false;
+            }
 
             if (!currentPhase.Evaluate()) return false;
             this.PhaseBatch.StepNextPhase();

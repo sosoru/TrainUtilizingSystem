@@ -109,11 +109,13 @@ namespace AutoController
                     if (!vehinamecol.Contains(vehi.Name))
                         vehinamecol.Add(vehi.Name);
                 }
+                var deleting = new List<object>();
                 foreach (var vehiname in vehinamecol) // delete vehicle name which is not contained in received data
                 {
-                    if (obj.All(v => v.Name != (string)vehiname))
-                        vehinamecol.Remove(vehiname);
+                    if (obj.All(v => v.Name != (string) vehiname))
+                        deleting.Add(vehiname);
                 }
+                deleting.ForEach(vehinamecol.Remove);
 
                 // find the vehicle spicified by VehicleNameColumn
                 if (string.IsNullOrWhiteSpace(this.VehicleNameComboBox.Text)) return;  
@@ -250,7 +252,6 @@ namespace AutoController
             if (DialogResult.OK != this.openFileDialog1.ShowDialog(this)) return;
 
             var ser = unten.Serializer;
-            this.RefreshStartCheckBox.Checked = false;
             using (var fs = new FileStream(this.openFileDialog1.FileName, FileMode.Open))
             {
                 var unten_ = ser.ReadObject(fs) as Unten;

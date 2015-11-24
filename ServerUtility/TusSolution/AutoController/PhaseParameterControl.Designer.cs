@@ -53,7 +53,10 @@
             this.StayGoSignalCheckBox = new System.Windows.Forms.CheckBox();
             this.DistanceValueLabel = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.StayDistanceNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.StayDistanceNumericUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // CurrentSpeedProgressBar
@@ -72,9 +75,11 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.SpeedScrollBar.Location = new System.Drawing.Point(47, 9);
             this.SpeedScrollBar.Maximum = 1000;
+            this.SpeedScrollBar.Minimum = 100;
             this.SpeedScrollBar.Name = "SpeedScrollBar";
             this.SpeedScrollBar.Size = new System.Drawing.Size(393, 17);
             this.SpeedScrollBar.TabIndex = 1;
+            this.SpeedScrollBar.Value = 100;
             this.SpeedScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.SpeedScrollBar_Scroll);
             this.SpeedScrollBar.MouseCaptureChanged += new System.EventHandler(this.SpeedScrollBar_MouseCaptureChanged);
             this.SpeedScrollBar.MouseEnter += new System.EventHandler(this.SpeedScrollBar_MouseEnter);
@@ -306,10 +311,11 @@
             this.StayGoSignalCheckBox.AutoSize = true;
             this.StayGoSignalCheckBox.Location = new System.Drawing.Point(17, 92);
             this.StayGoSignalCheckBox.Name = "StayGoSignalCheckBox";
-            this.StayGoSignalCheckBox.Size = new System.Drawing.Size(192, 16);
+            this.StayGoSignalCheckBox.Size = new System.Drawing.Size(82, 16);
             this.StayGoSignalCheckBox.TabIndex = 10;
-            this.StayGoSignalCheckBox.Text = "先行列車が次閉塞に進むまで待機";
+            this.StayGoSignalCheckBox.Text = "先行列車が";
             this.StayGoSignalCheckBox.UseVisualStyleBackColor = true;
+            this.StayGoSignalCheckBox.CheckedChanged += new System.EventHandler(this.StayGoSignalCheckBox_CheckedChanged);
             // 
             // DistanceValueLabel
             // 
@@ -332,10 +338,28 @@
             this.label7.TabIndex = 12;
             this.label7.Text = "Distance";
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(171, 92);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(94, 12);
+            this.label2.TabIndex = 14;
+            this.label2.Text = "閉塞進むまで待機";
+            // 
+            // StayDistanceNumericUpDown
+            // 
+            this.StayDistanceNumericUpDown.Location = new System.Drawing.Point(96, 89);
+            this.StayDistanceNumericUpDown.Name = "StayDistanceNumericUpDown";
+            this.StayDistanceNumericUpDown.Size = new System.Drawing.Size(69, 19);
+            this.StayDistanceNumericUpDown.TabIndex = 15;
+            // 
             // PhaseParameterControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.StayDistanceNumericUpDown);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.DistanceValueLabel);
             this.Controls.Add(this.StayGoSignalCheckBox);
@@ -353,6 +377,7 @@
             this.Size = new System.Drawing.Size(509, 243);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.StayDistanceNumericUpDown)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -385,5 +410,7 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.CheckBox BlockReachedTriggerThisVehicleCheckBox;
         private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.NumericUpDown StayDistanceNumericUpDown;
     }
 }

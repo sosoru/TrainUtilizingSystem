@@ -47,6 +47,7 @@ namespace AutoController
             if (vehi != null) this.DistanceValueLabel.Text = vehi.Distance.ToString();
 
             this.StayGoSignalCheckBox.Checked = phase.StayGoSignal;
+            this.StayDistanceNumericUpDown.Value = phase.StayDistance;
 
             // initialize triggers for apply states to the controls
             this.BlockTriggerRadioButton.Checked = phase.Trigger is BlockReachedTrigger;
@@ -82,7 +83,8 @@ namespace AutoController
         {
             if (!this.speedScrollBarEntered) phase.Speed = (float)this.SpeedScrollBar.Value / this.SpeedScrollBar.Maximum;
             if (!this.accelScrollBarEntered) phase.Accelation = (float)this.AccelationScrollBar.Value / this.AccelationScrollBar.Maximum;
-            phase.StayGoSignal = this.StayGoSignalCheckBox.Enabled;
+            phase.StayGoSignal = this.StayGoSignalCheckBox.Checked;
+            phase.StayDistance = (int)this.StayDistanceNumericUpDown.Value;
             if (this.BlockTriggerRadioButton.Checked)
             {
                 if (this.BlockReachedTriggerThisVehicleCheckBox.Checked)
@@ -185,6 +187,11 @@ namespace AutoController
             {
                 this.accelScrollBarEntered = false;
             }
+        }
+
+        private void StayGoSignalCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

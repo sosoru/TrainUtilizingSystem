@@ -14,6 +14,7 @@
     <TargetFrameworkProfile />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -24,10 +25,10 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationRevision>2</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -50,6 +51,18 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>1DAEA10E0F2F7FAC911154459D89F0AF808AF46C</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>DialogConsole_一時キー.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -129,7 +142,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-    <None Include="testscript.coffee" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -137,8 +149,6 @@
     <None Include="test_looping.yaml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="tusControllers.coffee" />
-    <None Include="vehiclemap.coffee" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LogingConsole\LogingConsole.csproj">
@@ -176,33 +186,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="map.html" />
-    <Content Include="scripts\jquery-1.8.3.js" />
-    <Content Include="scripts\jquery-1.8.3.min.js" />
-    <Content Include="scripts\jquery-ui.custom.js" />
-    <Content Include="scripts\jquery.timers.js" />
-    <Content Include="scripts\jquery.tmpl.min.js" />
-    <Content Include="scripts\jquery.ui.touch-punch.min.js" />
-    <Content Include="scripts\jsrender.js" />
-    <Content Include="scripttest.html" />
-    <Content Include="testscript.js">
-      <DependentUpon>testscript.coffee</DependentUpon>
-    </Content>
-    <Content Include="testscript.min.js">
-      <DependentUpon>testscript.coffee</DependentUpon>
-    </Content>
-    <Content Include="tusControllers.js">
-      <DependentUpon>tusControllers.coffee</DependentUpon>
-    </Content>
-    <Content Include="tusControllers.min.js">
-      <DependentUpon>tusControllers.coffee</DependentUpon>
-    </Content>
-    <Content Include="vehiclemap.js">
-      <DependentUpon>vehiclemap.coffee</DependentUpon>
-    </Content>
-    <Content Include="vehiclemap.min.js">
-      <DependentUpon>vehiclemap.coffee</DependentUpon>
-    </Content>
-    <Content Include="vehiclepage.html" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">

@@ -23,7 +23,7 @@ namespace Tus.AutoController.Deserialized
         public string[] ReallocatableBlockNames { get; set; }
         public string ShownName { get; set; }
         public virtual float Speed { get; set; }
-        public int StopThreshold { get; set; }
+        public float StopThreshold { get; set; }
         public int VehicleID { get; set; }
     }
     public class DeserializedBlock

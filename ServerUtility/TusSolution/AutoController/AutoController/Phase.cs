@@ -17,6 +17,7 @@ namespace Tus.AutoController
         {
             // TODO: Complete member initialization
             this.Name = name;
+            this.Speed = 0.1f;
         }
 
         [DataMember]
@@ -40,9 +41,19 @@ namespace Tus.AutoController
 
         public Func<TriggerFactory, Trigger> TriggerInitializer { get; set; }
 
+        [DataMember(IsRequired =false, EmitDefaultValue=true)]
+        public int StayDistance { get; set; }
+
         public void InitializeTrigger()
         {
-            this.Trigger = this.TriggerInitializer(this.TriggerFactory);
+            if (this.TriggerFactory != null)
+                this.Trigger = this.TriggerInitializer(this.TriggerFactory);
+        }
+
+        [OnDeserializing]
+        public void OnDeserializing(StreamingContext context)
+        {
+            this.StayDistance = 1;
         }
     }
 }
