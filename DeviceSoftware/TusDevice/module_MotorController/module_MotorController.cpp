@@ -78,6 +78,11 @@ void SendKernelPacket(DeviceID *psrcid, DeviceID *pdstid)
 		g_packer.Pack((uint8_t*)&state);
 		mtrB.get_KernelState((KernalState*)&state);
 		g_packer.Pack((uint8_t*)&state);
+		g_packer.Send(psrcid, pdstid);
+	}
+		
+	if(g_packer.Init())
+	{
 		mtrC.get_KernelState((KernalState*)&state);
 		g_packer.Pack((uint8_t*)&state);
 		mtrD.get_KernelState((KernalState*)&state);
