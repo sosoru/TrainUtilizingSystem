@@ -88,7 +88,7 @@ namespace EthernetBridge
 			static uint8_t ReceiveFromEthernet()
 			{   
 				uint16_t plen;
-				uint8_t payloadlen=0;
+				uint8_t payloadlen;
 
 				// get the next new packet:
 				plen = enc28j60PacketReceive(BUFFER_SIZE, buf);

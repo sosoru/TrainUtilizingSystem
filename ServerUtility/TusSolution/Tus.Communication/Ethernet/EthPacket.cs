@@ -10,11 +10,7 @@ using System.Reactive;
 
 namespace Tus.Communication.Ethernet
 {
-<<<<<<< HEAD
     [StructLayout(LayoutKind.Sequential, Size = 40)]
-=======
-    [StructLayout(LayoutKind.Sequential, Size = 104)]
->>>>>>> parent of 24cd721... DevicePacketのパケットサイズの調整
     public class EthPacket
     {
         public EthPacket()

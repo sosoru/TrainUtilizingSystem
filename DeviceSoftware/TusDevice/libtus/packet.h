@@ -17,11 +17,7 @@
 #define ETHCMD_REPLY 1
 #define ETHCMD_MEMORY 2
 
-<<<<<<< HEAD
 #define ETH_DATA_LEN 26 
-=======
-#define ETH_DATA_LEN 92 
->>>>>>> parent of 24cd721... DevicePacketのパケットサイズの調整
 
 #define MODULETYPE_KERNEL 0x11
 #define MODULETYPE_MOTOR 0x12
@@ -59,11 +55,7 @@ typedef struct tag_EthPacket
 		};
 		
 		//todo : how to read the size of unnamed structs or unions 
-<<<<<<< HEAD
 		BYTE raw_array[40];
-=======
-		BYTE raw_array[104];
->>>>>>> parent of 24cd721... DevicePacketのパケットサイズの調整
 	};
 } EthPacket;
 

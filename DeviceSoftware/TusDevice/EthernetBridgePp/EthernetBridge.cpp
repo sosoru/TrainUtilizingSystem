@@ -38,9 +38,7 @@ ISR(TIMER1_COMPA_vect)
 }
 
 void BoardInit()
-{
-	uint8_t i;
-	
+{	
 	_delay_ms(100);	//wait for launching eth device
 	
 	DDRA = 0x00; // nRESET pins are initialized HiZ
@@ -88,15 +86,14 @@ void BoardInit()
 	ModuleG::Init();
 	ModuleH::Init();
 	
-	Lcd::Display::Init();
+	//Lcd::Display::Init();
 }
 
 template < class t_module >
 void DispatchModulePackets()
 {
 	EthPacket received;
-	uint8_t i=0, bufpos=0;
-	char printbuf[100];
+	//char printbuf[100];
 	
 	if(t_module::Ignored)
 	return;
@@ -200,9 +197,9 @@ extern "C"
 		//#endif
 		
 		BoardInit();
-		Lcd::Display::WriteString("T.U.S. Unit Box",0);
-		ShowIpAddress(1);
-		ShowModuleExistence(3);
+		//Lcd::Display::WriteString("T.U.S. Unit Box",0);
+		//ShowIpAddress(1);
+		//ShowModuleExistence(3);
 		
 		PORTB |= _BV(PORTB4);
 		
@@ -214,7 +211,7 @@ extern "C"
 				wdt_reset(); // 長時間パケットない場合はリセット
 			}
 			
-			Lcd::Display::StepRendering();
+			//Lcd::Display::StepRendering();
 			DispatchProcess();
 			//uicnt.Refresh();
 		}

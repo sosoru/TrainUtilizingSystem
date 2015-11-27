@@ -55,14 +55,9 @@ namespace EthernetBridge{
 		class ChildModule
 		{
 			private:
-<<<<<<< HEAD
 			static const uint8_t buffer_count = 8;
 			static const uint8_t message_size = 64;
-=======
-			static const uint8_t buffer_count = 3;
-			static const uint8_t message_size = 1;
->>>>>>> parent of 24cd721... DevicePacketのパケットサイズの調整
-			
+						
 			public:
 			typedef reset_module Reset;
 			typedef EthernetBridge::DispatchBuffer::PacketDispatcher<buffer_count, message_size, device_child_id> Dispatcher;
