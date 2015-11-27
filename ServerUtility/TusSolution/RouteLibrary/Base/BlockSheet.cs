@@ -216,7 +216,8 @@ namespace Tus.TransControl.Base
             var kernels = addrs.Select(Kernel.InquiryState);
 
             //send inquiry state per board
-            this.Server.EnqueueChunck(kernels.Select(k => k.ToDeviceChunck()));
+            foreach (var kernel in kernels)
+                PacketExtension.CreatePackedPacket(kernel).Send(this.Server);
         }
 
 

@@ -5,7 +5,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Runtime.InteropServices;
 using System.IO;
-using Tus.Communication.Device.Devices.BasicDevices;
 using Tus.Diagnostics;
 
 namespace Tus.Communication
@@ -89,36 +88,6 @@ namespace Tus.Communication
             return CreatePackedPacketInternal(devs);
         }
 
-        public static IEnumerable<DevicePacket> CreatePackedPacket(this DeviceChunck[] chuncks)
-        {
-            if (chuncks == null || !chuncks.Any())
-                return new DevicePacket[] { };
-
-            var devs = chuncks.Select((a, ind) => new { ind = ind, val = a });
-            var pack = new DevicePacket() { ID = devs.First().val.ID };
-            var packed = new List<DeviceChunck>();
-
-            using (var mst = new MemoryStream(pack.Data))
-            {
-                foreach (var chunck in chuncks)
-                {
-
-                    if (mst.Position + chunck.Data.Length > pack.Data.Length)
-                    {
-                        return new[] { pack }.Concat(CreatePackedPacket(chuncks.Except(packed).ToArray()));
-                    }
-                    else
-                    {
-                        mst.Write(chunck.Data, 0, chunck.Data.Length);
-                    }
-                    packed.Add(chunck);
-                }
-            }
-
-            return new[] { pack };
-
-        }
-
         private static IEnumerable<DevicePacket> CreatePackedPacketInternal(
             IEnumerable<IDevice<IDeviceState<IPacketDeviceData>>> devenumerator)
         {
@@ -153,15 +122,6 @@ namespace Tus.Communication
         {
             foreach (var p in packets)
                 serv.EnqueuePacket(p);
-        }
-
-        public static DeviceChunck ToDeviceChunck(this IDevice<IDeviceState<IPacketDeviceData>> device)
-        {
-            return new DeviceChunck()
-                       {
-                           ID = device.DeviceID,
-                           Data = device.CurrentState.Data.ToByteArray(),
-                       };
         }
 
         //public static void WritePacket(this ChunckedStreamController st, DevicePacket pack)

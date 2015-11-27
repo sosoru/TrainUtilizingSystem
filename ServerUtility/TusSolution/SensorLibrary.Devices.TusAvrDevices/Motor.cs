@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.Serialization;
-using System.Linq;
-using Tus.Communication.Device.Devices.BasicDevices;
 using Tus.Diagnostics;
 
 namespace Tus.Communication.Device.AvrComposed
@@ -135,7 +133,7 @@ namespace Tus.Communication.Device.AvrComposed
 
         private MotorMemoryStateEnum _before_current = MotorMemoryStateEnum.Unknown;
         private DateTime _before_sent_waiting = DateTime.MinValue;
-        private IEnumerable<DeviceChunck> createApplyingStates()
+        private IEnumerable<DevicePacket> createApplyingStates()
         {
             var statelist = new List<IDevice<IDeviceState<IPacketDeviceData>>>();
             bool withoutwaiting = (this.CurrentMemory == MotorMemoryStateEnum.Waiting &&
@@ -164,7 +162,7 @@ namespace Tus.Communication.Device.AvrComposed
                 && this.ReceivedMemory != this.ModeAfterWaiting
                 && this.ReceivedMemory != MotorMemoryStateEnum.Waiting;
 
-            if (exprinit || exprrefresh || exprwaiting)
+            if (exprinit|| exprrefresh|| exprwaiting)
             {
                 // send packet changing memory
                 statelist.Add(Kernel.MemoryState(DeviceID, new MemoryState((int)CurrentMemory)));
@@ -173,7 +171,7 @@ namespace Tus.Communication.Device.AvrComposed
             }
 
             _before_current = CurrentMemory;
-            return statelist.Select(s => s.ToDeviceChunck());
+            return PacketExtension.CreatePackedPacket(statelist);
         }
 
         public override void Observe(IObservable<IDeviceState<IPacketDeviceData>> observable)
@@ -206,8 +204,9 @@ namespace Tus.Communication.Device.AvrComposed
             if (currentmem == MotorMemoryStateEnum.Unknown)
                 currentmem = MotorMemoryStateEnum.NoEffect;
 
-            var app = createApplyingStates();
-            ReceivingServer.EnqueueChunck(app);
+            IEnumerable<DevicePacket> app = createApplyingStates();
+            foreach (DevicePacket p in app)
+                ReceivingServer.EnqueuePacket(p);
             try
             {
                 this.CurrentState = this.States[currentmem];

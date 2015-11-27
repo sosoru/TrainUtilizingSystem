@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Threading;
-using Tus.Communication.Device.Devices.BasicDevices;
 
 namespace Tus.Communication
 {
@@ -14,7 +13,6 @@ namespace Tus.Communication
     {
         private readonly List<PacketServerAction> actionList = new List<PacketServerAction>();
 
-        public ConcurrentQueue<DeviceChunck> sendingchunck_queue = new ConcurrentQueue<DeviceChunck>();
         public ConcurrentQueue<DevicePacket> sending_queue = new ConcurrentQueue<DevicePacket>();
         public ConcurrentQueue<DevicePacket> receving_queue = new ConcurrentQueue<DevicePacket>();
         public readonly PacketDispatcher thisobsv_;
@@ -71,7 +69,7 @@ namespace Tus.Communication
         //}
         public void SendAll()
         {
-            var states = sendChunck().Concat<DevicePacket>(sendState());
+            var states = sendState();
             foreach (var state in states)
             {
                 this.Controller.WritePacket(state);
@@ -113,15 +111,15 @@ namespace Tus.Communication
                 sending_queue.Enqueue(packet);
         }
 
-        public virtual void EnqueueChunck(IEnumerable<DeviceChunck> chuncks)
+        public virtual void EnqueueState(IDevice<IDeviceState<IPacketDeviceData>> dev)
         {
             //todo : thread control (reading and writing on the same thread)
             //lock (lockStream)
 
             try
             {
-                foreach (var chunck in chuncks)
-                    this.sendingchunck_queue.Enqueue(chunck);
+                foreach (DevicePacket p in PacketExtension.CreatePackedPacket(dev))
+                    EnqueuePacket(p);
             }
             catch (ArgumentException)
             {
@@ -154,22 +152,6 @@ namespace Tus.Communication
                 list.Add(pack);
             }
             return list;
-        }
-
-        private IEnumerable<DevicePacket> sendChunck()
-        {
-            if (this.sendingchunck_queue.Count == 0)
-                return Enumerable.Empty<DevicePacket>();
-
-            var list = new List<DeviceChunck>();
-            DeviceChunck pack;
-            while (this.sendingchunck_queue.TryDequeue(out pack))
-            {
-                list.Add(pack);
-            }
-
-            var groups = list.GroupBy(g => (g.ID.ParentPart << 8) | g.ID.ModuleAddr);
-            return groups.SelectMany(g => g.ToArray().CreatePackedPacket());
         }
 
         [Obsolete]
