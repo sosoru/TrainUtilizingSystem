@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6D232EBE-87CD-4D4E-BFDE-FB2402676506}"
 	ProjectSection(SolutionItems) = preProject
 		TusSolution.vsmdi = TusSolution.vsmdi
@@ -115,8 +117,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoController", "AutoContr
 	EndProjectSection
 EndProject
 Global
-	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = TusSolution.vsmdi
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -328,12 +330,15 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{39E73A78-039D-45DD-AD32-879B81EA567E} = {4AED919F-FD3A-4808-ACD4-7B7166976793}
 		{941ABACA-CCF7-436B-8D63-C3751CC1D1A9} = {46EF153C-B6DD-41C7-A904-BD5CF9051F13}
 		{2FCBA61B-F967-442F-A3F6-3A8AA7126B17} = {D48E877B-B792-4A79-8888-A3588AECDB3A}
 		{BBBD4A5A-1A91-436E-88BC-8621AC261B7F} = {D48E877B-B792-4A79-8888-A3588AECDB3A}
-		{39E73A78-039D-45DD-AD32-879B81EA567E} = {4AED919F-FD3A-4808-ACD4-7B7166976793}
-		{A1C4F9C0-7AD4-4A72-B463-70C2BD221373} = {4AED919F-FD3A-4808-ACD4-7B7166976793}
 		{A367ED72-ABD5-4CFD-A9BD-4BA911D53584} = {42DD2714-BB39-4FED-9704-2E0A160EDF80}
+		{A1C4F9C0-7AD4-4A72-B463-70C2BD221373} = {4AED919F-FD3A-4808-ACD4-7B7166976793}
 		{FD19AF7F-4B6C-424A-B57A-06B8D1180C0B} = {AA196E14-EBE9-49FF-AC58-E19B33256B10}
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = TusSolution.vsmdi
 	EndGlobalSection
 EndGlobal
