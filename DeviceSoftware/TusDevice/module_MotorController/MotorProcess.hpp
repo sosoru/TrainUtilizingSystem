@@ -222,9 +222,10 @@ namespace MotorController
 				{
 					m_buffer_index = pstate->MemoryAfterEntered;
 				}
-				
-				if( (pstate->DestinationID.raw & 0x000000FF) == (g_myDeviceID.raw & 0x000000FF))
+			
+				if( (pstate->DestinationID.ParentPart == g_myDeviceID.ParentPart) && (pstate->DestinationID.ModuleAddr == g_myDeviceID.ModuleAddr))
 				{
+					// dispatch to myself
 					ProcessKernelPacket(&kstate, &g_myDeviceID, &pstate->DestinationID);
 				}
 				else

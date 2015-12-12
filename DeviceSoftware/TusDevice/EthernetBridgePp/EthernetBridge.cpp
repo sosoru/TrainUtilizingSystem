@@ -10,31 +10,13 @@
 #include <avr/wdt.h>
 
 #include "tus_mst/tus_mstcfg.hpp"
-#include "LcdCfg.hpp"
 #include "EthConfig.hpp"
-#include "UI/UIbase.hpp"
-//#include "ui/setting/test_setting.hpp"
-#include "ui/UIController.hpp"
-#include "ui/setting/mac_addr.hpp"
 
 using namespace EthernetBridge;
 using namespace EthernetBridge::Eth;
 
-//
-//SPI_TRANS_PORT g_spi_trans_port = SPI_TRANS_PORTINST;
-//
-//SPI_SLAVE_PORT g_spi_slave_ports[] = SPI_SLAVE_PORT_ARRAY;
-//
-
 ISR(TIMER1_COMPA_vect)
 {
-	//if(bufptr >= LCD_BUF_SIZE)
-	//{
-		//bufptr = 0;
-		//sc2004_SetAddr_DDRAM(0);
-	//}
-	//
-	//sc2004_WriteData(lcd_buf[bufptr++]);
 }
 
 void BoardInit()
@@ -85,41 +67,18 @@ void BoardInit()
 	ModuleF::Init();
 	ModuleG::Init();
 	ModuleH::Init();
-	
-	//Lcd::Display::Init();
 }
 
 template < class t_module >
 void DispatchModulePackets()
 {
 	EthPacket received;
-	//char printbuf[100];
 	
 	if(t_module::Ignored)
 	return;
 			
 		if(t_module::Transmit(received))
 		{
-			//bool flag = false;
-			//
-			//for(i=0; i<40; i++)
-			//{
-				//if(received.raw_array[i] != 0)
-				//{
-					//flag = true;
-					//goto flag_label;
-				//}
-			//}
-			//
-			//flag_label:
-			//if(flag)
-			//{
-				//for(i=0; i<40; i++)
-				//{
-					//bufpos += sprintf(&printbuf[bufpos],"%2x", received.raw_array[i]);
-				//}
-				//Lcd::Display::WriteString(printbuf,0);
-//
 				PORTB ^= _BV(PORTB7);
 				if(EthDevice::IsForChildren(received))
 				{
@@ -129,9 +88,6 @@ void DispatchModulePackets()
 				{
 					EthDevice::SendToEthernet(&received);
 				}
-				
-			//}
-			
 		}
 		
 }
@@ -148,58 +104,17 @@ void DispatchProcess()
 	if(!ModuleH::Ignored) DispatchModulePackets<ModuleH>();
 }
 
-void ShowModuleExistence(uint8_t line)
-{
-	char buf[9];
-	
-	buf[0] = ModuleA::Ignored ? 'X' : 'O';
-	buf[1] = ModuleB::Ignored ? 'X' : 'O';
-	buf[2] = ModuleC::Ignored ? 'X' : 'O';
-	buf[3] = ModuleD::Ignored ? 'X' : 'O';
-	buf[4] = ModuleE::Ignored ? 'X' : 'O';
-	buf[5] = ModuleF::Ignored ? 'X' : 'O';
-	buf[6] = ModuleG::Ignored ? 'X' : 'O';
-	buf[7] = ModuleH::Ignored ? 'X' : 'O';
-	buf[8] = '\0';
-	
-	Lcd::Display::WriteString(buf, line);
-}
-
-void ShowIpAddress(uint8_t line)
-{
-	char buf1[20], buf2[20];
-	uint8_t* paddr = EthDevice::Parameters.ipaddress;
-	uint8_t* pmac = EthDevice::Parameters.macaddress;
-	
-	sprintf(buf1, "I'm %d.%d.%d.%d", paddr[0],paddr[1],paddr[2],paddr[3]);
-	sprintf(buf2, "(%02X:%02X:%02X:%02X:%02X:%02X)", pmac[0],pmac[1],pmac[2],pmac[3],pmac[4],pmac[5]);
-	
-	Lcd::Display::WriteString(buf1, line);
-	Lcd::Display::WriteString(buf2, line+1);
-}
-
 extern "C"
 {
 
 	int main(void)
 	{
-		using namespace UI;
-		
-		//Ui_View_mac_addr ui_mac;
-		//UIController uicnt(ui_mac);
-		
 		MCUCSR = 0;
 		wdt_enable(WDTO_2S);
-		//fprintf(stderr, "hoge");
-		//#ifndef DEBUG
+		
 		DDRB = 0xff;
-		//_delay_ms(1000);
-		//#endif
 		
 		BoardInit();
-		//Lcd::Display::WriteString("T.U.S. Unit Box",0);
-		//ShowIpAddress(1);
-		//ShowModuleExistence(3);
 		
 		PORTB |= _BV(PORTB4);
 		
@@ -211,9 +126,7 @@ extern "C"
 				wdt_reset(); // 長時間パケットない場合はリセット
 			}
 			
-			//Lcd::Display::StepRendering();
 			DispatchProcess();
-			//uicnt.Refresh();
 		}
 		
 		return 0;
@@ -221,4 +134,3 @@ extern "C"
 
 	
 };
-}

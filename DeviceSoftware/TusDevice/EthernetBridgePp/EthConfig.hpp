@@ -88,7 +88,6 @@ namespace EthernetBridge
 			static uint8_t ReceiveFromEthernet()
 			{   
 				uint16_t plen;
-				uint8_t payloadlen;
 
 				// get the next new packet:
 				plen = enc28j60PacketReceive(BUFFER_SIZE, buf);
@@ -127,9 +126,7 @@ namespace EthernetBridge
 				if (buf[IP_PROTO_P]==IP_PROTO_UDP_V
 					&& buf[UDP_DST_PORT_H_P]==(uint8_t)(Parameters.recv_port>>8)
 					&& buf[UDP_DST_PORT_L_P]==(uint8_t)(Parameters.recv_port))
-				{
-					payloadlen = buf[UDP_LEN_L_P] - UDP_HEADER_LEN;
-							
+				{							
 					EthPacket * ppacket = (EthPacket*)&buf[UDP_DATA_P];
 												
 					if(IsForChildren(*ppacket))

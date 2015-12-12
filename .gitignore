@@ -6,6 +6,9 @@ Release/
 TestResults/
 packages/
 
+_ReSharper.Caches
+
+
 /TUSBudget/TUSBudget/_Pvt_Extensions
 
 
