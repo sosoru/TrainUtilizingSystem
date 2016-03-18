@@ -4,8 +4,8 @@
     <EnableENC>False</EnableENC>
     <ProjectView>ProjectFiles</ProjectView>
     <ServerPort>63026</ServerPort>
-    <SchemaManagementSchemaBuildState>0</SchemaManagementSchemaBuildState>
-    <SchemaManagementLastModelWriteTime>634855644144680899</SchemaManagementLastModelWriteTime>
+    <SchemaManagementSchemaBuildState>1</SchemaManagementSchemaBuildState>
+    <SchemaManagementLastModelWriteTime>635834976981493495</SchemaManagementLastModelWriteTime>
     <GrantedPermissions>
     </GrantedPermissions>
     <PublishUserName />

@@ -23,14 +23,16 @@ namespace Tus.Communication
         protected EthClient Client { get; private set; }
 
         public TusEthernetIO(IPAddress ipbase, IPAddress mask)
-            : this(BitConverter.ToUInt32(ipbase.GetAddressBytes(), 0), BitConverter.ToUInt32(mask.GetAddressBytes(), 0)) { }
+            : this(BitConverter.ToUInt32(ipbase.GetAddressBytes(), 0), BitConverter.ToUInt32(mask.GetAddressBytes(), 0))
+        { }
 
         public TusEthernetIO(UInt32 ipbase, UInt32 mask)
         {
             this.IpBase = ipbase;
             this.IpMask = mask;
             this.Client = new EthClient();
-
+            this.Client.SendPort = this.Port;
+            this.Client.RecvPort = this.Port + 1;
         }
 
         private IPEndPoint ToEndPoint(DeviceID id)
@@ -81,11 +83,11 @@ namespace Tus.Communication
         {
             this.Client.Address = ToEndPoint(pack.ID).Address;
             var eth = new EthPacket()
-                          {
-                              srcId = SourceID,
-                              destId = pack.ID,
-                              DataPacket = pack,
-                          };
+            {
+                srcId = SourceID,
+                destId = pack.ID,
+                DataPacket = pack,
+            };
             return eth;
         }
 

@@ -19,8 +19,8 @@ namespace Tus.Communication.Ethernet
 {
     public class EthClient
     {
-        public static int SEND_PORT = 8000;
-        public static int RECV_PORT = 8001;
+        public int SendPort ;
+        public int RecvPort ;
 
         // private UdpClient client_;
 
@@ -41,8 +41,8 @@ namespace Tus.Communication.Ethernet
         {
             try
             {
-                IPEndPoint ipend = new IPEndPoint(IPAddress.Any, RECV_PORT);
-                var client = new UdpClient(RECV_PORT);
+                IPEndPoint ipend = new IPEndPoint(IPAddress.Any, RecvPort);
+                var client = new UdpClient(RecvPort);
 
                 return Task.Factory.FromAsync<byte[]>(client.BeginReceive, res => client.EndReceive(res, ref ipend), "")
                     .ToObservable()
@@ -70,7 +70,7 @@ namespace Tus.Communication.Ethernet
             Array.Copy(this.Address.GetAddressBytes(), address, address.Length);
             address[3] = (byte)packet.destId.ParentPart;
 
-            return new IPEndPoint(new IPAddress(address), SEND_PORT);
+            return new IPEndPoint(new IPAddress(address), SendPort);
         }
 
 

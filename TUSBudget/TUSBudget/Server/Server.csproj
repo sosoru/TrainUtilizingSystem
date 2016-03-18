@@ -163,7 +163,6 @@
     <Folder Include="DataLogic\" />
     <Folder Include="DataSources\" />
     <Folder Include="UserCode\" />
-    <Folder Include="Web\" />
   </ItemGroup>
   <ItemGroup>
     <LightSwitchModel Include="Properties\Service.lsml">
@@ -189,6 +188,7 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
+    <Content Include="Web\TUSBudget.Client.xap" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

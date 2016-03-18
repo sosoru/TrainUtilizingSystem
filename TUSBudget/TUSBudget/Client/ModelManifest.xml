@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <ModelDocumentManifest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Documents>
-    <Document FullPath="C:\Users\Administrator\Documents\TrainUtilizingSystem\TUSBudget\TUSBudget\Client\Properties\Client.lsml" Checksum="E1E74D10A3D7B8D1D319BEE83EF306A54E693172A9D6DEDB0EA186BF720420D2" />
-    <Document FullPath="C:\Users\Administrator\Documents\TrainUtilizingSystem\TUSBudget\TUSBudget\Common\Properties\Common.lsml" Checksum="EF3C332557FA851AD1AEE838772DFD199B8899AEAAED0FE31ECA7A7F2FEC0E7F" />
+    <Document FullPath="C:\Users\Administrator\ProgSync\projects\TrainUtilizingSystem\TUSBudget\TUSBudget\Client\Properties\Client.lsml" Checksum="E1E74D10A3D7B8D1D319BEE83EF306A54E693172A9D6DEDB0EA186BF720420D2" />
+    <Document FullPath="C:\Users\Administrator\ProgSync\projects\TrainUtilizingSystem\TUSBudget\TUSBudget\Common\Properties\Common.lsml" Checksum="EF3C332557FA851AD1AEE838772DFD199B8899AEAAED0FE31ECA7A7F2FEC0E7F" />
   </Documents>
 </ModelDocumentManifest>
