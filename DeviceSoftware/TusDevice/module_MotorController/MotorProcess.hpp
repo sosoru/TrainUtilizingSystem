@@ -223,7 +223,8 @@ namespace MotorController
 					m_buffer_index = pstate->MemoryAfterEntered;
 				}
 				
-				if( (pstate->DestinationID.raw & 0x000000FF) == (g_myDeviceID.raw & 0x000000FF))
+				if( (pstate->DestinationID.SubnetAddr == g_myDeviceID.SubnetAddr) 
+						&&  (pstate->DestinationID.ModuleAddr == g_myDeviceID.ModuleAddr))
 				{
 					ProcessKernelPacket(&kstate, &g_myDeviceID, &pstate->DestinationID);
 				}
