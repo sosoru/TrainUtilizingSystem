@@ -120,6 +120,8 @@ namespace TestProject
         [TestMethod]
         public void HaltTest()
         {
+            Assert.Inconclusive(); // HaltHere等のHaltの他に，センサーを用いて閉塞を開放する機能があったが，現在使用していない
+
             var mockio = new Mock<IDeviceIO>();
             var written = new List<IDeviceState<IPacketDeviceData>>();
             var received = new List<IDevice<IDeviceState<IPacketDeviceData>>>();

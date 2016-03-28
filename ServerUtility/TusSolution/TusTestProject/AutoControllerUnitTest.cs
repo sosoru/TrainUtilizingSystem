@@ -38,6 +38,7 @@ namespace TusTestProject.AutoController
 
             moqTrigger.Setup<bool>(m => m.CheckTriggered()).Returns(true);
 
+            phase.TriggerFactory = new TriggerFactory();
             phase.TriggerInitializer = t => moqTrigger.Object;
             phase.InitializeTrigger(); // InitializeTriggergger()を読んでTriggerを初期化しないと，正しく評価できない
             Assert.IsTrue(phase.Evaluate());

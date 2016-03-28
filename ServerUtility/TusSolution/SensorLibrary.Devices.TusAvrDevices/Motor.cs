@@ -40,6 +40,8 @@ namespace Tus.Communication.Device.AvrComposed
         {
             get
             {
+                this.deviceKernel_ = this.deviceKernel_ ?? new Kernel();
+
                 this.deviceKernel_.DeviceID = this.DeviceID;
                 this.deviceKernel_.ReceivingServer = this.ReceivingServer;
                 return deviceKernel_;
@@ -162,7 +164,7 @@ namespace Tus.Communication.Device.AvrComposed
                 && this.ReceivedMemory != this.ModeAfterWaiting
                 && this.ReceivedMemory != MotorMemoryStateEnum.Waiting;
 
-            if (exprinit|| exprrefresh|| exprwaiting)
+            if (exprinit || exprrefresh || exprwaiting)
             {
                 // send packet changing memory
                 statelist.Add(Kernel.MemoryState(DeviceID, new MemoryState((int)CurrentMemory)));

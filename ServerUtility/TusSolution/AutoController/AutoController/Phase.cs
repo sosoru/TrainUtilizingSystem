@@ -18,6 +18,7 @@ namespace Tus.AutoController
             // TODO: Complete member initialization
             this.Name = name;
             this.Speed = 0.1f;
+            this.StayDistance = 1;
         }
 
         [DataMember]

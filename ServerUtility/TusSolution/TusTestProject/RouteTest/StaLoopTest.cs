@@ -51,7 +51,8 @@ namespace TestProject
                                                     "AT10", "AT11", "AT12", "BAT12",
                                                     "AT13", "AT14", "AT15", "BAT16",
                                                     "AT16", "AT1", "BAT1"
-                                                }) { IsRepeatable = true };
+                                                })
+            { IsRepeatable = true };
             return route;
         }
 
@@ -106,8 +107,13 @@ namespace TestProject
         {
             _sht.TimeWaitingSwitchChanged = TimeSpan.FromSeconds(5.0);
             var rt = GetRouteFirst(_sht);
-
             var vh = new Vehicle(_sht, rt);
+
+            // init switch position for this test
+            foreach (var sw in _sht.AllSwitches)
+            {
+                sw.CurrentState.Position = PointStateEnum.Any;
+            }
 
             // vh will allocate the first control block of the route at Constructor
             vh.Accelation = 100.0f; // ignoring speed control
@@ -141,6 +147,7 @@ namespace TestProject
         {
             var rt = GetRouteFirst(_sht);
             var vh = new Vehicle(_sht, rt);
+            vh.Accelation = 10000.0f;
 
             // N-th case : the vehicle goes at specified speed
             vh.Run(1.0f, _sht.GetBlock("AT2"));
@@ -150,7 +157,7 @@ namespace TestProject
             Assert.IsTrue(any);
 
 
-            // 2nd case : the vehicle keeps specified speed, but entering the next section, reduces its speed to half
+            // 2nd case : the vehicle keeps specified speed, but entering the next section, this vehicle will stop
             var otherrt = GetRouteFirst(_sht);
             var othervh = new Vehicle(_sht, otherrt);
 
@@ -161,16 +168,6 @@ namespace TestProject
             _scheduler.Start();
             _serv.SendAll();
             Assert.IsTrue(_written.ExtractDevices<MotorState>(1, 2, 2).Any(s => s.Duty == 1.0f));
-            Assert.IsTrue(_written.ExtractDevices<MotorState>(1, 2, 3).Any(s => Math.Round(s.Duty, 1) == 0.5f));
-
-            // 1st case : the vehicle reduces its speed to half immediately, and stops the next section
-            _written.Clear();
-            othervh.Run(1.0f, _sht.GetBlock("AT12"));
-            vh.Run(1.0f, _sht.GetBlock("AT2"));
-
-            _scheduler.Start();
-            _serv.SendAll();
-            Assert.IsTrue(_written.ExtractDevices<MotorState>(1, 2, 2).Any(s => Math.Round(s.Duty, 1) == 0.5f));
             Assert.IsTrue(_written.ExtractDevices<MotorState>(1, 2, 3).Any(s => s.Duty == 0.0f));
 
             // zero case : the vehicle stops immediately
@@ -183,9 +180,10 @@ namespace TestProject
             catch (InvalidOperationException ex)
             {
             }
+            vh.Run(0);
+            vh.AssociatedRoute.UnReserveHead();
             vh.AssociatedRoute.InitLockingPosition();
             othervh.Run(1.0f, _sht.GetBlock("AT9"));
-            vh.Run(1.0f, _sht.GetBlock("AT2"));
 
             _scheduler.Start();
             _serv.SendAll();
@@ -195,12 +193,13 @@ namespace TestProject
         [TestMethod]
         public void HaltTest()
         {
+            Assert.Inconclusive(); // HaltHere等のHaltの他に，センサーを用いて閉塞を開放する機能があったが，現在使用していない
             var rt = GetRouteFirst(_sht);
             var vh = new Vehicle(_sht, rt);
 
             vh.Halt.Add(new Halt(_sht.GetBlock("AT4")));
 
-            vh.Accelation = 1.0f;
+            vh.Accelation = 10000.0f;
             vh.Run(0.5f, _sht.GetBlock("AT2"));
             //vh.Refresh();
             _serv.SendAll();

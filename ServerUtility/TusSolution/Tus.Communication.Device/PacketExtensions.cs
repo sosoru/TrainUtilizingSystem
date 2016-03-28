@@ -30,9 +30,9 @@ namespace Tus.Communication
             var data = dev.CurrentState.Data;
 
             var packet = new DevicePacket()
-                             {
-                                 ID = dev.DeviceID,
-                             };
+            {
+                ID = dev.DeviceID,
+            };
 
             packet.CopyToData(data);
             //packet.ModuleType = dev.ModuleType;
@@ -66,6 +66,9 @@ namespace Tus.Communication
                     {
                         Logger.WriteLineAsTransInfo("ソース長さが足りない？");
                         Logger.WriteLineAsTransInfo(ex.ToString());
+                        Logger.WriteLineAsTransInfo("この例外が送出された場合，受信したパケットが破損した可能性があります．");
+                        Logger.WriteLineAsTransInfo("閉塞動作に影響が出た場合には，プログラムの再起動を試みるか，問題の出た列車を一度停止してください．");
+                        yield break;
                     }
                     data.RestoreObject(cpbuffer);
 
