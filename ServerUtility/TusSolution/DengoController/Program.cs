@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -24,10 +25,10 @@ namespace DengoController
             return client.DownloadString(serverAddr);
         }
 
-        private static void SendCommand(VehicleInfoReceived send)
+        private static void SendCommand(IEnumerable<VehicleInfoReceived> send)
         {
             var client = new WebClient();
-            var json = new DataContractJsonSerializer(typeof(VehicleInfoReceived));
+            var json = new DataContractJsonSerializer(typeof(IEnumerable<VehicleInfoReceived>));
 
             using (Stream ns = client.OpenWrite(serverAddr))
             {
@@ -105,12 +106,12 @@ namespace DengoController
             {
                 Console.WriteLine("accel : {0}, brake : {1}, duty : {2},  ",
                                   ac * 6, br * 14, infl);
-                var data = new VehicleInfoReceived
+                var data = new []{ new VehicleInfoReceived
                                {
                                    Name = RouteName,
                                    Speed = (infl / 250.0f).ToString(),
                                    Accelation = "1.0"
-                               };
+                               }};
                 SendCommand(data);
             }
             before_infl = infl;

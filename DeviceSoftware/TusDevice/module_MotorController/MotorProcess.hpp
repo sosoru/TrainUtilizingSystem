@@ -207,7 +207,7 @@ namespace MotorController
 			
 			curr = MeisureCurrent();
 			//g_dbgmsgind += sprintf(g_dbgmsg+g_dbgmsgind, "waiting dst=(%d, %d, %d)", pstate->DestinationID.SubnetAddr, pstate->DestinationID.ModuleAddr, pstate->DestinationID.InternalAddr);
-			if(curr > 5 /*pstate->ThresholdValue*/) // entered
+			if(curr > 15 /*pstate->ThresholdValue*/) // entered
 			{
 				KernalState kstate;
 				MemoryState *pmstate = (MemoryState*)kstate.pdata;
@@ -222,10 +222,10 @@ namespace MotorController
 				{
 					m_buffer_index = pstate->MemoryAfterEntered;
 				}
-			
-				if( (pstate->DestinationID.ParentPart == g_myDeviceID.ParentPart) && (pstate->DestinationID.ModuleAddr == g_myDeviceID.ModuleAddr))
+				
+				if( (pstate->DestinationID.SubnetAddr == g_myDeviceID.SubnetAddr) 
+						&&  (pstate->DestinationID.ModuleAddr == g_myDeviceID.ModuleAddr))
 				{
-					// dispatch to myself
 					ProcessKernelPacket(&kstate, &g_myDeviceID, &pstate->DestinationID);
 				}
 				else
